@@ -1,0 +1,15 @@
+R402:  type-spec is intrinsic-type-spec or derived-type-spec
+R404:  intrinsic-type-spec is INTEGER    or ...
+R457:  derived-type-spec   is type-name  or ...
+
+R468:  ac-spec  is type-spec ::  or ...
+
+ac-spec (for example)
+
+      A = [INTEGER :: ]
+
+ is ambiguous syntactically because type-name could be INTEGER 
+
+
+
+
