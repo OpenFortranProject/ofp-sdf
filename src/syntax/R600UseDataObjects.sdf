@@ -1,0 +1,240 @@
+      
+%%%%%%%%%%
+%% Fortran ISO/IEC 1539:1991 section R6xx Use of Data Objects
+%%%%%%%%%%
+
+%%module languages/fortran/syntax/R600UseDataObjects
+module R600UseDataObjects
+
+imports
+  %%  languages/fortran/syntax/FortranLex
+  %%  languages/fortran/syntax/R700Expressions
+  FortranLex
+  R700Expressions
+
+exports
+
+sorts
+  AllocatedShape AllocateObject AllocateObjectList AllocateShapeSpec AllocateStmt
+  Allocation AllocationList AllocOpt AllocOptList
+  ArrayElement ArraySection
+  CharVariable CoSubscript CoSubscriptList
+  DataRef DeallocateStmt DeallocOpt DeallocOptList
+  DefaultCharVariable DefaultLogicalVariable Designator ErrmsgVariable
+  ImageSelector IntVariable
+  LogicalVariable
+  NullifyStmt
+  ParentString PartName PartRef
+  PointerObject PointerObjectList
+  ScalarDefaultCharVariable ScalarIntVariable ScalarStructureComponent
+  ScalarVariable ScalarVariableName
+  SectionSubscript SectionSubscriptList SourceExpr StatVariable
+  StructureComponent Subscript
+  SubscriptTriplet Substring SubstringRange
+  Variable VectorSubscript
+
+context-free syntax
+
+%%R601
+%%AMB  ObjectName            -> Designator        %% R613 part-name -> part-ref -> data-ref
+%%AMB  ArrayElement          -> Designator        %% R617 is data-ref
+%%AMB  ArraySection          -> Designator        %% R618 is data-ref [ (substring-range) ] 
+%%AMB  ComplexPartDesignator -> Designator        %% R615 is designator % ('RE' | 'IM') -> data-ref
+%%AMB  StructureComponent    -> Designator        %% R614 is data-ref
+%%AMB  Substring             -> Designator        %% R609 is data-ref '(' substring-range ')'
+%% the above reduces to
+  DataRef                              -> Designator   {cons("designator")}
+
+%%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
+%%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
+
+%%TODO-F08 CharLiteralConstant '(' substring_range ')'  -> Designator  %% from OFP ANTLR grammar
+
+%%R602
+  Designator                           -> Variable     {cons("variable")}
+%%AMB Expr                             -> Variable          %% expr shall be a func ref with pointer result
+  Variable                             -> ScalarVariable
+
+%%R602
+%%TODO-AMB   VariableName | ArrayElement                                   -> ScalarVariable
+%%TODO-AMB   VariableName                                                  -> Variable
+%%TODO-AMB   VariableName '(' {Subscript ","}+ ')'                         -> Variable
+%%TODO-AMB   VariableName SubstringRange                                   -> Variable
+%%TODO-AMB   VariableName '(' {Subscript ","}+ ')' SubstringRange          -> Variable
+%%TODO-AMB   Expr                                                          -> Subscript
+
+%%R603
+  Name               -> VariableName
+  VariableName       -> ScalarVariableName
+
+%%R604
+  Variable           -> LogicalVariable
+
+%%R605
+  Variable           -> DefaultLogicalVariable
+
+%%606
+  Variable           -> CharVariable
+
+%%607
+  Variable           -> DefaultCharVariable
+
+%%608
+  Variable           -> IntVariable
+
+%%609
+  ParentString '(' SubstringRange ')'  -> Substring
+
+%%610
+  ScalarVariableName                   -> ParentString
+  ArrayElement                         -> ParentString
+  ScalarStructureComponent             -> ParentString
+  ScalarConstant                       -> ParentString
+
+%%R611
+  ScalarIntExpr? ':' ScalarIntExpr?    -> SubstringRange   {cons("substring-range")}
+
+%%R609
+%%R610
+%%R611
+%%TODO-DELETE   '(' SubscriptTriplet ')'                        -> SubstringRange
+
+%%R612
+  {PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
+
+%%TODO-DELETE   Name '%' Name                                   -> DataRef
+%%TODO-DELETE   DataRef '%' Name                                -> DataRef
+%%TODO-DELETE   Name '(' SectionSubscriptList ')'               -> DataRef
+%%TODO-DELETE   DataRef '(' SectionSubscriptList ')'            -> DataRef
+
+%%TODO-DELETE   {SectionSubscript ","}+                         -> SectionSubscriptList
+%%TODO-DELETE   Expr                                            -> SectionSubscript
+%%TODO-DELETE   SubscriptTriplet                                -> SectionSubscript
+
+%%R613
+  PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
+  PartName   '(' SectionSubscriptList ')'
+           ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
+  Name                                                          -> PartName
+
+%%R614
+  DataRef                                                       -> StructureComponent
+%%TODO-DELETE   VariableName FieldSelector                                    -> StructureComponent
+%%TODO-DELETE   StructureComponent FieldSelector                              -> StructureComponent
+%%TODO-DELETE   '(' SectionSubscriptList ')' '%' Name                         -> FieldSelector
+%%TODO-DELETE   '%' Name                                                      -> FieldSelector
+
+  StructureComponent                                            -> ScalarStructureComponent
+
+%%R615
+%%TODO-F08   Designator '%' 'RE'                                -> ComplexPartDesignator
+%%TODO-F08   Designator '%' 'IM'                                -> ComplexPartDesignator
+
+%%R616
+%%TODO-F08 Designator '%' TypeParamName                         -> TypeParamInquiry
+
+%%R617
+  DataRef                                                       -> ArrayElement
+%%TODO-DELETE   StructureComponent '(' SectionSubscriptList ')' -> ArrayElement
+%%TODO-DELETE   VariableName '(' SectionSubscriptList ')'       -> ArrayElement
+
+%%R618
+  DataRef ( '(' SubstringRange ')' )?                           -> ArraySection
+%%TODO-F08   ComplexPartDesignator                              -> ArraySection
+
+%%619
+  ScalarIntExpr                                                 -> Subscript             {cons("subscript")}
+
+%%620
+  Subscript                                                     -> SectionSubscript
+  SubscriptTriplet                                              -> SectionSubscript
+  %%VectorSubscript                                             -> SectionSubscript      %%AMB with subscript
+  {SectionSubscript ','}+                                       -> SectionSubscriptList  {cons("section-subscript-list")}
+
+%%R621
+  Subscript? ':' Subscript? (':' Stride)?                       -> SubscriptTriplet
+
+%%R622
+  ScalarIntExpr                                                 -> Stride
+
+%%R623
+  IntExpr                                                       -> VectorSubscript
+
+%%624
+  '[' CoSubscriptList ']'                                       -> ImageSelector
+
+%%625
+  ScalarIntExpr                                                 -> CoSubscript
+  {CoSubscript ','}+                                            -> CoSubscriptList
+
+%%R626
+  LblDef 'ALLOCATE' '(' (TypeSpec '::')? 
+                    AllocationList (',' AllocOptList)? ')'  EOS -> AllocateStmt  {cons("allocate-stmt")}
+
+%%R627
+  'ERRMSG' '=' ErrmsgVariable                                   -> AllocOpt
+  'MOLD'   '=' SourceExpr                                       -> AllocOpt
+  'SOURCE' '=' SourceExpr                                       -> AllocOpt
+  'STAT'   '=' StatVariable                                     -> AllocOpt
+  {AllocOpt ','}+                                               -> AllocOptList
+
+%%R628
+  ScalarIntVariable                                             -> StatVariable
+  ScalarVariable                                                -> ScalarIntVariable %%TODO-FIXME
+
+%%R620
+  ScalarDefaultCharVariable                                     -> ErrmsgVariable
+  ScalarVariable                                                -> ScalarDefaultCharVariable %%TODO-FIXME
+
+%%R630
+  Expr                                                          -> SourceExpr
+
+%%R623 chain rule deleted
+
+%%R631
+%%TODO-F08 allocate-co-array-spec
+   {Allocation ","}+                            -> AllocationList
+   AllocateObject AllocatedShape?               -> Allocation
+   '(' SectionSubscriptList ')'                 -> AllocatedShape
+%%/* From ELI: Need to use SectionSubscriptList here to solve an LALR(1) conflict with the
+%% * FieldSelector in R625.  (Can't tell which we have until the character
+%% * following the right paren, but we must reduce WITHIN the parens.)
+%% */
+
+%%R632
+  VariableName                                  -> AllocateObject
+  StructureComponent                            -> AllocateObject
+%%TODO-DELETE   AllocateObject FieldSelector                  -> AllocateObject
+  {AllocateObject ","}+                         -> AllocateObjectList
+
+%%R626
+%% JD is this correct??/* Omitted to solve LALR(1) conflict.  see R624
+  {Expr ":" }+                                  -> AllocateShapeSpec
+
+%%R638
+  LblDef 'NULLIFY' '(' PointerObjectList ')'   EOS -> NullifyStmt       {cons("nullify-stmt")}
+
+%%R639
+%%TODO-F08 make sure structure-component works
+   VariableName                                 -> PointerObject
+   StructureComponent                           -> PointerObject
+%%TODO-AMBiguous?
+%%TODO-F08   ProcPointerName                              -> PointerObject
+  {PointerObject ","}+                          -> PointerObjectList
+   
+%%TODO-DELETE   Name                                          -> PointerObject
+%%TODO-DELETE   PointerField                                  -> PointerObject
+%%TODO-DELETE   Name '(' SFExprList ')' '%' Name              -> PointerField
+%%TODO-DELETE   Name '(' SFDummyArgNameList ')' '%' Name      -> PointerField
+%%TODO-DELETE   Name '%' Name                                 -> PointerField
+%%TODO-DELETE   PointerField FieldSelector                    -> PointerField
+
+%%R640
+  LblDef 'DEALLOCATE' '('
+             AllocateObjectList (',' DeallocOptList)?
+                      ')'                               EOS -> DeallocateStmt  {cons("deallocate-stmt")}
+
+%%641
+  'STAT'   '=' StatVariable                                     -> DeallocOpt
+  'ERRMSG' '=' ErrmsgVariable                                   -> DeallocOpt
+  {AllocOpt ','}+                                               -> DeallocOptList

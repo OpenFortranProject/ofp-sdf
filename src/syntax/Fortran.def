@@ -1,0 +1,2523 @@
+definition
+module R800ExecutionControl
+
+imports
+  %% languages/fortran/syntax/FortranLex
+  %% languages/fortran/syntax/Fortran90
+  FortranLex
+  Fortran
+
+exports
+
+sorts
+  AllstopStmt ArithmeticIfStmt AssignedGotoStmt AssignStmt AssociateName
+  AssociateConstruct AssociateStmt Association Block
+  CaseBodyConstruct CaseConstruct CaseSelector CaseStmt CaseValueRange
+  ComputedGotoStmt ContinueStmt CycleStmt DoBlock DoConstructName DoVariable
+  ElseIfStmt
+  ElseStmt EndAssociateStmt EndDoStmt EndIfStmt EndSelectStmt EndSelectTypeStmt
+  ExitStmt GoToKw GotoStmt IfConstruct  IfConstructName IfStmt IfThenStmt LabelDoStmt
+  LblRef LoopControl OptAssociateConstructName OptAssociateConstructNameColon
+  OptAssociateName OptSelectConstructName OptSelectConstructNameColon PauseStmt
+  ScalarIntExpr ScalarLogicalExpr ScalarNumericExpr SelectCaseBody SelectCaseRange
+  Selector SelectTypeConstruct SelectTypeStmt StopStmt StopCode
+  TypeGuardConstruct TypeGuardStmt
+
+  NonlabelDoStmt DoStmt
+
+%%AMBiguous BlockDoConstruct DoConstruct EndDo
+
+context-free syntax
+
+%%R801
+  ExecutionPartConstruct*                          -> Block     {cons("block")}
+
+%%R802
+  AssociateStmt Block EndAssociateStmt             -> AssociateConstruct
+                                                                {cons("associate-construct")}
+
+%%R803
+  LblDef OptAssociateConstructNameColon
+     'ASSOCIATE' '(' {Association ','}+ ')'    EOS -> AssociateStmt
+                                                                {cons("associate-stmt")}
+  (Ident ':')?                                     -> OptAssociateConstructNameColon
+                                                                {cons("associate-construct-name")}
+
+%%R804
+  AssociateName '=>' Selector                      -> Association     {cons("associatiation")}
+  Ident                                            -> AssociateName   {cons("associate-name")}
+
+%%R805
+  Expr                                             -> Selector        {cons("selector")}
+
+%%R806
+  LblDef 'END' 'ASSOCIATE'
+         OptAssociateConstructName    EOS -> EndAssociateStmt   {cons("end-associate-stmt")}
+  Ident?                                  -> OptAssociateConstructName
+                                                                {cons("associate-construct-name")}
+
+%%R802
+  IfThenStmt ExecutionPartConstruct* 
+                (ElseIfStmt ExecutionPartConstruct*)* 
+                (ElseStmt   ExecutionPartConstruct*)? 
+         EndIfStmt                                                              -> IfConstruct 
+
+%%R803
+  LblDef (IfConstructName ":")? 'if' '(' ScalarLogicalExpr ')' 'then' EOS       -> IfThenStmt
+  Ident -> IfConstructName
+
+%%R804
+  LblDef 'else' 'if' '(' ScalarLogicalExpr ')' 'then' IfConstructName? EOS      -> ElseIfStmt
+
+%%R805
+  LblDef 'else' IfConstructName? EOS                                            -> ElseStmt
+
+%%R806
+  LblDef 'end' 'if' IfConstructName? EOS                                        -> EndIfStmt
+
+%%R807
+%% JD: removed EOS at end since its part of ActionStmt 
+  LblDef 'if' '(' ScalarLogicalExpr ')' ActionStmt                              -> IfStmt
+%% JD: simplification 
+  Expr -> ScalarLogicalExpr
+
+%%R810
+  LblDef Name ':' 'SELECT' 'CASE' '(' Expr ')' EOS SelectCaseRange   -> CaseConstruct
+  LblDef          'SELECT' 'CASE' '(' Expr ')' EOS SelectCaseRange   -> CaseConstruct
+
+  SelectCaseBody EndSelectStmt                  -> SelectCaseRange
+  EndSelectStmt                                 -> SelectCaseRange
+
+  CaseBodyConstruct+                            -> SelectCaseBody
+  CaseStmt                                      -> CaseBodyConstruct
+  ExecutionPartConstruct                        -> CaseBodyConstruct
+
+%%R812
+  LblDef 'CASE' CaseSelector Name?          EOS -> CaseStmt        {cons("case-stmt")}
+
+%%R813
+  LblDef 'END' 'SELECT' EndName?            EOS -> EndSelectStmt   {cons("end-case-stmt")}
+
+%%R815
+  '(' { CaseValueRange "," }+  ')'              -> CaseSelector
+  'default'                                     -> CaseSelector
+
+%%R816
+  Expr                                          -> CaseValueRange
+  Expr ':'                                      -> CaseValueRange
+  ':' Expr                                      -> CaseValueRange
+  Expr ':' Expr                                 -> CaseValueRange
+
+%%R821
+%%AMB BlockDoConstruct                          -> DoConstruct
+%%AMB NonblockDoConstruct                       -> DoConstruct
+
+%%R822
+%%/* Block DO constructs cannot be recognized syntactically because there is
+%% * no requirement that there is an end do statement. (A do loop may use label+continue construct)
+%%   DoStmt Block EndDoStmt  -> BlockDoConstruct
+%%   DoStmt Block  -> BlockDoConstruct
+%% JD: endo IS compulsory in cases where LblRef is missing. Can we use this to locate Do-blocks?
+
+%%R822
+%%TODO-DELETE   LblDef 'DO' LblRef                                EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef 'do' LoopControl                           EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef 'do'                                       EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef Name ':' 'do' LblRef LoopControl           EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef Name ':' 'do' LblRef                       EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef Name ':' 'do' LoopControl                  EOS -> BlockDoConstruct
+%%TODO-DELETE   LblDef Name ':' 'do'                              EOS -> BlockDoConstruct
+
+%%R822
+%%AMB DoStmt DoBlock EndDo                           -> BlockDoConstruct {cons("block-do-construct")}
+
+%%823
+  LabelDoStmt                                        -> DoStmt
+  NonlabelDoStmt                                     -> DoStmt
+
+%%R824
+  LblDef (DoConstructName ':')? 'DO' LblRef LoopControl?  EOS -> LabelDoStmt    {cons("label-do-stmt")}
+  Name                                                        -> DoConstructName
+
+%%R825
+  LblDef (DoConstructName ':')? 'DO'        LoopControl?  EOS -> NonlabelDoStmt {cons("nonlabel-do-stmt")}
+
+%%R826
+  ','? DoVariable '=' Expr ',' Expr (',' Expr)?               -> LoopControl    {cons("loop-control")}
+  ','? 'WHILE' '(' Expr ')'                                   -> LoopControl    {cons("loop-control")}
+  ','? 'CONCURRENT' ForallHeader                              -> LoopControl    {cons("loop-control")}
+
+%%R827
+  VariableName                                                -> DoVariable
+
+%%828
+  Block                                                       -> DoBlock
+
+%%829
+%%AMB EndDoStmt                                               -> EndDo
+%%AMB ContinueStmt                                            -> EndDo
+
+%%R830
+  LblDef 'END' 'DO' DoConstructName?                      EOS -> EndDoStmt      {cons("end-do-stmt")}
+
+%%R834
+  LblDef 'CYCLE' EndName?                                 EOS -> CycleStmt      {cons("cycle-stmt")}
+
+%%R850
+  LblDef 'EXIT' EndName?                                  EOS -> ExitStmt       {cons("exit-stmt")}
+
+%%R836
+ 'go' 'to'                                              -> GoToKw
+  LblDef GoToKw LblRef EOS                              -> GotoStmt
+
+%%R837
+  LblDef GoToKw '(' {LblRef ","}+ ')' ","? ScalarIntExpr EOS -> ComputedGotoStmt
+                                                                   {cons("computed-goto-stmt")}
+  Icon  ->  LblRef
+  Expr   -> ScalarIntExpr
+
+%%R838
+  LblDef 'assign' LblRef 'to' VariableName EOS  -> AssignStmt
+
+%%Deleted Feature
+  LblDef GoToKw VariableName                             EOS -> AssignedGotoStmt
+                                                                   {cons("assigned-goto-stmt")}
+  LblDef GoToKw VariableName ','? '(' {LblRef ","}+ ')'  EOS -> AssignedGotoStmt
+                                                                   {cons("assigned-goto-stmt")}
+
+%%R840
+  LblDef 'if' '(' ScalarNumericExpr ')' LblRef ',' LblRef ',' LblRef
+                                                         EOS -> ArithmeticIfStmt
+                                                                   {cons("arithmetic-if-stmt")}
+  Expr -> ScalarNumericExpr
+
+%%R846
+  SelectTypeStmt TypeGuardConstruct* EndSelectTypeStmt       -> SelectTypeConstruct
+                                                                   {cons("select-type-construct")}
+  TypeGuardStmt Block                                        -> TypeGuardConstruct
+                                                                   {cons("type-guard-construct")}
+
+%%R847
+  OptSelectConstructNameColon
+     'SELECT' 'TYPE' '(' OptAssociateName Selector ')'   EOS -> SelectTypeStmt
+                                                                   {cons("select-type-stmt")}
+  (Ident ':')?                                               -> OptSelectConstructNameColon
+                                                                   {cons("select-construct-name")}
+  (Ident '=>')?                                              -> OptAssociateName
+                                                                   {cons("associate-name")}
+
+%%848
+  'TYPE'  'IS' '(' TypeSpec ')'
+                    OptSelectConstructName    EOS -> TypeGuardStmt {cons("type-guard-stmt")}
+  'CLASS' 'IS' '(' DerivedTypeSpec ')'
+                    OptSelectConstructName    EOS -> TypeGuardStmt {cons("type-guard-stmt")}
+  'CLASS' 'DEFAULT' OptSelectConstructName    EOS -> TypeGuardStmt {cons("type-guard-stmt")}
+  Ident?                                          -> OptSelectConstructName
+                                                                   {cons("select-construct-name")}
+
+%%R849
+  'END' 'SELECT' OptSelectConstructName        EOS -> EndSelectTypeStmt
+                                                                   {cons("end-select-type-stmt")}
+
+%%R854
+  LblDef 'CONTINUE'                            EOS -> ContinueStmt {cons("continue-stmt")}
+
+%%R855
+  LblDef       'STOP' StopCode?                EOS -> StopStmt     {cons("stop-stmt")}
+
+%%R856
+  LblDef 'ALL' 'STOP' StopCode?            EOS -> AllstopStmt    {cons("allstop-stmt")}
+
+%%R857
+  Icon                                         -> StopCode
+  Scon                                         -> StopCode
+
+%% Deleted Feature
+  LblDef 'PAUSE' (Icon | Scon)?            EOS -> PauseStmt
+
+
+module R1100ProgramUnits
+
+%%imports languages/fortran/syntax/FortranLex
+%%imports languages/fortran/syntax/R400DataTypes
+%%imports languages/fortran/syntax/R500DataDeclarations
+%%imports languages/fortran/syntax/R600UseDataObjects
+%%imports languages/fortran/syntax/R700Expressions
+%%imports languages/fortran/syntax/R800ExecutionControl
+%%imports languages/fortran/syntax/R900IOStatements
+%%imports languages/fortran/syntax/R1000_IOEditing
+%%imports languages/fortran/syntax/R1100ProgramUnits
+%%imports languages/fortran/syntax/R1200Procedures
+
+imports FortranLex
+%%TODO imports R400DataTypes
+imports R500DataDeclarations
+%%TODO imports R600UseDataObjects
+%%TODO imports R700Expressions
+imports R800ExecutionControl
+imports R900IOStatements
+imports R1000_IOEditing
+%%TODO imports R1100ProgramUnits
+imports R1200Procedures
+
+exports
+
+sorts
+  ActionStmt ArrayName Body
+  BodyConstruct CommonBlockName ComponentName DeclarationConstruct DefinedOperator
+  ExtendedIntrinsicOp
+%%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
+  ExecutionPartConstruct %%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
+  InternalSubProgPart InternalSubprogram %%TODO IntrinsicProcedureName  MainProgram
+  MainRange ModuleNature ModuleSubprogram ModuleSubprogramPartConstruct %%TODO Name
+%%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
+  SpecificationPartConstruct %%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
+%%TODO   VariableName   
+
+%%TODO - replace with above
+  KeywordEqual OptKeywordEqual
+  IntrinsicOperator
+  ExecutableConstruct
+  UseStmt UseName Only OnlyList Rename RenameList
+  BlockDataSubprogram BlockDataStmt EndBlockDataStmt BlockDataBodyConstruct BlockDataName BlockDataBody
+  
+  Program                             %%R201   (originally ExecutableProgram F90)
+  ProgramUnit                         %%R202
+
+  MainProgram                         %%R1101
+  ProgramStmt                         %%R1102
+  EndProgramStmt                      %%R1103
+
+  Module                              %%R1104
+  ModuleStmt                          %%R1105
+  EndModuleStmt                       %%R1105
+  ModuleBody
+
+context-free start-symbols 
+  Program
+
+context-free syntax
+
+%%R201 JD: the optional startcommentblock is needed to parse comment lines in 1st lines of a file.
+%% original: ExecutableProgram ProgramUnit -> ExecutableProgram
+
+%%R201
+  StartCommentBlock?  ProgramUnit+              -> Program          {cons("program")}
+
+%%R202
+  MainProgram                                  -> ProgramUnit
+  FunctionSubprogram                           -> ProgramUnit
+  SubroutineSubprogram                         -> ProgramUnit
+  Module                                       -> ProgramUnit
+  BlockDataSubprogram                          -> ProgramUnit
+
+
+%%R1101
+  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
+  BodyConstruct+       EndProgramStmt          -> MainRange
+  InternalSubProgPart  EndProgramStmt          -> MainRange
+  EndProgramStmt                               -> MainRange
+
+  SpecificationPartConstruct                   -> BodyConstruct
+  ExecutableConstruct                          -> BodyConstruct
+  BodyConstruct+                               -> Body
+
+%%R1102
+  LblDef 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("program-stmt")}
+
+%%R1103
+  LblDef 'END'                             EOS -> EndProgramStmt   {cons("end-program-stmt")}
+  LblDef 'END' 'PROGRAM' ProgramName?      EOS -> EndProgramStmt   {cons("end-program-stmt")}
+
+%%R1104
+  ModuleStmt ModuleBody EndModuleStmt          -> Module           {cons("module")}
+  ModuleStmt            EndModuleStmt          -> Module           {cons("module")}
+
+%%R1105
+  LblDef 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("module-stmt")}
+
+%%R1106
+  LblDef 'END'                             EOS -> EndModuleStmt    {cons("end-module-stmt")}
+  LblDef 'END' 'MODULE' ModuleName?        EOS -> EndModuleStmt    {cons("end-module-stmt")}
+
+  SpecificationPartConstruct                   -> ModuleBody
+  ModuleSubprogramPartConstruct                -> ModuleBody
+  ModuleBody SpecificationPartConstruct        -> ModuleBody
+  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
+
+%%R1108
+  ContainsStmt                                 -> ModuleSubprogramPartConstruct
+  ModuleSubprogram                             -> ModuleSubprogramPartConstruct
+
+%%R1108
+  FunctionSubprogram                           -> ModuleSubprogram
+  SubroutineSubprogram                         -> ModuleSubprogram
+
+%%R1109
+  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName ("," RenameList)?        EOS -> UseStmt
+                                                                                        {cons("use-stmt")}
+  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName "," 'ONLY' ":" OnlyList? EOS -> UseStmt
+                                                                                        {cons("use-stmt")}
+
+%%R1110
+  'INTRINSIC'                                  -> ModuleNature
+  'NON_INTRINSIC'                              -> ModuleNature
+
+%%1111
+%%TODO-F08 - add OPERATORs
+  Ident "=>" UseName                           -> Rename
+  Rename ("," Rename)*                         -> RenameList
+
+  Ident                                        -> UseName
+
+%%R1112
+%%TODO-F08 - add rename and only-use-name
+  GenericSpec                                  -> Only
+  (Ident "=>")? UseName                        -> Only
+
+  Only ("," Only)*                             -> OnlyList
+
+
+%%R1120
+  BlockDataStmt BlockDataBody EndBlockDataStmt   -> BlockDataSubprogram
+  BlockDataStmt EndBlockDataStmt                 -> BlockDataSubprogram
+
+%%R1121
+  LblDef 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("block-data-stmt")}
+
+%%R1122
+  LblDef 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+  LblDef 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+
+  Ident -> BlockDataName
+
+  BlockDataBodyConstruct+ -> BlockDataBody
+
+  SpecificationPartConstruct -> BlockDataBodyConstruct
+
+
+%%R204
+%%TODO-F08 specification-part
+  ImplicitStmt                                 -> SpecificationPartConstruct
+  ParameterStmt                                -> SpecificationPartConstruct
+  FormatStmt                                   -> SpecificationPartConstruct
+  EntryStmt                                    -> SpecificationPartConstruct
+  DeclarationConstruct                         -> SpecificationPartConstruct
+  UseStmt                                      -> SpecificationPartConstruct
+
+%%R205
+%%TODO-F08 implicit-part
+
+%%R205
+%%TODO-F08 implicit-part-stmt
+
+%%R207
+  DerivedTypeDef                               -> DeclarationConstruct
+  InterfaceBlock                               -> DeclarationConstruct
+  ProcedureDeclarationStmt                     -> DeclarationConstruct
+  SpecificationStmt                            -> DeclarationConstruct
+  TypeDeclarationStmt                          -> DeclarationConstruct
+%%TODO-F08 entry-stmt enum-stmt format-stmt parameter-stmt stmt-function-stmt
+
+%%R208
+%%TODO-F08 execution-part
+
+%%R209
+  ExecutableConstruct                          -> ExecutionPartConstruct
+  FormatStmt                                   -> ExecutionPartConstruct
+  EntryStmt                                    -> ExecutionPartConstruct
+  DataStmt                                     -> ExecutionPartConstruct
+
+%%R210
+  Body ContainsStmt   InternalSubprogram       -> InternalSubProgPart
+  ContainsStmt        InternalSubprogram       -> InternalSubProgPart
+  InternalSubProgPart InternalSubprogram       -> InternalSubProgPart
+
+%%R211
+  FunctionSubprogram                   -> InternalSubprogram
+  SubroutineSubprogram                 -> InternalSubprogram
+
+%%R212
+  AccessStmt                                   -> SpecificationStmt
+  AllocatableStmt                              -> SpecificationStmt
+  AsynchronousStmt                             -> SpecificationStmt
+  BindStmt                                     -> SpecificationStmt
+  CommonStmt                                   -> SpecificationStmt
+  DataStmt                                     -> SpecificationStmt
+  DimensionStmt                                -> SpecificationStmt
+  EquivalenceStmt                              -> SpecificationStmt
+  ExternalStmt                                 -> SpecificationStmt
+  IntrinsicStmt                                -> SpecificationStmt
+  SaveStmt                                     -> SpecificationStmt
+  IntentStmt                                   -> SpecificationStmt
+  NamelistStmt                                 -> SpecificationStmt
+  OptionalStmt                                 -> SpecificationStmt
+  PointerStmt                                  -> SpecificationStmt
+  TargetStmt                                   -> SpecificationStmt
+  VolatileStmt                                 -> SpecificationStmt
+  ValueStmt                                    -> SpecificationStmt
+
+%%R213
+  ActionStmt                    -> ExecutableConstruct
+  AssociateConstruct            -> ExecutableConstruct
+%%TODO-F08 block-construct
+  CaseConstruct                 -> ExecutableConstruct
+%%TODO-F08 critical-construct
+%%TODO-F08 forall-construct
+  IfConstruct                   -> ExecutableConstruct
+  SelectTypeConstruct           -> ExecutableConstruct
+%%TODO   WhereConstruct                -> ExecutableConstruct
+
+%%AMB do-construct is problematic because a labeled statement
+%%       may terminate it not necessarily an end-do-stmt.
+%%       Replace by do-stmt and end-do-stmt and resolve
+%%       the construct end at a latter stage.
+%%AMB DoConstruct               -> ExecutableConstruct
+  DoStmt                        -> ExecutableConstruct
+  EndDoStmt                     -> ExecutableConstruct
+
+%%R214
+  AllocateStmt                  -> ActionStmt
+  AllstopStmt                   -> ActionStmt
+  CycleStmt                     -> ActionStmt
+  DeallocateStmt                -> ActionStmt
+  ExitStmt                      -> ActionStmt
+  FlushStmt                     -> ActionStmt
+  NullifyStmt                   -> ActionStmt
+%%TODO   PointerAssignmentStmt         -> ActionStmt
+  WhereStmt                     -> ActionStmt
+  ArithmeticIfStmt              -> ActionStmt
+  AssignmentStmt                -> ActionStmt
+%%TODO   AssignStmt                    -> ActionStmt
+  BackspaceStmt                 -> ActionStmt
+  CallStmt                      -> ActionStmt
+  CloseStmt                     -> ActionStmt
+  ContinueStmt                  -> ActionStmt
+  EndfileStmt                   -> ActionStmt
+  GotoStmt                      -> ActionStmt
+  ComputedGotoStmt              -> ActionStmt
+  AssignedGotoStmt              -> ActionStmt
+  IfStmt                        -> ActionStmt
+  InquireStmt                   -> ActionStmt
+  OpenStmt                      -> ActionStmt
+  PauseStmt                     -> ActionStmt
+  PrintStmt                     -> ActionStmt
+  ReadStmt                      -> ActionStmt
+  ReturnStmt                    -> ActionStmt
+  RewindStmt                    -> ActionStmt
+%%  StmtFunctionStmt            -> ActionStmt see R1226 comment
+  StopStmt                      -> ActionStmt
+  WaitStmt                      -> ActionStmt
+  WriteStmt                     -> ActionStmt
+
+%%R212
+  ContainsStmt                         -> ModuleSubprogramPartConstruct
+  ModuleSubprogram                     -> ModuleSubprogramPartConstruct
+
+%%R213
+  FunctionSubprogram                   -> ModuleSubprogram
+  SubroutineSubprogram                 -> ModuleSubprogram
+
+%%R215
+  Ident '='                     -> KeywordEqual            {cons("keyword")}
+  KeywordEqual?                 -> OptKeywordEqual
+
+%%R310
+  PowerOp                       -> IntrinsicOperator
+  MultOp                        -> IntrinsicOperator
+  AddOp                         -> IntrinsicOperator
+  ConcatOp                      -> IntrinsicOperator
+  RelOp                         -> IntrinsicOperator
+  NotOp                         -> IntrinsicOperator
+  AndOp                         -> IntrinsicOperator
+  OrOp                          -> IntrinsicOperator
+  EquivOp                       -> IntrinsicOperator
+
+%%R311
+
+  DefinedUnaryOp                -> DefinedOperator
+  DefinedBinaryOp               -> DefinedOperator
+  ExtendedIntrinsicOp           -> DefinedOperator
+
+%%TODO - see lex syntax  Dop                           -> DefinedOperator
+
+%%R312
+
+  IntrinsicOperator             -> ExtendedIntrinsicOp
+
+
+module R1000_IOEditing
+
+imports
+  %% needed for Icon, Scon, LblDef:
+%%  languages/fortran/syntax/FortranLex
+  FortranLex
+
+exports
+
+sorts
+  BlankInterpEditDescr CharStringEditDescr ControlEditDescr   
+  DataEditDescr FormatItem FormatItemList FormatStmt
+  PositionEditDescr SignEditDescr   
+
+context-free syntax
+
+%%R1001
+%%R1002
+  LblDef 'format' '(' FormatItemList? ')' EOS  -> FormatStmt
+
+  { FormatItem ","}+                    -> FormatItemList
+
+%%R1003
+  Icon? DataEditDescr                   -> FormatItem
+  ControlEditDescr                      -> FormatItem
+  CharStringEditDescr                   -> FormatItem
+  Icon? DataEditDescr                   -> FormatItem
+  Icon? '(' FormatItemList ')'          -> FormatItem
+  FormatItem ":" FormatItem                 -> FormatItem
+
+%%R1005-R1009
+  'I'  Icon ('.' Icon)?                 -> DataEditDescr
+  'O'  Icon ('.' Icon)?                 -> DataEditDescr
+  'B'  Icon ('.' Icon)?                 -> DataEditDescr
+  'Z'  Icon ('.' Icon)?                 -> DataEditDescr
+  'F'  Icon '.' Icon                    -> DataEditDescr  
+  'E'  Icon '.' Icon ('E' Icon)?        -> DataEditDescr
+  'EN' Icon '.' Icon ('E' Icon)?        -> DataEditDescr
+  'ES' Icon '.' Icon ('E' Icon)?        -> DataEditDescr
+  'G'  Icon '.' Icon ('E' Icon)?        -> DataEditDescr
+  'L'  Icon                             -> DataEditDescr
+  'A'  Icon?                            -> DataEditDescr
+  'D'  Icon '.' Icon                    -> DataEditDescr
+
+%%R1010,R1011
+  PositionEditDescr                     -> ControlEditDescr
+  Icon? '/'                             -> ControlEditDescr
+  ':'                                   -> ControlEditDescr   
+  SignEditDescr                         -> ControlEditDescr
+  ('-'|'+')? Icon 'P' (Icon? DataEditDescr)?    -> ControlEditDescr
+  BlankInterpEditDescr                  -> ControlEditDescr
+
+%%R1012, R1013
+  'T'  Icon                             -> PositionEditDescr
+  'TL' Icon                             -> PositionEditDescr
+  'TR' Icon                             -> PositionEditDescr
+  Icon 'X'                              -> PositionEditDescr
+
+%%R1014
+  'S'                                   -> SignEditDescr
+  'SP'                                  -> SignEditDescr
+  'SS'                                  -> SignEditDescr
+
+%%R1015
+  'BN'                                  -> BlankInterpEditDescr
+  'BZ'                                  -> BlankInterpEditDescr
+
+%%R1016
+  Scon                                  -> CharStringEditDescr 
+  Icon 'H' Character+                   -> CharStringEditDescr
+
+
+module R900IOStatements
+
+imports
+%%TODO  languages/fortran/syntax/FortranLex
+%%TODO  languages/fortran/syntax/Fortran90
+ FortranLex
+ Fortran
+
+exports
+
+sorts
+  BackspaceStmt CloseSpec CloseSpecList CloseStmt ConnectSpec
+  ConnectSpecList EndfileStmt FileUnitNumber FlushStmt FlushSpec FormatIdentifier
+  InputImpliedDo InputItem InputItemList InquireSpec InquireSpecList InquireStmt
+  IoControlSpec IoControlSpecList OpenStmt OutputImpliedDo OutputItem
+  OutputItemList PositionSpec PrintStmt RdCtlSpec RdFmtId RdFmtIdExpr
+  RdIoCtlSpecList RdUnitId ReadStmt RewindStmt UnitIdentifier
+  WaitStmt WaitSpec WriteStmt    
+
+context-free syntax
+  %% already defined in R800 section:
+  Icon  ->  LblRef
+
+%%R901
+%%TODO-F08 file-unit-number and io-unit to replace unit-identifier
+  UFExpr | '*'                  -> UnitIdentifier
+
+%%902
+  UFExpr                        -> FileUnitNumber            {const("file-unit-number")}
+
+%%-R902 rule deleted:
+%% external-file-unit is scalar-int-expr
+%%-R903 rule deleted:
+%% internal-file-unit is default-char-variable
+
+%%R904
+  LblDef 'OPEN' '(' ConnectSpecList ')'   EOS -> OpenStmt    {cons("open-stmt")}
+
+%%R905
+%%TODO-F08
+  {ConnectSpec ","}+                    -> ConnectSpecList
+  'UNIT'          '=' FileUnitNumber    -> ConnectSpec
+                      FileUnitNumber    -> ConnectSpec
+  'ACCESS'        '=' CExpr             -> ConnectSpec
+  'ACTION'        '=' CExpr             -> ConnectSpec
+  'ASYNCHRONOUS'  '=' CExpr             -> ConnectSpec
+  'BLANK'         '=' CExpr             -> ConnectSpec
+  'DECIMAL'       '=' CExpr             -> ConnectSpec
+  'DELIM'         '=' CExpr             -> ConnectSpec
+  'ENCODING'      '=' CExpr             -> ConnectSpec
+  'ERR'           '=' LblRef            -> ConnectSpec
+  'FILE'          '=' CExpr             -> ConnectSpec
+  'FORM'          '=' CExpr             -> ConnectSpec
+  'IOMSG'         '=' ScalarVariable    -> ConnectSpec
+  'IOSTAT'        '=' ScalarVariable    -> ConnectSpec
+  'NEWUNIT'       '=' ScalarVariable    -> ConnectSpec
+  'PAD'           '=' CExpr             -> ConnectSpec
+  'POSITION'      '=' CExpr             -> ConnectSpec
+  'RECL'          '=' Expr              -> ConnectSpec
+  'ROUND'         '=' CExpr             -> ConnectSpec
+  'SIGN'          '=' CExpr             -> ConnectSpec
+  'STATUS'        '=' CExpr             -> ConnectSpec
+  'TEAM'          '=' ScalarVariable    -> ConnectSpec
+
+%%-R906 rule deleted:
+%% file-name-expr is scalar-default-char-variable
+
+%%R908
+  LblDef 'CLOSE' '(' CloseSpecList ')'      EOS -> CloseStmt    {cons("close-stmt")}
+
+%%R909
+  {CloseSpec ","}+                              -> CloseSpecList
+  'UNIT'   '=' FileUnitNumber                   -> CloseSpec    {cons("close-spec-unit")}
+               FileUnitNumber                   -> CloseSpec    {cons("close-spec-unit")}
+  'IOSTAT' '=' ScalarVariable                   -> CloseSpec    {cons("close-spec-iostat")}
+  'IOMSG'  '=' ScalarVariable                   -> CloseSpec    {cons("close-spec-iomsg")}
+  'ERR'    '=' LblRef                           -> CloseSpec    {cons("close-spec-err")}
+  'STATUS' '=' CExpr                            -> CloseSpec    {cons("close-spec-status")}
+
+%%910
+%%TODO-DELETE   LblDef 'READ' RdCtlSpec InputItemList?     EOS -> ReadStmt   {cons("read-stmt")}
+%%TODO-DELETE   LblDef 'READ' RdFmtId                      EOS -> ReadStmt   {cons("read-stmt")}
+%%TODO-DELETE   LblDef 'READ' RdFmtId ',' InputItemList    EOS -> ReadStmt   {cons("read-stmt")}
+%%TODO-F08 - change FormatIdentifier to Format
+  LblDef 'READ'  '(' IoControlSpecList ')' InputItemList?  EOS -> ReadStmt   {cons("read-stmt")}
+  LblDef 'READ' FormatIdentifier      (',' InputItemList)? EOS -> ReadStmt   {cons("read-stmt")}
+
+%%R911
+  LblDef 'WRITE' '(' IoControlSpecList ')' OutputItemList?  EOS -> WriteStmt {cons("write-stmt")}
+
+%%R912
+  LblDef 'PRINT' FormatIdentifier ( ',' OutputItemList )?   EOS -> PrintStmt {cons("print-stmt")}
+
+%%R913
+%%TODO-F08 - change UnitIdentifier to IOUnit
+  'UNIT'         '=' UnitIdentifier          -> IoControlSpec
+  'FMT'          '=' FormatIdentifier        -> IoControlSpec
+  'NML'          '=' NamelistGroupName       -> IoControlSpec
+  'ADVANCE'      '=' CExpr                   -> IoControlSpec
+  'ASYNCHRONOUS' '=' CExpr                   -> IoControlSpec
+  'BLANK'        '=' CExpr                   -> IoControlSpec
+  'DECIMAL'      '=' CExpr                   -> IoControlSpec
+  'DELIM'        '=' CExpr                   -> IoControlSpec
+  'END'          '=' LblRef                  -> IoControlSpec
+  'EOR'          '=' LblRef                  -> IoControlSpec
+  'ERR'          '=' LblRef                  -> IoControlSpec
+  'ID'           '=' ScalarVariable          -> IoControlSpec
+  'IOMSG'        '=' ScalarVariable          -> IoControlSpec
+  'IOSTAT'       '=' ScalarVariable          -> IoControlSpec
+  'PAD'          '=' CExpr                   -> IoControlSpec
+  'POS'          '=' Expr                    -> IoControlSpec
+  'REC'          '=' Expr                    -> IoControlSpec
+  'ROUND'        '=' CExpr                   -> IoControlSpec
+  'SIGN'         '=' CExpr                   -> IoControlSpec
+  'SIZE'         '=' Variable                -> IoControlSpec
+
+%% io-unit and format must be first and second (without {UNIT,FMT}=)
+  UnitIdentifier                             -> IoControlSpecList
+  UnitIdentifier ',' FormatIdentifier        -> IoControlSpecList
+  UnitIdentifier ',' {IoControlSpec ','}+    -> IoControlSpecList
+  UnitIdentifier ',' FormatIdentifier ',' {IoControlSpec ","}+  -> IoControlSpecList
+  {IoControlSpec ","}+                       -> IoControlSpecList
+
+%%912
+  RdUnitId                              -> RdCtlSpec
+  '(' RdIoCtlSpecList ')'               -> RdCtlSpec
+  '(' UFExpr ')'                        -> RdUnitId
+  '(' '*' ')'                           -> RdUnitId
+
+  UnitIdentifier ',' IoControlSpec      -> RdIoCtlSpecList
+  UnitIdentifier ',' FormatIdentifier   -> RdIoCtlSpecList
+  IoControlSpec                         -> RdIoCtlSpecList
+  RdIoCtlSpecList ',' IoControlSpec     -> RdIoCtlSpecList
+
+%%R913 format
+  LblRef                                -> RdFmtId
+  '*'                                   -> RdFmtId
+  COperand                              -> RdFmtId
+  COperand ConcatOp CPrimary            -> RdFmtId
+  RdFmtIdExpr ConcatOp CPrimary         -> RdFmtId
+  '(' UFExpr ')'                        -> RdFmtIdExpr
+
+%%914
+  LblRef | CExpr | '*'                  -> FormatIdentifier
+
+%%R914
+  Name                                  -> InputItem
+  DataRef                               -> InputItem
+  InputImpliedDo                        -> InputItem
+  {InputItem ","}+                      -> InputItemList
+
+%%R915
+  Expr                                  -> OutputItem
+  OutputImpliedDo                       -> OutputItem
+  {OutputItem ","}+                     -> OutputItemList
+
+%%R916
+%%R917
+%%R918
+  '(' InputItemList  ',' ImpliedDoVariable '=' Expr ',' Expr ')'                -> InputImpliedDo
+  '(' InputItemList  ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'       -> InputImpliedDo
+
+  '(' OutputItemList ',' ImpliedDoVariable '=' Expr ',' Expr ')'                -> OutputImpliedDo
+  '(' OutputItemList ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'       -> OutputImpliedDo
+
+%%R921
+  LblDef 'WAIT' '(' {WaitSpec ','}+ ')'             EOS -> WaitStmt       {cons("wait-stmt")}
+
+%%R922
+  'UNIT'   '=' FileUnitNumber                           -> WaitSpec
+               FileUnitNumber                           -> WaitSpec
+  'END'    '=' LblRef                                   -> WaitSpec
+  'EOR'    '=' LblRef                                   -> WaitSpec
+  'ERR'    '=' LblRef                                   -> WaitSpec
+  'ID'     '=' Expr                                     -> WaitSpec
+  'IOMSG'  '=' ScalarVariable                           -> WaitSpec
+  'IOSTAT' '=' ScalarVariable                           -> WaitSpec
+
+%%R923
+  LblDef 'BACKSPACE' FileUnitNumber                 EOS -> BackspaceStmt  {cons("backspace-stmt")}
+  LblDef 'BACKSPACE' '(' {PositionSpec ','}+ ')'    EOS -> BackspaceStmt  {cons("backspace-stmt")}
+
+%%R924
+%% note: 'endfile' without space is allowed
+  LblDef 'END' 'FILE' FileUnitNumber                EOS -> EndfileStmt    {cons("endfile-stmt")}
+  LblDef 'END' 'FILE' '(' {PositionSpec ","}+ ')'   EOS -> EndfileStmt    {cons("endfile-stmt")}
+
+%%R925
+  LblDef 'REWIND' FileUnitNumber                    EOS -> RewindStmt     {cons("rewind-stmt")}
+  LblDef 'REWIND' '(' {PositionSpec ","}+ ')'       EOS -> RewindStmt     {cons("rewind-stmt")}
+
+%%R926
+  'UNIT'    '=' FileUnitNumber          -> PositionSpec
+                FileUnitNumber          -> PositionSpec
+  'IOMSG'   '=' ScalarVariable          -> PositionSpec
+  'IOSTAT'  '=' ScalarVariable          -> PositionSpec
+  'ERR'     '=' LblRef                  -> PositionSpec
+
+%%R923
+  LblDef 'INQUIRE' '(' InquireSpecList ')'             EOS -> InquireStmt {cons("inquire-stmt")}
+  LblDef 'INQUIRE' '(' 'iolength' '='
+                    ScalarVariable ')' OutputItemList  EOS -> InquireStmt {cons("inquire-stmt")}
+
+%%R924
+  'UNIT'         '=' FileUnitNumber      -> InquireSpec
+  'FILE'         '=' CExpr               -> InquireSpec
+  'ACCESS'       '=' ScalarVariable      -> InquireSpec
+  'ACTION'       '=' ScalarVariable      -> InquireSpec
+  'ASYNCHRONOUS' '=' ScalarVariable      -> InquireSpec
+  'BLANK'        '=' ScalarVariable      -> InquireSpec
+  'DECIMAL'      '=' ScalarVariable      -> InquireSpec
+  'DELIM'        '=' ScalarVariable      -> InquireSpec
+  'DIRECT'       '=' ScalarVariable      -> InquireSpec
+  'ENCODING'     '=' ScalarVariable      -> InquireSpec
+  'ERR'          '=' LblRef              -> InquireSpec
+  'EXIST '       '=' ScalarVariable      -> InquireSpec
+  'FORM'         '=' ScalarVariable      -> InquireSpec
+  'FORMATTED'    '=' ScalarVariable      -> InquireSpec
+  'ID'           '=' Expr                -> InquireSpec
+  'IOMSG'        '=' ScalarVariable      -> InquireSpec
+  'IOSTAT'       '=' ScalarVariable      -> InquireSpec
+  'NAME'         '=' ScalarVariable      -> InquireSpec
+  'NAMED'        '=' ScalarVariable      -> InquireSpec
+  'NEXTREC'      '=' ScalarVariable      -> InquireSpec
+  'NUMBER'       '=' ScalarVariable      -> InquireSpec
+  'OPENED'       '=' ScalarVariable      -> InquireSpec
+  'PAD'          '=' ScalarVariable      -> InquireSpec
+  'PENDING'      '=' ScalarVariable      -> InquireSpec
+  'POS'          '=' ScalarVariable      -> InquireSpec
+  'POSITION'     '=' ScalarVariable      -> InquireSpec
+  'READ'         '=' ScalarVariable      -> InquireSpec
+  'READWRITE'    '=' ScalarVariable      -> InquireSpec
+  'RECL'         '=' ScalarVariable      -> InquireSpec
+  'ROUND'        '=' ScalarVariable      -> InquireSpec
+  'SEQUENTIAL '  '=' ScalarVariable      -> InquireSpec
+  'SIGN'         '=' ScalarVariable      -> InquireSpec
+  'SIZE'         '=' ScalarVariable      -> InquireSpec
+  'STREAM'       '=' ScalarVariable      -> InquireSpec
+%%TODO-F08 'TEAM''=' ImageTeam       -> InquireSpec
+  'UNFORMATTED ' '=' ScalarVariable      -> InquireSpec
+  'WRITE'        '=' ScalarVariable      -> InquireSpec
+
+%%R924
+  FileUnitNumber "," {InquireSpec ","}+  -> InquireSpecList
+  FileUnitNumber                         -> InquireSpecList
+  {InquireSpec ","}+                     -> InquireSpecList
+
+%%R927
+  LblDef 'FLUSH' FileUnitNumber              EOS -> FlushStmt   {cons("flush-stmt")}
+  LblDef 'FLUSH' '(' {FlushSpec ","}+ ')'    EOS -> FlushStmt   {cons("flush-stmt")}
+
+%%R928
+  'UNIT'    '=' FileUnitNumber           -> FlushSpec
+                FileUnitNumber           -> FlushSpec
+  'IOSTAT'  '=' ScalarVariable           -> FlushSpec
+  'IOMSG'   '=' ScalarVariable           -> FlushSpec
+  'ERR'     '=' LblRef                   -> FlushSpec
+
+
+module R600UseDataObjects
+
+imports
+  %%  languages/fortran/syntax/FortranLex
+  %%  languages/fortran/syntax/R700Expressions
+  FortranLex
+  R700Expressions
+
+exports
+
+sorts
+  AllocatedShape AllocateObject AllocateObjectList AllocateShapeSpec AllocateStmt
+  Allocation AllocationList AllocOpt AllocOptList
+  ArrayElement ArraySection
+  CharVariable CoSubscript CoSubscriptList
+  DataRef DeallocateStmt DeallocOpt DeallocOptList
+  DefaultCharVariable DefaultLogicalVariable Designator ErrmsgVariable
+  ImageSelector IntVariable
+  LogicalVariable
+  NullifyStmt
+  ParentString PartName PartRef
+  PointerObject PointerObjectList
+  ScalarDefaultCharVariable ScalarIntVariable ScalarStructureComponent
+  ScalarVariable ScalarVariableName
+  SectionSubscript SectionSubscriptList SourceExpr StatVariable
+  StructureComponent Subscript
+  SubscriptTriplet Substring SubstringRange
+  Variable VectorSubscript
+
+context-free syntax
+
+%%R601
+%%AMB  ObjectName            -> Designator        %% R613 part-name -> part-ref -> data-ref
+%%AMB  ArrayElement          -> Designator        %% R617 is data-ref
+%%AMB  ArraySection          -> Designator        %% R618 is data-ref [ (substring-range) ] 
+%%AMB  ComplexPartDesignator -> Designator        %% R615 is designator % ('RE' | 'IM') -> data-ref
+%%AMB  StructureComponent    -> Designator        %% R614 is data-ref
+%%AMB  Substring             -> Designator        %% R609 is data-ref '(' substring-range ')'
+%% the above reduces to
+  DataRef                              -> Designator   {cons("designator")}
+
+%%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
+%%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
+
+%%TODO-F08 CharLiteralConstant '(' substring_range ')'  -> Designator  %% from OFP ANTLR grammar
+
+%%R602
+  Designator                           -> Variable     {cons("variable")}
+%%AMB Expr                             -> Variable          %% expr shall be a func ref with pointer result
+  Variable                             -> ScalarVariable
+
+%%R602
+%%TODO-AMB   VariableName | ArrayElement                                   -> ScalarVariable
+%%TODO-AMB   VariableName                                                  -> Variable
+%%TODO-AMB   VariableName '(' {Subscript ","}+ ')'                         -> Variable
+%%TODO-AMB   VariableName SubstringRange                                   -> Variable
+%%TODO-AMB   VariableName '(' {Subscript ","}+ ')' SubstringRange          -> Variable
+%%TODO-AMB   Expr                                                          -> Subscript
+
+%%R603
+  Name               -> VariableName
+  VariableName       -> ScalarVariableName
+
+%%R604
+  Variable           -> LogicalVariable
+
+%%R605
+  Variable           -> DefaultLogicalVariable
+
+%%606
+  Variable           -> CharVariable
+
+%%607
+  Variable           -> DefaultCharVariable
+
+%%608
+  Variable           -> IntVariable
+
+%%609
+  ParentString '(' SubstringRange ')'  -> Substring
+
+%%610
+  ScalarVariableName                   -> ParentString
+  ArrayElement                         -> ParentString
+  ScalarStructureComponent             -> ParentString
+  ScalarConstant                       -> ParentString
+
+%%R611
+  ScalarIntExpr? ':' ScalarIntExpr?    -> SubstringRange   {cons("substring-range")}
+
+%%R609
+%%R610
+%%R611
+%%TODO-DELETE   '(' SubscriptTriplet ')'                        -> SubstringRange
+
+%%R612
+  {PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
+
+%%TODO-DELETE   Name '%' Name                                   -> DataRef
+%%TODO-DELETE   DataRef '%' Name                                -> DataRef
+%%TODO-DELETE   Name '(' SectionSubscriptList ')'               -> DataRef
+%%TODO-DELETE   DataRef '(' SectionSubscriptList ')'            -> DataRef
+
+%%TODO-DELETE   {SectionSubscript ","}+                         -> SectionSubscriptList
+%%TODO-DELETE   Expr                                            -> SectionSubscript
+%%TODO-DELETE   SubscriptTriplet                                -> SectionSubscript
+
+%%R613
+  PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
+  PartName   '(' SectionSubscriptList ')'
+           ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
+  Name                                                          -> PartName
+
+%%R614
+  DataRef                                                       -> StructureComponent
+%%TODO-DELETE   VariableName FieldSelector                                    -> StructureComponent
+%%TODO-DELETE   StructureComponent FieldSelector                              -> StructureComponent
+%%TODO-DELETE   '(' SectionSubscriptList ')' '%' Name                         -> FieldSelector
+%%TODO-DELETE   '%' Name                                                      -> FieldSelector
+
+  StructureComponent                                            -> ScalarStructureComponent
+
+%%R615
+%%TODO-F08   Designator '%' 'RE'                                -> ComplexPartDesignator
+%%TODO-F08   Designator '%' 'IM'                                -> ComplexPartDesignator
+
+%%R616
+%%TODO-F08 Designator '%' TypeParamName                         -> TypeParamInquiry
+
+%%R617
+  DataRef                                                       -> ArrayElement
+%%TODO-DELETE   StructureComponent '(' SectionSubscriptList ')' -> ArrayElement
+%%TODO-DELETE   VariableName '(' SectionSubscriptList ')'       -> ArrayElement
+
+%%R618
+  DataRef ( '(' SubstringRange ')' )?                           -> ArraySection
+%%TODO-F08   ComplexPartDesignator                              -> ArraySection
+
+%%619
+  ScalarIntExpr                                                 -> Subscript             {cons("subscript")}
+
+%%620
+  Subscript                                                     -> SectionSubscript
+  SubscriptTriplet                                              -> SectionSubscript
+  %%VectorSubscript                                             -> SectionSubscript      %%AMB with subscript
+  {SectionSubscript ','}+                                       -> SectionSubscriptList  {cons("section-subscript-list")}
+
+%%R621
+  Subscript? ':' Subscript? (':' Stride)?                       -> SubscriptTriplet
+
+%%R622
+  ScalarIntExpr                                                 -> Stride
+
+%%R623
+  IntExpr                                                       -> VectorSubscript
+
+%%624
+  '[' CoSubscriptList ']'                                       -> ImageSelector
+
+%%625
+  ScalarIntExpr                                                 -> CoSubscript
+  {CoSubscript ','}+                                            -> CoSubscriptList
+
+%%R626
+  LblDef 'ALLOCATE' '(' (TypeSpec '::')? 
+                    AllocationList (',' AllocOptList)? ')'  EOS -> AllocateStmt  {cons("allocate-stmt")}
+
+%%R627
+  'ERRMSG' '=' ErrmsgVariable                                   -> AllocOpt
+  'MOLD'   '=' SourceExpr                                       -> AllocOpt
+  'SOURCE' '=' SourceExpr                                       -> AllocOpt
+  'STAT'   '=' StatVariable                                     -> AllocOpt
+  {AllocOpt ','}+                                               -> AllocOptList
+
+%%R628
+  ScalarIntVariable                                             -> StatVariable
+  ScalarVariable                                                -> ScalarIntVariable %%TODO-FIXME
+
+%%R620
+  ScalarDefaultCharVariable                                     -> ErrmsgVariable
+  ScalarVariable                                                -> ScalarDefaultCharVariable %%TODO-FIXME
+
+%%R630
+  Expr                                                          -> SourceExpr
+
+%%R623 chain rule deleted
+
+%%R631
+%%TODO-F08 allocate-co-array-spec
+   {Allocation ","}+                            -> AllocationList
+   AllocateObject AllocatedShape?               -> Allocation
+   '(' SectionSubscriptList ')'                 -> AllocatedShape
+%%/* From ELI: Need to use SectionSubscriptList here to solve an LALR(1) conflict with the
+%% * FieldSelector in R625.  (Can't tell which we have until the character
+%% * following the right paren, but we must reduce WITHIN the parens.)
+%% */
+
+%%R632
+  VariableName                                  -> AllocateObject
+  StructureComponent                            -> AllocateObject
+%%TODO-DELETE   AllocateObject FieldSelector                  -> AllocateObject
+  {AllocateObject ","}+                         -> AllocateObjectList
+
+%%R626
+%% JD is this correct??/* Omitted to solve LALR(1) conflict.  see R624
+  {Expr ":" }+                                  -> AllocateShapeSpec
+
+%%R638
+  LblDef 'NULLIFY' '(' PointerObjectList ')'   EOS -> NullifyStmt       {cons("nullify-stmt")}
+
+%%R639
+%%TODO-F08 make sure structure-component works
+   VariableName                                 -> PointerObject
+   StructureComponent                           -> PointerObject
+%%TODO-AMBiguous?
+%%TODO-F08   ProcPointerName                              -> PointerObject
+  {PointerObject ","}+                          -> PointerObjectList
+   
+%%TODO-DELETE   Name                                          -> PointerObject
+%%TODO-DELETE   PointerField                                  -> PointerObject
+%%TODO-DELETE   Name '(' SFExprList ')' '%' Name              -> PointerField
+%%TODO-DELETE   Name '(' SFDummyArgNameList ')' '%' Name      -> PointerField
+%%TODO-DELETE   Name '%' Name                                 -> PointerField
+%%TODO-DELETE   PointerField FieldSelector                    -> PointerField
+
+%%R640
+  LblDef 'DEALLOCATE' '('
+             AllocateObjectList (',' DeallocOptList)?
+                      ')'                               EOS -> DeallocateStmt  {cons("deallocate-stmt")}
+
+%%641
+  'STAT'   '=' StatVariable                                     -> DeallocOpt
+  'ERRMSG' '=' ErrmsgVariable                                   -> DeallocOpt
+  {AllocOpt ','}+                                               -> DeallocOptList
+
+
+module Fortran
+
+%%imports languages/fortran/syntax/FortranLex
+%%imports languages/fortran/syntax/R400DataTypes
+%%imports languages/fortran/syntax/R500DataDeclarations
+%%imports languages/fortran/syntax/R600UseDataObjects
+%%imports languages/fortran/syntax/R700Expressions
+%%imports languages/fortran/syntax/R800ExecutionControl
+%%imports languages/fortran/syntax/R900IOStatements
+%%imports languages/fortran/syntax/R1000_IOEditing
+%%imports languages/fortran/syntax/R1100ProgramUnits
+%%imports languages/fortran/syntax/R1200Procedures
+
+imports FortranLex
+%%TODO imports R400DataTypes
+imports R500DataDeclarations
+%%TODO imports R600UseDataObjects
+%%TODO imports R700Expressions
+%%TODO imports R800ExecutionControl
+imports R900IOStatements
+imports R1000_IOEditing
+imports R1100ProgramUnits
+%%TODO imports R1200Procedures
+
+exports
+
+sorts
+  ActionStmt ArrayName Body
+%%TODO   BodyConstruct CommonBlockName ComponentName DeclarationConstruct DefinedOperator
+%%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
+  ExecutionPartConstruct %%TODO ExternalName FunctionName GenericName ImpliedDoVariable
+%%TODO   InternalSubProgPart InternalSubprogram IntrinsicProcedureName  MainProgram
+%%TODO   MainRange  ModuleSubprogram ModuleSubprogramPartConstruct Name
+%%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
+%%TODO   SpecificationPartConstruct SpecificationStmt SubroutineName SubroutineNameUse TypeName
+%%TODO   VariableName   
+  
+%%TODO - replace with above
+  DefinedOperator
+  ExecutableConstruct
+
+context-free start-symbols 
+  Program
+
+context-free syntax
+
+%%R201 JD: the optional startcommentblock is needed to parse comment lines in 1st lines of a file.
+%% original: ExecutableProgram ProgramUnit -> ExecutableProgram
+
+  StartCommentBlock? ProgramUnit+              -> Program
+
+%%TODO - Figure out what Fortran.sdf really does
+
+
+module R1200Procedures
+
+imports
+  %% languages/fortran/syntax/FortranLex
+  %% languages/fortran/syntax/Fortran90
+  FortranLex
+  Fortran
+
+exports
+
+sorts
+
+  ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt EndInterfaceStmt
+  EndSubroutineStmt EntryStmt ExternalStmt FunctionArg FunctionArgList
+  FunctionInterfaceRange FunctionPar FunctionParList FunctionPrefix FunctionRange
+  FunctionReference FunctionStmt FunctionSubprogram GenericSpec InterfaceBlock
+  InterfaceBlockPart InterfaceBody InterfaceStmt IntrinsicStmt ProcedureStmt
+  ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
+  SubprogramInterfaceBody SubroutineInterfaceRange DummyArg OptSubroutineParList SubroutineRange
+  SubroutineStmt SubroutineSubprogram
+
+%%F2008
+  PrefixSpec
+  OptProcLanguageBindingSpec
+  ProcedureEntityName InterfaceName ProcedureDeclarationStmt ProcDeclList ProcInterface
+
+%%2008 experimental
+  SubroutinePrefix
+  OptSubroutineName
+
+%%TODO SubroutineStmt not used?
+%%TODO StmtFunctionStmt ambiguous obsolescant/deleted
+
+context-free syntax
+
+%%R1201 %% note: iso says interfacebody allways precedes moduleprocstmt.
+  InterfaceStmt                     EndInterfaceStmt   -> InterfaceBlock
+  InterfaceStmt InterfaceBlockPart+ EndInterfaceStmt   -> InterfaceBlock
+
+  InterfaceBody                                        -> InterfaceBlockPart
+  ProcedureStmt                                        -> InterfaceBlockPart
+
+%%R1203
+%%TODO-F08 abstract
+%%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt       {cons("interface-stmt")}
+  LblDef 'INTERFACE' GenericSpec?                   EOS -> InterfaceStmt       {cons("interface-stmt")}
+%%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt       {cons("interface-stmt")}
+
+%%R1204
+%%TODO-F08 generic-spec replaces generic-name ENDINTERFACE
+%%REMOVE-F90  LblDef 'END' 'INTERFACE' GenericName?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
+  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
+
+%%R1205
+  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
+  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
+
+  FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
+  FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
+
+  OptSubroutineParList OptProcLanguageBindingSpec
+                       EOS  SubprogramInterfaceBody EndSubroutineStmt -> SubroutineInterfaceRange
+  OptSubroutineParList OptProcLanguageBindingSpec
+                       EOS  EndSubroutineStmt                         -> SubroutineInterfaceRange
+
+  SpecificationPartConstruct                                -> SubprogramInterfaceBody
+  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
+
+%%R1206
+  LblDef 'MODULE'? 'PROCEDURE' "::"? ProcedureNameList  EOS -> ProcedureStmt  {cons("procedure-stmt")}
+  {ProcedureName ","}+                                      -> ProcedureNameList
+  Ident                                                     -> ProcedureName
+
+%%R1207
+  GenericName                                               -> GenericSpec
+  'OPERATOR'   "(" DefinedOperator ")"                      -> GenericSpec
+  'ASSIGNMENT' "(" '='             ")"                      -> GenericSpec
+  DtioGenericSpec                                           -> GenericSpec
+
+%%R1208
+  'READ'  '(' 'FORMATTED'   ')'                             -> DtioGenericSpec
+  'READ'  '(' 'UNFORMATTED' ')'                             -> DtioGenericSpec
+  'WRITE' '(' 'FORMATTED'   ')'                             -> DtioGenericSpec
+  'WRITE' '(' 'UNFORMATTED' ')'                             -> DtioGenericSpec
+
+%%R1209
+%%TODO-F08 import-stmt
+
+%%R1210
+  LblDef 'EXTERNAL' "::"? {ExternalName ","}+              EOS -> ExternalStmt   {cons("external-stmt")}
+
+%%R1211
+%%TODO-F08 - add proc-attr-spec
+  LblDef 'PROCEDURE' "(" ProcInterface ")" "::"? ProcDeclList  EOS -> ProcedureDeclarationStmt
+                                                                        {cons("procedure-declaration-stmt")}
+
+%%R1212
+%%TODO-F08 - add declaration-type-spec
+  InterfaceName                                             -> ProcInterface
+
+%%R1214
+%%TODO-f08 - add proc-pointer-init
+  {ProcedureEntityName ","}+                                -> ProcDeclList
+  Ident                                                     -> ProcedureEntityName
+
+%%R1215
+  Ident                                                     -> InterfaceName
+
+%%R1218
+  LblDef 'INTRINSIC' "::"? {IntrinsicProcedureName ","}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
+
+%%R1219
+%%TODO-F08 - procedure-designator
+%%TODO-F08 - this is also ambiguous with array reference so perhaps FunctionArgList is not complete
+  Name "(" FunctionArgList? ")"                        -> FunctionReference   {cons("function-reference")}
+
+%%R1220
+  LblDef 'CALL' SubroutineNameUse                          EOS -> CallStmt   {cons("call-stmt")}
+  LblDef 'CALL' SubroutineNameUse "(" {ActualArg ","}* ")" EOS -> CallStmt   {cons("call-stmt")}
+
+%%1221
+%%TODO-F08 - procedure-designator
+
+%%1222
+%%TODO-F08 - actual-arg-spec
+%% [ keyword = ] actual-arg
+  FunctionArg                                          -> FunctionArgList
+  FunctionArgList "," FunctionArg                      -> FunctionArgList
+%%TODO  SectionSubscriptList "," FunctionArg           -> FunctionArgList
+
+%%R1223
+%%TODO-F08
+  (Name '=')? Expr                                     -> ActualArg
+  (Name '=')? '*' LblRef                               -> ActualArg
+
+  Name '=' Expr                                        -> FunctionArg
+
+%%1224
+%%TODO-F08 - alt-return-spec
+
+%%1225
+  PrefixSpec*                                          -> SubroutinePrefix       {cons("prefix")}
+
+%%1226
+  DeclarationTypeSpec                                  -> PrefixSpec
+  'ELEMENTAL'                                          -> PrefixSpec
+  'IMPURE'                                             -> PrefixSpec
+  'MODULE'                                             -> PrefixSpec
+  'PURE'                                               -> PrefixSpec
+  'RECURSIVE'                                          -> PrefixSpec
+
+%%R1227
+  LblDef FunctionPrefix FunctionName FunctionRange     -> FunctionSubprogram  {cons("function-subprogram")}
+  FunctionStmt EndFunctionStmt                         -> FunctionSubprogram  {cons("function-subprogram")}
+  FunctionParList EOS Body? EndFunctionStmt            -> FunctionRange
+
+%%R1228
+%%TODO-F08 - add prefix, dummy-arg-name-list, suffix
+  LblDef 'FUNCTION' FunctionName "(" ")"           EOS -> FunctionStmt        {cons("function-stmt")}
+
+%%R1215
+  FunctionParList 'result' "(" Name ")" EOS InternalSubProgPart EndFunctionStmt         -> FunctionRange
+  FunctionParList 'result' "(" Name ")" EOS Body EndFunctionStmt                        -> FunctionRange
+  FunctionParList 'result' "(" Name ")" EOS EndFunctionStmt                             -> FunctionRange
+  FunctionParList EOS InternalSubProgPart EndFunctionStmt                               -> FunctionRange
+
+%%R1216
+%%R1217
+  'RECURSIVE' 'FUNCTION'                       -> FunctionPrefix
+  'recursive' TypeSpec 'function'              -> FunctionPrefix
+  TypeSpec 'recursive' 'function'              -> FunctionPrefix
+
+%%R1229
+  LanguageBindingSpec?                   -> OptProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
+
+%%R1232
+%% endfunction (without spaces) is allowed
+  LblDef 'END'                              EOS -> EndFunctionStmt       {cons("end-function-stmt")}
+  LblDef 'END' 'FUNCTION' FunctionName?     EOS -> EndFunctionStmt       {cons("end-function-stmt")}
+
+%%R1233
+%%TODO  LblDef 'RECURSIVE'? 'SUBROUTINE' SubroutineName SubroutineRange  -> SubroutineSubprogram
+%%TODO                                                                         {cons("subroutine-subprogram")}
+  OptSubroutineParList OptProcLanguageBindingSpec
+                       EOS Body? EndSubroutineStmt                       -> SubroutineRange
+  OptSubroutineParList OptProcLanguageBindingSpec
+                       EOS InternalSubProgPart EndSubroutineStmt         -> SubroutineRange
+%% split subroutineStmt/subroutineSubprogram needed? (ELI legacy)
+
+
+  SubroutineStmt Body? EndSubroutineStmt                                 -> SubroutineSubprogram
+                                                                               {cons("subroutine-subprogram")}
+
+%%1234
+%%TODO-F08 - add prefix and proc-language-binding-spec
+  LblDef SubroutinePrefix 'SUBROUTINE' SubroutineName
+         OptSubroutineParList OptProcLanguageBindingSpec  EOS -> SubroutineStmt {cons("subroutine-stmt")}
+  Ident                                                       -> SubroutineName {cons("subroutine-name")}
+  Ident?                                                      -> OptSubroutineName {cons("subroutine-name")}
+
+%%R1235
+%%TODO-F08 dummy-arg-name-list and move proc-language-binding-spec
+   ( "(" {DummyArg ","}* ")" )?                      -> OptSubroutineParList  {cons("dummy-arg-list")}
+
+%%R1235
+   DummyArgName         -> DummyArg
+   '*'                  -> DummyArg
+
+%%/* Must be split on semantic grounds, due to the different scopes for the
+   LblDef FunctionPrefix Name FunctionParList? EOS       -> FunctionStmt
+   TypeSpec? 'function'                                  -> FunctionPrefix
+
+   "(" {FunctionPar ","}* ")" OptProcLanguageBindingSpec -> FunctionParList {cons("function-par-list")}
+   DummyArgName                                          -> FunctionPar
+
+%%R1236
+  LblDef 'END' 'SUBROUTINE' OptSubroutineName EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
+  LblDef 'END'                                EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
+
+%%R1240
+%%TODO-F08 add suffix
+  LblDef 'ENTRY' EntryName OptSubroutineParList
+                           OptProcLanguageBindingSpec                       EOS -> EntryStmt
+                                                                                     {cons("entry-stmt")}
+  LblDef 'ENTRY' EntryName OptSubroutineParList
+                           OptProcLanguageBindingSpec 'RESULT' "(" Name ")" EOS -> EntryStmt
+                                                                                     {cons("entry-stmt")}
+
+
+%%R1241
+  LblDef 'RETURN' Expr?                     EOS -> ReturnStmt          {cons("return-stmt")}
+
+%%R1242
+  LblDef 'CONTAINS'                         EOS -> ContainsStmt        {cons("contains-stmt")}
+
+module R700Expressions
+
+imports
+  %% languages/fortran/syntax/FortranLex
+  %% languages/fortran/syntax/R1200Procedures
+  %% languages/fortran/syntax/R600UseDataObjects
+  FortranLex
+  R1200Procedures
+  R600UseDataObjects
+
+exports
+
+sorts
+  AddOp AddOperand AndOp AndOperand AssignmentStmt
+  CExpr CharExpr CharInitializationExpr
+  ComplexConst ConcatOp COperand CPrimary
+  DefaultCharExpr
+  DefinedBinaryOp DefinedUnaryOp
+  ElsewhereStmt EndWhereStmt
+  EquivOp EquivOperand Expr
+  ForallHeader ForallTripletSpec ForallTripletSpecList
+  IndexName InitializationExpr IntExpr IntInitializationExpr
+  NumericExpr Level1Expr Level2Expr
+  Level3Expr Level4Expr Level5Expr LogicalConstant
+  LogicalExpr LogicalInitializationExpr
+  MaskExpr
+  MultOp MultOperand NotOp  OrOp OrOperand
+  PointerAssignmentStmt PowerOp Primary RelOp ScalarMaskExpr Stride
+  SFExpr SFExprList SFFactor SFPrimary SFTerm
+  Sign
+  SpecificationExpr Target UFExpr UFFactor UFPrimary
+  UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
+  WhereConstructStmt WhereStmt    
+
+context-free syntax
+%%%% TODO: put these under the right section
+
+  UFTerm                        -> UFExpr
+  Sign UFTerm                   -> UFExpr
+  UFExpr AddOp UFTerm           -> UFExpr
+  UFFactor                      -> UFTerm
+  UFTerm MultOp UFFactor        -> UFTerm
+  UFTerm ConcatOp UFPrimary     -> UFTerm
+  UFPrimary                     -> UFFactor
+  UFPrimary PowerOp UFFactor    -> UFFactor
+
+  Icon                          -> UFPrimary
+  Scon                          -> UFPrimary
+  Name                          -> UFPrimary
+  FunctionReference             -> UFPrimary
+  DataRef                       -> UFPrimary
+  '(' UFExpr ')'                -> UFPrimary
+
+%%82,83
+  (CExpr ConcatOp)? CPrimary    -> CExpr
+  COperand                      -> CPrimary
+  '(' CExpr ')'                 -> CPrimary
+  Scon                          -> COperand
+  Name                          -> COperand
+  DataRef                       -> COperand
+  FunctionReference             -> COperand
+
+%%101
+  Icon                          -> UnsignedArithmeticConstant
+  Rcon                          -> UnsignedArithmeticConstant
+  ComplexConst                  -> UnsignedArithmeticConstant
+
+%%107
+  '(' Expr ',' Expr ')'         -> ComplexConst
+
+%%108
+  '.true.' | '.false.'          -> LogicalConstant
+
+%%R701
+  ArrayConstructor              -> Primary          {cons("primary-ac")}
+  ArrayConstructor              -> SFPrimary
+  UnsignedArithmeticConstant    -> Primary          {cons("primary-const")}
+  Name                          -> Primary          {cons("primary-name")}
+  DataRef                       -> Primary          {cons("primary-dref")}
+  FunctionReference             -> Primary          {cons("primary-fref")}
+  '(' Expr ')'                  -> Primary          {cons("primary-paren-expr")}
+  Scon                          -> Primary          {cons("primary-scon")}
+
+%%R703
+  DefinedUnaryOp? Primary       -> Level1Expr       {cons("level-1-expr")}
+
+%%R704
+  Dop                           -> DefinedUnaryOp
+
+%%R705
+  Level1Expr (PowerOp MultOperand)?     -> MultOperand
+
+%%R706
+  (AddOperand MultOp)? MultOperand      -> AddOperand
+
+%%R707 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
+  (Level2Expr AddOp)? AddOperand        -> Level2Expr       {cons("level-2-expr")}
+  Sign AddOperand                       -> Level2Expr       {cons("level-2-expr")}
+
+%%R708
+  '**'                                  -> PowerOp
+
+%%R709
+  '*' | '/'                             -> MultOp
+
+%%R710
+  '+' | '-'                             -> AddOp
+  '+' | '-'                             -> Sign
+
+%%R711
+  (Level3Expr ConcatOp)? Level2Expr     -> Level3Expr       {cons("level-3-expr")}
+
+%%R712
+  '//'                                  -> ConcatOp
+
+%%R713
+  (Level3Expr RelOp)? Level3Expr        -> Level4Expr       {cons("level-4-expr")}
+
+%%R714
+  '==' | '/=' | '<' | '<=' | '>' | '>='                         -> RelOp
+%%from F77
+  '.eq.' | '.ne.' | '.lt.' | '.le.' | '.gt.' | '.ge.'           -> RelOp
+
+%%R715
+  NotOp? Level4Expr                     -> AndOperand
+
+%%R716
+  (OrOperand AndOp)? AndOperand         -> OrOperand
+
+%%R717
+  (EquivOperand OrOp)? OrOperand        -> EquivOperand
+
+%%R717
+  (Level5Expr EquivOp)? EquivOperand    -> Level5Expr       {cons("level-5-expr")}
+
+%%R719
+ '.not.'                                -> NotOp 
+
+%%R720
+  '.and.'                               -> AndOp
+
+%%R721
+  '.or.'                                -> OrOp
+
+%%R722
+  '.eqv.' | '.neqv.'                    -> EquivOp
+
+  LogicalConstant                       -> Primary
+
+%%R723
+  (Expr DefinedBinaryOp)? Level5Expr    -> Expr             {cons("expr")}
+
+%%R724
+  Dop                                   -> DefinedBinaryOp
+
+%%R725-R734 chain rule deleted
+
+%%R724
+  Expr                                  -> LogicalExpr
+
+%%R725
+  Expr                                  -> CharExpr
+
+%%R726
+  Expr                                  -> DefaultCharExpr
+
+%%R727
+  Expr                                  -> IntExpr
+
+%%R728
+  Expr                                  -> NumericExpr
+
+%%R729
+  ScalarIntExpr                         -> SpecificationExpr
+
+%%R730
+  Expr                                  -> InitializationExpr
+
+%%R731
+  CharExpr                              -> CharInitializationExpr
+
+%%R732
+  IntExpr                               -> IntInitializationExpr
+
+%%R733
+  LogicalExpr                           -> LogicalInitializationExpr
+
+%%R734
+  LblDef Variable '=' Expr          EOS -> AssignmentStmt   {cons("assignment-stmt")}
+
+%% todo: check. Original ISO: assignmentStatement is variable '=' expression
+%%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '%' DataRef '=' Expr EOS                                   -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFExprList ')' '%' Name '=' Expr EOS                   -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFExprList ')' '%' DataRef '=' Expr EOS                -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=' Expr EOS           -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=' Expr EOS        -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '=' Expr EOS                                               -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFExprList ')' '=' Expr EOS                            -> AssignmentStmt
+%%TODO-DELETE   LblDef Name '(' SFExprList ')' SubstringRange '=' Expr EOS             -> AssignmentStmt
+
+  SFExpr ':' Expr ':' Expr                      -> SFExprList
+  SFExpr ':' ':' Expr                           -> SFExprList
+  ':' Expr ':' Expr                             -> SFExprList
+  ':' ':' Expr                                  -> SFExprList
+  ':'                                           -> SFExprList
+  ':' Expr                                      -> SFExprList
+  SFExpr                                        -> SFExprList
+  SFExpr ':'                                    -> SFExprList
+  SFExpr ':' Expr                               -> SFExprList
+  SFExprList ',' SectionSubscript               -> SFExprList
+%%TODO   SFDummyArgNameList ',' ':'                    -> SFExprList
+%%TODO   SFDummyArgNameList ',' ':' Expr               -> SFExprList
+%% problem with code like P(A,2). A can be both SFExprList and SFDummyargnameList. 
+%% Conflict with 3 lines above: SFExprList ',' SectionSubscript  
+%%  SFDummyArgNameList ',' SFExpr                 -> SFExprList
+%%TODO   SFDummyArgNameList ',' SFExpr ':'             -> SFExprList
+%%TODO   SFDummyArgNameList ',' SFExpr ':' Expr        -> SFExprList
+
+  SFTerm                                        -> SFExpr
+  Sign AddOperand                               -> SFExpr
+  SFExpr AddOp AddOperand                       -> SFExpr
+  SFFactor                                      -> SFTerm
+  SFTerm MultOp MultOperand                     -> SFTerm
+  SFPrimary                                     -> SFFactor
+  SFPrimary PowerOp MultOperand                 -> SFFactor
+  Icon                                          -> SFPrimary
+  Name                                          -> SFPrimary
+  DataRef                                       -> SFPrimary
+  FunctionReference                             -> SFPrimary
+  '(' Expr ')'                                  -> SFPrimary
+
+%%R736
+  LblDef Name '=>' Target EOS                                                   -> PointerAssignmentStmt
+  LblDef Name '%' Name '=>' Target EOS                                          -> PointerAssignmentStmt
+  LblDef Name '%' DataRef '=>' Target EOS                                       -> PointerAssignmentStmt
+  LblDef Name '(' SFExprList ')' '%' Name '=>' Target EOS                       -> PointerAssignmentStmt
+  LblDef Name '(' SFExprList ')' '%' DataRef '=>' Target EOS                    -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' Target EOS               -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' Target EOS            -> PointerAssignmentStmt
+
+%%R737
+  Expr  -> Target
+
+%%R743
+  LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt    {cons("where-stmt")}
+
+%%R739
+%% todo: sdf-fy
+%%  Where     EndWhereStmt      -> WhereConstruct
+%%  ElseWhere EndWhereStmt      -> WhereConstruct
+%%  WhereConstructStmt          -> Where
+%%  Where AssignmentStmt        -> Where
+%%  Where ElsewhereStmt         -> ElseWhere
+%%  ElseWhere AssignmentStmt    -> ElseWhere
+  WhereConstructStmt AssignmentStmt* 
+                (ElsewhereStmt AssignmentStmt*)? 
+        EndWhereStmt                            -> WhereConstruct
+
+%%R740
+  LblDef 'where' '(' MaskExpr ')' EOS           -> WhereConstructStmt
+
+%%R741
+  Expr  -> MaskExpr
+
+%%R742
+  LblDef 'elsewhere' EOS                        -> ElsewhereStmt
+
+%%R743
+  LblDef 'end' 'where' EOS                      -> EndWhereStmt
+
+%%R747
+%%TODO-F08 - make it so label can't be part of assignment-stmt
+  AssignmentStmt                                -> WhereAssignmentStmt
+
+%%754
+  '(' (TypeSpec '::')? ForallTripletSpecList (',' ScalarMaskExpr)?  -> ForallHeader
+  Expr                                                              -> ScalarMaskExpr
+
+%%755
+  IndexName '=' Subscript ':' Subscript (':' Stride)?               -> ForallTripletSpec
+  {ForallTripletSpec ','}+                                          -> ForallTripletSpecList
+  Name                                                              -> IndexName
+
+
+
+context-free priorities
+
+%%R701
+  Name -> Primary  >  DataRef -> Primary
+
+
+module R400DataTypes
+
+imports
+%%  languages/fortran/syntax/FortranLex
+%%  languages/fortran/syntax/R500DataDeclarations
+  FortranLex
+  R500DataDeclarations
+
+exports
+
+sorts
+
+  AcImpliedDo AcImpliedDoControl AcDoVariable AcSpec AcValue AcValueList ArrayConstructor
+  BozLiteralConstant ComponentArraySpec ComponentAttrSpec ComponentAttrSpecList ComponentDecl
+  ComponentDeclList ComponentDefStmt Constant DeclarationTypeSpec DerivedTypeBody 
+  DerivedTypeDef DerivedTypeSpec DerivedTypeStmt EndTypeStmt InitialDataTarget
+  IntrinsicTypeSpec KindParam LogicalConstant OptTypeParameterSpecList ParentTypeName
+  PrivateComponentsStmt PrivateOrSequence
+  ScalarConstant SequenceStmt StructureConstructor
+  TypeAttrSpec TypeAttrSpecList TypeParamAttrSpec TypeParamDefStmt TypeParamName
+  TypeParamDecl TypeParamDeclList TypeParamNameList TypeParamSpec TypeSpec
+  UnsignedArithmeticConstant
+
+context-free syntax
+
+%%-R401 lex: signed-digit-string is [sign] digit-string
+%%-R402 lex: digit-string is digit [digit]...
+
+%%R402
+  IntrinsicTypeSpec                   -> TypeSpec              {cons("type-spec")}
+  DerivedTypeSpec                     -> TypeSpec              {cons("type-spec")}
+
+%%R404
+  'INTEGER'   KindSelector?           -> IntrinsicTypeSpec
+  'REAL'      KindSelector?           -> IntrinsicTypeSpec
+  'COMPLEX'   KindSelector?           -> IntrinsicTypeSpec
+  'CHARACTER' CharSelector?           -> IntrinsicTypeSpec
+  'LOGICAL'   KindSelector?           -> IntrinsicTypeSpec
+
+  'DOUBLE' 'PRECISION'                -> IntrinsicTypeSpec
+  'DOUBLE' 'COMPLEX'                  -> IntrinsicTypeSpec
+
+%%R403
+  IntrinsicTypeSpec                   -> DeclarationTypeSpec
+%%AMBIGUOS - change to intrinsic-type-spec at later stage
+%%'TYPE'  '(' IntrinsicTypeSpec ')'   -> DeclarationTypeSpec
+  'TYPE'  '(' DerivedTypeSpec   ')'   -> DeclarationTypeSpec
+  'CLASS' '(' DerivedTypeSpec   ')'   -> DeclarationTypeSpec
+  'CLASS' '(' '*'               ')'   -> DeclarationTypeSpec
+  'TYPE'  '(' '*'               ')'   -> DeclarationTypeSpec
+
+%%R404
+  Icon '_' KindParam                    -> UnsignedArithmeticConstant
+
+%%R405
+  Icon                                  -> KindParam
+  NamedConstantUse                      -> KindParam
+
+%%TODO-F08 - move to clause 300
+
+%%R305
+  NamedConstantUse                      -> Constant
+  UnsignedArithmeticConstant            -> Constant
+  '+' UnsignedArithmeticConstant        -> Constant
+  '-' UnsignedArithmeticConstant        -> Constant
+  Scon                                  -> Constant
+%%  Hcon                                  -> Constant
+  LogicalConstant                       -> Constant
+
+  Constant                              -> ScalarConstant
+
+%%R306
+%%TODO-F08  IntLiteralConstant                    -> LiteralConstant
+%%TODO-F08  RealLiteralConstant                   -> LiteralConstant
+%%TODO-F08  ComplexLiteralConstant                -> LiteralConstant
+%%TODO-F08  LogicalLiteralConstant                -> LiteralConstant
+%%TODO-F08  CharLiteralConstant                   -> LiteralConstant
+%%TODO-F08  BozLiteralConstant                    -> LiteralConstant
+
+%%R307
+%%TODO-F08  Name                                  -> NamedConstant
+
+%%R308
+%%TODO-F08  Constant                              -> IntConstant
+
+%%R309
+%%TODO-F08  Constant                              -> CharConstant
+
+%%R407
+%%TODO-F08
+  BinaryConstant                        -> BozLiteralConstant
+  OctalConstant                         -> BozLiteralConstant
+  HexConstant                           -> BozLiteralConstant
+
+%%R420 char-literal-constant
+  Icon '_' Scon                         -> Constant
+  NamedConstantUse '_' Scon             -> Constant
+
+%%R413
+  Rcon '_' KindParam                    -> UnsignedArithmeticConstant
+
+%%R421
+  '.true.' '_' KindParam                -> LogicalConstant
+  '.false.' '_' KindParam               -> LogicalConstant
+
+%%R430
+%% TODO: iso defines order: privateseq, componentdef.
+%%TODO-F08: add private-or-sequence, component-part, type-bound-procedure-part
+  DerivedTypeStmt DerivedTypeBody* EndTypeStmt          -> DerivedTypeDef
+  TypeParamDefStmt                                      -> DerivedTypeBody
+  PrivateOrSequence                                     -> DerivedTypeBody
+  ComponentDefStmt                                      -> DerivedTypeBody
+
+%%R431
+  LblDef 'TYPE'
+             ((',' TypeAttrSpecList)? '::')?
+             TypeName
+             ('(' TypeParamNameList ')')?                  EOS -> DerivedTypeStmt
+
+  Ident                                                        -> ParentTypeName
+  Ident                                                        -> TypeName
+  Ident                                                        -> TypeParamName
+
+  {TypeParamName ","}+                                         -> TypeParamNameList
+
+%%R432
+  'ABSTRACT'                                                   -> TypeAttrSpec
+   AccessSpec                                                  -> TypeAttrSpec
+  'BIND'     '(' 'C'            ')'                            -> TypeAttrSpec
+  'EXTENDS'  '(' ParentTypeName ')'                            -> TypeAttrSpec
+
+  {TypeAttrSpec ","}+                                          -> TypeAttrSpecList
+
+%%R433
+  PrivateComponentsStmt                                        -> PrivateOrSequence
+  SequenceStmt                                                 -> PrivateOrSequence
+
+%%R434
+  LblDef 'END' 'TYPE' TypeName?                            EOS -> EndTypeStmt   {cons("end-type-stmt")}
+
+%%R435
+  LblDef 'SEQUENCE'                                        EOS -> SequenceStmt  {cons("sequence-stmt")}
+
+%%R436
+  LblDef 'INTEGER' KindSelector? ','  TypeParamAttrSpec
+                                 '::' TypeParamDeclList    EOS -> TypeParamDefStmt {cons("type-param-def-stmt")}
+
+%%R437
+  TypeParamName ( '=' Expr )?                                  -> TypeParamDecl
+  {TypeParamDecl ','}+                                         -> TypeParamDeclList
+
+%%R438
+  'KIND'                                                       -> TypeParamAttrSpec
+  'LEN'                                                        -> TypeParamAttrSpec
+
+%%R440
+%%TODO-F08: data-component-def-stmt or proc-component-def-stmt
+  LblDef DeclarationTypeSpec ( ',' ComponentAttrSpecList )? '::' ComponentDeclList EOS   -> ComponentDefStmt
+  LblDef DeclarationTypeSpec ComponentDeclList EOS                                       -> ComponentDefStmt
+
+%%R441
+%%TODO-F08: add data-component-def-stmt
+
+%%R442
+%%TODO-F08 - add co-array-spec to dimension
+  {ComponentAttrSpec ","}+                              -> ComponentAttrSpecList
+  AccessSpec                                            -> ComponentAttrSpec
+  'ALLOCATABLE'                                         -> ComponentAttrSpec
+  'DIMENSION' '(' ComponentArraySpec ')'                -> ComponentAttrSpec
+  'CONTIGUOUS'                                          -> ComponentAttrSpec
+  'POINTER'                                             -> ComponentAttrSpec
+
+%%R443
+%%TODO-F08 co-array-spec, component-initialization
+  ComponentName ('(' ComponentArraySpec ')')? ('*' CharLength)?      -> ComponentDecl
+  {ComponentDecl ","}+                                               -> ComponentDeclList
+
+%%R444
+  ExplicitShapeSpecList                                 -> ComponentArraySpec
+  DeferredShapeSpecList                                 -> ComponentArraySpec
+
+%%R445
+%%TODO-F08 proc-component-def-stmt
+
+%%R446
+%%TODO-F08 proc-component-attr-spec
+
+%%R447
+%%TODO-F08 component-initialization
+
+%%R448
+%%Designator replaced by variable
+  Variable                                              -> InitialDataTarget
+
+%%R449
+  LblDef 'PRIVATE'                                  EOS -> PrivateComponentsStmt
+
+%%R454
+%%TODO-F08 type-bound-generic-stmt
+
+%%R455
+%%TODO-F08 binding-attr
+
+%%R457
+  TypeName OptTypeParameterSpecList             -> DerivedTypeSpec      {cons("derived-type-spec")}
+  ( '(' {TypeParamSpec ','}+ ')' )?             -> OptTypeParameterSpecList
+
+%%458
+  OptKeywordEqual TypeParamValue                -> TypeParamSpec        {cons("type-param-spec")}
+
+%%R459
+%%TODO-F08 component-spec-list
+  TypeName '(' {Expr ","}+ ')'                  -> StructureConstructor
+
+%%R467
+  '(/' AcSpec '/)'                              -> ArrayConstructor
+  '['  AcSpec  ']'                              -> ArrayConstructor
+
+%%R468
+  TypeSpec '::'                                 -> AcSpec
+  (TypeSpec '::')? AcValueList                  -> AcSpec
+
+%%R432
+%%TODO-REMOVE
+%%  Expr                                        -> AcValueList
+%%  AcValueList1                                -> AcValueList
+%%  Expr ',' Expr                               -> AcValueList1
+%%  Expr ',' AcImpliedDo                        -> AcValueList1
+%%  AcImpliedDo                                 -> AcValueList1
+%%  AcValueList1 ',' Expr                       -> AcValueList1
+%%  AcValueList1 ',' AcImpliedDo                -> AcValueList1
+
+%%R471
+  Expr                                          -> AcValue
+  AcImpliedDo                                   -> AcValue
+  {AcValue ","}+                                -> AcValueList
+   
+%%R433
+%%TODO-REMOVE
+%%TODO   '(' Expr ',' ImpliedDoVariable '=' Expr ',' Expr ')'                  -> AcImpliedDo
+%%TODO   '(' Expr ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'         -> AcImpliedDo
+%%TODO   '(' AcImpliedDo ',' ImpliedDoVariable '=' Expr ',' Expr ')'           -> AcImpliedDo
+%%TODO   '(' AcImpliedDo ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'  -> AcImpliedDo
+%%TODO   '(' Expr ',' ImpliedDoVariable '=' Expr ',' Expr ')'                  -> AcImpliedDo
+
+%%R472
+  '(' AcValueList ',' AcImpliedDoControl ')'    -> AcImpliedDo
+
+%%R473
+  AcDoVariable '=' ScalarIntExpr ',' ScalarIntExpr (',' ScalarIntExpr)?    -> AcImpliedDoControl
+
+%%R474
+  DoVariable                                    -> AcDoVariable
+
+
+module R500DataDeclarations
+
+imports
+  %% languages/fortran/syntax/FortranLex
+  %% languages/fortran/syntax/R400DataTypes
+  %% languages/fortran/syntax/R700Expressions
+
+  FortranLex
+  R400DataTypes
+  R700Expressions
+
+exports
+
+sorts
+  AccessId AccessIdList AccessSpec AccessStmt
+  AllocatableDecl AllocatableDeclList AllocatableStmt ArraySpec
+  AssumedShapeSpec AsynchronousStmt AssumedShapeSpecList AssumedSizeSpec AttrSpec CharLength
+  BindEntity BindEntityList BindStmt
+  CharSelector %%TODO Comblock CommonBlockObject CommonBlockObjectList
+  CommonStmt %%TODO Constant DataIDoObject DataIDoObjectList DataImpliedDo
+  DataStmt DataStmtObject DataStmtObjectList DataStmtSet DataStmtSetList
+  DataStmtValue DataStmtValueList %%TODO DeferredShapeSpec DeferredShapeSpecList
+  DimensionDecl DimensionDeclList DimensionStmt
+  DummyArgNameList
+  EntityDecl EquivalenceObject EquivalenceSet EquivalenceSetList EquivalenceStmt
+  EntityName
+  ExplicitShapeSpec ExplicitShapeSpecList ImplicitSpec ImplicitSpecList ImplicitStmt
+  Initialization IntentSpec IntentStmt KindSelector LengthSelector
+  LetterSpec LetterSpecList LowerBound NamedConstant NamedConstantDef NamedConstantDefList
+%%TODO   NamedConstantUse
+  NamelistGroup NamelistGroupObject NamelistGroupObjectList NamelistStmt
+  NullInit ObjectNameList OptionalStmt ParameterStmt PointerStmt
+  PointerDecl PointerDeclList SavedEntity SavedEntityList SaveStmt
+  TargetDecl TargetDeclList TargetStmt TypeDeclarationStmt TypeParamValue
+  UpperBound ValueStmt VolatileStmt
+
+%%TODO - replace with above
+  DataIDoObject DataIDoObjectList DataImpliedDo DataStmtConstant DataStmtRepeat
+  CommonBlockObjectList  Comblock CommonBlockObject SpecificationStmt
+  DeferredShapeSpec DeferredShapeSpecList
+  NamedConstantUse
+  LanguageBindingSpec
+
+context-free syntax
+
+%%R307
+  Ident                         -> NamedConstant
+  Ident                         -> NamedConstantUse
+
+%%R501
+  LblDef DeclarationTypeSpec (',' AttrSpec)* '::'
+            {EntityDecl ","}+           EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
+  LblDef DeclarationTypeSpec
+            {EntityDecl ","}+           EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
+
+%%R502
+   AccessSpec                    -> AttrSpec
+  'ALLOCATABLE'                  -> AttrSpec
+  'ASYNCHRONOUS'                 -> AttrSpec
+  'CONTIGUOUS'                   -> AttrSpec
+%%TODO-F08  DimensionSpec                  -> AttrSpec
+  'DIMENSION' '(' ArraySpec ')'  -> AttrSpec
+  'EXTERNAL'                     -> AttrSpec
+  'INTENT' '(' IntentSpec ')'    -> AttrSpec
+  'INTRINSIC'                    -> AttrSpec
+   LanguageBindingSpec           -> AttrSpec
+  'OPTIONAL'                     -> AttrSpec
+  'PARAMETER'                    -> AttrSpec
+  'POINTER'                      -> AttrSpec
+  'PROTECTED'                    -> AttrSpec
+  'SAVE'                         -> AttrSpec
+  'TARGET'                       -> AttrSpec
+  'VALUE'                        -> AttrSpec
+  'VOLATILE'                     -> AttrSpec
+
+%%R503
+%%TODO-F08: co-array-spec
+  ObjectName    ( '(' ArraySpec ')' )?
+                ( '*' CharLength    )?
+                   Initialization?                       -> EntityDecl
+%%Ambiguous with object-name
+%%FunctionName  ( '*' CharLength    )?                   -> EntityDecl
+
+%%TODO-DELETE   ObjectName '=' Expr                                   -> EntityDecl
+%%TODO-DELETE   ObjectName '(' ArraySpec ')' '=' Expr                 -> EntityDecl
+%%TODO-DELETE   ObjectName '*' CharLength '=' Expr                    -> EntityDecl
+%%TODO-DELETE   ObjectName '*' CharLength '(' ArraySpec ')' '=' Expr  -> EntityDecl
+%%F77
+%%TODO-DELETE   ObjectName                                            -> EntityDecl
+%%TODO-DELETE   ObjectName '*' CharLength                             -> EntityDecl
+%%TODO-DELETE   ObjectName '(' ArraySpec ')'                          -> EntityDecl
+%%TODO-DELETE   ObjectName '(' ArraySpec ')' '*' CharLength           -> EntityDecl
+
+%%R504
+%%Name                                                  -> ObjectName
+%% see lexical syntax
+
+%%R505
+  '='   InitializationExpr                              -> Initialization
+  '=>'  NullInit                                        -> Initialization
+  '=>'  InitialDataTarget                               -> Initialization
+
+%%R506
+  FunctionReference                                     -> NullInit
+
+%%R505
+%% expr used as scalar-int-initialization-expr 
+  '(' ('KIND' '=')? Expr ')'                            -> KindSelector
+%%TODO: remove this often used in complex declarations like Integer*8 Complex*8 Complex*16 (IBM standard, not ISO!?)
+  '*' Icon                                              -> KindSelector
+
+%%R425
+%%TODO - move to R400...
+  LengthSelector                                        -> CharSelector
+  '(' 'LEN' '=' TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
+  '('           TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
+  '('           TypeParamValue ','            Expr ')'  -> CharSelector
+
+  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue ')'  -> CharSelector
+  '(' 'KIND' '=' Expr                              ')'  -> CharSelector
+
+%%R426
+  '(' ('LEN' '=')? TypeParamValue ')'                   -> LengthSelector
+  '*' CharLength ','?                                   -> LengthSelector
+
+%%R427
+  '(' TypeParamValue ')'                                -> CharLength
+  Icon                                                  -> CharLength
+
+%%R508
+%%TODO-DELETE   '(' TypeParamValue ')'        -> CharLength
+%%TODO????   ScalarIntLiteralConstant      -> CharLength
+
+%%R508
+  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'  -> LanguageBindingSpec
+
+%%R401
+  SpecificationExpr                    -> TypeParamValue
+  '*'                                  -> TypeParamValue
+  ':'                                  -> TypeParamValue
+
+%%R507
+  'PUBLIC'                             -> AccessSpec
+  'PRIVATE'                            -> AccessSpec
+
+%%R510
+%%TODO-F08 - fix assumed-rank-spec
+  '..'                                 -> ArraySpec
+  AssumedShapeSpecList                 -> ArraySpec
+  DeferredShapeSpecList                -> ArraySpec
+  ExplicitShapeSpecList                -> ArraySpec
+  AssumedSizeSpec                      -> ArraySpec
+
+%%R511
+%%TODO-F08 co-array-spec
+
+%%R523
+  'IN'                 -> IntentSpec
+  'OUT'                -> IntentSpec
+  'INOUT'              -> IntentSpec
+  'IN OUT'             -> IntentSpec
+
+%%R512
+  {ExplicitShapeSpec ","}+                      -> ExplicitShapeSpecList
+  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec
+
+%%R513
+  SpecificationExpr                             -> LowerBound
+
+%%R514
+  SpecificationExpr                             -> UpperBound
+
+%%R516
+  LowerBound? ':'                               -> AssumedShapeSpec
+  LowerBound ':'                                -> AssumedShapeSpecList
+  DeferredShapeSpecList ',' LowerBound ':'      -> AssumedShapeSpecList
+  AssumedShapeSpecList ',' AssumedShapeSpec     -> AssumedShapeSpecList
+
+%%R517
+  {DeferredShapeSpec ","}+                      -> DeferredShapeSpecList
+  ':'                                           -> DeferredShapeSpec
+
+%%R518
+  (LowerBound ':')? '*'                         -> AssumedSizeSpec
+  ExplicitShapeSpecList ',' '*'                 -> AssumedSizeSpec
+  ExplicitShapeSpecList ',' LowerBound ':' '*'  -> AssumedSizeSpec
+
+%%R545
+  LblDef 'INTENT' '(' IntentSpec ')' '::'? DummyArgNameList   EOS -> IntentStmt  {cons("intent-stmt")}
+  {DummyArgName ','}+                                             -> DummyArgNameList
+
+%%R520
+  LblDef 'OPTIONAL' '::'? DummyArgNameList                 EOS -> OptionalStmt {cons("optional-stmt")}
+
+%%R524
+  LblDef AccessSpec '::' AccessIdList                      EOS -> AccessStmt   {cons("access-stmt")}
+  LblDef AccessSpec      AccessIdList?                     EOS -> AccessStmt   {cons("access-stmt")}
+
+%%R525
+%%Ambiguous with generic-spec
+%%UseName                                                      -> AccessId
+  GenericSpec                                                  -> AccessId
+  {AccessId ","}+                                              -> AccessIdList
+
+%%R552
+  LblDef 'SAVE' ('::'? SavedEntityList)?                   EOS -> SaveStmt     {const("save-stmt")}
+
+%%R553
+  ObjectName                                                   -> SavedEntity
+  %% proc-pointer-name is Name
+  '/' CommonBlockName '/'                                      -> SavedEntity
+  {SavedEntity ","}+                                           -> SavedEntityList
+
+%%R543
+  LblDef 'DIMENSION' '::'? DimensionDeclList               EOS -> DimensionStmt  {cons("dimension-stmt")}
+
+%%R544
+%%TODO-F08 co-array-spec
+  VariableName '(' ArraySpec ')'                               -> DimensionDecl
+  {DimensionDecl ","}+                                         -> DimensionDeclList
+
+%%R526
+  LblDef 'ALLOCATABLE' '::'? AllocatableDeclList       EOS -> AllocatableStmt   {cons("allocatable-stmt")}
+
+%%R527
+%%TODO-F08 co-array-spec
+  ObjectName ( '(' ArraySpec ')' )?                        -> AllocatableDecl
+  {AllocatableDecl ","}+                                   -> AllocatableDeclList
+
+%%R528
+  LblDef 'ASYNCHRONOUS' '::'? ObjectNameList           EOS -> AsynchronousStmt   {cons("asynchronous-stmt")}
+
+%%R549
+  LblDef 'POINTER' '::'? PointerDeclList               EOS -> PointerStmt   {cons("pointer-stmt")}
+
+%%R550
+%%TODO-F08: proc-entity-name
+  ObjectName                                               -> PointerDecl
+  ObjectName '(' DeferredShapeSpecList ')'                 -> PointerDecl
+  {PointerDecl ","}+                                       -> PointerDeclList
+
+%%R555
+%%TODO-F08: co-array-spec
+  LblDef 'TARGET' '::'? TargetDeclList                 EOS -> TargetStmt   {cons("target-stmt")}
+  ObjectName ('(' ArraySpec ')')?                          -> TargetDecl
+  {TargetDecl ","}+                                        -> TargetDeclList
+
+%%R529
+  LblDef LanguageBindingSpec '::'? BindEntityList      EOS -> BindStmt   {cons("bind-stmt")}
+
+%%R530
+  EntityName                                               -> BindEntity
+  '/' CommonBlockName '/'                                  -> BindEntity
+  {BindEntity ','}+                                        -> BindEntityList
+  Ident                                                    -> EntityName
+
+%%R532
+  LblDef 'DATA' DataStmtSetList                        EOS -> DataStmt   {cons("data-stmt")}
+  {DataStmtSet ','?}+                                      -> DataStmtSetList
+
+%%R533
+  DataStmtObjectList '/' DataStmtValueList '/'             -> DataStmtSet
+
+%%R534
+  Variable                                                 -> DataStmtObject
+  DataImpliedDo                                            -> DataStmtObject
+  {DataStmtObject ","}+                                    -> DataStmtObjectList
+
+%%R535
+  '(' DataIDoObjectList ',' ImpliedDoVariable '=' Expr ',' Expr (',' Expr)? ')' -> DataImpliedDo
+
+%%R538
+  (DataStmtRepeat '*')? DataStmtConstant                   -> DataStmtValue
+  {DataStmtValue ","}+                                     -> DataStmtValueList
+  
+%%539
+%%TODO-F08: scalar-int-constant-subobject
+  Icon                                                     -> DataStmtRepeat
+
+%%540
+%%TODO-F08: long list of constants
+  Constant                                                 -> DataStmtConstant
+%%TODO-DELETE @<Scalar Integer Literal Constant@> '*' Constant          -> DataStmtConstant
+%%TODO-DELETE  NamedConstantUse '*' Constant                            -> DataStmtConstant
+
+%%R533 see 100
+%%TODO   StructureConstructor                  -> Constant
+%%TODO   BozLiteralConstant                    -> Constant
+
+%%R536
+  ArrayElement                          -> DataIDoObject
+  StructureComponent                    -> DataIDoObject
+  DataImpliedDo                         -> DataIDoObject
+  {DataIDoObject ","}+                  -> DataIDoObjectList
+
+%%R547
+  LblDef 'PARAMETER' '(' NamedConstantDefList ')'  EOS -> ParameterStmt
+
+%%R548
+%% original iso: named-constant-def is named-constant = initialization-expr
+  NamedConstant '=' Expr                        -> NamedConstantDef
+  {NamedConstantDef ","}+                       -> NamedConstantDefList
+
+%%R557
+  LblDef 'VALUE' '::'? DummyArgNameList            EOS -> ValueStmt       {cons("value-stmt")}
+  {DummyArgName ','}+                                  -> DummyArgNameList
+
+%%R558
+  LblDef 'VOLATILE' '::'? ObjectNameList           EOS -> VolatileStmt    {cons("volatile-stmt")}
+  {ObjectName ','}+                                    -> ObjectNameList
+
+%%R559
+  LblDef 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("implicit-stmt")}
+  LblDef 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("implicit-stmt")}
+
+%%560
+  DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec
+  {ImplicitSpec ','}+                                  -> ImplicitSpecList
+
+%%561
+  Letter ('-' Letter)?                                 -> LetterSpec
+  {LetterSpec ','}+                                    -> LetterSpecList
+
+%%R562
+  LblDef 'NAMELIST' NamelistGroup (','? NamelistGroup)*  EOS -> NamelistStmt      {cons("namelist-stmt")}
+  '/' NamelistGroupName '/' NamelistGroupObjectList          -> NamelistGroup
+
+%%R563
+  VariableName                                               -> NamelistGroupObject
+  {NamelistGroupObject ','}+                                 -> NamelistGroupObjectList
+
+%%R564
+  LblDef 'EQUIVALENCE' EquivalenceSetList                EOS -> EquivalenceStmt   {cons("equivalence-stmt")}
+
+%%R565
+  {EquivalenceSet ","}+                                      -> EquivalenceSetList
+  '(' EquivalenceObject "," {EquivalenceObject ","}+ ')'     -> EquivalenceSet
+
+%%R566
+%%Note: Variable includes array-element and substring
+  Variable                                                   -> EquivalenceObject
+%%TODO  ArrayName                                                  -> EquivalenceObject
+
+%%R567
+%%TODO-DELETE   LblDef 'COMMON' Comlist                                 EOS -> CommonStmt  {cons("common-stmt")}
+  LblDef 'COMMON'       Comblock? CommonBlockObjectList
+                  (','? Comblock  CommonBlockObjectList)*  EOS -> CommonStmt  {cons("common-stmt")}
+
+%%TODO-DELETE   CommonBlockObject                              -> Comlist
+%%TODO-DELETE   Comblock CommonBlockObject                     -> Comlist
+%%TODO-DELETE   Comlist ',' CommonBlockObject                  -> Comlist
+%%TODO-DELETE   Comlist Comblock CommonBlockObject             -> Comlist
+%%TODO-DELETE   Comlist ',' Comblock CommonBlockObject         -> Comlist
+%%TODO-DELETE  '/' '/'                                         -> Comblock
+%%TODO-DELETE  '/' CommonBlockName  '/'                        -> Comblock
+  '/' CommonBlockName? '/'                                     -> Comblock
+
+%%R568
+  VariableName ( '(' ArraySpec ')' )?                          -> CommonBlockObject
+%%TODO-DELETE   ArrayDeclarator                                -> CommonBlockObject
+  {CommonBlockObject ","}+                                     -> CommonBlockObjectList
+
+
+module FortranLex
+%%
+%% Input restrictions:
+%% -Make sure that the last statement at the end of the file has a '\n' to prevent a parse error.
+%% -Userdefined operators (.XYZ.) are not handled yet
+%% -include 'file' lines must first be processed or make it a comment (put a ! in front)
+%%
+%% F77 fixed format text can also be parsed if some pre-processing is done first,
+%% Minimal changes needed for fixed form source handling:
+%% a. change continuation symbols in 6th column by a & on the previous line (but not in a comment of course)
+%%    in VIM regexp: :g/^     [^ ]/-1s/$/ \&/ followed by :%/^     [^ ]/      / (5 spaces+nonspace -> 6 spaces) 
+%% b. change every comment-symbol (* or C) in the first column into a !.
+%%    in VIM regexp: %s/^[C\*]/!/
+
+
+exports
+ 
+sorts
+  BinaryConstant Character Comment StartCommentBlock
+  Continuation Dop EOS HexConstant
+  Icon Ident Label LblDef
+  Letter OctalConstant
+  Rcon ScalarIntLiteralConstant  Scon
+  SconDouble SconSingle 
+
+%%TODO-F08  FixedComment
+
+%% Ident Aliases:
+  Name ArrayName ComponentName GenericName NamelistGroupName TypeName EndName CommonBlockName DummyArgName
+  EntryName ExternalName FunctionName ImpliedDoVariable IntrinsicProcedureName ModuleName ObjectName
+  ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
+
+lexical syntax
+
+%% Everything following a ! is comment. With the \n it is an End of Statement
+  "!" ~[\n]*                            -> Comment
+  (Comment? "\n" [\ \t]* )+             -> EOS
+%% ; at end of line is allowed
+  (";" [\ \t]*)+ Comment? "\n" [\ \t]*  -> EOS
+
+%% Fixed source form comment rules (beware of code starting in 1st column!)
+%%TODO-F08 - need different language lexer for fixed format, don't combine
+%%TODO-F08
+%%TODO-F08  ("\n" [Cc\*] ~[\n]*)+         -> FixedComment
+%%TODO-F08   FixedComment "\n" [\ \t]*    -> EOS
+
+%% commentlines at the start of a file/program are handled separately in Fortran90.sdf
+  EOS  -> StartCommentBlock
+
+%% Statement separator is also EOS (used seldomly)
+  ([\ \t]* ";" [\ \t]*)+        -> EOS
+%%
+%% Continuation can optionally be separated by comment. The & on the next line is also optional.
+   "&" [\ \t]* ("!" ~[\n]*)? "\n" ( [\ \t]+ "&" )?  -> Continuation
+   Continuation -> LAYOUT    
+
+%% Layout does NOT have a \n since that's part of EOS
+   [\ \t] -> LAYOUT
+
+%% number as label: max 5 digits with space in 6th pos
+    [0-9][0-9][0-9][0-9][0-9]    -> Label
+    [0-9][0-9][0-9][0-9]         -> Label
+    [0-9][0-9][0-9]              -> Label   
+    [0-9][0-9]                   -> Label
+    [0-9]                        -> Label
+
+
+%%3.1.2
+  [a-zA-Z]                         -> Letter
+  [A-Za-z][A-Za-z0-9\_]*        -> Ident
+%% Integer Constant
+  [0-9]+                        -> Icon
+
+%%R420 Character constants allow '' and "" as escaped ' and " in string literals like 'don''t' (="don't")
+%% separate names needed for lexical restrictions later 
+%% NOTE: continuated strings like 'hello&\n   &world' will be parsed as one string with & embedded.
+  [\'] (~[\'] | "''")*  [\']    -> SconSingle
+  [\"] (~[\"] | '""')*  [\"]    -> SconDouble
+  SconSingle | SconDouble       -> Scon
+
+%%R301: character definition with the 21 specials from table 3.1
+  [a-zA-Z0-9\ \=\+\-\*\/\(\)\,\;\'\:\!\"\%\&\<\>\\\?\$] -> Character
+
+%%R412-R416 Real and Double Literal Constant. Kind is handled in R400Datatypes.sdf
+%% [sign] significant [exponent-letter exponent] [__kind-param]
+%% JD: [\+\-]? removed because of Sign in R707
+          [0-9]+ "." [0-9]* ([EeDd] [\+\-]? [0-9]+)?            -> Rcon
+%% [sign] digit-string exponent-letter exponent [__kind-param]
+                 "." [0-9]+ ([EeDd] [\+\-]? [0-9]+)?            -> Rcon
+%% or [sign] digit-string exponent-letter exponent [__kind-param]
+          [0-9]+ [EeDd] [\+\-]? [0-9]+                          -> Rcon
+%%R408
+  [Bb] [\'] [01]+ [\']          -> BinaryConstant
+  [Bb] [\"] [01]+ [\"]          -> BinaryConstant
+%%R409
+  [Oo] [\'] [0-7]+ [\']         -> OctalConstant
+  [Oo] [\"] [0-7]+ [\']         -> OctalConstant
+%%R410
+  [Zz] [\'] [0-9A-Fa-f]+ [\"]   -> HexConstant
+  [Zz] [\"] [0-9A-Fa-f]+ [\"]   -> HexConstant
+
+%%
+  [0-9]+                        -> ScalarIntLiteralConstant 
+
+%%R703,723 defined-unary-operator and defined-binary-operator
+%%TODO-F08
+%% JD: disabled Userdefined operators to prevent ambig with normal relops in expressions. 
+  "." "TODO" Letter+ "."        -> Dop
+
+lexical restrictions
+  SconSingle -/- [\']
+  SconDouble -/- [\"]
+
+%% commentline should be the complete line until newline. This must be lexical restriction
+%%   Comment  -/- ~[\n]  
+
+%% if  (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
+   EOS -/- [\ \t]
+
+context-free restrictions
+
+   Continuation? -/- ~[\n]  
+
+%% layout definition **without** \n due to the EOS definition. Lines are importent in Fortran.
+%% Continuation-char & should be part of continuation, so not layout.
+   LAYOUT? -/- [\ \t\&]
+
+%% to prevent layout/comment parsed as after LblDef (which causes ambigs)
+   LblDef -/- [\!]
+
+context-free syntax
+  Label? -> LblDef                       {cons("label")}
+
+%% Ident Aliasses. TODO: put them in the right modules.
+  Ident  -> Name
+  Ident  -> ArrayName
+  Ident  -> ComponentName
+  Ident  -> GenericName
+  Ident  -> NamelistGroupName
+  Ident  -> TypeName
+  Ident  -> EndName
+  Ident  -> CommonBlockName
+  Ident  -> DummyArgName
+  Ident  -> EntryName
+  Ident  -> ExternalName
+  Ident  -> FunctionName                  {cons("function-name")}
+  Ident  -> ImpliedDoVariable
+  Ident  -> IntrinsicProcedureName
+  Ident  -> ModuleName                    {cons("module-name")}
+  Ident  -> ObjectName                    {cons("object-name")}
+  Ident  -> ProgramName                   {cons("program-name")}
+  Ident  -> SFDummyArgName
+  Ident  -> SubroutineName
+  Ident  -> SubroutineNameUse
+  Ident  -> VariableName
+
+
+module Fortran
+
+%%imports languages/fortran/syntax/FortranLex
+%%imports languages/fortran/syntax/R400DataTypes
+%%imports languages/fortran/syntax/R500DataDeclarations
+%%imports languages/fortran/syntax/R600UseDataObjects
+%%imports languages/fortran/syntax/R700Expressions
+%%imports languages/fortran/syntax/R800ExecutionControl
+%%imports languages/fortran/syntax/R900IOStatements
+%%imports languages/fortran/syntax/R1000_IOEditing
+%%imports languages/fortran/syntax/R1100ProgramUnits
+%%imports languages/fortran/syntax/R1200Procedures
+
+imports FortranLex
+%%TODO imports R400DataTypes
+imports R500DataDeclarations
+%%TODO imports R600UseDataObjects
+%%TODO imports R700Expressions
+%%TODO imports R800ExecutionControl
+imports R900IOStatements
+imports R1000_IOEditing
+imports R1100ProgramUnits
+%%TODO imports R1200Procedures
+
+exports
+
+sorts
+  ActionStmt ArrayName Body
+%%TODO   BodyConstruct CommonBlockName ComponentName DeclarationConstruct DefinedOperator
+%%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
+  ExecutionPartConstruct %%TODO ExternalName FunctionName GenericName ImpliedDoVariable
+%%TODO   InternalSubProgPart InternalSubprogram IntrinsicProcedureName  MainProgram
+%%TODO   MainRange  ModuleSubprogram ModuleSubprogramPartConstruct Name
+%%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
+%%TODO   SpecificationPartConstruct SpecificationStmt SubroutineName SubroutineNameUse TypeName
+%%TODO   VariableName   
+  
+%%TODO - replace with above
+  DefinedOperator
+  ExecutableConstruct
+
+context-free start-symbols 
+  Program
+
+context-free syntax
+
+%%R201 JD: the optional startcommentblock is needed to parse comment lines in 1st lines of a file.
+%% original: ExecutableProgram ProgramUnit -> ExecutableProgram
+
+  StartCommentBlock? ProgramUnit+              -> Program
+
+%%TODO - Figure out what Fortran.sdf really does
