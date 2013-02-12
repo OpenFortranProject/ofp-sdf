@@ -1,0 +1,8 @@
+module Fortran
+imports Fortran-layout Fortran-literals Fortran-expressions Fortran-statements Fortran-calls
+exports 
+  sorts Program
+  context-free syntax
+    Stat* -> Program {cons("Program")}
+
+  context-free start-symbols Program

@@ -1,0 +1,97 @@
+module Fortran-expressions
+imports Fortran-literals
+exports 
+  sorts
+    Icon Constant
+
+    Primary          %%R701
+    Level1Expr       %%R702
+    DefinedUnaryOp   %%R703
+    MultOperand      %%R704
+    AddOperand       %%R705
+    Level2Expr       %%R706
+    Level3Expr       %%R710
+    Level4Expr       %%R712
+    AndOperand       %%R714
+    OrOperand        %%R715
+    EquivOperand     %%R716
+    Level5Expr       %%R717
+    Expr             %%R722
+    DefinedBinaryOp  %%R723
+
+  context-free syntax
+    Id             -> Expr {cons("Var")}
+    "(" Expr ")"   -> Expr {bracket}
+
+%%R306
+    Int                                  -> Icon            {cons("int-literal-constant")}
+    Icon                                 -> Constant
+
+%%R701
+    Constant                             -> Primary
+
+%%R702
+                     Primary             -> Level1Expr
+    DefinedUnaryOp   Primary             -> Level1Expr      {cons("defined-unary-op")}
+
+%%R703
+    '.NEGATE.'                           -> DefinedUnaryOp  {cons("defined-unary-op")}
+
+%%R704
+    Level1Expr                           -> MultOperand
+    Level1Expr   "**"    MultOperand     -> MultOperand     {cons("power-op")}
+
+%%R705
+                         MultOperand     -> AddOperand
+     AddOperand  "*"     MultOperand     -> AddOperand      {cons("mult-op")}
+     AddOperand  "/"     MultOperand     -> AddOperand      {cons("div-op")}
+
+%%R706
+                         AddOperand      -> Level2Expr
+                 "+"     AddOperand      -> Level2Expr      {cons("unary-plus-op")}
+                 "-"     AddOperand      -> Level2Expr      {cons("unary-minus-op")}
+     Level2Expr  "+"     AddOperand      -> Level2Expr      {cons("add-op")}
+     Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-op")}
+
+%%R710
+                           Level2Expr    -> Level3Expr
+     Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-op")}
+
+%%R712
+                        Level3Expr       -> Level4Expr
+     Level3Expr  "=="   Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
+     Level3Expr '.EQ.'  Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
+     Level3Expr  "/="   Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
+     Level3Expr '.NE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
+     Level3Expr  "<"    Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
+     Level3Expr '.LT.'  Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
+     Level3Expr  "<="   Level3Expr       -> Level4Expr      {cons("rel-op-le")}
+     Level3Expr '.LE.'  Level3Expr       -> Level4Expr      {cons("rel-op-le")}
+     Level3Expr  ">"    Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
+     Level3Expr '.GT.'  Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
+     Level3Expr  ">="   Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
+     Level3Expr '.GE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
+
+%%R714
+            Level4Expr                   -> AndOperand
+    '.NOT.' Level4Expr                   -> AndOperand      {cons("not-op")}
+
+%%R715
+                          AndOperand     -> OrOperand
+     OrOperand  '.AND.'   AndOperand     -> OrOperand       {cons("and-op")}
+
+%%R716
+                          OrOperand      -> EquivOperand
+     EquivOperand '.OR.'  OrOperand      -> EquivOperand    {cons("or-op")}
+
+%%R717
+                          EquivOperand   -> Level5Expr
+     Level5Expr  '.EQV.'  EquivOperand   -> Level5Expr      {cons("equiv-op")}
+     Level5Expr  '.NEQV.' EquivOperand   -> Level5Expr      {cons("nequiv-op")}
+
+%%R722
+                            Level5Expr   -> Expr
+    Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("defined-binary-op")}
+
+%%R723
+    '.UNION.'                            -> DefinedBinaryOp {cons("defined-binary-op")}

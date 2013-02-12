@@ -1,0 +1,13 @@
+module Fortran-statements
+imports Fortran-expressions Fortran-types
+exports 
+  sorts Stat
+  context-free syntax
+    "var" Id ";"                                  -> Stat  {cons("Declaration")}
+    "var" Id ":" Type ";"                         -> Stat  {cons("DeclarationTyped")}
+    Id ":=" Expr ";"                              -> Stat  {cons("Assign")}
+    "begin" Stat* "end"                           -> Stat  {cons("Block")}
+    "if" Expr "then" Stat* "end"                  -> Stat  {cons("IfThen")}
+    "if" Expr "then" Stat* "else" Stat* "end"     -> Stat  {cons("IfElse")}
+    "while" Expr "do" Stat* "end"                 -> Stat  {cons("While")}
+    "for" Id ":=" Expr "to" Expr "do" Stat* "end" -> Stat  {cons("For")}

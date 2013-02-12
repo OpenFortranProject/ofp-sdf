@@ -1,0 +1,6 @@
+module Fortran-calls
+imports Fortran-expressions Fortran-statements
+exports
+  context-free syntax
+    Id "(" {Expr ","}* ")"      -> Expr  {cons("FunCall")}
+    Id "(" {Expr ","}* ")" ";"  -> Stat  {cons("ProcCall")}

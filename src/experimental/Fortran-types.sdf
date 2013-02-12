@@ -1,0 +1,6 @@
+module Fortran-types
+imports Fortran-literals
+exports 
+ sorts Type
+  context-free syntax
+    Id -> Type {cons("TypeName")}
