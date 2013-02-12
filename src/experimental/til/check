@@ -1,0 +1,7 @@
+#! /bin/sh -e
+
+# parse input file
+sglri -p TIL.tbl -i test1.til -o test1.ast
+
+# `pretty-print' abstract syntax term
+pp-aterm -i test1.ast -o test1.atil
