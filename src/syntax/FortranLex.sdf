@@ -68,10 +68,10 @@ lexical syntax
 
 
 %%3.1.2
-  [a-zA-Z]                         -> Letter
-  [A-Za-z][A-Za-z0-9\_]*        -> Ident
+  [a-zA-Z]                       -> Letter
+  [A-Za-z][A-Za-z0-9\_]*         -> Ident
 %% Integer Constant
-  [0-9]+                        -> Icon
+  [0-9]+                         -> Icon
 
 %%R420 Character constants allow '' and "" as escaped ' and " in string literals like 'don''t' (="don't")
 %% separate names needed for lexical restrictions later 
