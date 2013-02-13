@@ -101,6 +101,7 @@ context-free syntax
 
 %%R612
   {PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
+  Name                                                          -> DataRef   {reject}
 
 %%TODO-DELETE   Name '%' Name                                   -> DataRef
 %%TODO-DELETE   DataRef '%' Name                                -> DataRef
