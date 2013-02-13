@@ -104,10 +104,19 @@ lexical syntax
 %%
   [0-9]+                        -> ScalarIntLiteralConstant 
 
-%%R703,723 defined-unary-operator and defined-binary-operator
-%%TODO-F08
-%% JD: disabled Userdefined operators to prevent ambig with normal relops in expressions. 
-  "." "TODO" Letter+ "."        -> Dop
+%%R703,R723 defined-unary-operator and defined-binary-operator
+  "." Letter+ "."               -> Dop
+  '.EQ.'                        -> Dop  {reject}
+  '.OR.'                        -> Dop  {reject}
+  '.LT.'                        -> Dop  {reject}
+  '.LE.'                        -> Dop  {reject}
+  '.GT.'                        -> Dop  {reject}
+  '.GE.'                        -> Dop  {reject}
+  '.NOT.'                       -> Dop  {reject}
+  '.AND.'                       -> Dop  {reject}
+  '.OR.'                        -> Dop  {reject}
+  '.EQV.'                       -> Dop  {reject}
+  '.NEQV.'                      -> Dop  {reject}
 
 lexical restrictions
   SconSingle -/- [\']
@@ -134,7 +143,7 @@ context-free syntax
   Label? -> LblDef                       {cons("label")}
 
 %% Ident Aliasses. TODO: put them in the right modules.
-  Ident  -> Name
+  Ident  -> Name                          {cons("name")}
   Ident  -> ArrayName
   Ident  -> ComponentName
   Ident  -> GenericName
