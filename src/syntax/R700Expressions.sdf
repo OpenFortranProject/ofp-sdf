@@ -17,26 +17,39 @@ imports
 exports
 
 sorts
-  AddOp AddOperand AndOp AndOperand AssignmentStmt
+  AddOp AndOp AssignmentStmt
   CExpr CharExpr CharInitializationExpr
   ComplexConst ConcatOp COperand CPrimary
   DefaultCharExpr
-  DefinedBinaryOp DefinedUnaryOp
   ElsewhereStmt EndWhereStmt
-  EquivOp EquivOperand Expr
+  EquivOp
   ForallHeader ForallTripletSpec ForallTripletSpecList
   IndexName InitializationExpr IntExpr IntInitializationExpr
-  NumericExpr Level1Expr Level2Expr
-  Level3Expr Level4Expr Level5Expr LogicalConstant
+  NumericExpr LogicalConstant
   LogicalExpr LogicalInitializationExpr
   MaskExpr
-  MultOp MultOperand NotOp  OrOp OrOperand
-  PointerAssignmentStmt PowerOp Primary RelOp ScalarMaskExpr Stride
+  MultOp NotOp OrOp
+  PointerAssignmentStmt PowerOp RelOp ScalarMaskExpr Stride
   SFExpr SFExprList SFFactor SFPrimary SFTerm
   Sign
   SpecificationExpr Target UFExpr UFFactor UFPrimary
   UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
   WhereConstructStmt WhereStmt    
+
+  Primary            %%R701
+  Level1Expr         %%R702
+  DefinedUnaryOp     %%R703
+  MultOperand        %%R704
+  AddOperand         %%R705
+  Level2Expr         %%R706
+  Level3Expr         %%R710
+  Level4Expr         %%R712
+  AndOperand         %%R714
+  OrOperand          %%R715
+  EquivOperand       %%R716
+  Level5Expr         %%R717
+  Expr               %%R722
+  DefinedBinaryOp    %%R723
 
 context-free syntax
 %%%% TODO: put these under the right section
@@ -87,77 +100,106 @@ context-free syntax
   '(' Expr ')'                  -> Primary          {cons("primary-paren-expr")}
   Scon                          -> Primary          {cons("primary-scon")}
 
+%%R702
+                   Primary             -> Level1Expr
+  DefinedUnaryOp   Primary             -> Level1Expr      {cons("defined-unary-op")}
+
 %%R703
-  DefinedUnaryOp? Primary       -> Level1Expr       {cons("level-1-expr")}
+  Dop                                  -> DefinedUnaryOp  {cons("defined-unary-op")}
 
 %%R704
-  Dop                           -> DefinedUnaryOp
+  Level1Expr                           -> MultOperand
+  Level1Expr   "**"    MultOperand     -> MultOperand     {cons("power-op")}
 
 %%R705
-  Level1Expr (PowerOp MultOperand)?     -> MultOperand
+                       MultOperand     -> AddOperand
+   AddOperand  "*"     MultOperand     -> AddOperand      {cons("mult-op")}
+   AddOperand  "/"     MultOperand     -> AddOperand      {cons("div-op")}
 
+%%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
+%%TODO-F08: is this still true?
 %%R706
-  (AddOperand MultOp)? MultOperand      -> AddOperand
+                       AddOperand      -> Level2Expr
+               "+"     AddOperand      -> Level2Expr      {cons("unary-plus-op")}
+               "-"     AddOperand      -> Level2Expr      {cons("unary-minus-op")}
+   Level2Expr  "+"     AddOperand      -> Level2Expr      {cons("add-op")}
+   Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-op")}
 
-%%R707 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
-  (Level2Expr AddOp)? AddOperand        -> Level2Expr       {cons("level-2-expr")}
-  Sign AddOperand                       -> Level2Expr       {cons("level-2-expr")}
-
-%%R708
+%%R707
   '**'                                  -> PowerOp
 
-%%R709
+%%R708
   '*' | '/'                             -> MultOp
 
-%%R710
+%%R709
   '+' | '-'                             -> AddOp
   '+' | '-'                             -> Sign
 
+%%R710
+                         Level2Expr    -> Level3Expr
+   Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-op")}
+
 %%R711
-  (Level3Expr ConcatOp)? Level2Expr     -> Level3Expr       {cons("level-3-expr")}
+  '//'                                 -> ConcatOp
 
 %%R712
-  '//'                                  -> ConcatOp
+                      Level3Expr       -> Level4Expr
+   Level3Expr  "=="   Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
+   Level3Expr '.EQ.'  Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
+   Level3Expr  "/="   Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
+   Level3Expr '.NE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
+   Level3Expr  "<"    Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
+   Level3Expr '.LT.'  Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
+   Level3Expr  "<="   Level3Expr       -> Level4Expr      {cons("rel-op-le")}
+   Level3Expr '.LE.'  Level3Expr       -> Level4Expr      {cons("rel-op-le")}
+   Level3Expr  ">"    Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
+   Level3Expr '.GT.'  Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
+   Level3Expr  ">="   Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
+   Level3Expr '.GE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
 
 %%R713
-  (Level3Expr RelOp)? Level3Expr        -> Level4Expr       {cons("level-4-expr")}
+  '=='   | '/='   | '<'    | '<='   | '>'    | '>='        -> RelOp
+  '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.'      -> RelOp
 
 %%R714
-  '==' | '/=' | '<' | '<=' | '>' | '>='                         -> RelOp
-%%from F77
-  '.eq.' | '.ne.' | '.lt.' | '.le.' | '.gt.' | '.ge.'           -> RelOp
+          Level4Expr                   -> AndOperand
+  '.NOT.' Level4Expr                   -> AndOperand      {cons("not-op")}
 
 %%R715
-  NotOp? Level4Expr                     -> AndOperand
+                        AndOperand     -> OrOperand
+   OrOperand  '.AND.'   AndOperand     -> OrOperand       {cons("and-op")}
 
 %%R716
-  (OrOperand AndOp)? AndOperand         -> OrOperand
+                        OrOperand      -> EquivOperand
+   EquivOperand '.OR.'  OrOperand      -> EquivOperand    {cons("or-op")}
 
 %%R717
-  (EquivOperand OrOp)? OrOperand        -> EquivOperand
-
-%%R717
-  (Level5Expr EquivOp)? EquivOperand    -> Level5Expr       {cons("level-5-expr")}
-
-%%R719
- '.not.'                                -> NotOp 
-
-%%R720
-  '.and.'                               -> AndOp
-
-%%R721
-  '.or.'                                -> OrOp
+                        EquivOperand   -> Level5Expr
+   Level5Expr  '.EQV.'  EquivOperand   -> Level5Expr      {cons("equiv-op")}
+   Level5Expr  '.NEQV.' EquivOperand   -> Level5Expr      {cons("nequiv-op")}
 
 %%R722
-  '.eqv.' | '.neqv.'                    -> EquivOp
+                          Level5Expr   -> Expr
+  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("defined-binary-op")}
+
+%%R723
+  Dop                                  -> DefinedBinaryOp {cons("defined-binary-op")}
+
+%%R719
+ '.NOT.'                                -> NotOp 
+
+%%R720
+  '.AND.'                               -> AndOp
+
+%%R721
+  '.OR.'                                -> OrOp
+
+%%R722
+  '.EQV.' | '.NEQV.'                    -> EquivOp
+
 
   LogicalConstant                       -> Primary
 
-%%R723
-  (Expr DefinedBinaryOp)? Level5Expr    -> Expr             {cons("expr")}
-
-%%R724
-  Dop                                   -> DefinedBinaryOp
 
 %%R725-R734 chain rule deleted
 
@@ -287,10 +329,3 @@ context-free syntax
   IndexName '=' Subscript ':' Subscript (':' Stride)?               -> ForallTripletSpec
   {ForallTripletSpec ','}+                                          -> ForallTripletSpecList
   Name                                                              -> IndexName
-
-
-
-context-free priorities
-
-%%R701
-  Name -> Primary  >  DataRef -> Primary
