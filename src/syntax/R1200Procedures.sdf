@@ -40,8 +40,8 @@ sorts
 context-free syntax
 
 %%R1201 %% note: iso says interfacebody allways precedes moduleprocstmt.
-  InterfaceStmt                     EndInterfaceStmt   -> InterfaceBlock
-  InterfaceStmt InterfaceBlockPart+ EndInterfaceStmt   -> InterfaceBlock
+  InterfaceStmt                     EndInterfaceStmt   -> InterfaceBlock     {cons("interface-block")}
+  InterfaceStmt InterfaceBlockPart+ EndInterfaceStmt   -> InterfaceBlock     {cons("interface-block")}
 
   InterfaceBody                                        -> InterfaceBlockPart
   ProcedureStmt                                        -> InterfaceBlockPart
@@ -49,7 +49,7 @@ context-free syntax
 %%R1203
 %%TODO-F08 abstract
 %%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt       {cons("interface-stmt")}
-  LblDef 'INTERFACE' GenericSpec?                   EOS -> InterfaceStmt       {cons("interface-stmt")}
+  LblDef 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt       {cons("interface-stmt")}
 %%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt       {cons("interface-stmt")}
 
 %%R1204
@@ -78,16 +78,16 @@ context-free syntax
   Ident                                                     -> ProcedureName
 
 %%R1207
-  GenericName                                               -> GenericSpec
-  'OPERATOR'   "(" DefinedOperator ")"                      -> GenericSpec
-  'ASSIGNMENT' "(" '='             ")"                      -> GenericSpec
-  DtioGenericSpec                                           -> GenericSpec
+  GenericName                             -> GenericSpec      {cons("generic-spec")}
+  'OPERATOR'   "(" DefinedOperator ")"    -> GenericSpec      {cons("generic-spec")}
+  'ASSIGNMENT' "(" '='             ")"    -> GenericSpec      {cons("generic-spec-assignment")}
+  DtioGenericSpec                         -> GenericSpec      {cons("generic-spec")}
 
 %%R1208
-  'READ'  '(' 'FORMATTED'   ')'                             -> DtioGenericSpec
-  'READ'  '(' 'UNFORMATTED' ')'                             -> DtioGenericSpec
-  'WRITE' '(' 'FORMATTED'   ')'                             -> DtioGenericSpec
-  'WRITE' '(' 'UNFORMATTED' ')'                             -> DtioGenericSpec
+  'READ'  '(' 'FORMATTED'   ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-read-formatted")}
+  'READ'  '(' 'UNFORMATTED' ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-read-unformatted")}
+  'WRITE' '(' 'FORMATTED'   ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-write-formatted")}
+  'WRITE' '(' 'UNFORMATTED' ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-write-unformatted")}
 
 %%R1209
 %%TODO-F08 import-stmt
