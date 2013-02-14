@@ -126,40 +126,53 @@ context-free syntax
    Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-op")}
 
 %%R707
-  '**'                                  -> PowerOp
+  '**'                                 -> PowerOp         {cons("power-op")}
 
 %%R708
-  '*' | '/'                             -> MultOp
+  '*'                                   -> MultOp         {cons("mult-op-times")}
+  '/'                                   -> MultOp         {cons("mult-op-div")}
 
 %%R709
-  '+' | '-'                             -> AddOp
-  '+' | '-'                             -> Sign
+  '+'                                   -> AddOp         {cons("add-op-plus")}
+  '-'                                   -> AddOp         {cons("add-op-minus")}
+  '+'                                   -> Sign          {cons("sign-plus")}
+  '-'                                   -> Sign          {cons("sign-minus")}
 
 %%R710
                          Level2Expr    -> Level3Expr
    Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-op")}
 
 %%R711
-  '//'                                 -> ConcatOp
+  "//"                                 -> ConcatOp        {cons("concat-op")}
 
 %%R712
-                      Level3Expr       -> Level4Expr
-   Level3Expr  "=="   Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
-   Level3Expr '.EQ.'  Level3Expr       -> Level4Expr      {cons("rel-op-eq")}
-   Level3Expr  "/="   Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
-   Level3Expr '.NE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ne")}
-   Level3Expr  "<"    Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
-   Level3Expr '.LT.'  Level3Expr       -> Level4Expr      {cons("rel-op-lt")}
-   Level3Expr  "<="   Level3Expr       -> Level4Expr      {cons("rel-op-le")}
-   Level3Expr '.LE.'  Level3Expr       -> Level4Expr      {cons("rel-op-le")}
-   Level3Expr  ">"    Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
-   Level3Expr '.GT.'  Level3Expr       -> Level4Expr      {cons("rel-op-gt")}
-   Level3Expr  ">="   Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
-   Level3Expr '.GE.'  Level3Expr       -> Level4Expr      {cons("rel-op-ge")}
+                     Level3Expr        -> Level4Expr
+  Level3Expr  "=="   Level3Expr        -> Level4Expr      {cons("rel-op-eq")}
+  Level3Expr '.EQ.'  Level3Expr        -> Level4Expr      {cons("rel-op-eq")}
+  Level3Expr  "/="   Level3Expr        -> Level4Expr      {cons("rel-op-ne")}
+  Level3Expr '.NE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ne")}
+  Level3Expr  "<"    Level3Expr        -> Level4Expr      {cons("rel-op-lt")}
+  Level3Expr '.LT.'  Level3Expr        -> Level4Expr      {cons("rel-op-lt")}
+  Level3Expr  "<="   Level3Expr        -> Level4Expr      {cons("rel-op-le")}
+  Level3Expr '.LE.'  Level3Expr        -> Level4Expr      {cons("rel-op-le")}
+  Level3Expr  ">"    Level3Expr        -> Level4Expr      {cons("rel-op-gt")}
+  Level3Expr '.GT.'  Level3Expr        -> Level4Expr      {cons("rel-op-gt")}
+  Level3Expr  ">="   Level3Expr        -> Level4Expr      {cons("rel-op-ge")}
+  Level3Expr '.GE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ge")}
 
 %%R713
-  '=='   | '/='   | '<'    | '<='   | '>'    | '>='        -> RelOp
-  '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.'      -> RelOp
+  "=="                                 -> RelOp           {cons("rel-op-eq")}
+  '.EQ.'                               -> RelOp           {cons("rel-op-eq")}
+  "/="                                 -> RelOp           {cons("rel-op-ne")}
+  '.NE.'                               -> RelOp           {cons("rel-op-ne")}
+  "<"                                  -> RelOp           {cons("rel-op-lt")}
+  '.LT.'                               -> RelOp           {cons("rel-op-lt")}
+  "<="                                 -> RelOp           {cons("rel-op-le")}
+  '.LE.'                               -> RelOp           {cons("rel-op-le")}
+  ">"                                  -> RelOp           {cons("rel-op-gt")}
+  '.GT.'                               -> RelOp           {cons("rel-op-gt")}
+  ">="                                 -> RelOp           {cons("rel-op-ge")}
+  '.GE.'                               -> RelOp           {cons("rel-op-ge")}
 
 %%R714
           Level4Expr                   -> AndOperand
@@ -186,16 +199,17 @@ context-free syntax
   Dop                                  -> DefinedBinaryOp {cons("defined-binary-op")}
 
 %%R719
- '.NOT.'                                -> NotOp 
+ '.NOT.'                                -> NotOp          {cons("not-op")}
 
 %%R720
-  '.AND.'                               -> AndOp
+  '.AND.'                               -> AndOp          {cons("and-op")}
 
 %%R721
-  '.OR.'                                -> OrOp
+  '.OR.'                                -> OrOp           {cons("or-op")}
 
 %%R722
-  '.EQV.' | '.NEQV.'                    -> EquivOp
+  '.EQV.'                               -> EquivOp        {cons("equiv-op")}
+  '.NEQV.'                              -> EquivOp        {cons("nequiv-op")}
 
 
   LogicalConstant                       -> Primary
