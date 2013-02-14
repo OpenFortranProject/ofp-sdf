@@ -219,12 +219,12 @@ context-free syntax
   TypeName '(' {Expr ","}+ ')'                  -> StructureConstructor
 
 %%R467
-  '(/' AcSpec '/)'                              -> ArrayConstructor
-  '['  AcSpec  ']'                              -> ArrayConstructor
+  '(/' AcSpec '/)'                              -> ArrayConstructor     {cons("array-constructor")}
+  '['  AcSpec  ']'                              -> ArrayConstructor     {cons("array-constructor")}
 
 %%R468
-  TypeSpec '::'                                 -> AcSpec
-  (TypeSpec '::')? AcValueList                  -> AcSpec
+  TypeSpec '::'                                 -> AcSpec               {cons("ac-spec")}
+  (TypeSpec '::')? AcValueList                  -> AcSpec               {cons("ac-spec")}
 
 %%R432
 %%TODO-REMOVE
