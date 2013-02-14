@@ -153,7 +153,7 @@ context-free syntax
   ','? 'CONCURRENT' ForallHeader                              -> LoopControl    {cons("loop-control")}
 
 %%R827
-  VariableName                                                -> DoVariable
+  Name                                                        -> DoVariable     {cons("do-variable")}
 
 %%828
   Block                                                       -> DoBlock
