@@ -45,7 +45,6 @@ sorts
   MainRange ModuleNature ModuleSubprogram ModuleSubprogramPartConstruct %%TODO Name
 %%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
   SpecificationPartConstruct %%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
-%%TODO   VariableName   
 
 %%TODO - replace with above
   KeywordEqual OptKeywordEqual
@@ -292,27 +291,25 @@ context-free syntax
   SubroutineSubprogram                 -> ModuleSubprogram
 
 %%R215
-  Ident '='                     -> KeywordEqual            {cons("keyword")}
+  Ident '='                     -> KeywordEqual          {cons("keyword")}
   KeywordEqual?                 -> OptKeywordEqual
 
 %%R310
-  PowerOp                       -> IntrinsicOperator
-  MultOp                        -> IntrinsicOperator
-  AddOp                         -> IntrinsicOperator
-  ConcatOp                      -> IntrinsicOperator
-  RelOp                         -> IntrinsicOperator
-  NotOp                         -> IntrinsicOperator
-  AndOp                         -> IntrinsicOperator
-  OrOp                          -> IntrinsicOperator
-  EquivOp                       -> IntrinsicOperator
+  PowerOp                       -> IntrinsicOperator     {cons("intrinsic-operator")}
+  MultOp                        -> IntrinsicOperator     {cons("intrinsic-operator")}
+  AddOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
+  ConcatOp                      -> IntrinsicOperator     {cons("intrinsic-operator")}
+  RelOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
+  NotOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
+  AndOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
+  OrOp                          -> IntrinsicOperator     {cons("intrinsic-operator")}
+  EquivOp                       -> IntrinsicOperator     {cons("intrinsic-operator")}
 
 %%R311
 
   DefinedUnaryOp                -> DefinedOperator
   DefinedBinaryOp               -> DefinedOperator
   ExtendedIntrinsicOp           -> DefinedOperator
-
-%%TODO - see lex syntax  Dop                           -> DefinedOperator
 
 %%R312
 
