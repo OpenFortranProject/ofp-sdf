@@ -17,14 +17,14 @@ exports
 sorts
   AllocatedShape AllocateObject AllocateObjectList AllocateShapeSpec AllocateStmt
   Allocation AllocationList AllocOpt AllocOptList
-  ArrayElement ArraySection
+  ArrayElement ArraySection ArraySelector
   CharVariable CoSubscript CoSubscriptList
   DataRef DeallocateStmt DeallocOpt DeallocOptList
   DefaultCharVariable DefaultLogicalVariable Designator ErrmsgVariable
   ImageSelector IntVariable
   LogicalVariable
   NullifyStmt
-  ParentString PartName PartRef
+  ParentString PartName
   PointerObject PointerObjectList
   ScalarDefaultCharVariable ScalarIntVariable ScalarStructureComponent
   ScalarVariable ScalarVariableName
@@ -43,6 +43,7 @@ context-free syntax
 %%AMB  StructureComponent    -> Designator        %% R614 is data-ref
 %%AMB  Substring             -> Designator        %% R609 is data-ref '(' substring-range ')'
 %% the above reduces to
+  ObjectName                           -> Designator   {cons("designator")}
   DataRef                              -> Designator   {cons("designator")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
@@ -100,23 +101,24 @@ context-free syntax
 %%TODO-DELETE   '(' SubscriptTriplet ')'                        -> SubstringRange
 
 %%R612
-  {PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
-  Name                                                          -> DataRef   {reject}
+%%AMBibuous with part-ref ambiguous with name
+%%{PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
+%%Name                                                          -> DataRef   {reject}
 
-%%TODO-DELETE   Name '%' Name                                   -> DataRef
-%%TODO-DELETE   DataRef '%' Name                                -> DataRef
-%%TODO-DELETE   Name '(' SectionSubscriptList ')'               -> DataRef
-%%TODO-DELETE   DataRef '(' SectionSubscriptList ')'            -> DataRef
+  PartName '%' PartName                                         -> DataRef   {cons("data-ref")}
+  DataRef  '%' PartName                                         -> DataRef   {cons("data-ref")}
+  PartName ArraySelector                                        -> DataRef   {cons("data-ref")}
+  DataRef  ArraySelector                                        -> DataRef   {cons("data-ref")}
 
-%%TODO-DELETE   {SectionSubscript ","}+                         -> SectionSubscriptList
-%%TODO-DELETE   Expr                                            -> SectionSubscript
-%%TODO-DELETE   SubscriptTriplet                                -> SectionSubscript
-
-%%R613
-  PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
-  PartName   '(' SectionSubscriptList ')'
-           ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
   Name                                                          -> PartName
+
+  "(" SectionSubscriptList ")" ImageSelector?                   -> ArraySelector
+                               ImageSelector                    -> ArraySelector
+
+%%R613 part-ref
+%%PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
+%%PartName   '(' SectionSubscriptList ')'
+%%         ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
 
 %%R614
   DataRef                                                       -> StructureComponent
@@ -162,7 +164,7 @@ context-free syntax
   IntExpr                                                       -> VectorSubscript
 
 %%624
-  '[' CoSubscriptList ']'                                       -> ImageSelector
+  '[' CoSubscriptList ']'                                       -> ImageSelector  {cons("image-selector")}
 
 %%625
   ScalarIntExpr                                                 -> CoSubscript
@@ -203,8 +205,9 @@ context-free syntax
 %% */
 
 %%R632
-  VariableName                                  -> AllocateObject
-  StructureComponent                            -> AllocateObject
+%%VariableName                                  -> AllocateObject      {cons("allocate-object")}
+  Name                                  -> AllocateObject      {cons("allocate-object")}
+  StructureComponent                            -> AllocateObject      {cons("allocate-object")}
 %%TODO-DELETE   AllocateObject FieldSelector                  -> AllocateObject
   {AllocateObject ","}+                         -> AllocateObjectList
 
@@ -236,6 +239,6 @@ context-free syntax
                       ')'                               EOS -> DeallocateStmt  {cons("deallocate-stmt")}
 
 %%641
-  'STAT'   '=' StatVariable                                     -> DeallocOpt
-  'ERRMSG' '=' ErrmsgVariable                                   -> DeallocOpt
-  {AllocOpt ','}+                                               -> DeallocOptList
+  'STAT'   '=' StatVariable                                     -> DeallocOpt  {cons("dealloc-opt-stat")}
+  'ERRMSG' '=' ErrmsgVariable                                   -> DeallocOpt  {cons("dealloc-opt-errmsg")}
+  {DeallocOpt ','}+                                             -> DeallocOptList
