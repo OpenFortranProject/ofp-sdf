@@ -107,7 +107,7 @@ lexical syntax
 %%R703,R723 defined-unary-operator and defined-binary-operator
   "." Letter+ "."               -> Dop
   '.EQ.'                        -> Dop  {reject}
-  '.OR.'                        -> Dop  {reject}
+  '.NE.'                        -> Dop  {reject}
   '.LT.'                        -> Dop  {reject}
   '.LE.'                        -> Dop  {reject}
   '.GT.'                        -> Dop  {reject}
@@ -163,4 +163,3 @@ context-free syntax
   Ident  -> SFDummyArgName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
-  Ident  -> VariableName
