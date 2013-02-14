@@ -261,22 +261,22 @@ context-free syntax
   Ident                                                    -> EntityName
 
 %%R532
-  LblDef 'DATA' DataStmtSetList                        EOS -> DataStmt   {cons("data-stmt")}
+  LblDef 'DATA' DataStmtSetList                        EOS -> DataStmt         {cons("data-stmt")}
   {DataStmtSet ','?}+                                      -> DataStmtSetList
 
 %%R533
-  DataStmtObjectList '/' DataStmtValueList '/'             -> DataStmtSet
+  DataStmtObjectList '/' DataStmtValueList '/'             -> DataStmtSet      {cons("data-stmt-set")}
 
 %%R534
-  Variable                                                 -> DataStmtObject
-  DataImpliedDo                                            -> DataStmtObject
+  Variable                                                 -> DataStmtObject   {cons("data-stmt-object")}
+  DataImpliedDo                                            -> DataStmtObject   {cons("data-stmt-object")}
   {DataStmtObject ","}+                                    -> DataStmtObjectList
 
 %%R535
   '(' DataIDoObjectList ',' ImpliedDoVariable '=' Expr ',' Expr (',' Expr)? ')' -> DataImpliedDo
 
 %%R538
-  (DataStmtRepeat '*')? DataStmtConstant                   -> DataStmtValue
+  (DataStmtRepeat '*')? DataStmtConstant                   -> DataStmtValue    {cons("data-stmt-value")}
   {DataStmtValue ","}+                                     -> DataStmtValueList
   
 %%539
