@@ -93,37 +93,37 @@ context-free syntax
 %%R701
   ArrayConstructor              -> Primary          {cons("primary-ac")}
   ArrayConstructor              -> SFPrimary
-  UnsignedArithmeticConstant    -> Primary          {cons("primary-const")}
+  UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
   Name                          -> Primary          {cons("primary-name")}
   DataRef                       -> Primary          {cons("primary-dref")}
   FunctionReference             -> Primary          {cons("primary-fref")}
-  '(' Expr ')'                  -> Primary          {cons("primary-paren-expr")}
+  '(' Expr ')'                  -> Primary          {cons("paren-expr")}
   Scon                          -> Primary          {cons("primary-scon")}
 
 %%R702
                    Primary             -> Level1Expr
-  DefinedUnaryOp   Primary             -> Level1Expr      {cons("defined-unary-op")}
+  DefinedUnaryOp   Primary             -> Level1Expr      {cons("defined-unary-op-expr")}
 
 %%R703
-  Dop                                  -> DefinedUnaryOp  {cons("defined-unary-op")}
+  Dop                                  -> DefinedUnaryOp
 
 %%R704
   Level1Expr                           -> MultOperand
-  Level1Expr   "**"    MultOperand     -> MultOperand     {cons("power-op")}
+  Level1Expr   "**"    MultOperand     -> MultOperand     {cons("power-expr")}
 
 %%R705
                        MultOperand     -> AddOperand
-   AddOperand  "*"     MultOperand     -> AddOperand      {cons("mult-op")}
-   AddOperand  "/"     MultOperand     -> AddOperand      {cons("div-op")}
+   AddOperand  "*"     MultOperand     -> AddOperand      {cons("mult-expr")}
+   AddOperand  "/"     MultOperand     -> AddOperand      {cons("div-expr")}
 
 %%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
 %%TODO-F08: is this still true?
 %%R706
                        AddOperand      -> Level2Expr
-               "+"     AddOperand      -> Level2Expr      {cons("unary-plus-op")}
-               "-"     AddOperand      -> Level2Expr      {cons("unary-minus-op")}
-   Level2Expr  "+"     AddOperand      -> Level2Expr      {cons("add-op")}
-   Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-op")}
+               "+"     AddOperand      -> Level2Expr      {cons("unary-plus-expr")}
+               "-"     AddOperand      -> Level2Expr      {cons("unary-minus-expr")}
+   Level2Expr  "+"     AddOperand      -> Level2Expr      {cons("add-expr")}
+   Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-expr")}
 
 %%R707
   '**'                                 -> PowerOp         {cons("power-op")}
@@ -140,25 +140,25 @@ context-free syntax
 
 %%R710
                          Level2Expr    -> Level3Expr
-   Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-op")}
+   Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-expr")}
 
 %%R711
   "//"                                 -> ConcatOp        {cons("concat-op")}
 
 %%R712
                      Level3Expr        -> Level4Expr
-  Level3Expr  "=="   Level3Expr        -> Level4Expr      {cons("rel-op-eq")}
-  Level3Expr '.EQ.'  Level3Expr        -> Level4Expr      {cons("rel-op-eq")}
-  Level3Expr  "/="   Level3Expr        -> Level4Expr      {cons("rel-op-ne")}
-  Level3Expr '.NE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ne")}
-  Level3Expr  "<"    Level3Expr        -> Level4Expr      {cons("rel-op-lt")}
-  Level3Expr '.LT.'  Level3Expr        -> Level4Expr      {cons("rel-op-lt")}
-  Level3Expr  "<="   Level3Expr        -> Level4Expr      {cons("rel-op-le")}
-  Level3Expr '.LE.'  Level3Expr        -> Level4Expr      {cons("rel-op-le")}
-  Level3Expr  ">"    Level3Expr        -> Level4Expr      {cons("rel-op-gt")}
-  Level3Expr '.GT.'  Level3Expr        -> Level4Expr      {cons("rel-op-gt")}
-  Level3Expr  ">="   Level3Expr        -> Level4Expr      {cons("rel-op-ge")}
-  Level3Expr '.GE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ge")}
+  Level3Expr  "=="   Level3Expr        -> Level4Expr      {cons("rel-op-eq-expr")}
+  Level3Expr '.EQ.'  Level3Expr        -> Level4Expr      {cons("rel-op-eq-expr")}
+  Level3Expr  "/="   Level3Expr        -> Level4Expr      {cons("rel-op-ne-expr")}
+  Level3Expr '.NE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ne-expr")}
+  Level3Expr  "<"    Level3Expr        -> Level4Expr      {cons("rel-op-lt-expr")}
+  Level3Expr '.LT.'  Level3Expr        -> Level4Expr      {cons("rel-op-lt-expr")}
+  Level3Expr  "<="   Level3Expr        -> Level4Expr      {cons("rel-op-le-expr")}
+  Level3Expr '.LE.'  Level3Expr        -> Level4Expr      {cons("rel-op-le-expr")}
+  Level3Expr  ">"    Level3Expr        -> Level4Expr      {cons("rel-op-gt-expr")}
+  Level3Expr '.GT.'  Level3Expr        -> Level4Expr      {cons("rel-op-gt-expr")}
+  Level3Expr  ">="   Level3Expr        -> Level4Expr      {cons("rel-op-ge-expr")}
+  Level3Expr '.GE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ge-expr")}
 
 %%R713
   "=="                                 -> RelOp           {cons("rel-op-eq")}
@@ -176,27 +176,27 @@ context-free syntax
 
 %%R714
           Level4Expr                   -> AndOperand
-  '.NOT.' Level4Expr                   -> AndOperand      {cons("not-op")}
+  '.NOT.' Level4Expr                   -> AndOperand      {cons("not-expr")}
 
 %%R715
                         AndOperand     -> OrOperand
-   OrOperand  '.AND.'   AndOperand     -> OrOperand       {cons("and-op")}
+   OrOperand  '.AND.'   AndOperand     -> OrOperand       {cons("and-expr")}
 
 %%R716
                         OrOperand      -> EquivOperand
-   EquivOperand '.OR.'  OrOperand      -> EquivOperand    {cons("or-op")}
+   EquivOperand '.OR.'  OrOperand      -> EquivOperand    {cons("or-expr")}
 
 %%R717
                         EquivOperand   -> Level5Expr
-   Level5Expr  '.EQV.'  EquivOperand   -> Level5Expr      {cons("equiv-op")}
-   Level5Expr  '.NEQV.' EquivOperand   -> Level5Expr      {cons("nequiv-op")}
+   Level5Expr  '.EQV.'  EquivOperand   -> Level5Expr      {cons("eqv-expr")}
+   Level5Expr  '.NEQV.' EquivOperand   -> Level5Expr      {cons("neqv-expr")}
 
 %%R722
                           Level5Expr   -> Expr
-  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("expr")}
+  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("defined-binary-op-expr")}
 
 %%R723
-  Dop                                  -> DefinedBinaryOp {cons("defined-binary-op")}
+  Dop                                  -> DefinedBinaryOp
 
 %%R719
  '.NOT.'                                -> NotOp          {cons("not-op")}
