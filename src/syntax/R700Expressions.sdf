@@ -193,7 +193,7 @@ context-free syntax
 
 %%R722
                           Level5Expr   -> Expr
-  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("defined-binary-op")}
+  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("expr")}
 
 %%R723
   Dop                                  -> DefinedBinaryOp {cons("defined-binary-op")}
