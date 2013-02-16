@@ -33,6 +33,9 @@ sorts
   SubscriptTriplet Substring SubstringRange
   Variable VectorSubscript
 
+  LowerBoundExpr           %%R634
+  UpperBoundExpr           %%R635
+
 context-free syntax
 
 %%R601
@@ -210,6 +213,12 @@ context-free syntax
   StructureComponent                            -> AllocateObject      {cons("allocate-object")}
 %%TODO-DELETE   AllocateObject FieldSelector                  -> AllocateObject
   {AllocateObject ","}+                         -> AllocateObjectList
+
+%%R634
+  ScalarIntExpr                                 -> LowerBoundExpr
+
+%%R635
+  ScalarIntExpr                                 -> UpperBoundExpr
 
 %%R626
 %% JD is this correct??/* Omitted to solve LALR(1) conflict.  see R624
