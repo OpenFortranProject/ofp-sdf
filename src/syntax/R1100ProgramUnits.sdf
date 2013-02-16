@@ -235,7 +235,7 @@ context-free syntax
 %%TODO-F08 block-construct
   CaseConstruct                 -> ExecutableConstruct
 %%TODO-F08 critical-construct
-%%TODO-F08 forall-construct
+  ForallConstruct               -> ExecutableConstruct
   IfConstruct                   -> ExecutableConstruct
   SelectTypeConstruct           -> ExecutableConstruct
 %%TODO   WhereConstruct                -> ExecutableConstruct
