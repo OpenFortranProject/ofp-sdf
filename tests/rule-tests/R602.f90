@@ -1,6 +1,6 @@
 !! R602 variable
-!    is designator or expr
-! NOTE 6.1
+!    is designator
+!    or expr
 
 A = 1
 B(1) = 1
