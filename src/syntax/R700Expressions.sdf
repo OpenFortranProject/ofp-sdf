@@ -23,7 +23,7 @@ sorts
   DefaultCharExpr
   ElsewhereStmt EndWhereStmt
   EquivOp
-  ForallHeader ForallTripletSpec ForallTripletSpecList
+  ForallConstructName ForallTripletSpecList
   IndexName InitializationExpr IntExpr IntInitializationExpr
   NumericExpr LogicalConstant
   LogicalExpr LogicalInitializationExpr
@@ -50,6 +50,15 @@ sorts
   Level5Expr         %%R717
   Expr               %%R722
   DefinedBinaryOp    %%R723
+
+  ForallConstruct        %%R752
+  ForallConstructStmt    %%R753
+  ForallHeader           %%R754
+  ForallTripletSpec      %%R755
+  ForallBodyConstruct    %%R756
+  ForallAssignmentStmt   %%R757
+  EndForallStmt          %%R758
+  ForallStmt             %%R759
 
 context-free syntax
 %%%% TODO: put these under the right section
@@ -335,11 +344,37 @@ context-free syntax
 %%TODO-F08 - make it so label can't be part of assignment-stmt
   AssignmentStmt                                -> WhereAssignmentStmt
 
+%%R752
+  ForallConstructStmt {ForallBodyConstruct ','}* EndForallStmt      -> ForallConstruct
+
+%%R753
+  LblDef (ForallConstructName ":")? 'FORALL' ForallHeader       EOS -> ForallConstructStmt  {cons("forall-construct-stmt")}
+  Name                                                              -> ForallConstructName
+
 %%754
-  '(' (TypeSpec '::')? ForallTripletSpecList (',' ScalarMaskExpr)?  -> ForallHeader
+  '('
+     (TypeSpec '::')? ForallTripletSpecList (',' ScalarMaskExpr)?
+  ')'                                                               -> ForallHeader
   Expr                                                              -> ScalarMaskExpr
 
 %%755
   IndexName '=' Subscript ':' Subscript (':' Stride)?               -> ForallTripletSpec
   {ForallTripletSpec ','}+                                          -> ForallTripletSpecList
   Name                                                              -> IndexName
+
+%%756
+  ForallAssignmentStmt                                              -> ForallBodyConstruct
+  WhereStmt                                                         -> ForallBodyConstruct
+  WhereConstruct                                                    -> ForallBodyConstruct
+  ForallConstruct                                                   -> ForallBodyConstruct
+  ForallStmt                                                        -> ForallBodyConstruct
+
+%%757
+  AssignmentStmt                                                    -> ForallAssignmentStmt
+  PointerAssignmentStmt                                             -> ForallAssignmentStmt
+
+%%758
+  'END' 'FORALL' ForallConstructName?                           EOS -> EndForallStmt  {cons("end-forall-stmt")}
+
+%%759
+  LblDef 'FORALL' ForallHeader ForallAssignmentStmt             EOS -> ForallStmt     {cons("forall-stmt")}
