@@ -1,4 +1,4 @@
-      
+
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
 %%%%%%%%%%
@@ -18,8 +18,10 @@ exports
 
 sorts
   AddOp AndOp AssignmentStmt
+  BoundsRemappingList BoundsSpecList
   CExpr CharExpr CharInitializationExpr
   ComplexConst ConcatOp COperand CPrimary
+  DataPointerComponentName DataPointerObject
   DefaultCharExpr
   ElsewhereStmt EndWhereStmt
   EquivOp
@@ -32,7 +34,7 @@ sorts
   PointerAssignmentStmt PowerOp RelOp ScalarMaskExpr Stride
   SFExpr SFExprList SFFactor SFPrimary SFTerm
   Sign
-  SpecificationExpr Target UFExpr UFFactor UFPrimary
+  SpecificationExpr UFExpr UFFactor UFPrimary
   UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
   WhereConstructStmt WhereStmt    
 
@@ -51,6 +53,10 @@ sorts
   Expr               %%R722
   DefinedBinaryOp    %%R723
 
+
+  BoundsSpec             %%R737
+  BoundsRemapping        %%R738
+  DataTarget             %%R739
   ForallConstruct        %%R752
   ForallConstructStmt    %%R753
   ForallHeader           %%R754
@@ -301,17 +307,34 @@ context-free syntax
   FunctionReference                             -> SFPrimary
   '(' Expr ')'                                  -> SFPrimary
 
+%%R735
+  LblDef DataPointerObject                             "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
+  LblDef DataPointerObject "(" BoundsSpecList ")"      "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
+  LblDef DataPointerObject "(" BoundsRemappingList ")" "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
+%%TODO   LblDef Name '%' Name '=>' DataTarget EOS                                          -> PointerAssignmentStmt
+%%TODO   LblDef Name '%' DataRef '=>' DataTarget EOS                                       -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFExprList ')' '%' Name '=>' DataTarget EOS                       -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFExprList ')' '%' DataRef '=>' DataTarget EOS                    -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' DataTarget EOS               -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' DataTarget EOS            -> PointerAssignmentStmt
+
 %%R736
-  LblDef Name '=>' Target EOS                                                   -> PointerAssignmentStmt
-  LblDef Name '%' Name '=>' Target EOS                                          -> PointerAssignmentStmt
-  LblDef Name '%' DataRef '=>' Target EOS                                       -> PointerAssignmentStmt
-  LblDef Name '(' SFExprList ')' '%' Name '=>' Target EOS                       -> PointerAssignmentStmt
-  LblDef Name '(' SFExprList ')' '%' DataRef '=>' Target EOS                    -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' Target EOS               -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' Target EOS            -> PointerAssignmentStmt
+  VariableName                                    -> DataPointerObject
+  ScalarVariable "%" DataPointerComponentName     -> DataPointerObject
+  Name                                            -> DataPointerComponentName
 
 %%R737
-  Expr  -> Target
+  LowerBoundExpr ":"                              -> BoundsSpec
+  {BoundsSpec ","}+                               -> BoundsSpecList 
+
+%%R738
+  LowerBoundExpr ":" UpperBoundExpr               -> BoundsRemapping
+  {BoundsRemapping ","}+                          -> BoundsRemappingList 
+
+%%R739
+  Expr      -> DataTarget
+%%Ambiguous
+%%Variable  -> DataTarget
 
 %%R743
   LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt    {cons("where-stmt")}

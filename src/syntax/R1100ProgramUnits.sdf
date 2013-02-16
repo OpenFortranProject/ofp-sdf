@@ -256,7 +256,7 @@ context-free syntax
   ExitStmt                      -> ActionStmt
   FlushStmt                     -> ActionStmt
   NullifyStmt                   -> ActionStmt
-%%TODO   PointerAssignmentStmt         -> ActionStmt
+  PointerAssignmentStmt         -> ActionStmt
   WhereStmt                     -> ActionStmt
   ArithmeticIfStmt              -> ActionStmt
   AssignmentStmt                -> ActionStmt
