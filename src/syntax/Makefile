@@ -3,16 +3,28 @@ TEST_DIR = ../../tests/rule-tests
 TestFiles = $(wildcard $(TEST_DIR)/*.f90)
 ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 
+SDF_FILES =  Fortran.sdf              \
+             FortranLex.sdf           \
+             R400DataTypes.sdf        \
+             R500DataDeclarations.sdf \
+             R600UseDataObjects.sdf   \
+             R700Expressions.sdf      \
+             R800ExecutionControl.sdf \
+             R900IOStatements.sdf     \
+             R1000_IOEditing.sdf      \
+             R1100ProgramUnits.sdf    \
+             R1200Procedures.sdf
+
 %.tbl : %
 	sdf2table -i $< -o $@
 
 all : Fortran.tbl
 
-Fortran.def : Fortran.sdf
-	pack-sdf -i $< -o $@
-
 Fortran.tbl : Fortran.def
 	sdf2table -i $< -o $@ -m Fortran
+
+Fortran.def : $(SDF_FILES)
+	pack-sdf -i $< -o $@
 
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
@@ -26,6 +38,15 @@ pretty : Fortran.tbl
               echo "Pretty printing $$File..." ; \
               pp-aterm -i $$File -o $$File.pp ; \
            done
+
+junk.ptree : junk.f90 Fortran.tbl
+	sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
+
+junk.ast.pp : junk.f90 Fortran.tbl
+	sglri -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.ast.pp
+
+junk.ast-info.pp : junk.f90 Fortran.tbl
+	sglri -i junk.f90 -p Fortran.tbl | addPosInfo -i junk.pt -p junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
 	rm -f *.def *.tbl
