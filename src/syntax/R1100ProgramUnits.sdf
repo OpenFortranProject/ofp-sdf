@@ -74,21 +74,21 @@ context-free syntax
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram
 
 %%R201
-  StartCommentBlock?  ProgramUnit+              -> Program          {cons("program")}
+  StartCommentBlock?  ProgramUnit+             -> Program          {cons("program")}
 
 %%R202
-  MainProgram                                  -> ProgramUnit
-  FunctionSubprogram                           -> ProgramUnit
-  SubroutineSubprogram                         -> ProgramUnit
-  Module                                       -> ProgramUnit
-  BlockDataSubprogram                          -> ProgramUnit
+  MainProgram                                  -> ProgramUnit      {cons("program-unit")}
+  FunctionSubprogram                           -> ProgramUnit      {cons("program-unit")}
+  SubroutineSubprogram                         -> ProgramUnit      {cons("program-unit")}
+  Module                                       -> ProgramUnit      {cons("program-unit")}
+  BlockDataSubprogram                          -> ProgramUnit      {cons("program-unit")}
 
 
 %%R1101
   ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
-  BodyConstruct+       EndProgramStmt          -> MainRange
-  InternalSubProgPart  EndProgramStmt          -> MainRange
-  EndProgramStmt                               -> MainRange
+  BodyConstruct+       EndProgramStmt          -> MainRange        {cons("main-range")}
+  InternalSubProgPart  EndProgramStmt          -> MainRange        {cons("main-range")}
+  EndProgramStmt                               -> MainRange        {cons("main-range")}
 
   SpecificationPartConstruct                   -> BodyConstruct
   ExecutableConstruct                          -> BodyConstruct
@@ -98,8 +98,7 @@ context-free syntax
   LblDef 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("program-stmt")}
 
 %%R1103
-  LblDef 'END'                             EOS -> EndProgramStmt   {cons("end-program-stmt")}
-  LblDef 'END' 'PROGRAM' ProgramName?      EOS -> EndProgramStmt   {cons("end-program-stmt")}
+  LblDef 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("end-program-stmt")}
 
 %%R1104
   ModuleStmt ModuleBody EndModuleStmt          -> Module           {cons("module")}
