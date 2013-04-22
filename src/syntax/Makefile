@@ -26,6 +26,12 @@ Fortran.tbl : Fortran.def
 Fortran.def : $(SDF_FILES)
 	pack-sdf -i $< -o $@
 
+Fortran.rtg : Fortran.def
+	sdf2rtg -i Fortran.def -m Fortran -o Fortran.rtg --ignore-missing-cons
+
+Fortran.sig : Fortran.rtg
+	rtg2sig -i Fortran.rtg -o Fortran.sig
+
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
            do \
