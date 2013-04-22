@@ -16,14 +16,20 @@ exports
 
 sorts
 
-  ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt EndInterfaceStmt
+  ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt
   EndSubroutineStmt EntryStmt ExternalStmt FunctionArg FunctionArgList
   FunctionInterfaceRange FunctionPar FunctionParList FunctionPrefix FunctionRange
-  FunctionReference FunctionStmt FunctionSubprogram GenericSpec InterfaceBlock
-  InterfaceBlockPart InterfaceBody InterfaceStmt IntrinsicStmt ProcedureStmt
+  FunctionReference FunctionStmt FunctionSubprogram GenericSpec
+  InterfaceBody IntrinsicStmt ProcedureStmt
   ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
   SubprogramInterfaceBody SubroutineInterfaceRange DummyArg OptSubroutineParList SubroutineRange
   SubroutineStmt SubroutineSubprogram
+
+  InterfaceBlock              %% R1201
+  InterfaceSpecification      %% R1202
+  InterfaceStmt               %% R1203
+    AltGeneric AltAbstract
+  EndInterfaceStmt            %% R1204
 
 %%F2008
   PrefixSpec
@@ -39,23 +45,33 @@ sorts
 
 context-free syntax
 
-%%R1201 %% note: iso says interfacebody allways precedes moduleprocstmt.
-  InterfaceStmt                     EndInterfaceStmt   -> InterfaceBlock     {cons("interface-block")}
-  InterfaceStmt InterfaceBlockPart+ EndInterfaceStmt   -> InterfaceBlock     {cons("interface-block")}
+%%R1201
+  InterfaceStmt
+    InterfaceSpecification*
+  EndInterfaceStmt                -> InterfaceBlock          {cons("interface-block")}
 
-  InterfaceBody                                        -> InterfaceBlockPart
-  ProcedureStmt                                        -> InterfaceBlockPart
+%%R1202
+    InterfaceBody
+  | ProcedureStmt                 -> InterfaceSpecification  {cons("interface-specification")}
+
 
 %%R1203
+  LblDef (AltGeneric | AltAbstract)   EOS -> InterfaceStmt   {cons("interface-stmt")}
+
+  'INTERFACE' GenericSpec?                  -> AltGeneric    {cons("alt_gen")}
+  'ABSTRACT' 'INTERFACE'                    -> AltAbstract   {cons("alt_abs")}
+
+
 %%TODO-F08 abstract
 %%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt       {cons("interface-stmt")}
-  LblDef 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt       {cons("interface-stmt")}
 %%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt       {cons("interface-stmt")}
 
+
 %%R1204
+  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
+
 %%TODO-F08 generic-spec replaces generic-name ENDINTERFACE
 %%REMOVE-F90  LblDef 'END' 'INTERFACE' GenericName?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
-  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
 
 %%R1205
   LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
