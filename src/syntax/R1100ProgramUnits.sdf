@@ -108,8 +108,7 @@ context-free syntax
   LblDef 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("module-stmt")}
 
 %%R1106
-  LblDef 'END'                             EOS -> EndModuleStmt    {cons("end-module-stmt")}
-  LblDef 'END' 'MODULE' ModuleName?        EOS -> EndModuleStmt    {cons("end-module-stmt")}
+  LblDef 'END' ('MODULE' ModuleName?)?     EOS -> EndModuleStmt    {cons("end-module-stmt")}
 
   SpecificationPartConstruct                   -> ModuleBody
   ModuleSubprogramPartConstruct                -> ModuleBody
