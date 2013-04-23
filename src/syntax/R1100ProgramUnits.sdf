@@ -55,6 +55,7 @@ sorts
   
   Program                             %%R201   (originally ExecutableProgram F90)
   ProgramUnit                         %%R202
+  SpecificationPart                   %%R204
 
   MainProgram                         %%R1101
   ProgramStmt                         %%R1102
@@ -77,12 +78,11 @@ context-free syntax
   StartCommentBlock?  ProgramUnit+             -> Program          {cons("program")}
 
 %%R202
-  MainProgram                                  -> ProgramUnit      {cons("program-unit")}
-  FunctionSubprogram                           -> ProgramUnit      {cons("program-unit")}
-  SubroutineSubprogram                         -> ProgramUnit      {cons("program-unit")}
-  Module                                       -> ProgramUnit      {cons("program-unit")}
-  BlockDataSubprogram                          -> ProgramUnit      {cons("program-unit")}
-
+    MainProgram
+  | FunctionSubprogram
+  | SubroutineSubprogram
+  | Module
+  | BlockDataSubprogram                        -> ProgramUnit      {cons("program-unit")}
 
 %%R1101
   ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
@@ -168,12 +168,18 @@ context-free syntax
 
 %%R204
 %%TODO-F08 specification-part
-  ImplicitStmt                                 -> SpecificationPartConstruct
+%%DELETE-2008  ImplicitStmt                                 -> SpecificationPartConstruct
   ParameterStmt                                -> SpecificationPartConstruct
   FormatStmt                                   -> SpecificationPartConstruct
   EntryStmt                                    -> SpecificationPartConstruct
   DeclarationConstruct                         -> SpecificationPartConstruct
-  UseStmt                                      -> SpecificationPartConstruct
+%%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
+
+%%R204
+%%TODO-F2008 impliment implicit-part by ignoring order and fix order in rewrite
+  UseStmt*
+%%TODO-F2008  ImportStmt*
+  ImplicitStmt                                 -> SpecificationPart  {cons("specification-part")}
 
 %%R205
 %%TODO-F08 implicit-part
