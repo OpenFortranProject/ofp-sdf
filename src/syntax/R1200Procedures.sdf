@@ -60,21 +60,15 @@ context-free syntax
   LblDef (
              ('INTERFACE' GenericSpec?)
            | ('ABSTRACT' 'INTERFACE')
-         )                                   EOS -> InterfaceStmt  {cons("interface-stmt")}
+         )                                         EOS -> InterfaceStmt     {cons("interface-stmt")}
       
-%%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt
-%%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt
-
 %%R1204
-  LblDef 'END' 'INTERFACE' GenericSpec?      EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
-
-%%TODO-F08 generic-spec replaces generic-name ENDINTERFACE
-%%REMOVE-F90  LblDef 'END' 'INTERFACE' GenericName?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
+  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
 
 %%R1205
-  SubroutineStmt EndSubroutineStmt               -> InterfaceBody  {cons("interface-body")}
+    (FunctionStmt   SpecificationPart? EndFunctionStmt  )
+  | (SubroutineStmt SpecificationPart? EndSubroutineStmt) -> InterfaceBody  {cons("interface-body")}
 
-%%TODO-F08 Add functions
 %%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
 %%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
 
