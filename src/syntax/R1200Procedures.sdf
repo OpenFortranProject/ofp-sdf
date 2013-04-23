@@ -28,8 +28,8 @@ sorts
   InterfaceBlock              %% R1201
   InterfaceSpecification      %% R1202
   InterfaceStmt               %% R1203
-    AltGeneric AltAbstract
   EndInterfaceStmt            %% R1204
+  Prefix                      %% R1225
 
 %%F2008
   PrefixSpec
@@ -37,7 +37,6 @@ sorts
   ProcedureEntityName InterfaceName ProcedureDeclarationStmt ProcDeclList ProcInterface
 
 %%2008 experimental
-  SubroutinePrefix
   OptSubroutineName
 
 %%TODO SubroutineStmt not used?
@@ -56,26 +55,26 @@ context-free syntax
 
 
 %%R1203
-  LblDef (AltGeneric | AltAbstract)   EOS -> InterfaceStmt   {cons("interface-stmt")}
-
-  'INTERFACE' GenericSpec?                  -> AltGeneric    {cons("alt_gen")}
-  'ABSTRACT' 'INTERFACE'                    -> AltAbstract   {cons("alt_abs")}
-
-
-%%TODO-F08 abstract
-%%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt       {cons("interface-stmt")}
-%%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt       {cons("interface-stmt")}
-
+  LblDef (
+             ('INTERFACE' GenericSpec?)
+           | ('ABSTRACT' 'INTERFACE')
+         )                                   EOS -> InterfaceStmt  {cons("interface-stmt")}
+      
+%%REMOVE-F90   LblDef 'INTERFACE' GenericName                   EOS -> InterfaceStmt
+%%REMOVE-F90   LblDef 'INTERFACE'                               EOS -> InterfaceStmt
 
 %%R1204
-  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
+  LblDef 'END' 'INTERFACE' GenericSpec?      EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
 
 %%TODO-F08 generic-spec replaces generic-name ENDINTERFACE
 %%REMOVE-F90  LblDef 'END' 'INTERFACE' GenericName?            EOS -> EndInterfaceStmt    {cons("end-interface-stmt")}
 
 %%R1205
-  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
-  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
+  SubroutineStmt EndSubroutineStmt               -> InterfaceBody  {cons("interface-body")}
+
+%%TODO-F08 Add functions
+%%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
+%%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
 
   FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
   FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
@@ -94,10 +93,10 @@ context-free syntax
   Ident                                                     -> ProcedureName
 
 %%R1207
-  GenericName                             -> GenericSpec      {cons("generic-spec")}
-  'OPERATOR'   "(" DefinedOperator ")"    -> GenericSpec      {cons("generic-spec")}
-  'ASSIGNMENT' "(" '='             ")"    -> GenericSpec      {cons("generic-spec-assignment")}
-  DtioGenericSpec                         -> GenericSpec      {cons("generic-spec")}
+    GenericName
+  | ('OPERATOR'   "(" DefinedOperator ")")
+  | ('ASSIGNMENT' "(" '='             ")")
+  | DtioGenericSpec                         -> GenericSpec      {cons("generic-spec")}
 
 %%R1208
   'READ'  '(' 'FORMATTED'   ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-read-formatted")}
@@ -161,7 +160,7 @@ context-free syntax
 %%TODO-F08 - alt-return-spec
 
 %%1225
-  PrefixSpec*                                          -> SubroutinePrefix       {cons("prefix")}
+  PrefixSpec+                                          -> Prefix       {cons("prefix")}
 
 %%1226
   DeclarationTypeSpec                                  -> PrefixSpec
@@ -215,7 +214,7 @@ context-free syntax
 
 %%1234
 %%TODO-F08 - add prefix and proc-language-binding-spec
-  LblDef SubroutinePrefix 'SUBROUTINE' SubroutineName
+  LblDef Prefix? 'SUBROUTINE' SubroutineName
          OptSubroutineParList OptProcLanguageBindingSpec  EOS -> SubroutineStmt {cons("subroutine-stmt")}
   Ident                                                       -> SubroutineName {cons("subroutine-name")}
   Ident?                                                      -> OptSubroutineName {cons("subroutine-name")}
