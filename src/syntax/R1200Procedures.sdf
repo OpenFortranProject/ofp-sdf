@@ -22,7 +22,7 @@ sorts
   FunctionReference FunctionStmt FunctionSubprogram GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
   ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
-  SubprogramInterfaceBody SubroutineInterfaceRange OptSubroutineParList SubroutineRange
+  SubprogramInterfaceBody SubroutineInterfaceRange SubroutineRange
   SubroutineStmt SubroutineSubprogram
 
   InterfaceBlock              %% R1201
@@ -30,16 +30,16 @@ sorts
   InterfaceStmt               %% R1203
   EndInterfaceStmt            %% R1204
   Prefix                      %% R1225
+  PrefixSpec                  %% R1226
+  ProcLanguageBindingSpec     %% R1229
   DummyArg                    %% R1235
   EndSubroutineStmt           %% R1236
 
 %%F2008
-  PrefixSpec
-  OptProcLanguageBindingSpec
   ProcedureEntityName InterfaceName ProcedureDeclarationStmt ProcDeclList ProcInterface
 
-%%2008 experimental
-  OptSubroutineName
+%%F2008 Experimental
+  SubroutineParList
 
 %%TODO SubroutineStmt not used?
 %%TODO StmtFunctionStmt ambiguous obsolescant/deleted
@@ -81,9 +81,9 @@ context-free syntax
   FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
   FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
 
-  OptSubroutineParList OptProcLanguageBindingSpec
+  SubroutineParList? ProcLanguageBindingSpec?
                        EOS  SubprogramInterfaceBody EndSubroutineStmt -> SubroutineInterfaceRange
-  OptSubroutineParList OptProcLanguageBindingSpec
+  SubroutineParList? ProcLanguageBindingSpec?
                        EOS  EndSubroutineStmt                         -> SubroutineInterfaceRange
 
   SpecificationPartConstruct                                -> SubprogramInterfaceBody
@@ -165,12 +165,12 @@ context-free syntax
   PrefixSpec+                                          -> Prefix       {cons("prefix")}
 
 %%1226
-  DeclarationTypeSpec                                  -> PrefixSpec
-  'ELEMENTAL'                                          -> PrefixSpec
-  'IMPURE'                                             -> PrefixSpec
-  'MODULE'                                             -> PrefixSpec
-  'PURE'                                               -> PrefixSpec
-  'RECURSIVE'                                          -> PrefixSpec
+    DeclarationTypeSpec
+  | 'ELEMENTAL'
+  | 'IMPURE'
+  | 'MODULE'
+  | 'PURE'
+  | 'RECURSIVE'                                        -> PrefixSpec  {cons("prefix-spec")}
 
 %%R1227
   LblDef FunctionPrefix FunctionName FunctionRange     -> FunctionSubprogram  {cons("function-subprogram")}
@@ -194,7 +194,7 @@ context-free syntax
   TypeSpec 'recursive' 'function'              -> FunctionPrefix
 
 %%R1229
-  LanguageBindingSpec?                   -> OptProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
+  LanguageBindingSpec                          -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
 
 %%R1232
 %% endfunction (without spaces) is allowed
@@ -204,9 +204,9 @@ context-free syntax
 %%R1233
 %%TODO  LblDef 'RECURSIVE'? 'SUBROUTINE' SubroutineName SubroutineRange  -> SubroutineSubprogram
 %%TODO                                                                         {cons("subroutine-subprogram")}
-  OptSubroutineParList OptProcLanguageBindingSpec
+  SubroutineParList? ProcLanguageBindingSpec?
                        EOS Body? EndSubroutineStmt                       -> SubroutineRange
-  OptSubroutineParList OptProcLanguageBindingSpec
+  SubroutineParList? ProcLanguageBindingSpec?
                        EOS InternalSubProgPart EndSubroutineStmt         -> SubroutineRange
 %% split subroutineStmt/subroutineSubprogram needed? (ELI legacy)
 
@@ -215,15 +215,16 @@ context-free syntax
                                                                                {cons("subroutine-subprogram")}
 
 %%1234
-%%TODO-F08 - add prefix and proc-language-binding-spec
   LblDef Prefix? 'SUBROUTINE' SubroutineName
-         OptSubroutineParList OptProcLanguageBindingSpec  EOS -> SubroutineStmt {cons("subroutine-stmt")}
-  Ident                                                       -> SubroutineName {cons("subroutine-name")}
-  Ident?                                                      -> OptSubroutineName {cons("subroutine-name")}
+         (
+            "(" {DummyArg ","}* ")"
+             ProcLanguageBindingSpec?
+         )?                                    EOS -> SubroutineStmt {cons("subroutine-stmt")}
+  Ident                                            -> SubroutineName {cons("subroutine-name")}
 
 %%R1235
-%%TODO-F08 dummy-arg-name-list and move proc-language-binding-spec
-   ( "(" {DummyArg ","}* ")" )?                      -> OptSubroutineParList  {cons("dummy-arg-list")}
+%%TODO-F08 dummy-arg-name-list
+   "(" {DummyArg ","}* ")"                         -> SubroutineParList  {cons("dummy-arg-list")}
 
 %%R1235
    DummyArgName         -> DummyArg
@@ -233,7 +234,7 @@ context-free syntax
    LblDef FunctionPrefix Name FunctionParList? EOS       -> FunctionStmt
    TypeSpec? 'function'                                  -> FunctionPrefix
 
-   "(" {FunctionPar ","}* ")" OptProcLanguageBindingSpec -> FunctionParList {cons("function-par-list")}
+   "(" {FunctionPar ","}* ")" ProcLanguageBindingSpec? -> FunctionParList {cons("function-par-list")}
    DummyArgName                                          -> FunctionPar
 
 %%R1236
@@ -241,11 +242,11 @@ context-free syntax
 
 %%R1240
 %%TODO-F08 add suffix
-  LblDef 'ENTRY' EntryName OptSubroutineParList
-                           OptProcLanguageBindingSpec                       EOS -> EntryStmt
+  LblDef 'ENTRY' EntryName SubroutineParList?
+                           ProcLanguageBindingSpec?                       EOS -> EntryStmt
                                                                                      {cons("entry-stmt")}
-  LblDef 'ENTRY' EntryName OptSubroutineParList
-                           OptProcLanguageBindingSpec 'RESULT' "(" Name ")" EOS -> EntryStmt
+  LblDef 'ENTRY' EntryName SubroutineParList?
+                           ProcLanguageBindingSpec? 'RESULT' "(" Name ")" EOS -> EntryStmt
                                                                                      {cons("entry-stmt")}
 
 
