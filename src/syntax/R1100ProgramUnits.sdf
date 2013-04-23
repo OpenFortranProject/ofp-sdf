@@ -50,21 +50,23 @@ sorts
   KeywordEqual OptKeywordEqual
   IntrinsicOperator
   ExecutableConstruct
-  UseStmt UseName Only OnlyList Rename RenameList
+  UseStmt UseName
   BlockDataSubprogram BlockDataStmt EndBlockDataStmt BlockDataBodyConstruct BlockDataName BlockDataBody
   
-  Program                             %%R201   (originally ExecutableProgram F90)
-  ProgramUnit                         %%R202
-  SpecificationPart                   %%R204
+  Program                             %% R201   (originally ExecutableProgram F90)
+  ProgramUnit                         %% R202
+  SpecificationPart                   %% R204
 
-  MainProgram                         %%R1101
-  ProgramStmt                         %%R1102
-  EndProgramStmt                      %%R1103
+  MainProgram                         %% R1101
+  ProgramStmt                         %% R1102
+  EndProgramStmt                      %% R1103
 
-  Module                              %%R1104
-  ModuleStmt                          %%R1105
-  EndModuleStmt                       %%R1105
+  Module                              %% R1104
+  ModuleStmt                          %% R1105
+  EndModuleStmt                       %% R1105
   ModuleBody
+  Rename                              %% R1111
+  Only                                %% R1112
 
 context-free start-symbols 
   Program
@@ -124,28 +126,27 @@ context-free syntax
   SubroutineSubprogram                         -> ModuleSubprogram
 
 %%R1109
-  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName ("," RenameList)?        EOS -> UseStmt
-                                                                                        {cons("use-stmt")}
-  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName "," 'ONLY' ":" OnlyList? EOS -> UseStmt
-                                                                                        {cons("use-stmt")}
+  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName
+     (
+           (","            {Rename ","}*)
+        |  ("," 'ONLY' ":" {Only   ","}*)
+     )?
+                                           EOS -> UseStmt {cons("use-stmt")}
 
 %%R1110
-  'INTRINSIC'                                  -> ModuleNature
-  'NON_INTRINSIC'                              -> ModuleNature
+    'INTRINSIC'
+  | 'NON_INTRINSIC'                            -> ModuleNature  {cons("module-nature")}
+
 
 %%1111
 %%TODO-F08 - add OPERATORs
   Ident "=>" UseName                           -> Rename
-  Rename ("," Rename)*                         -> RenameList
 
   Ident                                        -> UseName
 
 %%R1112
-%%TODO-F08 - add rename and only-use-name
-  GenericSpec                                  -> Only
-  (Ident "=>")? UseName                        -> Only
-
-  Only ("," Only)*                             -> OnlyList
+%%TODO-F08 - add generic-spec, rename and only-use-name
+  UseName                                    -> Only  {cons("only")}
 
 
 %%R1120
