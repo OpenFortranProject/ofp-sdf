@@ -17,12 +17,12 @@ exports
 sorts
 
   ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt
-  EndSubroutineStmt EntryStmt ExternalStmt FunctionArg FunctionArgList
+  EntryStmt ExternalStmt FunctionArg FunctionArgList
   FunctionInterfaceRange FunctionPar FunctionParList FunctionPrefix FunctionRange
   FunctionReference FunctionStmt FunctionSubprogram GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
   ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
-  SubprogramInterfaceBody SubroutineInterfaceRange DummyArg OptSubroutineParList SubroutineRange
+  SubprogramInterfaceBody SubroutineInterfaceRange OptSubroutineParList SubroutineRange
   SubroutineStmt SubroutineSubprogram
 
   InterfaceBlock              %% R1201
@@ -30,6 +30,8 @@ sorts
   InterfaceStmt               %% R1203
   EndInterfaceStmt            %% R1204
   Prefix                      %% R1225
+  DummyArg                    %% R1235
+  EndSubroutineStmt           %% R1236
 
 %%F2008
   PrefixSpec
@@ -235,8 +237,7 @@ context-free syntax
    DummyArgName                                          -> FunctionPar
 
 %%R1236
-  LblDef 'END' 'SUBROUTINE' OptSubroutineName EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
-  LblDef 'END'                                EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
+  LblDef 'END' ('SUBROUTINE' SubroutineName?)?   EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
 
 %%R1240
 %%TODO-F08 add suffix
