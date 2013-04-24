@@ -56,6 +56,7 @@ sorts
   Program                             %% R201   (originally ExecutableProgram F90)
   ProgramUnit                         %% R202
   SpecificationPart                   %% R204
+  ImplicitPart                        %% R205
 
   MainProgram                         %% R1101
   ProgramStmt                         %% R1102
@@ -168,7 +169,6 @@ context-free syntax
 
 
 %%R204
-%%TODO-F08 specification-part
 %%DELETE-2008  ImplicitStmt                                 -> SpecificationPartConstruct
   ParameterStmt                                -> SpecificationPartConstruct
   FormatStmt                                   -> SpecificationPartConstruct
@@ -177,25 +177,33 @@ context-free syntax
 %%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
 
 %%R204
-%%TODO-F2008 impliment implicit-part by ignoring order and fix order in rewrite
+%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
   UseStmt*
-%%TODO-F2008  ImportStmt*
-  ImplicitStmt                                 -> SpecificationPart  {cons("specification-part")}
+%%TODO-F2008 ImportStmt*
+  ImplicitPart?
+  DeclarationConstruct*                        -> SpecificationPart  {cons("specification-part")}
 
 %%R205
 %%TODO-F08 implicit-part
+  (
+       ImplicitStmt
+     | ParameterStmt
+     | FormatStmt
+     | EntryStmt
+  )*
+  ImplicitStmt                                 -> ImplicitPart  {cons("implicit-part")}
 
 %%R205
 %%TODO-F08 implicit-part-stmt
 
 %%R207
-  DerivedTypeDef                               -> DeclarationConstruct
-  InterfaceBlock                               -> DeclarationConstruct
-  ProcedureDeclarationStmt                     -> DeclarationConstruct
-  SpecificationStmt                            -> DeclarationConstruct
-  TypeDeclarationStmt                          -> DeclarationConstruct
 %%TODO-F08 entry-stmt enum-stmt format-stmt parameter-stmt stmt-function-stmt
-
+    DerivedTypeDef
+  | InterfaceBlock
+  | ProcedureDeclarationStmt
+  | SpecificationStmt
+  | TypeDeclarationStmt
+                                               -> DeclarationConstruct  {cons("declaration-construct")}
 %%R208
 %%TODO-F08 execution-part
 
