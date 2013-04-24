@@ -19,21 +19,20 @@ exports
 sorts
   AddOp AndOp AssignmentStmt
   BoundsRemappingList BoundsSpecList
-  CExpr CharExpr CharInitializationExpr
+  CExpr CharExpr
   ComplexConst ConcatOp COperand CPrimary
   DataPointerComponentName DataPointerObject
   DefaultCharExpr
   ElsewhereStmt EndWhereStmt
   EquivOp
   ForallConstructName ForallTripletSpecList
-  IndexName InitializationExpr IntExpr IntInitializationExpr
+  IndexName IntExpr ScalarIntInitializationExpr
   NumericExpr LogicalConstant
-  LogicalExpr LogicalInitializationExpr
+  LogicalExpr
   MaskExpr
   MultOp NotOp OrOp
   PointerAssignmentStmt PowerOp RelOp ScalarMaskExpr Stride
   SFExpr SFExprList SFFactor SFPrimary SFTerm
-  Sign
   SpecificationExpr UFExpr UFFactor UFPrimary
   UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
   WhereConstructStmt WhereStmt    
@@ -53,18 +52,21 @@ sorts
   Expr               %%R722
   DefinedBinaryOp    %%R723
 
-
-  BoundsSpec             %%R737
-  BoundsRemapping        %%R738
-  DataTarget             %%R739
-  ForallConstruct        %%R752
-  ForallConstructStmt    %%R753
-  ForallHeader           %%R754
-  ForallTripletSpec      %%R755
-  ForallBodyConstruct    %%R756
-  ForallAssignmentStmt   %%R757
-  EndForallStmt          %%R758
-  ForallStmt             %%R759
+  InitializationExpr         %%R730
+  CharInitializationExpr     %%R731
+  IntInitializationExpr      %%R732
+  LogicalInitializationExpr  %%R732
+  BoundsSpec                 %%R737
+  BoundsRemapping            %%R738
+  DataTarget                 %%R739
+  ForallConstruct            %%R752
+  ForallConstructStmt        %%R753
+  ForallHeader               %%R754
+  ForallTripletSpec          %%R755
+  ForallBodyConstruct        %%R756
+  ForallAssignmentStmt       %%R757
+  EndForallStmt              %%R758
+  ForallStmt                 %%R759
 
 context-free syntax
 %%%% TODO: put these under the right section
@@ -106,14 +108,16 @@ context-free syntax
   '.true.' | '.false.'          -> LogicalConstant
 
 %%R701
+  Constant                      -> Primary          {cons("primary-constant")}
+  Designator                    -> Primary          {cons("primary-designator")}
   ArrayConstructor              -> Primary          {cons("primary-ac")}
   ArrayConstructor              -> SFPrimary
-  UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
   Name                          -> Primary          {cons("primary-name")}
   DataRef                       -> Primary          {cons("primary-dref")}
   FunctionReference             -> Primary          {cons("primary-fref")}
   '(' Expr ')'                  -> Primary          {cons("paren-expr")}
-  Scon                          -> Primary          {cons("primary-scon")}
+%%TODO-DELETE   Scon                          -> Primary          {cons("primary-scon")}
+%%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
 
 %%R702
                    Primary             -> Level1Expr
@@ -150,8 +154,6 @@ context-free syntax
 %%R709
   '+'                                   -> AddOp         {cons("add-op-plus")}
   '-'                                   -> AddOp         {cons("add-op-minus")}
-  '+'                                   -> Sign          {cons("sign-plus")}
-  '-'                                   -> Sign          {cons("sign-minus")}
 
 %%R710
                          Level2Expr    -> Level3Expr
@@ -258,6 +260,7 @@ context-free syntax
 
 %%R732
   IntExpr                               -> IntInitializationExpr
+  IntInitializationExpr                 -> ScalarIntInitializationExpr
 
 %%R733
   LogicalExpr                           -> LogicalInitializationExpr
