@@ -18,26 +18,26 @@ imports
 exports
 
 sorts
-  AccessId AccessIdList AccessSpec AccessStmt
+  AccessId AccessIdList AccessStmt
   AllocatableDecl AllocatableDeclList AllocatableStmt ArraySpec
-  AssumedShapeSpec AsynchronousStmt AssumedShapeSpecList AssumedSizeSpec AttrSpec CharLength
+  AssumedShapeSpec AsynchronousStmt AssumedShapeSpecList AssumedSizeSpec
   BindEntity BindEntityList BindStmt
-  CharSelector %%TODO Comblock CommonBlockObject CommonBlockObjectList
+  %%TODO Comblock CommonBlockObject CommonBlockObjectList
   CommonStmt %%TODO Constant DataIDoObject DataIDoObjectList DataImpliedDo
   DataStmt DataStmtObject DataStmtObjectList DataStmtSet DataStmtSetList
   DataStmtValue DataStmtValueList %%TODO DeferredShapeSpec DeferredShapeSpecList
   DimensionDecl DimensionDeclList DimensionStmt
   DummyArgNameList
-  EntityDecl EquivalenceObject EquivalenceSet EquivalenceSetList EquivalenceStmt
+  EquivalenceObject EquivalenceSet EquivalenceSetList EquivalenceStmt
   EntityName
   ExplicitShapeSpec ExplicitShapeSpecList ImplicitSpec ImplicitSpecList ImplicitStmt
-  Initialization IntentSpec IntentStmt KindSelector LengthSelector
+  IntentSpec IntentStmt
   LetterSpec LetterSpecList LowerBound NamedConstant NamedConstantDef NamedConstantDefList
 %%TODO   NamedConstantUse
   NamelistGroup NamelistGroupObject NamelistGroupObjectList NamelistStmt
-  NullInit ObjectNameList OptionalStmt ParameterStmt PointerStmt
+  ObjectNameList OptionalStmt ParameterStmt PointerStmt
   PointerDecl PointerDeclList SavedEntity SavedEntityList SaveStmt
-  TargetDecl TargetDeclList TargetStmt TypeDeclarationStmt TypeParamValue
+  TargetDecl TargetDeclList TargetStmt TypeParamValue
   UpperBound ValueStmt VolatileStmt
 
 %%TODO - replace with above
@@ -45,7 +45,17 @@ sorts
   CommonBlockObjectList  Comblock CommonBlockObject SpecificationStmt
   DeferredShapeSpec DeferredShapeSpecList
   NamedConstantUse
-  LanguageBindingSpec
+
+  TypeDeclarationStmt                 %% R501
+  AttrSpec                            %% R502
+  EntityDecl                          %% R503
+  Initialization                      %% R505
+  NullInit                            %% R506
+  AccessSpec                          %% R507
+  LanguageBindingSpec                 %% R508
+  CoarraySpec                         %% R509
+  DeferredCoshapeSpec                 %% R510
+  ExplicitCoshapeSpec                 %% R511
 
 context-free syntax
 
@@ -54,36 +64,34 @@ context-free syntax
   Ident                         -> NamedConstantUse
 
 %%R501
-  LblDef DeclarationTypeSpec (',' AttrSpec)* '::'
-            {EntityDecl ","}+           EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
   LblDef DeclarationTypeSpec
-            {EntityDecl ","}+           EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
-
+         (',' {AttrSpec ','}+ '::')? {EntityDecl ','}+
+                                                  EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
 %%R502
-   AccessSpec                    -> AttrSpec
-  'ALLOCATABLE'                  -> AttrSpec
-  'ASYNCHRONOUS'                 -> AttrSpec
-  'CONTIGUOUS'                   -> AttrSpec
-%%TODO-F08  DimensionSpec                  -> AttrSpec
-  'DIMENSION' '(' ArraySpec ')'  -> AttrSpec
-  'EXTERNAL'                     -> AttrSpec
-  'INTENT' '(' IntentSpec ')'    -> AttrSpec
-  'INTRINSIC'                    -> AttrSpec
-   LanguageBindingSpec           -> AttrSpec
-  'OPTIONAL'                     -> AttrSpec
-  'PARAMETER'                    -> AttrSpec
-  'POINTER'                      -> AttrSpec
-  'PROTECTED'                    -> AttrSpec
-  'SAVE'                         -> AttrSpec
-  'TARGET'                       -> AttrSpec
-  'VALUE'                        -> AttrSpec
-  'VOLATILE'                     -> AttrSpec
+    (  AccessSpec                       )
+  | ( 'ALLOCATABLE'                     )
+  | ( 'ASYNCHRONOUS'                    )
+  | ( 'CODIMENSION' '[' CoarraySpec ']' )
+  | ( 'CONTIGUOUS'                      )
+  | ( 'DIMENSION' '(' ArraySpec ')'     )
+  | ( 'EXTERNAL'                        )
+  | ( 'INTENT' '(' IntentSpec ')'       )
+  | ( 'INTRINSIC'                       )
+  | (  LanguageBindingSpec              )
+  | ( 'OPTIONAL'                        )
+  | ( 'PARAMETER'                       )
+  | ( 'POINTER'                         )
+  | ( 'PROTECTED'                       )
+  | ( 'SAVE'                            )
+  | ( 'TARGET'                          )
+  | ( 'VALUE'                           )
+  | ( 'VOLATILE'                        )  -> AttrSpec  {cons("attr-spec")}
 
 %%R503
 %%TODO-F08: co-array-spec
   ObjectName    ( '(' ArraySpec ')' )?
                 ( '*' CharLength    )?
-                   Initialization?                       -> EntityDecl
+                   Initialization?                       -> EntityDecl  {cons("entity-decl")}
 %%Ambiguous with object-name
 %%FunctionName  ( '*' CharLength    )?                   -> EntityDecl
 
@@ -102,69 +110,46 @@ context-free syntax
 %% see lexical syntax
 
 %%R505
-  '='   InitializationExpr                              -> Initialization
-  '=>'  NullInit                                        -> Initialization
-  '=>'  InitialDataTarget                               -> Initialization
+%%TODO-F08 first alternative is '=' ConstantExpr
+    ( '='   InitializationExpr )
+  | ( '=>'  NullInit           )
+  | ( '=>'  InitialDataTarget  )                        -> Initialization  {cons("initialization")}
 
 %%R506
-  FunctionReference                                     -> NullInit
+  FunctionReference                                     -> NullInit        {cons("NullInit")}
 
-%%R505
-%% expr used as scalar-int-initialization-expr 
-  '(' ('KIND' '=')? Expr ')'                            -> KindSelector
-%%TODO: remove this often used in complex declarations like Integer*8 Complex*8 Complex*16 (IBM standard, not ISO!?)
-  '*' Icon                                              -> KindSelector
-
-%%R425
-%%TODO - move to R400...
-  LengthSelector                                        -> CharSelector
-  '(' 'LEN' '=' TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
-  '('           TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
-  '('           TypeParamValue ','            Expr ')'  -> CharSelector
-
-  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue ')'  -> CharSelector
-  '(' 'KIND' '=' Expr                              ')'  -> CharSelector
-
-%%R426
-  '(' ('LEN' '=')? TypeParamValue ')'                   -> LengthSelector
-  '*' CharLength ','?                                   -> LengthSelector
-
-%%R427
-  '(' TypeParamValue ')'                                -> CharLength
-  Icon                                                  -> CharLength
+%%R507
+    'PUBLIC'
+  | 'PRIVATE'                                           -> AccessSpec      {cons("access-spec")}
 
 %%R508
 %%TODO-DELETE   '(' TypeParamValue ')'        -> CharLength
-%%TODO????   ScalarIntLiteralConstant      -> CharLength
+%%TODO????   ScalarIntLiteralConstant         -> CharLength
 
 %%R508
-  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'  -> LanguageBindingSpec
+  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'  -> LanguageBindingSpec        {cons("language-binding-spec")}
 
-%%R401
-  SpecificationExpr                    -> TypeParamValue
-  '*'                                  -> TypeParamValue
-  ':'                                  -> TypeParamValue
+%%R509
+    ( {DeferredCoshapeSpec ','}+ )
+  | (  ExplicitCoshapeSpec       )     -> CoarraySpec          {cons("coarray-spec")}
 
-%%R507
-  'PUBLIC'                             -> AccessSpec
-  'PRIVATE'                            -> AccessSpec
+%%R510
+  ':'                                  -> DeferredCoshapeSpec  {cons("deferred-coshape-spec")}
+
+%%511
+%%TODO-F08 lower-cobound : ....
+  '*'                                  -> ExplicitCoshapeSpec  {cons("explicit-coshape-spec")}
 
 %%R510
 %%TODO-F08 - fix assumed-rank-spec
-  '..'                                 -> ArraySpec
-  AssumedShapeSpecList                 -> ArraySpec
-  DeferredShapeSpecList                -> ArraySpec
-  ExplicitShapeSpecList                -> ArraySpec
-  AssumedSizeSpec                      -> ArraySpec
+    '..'
+  | AssumedShapeSpecList
+  | DeferredShapeSpecList
+  | ExplicitShapeSpecList
+  | AssumedSizeSpec                    -> ArraySpec            {cons("array-spec")}
 
 %%R511
 %%TODO-F08 co-array-spec
-
-%%R523
-  'IN'                 -> IntentSpec
-  'OUT'                -> IntentSpec
-  'INOUT'              -> IntentSpec
-  'IN OUT'             -> IntentSpec
 
 %%R512
   {ExplicitShapeSpec ","}+                      -> ExplicitShapeSpecList
@@ -190,6 +175,12 @@ context-free syntax
   (LowerBound ':')? '*'                         -> AssumedSizeSpec
   ExplicitShapeSpecList ',' '*'                 -> AssumedSizeSpec
   ExplicitShapeSpecList ',' LowerBound ':' '*'  -> AssumedSizeSpec
+
+%%R523
+    'IN'
+  | 'OUT'
+  | 'INOUT'
+  | 'IN OUT'             -> IntentSpec  {cons("intent-spec")}
 
 %%R545
   LblDef 'INTENT' '(' IntentSpec ')' '::'? DummyArgNameList   EOS -> IntentStmt  {cons("intent-stmt")}
@@ -316,11 +307,10 @@ context-free syntax
   {ObjectName ','}+                                    -> ObjectNameList
 
 %%R559
-  LblDef 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("implicit-stmt")}
-  LblDef 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("implicit-stmt")}
+  LblDef 'IMPLICIT' ('NONE' | ImplicitSpecList)    EOS -> ImplicitStmt    {cons("implicit-stmt")}
 
-%%560
-  DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec
+%%561
+  DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec    {cons("implicit-spec")}
   {ImplicitSpec ','}+                                  -> ImplicitSpecList
 
 %%561
