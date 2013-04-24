@@ -66,8 +66,10 @@ context-free syntax
   LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
 
 %%R1205
-    (FunctionStmt   SpecificationPart? EndFunctionStmt  )
-  | (SubroutineStmt SpecificationPart? EndSubroutineStmt) -> InterfaceBody  {cons("interface-body")}
+%%       An optional SpecificationPart is ambiguous
+%%
+    (FunctionStmt   SpecificationPart EndFunctionStmt  )
+  | (SubroutineStmt SpecificationPart EndSubroutineStmt)  -> InterfaceBody  {cons("interface-body")}
 
 %%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
 %%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
