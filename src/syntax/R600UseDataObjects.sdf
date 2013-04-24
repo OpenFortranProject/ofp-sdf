@@ -20,7 +20,7 @@ sorts
   ArrayElement ArraySection ArraySelector
   CharVariable CoSubscript CoSubscriptList
   DataRef DeallocateStmt DeallocOpt DeallocOptList
-  DefaultCharVariable DefaultLogicalVariable Designator ErrmsgVariable
+  DefaultCharVariable DefaultLogicalVariable ErrmsgVariable
   ImageSelector IntVariable
   LogicalVariable
   NullifyStmt
@@ -33,6 +33,7 @@ sorts
   SubscriptTriplet Substring SubstringRange
   Variable VectorSubscript
 
+  Designator               %%R601
   LowerBoundExpr           %%R634
   UpperBoundExpr           %%R635
 
@@ -48,6 +49,7 @@ context-free syntax
 %% the above reduces to
   ObjectName                           -> Designator   {cons("designator")}
   DataRef                              -> Designator   {cons("designator")}
+  Substring                            -> Designator   {cons("designator")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -87,7 +89,7 @@ context-free syntax
   Variable           -> IntVariable
 
 %%609
-  ParentString '(' SubstringRange ')'  -> Substring
+  ParentString '(' SubstringRange ')'  -> Substring        {cons("substring")}
 
 %%610
   ScalarVariableName                   -> ParentString
