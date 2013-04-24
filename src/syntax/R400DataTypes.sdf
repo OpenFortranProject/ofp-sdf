@@ -18,96 +18,200 @@ sorts
 
   AcImpliedDo AcImpliedDoControl AcDoVariable AcSpec AcValue AcValueList ArrayConstructor
   BozLiteralConstant ComponentArraySpec ComponentAttrSpec ComponentAttrSpecList ComponentDecl
-  ComponentDeclList ComponentDefStmt Constant DeclarationTypeSpec DerivedTypeBody 
+  ComponentDeclList ComponentDefStmt Constant DerivedTypeBody 
   DerivedTypeDef DerivedTypeSpec DerivedTypeStmt EndTypeStmt InitialDataTarget
-  IntrinsicTypeSpec KindParam LogicalConstant OptTypeParameterSpecList ParentTypeName
+  LogicalConstant OptTypeParameterSpecList ParentTypeName
   PrivateComponentsStmt PrivateOrSequence
-  ScalarConstant SequenceStmt StructureConstructor
+  ScalarConstant ScalarIntConstantName SequenceStmt StructureConstructor
   TypeAttrSpec TypeAttrSpecList TypeParamAttrSpec TypeParamDefStmt TypeParamName
-  TypeParamDecl TypeParamDeclList TypeParamNameList TypeParamSpec TypeSpec
+  TypeParamDecl TypeParamDeclList TypeParamNameList TypeParamSpec
   UnsignedArithmeticConstant
 
+  LiteralConstant             %% R306
+  NamedConstant               %% R307
+  IntConstant                 %% R308
+  CharConstant                %% R309
+
+  TypeSpec                    %% R402
+  DeclarationTypeSpec         %% R403
+  IntrinsicTypeSpec           %% R404
+  KindSelector                %% R405
+  SignedIntLiteralConstant    %% R406
+  IntLiteralConstant          %% R407
+  KindParam                   %% R408
+  SignedDigitString           %% R409
+  DigitString                 %% R410
+  Sign                        %% R411
+  SignedRealLiteralConstant   %% R417
+  ComplexLiteralConstant      %% R422
+  CharLiteralConstant         %% R428
+  RealLiteralConstant         %% R429
+  RealPart                    %% R423
+  ImagPart                    %% R424
+  CharSelector                %% R425
+  LengthSelector              %% R426
+  CharLength                  %% R427
+  LogicalLiteralConstant      %% R429
+  
+
 context-free syntax
-
-%%-R401 lex: signed-digit-string is [sign] digit-string
-%%-R402 lex: digit-string is digit [digit]...
-
-%%R402
-  IntrinsicTypeSpec                   -> TypeSpec              {cons("type-spec")}
-  DerivedTypeSpec                     -> TypeSpec              {cons("type-spec")}
-
-%%R404
-  'INTEGER'   KindSelector?           -> IntrinsicTypeSpec
-  'REAL'      KindSelector?           -> IntrinsicTypeSpec
-  'COMPLEX'   KindSelector?           -> IntrinsicTypeSpec
-  'CHARACTER' CharSelector?           -> IntrinsicTypeSpec
-  'LOGICAL'   KindSelector?           -> IntrinsicTypeSpec
-
-  'DOUBLE' 'PRECISION'                -> IntrinsicTypeSpec
-  'DOUBLE' 'COMPLEX'                  -> IntrinsicTypeSpec
-
-%%R403
-  IntrinsicTypeSpec                   -> DeclarationTypeSpec
-%%AMBIGUOS - change to intrinsic-type-spec at later stage
-%%'TYPE'  '(' IntrinsicTypeSpec ')'   -> DeclarationTypeSpec
-  'TYPE'  '(' DerivedTypeSpec   ')'   -> DeclarationTypeSpec
-  'CLASS' '(' DerivedTypeSpec   ')'   -> DeclarationTypeSpec
-  'CLASS' '(' '*'               ')'   -> DeclarationTypeSpec
-  'TYPE'  '(' '*'               ')'   -> DeclarationTypeSpec
-
-%%R404
-  Icon '_' KindParam                    -> UnsignedArithmeticConstant
-
-%%R405
-  Icon                                  -> KindParam
-  NamedConstantUse                      -> KindParam
 
 %%TODO-F08 - move to clause 300
 
 %%R305
-  NamedConstantUse                      -> Constant
-  UnsignedArithmeticConstant            -> Constant
-  '+' UnsignedArithmeticConstant        -> Constant
-  '-' UnsignedArithmeticConstant        -> Constant
-  Scon                                  -> Constant
-%%  Hcon                                  -> Constant
-  LogicalConstant                       -> Constant
+%%TODO-DELETE   NamedConstantUse                      -> Constant
+%%TODO-DELETE   UnsignedArithmeticConstant            -> Constant
+%%TODO-DELETE   '+' UnsignedArithmeticConstant        -> Constant
+%%TODO-DELETE   '-' UnsignedArithmeticConstant        -> Constant
+%%TODO-DELETE   Scon                                  -> Constant
+%%TODO-DELETE   Hcon                                  -> Constant
+%%TODO-DELETE   LogicalConstant                       -> Constant
+%%TODO-DELETE   Icon '_' Scon                         -> Constant
+%%TODO-DELETE   NamedConstantUse '_' Scon             -> Constant
+
+  LiteralConstant                       -> Constant         {cons("constant")}
+  NamedConstant                         -> Constant         {cons("constant")}
 
   Constant                              -> ScalarConstant
 
 %%R306
-%%TODO-F08  IntLiteralConstant                    -> LiteralConstant
-%%TODO-F08  RealLiteralConstant                   -> LiteralConstant
-%%TODO-F08  ComplexLiteralConstant                -> LiteralConstant
-%%TODO-F08  LogicalLiteralConstant                -> LiteralConstant
-%%TODO-F08  CharLiteralConstant                   -> LiteralConstant
-%%TODO-F08  BozLiteralConstant                    -> LiteralConstant
+  IntLiteralConstant                    -> LiteralConstant
+  RealLiteralConstant                   -> LiteralConstant
+  ComplexLiteralConstant                -> LiteralConstant
+  LogicalLiteralConstant                -> LiteralConstant
+  CharLiteralConstant                   -> LiteralConstant
+  BozLiteralConstant                    -> LiteralConstant
 
 %%R307
-%%TODO-F08  Name                                  -> NamedConstant
+  Name                                  -> NamedConstant    {cons("named-constant")}
+
+%%TODO-AMBIGUOUS
+%%TODO-F08 the following rules look way ambiguous
 
 %%R308
-%%TODO-F08  Constant                              -> IntConstant
+  Constant                              -> IntConstant      {cons("int-constant")}
 
 %%R309
-%%TODO-F08  Constant                              -> CharConstant
+  Constant                              -> CharConstant     {cons("char-constant")}
+
+%%R401
+  SpecificationExpr                    -> TypeParamValue
+  '*'                                  -> TypeParamValue
+  ':'                                  -> TypeParamValue
+
+%%R402
+    IntrinsicTypeSpec
+  | DerivedTypeSpec                     -> TypeSpec             {cons("type-spec")}
+
+%%R403
+%%TODO-F08
+%%AMBIGUOS - change to intrinsic-type-spec at later stage
+  IntrinsicTypeSpec
+%%| ( 'TYPE'  '(' IntrinsicTypeSpec ')' )
+  | ( 'TYPE'  '(' DerivedTypeSpec   ')' )
+  | ( 'CLASS' '(' DerivedTypeSpec   ')' )
+  | ( 'CLASS' '(' '*'               ')' )
+  | ( 'TYPE'  '(' '*'               ')' ) -> DeclarationTypeSpec  {cons("declaration-type-spec")}
+
+%%R404
+    ( 'INTEGER'   KindSelector? )
+  | ( 'REAL'      KindSelector? )
+  | ( 'DOUBLE' 'PRECISION'      )
+  | ( 'COMPLEX'   KindSelector? )
+  | ( 'CHARACTER' CharSelector? )
+  | ( 'LOGICAL'   KindSelector? )
+  | ( 'DOUBLE' 'COMPLEX'        )       -> IntrinsicTypeSpec    {cons("intrinsic-type-spec")}
+
+%%R405
+  "(" ('KIND' "=")? ScalarIntInitializationExpr ")"     -> KindSelector
+%%NONSTANDARD: e.g., integer*8 complex*8 complex*16
+  '*' Icon                                              -> KindSelector
+
+%%406
+  Sign? IntLiteralConstant            -> SignedIntLiteralConstant
 
 %%R407
-%%TODO-F08
+  DigitString ("_" KindParam)?        -> IntLiteralConstant
+
+%%R408
+    DigitString
+  | ScalarIntConstantName             -> KindParam          {cons("kind-param")}
+  Name                                -> ScalarIntConstantName
+
+%%R409 lex: signed-digit-string is [sign] digit-string
+%%R410 lex: digit-string is digit [digit]...
+
+%%R409
+  Sign? DigitString                   -> SignedDigitString  {cons("signed-digit-string")}
+
+%%R410
+  Icon                                -> DigitString        {cons("digit-string")}
+
+%%R411
+  "+"                                 -> Sign             {cons("sign-plus")}
+  "-"                                 -> Sign             {cons("sign-minus")}
+
+%%R412
   BinaryConstant                        -> BozLiteralConstant
   OctalConstant                         -> BozLiteralConstant
   HexConstant                           -> BozLiteralConstant
 
-%%R420 char-literal-constant
-  Icon '_' Scon                         -> Constant
-  NamedConstantUse '_' Scon             -> Constant
+%%R413 binary-constant - lex
 
-%%R413
-  Rcon '_' KindParam                    -> UnsignedArithmeticConstant
+%%R414 octal-constant  - lex
+
+%%R415 hex-constant    - lex
+
+%%R416 hex-digit
+
+%%R417
+  Sign? RealLiteralConstant             -> SignedRealLiteralConstant
+
+%%R418
+  Rcon                                  -> RealLiteralConstant
+
+%%R419 significand     - lex
+
+%%R420 exponent-letter - lex
+
+%%R421 exponent        - lex
+
+%%422
+  "(" RealPart "," ImagPart ")"         -> ComplexLiteralConstant
+
+%%423
+  SignedIntLiteralConstant              -> RealPart
+  SignedRealLiteralConstant             -> RealPart
+  NamedConstant                         -> RealPart
+
+%%424
+  SignedIntLiteralConstant              -> ImagPart
+  SignedRealLiteralConstant             -> ImagPart
+  NamedConstant                         -> ImagPart
+
+%%R420
+  LengthSelector                                        -> CharSelector
+  '(' 'LEN' '=' TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
+  '('           TypeParamValue ',' 'KIND' '=' Expr ')'  -> CharSelector
+  '('           TypeParamValue ','            Expr ')'  -> CharSelector
+
+  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue ')'  -> CharSelector
+  '(' 'KIND' '=' Expr                              ')'  -> CharSelector
 
 %%R421
-  '.true.' '_' KindParam                -> LogicalConstant
-  '.false.' '_' KindParam               -> LogicalConstant
+  '(' ('LEN' '=')? TypeParamValue ')'                   -> LengthSelector
+  '*' CharLength ','?                                   -> LengthSelector
+
+%%R422
+  '(' TypeParamValue ')'                                -> CharLength
+  Icon                                                  -> CharLength
+
+%%428
+  (KindParam "_")? Scon                 -> CharLiteralConstant     {cons("char-literal-constant")}
+
+%%R429
+  '.TRUE.'  ("_" KindParam)?            -> LogicalLiteralConstant
+  '.FALSE.' ("_" KindParam)?            -> LogicalLiteralConstant
 
 %%R430
 %% TODO: iso defines order: privateseq, componentdef.
