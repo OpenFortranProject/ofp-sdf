@@ -23,19 +23,16 @@ sorts
   ComplexConst ConcatOp COperand CPrimary
   DataPointerComponentName DataPointerObject
   DefaultCharExpr
-  ElsewhereStmt EndWhereStmt
   EquivOp
   ForallConstructName ForallTripletSpecList
   IndexName IntExpr ScalarIntInitializationExpr
   NumericExpr LogicalConstant
   LogicalExpr
-  MaskExpr
   MultOp NotOp OrOp
   PointerAssignmentStmt PowerOp RelOp ScalarMaskExpr Stride
   SFExpr SFExprList SFFactor SFPrimary SFTerm
   SpecificationExpr UFExpr UFFactor UFPrimary
-  UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
-  WhereConstructStmt WhereStmt    
+  UFTerm UnsignedArithmeticConstant
 
   Primary                             %% R701
   Level1Expr                          %% R702
@@ -63,6 +60,17 @@ sorts
   BoundsSpec                          %% R737
   BoundsRemapping                     %% R738
   DataTarget                          %% R739
+
+  WhereStmt                           %% R741
+  WhereConstruct                      %% R742
+  WhereConstructStmt                  %% R743
+  WhereBodyConstruct                  %% R744
+  WhereAssignmentStmt                 %% R745
+  MaskExpr                            %% R746
+  MaskedElsewhereStmt                 %% R747
+  ElsewhereStmt                       %% R748
+  EndWhereStmt                        %% R749
+
   ForallConstruct                     %% R752
   ForallConstructStmt                 %% R753
   ForallHeader                        %% R754
@@ -346,10 +354,11 @@ context-free syntax
 %%Ambiguous
 %%Variable  -> DataTarget
 
-%%R743
+%%R741
   LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt    {cons("where-stmt")}
 
-%%R739
+%%R742
+%%TODO-F08-FIXME
 %% todo: sdf-fy
 %%  Where     EndWhereStmt      -> WhereConstruct
 %%  ElseWhere EndWhereStmt      -> WhereConstruct
@@ -357,21 +366,47 @@ context-free syntax
 %%  Where AssignmentStmt        -> Where
 %%  Where ElsewhereStmt         -> ElseWhere
 %%  ElseWhere AssignmentStmt    -> ElseWhere
-  WhereConstructStmt AssignmentStmt* 
-                (ElsewhereStmt AssignmentStmt*)? 
-        EndWhereStmt                            -> WhereConstruct
-
-%%R740
-  LblDef 'where' '(' MaskExpr ')' EOS           -> WhereConstructStmt
-
-%%R741
-  Expr  -> MaskExpr
+%%TODO-DELETE  WhereConstructStmt AssignmentStmt* 
+%%TODO-DELETE                (ElsewhereStmt AssignmentStmt*)? 
+%%TODO-DELETE  EndWhereStmt                                  -> WhereConstruct  {cons("where-construct")}
 
 %%R742
-  LblDef 'elsewhere' EOS                        -> ElsewhereStmt
+  WhereConstructStmt
+    (                    WhereBodyConstruct*)
+    (MaskedElsewhereStmt WhereBodyConstruct*)*
+    (ElsewhereStmt       WhereBodyConstruct*)? 
+  EndWhereStmt                                  -> WhereConstruct  {cons("where-construct")}
 
 %%R743
-  LblDef 'end' 'where' EOS                      -> EndWhereStmt
+%%       Ident substituted for where-construct-name
+%%
+  LblDef (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("where-construct-stmt")}
+
+%%R744
+    WhereAssignmentStmt
+  | WhereStmt
+  | WhereConstruct                                 -> WhereBodyConstruct  {cons("where-body-construct")}
+
+%%R745
+  AssignmentStmt                                   -> WhereAssignmentStmt {cons("where-assignment-stmt")}
+
+%%R746
+  Expr                                             -> MaskExpr            {cons("mask-expr")}
+
+%%R747
+%%       Ident substituted for where-construct-name
+%%
+  LblDef 'ELSEWHERE' '(' MaskExpr ')' Ident?   EOS -> MaskedElsewhereStmt {cons("masked-elsewhere-stmt")}
+
+%%R748
+%%       Ident substituted for where-construct-name
+%%
+  LblDef 'ELSEWHERE' Ident?                    EOS -> ElsewhereStmt       {cons("elsewhere-stmt")}
+
+%%R749
+%%       Ident substituted for where-construct-name
+%%
+  LblDef 'END' 'WHERE' Ident?                  EOS -> EndWhereStmt        {cons("end-where-stmt")}
 
 %%R747
 %%TODO-F08 - make it so label can't be part of assignment-stmt
