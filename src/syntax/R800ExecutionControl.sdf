@@ -33,6 +33,9 @@ sorts
   BlockConstruct                      %% R807
   BlockStmt                           %% R808
   EndBlockStmt                        %% R809
+  CriticalConstruct                   %% R810
+  CriticalStmt                        %% R811
+  EndCriticalStmt                     %% R812
 
 %%AMBiguous BlockDoConstruct DoConstruct EndDo
 
@@ -71,17 +74,32 @@ context-free syntax
   BlockStmt
     SpecificationPart
     Block
-  EndBlockStmt                            -> BlockConstruct  {cons("block-construct")}
+  EndBlockStmt                            -> BlockConstruct     {cons("block-construct")}
 
 %%R808
 %%       Ident substituted for block-construct-name
 %%
-  LblDef ( Ident ':' )? 'BLOCK'       EOS -> BlockStmt       {cons("block-stmt")}
+  LblDef ( Ident ':' )? 'BLOCK'       EOS -> BlockStmt          {cons("block-stmt")}
 
 %%R809
 %%       Ident substituted for block-construct-name
 %%
-  LblDef 'END' 'BLOCK' Ident          EOS -> EndBlockStmt    {cons("end-block-stmt")}
+  LblDef 'END' 'BLOCK' Ident?         EOS -> EndBlockStmt       {cons("end-block-stmt")}
+
+%%R810
+  CriticalStmt
+    Block
+  EndCriticalStmt                         -> CriticalConstruct  {cons("critical-construct")}
+
+%%R811
+%%       Ident substituted for critical-construct-name
+%%
+  LblDef ( Ident ':' )? 'CRITICAL'    EOS -> CriticalStmt       {cons("critical-stmt")}
+
+%%R812
+%%       Ident substituted for critical-construct-name
+%%
+  LblDef 'END' 'CRITICAL' Ident?      EOS -> EndCriticalStmt    {cons("end-critical-stmt")}
 
 %%R802
   IfThenStmt ExecutionPartConstruct* 
