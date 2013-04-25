@@ -65,7 +65,7 @@ context-free syntax
 
 %%R501
   LblDef DeclarationTypeSpec
-         (',' {AttrSpec ','}+ '::')? {EntityDecl ','}+
+          ((',' {AttrSpec ','}+)? '::')? {EntityDecl ','}+
                                                   EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
 %%R502
     (  AccessSpec                       )
