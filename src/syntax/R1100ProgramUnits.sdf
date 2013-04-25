@@ -36,20 +36,18 @@ imports R1200Procedures
 exports
 
 sorts
-  ActionStmt ArrayName Body
+  ArrayName Body
   BodyConstruct CommonBlockName ComponentName DefinedOperator
   ExtendedIntrinsicOp
-%%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
+%%TODO   DummyArgName EndName EntryName
 %%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
-  InternalSubProgPart InternalSubprogram %%TODO IntrinsicProcedureName  MainProgram
-  MainRange ModuleNature ModuleSubprogramPartConstruct %%TODO Name
+%%TODO IntrinsicProcedureName  MainProgram
+  MainRange ModuleNature %%TODO Name
 %%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
 %%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
 
 %%TODO - replace with above
-  KeywordEqual OptKeywordEqual
   IntrinsicOperator
-  ExecutableConstruct
   UseStmt UseName
   BlockDataStmt EndBlockDataStmt BlockDataName
   
@@ -62,8 +60,12 @@ sorts
   DeclarationConstruct                %% R207
   ExecutionPart                       %% R208
   ExecutionPartConstruct              %% R209
-
+  InternalSubprogramPart              %% R210
+  InternalSubprogram                  %% R211
   OtherSpecificationStmt              %% R212
+  ExecutableConstruct                 %% R213
+  ActionStmt                          %% R214
+  Keyword                             %% R215
 
   MainProgram                         %% R1101
   ProgramStmt                         %% R1102
@@ -154,13 +156,11 @@ context-free syntax
   | DataStmt                                   -> ExecutionPartConstruct  {cons("execution-part-construct")}
 
 %%R210
-  Body ContainsStmt   InternalSubprogram       -> InternalSubProgPart
-  ContainsStmt        InternalSubprogram       -> InternalSubProgPart
-  InternalSubProgPart InternalSubprogram       -> InternalSubProgPart
+  ContainsStmt InternalSubprogram*             -> InternalSubprogramPart  {cons("internal-subprogram-part")}
 
 %%R211
-  FunctionSubprogram                   -> InternalSubprogram
-  SubroutineSubprogram                 -> InternalSubprogram
+    FunctionSubprogram
+  | SubroutineSubprogram                       -> InternalSubprogram      {cons("internal-subprogram")}
 
 %%R212
     AccessStmt
@@ -184,76 +184,91 @@ context-free syntax
   | VolatileStmt
   | ValueStmt                                  -> OtherSpecificationStmt  {cons("other-specification-stmt")}
 
-%%R213
-  ActionStmt                    -> ExecutableConstruct
-  AssociateConstruct            -> ExecutableConstruct
-%%TODO-F08 block-construct
-  CaseConstruct                 -> ExecutableConstruct
-%%TODO-F08 critical-construct
-  ForallConstruct               -> ExecutableConstruct
-  IfConstruct                   -> ExecutableConstruct
-  SelectTypeConstruct           -> ExecutableConstruct
-%%TODO   WhereConstruct                -> ExecutableConstruct
+%%R212
+%%TODO-REMOVE  ContainsStmt                         -> ModuleSubprogramPartConstruct
+%%TODO-REMOVE  ModuleSubprogram                     -> ModuleSubprogramPartConstruct
 
-%%AMB do-construct is problematic because a labeled statement
-%%       may terminate it not necessarily an end-do-stmt.
-%%       Replace by do-stmt and end-do-stmt and resolve
-%%       the construct end at a latter stage.
-%%AMB DoConstruct               -> ExecutableConstruct
-  DoStmt                        -> ExecutableConstruct
-  EndDoStmt                     -> ExecutableConstruct
+%%R213
+%%TODO-REMOVE  FunctionSubprogram                   -> ModuleSubprogram
+%%TODO-REMOVE  SubroutineSubprogram                 -> ModuleSubprogram
+
+%%R213
+%%       do-construct is problematic because a labeled statement
+%%          may terminate it not necessarily an end-do-stmt.
+%%          Replace by do-stmt and end-do-stmt and resolve
+%%          the construct end at a latter stage.
+%%
+    ActionStmt
+  | AssociateConstruct
+%%TODO-F08 | BlockConstruct
+  | CaseConstruct
+%%TODO-F08 | CriticalConstruct
+%%AMBIGUOUS | DoConstruct
+  | DoStmt
+  | EndDoStmt
+  | ForallConstruct
+  | IfConstruct
+  | SelectTypeConstruct
+%%TODO-F08  | WhereConstruct
+                                               -> ExecutableConstruct  {cons("executable-construct")}
 
 %%R214
-  AllocateStmt                  -> ActionStmt
-  AllstopStmt                   -> ActionStmt
-  CycleStmt                     -> ActionStmt
-  DeallocateStmt                -> ActionStmt
-  ExitStmt                      -> ActionStmt
-  FlushStmt                     -> ActionStmt
-  NullifyStmt                   -> ActionStmt
-  PointerAssignmentStmt         -> ActionStmt
-  WhereStmt                     -> ActionStmt
-  ArithmeticIfStmt              -> ActionStmt
-  AssignmentStmt                -> ActionStmt
-%%TODO   AssignStmt                    -> ActionStmt
-  BackspaceStmt                 -> ActionStmt
-  CallStmt                      -> ActionStmt
-  CloseStmt                     -> ActionStmt
-  ContinueStmt                  -> ActionStmt
-  EndfileStmt                   -> ActionStmt
-  GotoStmt                      -> ActionStmt
-  ComputedGotoStmt              -> ActionStmt
-  AssignedGotoStmt              -> ActionStmt
-  IfStmt                        -> ActionStmt
-  InquireStmt                   -> ActionStmt
-  OpenStmt                      -> ActionStmt
-  PauseStmt                     -> ActionStmt
-  PrintStmt                     -> ActionStmt
-  ReadStmt                      -> ActionStmt
-  ReturnStmt                    -> ActionStmt
-  RewindStmt                    -> ActionStmt
-%%  StmtFunctionStmt            -> ActionStmt see R1226 comment
-  StopStmt                      -> ActionStmt
-  WaitStmt                      -> ActionStmt
-  WriteStmt                     -> ActionStmt
+%%TODO-REMOVE  AssignStmt
+%%TODO-REMOVE  AssignedGotoStmt
+%%TODO-REMOVE  PauseStmt
+%%TODO-REMOVE  StmtFunctionStmt  %% see R1226 comment
+%%TODO-REMOVE  AllstopStmt
+    AllocateStmt
+  | AssignmentStmt
+  | BackspaceStmt
+  | CallStmt
+  | CloseStmt
+  | ContinueStmt
+  | CycleStmt
+  | DeallocateStmt
+%%TODO-F08  | EndFunctionStmt
+%%TODO-F08  | EndMpSubprogramStmt
+%%TODO-F08  | EndProgramStmt
+%%TODO-F08  | EndSubroutineStmt
+  | EndfileStmt
+%%TODO-F08  | ErrorStopStmt
+  | ExitStmt
+  | FlushStmt
+%%TODO-F08  | ForallStmt
+  | GotoStmt
+  | IfStmt
+  | InquireStmt
+%%TODO-F08  | LockStmt
+  | NullifyStmt
+  | OpenStmt
+  | PointerAssignmentStmt
+  | PrintStmt
+  | ReadStmt
+  | ReturnStmt
+  | RewindStmt
+  | StopStmt
+%%TODO-F08  | SyncAllStmt
+%%TODO-F08  | SyncImagesStmt
+%%TODO-F08  | SyncMemoryStmt
+%%TODO-F08  | UnlockStmt
+  | WaitStmt
+  | WhereStmt
+  | WriteStmt
+  | ArithmeticIfStmt
+  | ComputedGotoStmt                   -> ActionStmt  {cons("action-stmt")}
 
-%%R212
-  ContainsStmt                         -> ModuleSubprogramPartConstruct
-  ModuleSubprogram                     -> ModuleSubprogramPartConstruct
-
-%%R213
-  FunctionSubprogram                   -> ModuleSubprogram
-  SubroutineSubprogram                 -> ModuleSubprogram
+%%215
+  Name                                 -> Keyword     {cons("keyword")}
 
 %%R215
-  Ident '='                     -> KeywordEqual          {cons("keyword")}
-  KeywordEqual?                 -> OptKeywordEqual
+%%TODO-REMOVE  Ident '='                     -> KeywordEqual          {cons("keyword-equal")}
+%%TODO-REMOVE  KeywordEqual?                 -> OptKeywordEqual
 
 %%R1101
 %%TODO-F08 try F08 structure
   ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
-  BodyConstruct+       EndProgramStmt          -> MainRange        {cons("main-range")}
-  InternalSubProgPart  EndProgramStmt          -> MainRange        {cons("main-range")}
+  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("main-range")}
+  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("main-range")}
   EndProgramStmt                               -> MainRange        {cons("main-range")}
 
   SpecificationPart                            -> BodyConstruct
