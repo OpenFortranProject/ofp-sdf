@@ -194,7 +194,7 @@ context-free syntax
   | AssociateConstruct
   | BlockConstruct
   | CaseConstruct
-%%TODO-F08 | CriticalConstruct
+  | CriticalConstruct
 %%AMBIGUOUS | DoConstruct
   | DoStmt
   | EndDoStmt
