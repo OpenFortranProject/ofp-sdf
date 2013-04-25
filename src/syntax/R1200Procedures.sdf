@@ -25,15 +25,17 @@ sorts
   SubprogramInterfaceBody SubroutineInterfaceRange SubroutineRange
   SubroutineStmt SubroutineSubprogram
 
-  InterfaceBlock              %% R1201
-  InterfaceSpecification      %% R1202
-  InterfaceStmt               %% R1203
-  EndInterfaceStmt            %% R1204
-  Prefix                      %% R1225
-  PrefixSpec                  %% R1226
-  ProcLanguageBindingSpec     %% R1229
-  DummyArg                    %% R1235
-  EndSubroutineStmt           %% R1236
+  InterfaceBlock                      %% R1201
+  InterfaceSpecification              %% R1202
+  InterfaceStmt                       %% R1203
+  EndInterfaceStmt                    %% R1204
+  ImportStmt                          %% R1209
+  ImportName
+  Prefix                              %% R1225
+  PrefixSpec                          %% R1226
+  ProcLanguageBindingSpec             %% R1229
+  DummyArg                            %% R1235
+  EndSubroutineStmt                   %% R1236
 
 %%F2008
   ProcedureEntityName InterfaceName ProcedureDeclarationStmt ProcDeclList ProcInterface
@@ -104,10 +106,12 @@ context-free syntax
   'WRITE' '(' 'UNFORMATTED' ')'           -> DtioGenericSpec  {cons("dtio-generic-spec-write-unformatted")}
 
 %%R1209
-%%TODO-F08 import-stmt
+  LblDef 'IMPORT' ( '::'? {ImportName ','}+ )?             EOS -> ImportStmt     {cons("import-stmt")}
+
+  Ident                                                        -> ImportName     {cons("import-name")}
 
 %%R1210
-  LblDef 'EXTERNAL' "::"? {ExternalName ","}+              EOS -> ExternalStmt   {cons("external-stmt")}
+  LblDef 'EXTERNAL' '::'? {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
 
 %%R1211
 %%TODO-F08 - add proc-attr-spec
