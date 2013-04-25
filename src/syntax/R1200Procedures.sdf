@@ -66,7 +66,7 @@ context-free syntax
   LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
 
 %%R1205
-%%       An optional SpecificationPart is ambiguous.  The lack of a specification-part
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
     (FunctionStmt   SpecificationPart EndFunctionStmt  )
