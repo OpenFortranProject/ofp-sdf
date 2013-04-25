@@ -40,18 +40,18 @@ sorts
   BodyConstruct CommonBlockName ComponentName DefinedOperator
   ExtendedIntrinsicOp
 %%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
-  ExecutionPartConstruct %%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
+%%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
   InternalSubProgPart InternalSubprogram %%TODO IntrinsicProcedureName  MainProgram
-  MainRange ModuleNature ModuleSubprogram ModuleSubprogramPartConstruct %%TODO Name
+  MainRange ModuleNature ModuleSubprogramPartConstruct %%TODO Name
 %%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
-  SpecificationPartConstruct %%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
+%%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
 
 %%TODO - replace with above
   KeywordEqual OptKeywordEqual
   IntrinsicOperator
   ExecutableConstruct
   UseStmt UseName
-  BlockDataStmt EndBlockDataStmt BlockDataBodyConstruct BlockDataName BlockDataBody
+  BlockDataStmt EndBlockDataStmt BlockDataName
   
   Program                             %% R201
   ProgramUnit                         %% R202
@@ -60,6 +60,8 @@ sorts
   ImplicitPart                        %% R205
   ImplicitPartStmt                    %% R206
   DeclarationConstruct                %% R207
+  ExecutionPart                       %% R208
+  ExecutionPartConstruct              %% R209
 
   OtherSpecificationStmt              %% R212
 
@@ -71,7 +73,8 @@ sorts
   ModuleStmt                          %% R1105
   EndModuleStmt                       %% R1106
   ModuleSubprogramPart                %% R1107
-  ModuleBody
+  ModuleSubprogram                    %% R1108
+
   Rename                              %% R1111
   Only                                %% R1112
   Submodule                           %% R1116
@@ -106,7 +109,6 @@ context-free syntax
   | SubroutineSubprogram                       -> ExternalSubprogram  {cons("external-subprogram")}
   
 %%R204
-%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
   UseStmt*
   ImportStmt*
   ImplicitPart?
@@ -114,13 +116,14 @@ context-free syntax
 
 %%R204
 %%DELETE-2008  ImplicitStmt                                 -> SpecificationPartConstruct
-  ParameterStmt                                -> SpecificationPartConstruct
-  FormatStmt                                   -> SpecificationPartConstruct
-  EntryStmt                                    -> SpecificationPartConstruct
-  DeclarationConstruct                         -> SpecificationPartConstruct
+%%DELETE-2008  ParameterStmt                                -> SpecificationPartConstruct
+%%DELETE-2008  FormatStmt                                   -> SpecificationPartConstruct
+%%DELETE-2008  EntryStmt                                    -> SpecificationPartConstruct
+%%DELETE-2008  DeclarationConstruct                         -> SpecificationPartConstruct
 %%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
 
 %%R205
+%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
   ImplicitPartStmt* ImplicitStmt               -> ImplicitPart  {cons("implicit-part")}
 
 %%R206
@@ -130,7 +133,6 @@ context-free syntax
   | EntryStmt                                  -> ImplicitPartStmt      {cons("implicit-part-stmt")}
 
 %%R207
-%%TODO-F08 enum-stmt parameter-stmt stmt-function-stmt
     DerivedTypeDef
   | EntryStmt
   | EnumDef
@@ -143,13 +145,13 @@ context-free syntax
   | StmtFunctionStmt                           -> DeclarationConstruct  {cons("declaration-construct")}
 
 %%R208
-%%TODO-F08 execution-part
+  ExecutableConstruct ExecutionPartConstruct*  -> ExecutionPart
 
 %%R209
-  ExecutableConstruct                          -> ExecutionPartConstruct
-  FormatStmt                                   -> ExecutionPartConstruct
-  EntryStmt                                    -> ExecutionPartConstruct
-  DataStmt                                     -> ExecutionPartConstruct
+    ExecutableConstruct
+  | FormatStmt
+  | EntryStmt
+  | DataStmt                                   -> ExecutionPartConstruct  {cons("execution-part-construct")}
 
 %%R210
   Body ContainsStmt   InternalSubprogram       -> InternalSubProgPart
@@ -248,12 +250,13 @@ context-free syntax
   KeywordEqual?                 -> OptKeywordEqual
 
 %%R1101
+%%TODO-F08 try F08 structure
   ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
   BodyConstruct+       EndProgramStmt          -> MainRange        {cons("main-range")}
   InternalSubProgPart  EndProgramStmt          -> MainRange        {cons("main-range")}
   EndProgramStmt                               -> MainRange        {cons("main-range")}
 
-  SpecificationPartConstruct                   -> BodyConstruct
+  SpecificationPart                            -> BodyConstruct
   ExecutableConstruct                          -> BodyConstruct
   BodyConstruct+                               -> Body
 
@@ -264,8 +267,10 @@ context-free syntax
   LblDef 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("end-program-stmt")}
 
 %%R1104
-  ModuleStmt ModuleBody EndModuleStmt          -> Module           {cons("module")}
-  ModuleStmt            EndModuleStmt          -> Module           {cons("module")}
+  ModuleStmt
+    SpecificationPart
+    ModuleSubprogramPart?
+  EndModuleStmt                                -> Module           {cons("module")}
 
 %%R1105
   LblDef 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("module-stmt")}
@@ -273,21 +278,19 @@ context-free syntax
 %%R1106
   LblDef 'END' ('MODULE' ModuleName?)?     EOS -> EndModuleStmt    {cons("end-module-stmt")}
 
-  SpecificationPartConstruct                   -> ModuleBody
-  ModuleSubprogramPartConstruct                -> ModuleBody
-  ModuleBody SpecificationPartConstruct        -> ModuleBody
-  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
+%%TODO-DELETE  SpecificationPartConstruct                   -> ModuleBody
+%%TODO-DELETE  ModuleSubprogramPartConstruct                -> ModuleBody
+%%TODO-DELETE  ModuleBody SpecificationPartConstruct        -> ModuleBody
+%%TODO-DELETE  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
 
 %%R1107
-  ContainsStmt ModuleSubprogram+               -> ModuleSubprogramPart  {const("module-subprogram-part")}
+  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {const("module-subprogram-part")}
 
 %%R1108
-  ContainsStmt                                 -> ModuleSubprogramPartConstruct
-  ModuleSubprogram                             -> ModuleSubprogramPartConstruct
-
-%%R1108
-  FunctionSubprogram                           -> ModuleSubprogram
-  SubroutineSubprogram                         -> ModuleSubprogram
+    FunctionSubprogram
+  | SubroutineSubprogram
+%%TODO-F08 | SeparateModuleSubprogram
+                                               -> ModuleSubprogram  {cons("module-subprogram")}
 
 %%R1109
   LblDef 'USE' (("," ModuleNature)? "::")? ModuleName
@@ -352,9 +355,8 @@ context-free syntax
 
   Ident -> BlockDataName
 
-  BlockDataBodyConstruct+ -> BlockDataBody
-
-  SpecificationPartConstruct -> BlockDataBodyConstruct
+%%TODO-DELETE  BlockDataBodyConstruct+ -> BlockDataBody
+%%TODO-DELETE  SpecificationPartConstruct -> BlockDataBodyConstruct
 
 %%R310
   PowerOp                       -> IntrinsicOperator     {cons("intrinsic-operator")}
