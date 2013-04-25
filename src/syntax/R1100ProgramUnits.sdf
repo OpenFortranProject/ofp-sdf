@@ -104,7 +104,7 @@ context-free syntax
 %%R204
 %%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
   UseStmt*
-%%TODO-F2008 ImportStmt*
+  ImportStmt*
   ImplicitPart?
   DeclarationConstruct*                        -> SpecificationPart   {cons("specification-part")}
 
