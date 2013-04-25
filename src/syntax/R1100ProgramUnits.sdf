@@ -201,7 +201,7 @@ context-free syntax
   | ForallConstruct
   | IfConstruct
   | SelectTypeConstruct
-%%TODO-F08  | WhereConstruct
+  | WhereConstruct
                                                -> ExecutableConstruct  {cons("executable-construct")}
 
 %%R214
