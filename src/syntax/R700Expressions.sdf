@@ -37,36 +37,40 @@ sorts
   UFTerm UnsignedArithmeticConstant WhereAssignmentStmt WhereConstruct
   WhereConstructStmt WhereStmt    
 
-  Primary            %%R701
-  Level1Expr         %%R702
-  DefinedUnaryOp     %%R703
-  MultOperand        %%R704
-  AddOperand         %%R705
-  Level2Expr         %%R706
-  Level3Expr         %%R710
-  Level4Expr         %%R712
-  AndOperand         %%R714
-  OrOperand          %%R715
-  EquivOperand       %%R716
-  Level5Expr         %%R717
-  Expr               %%R722
-  DefinedBinaryOp    %%R723
+  Primary                             %% R701
+  Level1Expr                          %% R702
+  DefinedUnaryOp                      %% R703
+  MultOperand                         %% R704
+  AddOperand                          %% R705
+  Level2Expr                          %% R706
+  Level3Expr                          %% R710
+  Level4Expr                          %% R712
+  AndOperand                          %% R714
+  OrOperand                           %% R715
+  EquivOperand                        %% R716
+  Level5Expr                          %% R717
+  Expr                                %% R722
+  DefinedBinaryOp                     %% R723
 
-  InitializationExpr         %%R730
-  CharInitializationExpr     %%R731
-  IntInitializationExpr      %%R732
-  LogicalInitializationExpr  %%R732
-  BoundsSpec                 %%R737
-  BoundsRemapping            %%R738
-  DataTarget                 %%R739
-  ForallConstruct            %%R752
-  ForallConstructStmt        %%R753
-  ForallHeader               %%R754
-  ForallTripletSpec          %%R755
-  ForallBodyConstruct        %%R756
-  ForallAssignmentStmt       %%R757
-  EndForallStmt              %%R758
-  ForallStmt                 %%R759
+%%TODO - fix rule numbers
+
+  IntConstantExpr                     %% R731
+
+  InitializationExpr                  %% R730
+  CharInitializationExpr              %% R731
+  IntInitializationExpr               %% R732
+  LogicalInitializationExpr           %% R732
+  BoundsSpec                          %% R737
+  BoundsRemapping                     %% R738
+  DataTarget                          %% R739
+  ForallConstruct                     %% R752
+  ForallConstructStmt                 %% R753
+  ForallHeader                        %% R754
+  ForallTripletSpec                   %% R755
+  ForallBodyConstruct                 %% R756
+  ForallAssignmentStmt                %% R757
+  EndForallStmt                       %% R758
+  ForallStmt                          %% R759
 
 context-free syntax
 %%%% TODO: put these under the right section
@@ -254,6 +258,9 @@ context-free syntax
 
 %%R730
   Expr                                  -> InitializationExpr
+
+%%R731
+  IntExpr                               -> IntConstantExpr                {cons("int-constant-expr")}
 
 %%R731
   CharExpr                              -> CharInitializationExpr
