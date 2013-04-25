@@ -51,10 +51,11 @@ sorts
   IntrinsicOperator
   ExecutableConstruct
   UseStmt UseName
-  BlockDataSubprogram BlockDataStmt EndBlockDataStmt BlockDataBodyConstruct BlockDataName BlockDataBody
+  BlockDataStmt EndBlockDataStmt BlockDataBodyConstruct BlockDataName BlockDataBody
   
   Program                             %% R201   (originally ExecutableProgram F90)
   ProgramUnit                         %% R202
+  ExternalSubprogram                  %% R203
   SpecificationPart                   %% R204
   ImplicitPart                        %% R205
 
@@ -64,10 +65,19 @@ sorts
 
   Module                              %% R1104
   ModuleStmt                          %% R1105
-  EndModuleStmt                       %% R1105
+  EndModuleStmt                       %% R1106
+  ModuleSubprogramPart                %% R1107
   ModuleBody
   Rename                              %% R1111
   Only                                %% R1112
+  Submodule                           %% R1116
+  SubmoduleStmt                       %% R1117
+  ParentIdentifier                    %% R1118
+  SubmoduleName
+  AncestorModuleName
+  ParentSubmoduleName
+  EndSubmoduleStmt                    %% R1119
+  BlockData                           %% R1120
 
 context-free start-symbols 
   Program
@@ -82,10 +92,21 @@ context-free syntax
 
 %%R202
     MainProgram
-  | FunctionSubprogram
-  | SubroutineSubprogram
+  | ExternalSubprogram
   | Module
-  | BlockDataSubprogram                        -> ProgramUnit      {cons("program-unit")}
+  | Submodule
+  | BlockData                                  -> ProgramUnit      {cons("program-unit")}
+
+%%R203
+    FunctionSubprogram
+  | SubroutineSubprogram                       -> ExternalSubprogram  {cons("external-subprogram")}
+  
+%%R204
+%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
+  UseStmt*
+%%TODO-F2008 ImportStmt*
+  ImplicitPart?
+  DeclarationConstruct*                        -> SpecificationPart   {cons("specification-part")}
 
 %%R1101
   ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
@@ -118,6 +139,9 @@ context-free syntax
   ModuleBody SpecificationPartConstruct        -> ModuleBody
   ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
 
+%%R1107
+  ContainsStmt ModuleSubprogram+               -> ModuleSubprogramPart  {const("module-subprogram-part")}
+
 %%R1108
   ContainsStmt                                 -> ModuleSubprogramPartConstruct
   ModuleSubprogram                             -> ModuleSubprogramPartConstruct
@@ -149,10 +173,36 @@ context-free syntax
 %%TODO-F08 - add generic-spec, rename and only-use-name
   UseName                                    -> Only  {cons("only")}
 
+%%R1116
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
+  SubmoduleStmt
+    SpecificationPart
+    ModuleSubprogramPart?
+  EndSubmoduleStmt                               -> Submodule         {cons("submodule")}
+
+%%R1117
+  LblDef 'SUBMODULE' '(' ParentIdentifier ')'
+         SubmoduleName                       EOS -> SubmoduleStmt     {cons("submodule-stmt")}
+
+%%R1118
+  AncestorModuleName (':' ParentSubmoduleName)?  -> ParentIdentifier  {cons("parent-identifier")}
+
+  Ident                                          -> SubmoduleName        {cons("submodule-name")}
+  Ident                                          -> AncestorModuleName   {cons("ancestor-module-name")}
+  Ident                                          -> ParentSubmoduleName  {cons("parent-submodule-name")}
+
+%%R1119
+  LblDef 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
 
 %%R1120
-  BlockDataStmt BlockDataBody EndBlockDataStmt   -> BlockDataSubprogram
-  BlockDataStmt EndBlockDataStmt                 -> BlockDataSubprogram
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
+  BlockDataStmt
+    SpecificationPart
+  EndBlockDataStmt                               -> BlockData         {cons("block-data")}
 
 %%R1121
   LblDef 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("block-data-stmt")}
@@ -175,13 +225,6 @@ context-free syntax
   EntryStmt                                    -> SpecificationPartConstruct
   DeclarationConstruct                         -> SpecificationPartConstruct
 %%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
-
-%%R204
-%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
-  UseStmt*
-%%TODO-F2008 ImportStmt*
-  ImplicitPart?
-  DeclarationConstruct*                        -> SpecificationPart  {cons("specification-part")}
 
 %%R205
 %%TODO-F08 implicit-part
