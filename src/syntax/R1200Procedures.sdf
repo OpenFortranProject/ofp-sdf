@@ -37,6 +37,8 @@ sorts
   DummyArg                            %% R1235
   EndSubroutineStmt                   %% R1236
 
+  StmtFunctionStmt                    %% R1243
+
 %%F2008
   ProcedureEntityName InterfaceName ProcedureDeclarationStmt ProcDeclList ProcInterface
 
@@ -256,6 +258,12 @@ context-free syntax
 
 %%R1242
   LblDef 'CONTAINS'                         EOS -> ContainsStmt        {cons("contains-stmt")}
+
+%%R1243
+%%          scalar-expr replaced by expr
+%%
+  LblDef FunctionName '(' {DummyArgName ','}* ')' '=' Expr  EOS -> StmtFunctionStmt  {cons("stmt-function-stmt")}
+
 
 %%-R1226 
 %% statement-functions are obsolete in fortran 95. 
