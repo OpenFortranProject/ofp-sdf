@@ -239,6 +239,7 @@ context-free syntax
 %%R207
 %%TODO-F08 enum-stmt format-stmt parameter-stmt stmt-function-stmt
     DerivedTypeDef
+  | EnumDef
   | EntryStmt
   | InterfaceBlock
   | ProcedureDeclarationStmt
