@@ -58,6 +58,7 @@ sorts
   ExternalSubprogram                  %% R203
   SpecificationPart                   %% R204
   ImplicitPart                        %% R205
+  ImplicitPartStmt                    %% R206
 
   MainProgram                         %% R1101
   ProgramStmt                         %% R1102
@@ -227,17 +228,13 @@ context-free syntax
 %%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
 
 %%R205
-%%TODO-F08 implicit-part
-  (
-       ImplicitStmt
-     | ParameterStmt
-     | FormatStmt
-     | EntryStmt
-  )*
-  ImplicitStmt                                 -> ImplicitPart  {cons("implicit-part")}
+  ImplicitPartStmt* ImplicitStmt               -> ImplicitPart  {cons("implicit-part")}
 
-%%R205
-%%TODO-F08 implicit-part-stmt
+%%R206
+    ImplicitStmt
+  | ParameterStmt
+  | FormatStmt
+  | EntryStmt                                  -> ImplicitPartStmt      {cons("implicit-part-stmt")}
 
 %%R207
 %%TODO-F08 entry-stmt enum-stmt format-stmt parameter-stmt stmt-function-stmt
