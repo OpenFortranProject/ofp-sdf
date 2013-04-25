@@ -237,8 +237,9 @@ context-free syntax
   | EntryStmt                                  -> ImplicitPartStmt      {cons("implicit-part-stmt")}
 
 %%R207
-%%TODO-F08 entry-stmt enum-stmt format-stmt parameter-stmt stmt-function-stmt
+%%TODO-F08 enum-stmt format-stmt parameter-stmt stmt-function-stmt
     DerivedTypeDef
+  | EntryStmt
   | InterfaceBlock
   | ProcedureDeclarationStmt
   | SpecificationStmt
