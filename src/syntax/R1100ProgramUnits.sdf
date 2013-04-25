@@ -140,7 +140,8 @@ context-free syntax
   | ProcedureDeclarationStmt
   | OtherSpecificationStmt
   | TypeDeclarationStmt
-                                               -> DeclarationConstruct  {cons("declaration-construct")}
+  | StmtFunctionStmt                           -> DeclarationConstruct  {cons("declaration-construct")}
+
 %%R208
 %%TODO-F08 execution-part
 
