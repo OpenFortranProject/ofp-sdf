@@ -30,6 +30,10 @@ sorts
 
   NonlabelDoStmt DoStmt
 
+  BlockConstruct                      %% R807
+  BlockStmt                           %% R808
+  EndBlockStmt                        %% R809
+
 %%AMBiguous BlockDoConstruct DoConstruct EndDo
 
 context-free syntax
@@ -60,6 +64,24 @@ context-free syntax
          OptAssociateConstructName    EOS -> EndAssociateStmt   {cons("end-associate-stmt")}
   Ident?                                  -> OptAssociateConstructName
                                                                 {cons("associate-construct-name")}
+%%R807
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
+  BlockStmt
+    SpecificationPart
+    Block
+  EndBlockStmt                            -> BlockConstruct  {cons("block-construct")}
+
+%%R808
+%%       Ident substituted for block-construct-name
+%%
+  LblDef ( Ident ':' )? 'BLOCK'       EOS -> BlockStmt       {cons("block-stmt")}
+
+%%R809
+%%       Ident substituted for block-construct-name
+%%
+  LblDef 'END' 'BLOCK' Ident          EOS -> EndBlockStmt    {cons("end-block-stmt")}
 
 %%R802
   IfThenStmt ExecutionPartConstruct* 
