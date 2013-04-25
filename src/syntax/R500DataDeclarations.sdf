@@ -42,7 +42,7 @@ sorts
 
 %%TODO - replace with above
   DataIDoObject DataIDoObjectList DataImpliedDo DataStmtConstant DataStmtRepeat
-  CommonBlockObjectList  Comblock CommonBlockObject SpecificationStmt
+  CommonBlockObjectList  Comblock CommonBlockObject
   DeferredShapeSpec DeferredShapeSpecList
   NamedConstantUse
 
@@ -56,6 +56,11 @@ sorts
   CoarraySpec                         %% R509
   DeferredCoshapeSpec                 %% R510
   ExplicitCoshapeSpec                 %% R511
+  
+  CodimensionStmt                     %% R531
+  CodimensionDecl                     %% R532
+
+  ProtectedStmt                       %% R552
 
 context-free syntax
 
@@ -251,6 +256,12 @@ context-free syntax
   {BindEntity ','}+                                        -> BindEntityList
   Ident                                                    -> EntityName
 
+%%R531
+  LblDef 'CODIMENSION' '::'? {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("codimension-stmt")}      
+
+%%R532
+  Ident '[' CoarraySpec ']'                                -> CodimensionDecl  {cons("codimension-decl")}
+
 %%R532
   LblDef 'DATA' DataStmtSetList                        EOS -> DataStmt         {cons("data-stmt")}
   {DataStmtSet ','?}+                                      -> DataStmtSetList
@@ -297,6 +308,9 @@ context-free syntax
 %% original iso: named-constant-def is named-constant = initialization-expr
   NamedConstant '=' Expr                        -> NamedConstantDef
   {NamedConstantDef ","}+                       -> NamedConstantDefList
+
+%%R552
+  LblDef 'PROTECTED' '::'? {Ident ','}+            EOS -> ProtectedStmt  {cons("protected-stmt")}
 
 %%R557
   LblDef 'VALUE' '::'? DummyArgNameList            EOS -> ValueStmt       {cons("value-stmt")}
