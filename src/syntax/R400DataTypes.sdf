@@ -19,12 +19,12 @@ sorts
   AcImpliedDo AcImpliedDoControl AcDoVariable AcSpec AcValue AcValueList ArrayConstructor
   BozLiteralConstant ComponentArraySpec ComponentAttrSpec ComponentAttrSpecList ComponentDecl
   ComponentDeclList ComponentDefStmt Constant DerivedTypeBody 
-  DerivedTypeDef DerivedTypeSpec DerivedTypeStmt EndTypeStmt InitialDataTarget
-  LogicalConstant OptTypeParameterSpecList ParentTypeName
+  DerivedTypeDef DerivedTypeStmt EndTypeStmt InitialDataTarget
+  LogicalConstant ParentTypeName
   PrivateComponentsStmt PrivateOrSequence
   ScalarConstant ScalarIntConstantName SequenceStmt StructureConstructor
   TypeAttrSpec TypeAttrSpecList TypeParamAttrSpec TypeParamDefStmt TypeParamName
-  TypeParamDecl TypeParamDeclList TypeParamNameList TypeParamSpec
+  TypeParamDecl TypeParamDeclList TypeParamNameList
   UnsignedArithmeticConstant
 
   LiteralConstant                     %% R306
@@ -52,6 +52,9 @@ sorts
   LengthSelector                      %% R426
   CharLength                          %% R427
   LogicalLiteralConstant              %% R429
+
+  DerivedTypeSpec                     %% R453
+  TypeParamSpec                       %% R454
 
   EnumDef                             %% R458
   EnumDefStmt                         %% R459
@@ -316,9 +319,11 @@ context-free syntax
 %%R455
 %%TODO-F08 binding-attr
 
-%%R457
-  TypeName OptTypeParameterSpecList             -> DerivedTypeSpec      {cons("derived-type-spec")}
-  ( '(' {TypeParamSpec ','}+ ')' )?             -> OptTypeParameterSpecList
+%%R453
+  TypeName ( '(' {TypeParamSpec ','}+ ')' )?    -> DerivedTypeSpec      {cons("derived-type-spec")}
+
+%%R454
+  ( Keyword '=' )? TypeParamValue               -> TypeParamSpec        {cons("type-param-spec")}
 
 %%R458
   EnumDefStmt
@@ -339,9 +344,6 @@ context-free syntax
 
 %%R462
   LblDef 'END' 'ENUM'                       EOS -> EndEnumStmt          {cons("end-enum-stmt")}
-
-%%R458?????????
-  OptKeywordEqual TypeParamValue                -> TypeParamSpec        {cons("type-param-spec")}
 
 %%R459
 %%TODO-F08 component-spec-list
