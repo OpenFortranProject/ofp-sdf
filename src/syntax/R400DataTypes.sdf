@@ -27,32 +27,37 @@ sorts
   TypeParamDecl TypeParamDeclList TypeParamNameList TypeParamSpec
   UnsignedArithmeticConstant
 
-  LiteralConstant             %% R306
-  NamedConstant               %% R307
-  IntConstant                 %% R308
-  CharConstant                %% R309
+  LiteralConstant                     %% R306
+  NamedConstant                       %% R307
+  IntConstant                         %% R308
+  CharConstant                        %% R309
 
-  TypeSpec                    %% R402
-  DeclarationTypeSpec         %% R403
-  IntrinsicTypeSpec           %% R404
-  KindSelector                %% R405
-  SignedIntLiteralConstant    %% R406
-  IntLiteralConstant          %% R407
-  KindParam                   %% R408
-  SignedDigitString           %% R409
-  DigitString                 %% R410
-  Sign                        %% R411
-  SignedRealLiteralConstant   %% R417
-  ComplexLiteralConstant      %% R422
-  CharLiteralConstant         %% R428
-  RealLiteralConstant         %% R429
-  RealPart                    %% R423
-  ImagPart                    %% R424
-  CharSelector                %% R425
-  LengthSelector              %% R426
-  CharLength                  %% R427
-  LogicalLiteralConstant      %% R429
-  
+  TypeSpec                            %% R402
+  DeclarationTypeSpec                 %% R403
+  IntrinsicTypeSpec                   %% R404
+  KindSelector                        %% R405
+  SignedIntLiteralConstant            %% R406
+  IntLiteralConstant                  %% R407
+  KindParam                           %% R408
+  SignedDigitString                   %% R409
+  DigitString                         %% R410
+  Sign                                %% R411
+  SignedRealLiteralConstant           %% R417
+  ComplexLiteralConstant              %% R422
+  CharLiteralConstant                 %% R428
+  RealLiteralConstant                 %% R429
+  RealPart                            %% R423
+  ImagPart                            %% R424
+  CharSelector                        %% R425
+  LengthSelector                      %% R426
+  CharLength                          %% R427
+  LogicalLiteralConstant              %% R429
+
+  EnumDef                             %% R458
+  EnumDefStmt                         %% R459
+  EnumeratorDefStmt                   %% R460
+  Enumerator                          %% R461
+  EndEnumStmt                         %% R462
 
 context-free syntax
 
@@ -315,7 +320,27 @@ context-free syntax
   TypeName OptTypeParameterSpecList             -> DerivedTypeSpec      {cons("derived-type-spec")}
   ( '(' {TypeParamSpec ','}+ ')' )?             -> OptTypeParameterSpecList
 
-%%458
+%%R458
+  EnumDefStmt
+    EnumeratorDefStmt+
+  EndEnumStmt                                   -> EnumDef              {cons("enum-def")}
+
+%%R459
+  LblDef 'ENUM' ',' 'BIND' '(' 'C' ')'      EOS -> EnumDefStmt          {cons("enum-def-stmt")}
+
+%%R460
+  LblDef 'ENUMERATOR' '::'?
+         {Enumerator ','}+                  EOS -> EnumeratorDefStmt    {cons("enumerator-def-stmt")}
+
+%%R461
+%%       IntConstantExpr substituted for ScalarIntConstantExpr
+%%
+  NamedConstant ('=' IntConstantExpr)?          -> Enumerator           {cons("enumerator")}
+
+%%R462
+  LblDef 'END' 'ENUM'                       EOS -> EndEnumStmt          {cons("end-enum-stmt")}
+
+%%R458?????????
   OptKeywordEqual TypeParamValue                -> TypeParamSpec        {cons("type-param-spec")}
 
 %%R459
