@@ -18,12 +18,11 @@ sorts
 
   ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt
   EntryStmt ExternalStmt FunctionArg FunctionArgList
-  FunctionInterfaceRange FunctionPar FunctionParList FunctionPrefix FunctionRange
+  FunctionPar FunctionParList FunctionPrefix FunctionRange
   FunctionReference FunctionStmt FunctionSubprogram GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
   ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
-  SubprogramInterfaceBody SubroutineInterfaceRange SubroutineRange
-  SubroutineStmt SubroutineSubprogram
+  SubroutineRange SubroutineStmt SubroutineSubprogram
 
   InterfaceBlock                      %% R1201
   InterfaceSpecification              %% R1202
@@ -79,16 +78,16 @@ context-free syntax
 %%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
 %%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
 
-  FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
-  FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
+%%REMOVE-F08  FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
+%%REMOVE-F08  FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
 
-  SubroutineParList? ProcLanguageBindingSpec?
-                       EOS  SubprogramInterfaceBody EndSubroutineStmt -> SubroutineInterfaceRange
-  SubroutineParList? ProcLanguageBindingSpec?
-                       EOS  EndSubroutineStmt                         -> SubroutineInterfaceRange
+%%REMOVE-F08  SubroutineParList? ProcLanguageBindingSpec?
+%%REMOVE-F08                       EOS  SubprogramInterfaceBody EndSubroutineStmt -> SubroutineInterfaceRange
+%%REMOVE-F08  SubroutineParList? ProcLanguageBindingSpec?
+%%REMOVE-F08                       EOS  EndSubroutineStmt                         -> SubroutineInterfaceRange
 
-  SpecificationPartConstruct                                -> SubprogramInterfaceBody
-  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
+%%REMOVE-F08  SpecificationPartConstruct                                -> SubprogramInterfaceBody
+%%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
   LblDef 'MODULE'? 'PROCEDURE' "::"? ProcedureNameList  EOS -> ProcedureStmt  {cons("procedure-stmt")}
