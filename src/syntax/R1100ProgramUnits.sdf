@@ -116,14 +116,6 @@ context-free syntax
   ImplicitPart?
   DeclarationConstruct*                        -> SpecificationPart   {cons("specification-part")}
 
-%%R204
-%%DELETE-2008  ImplicitStmt                                 -> SpecificationPartConstruct
-%%DELETE-2008  ParameterStmt                                -> SpecificationPartConstruct
-%%DELETE-2008  FormatStmt                                   -> SpecificationPartConstruct
-%%DELETE-2008  EntryStmt                                    -> SpecificationPartConstruct
-%%DELETE-2008  DeclarationConstruct                         -> SpecificationPartConstruct
-%%DELETE-2008  UseStmt                                      -> SpecificationPartConstruct
-
 %%R205
 %%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
   ImplicitPartStmt* ImplicitStmt               -> ImplicitPart  {cons("implicit-part")}
@@ -200,7 +192,7 @@ context-free syntax
 %%
     ActionStmt
   | AssociateConstruct
-%%TODO-F08 | BlockConstruct
+  | BlockConstruct
   | CaseConstruct
 %%TODO-F08 | CriticalConstruct
 %%AMBIGUOUS | DoConstruct
