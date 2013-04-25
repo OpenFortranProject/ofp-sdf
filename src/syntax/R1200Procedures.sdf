@@ -184,10 +184,10 @@ context-free syntax
   LblDef 'FUNCTION' FunctionName "(" ")"           EOS -> FunctionStmt        {cons("function-stmt")}
 
 %%R1215
-  FunctionParList 'result' "(" Name ")" EOS InternalSubProgPart EndFunctionStmt         -> FunctionRange
+  FunctionParList 'result' "(" Name ")" EOS InternalSubprogramPart EndFunctionStmt      -> FunctionRange
   FunctionParList 'result' "(" Name ")" EOS Body EndFunctionStmt                        -> FunctionRange
   FunctionParList 'result' "(" Name ")" EOS EndFunctionStmt                             -> FunctionRange
-  FunctionParList EOS InternalSubProgPart EndFunctionStmt                               -> FunctionRange
+  FunctionParList EOS InternalSubprogramPart EndFunctionStmt                            -> FunctionRange
 
 %%R1216
 %%R1217
@@ -209,7 +209,7 @@ context-free syntax
   SubroutineParList? ProcLanguageBindingSpec?
                        EOS Body? EndSubroutineStmt                       -> SubroutineRange
   SubroutineParList? ProcLanguageBindingSpec?
-                       EOS InternalSubProgPart EndSubroutineStmt         -> SubroutineRange
+                       EOS InternalSubprogramPart EndSubroutineStmt      -> SubroutineRange
 %% split subroutineStmt/subroutineSubprogram needed? (ELI legacy)
 
 
