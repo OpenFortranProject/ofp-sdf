@@ -28,9 +28,10 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
-  Name ArrayName BindingName ComponentName GenericName NamelistGroupName TypeName EndName
-  CommonBlockName
-  EntryName ExternalName FunctionName ImpliedDoVariable IntrinsicProcedureName ModuleName ObjectName
+  Name ArrayName BindingName ComponentName ConstructName DataPointerComponentName
+  GenericName NamelistGroupName TypeName EndName CommonBlockName
+  EntryName ExternalName ForallConstructName
+  FunctionName ImpliedDoVariable IndexName IntrinsicProcedureName ModuleName ObjectName
   ProcedureComponentName ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
   ResultName
 
@@ -145,15 +146,19 @@ context-free restrictions
    LblDef -/- [\!]
 
 context-free syntax
-  Label? -> LblDef                       {cons("label")}
+  Label? -> LblDef                        {cons("label")}
 
 %% Ident Aliasses. TODO: put them in the right modules.
   Ident  -> Name                          {cons("name")}
   Ident  -> ArrayName
   Ident  -> BindingName
   Ident  -> ComponentName
+  Ident  -> ConstructName
+  Ident  -> DataPointerComponentName
   Ident  -> DummyArgName                %% R1230
+  Ident  -> ForallConstructName
   Ident  -> GenericName
+  Ident  -> IndexName
   Ident  -> NamelistGroupName
   Ident  -> TypeName
   Ident  -> EndName
