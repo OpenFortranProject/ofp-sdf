@@ -17,7 +17,7 @@ exports
 sorts
 
   ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt
-  EntryStmt ExternalStmt FunctionArg FunctionArgList
+  ExternalStmt FunctionArg FunctionArgList
   FunctionPar FunctionParList FunctionPrefix FunctionRange
   FunctionReference FunctionStmt FunctionSubprogram GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
@@ -35,6 +35,10 @@ sorts
   ProcLanguageBindingSpec             %% R1229
   DummyArg                            %% R1235
   EndSubroutineStmt                   %% R1236
+  SeparateModuleSubprogram            %% R1237
+  MpSubprogramStmt                    %% R1238
+  EndMpSubprogramStmt                 %% R1239
+  EntryStmt                           %% R1240
 
   StmtFunctionStmt                    %% R1243
 
@@ -236,11 +240,28 @@ context-free syntax
    LblDef FunctionPrefix Name FunctionParList? EOS       -> FunctionStmt
    TypeSpec? 'function'                                  -> FunctionPrefix
 
-   "(" {FunctionPar ","}* ")" ProcLanguageBindingSpec? -> FunctionParList {cons("function-par-list")}
+   "(" {FunctionPar ","}* ")" ProcLanguageBindingSpec? -> FunctionParList   {cons("function-par-list")}
    DummyArgName                                          -> FunctionPar
 
 %%R1236
   LblDef 'END' ('SUBROUTINE' SubroutineName?)?   EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
+
+%%R1237
+  MpSubprogramStmt
+    SpecificationPart
+    ExecutionPart?
+    InternalSubprogramPart?
+  EndMpSubprogramStmt                           -> SeparateModuleSubprogram {cons("separate-module-subprogram")}
+
+%%R1238
+%%       Ident substituted for procedure-name
+%%
+  LblDef 'MODULE' 'PROCEDURE' Ident         EOS -> MpSubprogramStmt         {cons("mp-subprogram-stmt")}
+
+%%R1239
+%%       Ident substituted for procedure-name
+%%
+  LblDef 'END' ('PROCEDURE' Ident?)?        EOS -> EndMpSubprogramStmt      {cons("end-mp-subprogram-stmt")}
 
 %%R1240
 %%TODO-F08 add suffix
