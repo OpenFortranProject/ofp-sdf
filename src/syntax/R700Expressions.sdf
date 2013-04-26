@@ -59,6 +59,10 @@ sorts
   LogicalInitializationExpr           %% R732
   BoundsSpec                          %% R737
   BoundsRemapping                     %% R738
+
+  ProcPointerObject                   %% R738
+  ProcComponentRef                    %% R739
+
   DataTarget                          %% R739
 
   WhereStmt                           %% R741
@@ -353,6 +357,13 @@ context-free syntax
   Expr      -> DataTarget
 %%Ambiguous
 %%Variable  -> DataTarget
+
+%%R738
+    ProcPointerName
+  | ProcComponentRef                                   -> ProcPointerObject {cons("proc-pointer-object")}
+
+%%R739
+  ScalarVariable '%' ProcedureComponentName            -> ProcComponentRef  {cons("proc-component-ref")}
 
 %%R741
   LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt    {cons("where-stmt")}
