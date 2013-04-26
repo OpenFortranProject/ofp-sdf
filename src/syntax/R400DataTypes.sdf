@@ -131,9 +131,11 @@ context-free syntax
   | ( 'DOUBLE' 'COMPLEX'        )       -> IntrinsicTypeSpec    {cons("intrinsic-type-spec")}
 
 %%R405
-  "(" ('KIND' "=")? ScalarIntInitializationExpr ")"     -> KindSelector
-%%NONSTANDARD: e.g., integer*8 complex*8 complex*16
-  '*' Icon                                              -> KindSelector
+%%       int-constant-expr substituted for scalar-int-constant-expr
+%%       NONSTANDARD: e.g., integer*8 complex*8 complex*16
+%%
+    ( '(' ('KIND' '=')? IntConstantExpr ')' )
+  | ( '*' Icon                              )     -> KindSelector  {cons("kind-selector")}
 
 %%406
   Sign? IntLiteralConstant            -> SignedIntLiteralConstant
@@ -383,8 +385,10 @@ context-free syntax
 %%R472
   '(' AcValueList ',' AcImpliedDoControl ')'    -> AcImpliedDo
 
-%%R473
-  AcDoVariable '=' ScalarIntExpr ',' ScalarIntExpr (',' ScalarIntExpr)?    -> AcImpliedDoControl
-
 %%R474
-  DoVariable                                    -> AcDoVariable
+%%      int-expr substituted for scalar-int-expr
+%%
+  AcDoVariable '=' IntExpr ',' IntExpr (',' IntExpr)?    -> AcImpliedDoControl  {cons("ac-implied-do-control")}
+
+%%R475
+  DoVariable                                    -> AcDoVariable  {cons("ac-do-variable")}
