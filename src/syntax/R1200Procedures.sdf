@@ -16,12 +16,11 @@ exports
 
 sorts
 
-  ActualArg CallStmt ContainsStmt DtioGenericSpec EndFunctionStmt
+  ActualArg CallStmt DtioGenericSpec
   ExternalStmt FunctionArg FunctionArgList
-  FunctionPar FunctionParList FunctionPrefix FunctionRange
-  FunctionReference FunctionStmt FunctionSubprogram GenericSpec
+  FunctionReference GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
-  ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
+  ProcedureName ProcedureNameList %%TODO SFDummyArgNameList 
 
   InterfaceBlock                      %% R1201
   InterfaceSpecification              %% R1202
@@ -29,11 +28,16 @@ sorts
   EndInterfaceStmt                    %% R1204
   ImportStmt                          %% R1209
   ImportName
+  ProcedureDesignator                 %% R1221
   Prefix                              %% R1225
   PrefixSpec                          %% R1226
+  FunctionSubprogram                  %% R1227
+  FunctionStmt                        %% R1228
   ProcLanguageBindingSpec             %% R1229
-  SubroutineSubprogram                %% R1230
+                                      %% R1230  DummyArgName (FortranLex)
   Suffix                              %% R1231
+  EndFunctionStmt                     %% R1232
+  SubroutineSubprogram                %% R1233
   SubroutineStmt                      %% R1234
   DummyArg                            %% R1235
   EndSubroutineStmt                   %% R1236
@@ -41,6 +45,8 @@ sorts
   MpSubprogramStmt                    %% R1238
   EndMpSubprogramStmt                 %% R1239
   EntryStmt                           %% R1240
+  ReturnStmt                          %% R1241
+  ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
 %%F2008
@@ -144,11 +150,13 @@ context-free syntax
   Name "(" FunctionArgList? ")"                        -> FunctionReference   {cons("function-reference")}
 
 %%R1220
-  LblDef 'CALL' SubroutineNameUse                          EOS -> CallStmt   {cons("call-stmt")}
-  LblDef 'CALL' SubroutineNameUse "(" {ActualArg ","}* ")" EOS -> CallStmt   {cons("call-stmt")}
+  LblDef 'CALL' ProcedureDesignator
+                ( '(' {ActualArg ','}* ')' )?      EOS -> CallStmt   {cons("call-stmt")}
 
 %%1221
-%%TODO-F08 - procedure-designator
+    ProcedureName
+  | ProcComponentRef
+  | DataRef '%' BindingName                            -> ProcedureDesignator  {cons("procedure-designator")}
 
 %%1222
 %%TODO-F08 - actual-arg-spec
@@ -179,37 +187,28 @@ context-free syntax
   | 'RECURSIVE'                                        -> PrefixSpec  {cons("prefix-spec")}
 
 %%R1227
-  LblDef FunctionPrefix FunctionName FunctionRange     -> FunctionSubprogram  {cons("function-subprogram")}
-  FunctionStmt EndFunctionStmt                         -> FunctionSubprogram  {cons("function-subprogram")}
-  FunctionParList EOS Body? EndFunctionStmt            -> FunctionRange
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
+  FunctionStmt
+    SpecificationPart
+    ExecutionPart?
+    InternalSubprogramPart?
+  EndFunctionStmt                                      -> FunctionSubprogram  {cons("function-subprogram")}
 
 %%R1228
-%%TODO-F08 - add prefix, dummy-arg-name-list, suffix
-  LblDef 'FUNCTION' FunctionName "(" ")"           EOS -> FunctionStmt        {cons("function-stmt")}
-
-%%R1215
-  FunctionParList 'result' "(" Name ")" EOS InternalSubprogramPart EndFunctionStmt      -> FunctionRange
-  FunctionParList 'result' "(" Name ")" EOS Body EndFunctionStmt                        -> FunctionRange
-  FunctionParList 'result' "(" Name ")" EOS EndFunctionStmt                             -> FunctionRange
-  FunctionParList EOS InternalSubprogramPart EndFunctionStmt                            -> FunctionRange
-
-%%R1216
-%%R1217
-  'RECURSIVE' 'FUNCTION'                       -> FunctionPrefix
-  'recursive' TypeSpec 'function'              -> FunctionPrefix
-  TypeSpec 'recursive' 'function'              -> FunctionPrefix
+  LblDef Prefix? 'FUNCTION' FunctionName
+              '(' {DummyArgName ','}* ')' Suffix?  EOS -> FunctionStmt        {cons("function-stmt")}
 
 %%R1229
-  LanguageBindingSpec                          -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
+  LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
 
 %%R1231
     ( ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')? )
   | ( 'RESULT' '(' ResultName ')' ProcLanguageBindingSpec?   )  -> Suffix  {cons("suffix")}
 
 %%R1232
-%% endfunction (without spaces) is allowed
-  LblDef 'END'                              EOS -> EndFunctionStmt       {cons("end-function-stmt")}
-  LblDef 'END' 'FUNCTION' FunctionName?     EOS -> EndFunctionStmt       {cons("end-function-stmt")}
+  LblDef 'END' ('FUNCTION' FunctionName?)?  EOS -> EndFunctionStmt         {cons("end-function-stmt")}
 
 %%R1233
 %%       The optional specification-part is ambiguous.  The lack of a specification-part
@@ -235,13 +234,6 @@ context-free syntax
 %%R1235
    DummyArgName         -> DummyArg
    '*'                  -> DummyArg
-
-%%/* Must be split on semantic grounds, due to the different scopes for the
-   LblDef FunctionPrefix Name FunctionParList? EOS       -> FunctionStmt
-   TypeSpec? 'function'                                  -> FunctionPrefix
-
-   "(" {FunctionPar ","}* ")" ProcLanguageBindingSpec? -> FunctionParList   {cons("function-par-list")}
-   DummyArgName                                          -> FunctionPar
 
 %%R1236
   LblDef 'END' ('SUBROUTINE' SubroutineName?)?   EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
