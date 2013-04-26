@@ -17,22 +17,11 @@ imports
 exports
 
 sorts
-  AddOp AndOp AssignmentStmt
-  BoundsRemappingList BoundsSpecList
-  CExpr CharExpr
-  ComplexConst ConcatOp COperand CPrimary
-  DataPointerComponentName DataPointerObject
-  DefaultCharExpr
-  EquivOp
-  ForallConstructName ForallTripletSpecList
-  IndexName IntExpr ScalarIntInitializationExpr
-  NumericExpr LogicalConstant
-  LogicalExpr
-  MultOp NotOp OrOp
-  PointerAssignmentStmt PowerOp RelOp ScalarMaskExpr Stride
-  SFExpr SFExprList SFFactor SFPrimary SFTerm
-  SpecificationExpr UFExpr UFFactor UFPrimary
-  UFTerm UnsignedArithmeticConstant
+  CExpr
+  ComplexConst COperand CPrimary
+  LogicalConstant
+  Stride
+  UnsignedArithmeticConstant
 
   Primary                             %% R701
   Level1Expr                          %% R702
@@ -40,31 +29,36 @@ sorts
   MultOperand                         %% R704
   AddOperand                          %% R705
   Level2Expr                          %% R706
+  
   Level3Expr                          %% R710
+
   Level4Expr                          %% R712
+
   AndOperand                          %% R714
   OrOperand                           %% R715
   EquivOperand                        %% R716
   Level5Expr                          %% R717
+
   Expr                                %% R722
   DefinedBinaryOp                     %% R723
 
-%%TODO - fix rule numbers
-
+  LogicalExpr                         %% R724
+  DefaultCharExpr                     %% R725
+  IntExpr                             %% R726
+  NumericExpr                         %% R727
+  SpecificationExpr                   %% R728
+  ConstantExpr                        %% R729
+  DefaultCharConstantExpr             %% R730
   IntConstantExpr                     %% R731
-
-  InitializationExpr                  %% R730
-  CharInitializationExpr              %% R731
-  IntInitializationExpr               %% R732
-  LogicalInitializationExpr           %% R732
-  BoundsSpec                          %% R737
-  BoundsRemapping                     %% R738
-
+  AssignmentStmt                      %% R732
+  PointerAssignmentStmt               %% R733
+  DataPointerObject                   %% R734
+  BoundsSpec                          %% R735
+  BoundsRemapping                     %% R736
+  DataTarget                          %% R737
   ProcPointerObject                   %% R738
   ProcComponentRef                    %% R739
-
-  DataTarget                          %% R739
-
+  ProcTarget                          %% R740
   WhereStmt                           %% R741
   WhereConstruct                      %% R742
   WhereConstructStmt                  %% R743
@@ -74,11 +68,12 @@ sorts
   MaskedElsewhereStmt                 %% R747
   ElsewhereStmt                       %% R748
   EndWhereStmt                        %% R749
-
-  ForallConstruct                     %% R752
-  ForallConstructStmt                 %% R753
-  ForallHeader                        %% R754
-  ForallTripletSpec                   %% R755
+  ForallConstruct                     %% R750
+  ForallConstructStmt                 %% R751
+  ForallHeader                        %% R752
+  ForallTripletSpec                   %% R753
+  ForallLimit                         %% R754
+  ForallStep                          %% R755
   ForallBodyConstruct                 %% R756
   ForallAssignmentStmt                %% R757
   EndForallStmt                       %% R758
@@ -87,24 +82,24 @@ sorts
 context-free syntax
 %%%% TODO: put these under the right section
 
-  UFTerm                        -> UFExpr
-  Sign UFTerm                   -> UFExpr
-  UFExpr AddOp UFTerm           -> UFExpr
-  UFFactor                      -> UFTerm
-  UFTerm MultOp UFFactor        -> UFTerm
-  UFTerm ConcatOp UFPrimary     -> UFTerm
-  UFPrimary                     -> UFFactor
-  UFPrimary PowerOp UFFactor    -> UFFactor
+%%  UFTerm                        -> UFExpr
+%%  Sign UFTerm                   -> UFExpr
+%%  UFExpr AddOp UFTerm           -> UFExpr
+%%  UFFactor                      -> UFTerm
+%%  UFTerm MultOp UFFactor        -> UFTerm
+%%  UFTerm ConcatOp UFPrimary     -> UFTerm
+%%  UFPrimary                     -> UFFactor
+%%  UFPrimary PowerOp UFFactor    -> UFFactor
 
-  Icon                          -> UFPrimary
-  Scon                          -> UFPrimary
-  Name                          -> UFPrimary
-  FunctionReference             -> UFPrimary
-  DataRef                       -> UFPrimary
-  '(' UFExpr ')'                -> UFPrimary
+%%  Icon                          -> UFPrimary
+%%  Scon                          -> UFPrimary
+%%  Name                          -> UFPrimary
+%%  FunctionReference             -> UFPrimary
+%%  DataRef                       -> UFPrimary
+%%  '(' UFExpr ')'                -> UFPrimary
 
 %%82,83
-  (CExpr ConcatOp)? CPrimary    -> CExpr
+  (CExpr '//')? CPrimary    -> CExpr
   COperand                      -> CPrimary
   '(' CExpr ')'                 -> CPrimary
   Scon                          -> COperand
@@ -124,168 +119,146 @@ context-free syntax
   '.true.' | '.false.'          -> LogicalConstant
 
 %%R701
-  Constant                      -> Primary          {cons("primary-constant")}
-  Designator                    -> Primary          {cons("primary-designator")}
-  ArrayConstructor              -> Primary          {cons("primary-ac")}
-  ArrayConstructor              -> SFPrimary
-  Name                          -> Primary          {cons("primary-name")}
-  DataRef                       -> Primary          {cons("primary-dref")}
-  FunctionReference             -> Primary          {cons("primary-fref")}
-  '(' Expr ')'                  -> Primary          {cons("paren-expr")}
+    Constant
+  | Designator
+  | ArrayConstructor
+  | StructureConstructor
+  | FunctionReference
+  | TypeParamInquiry
+  | TypeParamName
+  '(' Expr ')'                  -> Primary          {cons("primary")}
+
 %%TODO-DELETE   Scon                          -> Primary          {cons("primary-scon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
+%%TODO- needed to resolve ambiguity? DataRef
+%%TODO ???????  ArrayConstructor              -> SFPrimary
 
 %%R702
-                   Primary             -> Level1Expr
-  DefinedUnaryOp   Primary             -> Level1Expr      {cons("defined-unary-op-expr")}
+  DefinedUnaryOp?   Primary                -> Level1Expr      {cons("level-1-expr")}
 
 %%R703
-  Dop                                  -> DefinedUnaryOp
+  Dop                                      -> DefinedUnaryOp  {cons("defined-unary-op")}
 
 %%R704
-  Level1Expr                           -> MultOperand
-  Level1Expr   "**"    MultOperand     -> MultOperand     {cons("power-expr")}
+  Level1Expr  ('**'         MultOperand)?  -> MultOperand     {cons("mult-operand")}
 
 %%R705
-                       MultOperand     -> AddOperand
-   AddOperand  "*"     MultOperand     -> AddOperand      {cons("mult-expr")}
-   AddOperand  "/"     MultOperand     -> AddOperand      {cons("div-expr")}
+  (AddOperand ('*' | '/'))? MultOperand    -> AddOperand      {cons("add-operand")}
 
 %%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
 %%TODO-F08: is this still true?
 %%R706
-                       AddOperand      -> Level2Expr
-               "+"     AddOperand      -> Level2Expr      {cons("unary-plus-expr")}
-               "-"     AddOperand      -> Level2Expr      {cons("unary-minus-expr")}
-   Level2Expr  "+"     AddOperand      -> Level2Expr      {cons("add-expr")}
-   Level2Expr  "-"     AddOperand      -> Level2Expr      {cons("sub-expr")}
+  (Level2Expr? ('+' | '-'))? AddOperand    -> Level2Expr      {cons("level-2-expr")}
 
 %%R707
-  '**'                                 -> PowerOp         {cons("power-op")}
+%%  '**'                                   -> PowerOp
 
 %%R708
-  '*'                                   -> MultOp         {cons("mult-op-times")}
-  '/'                                   -> MultOp         {cons("mult-op-div")}
+%%  ('*' | '/')                            -> MultOp
 
 %%R709
-  '+'                                   -> AddOp         {cons("add-op-plus")}
-  '-'                                   -> AddOp         {cons("add-op-minus")}
+%%  ('+' | '-')                            -> AddOp
 
 %%R710
-                         Level2Expr    -> Level3Expr
-   Level3Expr  "//"      Level2Expr    -> Level3Expr      {cons("concat-expr")}
+  (Level3Expr  '//')? Level2Expr           -> Level3Expr      {cons("level-3-expr")}
 
 %%R711
-  "//"                                 -> ConcatOp        {cons("concat-op")}
+%%  '//'                                   -> ConcatOp
 
 %%R712
-                     Level3Expr        -> Level4Expr
-  Level3Expr  "=="   Level3Expr        -> Level4Expr      {cons("rel-op-eq-expr")}
-  Level3Expr '.EQ.'  Level3Expr        -> Level4Expr      {cons("rel-op-eq-expr")}
-  Level3Expr  "/="   Level3Expr        -> Level4Expr      {cons("rel-op-ne-expr")}
-  Level3Expr '.NE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ne-expr")}
-  Level3Expr  "<"    Level3Expr        -> Level4Expr      {cons("rel-op-lt-expr")}
-  Level3Expr '.LT.'  Level3Expr        -> Level4Expr      {cons("rel-op-lt-expr")}
-  Level3Expr  "<="   Level3Expr        -> Level4Expr      {cons("rel-op-le-expr")}
-  Level3Expr '.LE.'  Level3Expr        -> Level4Expr      {cons("rel-op-le-expr")}
-  Level3Expr  ">"    Level3Expr        -> Level4Expr      {cons("rel-op-gt-expr")}
-  Level3Expr '.GT.'  Level3Expr        -> Level4Expr      {cons("rel-op-gt-expr")}
-  Level3Expr  ">="   Level3Expr        -> Level4Expr      {cons("rel-op-ge-expr")}
-  Level3Expr '.GE.'  Level3Expr        -> Level4Expr      {cons("rel-op-ge-expr")}
+  ( Level3Expr
+      (    '.EQ.'
+         | '.NE.'
+         | '.LT.'
+         | '.LE.'
+         | '.GT.'
+         | '.GE.'
+         | '=='
+         | '/='
+         | '<'
+         | '<='
+         | '>'
+         | '>='
+      )
+   )? Level3Expr                           -> Level4Expr      {cons("level-4-expr")}
 
 %%R713
-  "=="                                 -> RelOp           {cons("rel-op-eq")}
-  '.EQ.'                               -> RelOp           {cons("rel-op-eq")}
-  "/="                                 -> RelOp           {cons("rel-op-ne")}
-  '.NE.'                               -> RelOp           {cons("rel-op-ne")}
-  "<"                                  -> RelOp           {cons("rel-op-lt")}
-  '.LT.'                               -> RelOp           {cons("rel-op-lt")}
-  "<="                                 -> RelOp           {cons("rel-op-le")}
-  '.LE.'                               -> RelOp           {cons("rel-op-le")}
-  ">"                                  -> RelOp           {cons("rel-op-gt")}
-  '.GT.'                               -> RelOp           {cons("rel-op-gt")}
-  ">="                                 -> RelOp           {cons("rel-op-ge")}
-  '.GE.'                               -> RelOp           {cons("rel-op-ge")}
+%%    '.EQ.'
+%%  | '.NE.'
+%%  | '.LT.'
+%%  | '.LE.'
+%%  | '.GT.'
+%%  | '.GE.'
+%%  | '=='
+%%  | '/='
+%%  | '<'
+%%  | '<='
+%%  | '>'
+%%  | '>='                                 -> RelOp
 
 %%R714
-          Level4Expr                   -> AndOperand
-  '.NOT.' Level4Expr                   -> AndOperand      {cons("not-expr")}
+  '.NOT.'? Level4Expr                      -> AndOperand      {cons("and-operand")}
 
 %%R715
-                        AndOperand     -> OrOperand
-   OrOperand  '.AND.'   AndOperand     -> OrOperand       {cons("and-expr")}
+  ( OrOperand    '.AND.'   )? AndOperand   -> OrOperand       {cons("or-operand")}
 
 %%R716
-                        OrOperand      -> EquivOperand
-   EquivOperand '.OR.'  OrOperand      -> EquivOperand    {cons("or-expr")}
+  ( EquivOperand '.OR.'    )? OrOperand    -> EquivOperand    {cons("equiv-operand")}
 
 %%R717
-                        EquivOperand   -> Level5Expr
-   Level5Expr  '.EQV.'  EquivOperand   -> Level5Expr      {cons("eqv-expr")}
-   Level5Expr  '.NEQV.' EquivOperand   -> Level5Expr      {cons("neqv-expr")}
+  ( Level5Expr
+      ('.EQV.' | '.NEQV.') )? EquivOperand -> Level5Expr      {cons("level-5-expr")}
 
-%%R722
-                          Level5Expr   -> Expr
-  Expr  DefinedBinaryOp   Level5Expr   -> Expr            {cons("defined-binary-op-expr")}
-
-%%R723
-  Dop                                  -> DefinedBinaryOp
+%%R718
+%% '.NOT.'                                 -> NotOp
 
 %%R719
- '.NOT.'                                -> NotOp          {cons("not-op")}
+%% '.AND.'                                 -> AndOp
 
 %%R720
-  '.AND.'                               -> AndOp          {cons("and-op")}
+%%  '.OR.'                                 -> OrOp
 
 %%R721
-  '.OR.'                                -> OrOp           {cons("or-op")}
+%%    '.EQV.'
+%%  | '.NEQV.'                             -> EquivOp
 
 %%R722
-  '.EQV.'                               -> EquivOp        {cons("equiv-op")}
-  '.NEQV.'                              -> EquivOp        {cons("nequiv-op")}
+  ( Expr DefinedBinaryOp)? Level5Expr      -> Expr            {cons("expr")}
 
+%%R723
+  Dop                                      -> DefinedBinaryOp {cons("defined-binary-op")}
 
-  LogicalConstant                       -> Primary
-
-
+%%TODO - what to do about this
 %%R725-R734 chain rule deleted
 
 %%R724
-  Expr                                  -> LogicalExpr
+  Expr                                     -> LogicalExpr     {cons("logical-expr")}
 
 %%R725
-  Expr                                  -> CharExpr
+  Expr                                     -> DefaultCharExpr {cons("default-char-expr")}
 
 %%R726
-  Expr                                  -> DefaultCharExpr
+  Expr                                     -> IntExpr         {cons("int-expr")}
 
 %%R727
-  Expr                                  -> IntExpr
+  Expr                                     -> NumericExpr     {cons("numeric-expr")}
 
 %%R728
-  Expr                                  -> NumericExpr
+%%       scalar-int-expr replaced by int-expr
+%%
+  IntExpr                                  -> SpecificationExpr  {cons("specification-expr")}
 
 %%R729
-  ScalarIntExpr                         -> SpecificationExpr
+  Expr                                     -> ConstantExpr    {cons("constant-expr")}
 
 %%R730
-  Expr                                  -> InitializationExpr
+  DefaultCharExpr                          -> DefaultCharConstantExpr  {cons("default-char-constant-expr")}
 
 %%R731
-  IntExpr                               -> IntConstantExpr                {cons("int-constant-expr")}
-
-%%R731
-  CharExpr                              -> CharInitializationExpr
+  IntExpr                                  -> IntConstantExpr {cons("int-constant-expr")}
 
 %%R732
-  IntExpr                               -> IntInitializationExpr
-  IntInitializationExpr                 -> ScalarIntInitializationExpr
-
-%%R733
-  LogicalExpr                           -> LogicalInitializationExpr
-
-%%R734
-  LblDef Variable '=' Expr          EOS -> AssignmentStmt   {cons("assignment-stmt")}
+  LblDef Variable '=' Expr             EOS -> AssignmentStmt  {cons("assignment-stmt")}
 
 %% todo: check. Original ISO: assignmentStatement is variable '=' expression
 %%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
@@ -298,65 +271,35 @@ context-free syntax
 %%TODO-DELETE   LblDef Name '(' SFExprList ')' '=' Expr EOS                            -> AssignmentStmt
 %%TODO-DELETE   LblDef Name '(' SFExprList ')' SubstringRange '=' Expr EOS             -> AssignmentStmt
 
-  SFExpr ':' Expr ':' Expr                      -> SFExprList
-  SFExpr ':' ':' Expr                           -> SFExprList
-  ':' Expr ':' Expr                             -> SFExprList
-  ':' ':' Expr                                  -> SFExprList
-  ':'                                           -> SFExprList
-  ':' Expr                                      -> SFExprList
-  SFExpr                                        -> SFExprList
-  SFExpr ':'                                    -> SFExprList
-  SFExpr ':' Expr                               -> SFExprList
-  SFExprList ',' SectionSubscript               -> SFExprList
-%%TODO   SFDummyArgNameList ',' ':'                    -> SFExprList
-%%TODO   SFDummyArgNameList ',' ':' Expr               -> SFExprList
-%% problem with code like P(A,2). A can be both SFExprList and SFDummyargnameList. 
-%% Conflict with 3 lines above: SFExprList ',' SectionSubscript  
-%%  SFDummyArgNameList ',' SFExpr                 -> SFExprList
-%%TODO   SFDummyArgNameList ',' SFExpr ':'             -> SFExprList
-%%TODO   SFDummyArgNameList ',' SFExpr ':' Expr        -> SFExprList
+%%R733
+  LblDef
+       ( DataPointerObject ( '(' {BoundsSpec      ','}+ ')' )? '=>' DataTarget )
+    |  ( DataPointerObject   '(' {BoundsRemapping ','}+ ')'    '=>' DataTarget )
+    |  ( ProcPointerObject                                     '=>' ProcTarget )
+    EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
 
-  SFTerm                                        -> SFExpr
-  Sign AddOperand                               -> SFExpr
-  SFExpr AddOp AddOperand                       -> SFExpr
-  SFFactor                                      -> SFTerm
-  SFTerm MultOp MultOperand                     -> SFTerm
-  SFPrimary                                     -> SFFactor
-  SFPrimary PowerOp MultOperand                 -> SFFactor
-  Icon                                          -> SFPrimary
-  Name                                          -> SFPrimary
-  DataRef                                       -> SFPrimary
-  FunctionReference                             -> SFPrimary
-  '(' Expr ')'                                  -> SFPrimary
+%%TODO-DELETE these
+%%TODO   LblDef Name '%' Name '=>' DataTarget EOS                               -> PointerAssignmentStmt
+%%TODO   LblDef Name '%' DataRef '=>' DataTarget EOS                            -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFExprList ')' '%' Name '=>' DataTarget EOS            -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFExprList ')' '%' DataRef '=>' DataTarget EOS         -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' DataTarget EOS    -> PointerAssignmentStmt
+%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' DataTarget EOS -> PointerAssignmentStmt
+
+%%R734
+    ( VariableName                                )
+  | ( ScalarVariable '%' DataPointerComponentName )      -> DataPointerObject  {cons("data-pointer-object")}
 
 %%R735
-  LblDef DataPointerObject                             "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
-  LblDef DataPointerObject "(" BoundsSpecList ")"      "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
-  LblDef DataPointerObject "(" BoundsRemappingList ")" "=>" DataTarget  EOS -> PointerAssignmentStmt  {cons("pointer-assignment-stmt")}
-%%TODO   LblDef Name '%' Name '=>' DataTarget EOS                                          -> PointerAssignmentStmt
-%%TODO   LblDef Name '%' DataRef '=>' DataTarget EOS                                       -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFExprList ')' '%' Name '=>' DataTarget EOS                       -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFExprList ')' '%' DataRef '=>' DataTarget EOS                    -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' DataTarget EOS               -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' DataTarget EOS            -> PointerAssignmentStmt
+  LowerBoundExpr ':'                                     -> BoundsSpec         {cons("bounds-spec")}
 
 %%R736
-  VariableName                                    -> DataPointerObject
-  ScalarVariable "%" DataPointerComponentName     -> DataPointerObject
-  Name                                            -> DataPointerComponentName
+  LowerBoundExpr ':' UpperBoundExpr                      -> BoundsRemapping    {cons("bounds-remappig")}
 
 %%R737
-  LowerBoundExpr ":"                              -> BoundsSpec
-  {BoundsSpec ","}+                               -> BoundsSpecList 
-
-%%R738
-  LowerBoundExpr ":" UpperBoundExpr               -> BoundsRemapping
-  {BoundsRemapping ","}+                          -> BoundsRemappingList 
-
-%%R739
+%%       Variable producing DataTarget is Ambiguous
+%%
   Expr      -> DataTarget
-%%Ambiguous
-%%Variable  -> DataTarget
 
 %%R738
     ProcPointerName
@@ -365,8 +308,13 @@ context-free syntax
 %%R739
   ScalarVariable '%' ProcedureComponentName            -> ProcComponentRef  {cons("proc-component-ref")}
 
+%%R740
+    Expr
+  | ProcedureName
+  | ProcComponentRef                                   -> ProcTarget        {cons("proc-target")}
+
 %%R741
-  LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt    {cons("where-stmt")}
+  LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("where-stmt")}
 
 %%R742
 %%TODO-F08-FIXME
@@ -399,10 +347,12 @@ context-free syntax
   | WhereConstruct                                 -> WhereBodyConstruct  {cons("where-body-construct")}
 
 %%R745
+%%TODO-F08 - make it so label can't be part of assignment-stmt
+%%
   AssignmentStmt                                   -> WhereAssignmentStmt {cons("where-assignment-stmt")}
 
 %%R746
-  Expr                                             -> MaskExpr            {cons("mask-expr")}
+  LogicalExpr                                      -> MaskExpr            {cons("mask-expr")}
 
 %%R747
 %%       Ident substituted for where-construct-name
@@ -419,41 +369,84 @@ context-free syntax
 %%
   LblDef 'END' 'WHERE' Ident?                  EOS -> EndWhereStmt        {cons("end-where-stmt")}
 
-%%R747
-%%TODO-F08 - make it so label can't be part of assignment-stmt
-  AssignmentStmt                                -> WhereAssignmentStmt
+%%R750
+  ForallConstructStmt
+    ForallBodyConstruct*
+  EndForallStmt                                    -> ForallConstruct     {cons("forall-construct")}
 
-%%R752
-  ForallConstructStmt {ForallBodyConstruct ','}* EndForallStmt      -> ForallConstruct
+%%R751
+  LblDef (ForallConstructName ':')?
+         'FORALL' ForallHeader                 EOS -> ForallConstructStmt  {cons("forall-construct-stmt")}
 
-%%R753
-  LblDef (ForallConstructName ":")? 'FORALL' ForallHeader       EOS -> ForallConstructStmt  {cons("forall-construct-stmt")}
-  Name                                                              -> ForallConstructName
+%%752
+%%       mask-expr substituted for scalar-mask-expr
+%%
+  '('
+     (TypeSpec '::')? {ForallTripletSpec ','}+
+                      (',' MaskExpr)?
+  ')'                                              -> ForallHeader         {cons("forall-header")}
+
+%%753
+  IndexName '=' ForallLimit
+            ':' ForallLimit (':' ForallStep)?      -> ForallTripletSpec    {cons("forall-triplet-spec")}
 
 %%754
-  '('
-     (TypeSpec '::')? ForallTripletSpecList (',' ScalarMaskExpr)?
-  ')'                                                               -> ForallHeader
-  Expr                                                              -> ScalarMaskExpr
+%%        int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                          -> ForallLimit          {cons("forall-limit")}
 
 %%755
-  IndexName '=' Subscript ':' Subscript (':' Stride)?               -> ForallTripletSpec
-  {ForallTripletSpec ','}+                                          -> ForallTripletSpecList
-  Name                                                              -> IndexName
+%%        int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                          -> ForallStep           {cons("forall-step")}
 
 %%756
-  ForallAssignmentStmt                                              -> ForallBodyConstruct
-  WhereStmt                                                         -> ForallBodyConstruct
-  WhereConstruct                                                    -> ForallBodyConstruct
-  ForallConstruct                                                   -> ForallBodyConstruct
-  ForallStmt                                                        -> ForallBodyConstruct
+    ForallAssignmentStmt
+  | WhereStmt
+  | WhereConstruct
+  | ForallConstruct
+  | ForallStmt                                     -> ForallBodyConstruct  {cons("forall-body-construct")}
 
 %%757
-  AssignmentStmt                                                    -> ForallAssignmentStmt
-  PointerAssignmentStmt                                             -> ForallAssignmentStmt
+    AssignmentStmt
+  | PointerAssignmentStmt                          -> ForallAssignmentStmt {cons("forall-assignment-stmt")}
 
 %%758
-  'END' 'FORALL' ForallConstructName?                           EOS -> EndForallStmt  {cons("end-forall-stmt")}
+  LblDef 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("end-forall-stmt")}
 
 %%759
-  LblDef 'FORALL' ForallHeader ForallAssignmentStmt             EOS -> ForallStmt     {cons("forall-stmt")}
+  LblDef 'FORALL' ForallHeader ForallAssignmentStmt  EOS -> ForallStmt     {cons("forall-stmt")}
+
+
+%%TODO - what with the following
+%%
+%%  SFExpr ':' Expr ':' Expr                      -> SFExprList
+%%  SFExpr ':' ':' Expr                           -> SFExprList
+%%  ':' Expr ':' Expr                             -> SFExprList
+%%  ':' ':' Expr                                  -> SFExprList
+%%  ':'                                           -> SFExprList
+%%  ':' Expr                                      -> SFExprList
+%%  SFExpr                                        -> SFExprList
+%%  SFExpr ':'                                    -> SFExprList
+%%  SFExpr ':' Expr                               -> SFExprList
+%%  SFExprList ',' SectionSubscript               -> SFExprList
+%%TODO   SFDummyArgNameList ',' ':'                    -> SFExprList
+%%TODO   SFDummyArgNameList ',' ':' Expr               -> SFExprList
+%% problem with code like P(A,2). A can be both SFExprList and SFDummyargnameList. 
+%% Conflict with 3 lines above: SFExprList ',' SectionSubscript  
+%%  SFDummyArgNameList ',' SFExpr                 -> SFExprList
+%%TODO   SFDummyArgNameList ',' SFExpr ':'             -> SFExprList
+%%TODO   SFDummyArgNameList ',' SFExpr ':' Expr        -> SFExprList
+
+%%  SFTerm                                        -> SFExpr
+%%  Sign AddOperand                               -> SFExpr
+%%  SFExpr AddOp AddOperand                       -> SFExpr
+%%  SFFactor                                      -> SFTerm
+%%  SFTerm MultOp MultOperand                     -> SFTerm
+%%  SFPrimary                                     -> SFFactor
+%%  SFPrimary PowerOp MultOperand                 -> SFFactor
+%%  Icon                                          -> SFPrimary
+%%  Name                                          -> SFPrimary
+%%  DataRef                                       -> SFPrimary
+%%  FunctionReference                             -> SFPrimary
+%%  '(' Expr ')'                                  -> SFPrimary
