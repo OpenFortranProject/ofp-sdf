@@ -33,9 +33,11 @@ sorts
   SubscriptTriplet Substring SubstringRange
   Variable VectorSubscript
 
-  Designator               %%R601
-  LowerBoundExpr           %%R634
-  UpperBoundExpr           %%R635
+  Designator                          %% R601
+  TypeParamInquiry                    %% R616
+  LowerBoundExpr                      %% R634
+  UpperBoundExpr                      %% R635
+
 
 context-free syntax
 
@@ -97,8 +99,10 @@ context-free syntax
   ScalarStructureComponent             -> ParentString
   ScalarConstant                       -> ParentString
 
-%%R611
-  ScalarIntExpr? ':' ScalarIntExpr?    -> SubstringRange   {cons("substring-range")}
+%%R610
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr? ':' IntExpr?                -> SubstringRange   {cons("substring-range")}
 
 %%R609
 %%R610
@@ -139,7 +143,7 @@ context-free syntax
 %%TODO-F08   Designator '%' 'IM'                                -> ComplexPartDesignator
 
 %%R616
-%%TODO-F08 Designator '%' TypeParamName                         -> TypeParamInquiry
+  Designator '%' TypeParamName                                  -> TypeParamInquiry
 
 %%R617
   DataRef                                                       -> ArrayElement
@@ -151,7 +155,9 @@ context-free syntax
 %%TODO-F08   ComplexPartDesignator                              -> ArraySection
 
 %%619
-  ScalarIntExpr                                                 -> Subscript             {cons("subscript")}
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                                       -> Subscript             {cons("subscript")}
 
 %%620
   Subscript                                                     -> SectionSubscript
@@ -163,7 +169,9 @@ context-free syntax
   Subscript? ':' Subscript? (':' Stride)?                       -> SubscriptTriplet
 
 %%R622
-  ScalarIntExpr                                                 -> Stride
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                                       -> Stride
 
 %%R623
   IntExpr                                                       -> VectorSubscript
@@ -172,7 +180,9 @@ context-free syntax
   '[' CoSubscriptList ']'                                       -> ImageSelector  {cons("image-selector")}
 
 %%625
-  ScalarIntExpr                                                 -> CoSubscript
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                                       -> CoSubscript    {cons("cosubscript")}
   {CoSubscript ','}+                                            -> CoSubscriptList
 
 %%R626
@@ -217,10 +227,14 @@ context-free syntax
   {AllocateObject ","}+                         -> AllocateObjectList
 
 %%R634
-  ScalarIntExpr                                 -> LowerBoundExpr
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                       -> LowerBoundExpr      {cons("lower-bound-expr")}
 
 %%R635
-  ScalarIntExpr                                 -> UpperBoundExpr
+%%      int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                       -> UpperBoundExpr      {cons("upper-bound-expr")}
 
 %%R626
 %% JD is this correct??/* Omitted to solve LALR(1) conflict.  see R624
