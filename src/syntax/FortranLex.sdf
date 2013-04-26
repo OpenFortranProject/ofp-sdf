@@ -28,9 +28,12 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
-  Name ArrayName ComponentName GenericName NamelistGroupName TypeName EndName CommonBlockName DummyArgName
+  Name ArrayName ComponentName GenericName NamelistGroupName TypeName EndName CommonBlockName
   EntryName ExternalName FunctionName ImpliedDoVariable IntrinsicProcedureName ModuleName ObjectName
   ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
+  ResultName
+
+  DummyArgName                        %% R1230
 
 lexical syntax
 
@@ -146,12 +149,12 @@ context-free syntax
   Ident  -> Name                          {cons("name")}
   Ident  -> ArrayName
   Ident  -> ComponentName
+  Ident  -> DummyArgName                %% R1230
   Ident  -> GenericName
   Ident  -> NamelistGroupName
   Ident  -> TypeName
   Ident  -> EndName
   Ident  -> CommonBlockName
-  Ident  -> DummyArgName
   Ident  -> EntryName
   Ident  -> ExternalName
   Ident  -> FunctionName                  {cons("function-name")}
@@ -160,6 +163,7 @@ context-free syntax
   Ident  -> ModuleName                    {cons("module-name")}
   Ident  -> ObjectName                    {cons("object-name")}
   Ident  -> ProgramName                   {cons("program-name")}
+  Ident  -> ResultName
   Ident  -> SFDummyArgName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
