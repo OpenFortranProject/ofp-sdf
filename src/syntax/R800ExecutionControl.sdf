@@ -18,14 +18,14 @@ sorts
   AllstopStmt ArithmeticIfStmt AssignedGotoStmt AssignStmt AssociateName
   AssociateConstruct AssociateStmt Association Block
   CaseBodyConstruct CaseConstruct CaseSelector CaseStmt CaseValueRange
-  ComputedGotoStmt ContinueStmt CycleStmt DoBlock DoConstructName DoVariable
+  ContinueStmt CycleStmt DoBlock DoConstructName DoVariable
   ElseIfStmt
   ElseStmt EndAssociateStmt EndDoStmt EndIfStmt EndSelectStmt EndSelectTypeStmt
-  ExitStmt GoToKw GotoStmt IfConstruct  IfConstructName IfStmt IfThenStmt LabelDoStmt
+  IfConstruct  IfConstructName IfStmt IfThenStmt LabelDoStmt
   LblRef LoopControl OptAssociateConstructName OptAssociateConstructNameColon
   OptAssociateName OptSelectConstructName OptSelectConstructNameColon PauseStmt
-  ScalarIntExpr ScalarLogicalExpr ScalarNumericExpr SelectCaseBody SelectCaseRange
-  Selector SelectTypeConstruct SelectTypeStmt StopStmt StopCode
+  ScalarLogicalExpr SelectCaseBody SelectCaseRange
+  Selector SelectTypeConstruct SelectTypeStmt StopStmt
   TypeGuardConstruct TypeGuardStmt
 
   NonlabelDoStmt DoStmt
@@ -36,6 +36,21 @@ sorts
   CriticalConstruct                   %% R810
   CriticalStmt                        %% R811
   EndCriticalStmt                     %% R812
+
+  ExitStmt                            %% R850
+  GotoStmt                            %% R851
+  ComputedGotoStmt                    %% R852
+
+  StopCode                            %% R857
+  SyncAllStmt                         %% R858
+  SyncStat                            %% R859
+  SyncImagesStmt                      %% R860
+  ImageSet                            %% R861
+  SyncMemoryStmt                      %% R862
+  LockStmt                            %% R863
+  LockStat                            %% R864
+  UnlockStmt                          %% R865
+  LockVariable                        %% R866
 
 %%AMBiguous BlockDoConstruct DoConstruct EndDo
 
@@ -209,32 +224,23 @@ context-free syntax
   LblDef 'CYCLE' EndName?                                 EOS -> CycleStmt      {cons("cycle-stmt")}
 
 %%R850
-  LblDef 'EXIT' EndName?                                  EOS -> ExitStmt       {cons("exit-stmt")}
+  LblDef 'EXIT' ConstructName?                            EOS -> ExitStmt       {cons("exit-stmt")}
 
-%%R836
- 'go' 'to'                                              -> GoToKw
-  LblDef GoToKw LblRef EOS                              -> GotoStmt
+%%R851
+  LblDef 'GO' 'TO' LblRef                                 EOS -> GotoStmt       {const("goto-stmt")}
 
-%%R837
-  LblDef GoToKw '(' {LblRef ","}+ ')' ","? ScalarIntExpr EOS -> ComputedGotoStmt
-                                                                   {cons("computed-goto-stmt")}
+%%R852
+%%       expr substituted for scalar-int-expr
+%%
+  LblDef 'GO' 'TO' '(' {LblRef ','}+ ')' ','? Expr        EOS -> ComputedGotoStmt  {cons("computed-goto-stmt")}
+
+%%TODO - move to lexer?
   Icon  ->  LblRef
-  Expr   -> ScalarIntExpr
 
-%%R838
-  LblDef 'assign' LblRef 'to' VariableName EOS  -> AssignStmt
-
-%%Deleted Feature
-  LblDef GoToKw VariableName                             EOS -> AssignedGotoStmt
-                                                                   {cons("assigned-goto-stmt")}
-  LblDef GoToKw VariableName ','? '(' {LblRef ","}+ ')'  EOS -> AssignedGotoStmt
-                                                                   {cons("assigned-goto-stmt")}
-
-%%R840
-  LblDef 'if' '(' ScalarNumericExpr ')' LblRef ',' LblRef ',' LblRef
-                                                         EOS -> ArithmeticIfStmt
-                                                                   {cons("arithmetic-if-stmt")}
-  Expr -> ScalarNumericExpr
+%%R853
+%%       expr substituted for scalar-numeric-expr
+%%
+  LblDef 'IF' '(' Expr ')' LblRef ',' LblRef ',' LblRef   EOS -> ArithmeticIfStmt  {cons("arithmetic-if-stmt")}
 
 %%R846
   SelectTypeStmt TypeGuardConstruct* EndSelectTypeStmt       -> SelectTypeConstruct
@@ -271,11 +277,56 @@ context-free syntax
   LblDef       'STOP' StopCode?                EOS -> StopStmt     {cons("stop-stmt")}
 
 %%R856
-  LblDef 'ALL' 'STOP' StopCode?            EOS -> AllstopStmt    {cons("allstop-stmt")}
+  LblDef 'ALL' 'STOP' StopCode?                EOS -> AllstopStmt  {cons("allstop-stmt")}
 
 %%R857
-  Icon                                         -> StopCode
-  Scon                                         -> StopCode
+%%        Scon substituted for scalar-default-char-constant-expt
+%%        Icon substituted for scalar-int-constant-expr
+%%
+    Scon
+  | Icon                                           -> StopCode     {cons("stop-code")}
+
+%%R858
+  LblDef 'SYNC' 'ALL'
+         ( '(' {SyncStat ','}* ')' )?          EOS -> SyncAllStmt     {const("sync-all-stmt")}
+
+%%R859
+    'STAT'   '=' StatVariable
+  | 'ERRMSG' '=' ErrmsgVariable                    -> SyncStat        {cons("sync-stat")}
+
+%%R860
+  LblDef 'SYNC' 'IMAGES' '(' ImageSet
+                (',' {SyncStat ','}+ )? ')'    EOS -> SyncImagesStmt  {const("sync-images-stmt")}
+
+%%R861
+    IntExpr
+  | '*'                                            -> ImageSet        {cons("image-set")}
+
+%%R862
+  LblDef 'SYNC' 'MEMORY'
+         ( '(' {SyncStat ','}* ')' )?          EOS -> SyncMemoryStmt  {const("sync-memory-stmt")}
+
+%%R863
+  LblDef 'LOCK' '(' LockVariable
+                 (',' {SyncStat ','}+ )? ')'   EOS -> LockStmt        {const("lock-stmt")}
+
+%%R864
+    ( 'ACQUIRED_LOCK' '=' LogicalVariable )
+  | ( SyncStat                            )        -> LockStat        {cons("lock-stat")}
+
+%%R865
+  LblDef 'UNLOCK' '(' LockVariable
+                   (',' {SyncStat ','}+ )? ')' EOS -> UnlockStmt      {const("unlock-stmt")}
+
+%%866
+  ScalarVariable                                   -> LockVariable    {const("lock-variable")}
 
 %% Deleted Feature
-  LblDef 'PAUSE' (Icon | Scon)?            EOS -> PauseStmt
+%%
+
+  LblDef 'PAUSE' (Icon | Scon)?                EOS -> PauseStmt       {cons("pause-stmt")}
+
+  LblDef 'ASSIGN' LblRef 'TO' VariableName     EOS -> AssignStmt      {cons("assign-stmt")}
+
+  LblDef 'GO' 'TO' VariableName
+         (','? '(' {LblRef ","}+)? ')'         EOS -> AssignedGotoStmt {cons("assigned-goto-stmt")}
