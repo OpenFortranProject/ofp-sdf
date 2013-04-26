@@ -18,26 +18,32 @@ sorts
   BackspaceStmt CloseSpec CloseSpecList CloseStmt ConnectSpec
   ConnectSpecList EndfileStmt FileUnitNumber FlushStmt FlushSpec FormatIdentifier
   InputImpliedDo InputItem InputItemList InquireSpec InquireSpecList InquireStmt
-  IoControlSpec IoControlSpecList OpenStmt OutputImpliedDo OutputItem
+  IoControlSpec OpenStmt OutputImpliedDo OutputItem
   OutputItemList PositionSpec PrintStmt RdCtlSpec RdFmtId RdFmtIdExpr
   RdIoCtlSpecList RdUnitId ReadStmt RewindStmt UnitIdentifier
   WaitStmt WaitSpec WriteStmt    
 
+  IoUnit                              %% R901
+
+
 context-free syntax
-  %% already defined in R800 section:
-  Icon  ->  LblRef
+
+%%TODO-FiXME
+%% already defined in R800 section:
+%%  Icon  ->  LblRef
+
+%%TODO-F08 DELETE?
+  IntExpr   -> UnitIdentifier
+  IntExpr   -> FileUnitNumber
 
 %%R901
-%%TODO-F08 file-unit-number and io-unit to replace unit-identifier
-  UFExpr | '*'                  -> UnitIdentifier
-
-%%902
-  UFExpr                        -> FileUnitNumber            {const("file-unit-number")}
-
-%%-R902 rule deleted:
-%% external-file-unit is scalar-int-expr
-%%-R903 rule deleted:
-%% internal-file-unit is default-char-variable
+%%      int-expr substituted for file-unit-number
+%%      char-variable substituted for internal-file-variable
+%%
+%%TODO - check for ambiguity
+    IntExpr
+  | '*'
+  | CharVariable                -> IoUnit                    {const("io-unit")}
 
 %%R904
   LblDef 'OPEN' '(' ConnectSpecList ')'   EOS -> OpenStmt    {cons("open-stmt")}
@@ -88,11 +94,11 @@ context-free syntax
 %%TODO-DELETE   LblDef 'READ' RdFmtId                      EOS -> ReadStmt   {cons("read-stmt")}
 %%TODO-DELETE   LblDef 'READ' RdFmtId ',' InputItemList    EOS -> ReadStmt   {cons("read-stmt")}
 %%TODO-F08 - change FormatIdentifier to Format
-  LblDef 'READ'  '(' IoControlSpecList ')' InputItemList?  EOS -> ReadStmt   {cons("read-stmt")}
+%%TODO-F08  LblDef 'READ'  '(' IoControlSpecList ')' InputItemList?  EOS -> ReadStmt   {cons("read-stmt")}
   LblDef 'READ' FormatIdentifier      (',' InputItemList)? EOS -> ReadStmt   {cons("read-stmt")}
 
 %%R911
-  LblDef 'WRITE' '(' IoControlSpecList ')' OutputItemList?  EOS -> WriteStmt {cons("write-stmt")}
+  LblDef 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("write-stmt")}
 
 %%R912
   LblDef 'PRINT' FormatIdentifier ( ',' OutputItemList )?   EOS -> PrintStmt {cons("print-stmt")}
@@ -121,20 +127,20 @@ context-free syntax
   'SIZE'         '=' Variable                -> IoControlSpec
 
 %% io-unit and format must be first and second (without {UNIT,FMT}=)
-  UnitIdentifier                             -> IoControlSpecList
-  UnitIdentifier ',' FormatIdentifier        -> IoControlSpecList
-  UnitIdentifier ',' {IoControlSpec ','}+    -> IoControlSpecList
-  UnitIdentifier ',' FormatIdentifier ',' {IoControlSpec ","}+  -> IoControlSpecList
-  {IoControlSpec ","}+                       -> IoControlSpecList
+%%TODO-F08  UnitIdentifier                             -> IoControlSpecList
+%%TODO-F08  UnitIdentifier ',' FormatIdentifier        -> IoControlSpecList
+%%TODO-F08  UnitIdentifier ',' {IoControlSpec ','}+    -> IoControlSpecList
+%%TODO-F08  UnitIdentifier ',' FormatIdentifier ',' {IoControlSpec ","}+  -> IoControlSpecList
+%%TODO-F08  {IoControlSpec ","}+                       -> IoControlSpecList
 
 %%912
   RdUnitId                              -> RdCtlSpec
   '(' RdIoCtlSpecList ')'               -> RdCtlSpec
-  '(' UFExpr ')'                        -> RdUnitId
+%%TODO-F08  '(' UFExpr ')'                        -> RdUnitId
   '(' '*' ')'                           -> RdUnitId
 
-  UnitIdentifier ',' IoControlSpec      -> RdIoCtlSpecList
-  UnitIdentifier ',' FormatIdentifier   -> RdIoCtlSpecList
+%%TODO-F08  UnitIdentifier ',' IoControlSpec      -> RdIoCtlSpecList
+%%TODO-F08  UnitIdentifier ',' FormatIdentifier   -> RdIoCtlSpecList
   IoControlSpec                         -> RdIoCtlSpecList
   RdIoCtlSpecList ',' IoControlSpec     -> RdIoCtlSpecList
 
@@ -142,9 +148,10 @@ context-free syntax
   LblRef                                -> RdFmtId
   '*'                                   -> RdFmtId
   COperand                              -> RdFmtId
-  COperand ConcatOp CPrimary            -> RdFmtId
-  RdFmtIdExpr ConcatOp CPrimary         -> RdFmtId
-  '(' UFExpr ')'                        -> RdFmtIdExpr
+  COperand    '//' CPrimary             -> RdFmtId
+  RdFmtIdExpr '//' CPrimary             -> RdFmtId
+%%TODO-F08  '(' UFExpr ')'                        -> RdFmtIdExpr
+  '(' IntExpr ')'                       -> RdFmtIdExpr
 
 %%914
   LblRef | CExpr | '*'                  -> FormatIdentifier
