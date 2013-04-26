@@ -357,22 +357,22 @@ context-free syntax
 %%TODO-DELETE  SpecificationPartConstruct -> BlockDataBodyConstruct
 
 %%R310
-  PowerOp                       -> IntrinsicOperator     {cons("intrinsic-operator")}
-  MultOp                        -> IntrinsicOperator     {cons("intrinsic-operator")}
-  AddOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
-  ConcatOp                      -> IntrinsicOperator     {cons("intrinsic-operator")}
-  RelOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
-  NotOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
-  AndOp                         -> IntrinsicOperator     {cons("intrinsic-operator")}
-  OrOp                          -> IntrinsicOperator     {cons("intrinsic-operator")}
-  EquivOp                       -> IntrinsicOperator     {cons("intrinsic-operator")}
+    '**'                                                       %% power-op
+  | ('*' | '/')                                                %% mult-op
+  | ('+' | '-')                                                %% add-op
+  | '//'                                                       %% concat-op
+  | ( '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.' |
+      '=='   | '/='   | '<'    | '<='   | '>'    | '>=' )      %% rel-op
+  | '.NOT.'                                                    %% not-op
+  | '.AND.'                                                    %% and-op
+  | '.OR.'                                                     %% or-op
+  | ('.EQV.' | '.NEQV.')                                       %% equiv-op
+                                -> IntrinsicOperator     {cons("intrinsic-operator")}
 
-%%R311
-
-  DefinedUnaryOp                -> DefinedOperator
-  DefinedBinaryOp               -> DefinedOperator
-  ExtendedIntrinsicOp           -> DefinedOperator
+%%R310
+    DefinedUnaryOp
+  | DefinedBinaryOp
+  | ExtendedIntrinsicOp         -> DefinedOperator       {cons("defined-operator")}
 
 %%R312
-
   IntrinsicOperator             -> ExtendedIntrinsicOp
