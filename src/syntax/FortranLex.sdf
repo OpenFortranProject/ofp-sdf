@@ -28,11 +28,13 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
-  Name ArrayName ComponentName GenericName NamelistGroupName TypeName EndName CommonBlockName
+  Name ArrayName BindingName ComponentName GenericName NamelistGroupName TypeName EndName
+  CommonBlockName
   EntryName ExternalName FunctionName ImpliedDoVariable IntrinsicProcedureName ModuleName ObjectName
-  ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
+  ProcedureComponentName ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
   ResultName
 
+  ProcPointerName                     %% R555
   DummyArgName                        %% R1230
 
 lexical syntax
@@ -148,6 +150,7 @@ context-free syntax
 %% Ident Aliasses. TODO: put them in the right modules.
   Ident  -> Name                          {cons("name")}
   Ident  -> ArrayName
+  Ident  -> BindingName
   Ident  -> ComponentName
   Ident  -> DummyArgName                %% R1230
   Ident  -> GenericName
@@ -162,6 +165,8 @@ context-free syntax
   Ident  -> IntrinsicProcedureName
   Ident  -> ModuleName                    {cons("module-name")}
   Ident  -> ObjectName                    {cons("object-name")}
+  Ident  -> ProcedureComponentName
+  Ident  -> ProcPointerName             %% R555
   Ident  -> ProgramName                   {cons("program-name")}
   Ident  -> ResultName
   Ident  -> SFDummyArgName
