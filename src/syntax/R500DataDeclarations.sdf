@@ -115,10 +115,9 @@ context-free syntax
 %% see lexical syntax
 
 %%R505
-%%TODO-F08 first alternative is '=' ConstantExpr
-    ( '='   InitializationExpr )
-  | ( '=>'  NullInit           )
-  | ( '=>'  InitialDataTarget  )                        -> Initialization  {cons("initialization")}
+    ( '='   ConstantExpr      )
+  | ( '=>'  NullInit          )
+  | ( '=>'  InitialDataTarget )                         -> Initialization  {cons("initialization")}
 
 %%R506
   FunctionReference                                     -> NullInit        {cons("NullInit")}
