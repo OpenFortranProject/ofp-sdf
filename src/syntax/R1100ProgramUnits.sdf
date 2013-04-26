@@ -176,14 +176,6 @@ context-free syntax
   | VolatileStmt
   | ValueStmt                                  -> OtherSpecificationStmt  {cons("other-specification-stmt")}
 
-%%R212
-%%TODO-REMOVE  ContainsStmt                         -> ModuleSubprogramPartConstruct
-%%TODO-REMOVE  ModuleSubprogram                     -> ModuleSubprogramPartConstruct
-
-%%R213
-%%TODO-REMOVE  FunctionSubprogram                   -> ModuleSubprogram
-%%TODO-REMOVE  SubroutineSubprogram                 -> ModuleSubprogram
-
 %%R213
 %%       do-construct is problematic because a labeled statement
 %%          may terminate it not necessarily an end-do-stmt.
@@ -296,8 +288,7 @@ context-free syntax
 %%R1108
     FunctionSubprogram
   | SubroutineSubprogram
-%%TODO-F08 | SeparateModuleSubprogram
-                                               -> ModuleSubprogram  {cons("module-subprogram")}
+  | SeparateModuleSubprogram                   -> ModuleSubprogram  {cons("module-subprogram")}
 
 %%R1109
   LblDef 'USE' (("," ModuleNature)? "::")? ModuleName
