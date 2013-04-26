@@ -22,7 +22,6 @@ sorts
   FunctionReference FunctionStmt FunctionSubprogram GenericSpec
   InterfaceBody IntrinsicStmt ProcedureStmt
   ProcedureName ProcedureNameList ReturnStmt %%TODO SFDummyArgNameList 
-  SubroutineRange SubroutineStmt SubroutineSubprogram
 
   InterfaceBlock                      %% R1201
   InterfaceSpecification              %% R1202
@@ -33,7 +32,9 @@ sorts
   Prefix                              %% R1225
   PrefixSpec                          %% R1226
   ProcLanguageBindingSpec             %% R1229
+  SubroutineSubprogram                %% R1230
   Suffix                              %% R1231
+  SubroutineStmt                      %% R1234
   DummyArg                            %% R1235
   EndSubroutineStmt                   %% R1236
   SeparateModuleSubprogram            %% R1237
@@ -48,7 +49,6 @@ sorts
 %%F2008 Experimental
   SubroutineParList
 
-%%TODO SubroutineStmt not used?
 %%TODO StmtFunctionStmt ambiguous obsolescant/deleted
 
 context-free syntax
@@ -212,17 +212,14 @@ context-free syntax
   LblDef 'END' 'FUNCTION' FunctionName?     EOS -> EndFunctionStmt       {cons("end-function-stmt")}
 
 %%R1233
-%%TODO  LblDef 'RECURSIVE'? 'SUBROUTINE' SubroutineName SubroutineRange  -> SubroutineSubprogram
-%%TODO                                                                         {cons("subroutine-subprogram")}
-  SubroutineParList? ProcLanguageBindingSpec?
-                       EOS Body? EndSubroutineStmt                       -> SubroutineRange
-  SubroutineParList? ProcLanguageBindingSpec?
-                       EOS InternalSubprogramPart EndSubroutineStmt      -> SubroutineRange
-%% split subroutineStmt/subroutineSubprogram needed? (ELI legacy)
-
-
-  SubroutineStmt Body? EndSubroutineStmt                                 -> SubroutineSubprogram
-                                                                               {cons("subroutine-subprogram")}
+%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
+  SubroutineStmt
+    SpecificationPart
+    ExecutionPart?
+    InternalSubprogramPart?
+  EndSubroutineStmt                             -> SubroutineSubprogram  {cons("subroutine-subprogram")}
 
 %%1234
   LblDef Prefix? 'SUBROUTINE' SubroutineName
@@ -230,7 +227,6 @@ context-free syntax
             "(" {DummyArg ","}* ")"
              ProcLanguageBindingSpec?
          )?                                    EOS -> SubroutineStmt {cons("subroutine-stmt")}
-  Ident                                            -> SubroutineName {cons("subroutine-name")}
 
 %%R1235
 %%TODO-F08 dummy-arg-name-list
