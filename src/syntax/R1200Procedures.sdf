@@ -33,13 +33,13 @@ sorts
   Prefix                              %% R1225
   PrefixSpec                          %% R1226
   ProcLanguageBindingSpec             %% R1229
+  Suffix                              %% R1231
   DummyArg                            %% R1235
   EndSubroutineStmt                   %% R1236
   SeparateModuleSubprogram            %% R1237
   MpSubprogramStmt                    %% R1238
   EndMpSubprogramStmt                 %% R1239
   EntryStmt                           %% R1240
-
   StmtFunctionStmt                    %% R1243
 
 %%F2008
@@ -202,6 +202,10 @@ context-free syntax
 %%R1229
   LanguageBindingSpec                          -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
 
+%%R1231
+    ( ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')? )
+  | ( 'RESULT' '(' ResultName ')' ProcLanguageBindingSpec?   )  -> Suffix  {cons("suffix")}
+
 %%R1232
 %% endfunction (without spaces) is allowed
   LblDef 'END'                              EOS -> EndFunctionStmt       {cons("end-function-stmt")}
@@ -251,27 +255,16 @@ context-free syntax
     SpecificationPart
     ExecutionPart?
     InternalSubprogramPart?
-  EndMpSubprogramStmt                           -> SeparateModuleSubprogram {cons("separate-module-subprogram")}
+  EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("separate-module-subprogram")}
 
 %%R1238
-%%       Ident substituted for procedure-name
-%%
-  LblDef 'MODULE' 'PROCEDURE' Ident         EOS -> MpSubprogramStmt         {cons("mp-subprogram-stmt")}
+  LblDef 'MODULE' 'PROCEDURE' ProcedureName  EOS -> MpSubprogramStmt         {cons("mp-subprogram-stmt")}
 
 %%R1239
-%%       Ident substituted for procedure-name
-%%
-  LblDef 'END' ('PROCEDURE' Ident?)?        EOS -> EndMpSubprogramStmt      {cons("end-mp-subprogram-stmt")}
+  LblDef 'END' ('PROCEDURE' ProcedureName?)? EOS -> EndMpSubprogramStmt      {cons("end-mp-subprogram-stmt")}
 
 %%R1240
-%%TODO-F08 add suffix
-  LblDef 'ENTRY' EntryName SubroutineParList?
-                           ProcLanguageBindingSpec?                       EOS -> EntryStmt
-                                                                                     {cons("entry-stmt")}
-  LblDef 'ENTRY' EntryName SubroutineParList?
-                           ProcLanguageBindingSpec? 'RESULT' "(" Name ")" EOS -> EntryStmt
-                                                                                     {cons("entry-stmt")}
-
+  LblDef 'ENTRY' EntryName ( '(' {DummyArg ','}* ')' Suffix? )?  EOS -> EntryStmt  {cons("entry-stmt")}
 
 %%R1241
   LblDef 'RETURN' Expr?                     EOS -> ReturnStmt          {cons("return-stmt")}
