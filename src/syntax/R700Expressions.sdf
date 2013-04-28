@@ -126,7 +126,7 @@ context-free syntax
   | FunctionReference
   | TypeParamInquiry
   | TypeParamName
-  '(' Expr ')'                  -> Primary          {cons("primary")}
+  | ( '(' Expr ')' )            -> Primary          {cons("primary")}
 
 %%TODO-DELETE   Scon                          -> Primary          {cons("primary-scon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
@@ -134,7 +134,7 @@ context-free syntax
 %%TODO ???????  ArrayConstructor              -> SFPrimary
 
 %%R702
-  DefinedUnaryOp?   Primary                -> Level1Expr      {cons("level-1-expr")}
+  DefinedUnaryOp? Primary                  -> Level1Expr      {cons("level-1-expr")}
 
 %%R703
   Dop                                      -> DefinedUnaryOp  {cons("defined-unary-op")}
@@ -223,7 +223,7 @@ context-free syntax
 %%  | '.NEQV.'                             -> EquivOp
 
 %%R722
-  ( Expr DefinedBinaryOp)? Level5Expr      -> Expr            {cons("expr")}
+  ( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("expr")}
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("defined-binary-op")}
