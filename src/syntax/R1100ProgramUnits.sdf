@@ -36,19 +36,6 @@ imports R1200Procedures
 exports
 
 sorts
-  CommonBlockName ComponentName DefinedOperator
-  ExtendedIntrinsicOp
-%%TODO   DummyArgName EndName EntryName ArrayName
-%%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
-%%TODO IntrinsicProcedureName  MainProgram
-  ModuleNature %%TODO Name
-%%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
-%%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
-
-%%TODO - replace with above
-  IntrinsicOperator
-  UseStmt UseName
-  BlockDataStmt EndBlockDataStmt BlockDataName
   
   Program                             %% R201
   ProgramUnit                         %% R202
@@ -75,17 +62,20 @@ sorts
   EndModuleStmt                       %% R1106
   ModuleSubprogramPart                %% R1107
   ModuleSubprogram                    %% R1108
-
+  UseStmt                             %% R1109
+  ModuleNature                        %% R1110
   Rename                              %% R1111
   Only                                %% R1112
+                                      %% R1113  OnlyUseName in FortranLex
+  LocalDefinedOperator                %% R1114
+  UseDefinedOperator                  %% R1115
   Submodule                           %% R1116
   SubmoduleStmt                       %% R1117
   ParentIdentifier                    %% R1118
-  SubmoduleName
-  AncestorModuleName
-  ParentSubmoduleName
   EndSubmoduleStmt                    %% R1119
   BlockData                           %% R1120
+  BlockDataStmt                       %% R1121
+  EndBlockDataStmt                    %% R1122
 
 context-free start-symbols 
   Program
@@ -246,16 +236,15 @@ context-free syntax
 %%215
   Name                                 -> Keyword     {cons("keyword")}
 
-%%R215
-%%TODO-REMOVE  Ident '='                     -> KeywordEqual          {cons("keyword-equal")}
-%%TODO-REMOVE  KeywordEqual?                 -> OptKeywordEqual
-
 %%R1101
-%%TODO-F08 try F08 structure
 %%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
 %%TODO-REMOVE  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("main-range")}
 %%TODO-REMOVE  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("main-range")}
 %%TODO-REMOVE  EndProgramStmt                               -> MainRange        {cons("main-range")}
+
+%%TODO-REMOVE  SpecificationPart                            -> BodyConstruct
+%%TODO-REMOVE  ExecutableConstruct                          -> BodyConstruct
+%%TODO-REMOVE  BodyConstruct+                               -> Body
 
 %%R1101
 %%     WARNING-MODIFICATION: 
@@ -268,10 +257,6 @@ context-free syntax
     ExecutionPart
     InternalSubprogramPart?
   EndProgramStmt                               -> MainProgram      {cons("main-program")}
-
-%%TODO-REMOVE  SpecificationPart                            -> BodyConstruct
-%%TODO-REMOVE  ExecutableConstruct                          -> BodyConstruct
-%%TODO-REMOVE  BodyConstruct+                               -> Body
 
 %%R1102
   LblDef 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("program-stmt")}
@@ -322,14 +307,26 @@ context-free syntax
 
 
 %%1111
-%%TODO-F08 - add OPERATORs
-  Ident "=>" UseName                           -> Rename
-
-  Ident                                        -> UseName
+    ( LocalName '=>' UseName                  )
+  | ( 'OPERATOR' '(' LocalDefinedOperator ')'
+                '=>'
+      'OPERATOR' '(' UseDefinedOperator   ')' )  -> Rename      {cons("rename")}
 
 %%R1112
-%%TODO-F08 - add generic-spec, rename and only-use-name
-  UseName                                    -> Only  {cons("only")}
+    GenericSpec
+  | OnlyUseName
+  | Rename                                       -> Only        {cons("only")}
+
+%%R1113
+%%UseName -> OnlyUseName
+
+%%R1114
+    DefinedUnaryOp
+  | DefinedBinaryOp                              -> LocalDefinedOperator  {const("local-defined-operator")}
+
+%%R1115
+    DefinedUnaryOp
+  | DefinedBinaryOp                              -> UseDefinedOperator  {const("use-defined-operator")}
 
 %%R1116
 %%     WARNING-MODIFICATION: 
@@ -347,10 +344,6 @@ context-free syntax
 
 %%R1118
   AncestorModuleName (':' ParentSubmoduleName)?  -> ParentIdentifier  {cons("parent-identifier")}
-
-  Ident                                          -> SubmoduleName        {cons("submodule-name")}
-  Ident                                          -> AncestorModuleName   {cons("ancestor-module-name")}
-  Ident                                          -> ParentSubmoduleName  {cons("parent-submodule-name")}
 
 %%R1119
   LblDef 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
@@ -370,29 +363,3 @@ context-free syntax
 %%R1122
   LblDef 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
   LblDef 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
-
-  Ident -> BlockDataName
-
-%%TODO-DELETE  BlockDataBodyConstruct+ -> BlockDataBody
-%%TODO-DELETE  SpecificationPartConstruct -> BlockDataBodyConstruct
-
-%%R310
-    '**'                                                       %% power-op
-  | ('*' | '/')                                                %% mult-op
-  | ('+' | '-')                                                %% add-op
-  | '//'                                                       %% concat-op
-  | ( '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.' |
-      '=='   | '/='   | '<'    | '<='   | '>'    | '>=' )      %% rel-op
-  | '.NOT.'                                                    %% not-op
-  | '.AND.'                                                    %% and-op
-  | '.OR.'                                                     %% or-op
-  | ('.EQV.' | '.NEQV.')                                       %% equiv-op
-                                -> IntrinsicOperator     {cons("intrinsic-operator")}
-
-%%R310
-    DefinedUnaryOp
-  | DefinedBinaryOp
-  | ExtendedIntrinsicOp         -> DefinedOperator       {cons("defined-operator")}
-
-%%R312
-  IntrinsicOperator             -> ExtendedIntrinsicOp
