@@ -222,7 +222,7 @@ context-free syntax
   | GotoStmt
   | IfStmt
   | InquireStmt
-%%TODO-F08  | LockStmt
+  | LockStmt
   | NullifyStmt
   | OpenStmt
   | PointerAssignmentStmt
@@ -231,10 +231,10 @@ context-free syntax
   | ReturnStmt
   | RewindStmt
   | StopStmt
-%%TODO-F08  | SyncAllStmt
-%%TODO-F08  | SyncImagesStmt
-%%TODO-F08  | SyncMemoryStmt
-%%TODO-F08  | UnlockStmt
+  | SyncAllStmt
+  | SyncImagesStmt
+  | SyncMemoryStmt
+  | UnlockStmt
   | WaitStmt
   | WhereStmt
   | WriteStmt
