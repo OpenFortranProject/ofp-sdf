@@ -36,13 +36,12 @@ imports R1200Procedures
 exports
 
 sorts
-  ArrayName Body
-  BodyConstruct CommonBlockName ComponentName DefinedOperator
+  CommonBlockName ComponentName DefinedOperator
   ExtendedIntrinsicOp
-%%TODO   DummyArgName EndName EntryName
+%%TODO   DummyArgName EndName EntryName ArrayName
 %%TODO ExternalName FunctionName GenericName %%TODO ImpliedDoVariable
 %%TODO IntrinsicProcedureName  MainProgram
-  MainRange ModuleNature %%TODO Name
+  ModuleNature %%TODO Name
 %%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
 %%TODO SpecificationStmt SubroutineName SubroutineNameUse TypeName
 
@@ -97,14 +96,14 @@ context-free syntax
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram
 
 %%R201
-  StartCommentBlock?  ProgramUnit+             -> Program          {cons("program")}
+  StartCommentBlock?  ProgramUnit+             -> Program             {cons("program")}
 
 %%R202
     MainProgram
   | ExternalSubprogram
   | Module
   | Submodule
-  | BlockData                                  -> ProgramUnit      {cons("program-unit")}
+  | BlockData                                  -> ProgramUnit         {cons("program-unit")}
 
 %%R203
     FunctionSubprogram
@@ -124,7 +123,7 @@ context-free syntax
     ImplicitStmt
   | ParameterStmt
   | FormatStmt
-  | EntryStmt                                  -> ImplicitPartStmt      {cons("implicit-part-stmt")}
+  | EntryStmt                                  -> ImplicitPartStmt    {cons("implicit-part-stmt")}
 
 %%R207
     DerivedTypeDef
@@ -136,10 +135,13 @@ context-free syntax
   | ProcedureDeclarationStmt
   | OtherSpecificationStmt
   | TypeDeclarationStmt
-  | StmtFunctionStmt                           -> DeclarationConstruct  {cons("declaration-construct")}
+  | StmtFunctionStmt                           -> DeclarationConstruct    {cons("declaration-construct")}
 
 %%R208
-  ExecutableConstruct ExecutionPartConstruct*  -> ExecutionPart
+%%     WARNING-MODIFICATION: Removed the leading ExecutableConstruct to allow an empty list to
+%%       be an ExecutionPart.  Check order of statements in a separate stage.
+%%
+  ExecutionPartConstruct*                      -> ExecutionPart           {const("execution-part")}
 
 %%R209
     ExecutableConstruct
@@ -250,14 +252,26 @@ context-free syntax
 
 %%R1101
 %%TODO-F08 try F08 structure
-  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
-  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("main-range")}
-  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("main-range")}
-  EndProgramStmt                               -> MainRange        {cons("main-range")}
+%%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
+%%TODO-REMOVE  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("main-range")}
+%%TODO-REMOVE  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("main-range")}
+%%TODO-REMOVE  EndProgramStmt                               -> MainRange        {cons("main-range")}
 
-  SpecificationPart                            -> BodyConstruct
-  ExecutableConstruct                          -> BodyConstruct
-  BodyConstruct+                               -> Body
+%%R1101
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%       ExecutionPart modified so it can be an empty list, thus it is not optional.
+%%
+  ProgramStmt?
+    SpecificationPart
+    ExecutionPart
+    InternalSubprogramPart?
+  EndProgramStmt                               -> MainProgram      {cons("main-program")}
+
+%%TODO-REMOVE  SpecificationPart                            -> BodyConstruct
+%%TODO-REMOVE  ExecutableConstruct                          -> BodyConstruct
+%%TODO-REMOVE  BodyConstruct+                               -> Body
 
 %%R1102
   LblDef 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("program-stmt")}
@@ -266,6 +280,10 @@ context-free syntax
   LblDef 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("end-program-stmt")}
 
 %%R1104
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%
   ModuleStmt
     SpecificationPart
     ModuleSubprogramPart?
@@ -314,7 +332,8 @@ context-free syntax
   UseName                                    -> Only  {cons("only")}
 
 %%R1116
-%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
   SubmoduleStmt
@@ -337,7 +356,8 @@ context-free syntax
   LblDef 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
 
 %%R1120
-%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
   BlockDataStmt
