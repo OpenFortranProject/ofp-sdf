@@ -28,12 +28,16 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
-  Name ArrayName BindingName ComponentName ConstructName DataPointerComponentName
+  Name AncestorModuleName ArrayName BindingName BlockDataName
+  ComponentName ConstructName
+  DataPointerComponentName
   GenericName NamelistGroupName TypeName EndName CommonBlockName
   EntryName ExternalName ForallConstructName
-  FunctionName ImpliedDoVariable IndexName IntrinsicProcedureName ModuleName ObjectName
-  ProcedureComponentName ProgramName SFDummyArgName SubroutineName SubroutineNameUse VariableName
-  ResultName
+  FunctionName ImpliedDoVariable IndexName IntrinsicProcedureName LocalName
+  ModuleName ObjectName OnlyUseName ParentSubmoduleName
+  ProcedureComponentName ProgramName ResultName SubmoduleName SubroutineName
+  SubroutineNameUse VariableName UseName
+  
 
   ProcPointerName                     %% R555
   DummyArgName                        %% R1230
@@ -150,30 +154,36 @@ context-free syntax
 
 %% Ident Aliasses. TODO: put them in the right modules.
   Ident  -> Name                          {cons("name")}
+  Ident  -> AncestorModuleName
   Ident  -> ArrayName
   Ident  -> BindingName
+  Ident  -> BlockDataName
+  Ident  -> CommonBlockName
   Ident  -> ComponentName
   Ident  -> ConstructName
   Ident  -> DataPointerComponentName
   Ident  -> DummyArgName                %% R1230
-  Ident  -> ForallConstructName
-  Ident  -> GenericName
-  Ident  -> IndexName
-  Ident  -> NamelistGroupName
-  Ident  -> TypeName
   Ident  -> EndName
-  Ident  -> CommonBlockName
   Ident  -> EntryName
   Ident  -> ExternalName
+  Ident  -> ForallConstructName
   Ident  -> FunctionName                  {cons("function-name")}
+  Ident  -> GenericName
   Ident  -> ImpliedDoVariable
+  Ident  -> IndexName
   Ident  -> IntrinsicProcedureName
+  Ident  -> LocalName
   Ident  -> ModuleName                    {cons("module-name")}
+  Ident  -> NamelistGroupName
   Ident  -> ObjectName                    {cons("object-name")}
+  Ident  -> OnlyUseName
+  Ident  -> ParentSubmoduleName
   Ident  -> ProcedureComponentName
   Ident  -> ProcPointerName             %% R555
   Ident  -> ProgramName                   {cons("program-name")}
   Ident  -> ResultName
-  Ident  -> SFDummyArgName
+  Ident  -> SubmoduleName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
+  Ident  -> TypeName
+  Ident  -> UseName
