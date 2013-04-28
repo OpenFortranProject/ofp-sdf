@@ -23,6 +23,10 @@ sorts
   Stride
   UnsignedArithmeticConstant
 
+  IntrinsicOperator                   %% R309
+  DefinedOperator                     %% R310
+  ExtendedIntrinsicOp                 %% R311
+
   Primary                             %% R701
   Level1Expr                          %% R702
   DefinedUnaryOp                      %% R703
@@ -117,6 +121,27 @@ context-free syntax
 
 %%108
   '.true.' | '.false.'          -> LogicalConstant
+
+%%R309
+    '**'                                                       %% power-op
+  | ('*' | '/')                                                %% mult-op
+  | ('+' | '-')                                                %% add-op
+  | '//'                                                       %% concat-op
+  | ( '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.' |
+      '=='   | '/='   | '<'    | '<='   | '>'    | '>=' )      %% rel-op
+  | '.NOT.'                                                    %% not-op
+  | '.AND.'                                                    %% and-op
+  | '.OR.'                                                     %% or-op
+  | ('.EQV.' | '.NEQV.')                                       %% equiv-op
+                                -> IntrinsicOperator     {cons("intrinsic-operator")}
+
+%%R310
+    DefinedUnaryOp
+  | DefinedBinaryOp
+  | ExtendedIntrinsicOp         -> DefinedOperator       {cons("defined-operator")}
+
+%%R311
+  IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("extended-intrinsic-op")}
 
 %%R701
     Constant
