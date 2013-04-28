@@ -215,10 +215,10 @@ context-free syntax
 %%TODO-F08  | EndProgramStmt
 %%TODO-F08  | EndSubroutineStmt
   | EndfileStmt
-%%TODO-F08  | ErrorStopStmt
+  | ErrorStopStmt
   | ExitStmt
   | FlushStmt
-%%TODO-F08  | ForallStmt
+  | ForallStmt
   | GotoStmt
   | IfStmt
   | InquireStmt
