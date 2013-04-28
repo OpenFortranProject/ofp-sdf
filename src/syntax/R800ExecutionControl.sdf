@@ -15,17 +15,17 @@ imports
 exports
 
 sorts
-  AllstopStmt ArithmeticIfStmt AssignedGotoStmt AssignStmt AssociateName
+  ArithmeticIfStmt AssignedGotoStmt AssignStmt AssociateName
   AssociateConstruct AssociateStmt Association Block
   CaseBodyConstruct CaseConstruct CaseSelector CaseStmt CaseValueRange
-  ContinueStmt CycleStmt DoBlock DoConstructName DoVariable
+  CycleStmt DoBlock DoConstructName DoVariable
   ElseIfStmt
   ElseStmt EndAssociateStmt EndDoStmt EndIfStmt EndSelectStmt EndSelectTypeStmt
   IfConstruct  IfConstructName IfStmt IfThenStmt LabelDoStmt
   LblRef LoopControl OptAssociateConstructName OptAssociateConstructNameColon
   OptAssociateName OptSelectConstructName OptSelectConstructNameColon PauseStmt
   ScalarLogicalExpr SelectCaseBody SelectCaseRange
-  Selector SelectTypeConstruct SelectTypeStmt StopStmt
+  Selector SelectTypeConstruct SelectTypeStmt
   TypeGuardConstruct TypeGuardStmt
 
   NonlabelDoStmt DoStmt
@@ -41,6 +41,9 @@ sorts
   GotoStmt                            %% R851
   ComputedGotoStmt                    %% R852
 
+  ContinueStmt                        %% R854
+  StopStmt                            %% R855
+  ErrorStopStmt                       %% R856
   StopCode                            %% R857
   SyncAllStmt                         %% R858
   SyncStat                            %% R859
@@ -274,10 +277,10 @@ context-free syntax
   LblDef 'CONTINUE'                            EOS -> ContinueStmt {cons("continue-stmt")}
 
 %%R855
-  LblDef       'STOP' StopCode?                EOS -> StopStmt     {cons("stop-stmt")}
+  LblDef         'STOP' StopCode?              EOS -> StopStmt     {cons("stop-stmt")}
 
 %%R856
-  LblDef 'ALL' 'STOP' StopCode?                EOS -> AllstopStmt  {cons("allstop-stmt")}
+  LblDef 'ERROR' 'STOP' StopCode?              EOS -> ErrorStopStmt  {cons("error-stop-stmt")}
 
 %%R857
 %%        Scon substituted for scalar-default-char-constant-expt
