@@ -79,7 +79,8 @@ context-free syntax
   LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
 
 %%R1205
-%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
     (FunctionStmt   SpecificationPart EndFunctionStmt  )
@@ -187,12 +188,14 @@ context-free syntax
   | 'RECURSIVE'                                        -> PrefixSpec  {cons("prefix-spec")}
 
 %%R1227
-%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
+%%       ExecutionPart modified so it can be an empty list, thus it is not optional.
 %%
   FunctionStmt
     SpecificationPart
-    ExecutionPart?
+    ExecutionPart
     InternalSubprogramPart?
   EndFunctionStmt                                      -> FunctionSubprogram  {cons("function-subprogram")}
 
@@ -211,12 +214,14 @@ context-free syntax
   LblDef 'END' ('FUNCTION' FunctionName?)?  EOS -> EndFunctionStmt         {cons("end-function-stmt")}
 
 %%R1233
-%%       The optional specification-part is ambiguous.  The lack of a specification-part
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
+%%       ExecutionPart modified so it can be an empty list, thus it is not optional.
 %%
   SubroutineStmt
     SpecificationPart
-    ExecutionPart?
+    ExecutionPart
     InternalSubprogramPart?
   EndSubroutineStmt                             -> SubroutineSubprogram  {cons("subroutine-subprogram")}
 
@@ -239,9 +244,14 @@ context-free syntax
   LblDef 'END' ('SUBROUTINE' SubroutineName?)?   EOS -> EndSubroutineStmt   {cons("end-subroutine-stmt")}
 
 %%R1237
+%%     WARNING-MODIFICATION: 
+%%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
+%%       is detectable from an empty list and None components in the specification-part ATerm.
+%%       ExecutionPart modified so it can be an empty list, thus it is not optional.
+%%
   MpSubprogramStmt
     SpecificationPart
-    ExecutionPart?
+    ExecutionPart
     InternalSubprogramPart?
   EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("separate-module-subprogram")}
 
