@@ -23,14 +23,14 @@ module R1100ProgramUnits
 %%imports languages/fortran/syntax/R1200Procedures
 
 imports FortranLex
-%%TODO imports R400DataTypes
+imports R400DataTypes
 imports R500DataDeclarations
-%%TODO imports R600UseDataObjects
-%%TODO imports R700Expressions
+imports R600UseDataObjects
+imports R700Expressions
 imports R800ExecutionControl
 imports R900IOStatements
 imports R1000_IOEditing
-%%TODO imports R1100ProgramUnits
+imports R1100ProgramUnits
 imports R1200Procedures
 
 exports
