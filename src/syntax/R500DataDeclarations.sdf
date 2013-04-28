@@ -30,15 +30,15 @@ sorts
   DummyArgNameList
   EquivalenceObject EquivalenceSet EquivalenceSetList EquivalenceStmt
   EntityName
-  ExplicitShapeSpec ExplicitShapeSpecList ImplicitSpec ImplicitSpecList ImplicitStmt
+  ImplicitSpec ImplicitSpecList ImplicitStmt
   IntentSpec IntentStmt
-  LetterSpec LetterSpecList LowerBound NamedConstant NamedConstantDef NamedConstantDefList
+  LetterSpec LetterSpecList NamedConstant NamedConstantDef NamedConstantDefList
 %%TODO   NamedConstantUse
   NamelistGroup NamelistGroupObject NamelistGroupObjectList NamelistStmt
   ObjectNameList OptionalStmt ParameterStmt PointerStmt
   PointerDecl PointerDeclList SavedEntity SavedEntityList SaveStmt
   TargetDecl TargetDeclList TargetStmt TypeParamValue
-  UpperBound ValueStmt VolatileStmt
+  ValueStmt VolatileStmt
 
 %%TODO - replace with above
   DataIDoObject DataIDoObjectList DataImpliedDo DataStmtConstant DataStmtRepeat
@@ -57,6 +57,12 @@ sorts
   DeferredCoshapeSpec                 %% R510
   ExplicitCoshapeSpec                 %% R511
   
+  ExplicitShapeSpec                   %% R516
+  LowerBound                          %% R517
+  UpperBound                          %% R518
+
+  ImpliedShapeSpec                    %% R522
+
   CodimensionStmt                     %% R531
   CodimensionDecl                     %% R532
 
@@ -144,41 +150,41 @@ context-free syntax
 %%TODO-F08 lower-cobound : ....
   '*'                                  -> ExplicitCoshapeSpec  {cons("explicit-coshape-spec")}
 
-%%R510
-%%TODO-F08 - fix assumed-rank-spec
-    '..'
-  | AssumedShapeSpecList
-  | DeferredShapeSpecList
-  | ExplicitShapeSpecList
-  | AssumedSizeSpec                    -> ArraySpec            {cons("array-spec")}
-
 %%R511
 %%TODO-F08 co-array-spec
 
-%%R512
-  {ExplicitShapeSpec ","}+                      -> ExplicitShapeSpecList
-  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec
-
-%%R513
-  SpecificationExpr                             -> LowerBound
-
-%%R514
-  SpecificationExpr                             -> UpperBound
+%%R515
+%%TODO-F08 - fix assumed-rank-spec
+    ( {ExplicitShapeSpec ','}+ )
+  | AssumedShapeSpecList
+  | DeferredShapeSpecList
+  | AssumedSizeSpec
+  | '..'                               -> ArraySpec            {cons("array-spec")}
 
 %%R516
+  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec  {cons("explicit-shape-spec")}
+
+%%R517
+  SpecificationExpr                             -> LowerBound         {cons("lower-bound")}
+
+%%R518
+  SpecificationExpr                             -> UpperBound         {cons("upper-bound")}
+
+%%R519
   LowerBound? ':'                               -> AssumedShapeSpec
   LowerBound ':'                                -> AssumedShapeSpecList
   DeferredShapeSpecList ',' LowerBound ':'      -> AssumedShapeSpecList
   AssumedShapeSpecList ',' AssumedShapeSpec     -> AssumedShapeSpecList
 
-%%R517
-  {DeferredShapeSpec ","}+                      -> DeferredShapeSpecList
-  ':'                                           -> DeferredShapeSpec
+%%R520
+  ':'                                           -> DeferredShapeSpec  {cons("deferred-shape-spec")}
+  {DeferredShapeSpec ','}+                      -> DeferredShapeSpecList
 
-%%R518
-  (LowerBound ':')? '*'                         -> AssumedSizeSpec
-  ExplicitShapeSpecList ',' '*'                 -> AssumedSizeSpec
-  ExplicitShapeSpecList ',' LowerBound ':' '*'  -> AssumedSizeSpec
+%%R521
+  (ExplicitShapeSpec ',')* (LowerBound ':')? '*'  -> AssumedSizeSpec  {cons("assumed-size-spec")}
+
+%%R522
+  (LowerBound ':')? '*'                         -> ImpliedShapeSpec   {cons("implied-shape-spec")}
 
 %%R523
     'IN'
