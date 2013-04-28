@@ -23,32 +23,17 @@ module Fortran
 %%imports languages/fortran/syntax/R1200Procedures
 
 imports FortranLex
-%%TODO imports R400DataTypes
+imports R400DataTypes
 imports R500DataDeclarations
-%%TODO imports R600UseDataObjects
-%%TODO imports R700Expressions
-%%TODO imports R800ExecutionControl
+imports R600UseDataObjects
+imports R700Expressions
+imports R800ExecutionControl
 imports R900IOStatements
 imports R1000_IOEditing
 imports R1100ProgramUnits
-%%TODO imports R1200Procedures
+imports R1200Procedures
 
 exports
-
-sorts
-  ActionStmt ArrayName Body
-%%TODO   BodyConstruct CommonBlockName ComponentName DeclarationConstruct DefinedOperator
-%%TODO   DummyArgName EndName EntryName ExecutableConstruct ExecutableProgram
-  ExecutionPartConstruct %%TODO ExternalName FunctionName GenericName ImpliedDoVariable
-%%TODO   InternalSubProgPart InternalSubprogram IntrinsicProcedureName  MainProgram
-%%TODO   MainRange  ModuleSubprogram ModuleSubprogramPartConstruct Name
-%%TODO   NamelistGroupName ObjectName ProgramName ProgramUnit SFDummyArgName
-%%TODO   SpecificationPartConstruct SpecificationStmt SubroutineName SubroutineNameUse TypeName
-%%TODO   VariableName   
-  
-%%TODO - replace with above
-  DefinedOperator
-  ExecutableConstruct
 
 context-free start-symbols 
   Program
