@@ -77,18 +77,19 @@ context-free syntax
 %%TODO-DELETE   Icon '_' Scon                         -> Constant
 %%TODO-DELETE   NamedConstantUse '_' Scon             -> Constant
 
-  LiteralConstant                       -> Constant         {cons("constant")}
-  NamedConstant                         -> Constant         {cons("constant")}
+%%R304
+    LiteralConstant
+  | NamedConstant                       -> Constant         {cons("constant")}
 
   Constant                              -> ScalarConstant
 
-%%R306
-  IntLiteralConstant                    -> LiteralConstant
-  RealLiteralConstant                   -> LiteralConstant
-  ComplexLiteralConstant                -> LiteralConstant
-  LogicalLiteralConstant                -> LiteralConstant
-  CharLiteralConstant                   -> LiteralConstant
-  BozLiteralConstant                    -> LiteralConstant
+%%R305
+    IntLiteralConstant
+  | RealLiteralConstant
+  | ComplexLiteralConstant
+  | LogicalLiteralConstant
+  | CharLiteralConstant
+  | BozLiteralConstant                  -> LiteralConstant  {cons("literal-constant")}
 
 %%R307
   Name                                  -> NamedConstant    {cons("named-constant")}
@@ -138,10 +139,10 @@ context-free syntax
   | ( '*' Icon                              )     -> KindSelector  {cons("kind-selector")}
 
 %%406
-  Sign? IntLiteralConstant            -> SignedIntLiteralConstant
+  Sign? IntLiteralConstant            -> SignedIntLiteralConstant  {cons("signed-int-literal-constant")}
 
 %%R407
-  DigitString ("_" KindParam)?        -> IntLiteralConstant
+  DigitString ("_" KindParam)?        -> IntLiteralConstant  {cons("int-literal-constant")}
 
 %%R408
     DigitString
@@ -296,8 +297,8 @@ context-free syntax
   {ComponentDecl ","}+                                               -> ComponentDeclList
 
 %%R444
-  ExplicitShapeSpecList                                 -> ComponentArraySpec
-  DeferredShapeSpecList                                 -> ComponentArraySpec
+    ( {ExplicitShapeSpec ','}+ )
+  | ( {DeferredShapeSpec ','}+ )                        -> ComponentArraySpec  {cons("component-array-spec")}
 
 %%R445
 %%TODO-F08 proc-component-def-stmt
