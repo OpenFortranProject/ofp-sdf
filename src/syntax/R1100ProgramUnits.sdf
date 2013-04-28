@@ -116,8 +116,7 @@ context-free syntax
   DeclarationConstruct*                        -> SpecificationPart   {cons("specification-part")}
 
 %%R205
-%%TODO-F2008 implement implicit-part by ignoring order and fix order in rewrite
-  ImplicitPartStmt* ImplicitStmt               -> ImplicitPart  {cons("implicit-part")}
+  ImplicitPartStmt* ImplicitStmt               -> ImplicitPart        {cons("implicit-part")}
 
 %%R206
     ImplicitStmt
@@ -138,7 +137,8 @@ context-free syntax
   | StmtFunctionStmt                           -> DeclarationConstruct    {cons("declaration-construct")}
 
 %%R208
-%%     WARNING-MODIFICATION: Removed the leading ExecutableConstruct to allow an empty list to
+%%     WARNING-MODIFICATION:
+%%       Removed the leading ExecutableConstruct to allow an empty list to
 %%       be an ExecutionPart.  Check order of statements in a separate stage.
 %%
   ExecutionPartConstruct*                      -> ExecutionPart           {const("execution-part")}
@@ -179,10 +179,10 @@ context-free syntax
   | ValueStmt                                  -> OtherSpecificationStmt  {cons("other-specification-stmt")}
 
 %%R213
-%%       do-construct is problematic because a labeled statement
-%%          may terminate it not necessarily an end-do-stmt.
-%%          Replace by do-stmt and end-do-stmt and resolve
-%%          the construct end at a latter stage.
+%%     WARNING-MODIFICATION:
+%%       do-construct is problematic because a labeled statement may terminate it
+%%          not necessarily an end-do-stmt.  Replace by do-stmt and end-do-stmt and
+%%          resolve the construct end at a latter stage.
 %%
     ActionStmt
   | AssociateConstruct
@@ -212,10 +212,10 @@ context-free syntax
   | ContinueStmt
   | CycleStmt
   | DeallocateStmt
-%%TODO-F08  | EndFunctionStmt
-%%TODO-F08  | EndMpSubprogramStmt
-%%TODO-F08  | EndProgramStmt
-%%TODO-F08  | EndSubroutineStmt
+  | EndFunctionStmt
+  | EndMpSubprogramStmt
+  | EndProgramStmt
+  | EndSubroutineStmt
   | EndfileStmt
   | ErrorStopStmt
   | ExitStmt
