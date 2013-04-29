@@ -24,19 +24,29 @@ sorts
   ImageSelector IntVariable
   LogicalVariable
   NullifyStmt
-  ParentString PartName
+  PartName
   PointerObject PointerObjectList
   ScalarDefaultCharVariable ScalarIntVariable ScalarStructureComponent
   ScalarVariable ScalarVariableName
   SectionSubscript SectionSubscriptList SourceExpr StatVariable
   StructureComponent Subscript
-  SubscriptTriplet Substring SubstringRange
+  SubscriptTriplet
   Variable VectorSubscript
 
   Designator                          %% R601
+
+%% Scalars
+
+  Substring                           %% R608
+  ParentString                        %% R609
+  SubstringRange                      %% R610
+
+  CoindexedNamedObject                %% R614
   TypeParamInquiry                    %% R616
   LowerBoundExpr                      %% R634
   UpperBoundExpr                      %% R635
+
+
 
 
 context-free syntax
@@ -90,14 +100,21 @@ context-free syntax
 %%608
   Variable           -> IntVariable
 
-%%609
+
+%% 6.4 Scalars
+%%
+
+%%608
   ParentString '(' SubstringRange ')'  -> Substring        {cons("substring")}
 
-%%610
-  ScalarVariableName                   -> ParentString
-  ArrayElement                         -> ParentString
-  ScalarStructureComponent             -> ParentString
-  ScalarConstant                       -> ParentString
+%%609
+%%      constant substituted for scalar-constant
+%%
+    ScalarVariableName
+  | ArrayElement
+  | CoindexedNamedObject
+  | ScalarStructureComponent
+  | Constant                           -> ParentString     {cons("parent-string")}
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -128,6 +145,9 @@ context-free syntax
 %%PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
 %%PartName   '(' SectionSubscriptList ')'
 %%         ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
+
+%%R614
+  DataRef                                                       -> CoindexedNamedObject {const("coindexed-named-object")}
 
 %%R614
   DataRef                                                       -> StructureComponent
