@@ -28,17 +28,19 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
-  Name AncestorModuleName ArrayName BindingName BlockDataName
+  Name
+  AncestorModuleName ArgName ArrayName BindingName BlockDataName
   ComponentName ConstructName
   DataPointerComponentName
   GenericName NamelistGroupName TypeName EndName CommonBlockName
-  EntryName ExternalName ForallConstructName
+  EntryName ExternalName FinalSubroutineName ForallConstructName
   FunctionName ImpliedDoVariable ImportName
   IndexName InterfaceName IntrinsicProcedureName LocalName
-  ModuleName ObjectName OnlyUseName ParentSubmoduleName ProcedureName
+  ModuleName ObjectName OnlyUseName ParentSubmoduleName
+  ParentTypeName ProcedureName
   ProcedureComponentName ProcedureEntityName
-  ProgramName ResultName SubmoduleName SubroutineName
-  SubroutineNameUse VariableName UseName
+  ProgramName ResultName ScalarIntConstantName SubmoduleName SubroutineName
+  SubroutineNameUse TypeParamName VariableName UseName
   
 
   ProcPointerName                     %% R555
@@ -157,6 +159,7 @@ context-free syntax
 %% Ident Aliasses. TODO: put them in the right modules.
   Ident  -> Name                          {cons("name")}
   Ident  -> AncestorModuleName
+  Ident  -> ArgName
   Ident  -> ArrayName
   Ident  -> BindingName
   Ident  -> BlockDataName
@@ -168,6 +171,7 @@ context-free syntax
   Ident  -> EndName
   Ident  -> EntryName
   Ident  -> ExternalName
+  Ident  -> FinalSubroutineName
   Ident  -> ForallConstructName
   Ident  -> FunctionName                  {cons("function-name")}
   Ident  -> GenericName
@@ -182,14 +186,17 @@ context-free syntax
   Ident  -> ObjectName                    {cons("object-name")}
   Ident  -> OnlyUseName
   Ident  -> ParentSubmoduleName
+  Ident  -> ParentTypeName
   Ident  -> ProcedureComponentName
   Ident  -> ProcedureEntityName
   Ident  -> ProcedureName
   Ident  -> ProcPointerName             %% R555
   Ident  -> ProgramName                   {cons("program-name")}
   Ident  -> ResultName
+  Ident  -> ScalarIntConstantName
   Ident  -> SubmoduleName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
   Ident  -> TypeName
+  Ident  -> TypeParamName
   Ident  -> UseName
