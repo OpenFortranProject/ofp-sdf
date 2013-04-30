@@ -322,7 +322,9 @@ context-free syntax
                    (',' {SyncStat ','}+ )? ')' EOS -> UnlockStmt      {const("unlock-stmt")}
 
 %%866
-  ScalarVariable                                   -> LockVariable    {const("lock-variable")}
+%%          variable substituted for scalar-variable
+%%
+  Variable                                         -> LockVariable    {const("lock-variable")}
 
 %% Deleted Feature
 %%
