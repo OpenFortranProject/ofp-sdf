@@ -15,63 +15,102 @@ imports
 exports
 
 sorts
-  AllocatedShape AllocateObject AllocateObjectList AllocateShapeSpec AllocateStmt
-  Allocation AllocationList AllocOpt AllocOptList
-  ArrayElement ArraySection ArraySelector
-  CharVariable CoSubscript CoSubscriptList
-  DataRef DeallocateStmt DeallocOpt DeallocOptList
-  DefaultCharVariable DefaultLogicalVariable ErrmsgVariable
-  ImageSelector IntVariable
-  LogicalVariable
-  NullifyStmt
-  PartName
-  PointerObject PointerObjectList
-  ScalarDefaultCharVariable ScalarIntVariable ScalarStructureComponent
-  ScalarVariable ScalarVariableName
-  SectionSubscript SectionSubscriptList SourceExpr StatVariable
-  StructureComponent Subscript
-  SubscriptTriplet
-  Variable VectorSubscript
+
+%% 6.1 Designator
 
   Designator                          %% R601
 
-%% Scalars
+%% 6.2 Variable
+
+  Variable                            %% R602
+                                      %% R603  VariableName - lex
+  LogicalVariable                     %% R604
+  CharVariable                        %% R605
+  DefaultCharVariable                 %% R606
+  IntVariable                         %% R607
+  
+%% 6.4 Scalars
 
   Substring                           %% R608
   ParentString                        %% R609
   SubstringRange                      %% R610
 
+  DataRef                             %% R611
+  PartRef                             %% R612
+  StructureComponent                  %% R613
   CoindexedNamedObject                %% R614
+  ComplexPartDesignator               %% R615
   TypeParamInquiry                    %% R616
+
+%% 6.5 Arrays
+
+  ArrayElement                        %% R617
+  ArraySection                        %% R618
+  Subscript                           %% R619
+  SectionSubscript                    %% R620
+  SubscriptTriplet                    %% R621
+  Stride                              %% R622
+  VectorSubscript                     %% R623
+
+%% 6.6 Image selectors
+
+  ImageSelector                       %% R624
+  Cosubscript                         %% R625
+
+%% 6.7 Dynamic association
+
+  AllocateStmt                        %% R626
+  AllocOpt                            %% R627
+  StatVariable                        %% R628
+  ErrmsgVariable                      %% R629
+                                      %% R630  SourceExpr
+  Allocation                          %% R631
+  AllocateObject                      %% R632
+  AllocateShapeSpec                   %% R633
   LowerBoundExpr                      %% R634
   UpperBoundExpr                      %% R635
-
-
+  AllocateCoarraySpec                 %% R636
+  AllocateCoshapeSpec                 %% R637
+  NullifyStmt                         %% R638
+  PointerObject                       %% R639
+  DeallocateStmt                      %% R640
+  DeallocOpt                          %% R641
 
 
 context-free syntax
 
+
+%% 6.1 Designator
+%%
+
 %%R601
-%%AMB  ObjectName            -> Designator        %% R613 part-name -> part-ref -> data-ref
-%%AMB  ArrayElement          -> Designator        %% R617 is data-ref
-%%AMB  ArraySection          -> Designator        %% R618 is data-ref [ (substring-range) ] 
-%%AMB  ComplexPartDesignator -> Designator        %% R615 is designator % ('RE' | 'IM') -> data-ref
-%%AMB  StructureComponent    -> Designator        %% R614 is data-ref
-%%AMB  Substring             -> Designator        %% R609 is data-ref '(' substring-range ')'
-%% the above reduces to
-  ObjectName                           -> Designator   {cons("designator")}
-  DataRef                              -> Designator   {cons("designator")}
-  Substring                            -> Designator   {cons("designator")}
+%%          AMB  ObjectName                    %% R613 part-name -> part-ref -> data-ref
+%%          AMB  ArrayElement                  %% R617 is data-ref
+%%          AMB  ArraySection                  %% R618 is data-ref [ (substring-range) ] 
+%%               CoindexedNamedObject
+%%          AMB  ComplexPartDesignator         %% R615 is designator % ('RE' | 'IM') -> data-ref
+%%          AMB  StructureComponent            %% R614 is data-ref
+%%          AMB  Substring                     %% R609 is data-ref '(' substring-range ')'
+%%
+%%      the above reduces to
+%%
+    ObjectName
+  | CoindexedNamedObject
+  | DataRef
+  | Substring                          -> Designator   {cons("designator")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
 
 %%TODO-F08 CharLiteralConstant '(' substring_range ')'  -> Designator  %% from OFP ANTLR grammar
 
+
+%% 6.2 Variable
+%%
+
 %%R602
-  Designator                           -> Variable     {cons("variable")}
-%%AMB Expr                             -> Variable          %% expr shall be a func ref with pointer result
-  Variable                             -> ScalarVariable
+  Designator                           -> Variable  {cons("variable")}
+%%AMB Expr                             -> Variable  %% expr shall be a func ref with pointer result
 
 %%R602
 %%TODO-AMB   VariableName | ArrayElement                                   -> ScalarVariable
@@ -82,22 +121,18 @@ context-free syntax
 %%TODO-AMB   Expr                                                          -> Subscript
 
 %%R603
-  Name               -> VariableName
-  VariableName       -> ScalarVariableName
+%% VariableName
 
 %%R604
   Variable           -> LogicalVariable
 
-%%R605
-  Variable           -> DefaultLogicalVariable
-
-%%606
+%%605
   Variable           -> CharVariable
 
-%%607
+%%R606
   Variable           -> DefaultCharVariable
 
-%%608
+%%607
   Variable           -> IntVariable
 
 
@@ -109,11 +144,12 @@ context-free syntax
 
 %%609
 %%      constant substituted for scalar-constant
+%%      structure-component substituted for scalar-structure-component
 %%
     ScalarVariableName
   | ArrayElement
   | CoindexedNamedObject
-  | ScalarStructureComponent
+  | StructureComponent
   | Constant                           -> ParentString     {cons("parent-string")}
 
 %%R610
@@ -121,169 +157,163 @@ context-free syntax
 %%
   IntExpr? ':' IntExpr?                -> SubstringRange   {cons("substring-range")}
 
-%%R609
-%%R610
 %%R611
-%%TODO-DELETE   '(' SubscriptTriplet ')'                        -> SubstringRange
-
-%%R612
+%%TODO - is the following still true?
 %%AMBibuous with part-ref ambiguous with name
 %%{PartRef "%"}+                                                -> DataRef   {cons("data-ref")}
 %%Name                                                          -> DataRef   {reject}
+%%
+%%REMOVE  PartName '%' PartName                                         -> DataRef   {cons("data-ref")}
+%%REMOVE  DataRef  '%' PartName                                         -> DataRef   {cons("data-ref")}
+%%REMOVE  PartName ArraySelector                                        -> DataRef   {cons("data-ref")}
+%%REMOVE  DataRef  ArraySelector                                        -> DataRef   {cons("data-ref")}
 
-  PartName '%' PartName                                         -> DataRef   {cons("data-ref")}
-  DataRef  '%' PartName                                         -> DataRef   {cons("data-ref")}
-  PartName ArraySelector                                        -> DataRef   {cons("data-ref")}
-  DataRef  ArraySelector                                        -> DataRef   {cons("data-ref")}
+%%R611
+  PartRef {'%' PartRef}*                                 -> DataRef   {cons("data-ref")}
 
-  Name                                                          -> PartName
+%%R612 part-ref
+%%REMOVE PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
+%%REMOVE PartName   '(' SectionSubscriptList ')'
+%%REMOVE         ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
 
-  "(" SectionSubscriptList ")" ImageSelector?                   -> ArraySelector
-                               ImageSelector                    -> ArraySelector
+%%R612
+  PartName ( '(' {SectionSubscript ','}+ ')' )?
+           ( '[' {SectionSubscript ','}+ ']' )?          -> PartRef   {cons("part-ref")}
 
-%%R613 part-ref
-%%PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
-%%PartName   '(' SectionSubscriptList ')'
-%%         ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("part-ref")}
+%%R613
+  DataRef                                                -> StructureComponent  {cons("structure-component")}
 
 %%R614
-  DataRef                                                       -> CoindexedNamedObject {const("coindexed-named-object")}
-
-%%R614
-  DataRef                                                       -> StructureComponent
-%%TODO-DELETE   VariableName FieldSelector                                    -> StructureComponent
-%%TODO-DELETE   StructureComponent FieldSelector                              -> StructureComponent
-%%TODO-DELETE   '(' SectionSubscriptList ')' '%' Name                         -> FieldSelector
-%%TODO-DELETE   '%' Name                                                      -> FieldSelector
-
-  StructureComponent                                            -> ScalarStructureComponent
+  DataRef                                                -> CoindexedNamedObject {cons("coindexed-named-object")}
 
 %%R615
-%%TODO-F08   Designator '%' 'RE'                                -> ComplexPartDesignator
-%%TODO-F08   Designator '%' 'IM'                                -> ComplexPartDesignator
+    ( Designator '%' 'RE' )
+  | ( Designator '%' 'IM' )                              -> ComplexPartDesignator {cons("complex-part-designator")}
 
 %%R616
-  Designator '%' TypeParamName                                  -> TypeParamInquiry
+  Designator '%' TypeParamName                           -> TypeParamInquiry     {cons("type-param-inquiry")}
+
+
+%% 6.5 Arrays
+%%
 
 %%R617
-  DataRef                                                       -> ArrayElement
-%%TODO-DELETE   StructureComponent '(' SectionSubscriptList ')' -> ArrayElement
-%%TODO-DELETE   VariableName '(' SectionSubscriptList ')'       -> ArrayElement
+  DataRef                                                -> ArrayElement         {cons("array-element")}
 
 %%R618
-  DataRef ( '(' SubstringRange ')' )?                           -> ArraySection
-%%TODO-F08   ComplexPartDesignator                              -> ArraySection
+    DataRef ( ('(' SubstringRange ')')? )
+  | ComplexPartDesignator                                -> ArraySection         {cons("array-section")}
 
-%%619
+%%R619
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                       -> Subscript             {cons("subscript")}
+  IntExpr                                                -> Subscript            {cons("subscript")}
 
-%%620
-  Subscript                                                     -> SectionSubscript
-  SubscriptTriplet                                              -> SectionSubscript
-  %%VectorSubscript                                             -> SectionSubscript      %%AMB with subscript
-  {SectionSubscript ','}+                                       -> SectionSubscriptList  {cons("section-subscript-list")}
+%%R620
+    Subscript
+  | SubscriptTriplet
+%%| VectorSubscript     %%AMB with subscript
+                                                         -> SectionSubscript     {cons("section-subscript")}
 
 %%R621
-  Subscript? ':' Subscript? (':' Stride)?                       -> SubscriptTriplet
+  Subscript? ':' Subscript? (':' Stride)?                -> SubscriptTriplet     {cons("subscript-triplet")}
 
 %%R622
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                       -> Stride
+  IntExpr                                                -> Stride               {cons("stride")}
 
 %%R623
-  IntExpr                                                       -> VectorSubscript
+  IntExpr                                                -> VectorSubscript      {cons("vector-subscript")}
 
-%%624
-  '[' CoSubscriptList ']'                                       -> ImageSelector  {cons("image-selector")}
+
+%% 6.6 Image selectors
+%%
+
+%%R624
+  '[' {Cosubscript ','}+ ']'                             -> ImageSelector        {cons("image-selector")}
 
 %%625
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                       -> CoSubscript    {cons("cosubscript")}
-  {CoSubscript ','}+                                            -> CoSubscriptList
+  IntExpr                                                -> Cosubscript          {cons("cosubscript")}
+
+
+%% 6.7 Dynamic association
+%%
 
 %%R626
-  LblDef 'ALLOCATE' '(' (TypeSpec '::')? 
-                    AllocationList (',' AllocOptList)? ')'  EOS -> AllocateStmt  {cons("allocate-stmt")}
+  LblDef 'ALLOCATE'
+           '(' (TypeSpec '::')?
+                    {Allocation ','}+
+               (',' {AllocOpt   ','}+)?
+           ')'                                       EOS -> AllocateStmt         {cons("allocate-stmt")}
 
 %%R627
-  'ERRMSG' '=' ErrmsgVariable                                   -> AllocOpt
-  'MOLD'   '=' SourceExpr                                       -> AllocOpt
-  'SOURCE' '=' SourceExpr                                       -> AllocOpt
-  'STAT'   '=' StatVariable                                     -> AllocOpt
-  {AllocOpt ','}+                                               -> AllocOptList
+%%      expr substituted for source-expr
+%%
+    ( 'ERRMSG' '=' ErrmsgVariable )
+  | ( 'MOLD'   '=' Expr           )
+  | ( 'SOURCE' '=' Expr           )
+  | ( 'STAT'   '=' StatVariable   )                      -> AllocOpt             {cons("alloc-opt")}
 
 %%R628
-  ScalarIntVariable                                             -> StatVariable
-  ScalarVariable                                                -> ScalarIntVariable %%TODO-FIXME
+%%     int-variable substituted for scalar-int-variable
+%%
+  IntVariable                                            -> StatVariable         {cons("stat-variable")}
 
-%%R620
-  ScalarDefaultCharVariable                                     -> ErrmsgVariable
-  ScalarVariable                                                -> ScalarDefaultCharVariable %%TODO-FIXME
+%%R629
+%%     default-char-variable substituted for scalar-default-char-variable
+%%
+  DefaultCharVariable                                    -> ErrmsgVariable       {cons("errmsg-variable")}
 
 %%R630
-  Expr                                                          -> SourceExpr
-
-%%R623 chain rule deleted
+%% SourceExpr
 
 %%R631
-%%TODO-F08 allocate-co-array-spec
-   {Allocation ","}+                            -> AllocationList
-   AllocateObject AllocatedShape?               -> Allocation
-   '(' SectionSubscriptList ')'                 -> AllocatedShape
-%%/* From ELI: Need to use SectionSubscriptList here to solve an LALR(1) conflict with the
-%% * FieldSelector in R625.  (Can't tell which we have until the character
-%% * following the right paren, but we must reduce WITHIN the parens.)
-%% */
+   AllocateObject
+        ( '(' {AllocateShapeSpec ','}+ ')' )?
+        ( '[' AllocateCoarraySpec      ']' )?            -> Allocation           {cons("allocation")}
 
 %%R632
-%%VariableName                                  -> AllocateObject      {cons("allocate-object")}
-  Name                                  -> AllocateObject      {cons("allocate-object")}
-  StructureComponent                            -> AllocateObject      {cons("allocate-object")}
-%%TODO-DELETE   AllocateObject FieldSelector                  -> AllocateObject
-  {AllocateObject ","}+                         -> AllocateObjectList
+    VariableName
+  | StructureComponent                                   -> AllocateObject       {cons("allocate-object")}
+
+%%R633
+  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateShapeSpec    {cons("allocate-shape-spec")}
 
 %%R634
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                       -> LowerBoundExpr      {cons("lower-bound-expr")}
+  IntExpr                                                -> LowerBoundExpr       {cons("lower-bound-expr")}
 
 %%R635
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                       -> UpperBoundExpr      {cons("upper-bound-expr")}
+  IntExpr                                                -> UpperBoundExpr       {cons("upper-bound-expr")}
 
-%%R626
-%% JD is this correct??/* Omitted to solve LALR(1) conflict.  see R624
-  {Expr ":" }+                                  -> AllocateShapeSpec
+%%R636
+  ( {AllocateCoshapeSpec ','}+ )?
+  ( LowerBoundExpr ':'         )?  '*'                   -> AllocateCoarraySpec  {cons("allocate-coarray-spec")}
+
+%%R637
+  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateCoshapeSpec  {cons("allocate-coshape-spec")}
 
 %%R638
-  LblDef 'NULLIFY' '(' PointerObjectList ')'   EOS -> NullifyStmt       {cons("nullify-stmt")}
+  LblDef 'NULLIFY' '(' {PointerObject ','}+ ')'      EOS -> NullifyStmt          {cons("nullify-stmt")}
 
 %%R639
-%%TODO-F08 make sure structure-component works
-   VariableName                                 -> PointerObject
-   StructureComponent                           -> PointerObject
-%%TODO-AMBiguous?
-%%TODO-F08   ProcPointerName                              -> PointerObject
-  {PointerObject ","}+                          -> PointerObjectList
+    VariableName
+  | StructureComponent
+  | ProcPointerName                                      -> PointerObject        {cons("pointer-object")}
    
-%%TODO-DELETE   Name                                          -> PointerObject
-%%TODO-DELETE   PointerField                                  -> PointerObject
-%%TODO-DELETE   Name '(' SFExprList ')' '%' Name              -> PointerField
-%%TODO-DELETE   Name '(' SFDummyArgNameList ')' '%' Name      -> PointerField
-%%TODO-DELETE   Name '%' Name                                 -> PointerField
-%%TODO-DELETE   PointerField FieldSelector                    -> PointerField
-
 %%R640
-  LblDef 'DEALLOCATE' '('
-             AllocateObjectList (',' DeallocOptList)?
-                      ')'                               EOS -> DeallocateStmt  {cons("deallocate-stmt")}
+  LblDef 'DEALLOCATE'
+            '('
+                       {AllocateObject ','}+
+                  (',' {DeallocOpt     ','}+)?
+            ')'                                      EOS -> DeallocateStmt       {cons("deallocate-stmt")}
 
 %%641
-  'STAT'   '=' StatVariable                                     -> DeallocOpt  {cons("dealloc-opt-stat")}
-  'ERRMSG' '=' ErrmsgVariable                                   -> DeallocOpt  {cons("dealloc-opt-errmsg")}
-  {DeallocOpt ','}+                                             -> DeallocOptList
+    ( 'STAT'   '=' StatVariable   )
+  | ( 'ERRMSG' '=' ErrmsgVariable )                      -> DeallocOpt           {cons("dealloc-opt")}
