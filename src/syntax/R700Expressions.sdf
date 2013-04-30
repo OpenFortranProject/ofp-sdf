@@ -312,8 +312,10 @@ context-free syntax
 %%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' DataTarget EOS -> PointerAssignmentStmt
 
 %%R734
-    ( VariableName                                )
-  | ( ScalarVariable '%' DataPointerComponentName )      -> DataPointerObject  {cons("data-pointer-object")}
+%%          variable substituted for scalar-variable
+%%
+    ( VariableName                          )
+  | ( Variable '%' DataPointerComponentName )            -> DataPointerObject  {cons("data-pointer-object")}
 
 %%R735
   LowerBoundExpr ':'                                     -> BoundsSpec         {cons("bounds-spec")}
@@ -331,7 +333,9 @@ context-free syntax
   | ProcComponentRef                                   -> ProcPointerObject {cons("proc-pointer-object")}
 
 %%R739
-  ScalarVariable '%' ProcedureComponentName            -> ProcComponentRef  {cons("proc-component-ref")}
+%%          variable substituted for scalar-variable
+%%
+  Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("proc-component-ref")}
 
 %%R740
     Expr
