@@ -25,6 +25,10 @@ sorts
   Rcon ScalarIntLiteralConstant  Scon
   SconDouble SconSingle 
 
+%%TODO-DELETE  SignedIntLiteralConstant            %% R406
+%%TODO-DELETE  IntLiteralConstant                  %% R407
+%%TODO-DELETE  Sign                                %% R411
+
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
@@ -106,15 +110,22 @@ lexical syntax
                  "." [0-9]+ ([EeDd] [\+\-]? [0-9]+)?            -> Rcon
 %% or [sign] digit-string exponent-letter exponent [__kind-param]
           [0-9]+ [EeDd] [\+\-]? [0-9]+                          -> Rcon
+
+%%R406
+%%TODO-DELETE  Sign? IntLiteralConstant         -> SignedIntLiteralConstant
+
 %%R408
-  [Bb] [\'] [01]+ [\']          -> BinaryConstant
-  [Bb] [\"] [01]+ [\"]          -> BinaryConstant
+  [Bb] [\'] [01]+ [\']             -> BinaryConstant
+  [Bb] [\"] [01]+ [\"]             -> BinaryConstant
 %%R409
-  [Oo] [\'] [0-7]+ [\']         -> OctalConstant
-  [Oo] [\"] [0-7]+ [\']         -> OctalConstant
+  [Oo] [\'] [0-7]+ [\']            -> OctalConstant
+  [Oo] [\"] [0-7]+ [\']            -> OctalConstant
 %%R410
-  [Zz] [\'] [0-9A-Fa-f]+ [\"]   -> HexConstant
-  [Zz] [\"] [0-9A-Fa-f]+ [\"]   -> HexConstant
+  [Zz] [\'] [0-9A-Fa-f]+ [\"]      -> HexConstant
+  [Zz] [\"] [0-9A-Fa-f]+ [\"]      -> HexConstant
+
+%%R411
+%%TODO-DELETE    '+' | '-'                      -> Sign
 
 %%
   [0-9]+                        -> ScalarIntLiteralConstant 
