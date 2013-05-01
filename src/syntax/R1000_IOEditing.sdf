@@ -6,71 +6,150 @@
 %% module languages/fortran/syntax/R1000_IOEditing
 module R1000_IOEditing
 
-imports
-  %% needed for Icon, Scon, LblDef:
 %%  languages/fortran/syntax/FortranLex
-  FortranLex
+%%  languages/fortran/syntax/R400DataTypes
+
+imports  FortranLex
+imports R400DataTypes
 
 exports
 
 sorts
-  BlankInterpEditDescr CharStringEditDescr ControlEditDescr   
-  DataEditDescr FormatItem FormatItemList FormatStmt
-  PositionEditDescr SignEditDescr   
+
+%% 10.2 Explicit format specification methods
+
+  FormatStmt                          %% R1001
+  FormatSpecification                 %% R1002
+
+%% 10.3 Form of a format item list
+
+  FormatItems                         %% R1003
+  FormatItem                          %% R1004
+  UnlimitedFormatItem                 %% R1005
+  REditDesc                           %% R1006
+  DataEditDesc                        %% R1007
+  WEditDesc                           %% R1008
+  MEditDesc                           %% R1009
+  DEditDesc                           %% R1010
+  EEditDesc                           %% R1011
+  VEditDesc                           %% R1012
+  ControlEditDesc                     %% R1013
+  KEditDesc                           %% R1014
+  PositionEditDesc                    %% R1015
+  NEditDesc                           %% R1016
+  SignEditDesc                        %% R1017
+  BlankInterpEditDesc                 %% R1018
+  RoundEditDesc                       %% R1019
+  DecimalEditDesc                     %% R1020
+  CharStringEditDesc                  %% R1021
+
 
 context-free syntax
 
-%%R1001
-%%R1002
-  LblDef 'format' '(' FormatItemList? ')' EOS  -> FormatStmt
 
-  { FormatItem ","}+                    -> FormatItemList
+%% 10.2 Explicit format specification methods
+%%
+
+%%R1001
+  LblDef 'FORMAT' FormatSpecification                  EOS -> FormatStmt           {cons("format-stmt")}
+
+%%R1002
+    ( '(' ( FormatItems    )?                     ')' )
+  | ( '(' ( FormatItems ',')? UnlimitedFormatItem ')' )    -> FormatSpecification  {cons("format-specification")}
+
+
+%% 10.3 Form of a format item list
+%%
 
 %%R1003
-  Icon? DataEditDescr                   -> FormatItem
-  ControlEditDescr                      -> FormatItem
-  CharStringEditDescr                   -> FormatItem
-  Icon? DataEditDescr                   -> FormatItem
-  Icon? '(' FormatItemList ')'          -> FormatItem
-  FormatItem ":" FormatItem                 -> FormatItem
+  FormatItem ( ','? FormatItem )*                          -> FormatItems          {cons("format-items")}
 
-%%R1005-R1009
-  'I'  Icon ('.' Icon)?                 -> DataEditDescr
-  'O'  Icon ('.' Icon)?                 -> DataEditDescr
-  'B'  Icon ('.' Icon)?                 -> DataEditDescr
-  'Z'  Icon ('.' Icon)?                 -> DataEditDescr
-  'F'  Icon '.' Icon                    -> DataEditDescr  
-  'E'  Icon '.' Icon ('E' Icon)?        -> DataEditDescr
-  'EN' Icon '.' Icon ('E' Icon)?        -> DataEditDescr
-  'ES' Icon '.' Icon ('E' Icon)?        -> DataEditDescr
-  'G'  Icon '.' Icon ('E' Icon)?        -> DataEditDescr
-  'L'  Icon                             -> DataEditDescr
-  'A'  Icon?                            -> DataEditDescr
-  'D'  Icon '.' Icon                    -> DataEditDescr
+%%R1004
+    ( 'REditDesc'? DataEditDesc        )
+  | (      ControlEditDesc             )
+  | (      CharStringEditDesc          )
+  | ( 'REditDesc'? '(' FormatItems ')' )                   -> FormatItem           {cons("format-item")}
 
-%%R1010,R1011
-  PositionEditDescr                     -> ControlEditDescr
-  Icon? '/'                             -> ControlEditDescr
-  ':'                                   -> ControlEditDescr   
-  SignEditDescr                         -> ControlEditDescr
-  ('-'|'+')? Icon 'P' (Icon? DataEditDescr)?    -> ControlEditDescr
-  BlankInterpEditDescr                  -> ControlEditDescr
+%%R1005
+  '*' '(' FormatItems ')'                                  -> UnlimitedFormatItem  {cons("unlimited-format-item")}
 
-%%R1012, R1013
-  'T'  Icon                             -> PositionEditDescr
-  'TL' Icon                             -> PositionEditDescr
-  'TR' Icon                             -> PositionEditDescr
-  Icon 'X'                              -> PositionEditDescr
+%%R1006
+  Icon                                                     -> REditDesc            {cons("r")}
+
+%%R1007
+%% Scon substituted for char-literal-constant
+%%
+    ( 'I'  WEditDesc ('.' MEditDesc)?                  )
+  | ( 'B'  WEditDesc ('.' MEditDesc)?                  )
+  | ( 'O'  WEditDesc ('.' MEditDesc)?                  )
+  | ( 'Z'  WEditDesc ('.' MEditDesc)?                  )
+  | ( 'F'  WEditDesc  '.' DEditDesc                    )
+  | ( 'E'  WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
+  | ( 'EN' WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
+  | ( 'ES' WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
+  | ( 'G'  WEditDesc ('.' DEditDesc ('E' EEditDesc)?)? )
+  | ( 'L'  WEditDesc                                   )
+  | ( 'A'  WEditDesc?                                  )
+  | ( 'D'  WEditDesc  '.' DEditDesc                    )
+  | ( 'DT' Scon? ( '('   {VEditDesc ','}+ ')' )?       )   -> DataEditDesc         {cons("data-edit-desc")}
+
+%%R1008
+  Icon                                  -> WEditDesc            {cons("w")}
+
+%%R1009
+  Icon                                  -> MEditDesc            {cons("m")}
+
+%%R1010
+  Icon                                  -> DEditDesc            {cons("d")}
+
+%%R1011
+  Icon                                  -> EEditDesc            {cons("e")}
+
+%%R1012
+  Icon                                  -> VEditDesc            {cons("v")}
+
+%%R1013
+    ( PositionEditDesc    )
+  | ( REditDesc? '/'      )
+  | ( ':'                 )
+  | ( SignEditDesc        )
+  | ( KEditDesc 'P'       )
+  | ( BlankInterpEditDesc )
+  | ( RoundEditDesc       )
+  | ( DecimalEditDesc     )             -> ControlEditDesc      {cons("control-edit-desc")}
 
 %%R1014
-  'S'                                   -> SignEditDescr
-  'SP'                                  -> SignEditDescr
-  'SS'                                  -> SignEditDescr
+  SignedIntLiteralConstant              -> KEditDesc            {cons("k")}
 
 %%R1015
-  'BN'                                  -> BlankInterpEditDescr
-  'BZ'                                  -> BlankInterpEditDescr
+    ( 'T'  NEditDesc     )
+  | ( 'TL' NEditDesc     )
+  | ( 'TR' NEditDesc     )
+  | (      NEditDesc 'X' )              -> PositionEditDesc     {cons("position-edit-desc")}
 
 %%R1016
-  Scon                                  -> CharStringEditDescr 
-  Icon 'H' Character+                   -> CharStringEditDescr
+  Icon                                  -> NEditDesc            {cons("n")}
+
+%%R1017
+    'S'
+  | 'SP'
+  | 'SS'                                -> SignEditDesc         {cons("sign-edit-desc")}
+
+%%R1018
+    'BN'
+  | 'BZ'                                -> BlankInterpEditDesc  {cons("blank-interp-edit-desc")}
+
+%%R1019
+    'RU'
+  | 'RD'
+  | 'RZ'
+  | 'RN'
+  | 'RC'
+  | 'RP'                                -> RoundEditDesc        {cons("round-edit-desc")}
+
+%%R1020
+    'DC'
+  | 'DP'                                -> DecimalEditDesc      {cons("decimal-edit-desc")}
+
+%%R1021
+  Scon                                  -> CharStringEditDesc   {cons("char-string-edit-desc")}
