@@ -30,15 +30,15 @@ sorts
 %% Ident Aliases:
   Name
   AncestorModuleName ArgName ArrayName BindingName BlockDataName
-  ComponentName ConstructName
-  DataPointerComponentName
+  CoarrayName ComponentName ConstructName
+  DataPointerComponentName EntityName
   GenericName NamelistGroupName TypeName EndName CommonBlockName
   EntryName ExternalName FinalSubroutineName ForallConstructName
   FunctionName ImpliedDoVariable ImportName
   IndexName InterfaceName IntrinsicProcedureName LocalName
   ModuleName ObjectName OnlyUseName ParentSubmoduleName
   ParentTypeName PartName ProcedureName
-  ProcedureComponentName ProcedureEntityName
+  ProcedureComponentName ProcedureEntityName ProcEntityName
   ProgramName ResultName ScalarIntConstantName ScalarVariableName
   SubmoduleName SubroutineName
   SubroutineNameUse TypeParamName VariableName UseName
@@ -164,12 +164,14 @@ context-free syntax
   Ident  -> ArrayName
   Ident  -> BindingName
   Ident  -> BlockDataName
+  Ident  -> CoarrayName
   Ident  -> CommonBlockName
   Ident  -> ComponentName
   Ident  -> ConstructName
   Ident  -> DataPointerComponentName
   Ident  -> DummyArgName                %% R1230
   Ident  -> EndName
+  Ident  -> EntityName
   Ident  -> EntryName
   Ident  -> ExternalName
   Ident  -> FinalSubroutineName
@@ -192,6 +194,7 @@ context-free syntax
   Ident  -> ProcedureComponentName
   Ident  -> ProcedureEntityName
   Ident  -> ProcedureName
+  Ident  -> ProcEntityName
   Ident  -> ProcPointerName             %% R555
   Ident  -> ProgramName                   {cons("program-name")}
   Ident  -> ResultName
