@@ -20,7 +20,7 @@ exports
 sorts
   BinaryConstant Character Comment StartCommentBlock
   Continuation Dop EOS HexConstant
-  Icon Ident Label LblDef
+  Icon Ident Label LblDef LblRef
   Letter OctalConstant
   Rcon ScalarIntLiteralConstant  Scon
   SconDouble SconSingle 
@@ -33,18 +33,22 @@ sorts
 
 %% Ident Aliases:
   Name
-  AncestorModuleName ArgName ArrayName BindingName BlockDataName
-  CoarrayName ComponentName ConstructName
-  DataPointerComponentName EntityName
+  AncestorModuleName ArgName ArrayName AssociateConstructName AssociateName
+  BindingName BlockConstructName BlockDataName
+  CaseConstructName CoarrayName ComponentName ConstructName CriticalConstructName
+  DataPointerComponentName DoConstructName
+  EntityName
   GenericName NamelistGroupName TypeName EndName CommonBlockName
   EntryName ExternalName FinalSubroutineName ForallConstructName
-  FunctionName ImpliedDoVariable ImportName
+  FunctionName
+  IfConstructName ImpliedDoVariable ImportName
   IndexName InterfaceName IntrinsicProcedureName LocalName
   ModuleName ObjectName OnlyUseName ParentSubmoduleName
   ParentTypeName PartName ProcedureName
   ProcedureComponentName ProcedureEntityName ProcEntityName
-  ProgramName ResultName ScalarIntConstantName ScalarVariableName
-  SubmoduleName SubroutineName
+  ProgramName ResultName
+  ScalarIntConstantName ScalarIntVariableName ScalarVariableName
+  SelectConstructName SubmoduleName SubroutineName
   SubroutineNameUse TypeParamName VariableName UseName
   
 
@@ -166,20 +170,28 @@ context-free restrictions
    LblDef -/- [\!]
 
 context-free syntax
+
   Label? -> LblDef                        {cons("label")}
+  Label  -> LblRef                        {cons("label")}
 
 %% Ident Aliasses. TODO: put them in the right modules.
   Ident  -> Name                          {cons("name")}
   Ident  -> AncestorModuleName
+  Ident  -> AssociateConstructName
+  Ident  -> AssociateName
   Ident  -> ArgName
   Ident  -> ArrayName
   Ident  -> BindingName
+  Ident  -> BlockConstructName
   Ident  -> BlockDataName
+  Ident  -> CaseConstructName
+  Ident  -> CriticalConstructName
   Ident  -> CoarrayName
   Ident  -> CommonBlockName
   Ident  -> ComponentName
   Ident  -> ConstructName
   Ident  -> DataPointerComponentName
+  Ident  -> DoConstructName
   Ident  -> DummyArgName                %% R1230
   Ident  -> EndName
   Ident  -> EntityName
@@ -189,6 +201,7 @@ context-free syntax
   Ident  -> ForallConstructName
   Ident  -> FunctionName                  {cons("function-name")}
   Ident  -> GenericName
+  Ident  -> IfConstructName
   Ident  -> ImpliedDoVariable
   Ident  -> ImportName
   Ident  -> InterfaceName
@@ -210,7 +223,9 @@ context-free syntax
   Ident  -> ProgramName                   {cons("program-name")}
   Ident  -> ResultName
   Ident  -> ScalarIntConstantName
+  Ident  -> ScalarIntVariableName
   Ident  -> ScalarVariableName
+  Ident  -> SelectConstructName
   Ident  -> SubmoduleName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
