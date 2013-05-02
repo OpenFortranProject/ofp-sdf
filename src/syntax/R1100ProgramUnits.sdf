@@ -179,9 +179,7 @@ context-free syntax
   | BlockConstruct
   | CaseConstruct
   | CriticalConstruct
-%%AMBIGUOUS | DoConstruct
-  | DoStmt
-  | EndDoStmt
+%%| DoConstruct          %% Ambiguous - placed related statements in action-stmt
   | ForallConstruct
   | IfConstruct
   | SelectTypeConstruct
@@ -231,7 +229,11 @@ context-free syntax
   | WhereStmt
   | WriteStmt
   | ArithmeticIfStmt
-  | ComputedGotoStmt                   -> ActionStmt  {cons("action-stmt")}
+  | ComputedGotoStmt
+%% Following added as replacement for DoConstruct (because ambiguous)
+  | LabelDoStmt     
+  | NonlabelDoStmt
+  | EndDoStmt                          -> ActionStmt  {cons("action-stmt")}
 
 %%215
   Name                                 -> Keyword     {cons("keyword")}
