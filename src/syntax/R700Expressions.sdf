@@ -17,11 +17,6 @@ imports
 exports
 
 sorts
-  CExpr
-  ComplexConst COperand CPrimary
-  LogicalConstant
-  Stride
-  UnsignedArithmeticConstant
 
   IntrinsicOperator                   %% R309
   DefinedOperator                     %% R310
@@ -83,44 +78,9 @@ sorts
   EndForallStmt                       %% R758
   ForallStmt                          %% R759
 
+
 context-free syntax
-%%%% TODO: put these under the right section
 
-%%  UFTerm                        -> UFExpr
-%%  Sign UFTerm                   -> UFExpr
-%%  UFExpr AddOp UFTerm           -> UFExpr
-%%  UFFactor                      -> UFTerm
-%%  UFTerm MultOp UFFactor        -> UFTerm
-%%  UFTerm ConcatOp UFPrimary     -> UFTerm
-%%  UFPrimary                     -> UFFactor
-%%  UFPrimary PowerOp UFFactor    -> UFFactor
-
-%%  Icon                          -> UFPrimary
-%%  Scon                          -> UFPrimary
-%%  Name                          -> UFPrimary
-%%  FunctionReference             -> UFPrimary
-%%  DataRef                       -> UFPrimary
-%%  '(' UFExpr ')'                -> UFPrimary
-
-%%82,83
-  (CExpr '//')? CPrimary    -> CExpr
-  COperand                      -> CPrimary
-  '(' CExpr ')'                 -> CPrimary
-  Scon                          -> COperand
-  Name                          -> COperand
-  DataRef                       -> COperand
-  FunctionReference             -> COperand
-
-%%101
-  Icon                          -> UnsignedArithmeticConstant
-  Rcon                          -> UnsignedArithmeticConstant
-  ComplexConst                  -> UnsignedArithmeticConstant
-
-%%107
-  '(' Expr ',' Expr ')'         -> ComplexConst
-
-%%108
-  '.true.' | '.false.'          -> LogicalConstant
 
 %%R309
     '**'                                                       %% power-op
