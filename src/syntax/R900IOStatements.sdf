@@ -15,25 +15,54 @@ imports
 exports
 
 sorts
-  BackspaceStmt CloseSpec CloseStmt ConnectSpec
-  EndfileStmt FlushStmt FlushSpec FormatIdentifier
-  InputImpliedDo InputItem InputItemList InquireSpec InquireSpecList InquireStmt
-  IoControlSpec OpenStmt OutputImpliedDo OutputItem
-  OutputItemList PositionSpec PrintStmt RdCtlSpec RdFmtId RdFmtIdExpr
-  RdIoCtlSpecList RdUnitId ReadStmt RewindStmt
-  WaitStmt WaitSpec WriteStmt    
 
 %% 9.5 File connection
 
   IoUnit                              %% R901
   FileUnitNumber                      %% R902
   InternalFileVariable                %% R903
-
+  OpenStmt                            %% R904
+  ConnectSpec                         %% R905
   FileNameExpr                        %% R906
   IomsgVariable                       %% R907
+  CloseStmt                           %% R908
+  CloseSpec                           %% R909
 
+%% 9.6 Data transfer statements
+
+  ReadStmt                            %% R910
+  WriteStmt                           %% R911
+  PrintStmt                           %% R912
+  IoControlSpec                       %% R913
   IdVariable                          %% R914
   Format                              %% R915
+  InputItem                           %% R916
+  OutputItem                          %% R917
+  IoImpliedDo                         %% R918
+  IoImpliedDoObject                   %% R919
+  IoImpliedDoControl                  %% R920
+
+%% 9.7 Waiting on pending data transfer
+
+  WaitStmt                            %% R922
+  WaitSpec                            %% R923
+
+%% 9.8 File positioning statements
+
+  BackspaceStmt                        %% R924
+  EndfileStmt                          %% R925
+  RewindStmt                           %% R926
+  PositionSpec                         %% R927
+
+%% 9.9 FLUSH statement
+
+  FlushStmt                           %% R928
+  FlushSpec                           %% R929
+
+%% 9.10 File inquiry statement
+
+  InquireStmt                         %% R930
+  InquireSpec                         %% R931
 
 
 context-free syntax
@@ -47,25 +76,27 @@ context-free syntax
 %%
 
 %%R901
-%%      int-expr substituted for file-unit-number
-%%      char-variable substituted for internal-file-variable
+%%         int-expr substituted for file-unit-number
+%%         char-variable substituted for internal-file-variable
 %%
     IntExpr
   | '*'
-  | CharVariable                              -> IoUnit          {cons("io-unit")}
+  | CharVariable                                 -> IoUnit          {cons("io-unit")}
 
 %%R902
-  IntExpr                                     -> FileUnitNumber  {cons("file-unit-number")}
+%%         int-expr substituted for scalar-int-expr
+%%
+  IntExpr                                        -> FileUnitNumber  {cons("file-unit-number")}
 
 %%R903
-  CharVariable                                -> InternalFileVariable  {cons("internal-file-variable")}
+  CharVariable                                   -> InternalFileVariable  {cons("internal-file-variable")}
 
 %%R904
-  LblDef 'OPEN' '(' {ConnectSpec ','}+ ')'   EOS -> OpenStmt     {cons("open-stmt")}
+  LblDef 'OPEN' '(' {ConnectSpec ','}+ ')'   EOS -> OpenStmt        {cons("open-stmt")}
 
 %%R905
-%%           CExpr substituted for scalar-default-char-expr
-%%           int-variable substituted for scalar-int-variable
+%%         CExpr substituted for scalar-default-char-expr
+%%         int-variable substituted for scalar-int-variable
 %%
     (('UNIT'         '=')? FileUnitNumber )
   | ( 'ACCESS'       '='   CExpr          )
@@ -87,8 +118,8 @@ context-free syntax
   | ( 'ROUND'        '='   CExpr          )
   | ( 'SIGN'         '='   CExpr          )
   | ( 'STATUS'       '='   CExpr          )
-%%| ( 'TEAM'         '='   ImageTeam      )  %%TODO - is this in standard?
-                                                -> ConnectSpec  {cons("connect-spec")}
+%%| ( 'TEAM'         '='   ImageTeam      )  %%TODO - is this in standard for F08?
+                                                -> ConnectSpec    {cons("connect-spec")}
 
 %%R906
   CExpr                                         -> FileNameExpr   {cons("file-name-expr")}
@@ -97,7 +128,7 @@ context-free syntax
   CExpr                                         -> IomsgVariable  {cons("iomsg-variable")}
 
 %%R908
-  LblDef 'CLOSE' '(' {CloseSpec ','}+ ')'   EOS -> CloseStmt    {cons("close-stmt")}
+  LblDef 'CLOSE' '(' {CloseSpec ','}+ ')'   EOS -> CloseStmt      {cons("close-stmt")}
 
 %%R909
 %%           CExpr substituted for scalar-default-char-expr
@@ -107,21 +138,24 @@ context-free syntax
   | ( 'IOSTAT'       '=' IntVariable      )
   | ( 'IOMSG'        '=' IomsgVariable    )
   | ( 'ERR'          '=' LblRef           )
-  | ( 'STATUS'       '=' CExpr            )     -> CloseSpec    {cons("close-spec")}
+  | ( 'STATUS'       '=' CExpr            )     -> CloseSpec      {cons("close-spec")}
+
+
+%% 9.6 Data transfer statements
+%%
 
 %%910
-%%TODO-DELETE   LblDef 'READ' RdCtlSpec InputItemList?     EOS -> ReadStmt   {cons("read-stmt")}
-%%TODO-DELETE   LblDef 'READ' RdFmtId                      EOS -> ReadStmt   {cons("read-stmt")}
-%%TODO-DELETE   LblDef 'READ' RdFmtId ',' InputItemList    EOS -> ReadStmt   {cons("read-stmt")}
-%%TODO-F08 - change FormatIdentifier to Format
-%%TODO-F08  LblDef 'READ'  '(' IoControlSpecList ')' InputItemList?  EOS -> ReadStmt   {cons("read-stmt")}
-  LblDef 'READ' FormatIdentifier      (',' InputItemList)? EOS -> ReadStmt   {cons("read-stmt")}
+  LblDef 'READ'
+     (
+        ('(' {IoControlSpec ','}+ ')'     {InputItem ','}*   )
+      | (    Format                  (',' {InputItem ','}+)? )
+     )                                                          EOS -> ReadStmt  {cons("read-stmt")}
 
 %%R911
   LblDef 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("write-stmt")}
 
 %%R912
-  LblDef 'PRINT' FormatIdentifier ( ',' OutputItemList )?   EOS -> PrintStmt {cons("print-stmt")}
+  LblDef 'PRINT' Format (',' {OutputItem ','}+ )?               EOS -> PrintStmt {cons("print-stmt")}
 
 %%R913
 %% io-unit and format must be first and second (without {UNIT,FMT}=)
@@ -148,12 +182,6 @@ context-free syntax
   | ( 'SIGN'         '='   CExpr             )
   | ( 'SIZE'         '='   IntVariable       )    -> IoControlSpec  {cons("io-control-spec")}
 
-%%TODO-F08  UnitIdentifier                             -> IoControlSpecList
-%%TODO-F08  UnitIdentifier ',' FormatIdentifier        -> IoControlSpecList
-%%TODO-F08  UnitIdentifier ',' {IoControlSpec ','}+    -> IoControlSpecList
-%%TODO-F08  UnitIdentifier ',' FormatIdentifier ',' {IoControlSpec ","}+  -> IoControlSpecList
-%%TODO-F08  {IoControlSpec ","}+                       -> IoControlSpecList
-
 %%R914
   IntVariable                                     -> IdVariable     {cons("id-variable")}
 
@@ -162,53 +190,37 @@ context-free syntax
   | Label
   | '*'                                           -> Format         {cons("format")}
 
-%%912
-  RdUnitId                              -> RdCtlSpec
-  '(' RdIoCtlSpecList ')'               -> RdCtlSpec
-%%TODO-F08  '(' UFExpr ')'                        -> RdUnitId
-  '(' '*' ')'                           -> RdUnitId
-
-%%TODO-F08  UnitIdentifier ',' IoControlSpec      -> RdIoCtlSpecList
-%%TODO-F08  UnitIdentifier ',' FormatIdentifier   -> RdIoCtlSpecList
-  IoControlSpec                         -> RdIoCtlSpecList
-  RdIoCtlSpecList ',' IoControlSpec     -> RdIoCtlSpecList
-
-%%R913 format
-  LblRef                                -> RdFmtId
-  '*'                                   -> RdFmtId
-  COperand                              -> RdFmtId
-  COperand    '//' CPrimary             -> RdFmtId
-  RdFmtIdExpr '//' CPrimary             -> RdFmtId
-%%TODO-F08  '(' UFExpr ')'                        -> RdFmtIdExpr
-  '(' IntExpr ')'                       -> RdFmtIdExpr
-
-%%914
-  LblRef | CExpr | '*'                  -> FormatIdentifier
-
-%%R914
-  Name                                  -> InputItem
-  DataRef                               -> InputItem
-  InputImpliedDo                        -> InputItem
-  {InputItem ","}+                      -> InputItemList
-
-%%R915
-  Expr                                  -> OutputItem
-  OutputImpliedDo                       -> OutputItem
-  {OutputItem ","}+                     -> OutputItemList
-
 %%R916
+    Variable
+  | IoImpliedDo                                   -> InputItem      {cons("input-item")}
+
 %%R917
+    Expr
+  | IoImpliedDo                                   -> OutputItem     {cons("output-item")}
+
 %%R918
-  '(' InputItemList  ',' ImpliedDoVariable '=' Expr ',' Expr ')'                -> InputImpliedDo
-  '(' InputItemList  ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'       -> InputImpliedDo
+  '('
+      {IoImpliedDoObject ','}+ ',' IoImpliedDoControl
+  ')'                                             -> IoImpliedDo    {cons("io-implied-do")}
 
-  '(' OutputItemList ',' ImpliedDoVariable '=' Expr ',' Expr ')'                -> OutputImpliedDo
-  '(' OutputItemList ',' ImpliedDoVariable '=' Expr ',' Expr ',' Expr ')'       -> OutputImpliedDo
+%%R919
+    InputItem
+  | OutputItem                                    -> IoImpliedDoObject  {cons("io-implied-do-object")}
 
-%%R921
+%%R920
+  DoVariable '=' IntExpr  ','
+                 IntExpr (',' IntExpr)?           -> IoImpliedDoControl {cons("io-implied-do-control")}
+
+%% 9.7 Waiting on pending data transfer
+%%
+
+%%R922
   LblDef 'WAIT' '(' {WaitSpec ','}+ ')'             EOS -> WaitStmt       {cons("wait-stmt")}
 
 %%R923
+%%           int-expr substituted for scalar-int-expr
+%%           int-variable substituted for scalar-int-variable
+%%
     (('UNIT'   '=')? FileUnitNumber )
   | ( 'END'    '=' LblRef           )
   | ( 'EOR'    '=' LblRef           )
@@ -217,18 +229,31 @@ context-free syntax
   | ( 'IOMSG'  '=' IomsgVariable    )
   | ( 'IOSTAT' '=' IntExpr          )                   -> WaitSpec       {cons("wait-spec")}
 
-%%R923
-  LblDef 'BACKSPACE' FileUnitNumber                 EOS -> BackspaceStmt  {cons("backspace-stmt")}
-  LblDef 'BACKSPACE' '(' {PositionSpec ','}+ ')'    EOS -> BackspaceStmt  {cons("backspace-stmt")}
+
+%% 9.8 File positioning statements
+%%
 
 %%R924
-%% note: 'endfile' without space is allowed
-  LblDef 'END' 'FILE' FileUnitNumber                EOS -> EndfileStmt    {cons("endfile-stmt")}
-  LblDef 'END' 'FILE' '(' {PositionSpec ","}+ ')'   EOS -> EndfileStmt    {cons("endfile-stmt")}
+  LblDef 'BACKSPACE'
+     (
+           ( FileUnitNumber              )
+         | ( '(' {PositionSpec ","}+ ')' )
+     )                                              EOS -> BackspaceStmt  {cons("backspace-stmt")}
 
 %%R925
-  LblDef 'REWIND' FileUnitNumber                    EOS -> RewindStmt     {cons("rewind-stmt")}
-  LblDef 'REWIND' '(' {PositionSpec ","}+ ')'       EOS -> RewindStmt     {cons("rewind-stmt")}
+%% note: 'endfile' without space is allowed
+  LblDef 'END' 'FILE'
+     (
+           ( FileUnitNumber              )
+         | ( '(' {PositionSpec ","}+ ')' )
+     )                                              EOS -> EndfileStmt    {cons("endfile-stmt")}
+
+%%R926
+  LblDef 'REWIND'
+     (
+           ( FileUnitNumber              )
+         | ( '(' {PositionSpec ","}+ ')' )
+     )                                              EOS -> RewindStmt     {cons("rewind-stmt")}
 
 %%R927
     (('UNIT'    '=')? FileUnitNumber )
@@ -236,22 +261,32 @@ context-free syntax
   | ( 'IOMSG'   '=' IomsgVariable    )
   | ( 'ERR'     '=' LblRef           )                  -> PositionSpec   {cons("position-spec")}
 
-%%R924
-  FileUnitNumber "," {InquireSpec ","}+  -> InquireSpecList
-  FileUnitNumber                         -> InquireSpecList
-  {InquireSpec ","}+                     -> InquireSpecList
+
+%% 9.9 FLUSH statement
+%%
 
 %%R928
-  LblDef 'FLUSH' FileUnitNumber              EOS -> FlushStmt   {cons("flush-stmt")}
-  LblDef 'FLUSH' '(' {FlushSpec ","}+ ')'    EOS -> FlushStmt   {cons("flush-stmt")}
+  LblDef 'FLUSH'
+     (
+            ( FileUnitNumber           )
+          | ( '(' {FlushSpec ','}+ ')' )
+     )                                              EOS -> FlushStmt   {cons("flush-stmt")}
 
 %%R929
+%%           int-variable substituted for scalar-int-variable
+%%
     (('UNIT'    '=')? FileUnitNumber )
   | ( 'IOSTAT'  '=' IntVariable      )
   | ( 'IOMSG'   '=' IomsgVariable    )
-  | ( 'ERR'     '=' LblRef           )           -> FlushSpec   {cons("flush-spec")}
+  | ( 'ERR'     '=' LblRef           )                  -> FlushSpec   {cons("flush-spec")}
+
+
+%% 9.10 File inquiry statement
+%%
 
 %%R930
+%%           int-variable substituted for scalar-int-variable
+%%
   LblDef 'INQUIRE'
              (
                '(' {InquireSpec ','}+ ')'
@@ -259,9 +294,13 @@ context-free syntax
            | (
                '(' 'IOLENGTH' '=' IntVariable ')' {OutputItem ','}+
              )
-                                              EOS -> InquireStmt {cons("inquire-stmt")}
+                                                    EOS -> InquireStmt {cons("inquire-stmt")}
 
 %%R931
+%%           CExpr substituted for scalar-default-char-expr
+%%           logical-variable substituted for scalar-logical-variable
+%%           int-variable substituted for scalar-int-variable
+%%
     (('UNIT'         '=')? FileUnitNumber )
   | ( 'FILE'         '=' FileNameExpr     )
   | ( 'ACCESS'       '=' CExpr            )
@@ -298,4 +337,4 @@ context-free syntax
   | ( 'STREAM'       '=' CExpr            )
 %%| ( 'TEAM'         '=' ImageTeam        )  %%TODO-F08
   | ( 'UNFORMATTED'  '=' CExpr            )
-  | ( 'WRITE'        '=' CExpr            )   -> InquireSpec  {cons("inquire-spec")}
+  | ( 'WRITE'        '=' CExpr            )            -> InquireSpec  {cons("inquire-spec")}
