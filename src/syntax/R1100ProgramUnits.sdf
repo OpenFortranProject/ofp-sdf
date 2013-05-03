@@ -131,7 +131,7 @@ context-free syntax
 %%       Removed the leading ExecutableConstruct to allow an empty list to
 %%       be an ExecutionPart.  Check order of statements in a separate stage.
 %%
-  ExecutionPartConstruct*                      -> ExecutionPart           {const("execution-part")}
+  ExecutionPartConstruct*                      -> ExecutionPart           {cons("execution-part")}
 
 %%R209
     ExecutableConstruct
@@ -288,7 +288,7 @@ context-free syntax
 %%TODO-DELETE  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
 
 %%R1107
-  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {const("module-subprogram-part")}
+  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("module-subprogram-part")}
 
 %%R1108
     FunctionSubprogram
@@ -324,11 +324,11 @@ context-free syntax
 
 %%R1114
     DefinedUnaryOp
-  | DefinedBinaryOp                              -> LocalDefinedOperator  {const("local-defined-operator")}
+  | DefinedBinaryOp                              -> LocalDefinedOperator  {cons("local-defined-operator")}
 
 %%R1115
     DefinedUnaryOp
-  | DefinedBinaryOp                              -> UseDefinedOperator  {const("use-defined-operator")}
+  | DefinedBinaryOp                              -> UseDefinedOperator  {cons("use-defined-operator")}
 
 %%R1116
 %%     WARNING-MODIFICATION: 
