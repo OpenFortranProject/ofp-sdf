@@ -95,50 +95,52 @@ context-free syntax
   LblDef 'OPEN' '(' {ConnectSpec ','}+ ')'   EOS -> OpenStmt        {cons("open-stmt")}
 
 %%R905
-%%         CExpr substituted for scalar-default-char-expr
+%%         default-char-expr substituted for scalar-default-char-expr
 %%         int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'         '=')? FileUnitNumber )
-  | ( 'ACCESS'       '='   CExpr          )
-  | ( 'ACTION'       '='   CExpr          )
-  | ( 'ASYNCHRONOUS' '='   CExpr          )
-  | ( 'BLANK'        '='   CExpr          )
-  | ( 'DECIMAL'      '='   CExpr          )
-  | ( 'DELIM'        '='   CExpr          )
-  | ( 'ENCODING'     '='   CExpr          )
-  | ( 'ERR'          '='   LblRef         )
-  | ( 'FILE'         '='   FileNameExpr   )
-  | ( 'FORM'         '='   CExpr          )
-  | ( 'IOMSG'        '='   IomsgVariable  )
-  | ( 'IOSTAT'       '='   IntVariable    )
-  | ( 'NEWUNIT'      '='   IntVariable    )
-  | ( 'PAD'          '='   CExpr          )
-  | ( 'POSITION'     '='   CExpr          )
-  | ( 'RECL'         '='   IntExpr        )
-  | ( 'ROUND'        '='   CExpr          )
-  | ( 'SIGN'         '='   CExpr          )
-  | ( 'STATUS'       '='   CExpr          )
-%%| ( 'TEAM'         '='   ImageTeam      )  %%TODO - is this in standard for F08?
+    (('UNIT'         '=')? FileUnitNumber  )
+  | ( 'ACCESS'       '='   DefaultCharExpr )
+  | ( 'ACTION'       '='   DefaultCharExpr )
+  | ( 'ASYNCHRONOUS' '='   DefaultCharExpr )
+  | ( 'BLANK'        '='   DefaultCharExpr )
+  | ( 'DECIMAL'      '='   DefaultCharExpr )
+  | ( 'DELIM'        '='   DefaultCharExpr )
+  | ( 'ENCODING'     '='   DefaultCharExpr )
+  | ( 'ERR'          '='   LblRef          )
+  | ( 'FILE'         '='   FileNameExpr    )
+  | ( 'FORM'         '='   DefaultCharExpr )
+  | ( 'IOMSG'        '='   IomsgVariable   )
+  | ( 'IOSTAT'       '='   IntVariable     )
+  | ( 'NEWUNIT'      '='   IntVariable     )
+  | ( 'PAD'          '='   DefaultCharExpr )
+  | ( 'POSITION'     '='   DefaultCharExpr )
+  | ( 'RECL'         '='   IntExpr         )
+  | ( 'ROUND'        '='   DefaultCharExpr )
+  | ( 'SIGN'         '='   DefaultCharExpr )
+  | ( 'STATUS'       '='   DefaultCharExpr )
+%%| ( 'TEAM'         '='   ImageTeam       )  %%TODO - is this in standard for F08?
                                                 -> ConnectSpec    {cons("connect-spec")}
 
 %%R906
-  CExpr                                         -> FileNameExpr   {cons("file-name-expr")}
+%%           default-char-expr substituted for scalar-default-char-expr
+  DefaultCharExpr                               -> FileNameExpr   {cons("file-name-expr")}
 
 %%R907
-  CExpr                                         -> IomsgVariable  {cons("iomsg-variable")}
+%%           default-char-expr substituted for scalar-default-char-expr
+  DefaultCharExpr                               -> IomsgVariable  {cons("iomsg-variable")}
 
 %%R908
   LblDef 'CLOSE' '(' {CloseSpec ','}+ ')'   EOS -> CloseStmt      {cons("close-stmt")}
 
 %%R909
-%%           CExpr substituted for scalar-default-char-expr
+%%           default-char-expr substituted for scalar-default-char-expr
 %%           int-variable substituted for scalar-int-variable
 %%
     (('UNIT'         '=')? FileUnitNumber )
   | ( 'IOSTAT'       '=' IntVariable      )
   | ( 'IOMSG'        '=' IomsgVariable    )
   | ( 'ERR'          '=' LblRef           )
-  | ( 'STATUS'       '=' CExpr            )     -> CloseSpec      {cons("close-spec")}
+  | ( 'STATUS'       '=' DefaultCharExpr       )     -> CloseSpec      {cons("close-spec")}
 
 
 %% 9.6 Data transfer statements
@@ -158,28 +160,28 @@ context-free syntax
   LblDef 'PRINT' Format (',' {OutputItem ','}+ )?               EOS -> PrintStmt {cons("print-stmt")}
 
 %%R913
-%% io-unit and format must be first and second (without {UNIT,FMT}=)
-%% TODO-F08
+%% TODO-F08  io-unit and format must be first and second (without {UNIT,FMT}=)
+%%           default-char-expr substituted for scalar-default-char-expr
 %%
     (('UNIT'         '=')? IoUnit            )
   | (('FMT'          '=')? Format            )
   | (('NML'          '=')? NamelistGroupName )
-  | ( 'ADVANCE'      '='   CExpr             )
-  | ( 'ASYNCHRONOUS' '='   CExpr             )
-  | ( 'BLANK'        '='   CExpr             )
-  | ( 'DECIMAL'      '='   CExpr             )
-  | ( 'DELIM'        '='   CExpr             )
+  | ( 'ADVANCE'      '='   DefaultCharExpr   )
+  | ( 'ASYNCHRONOUS' '='   DefaultCharExpr   )
+  | ( 'BLANK'        '='   DefaultCharExpr   )
+  | ( 'DECIMAL'      '='   DefaultCharExpr   )
+  | ( 'DELIM'        '='   DefaultCharExpr   )
   | ( 'END'          '='   LblRef            )
   | ( 'EOR'          '='   LblRef            )
   | ( 'ERR'          '='   LblRef            )
   | ( 'ID'           '='   IdVariable        )
   | ( 'IOMSG'        '='   IomsgVariable     )
   | ( 'IOSTAT'       '='   IntVariable       )
-  | ( 'PAD'          '='   CExpr             )
+  | ( 'PAD'          '='   DefaultCharExpr   )
   | ( 'POS'          '='   Expr              )
   | ( 'REC'          '='   Expr              )
-  | ( 'ROUND'        '='   CExpr             )
-  | ( 'SIGN'         '='   CExpr             )
+  | ( 'ROUND'        '='   DefaultCharExpr   )
+  | ( 'SIGN'         '='   DefaultCharExpr   )
   | ( 'SIZE'         '='   IntVariable       )    -> IoControlSpec  {cons("io-control-spec")}
 
 %%R914
@@ -297,44 +299,44 @@ context-free syntax
                                                     EOS -> InquireStmt {cons("inquire-stmt")}
 
 %%R931
-%%           CExpr substituted for scalar-default-char-expr
+%%           default-char-expr substituted for scalar-default-char-expr
 %%           logical-variable substituted for scalar-logical-variable
 %%           int-variable substituted for scalar-int-variable
 %%
     (('UNIT'         '=')? FileUnitNumber )
   | ( 'FILE'         '=' FileNameExpr     )
-  | ( 'ACCESS'       '=' CExpr            )
-  | ( 'ACTION'       '=' CExpr            )
-  | ( 'ASYNCHRONOUS' '=' CExpr            )
-  | ( 'BLANK'        '=' CExpr            )
-  | ( 'DECIMAL'      '=' CExpr            )
-  | ( 'DELIM'        '=' CExpr            )
-  | ( 'DIRECT'       '=' CExpr            )
-  | ( 'ENCODING'     '=' CExpr            )
+  | ( 'ACCESS'       '=' DefaultCharExpr  )
+  | ( 'ACTION'       '=' DefaultCharExpr  )
+  | ( 'ASYNCHRONOUS' '=' DefaultCharExpr  )
+  | ( 'BLANK'        '=' DefaultCharExpr  )
+  | ( 'DECIMAL'      '=' DefaultCharExpr  )
+  | ( 'DELIM'        '=' DefaultCharExpr  )
+  | ( 'DIRECT'       '=' DefaultCharExpr  )
+  | ( 'ENCODING'     '=' DefaultCharExpr  )
   | ( 'ERR'          '=' LblRef           )
   | ( 'EXIST '       '=' LogicalVariable  )
-  | ( 'FORM'         '=' CExpr            )
-  | ( 'FORMATTED'    '=' CExpr            )
+  | ( 'FORM'         '=' DefaultCharExpr  )
+  | ( 'FORMATTED'    '=' DefaultCharExpr  )
   | ( 'ID'           '=' IntExpr          )
   | ( 'IOMSG'        '=' IomsgVariable    )
   | ( 'IOSTAT'       '=' IntVariable      )
-  | ( 'NAME'         '=' CExpr            )
+  | ( 'NAME'         '=' DefaultCharExpr  )
   | ( 'NAMED'        '=' LogicalVariable  )
   | ( 'NEXTREC'      '=' IntVariable      )
   | ( 'NUMBER'       '=' IntVariable      )
   | ( 'OPENED'       '=' LogicalVariable  )
-  | ( 'PAD'          '=' CExpr            )
+  | ( 'PAD'          '=' DefaultCharExpr  )
   | ( 'PENDING'      '=' LogicalVariable  )
   | ( 'POS'          '=' IntVariable      )
-  | ( 'POSITION'     '=' CExpr            )
-  | ( 'READ'         '=' CExpr            )
-  | ( 'READWRITE'    '=' CExpr            )
+  | ( 'POSITION'     '=' DefaultCharExpr  )
+  | ( 'READ'         '=' DefaultCharExpr  )
+  | ( 'READWRITE'    '=' DefaultCharExpr  )
   | ( 'RECL'         '=' IntVariable      )
-  | ( 'ROUND'        '=' CExpr            )
-  | ( 'SEQUENTIAL '  '=' CExpr            )
-  | ( 'SIGN'         '=' CExpr            )
+  | ( 'ROUND'        '=' DefaultCharExpr  )
+  | ( 'SEQUENTIAL '  '=' DefaultCharExpr  )
+  | ( 'SIGN'         '=' DefaultCharExpr  )
   | ( 'SIZE'         '=' IntVariable      )
-  | ( 'STREAM'       '=' CExpr            )
+  | ( 'STREAM'       '=' DefaultCharExpr  )
 %%| ( 'TEAM'         '=' ImageTeam        )  %%TODO-F08
-  | ( 'UNFORMATTED'  '=' CExpr            )
-  | ( 'WRITE'        '=' CExpr            )            -> InquireSpec  {cons("inquire-spec")}
+  | ( 'UNFORMATTED'  '=' DefaultCharExpr  )
+  | ( 'WRITE'        '=' DefaultCharExpr  )            -> InquireSpec  {cons("inquire-spec")}
