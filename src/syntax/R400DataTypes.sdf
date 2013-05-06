@@ -174,7 +174,6 @@ context-free syntax
   | '*'
   | ':'                                 -> TypeParamValue       {cons("type-param-value")}
 
-
 %% 4.3 Relationship of types and values to objects
 %%
 
@@ -183,12 +182,8 @@ context-free syntax
   | DerivedTypeSpec                     -> TypeSpec             {cons("type-spec")}
 
 %%R403
-%%     WARNING-MODIFICATION:
-%%       TYPE ( intrinsic-type-spec ) is AMBIGUOUS,
-%%       rewrite ATerm to intrinsic-type-spec at a later stage
-%%        
   IntrinsicTypeSpec
-%%| ( 'TYPE'  '(' IntrinsicTypeSpec ')' )
+  | ( 'TYPE'  '(' IntrinsicTypeSpec ')' )
   | ( 'TYPE'  '(' DerivedTypeSpec   ')' )
   | ( 'CLASS' '(' DerivedTypeSpec   ')' )
   | ( 'CLASS' '(' '*'               ')' )
@@ -424,6 +419,16 @@ context-free syntax
 
 %%R453
   TypeName ( '(' {TypeParamSpec ','}+ ')' )?       -> DerivedTypeSpec         {cons("derived-type-spec")}
+    (
+         ( 'INTEGER'            )
+       | ( 'REAL'               )
+       | ( 'DOUBLE' 'PRECISION' )
+       | ( 'COMPLEX'            )
+       | ( 'CHARACTER'          )
+       | ( 'LOGICAL'            )
+       | ( 'DOUBLE' 'COMPLEX'   )
+    )
+      ( '(' {TypeParamSpec ','}+ ')' )?            -> DerivedTypeSpec  {reject}
 
 %%R454
   ( Keyword '=' )? TypeParamValue                  -> TypeParamSpec           {cons("type-param-spec")}
