@@ -169,7 +169,7 @@ context-free syntax
 %%REMOVE  DataRef  ArraySelector                                        -> DataRef   {cons("data-ref")}
 
 %%R611
-  PartRef {'%' PartRef}*                                 -> DataRef   {cons("data-ref")}
+  PartRef ('%' PartRef)*                                 -> DataRef   {cons("data-ref")}
 
 %%R612 part-ref
 %%REMOVE PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
