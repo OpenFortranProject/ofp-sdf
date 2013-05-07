@@ -170,9 +170,9 @@ context-free syntax
 %%R401
 %%       expr substituted for scalar-int-expr
 %%
-    Expr
-  | '*'
-  | ':'                                 -> TypeParamValue       {cons("type-param-value")}
+  Expr                                  -> TypeParamValue       {cons("type-param-value_Expr")}
+  '*'                                   -> TypeParamValue       {cons("type-param-value_STAR")}
+  ':'                                   -> TypeParamValue       {cons("type-param-value_COLON")}
 
 %% 4.3 Relationship of types and values to objects
 %%
@@ -194,20 +194,20 @@ context-free syntax
 %%
 
 %%R404
-    ( 'INTEGER'   KindSelector? )
-  | ( 'REAL'      KindSelector? )
-  | ( 'DOUBLE' 'PRECISION'      )
-  | ( 'COMPLEX'   KindSelector? )
-  | ( 'CHARACTER' CharSelector? )
-  | ( 'LOGICAL'   KindSelector? )
-  | ( 'DOUBLE' 'COMPLEX'        )       -> IntrinsicTypeSpec    {cons("intrinsic-type-spec")}
+  'INTEGER'   KindSelector?             -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_INTEGER")}
+  'REAL'      KindSelector?             -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_REAL")}
+  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_DOUBLE_PRECISION")}
+  'COMPLEX'   KindSelector?             -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_COMPLEX")}
+  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_CHARACTER")}
+  'LOGICAL'   KindSelector?             -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_LOGICAL")}
+  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("intrinsic-type-spec_DOUBLE_COMPLEX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
 %%       NONSTANDARD: e.g., integer*8 complex*8 complex*16
 %%
-    ( '(' ('KIND' '=')? Expr ')' )
-  | ( '*' Icon                   )      -> KindSelector  {cons("kind-selector")}
+  '(' ('KIND' '=')? Expr ')'            -> KindSelector  {cons("kind-selector_KIND")}
+  '*' Icon                              -> KindSelector  {cons("kind-selector_STAR")}
 
 %%406
   Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("signed-int-literal-constant")}
@@ -226,8 +226,8 @@ context-free syntax
   Icon                                  -> DigitString        {cons("digit-string")}
 
 %%R411
-    '+'
-  | '-'                                 -> Sign               {cons("sign")}
+  '+'                                   -> Sign               {cons("sign_PLUS")}
+  '-'                                   -> Sign               {cons("sign_MINUS")}
 
 %%R412
   Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("signed-real-literal-constant")}
@@ -257,14 +257,18 @@ context-free syntax
 %%R420
 %%       expr substituted for scalar-int-constant-expr
 %%
-    ( LengthSelector                                         )
-  | ( '(' 'LEN'  '=' TypeParamValue ',' 'KIND'  '=' Expr ')' )
-  | ( '('            TypeParamValue ',' 'KIND'? '=' Expr ')' )
-  | ( '(' 'KIND' '=' (',' 'LEN' '=' TypeParamValue)?     ')' ) -> CharSelector    {cons("char-selector")}
+  LengthSelector                                               -> CharSelector    {cons("char-selector_LS")}
+  '(' 'LEN'  '=' TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("char-selector_LEN_KIND")}
+  '('            TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("char-selector_LEN_KIND")}
+  '('            TypeParamValue ','             Expr ')'       -> CharSelector    {cons("char-selector_LEN_KIND")}
+  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue   ')'       -> CharSelector    {cons("char-selector_KIND_LEN")}
+  '(' 'KIND' '=' Expr                                ')'       -> CharSelector    {cons("char-selector_KIND")}
 
 %%R421
-    ( '(' ('LEN' '=')? TypeParamValue ')' )
-  | ( '*' CharLength ','?                 )                    -> LengthSelector  {cons("length-selector")}
+  '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("length-selector_LEN")}
+  '('           TypeParamValue ')'                             -> LengthSelector  {cons("length-selector_LEN")}
+  '*' CharLength ','                                           -> LengthSelector  {cons("length-selector_STAR")}
+  '*' CharLength                                               -> LengthSelector  {cons("length-selector_STAR")}
 
 %%R422
     ( '(' TypeParamValue ')' )
@@ -274,8 +278,8 @@ context-free syntax
   (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("char-literal-constant")}
 
 %%R424
-    ( '.TRUE.'  ("_" KindParam)? )
-  | ( '.FALSE.' ("_" KindParam)? )      -> LogicalLiteralConstant  {cons("logical-literal-constant")}
+  '.TRUE.'  ("_" KindParam)?            -> LogicalLiteralConstant  {cons("logical-literal-constant_TRUE")}
+  '.FALSE.' ("_" KindParam)?            -> LogicalLiteralConstant  {cons("logical-literal-constant_FALSE")}
 
 
 %% 4.5 Derived types
@@ -295,11 +299,20 @@ context-free syntax
              TypeName
              ( '('  {TypeParamName ','}+ ')'   )?          EOS -> DerivedTypeStmt  {cons("derived-type-stmt")}
 
+  'INTEGER'                                                    -> TypeName  {reject}
+  'REAL'                                                       -> TypeName  {reject}
+  'DOUBLEPRECISION'                                            -> TypeName  {reject}
+  'COMPLEX'                                                    -> TypeName  {reject}
+  'CHARACTER'                                                  -> TypeName  {reject}
+  'LOGICAL'                                                    -> TypeName  {reject}
+  'DOUBLECOMPLEX'                                              -> TypeName  {reject}
+
+
 %%R427
-    ( 'ABSTRACT'                        )
-  | (  AccessSpec                       )
-  | ( 'BIND'     '(' 'C'            ')' )
-  | ( 'EXTENDS'  '(' ParentTypeName ')' )                      -> TypeAttrSpec     {cons("type-attr-spec")}
+  'ABSTRACT'                                                   -> TypeAttrSpec     {cons("type-attr-spec_ABSTRACT")}
+   AccessSpec                                                  -> TypeAttrSpec     {cons("type-attr-spec_AS")}
+  'BIND'     '(' 'C'            ')'                            -> TypeAttrSpec     {cons("type-attr-spec_BIND")}
+  'EXTENDS'  '(' ParentTypeName ')'                            -> TypeAttrSpec     {cons("type-attr-spec_EXTENDS")}
 
 %%R428
     PrivateComponentsStmt
@@ -321,8 +334,8 @@ context-free syntax
   TypeParamName ( '=' Expr )?                                  -> TypeParamDecl    {cons("type-param-decl")}
 
 %%R433
-    'KIND'
-  | 'LEN'                                                      -> TypeParamAttrSpec  {cons("type-param-attr-spec")}
+  'KIND'                                -> TypeParamAttrSpec  {cons("type-param-attr-spec_KIND")}
+  'LEN'                                 -> TypeParamAttrSpec  {cons("type-param-attr-spec_LEN")}
 
 %%R434
   ComponentDefStmt*                     -> ComponentPart     {cons("component-part")}
@@ -337,12 +350,12 @@ context-free syntax
                   {ComponentDecl     ','}+             EOS   -> DataComponentDefStmt  {cons("data-component-def-stmt")}
 
 %%R437
-    ( AccessSpec                             )
-  | ( 'ALLOCATABLE'                          )
-  | ( 'CODIMENSION' '[' CoarraySpec ']'      )
-  | ( 'CONTIGUOUS'                           )
-  | ( 'DIMENSION' '(' ComponentArraySpec ')' )
-  | ( 'POINTER'                              )  -> ComponentAttrSpec  {cons("component-attr-spec")}
+  AccessSpec                                -> ComponentAttrSpec  {cons("component-attr-spec_AS")}
+  'ALLOCATABLE'                             -> ComponentAttrSpec  {cons("component-attr-spec_ALLOCATABLE")}
+  'CODIMENSION' '[' CoarraySpec ']'         -> ComponentAttrSpec  {cons("component-attr-spec_CODIMENSION")}
+  'CONTIGUOUS'                              -> ComponentAttrSpec  {cons("component-attr-spec_CONTIGUOUS")}
+  'DIMENSION' '(' ComponentArraySpec ')'    -> ComponentAttrSpec  {cons("component-attr-spec_DIMENSION")}
+  'POINTER'                                 -> ComponentAttrSpec  {cons("component-attr-spec_POINTER")}
 
 %%R438
   ComponentName ( '(' ComponentArraySpec ')' )?
@@ -360,10 +373,10 @@ context-free syntax
            '::' {ProcDecl              ','}+  EOS  -> ProcComponentDefStmt  {cons("proc-component-def-stmt")}
 
 %%R441
-    ( 'POINTER'  )
-  | ( 'PASS'     )
-  | ( 'NOPASS'   )
-  | ( AccessSpec )                                 -> ProcComponentAttrSpec {cons("proc-component-attr-spec")}
+  'POINTER'                                   -> ProcComponentAttrSpec {cons("proc-component-attr-spec_POINTER")}
+  'PASS'                                      -> ProcComponentAttrSpec {cons("proc-component-attr-spec_PASS")}
+  'NOPASS'                                    -> ProcComponentAttrSpec {cons("proc-component-attr-spec_NOPASS")}
+  AccessSpec                                  -> ProcComponentAttrSpec {cons("proc-component-attr-spec_AS")}
 
 %%R442
     ( '=' Expr               )
@@ -407,28 +420,18 @@ context-free syntax
      '::' GenericSpec '=>' {BindingName ','}+  EOS -> TypeBoundGenericStmt    {cons("type-bound-generic-stmt")}
 
 %%451
-    ( 'PASS' ('(' ArgName ')')? )
-  | ( 'NOPASS'                  )
-  | ( 'NON_OVERRIDABLS'         )
-  | ( 'DEFERRED'                )
-  | ( AccessSpec                )                  -> BindingAttr             {cons("binding-attr")}
+  'PASS' ('(' ArgName ')')?                        -> BindingAttr             {cons("binding-attr_PASS")}
+  'NOPASS'                                         -> BindingAttr             {cons("binding-attr_NOPASS")}
+  'NON_OVERRIDABLE'                                -> BindingAttr             {cons("binding-attr_NON_OVERRIDABLE")}
+  'DEFERRED'                                       -> BindingAttr             {cons("binding-attr_DEFERRED")}
+  AccessSpec                                       -> BindingAttr             {cons("binding-attr_AS")}
 
 %%452
   LblDef 'FINAL'
-         '::'? {FinalSubroutineName ','}+      EOS -> FinalProcedureStmt      {cons("final-procedure-stmt")}
+         OptCC {FinalSubroutineName ','}+      EOS -> FinalProcedureStmt      {cons("final-procedure-stmt")}
 
 %%R453
   TypeName ( '(' {TypeParamSpec ','}+ ')' )?       -> DerivedTypeSpec         {cons("derived-type-spec")}
-    (
-         ( 'INTEGER'            )
-       | ( 'REAL'               )
-       | ( 'DOUBLE' 'PRECISION' )
-       | ( 'COMPLEX'            )
-       | ( 'CHARACTER'          )
-       | ( 'LOGICAL'            )
-       | ( 'DOUBLE' 'COMPLEX'   )
-    )
-      ( '(' {TypeParamSpec ','}+ ')' )?            -> DerivedTypeSpec  {reject}
 
 %%R454
   ( Keyword '=' )? TypeParamValue                  -> TypeParamSpec           {cons("type-param-spec")}
@@ -457,7 +460,7 @@ context-free syntax
   LblDef 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("enum-def-stmt")}
 
 %%R460
-  LblDef 'ENUMERATOR' '::'?
+  LblDef 'ENUMERATOR' OptCC
          {Enumerator ','}+                     EOS -> EnumeratorDefStmt       {cons("enumerator-def-stmt")}
 
 %%R461
@@ -494,8 +497,8 @@ context-free syntax
 %%
 
 %%R468
-    ( '(/' AcSpec '/)' )
-  | ( '['  AcSpec  ']' )                           -> ArrayConstructor  {cons("array-constructor")}
+  '(/' AcSpec '/)'                                 -> ArrayConstructor     {cons("array-constructor")}
+  '['  AcSpec  ']'                                 -> ArrayConstructor     {cons("array-constructor")}
 
 %%R469
     (  TypeSpec '::'                  )
@@ -517,10 +520,10 @@ context-free syntax
 %%R474
 %%      expr substituted for scalar-int-expr
 %%
-  AcDoVariable '=' Expr ',' Expr (',' Expr)?       -> AcImpliedDoControl  {cons("ac-implied-do-control")}
+  AcDoVariable '=' Expr ',' Expr (',' Expr)?       -> AcImpliedDoControl   {cons("ac-implied-do-control")}
 
 %%R475
-  DoVariable                                       -> AcDoVariable        {cons("ac-do-variable")}
+  DoVariable                                       -> AcDoVariable         {cons("ac-do-variable")}
 
 %%R432
 %%TODO-REMOVE
