@@ -51,47 +51,47 @@ context-free syntax
 %%
 
 %%R1001
-  LblDef 'FORMAT' FormatSpecification                  EOS -> FormatStmt           {cons("format-stmt")}
+  LblDef 'FORMAT' FormatSpecification           EOS -> FormatStmt           {cons("format-stmt")}
 
 %%R1002
-    ( '(' ( FormatItems    )?                     ')' )
-  | ( '(' ( FormatItems ',')? UnlimitedFormatItem ')' )    -> FormatSpecification  {cons("format-specification")}
+  '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("format-specification_alt1")}
+  '(' ( FormatItems ',')? UnlimitedFormatItem ')'   -> FormatSpecification  {cons("format-specification_alt2")}
 
 
 %% 10.3 Form of a format item list
 %%
 
 %%R1003
-  FormatItem ( ','? FormatItem )*                          -> FormatItems          {cons("format-items")}
+  FormatItem (OptComma FormatItem)*                 -> FormatItems          {cons("format-items")}
 
 %%R1004
-    ( 'REditDesc'? DataEditDesc        )
-  | (      ControlEditDesc             )
-  | (      CharStringEditDesc          )
-  | ( 'REditDesc'? '(' FormatItems ')' )                   -> FormatItem           {cons("format-item")}
+  REditDesc? DataEditDesc                           -> FormatItem           {cons("format-item_alt1")}
+  ControlEditDesc                                   -> FormatItem           {cons("format-item_alt2")}
+  CharStringEditDesc                                -> FormatItem           {cons("format-item_alt3")}
+  REditDesc? '(' FormatItems ')'                    -> FormatItem           {cons("format-item_alt4")}
 
 %%R1005
-  '*' '(' FormatItems ')'                                  -> UnlimitedFormatItem  {cons("unlimited-format-item")}
+  '*' '(' FormatItems ')'                           -> UnlimitedFormatItem  {cons("unlimited-format-item")}
 
 %%R1006
-  Icon                                                     -> REditDesc            {cons("r")}
+  Icon                                              -> REditDesc            {cons("r")}
 
 %%R1007
 %% Scon substituted for char-literal-constant
 %%
-    ( 'I'  WEditDesc ('.' MEditDesc)?                  )
-  | ( 'B'  WEditDesc ('.' MEditDesc)?                  )
-  | ( 'O'  WEditDesc ('.' MEditDesc)?                  )
-  | ( 'Z'  WEditDesc ('.' MEditDesc)?                  )
-  | ( 'F'  WEditDesc  '.' DEditDesc                    )
-  | ( 'E'  WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
-  | ( 'EN' WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
-  | ( 'ES' WEditDesc  '.' DEditDesc ('E' EEditDesc)?   )
-  | ( 'G'  WEditDesc ('.' DEditDesc ('E' EEditDesc)?)? )
-  | ( 'L'  WEditDesc                                   )
-  | ( 'A'  WEditDesc?                                  )
-  | ( 'D'  WEditDesc  '.' DEditDesc                    )
-  | ( 'DT' Scon? ( '('   {VEditDesc ','}+ ')' )?       )   -> DataEditDesc         {cons("data-edit-desc")}
+  'I'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("data-edit-desc_I")}
+  'B'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("data-edit-desc_B")}
+  'O'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("data-edit-desc_O")}
+  'Z'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("data-edit-desc_Z")}
+  'F'  WEditDesc  '.' DEditDesc                     -> DataEditDesc       {cons("data-edit-desc_F")}
+  'E'  WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("data-edit-desc_E")}
+  'EN' WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("data-edit-desc_EN")}
+  'ES' WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("data-edit-desc_ES")}
+  'G'  WEditDesc ('.' DEditDesc ('E' EEditDesc)?)?  -> DataEditDesc       {cons("data-edit-desc_G")}
+  'L'  WEditDesc                                    -> DataEditDesc       {cons("data-edit-desc_L")}
+  'A'  WEditDesc?                                   -> DataEditDesc       {cons("data-edit-desc_A")}
+  'D'  WEditDesc  '.' DEditDesc                     -> DataEditDesc       {cons("data-edit-desc_D")}
+  'DT' Scon? ( '('   {VEditDesc ','}+ ')' )?        -> DataEditDesc       {cons("data-edit-desc_DT")}
 
 %%R1008
   Icon                                  -> WEditDesc            {cons("w")}
@@ -109,47 +109,47 @@ context-free syntax
   Icon                                  -> VEditDesc            {cons("v")}
 
 %%R1013
-    ( PositionEditDesc    )
-  | ( REditDesc? '/'      )
-  | ( ':'                 )
-  | ( SignEditDesc        )
-  | ( KEditDesc 'P'       )
-  | ( BlankInterpEditDesc )
-  | ( RoundEditDesc       )
-  | ( DecimalEditDesc     )             -> ControlEditDesc      {cons("control-edit-desc")}
+  PositionEditDesc                      -> ControlEditDesc      {cons("control-edit-desc_alt1")}
+  REditDesc? '/'                        -> ControlEditDesc      {cons("control-edit-desc_alt2")}
+  ':'                                   -> ControlEditDesc      {cons("control-edit-desc_alt3")}
+  SignEditDesc                          -> ControlEditDesc      {cons("control-edit-desc_alt4")}
+  KEditDesc 'P'                         -> ControlEditDesc      {cons("control-edit-desc_alt5")}
+  BlankInterpEditDesc                   -> ControlEditDesc      {cons("control-edit-desc_alt6")}
+  RoundEditDesc                         -> ControlEditDesc      {cons("control-edit-desc_alt7")}
+  DecimalEditDesc                       -> ControlEditDesc      {cons("control-edit-desc_alt8")}
 
 %%R1014
   SignedIntLiteralConstant              -> KEditDesc            {cons("k")}
 
 %%R1015
-    ( 'T'  NEditDesc     )
-  | ( 'TL' NEditDesc     )
-  | ( 'TR' NEditDesc     )
-  | (      NEditDesc 'X' )              -> PositionEditDesc     {cons("position-edit-desc")}
+  'T'  NEditDesc                        -> PositionEditDesc     {cons("position-edit-desc_T")}
+  'TL' NEditDesc                        -> PositionEditDesc     {cons("position-edit-desc_TL")}
+  'TR' NEditDesc                        -> PositionEditDesc     {cons("position-edit-desc_TR")}
+       NEditDesc 'X'                    -> PositionEditDesc     {cons("position-edit-desc_X")}
 
 %%R1016
   Icon                                  -> NEditDesc            {cons("n")}
 
 %%R1017
-    'S'
-  | 'SP'
-  | 'SS'                                -> SignEditDesc         {cons("sign-edit-desc")}
+  'SS'                                  -> SignEditDesc         {cons("sign-edit-desc_SS")}
+  'SP'                                  -> SignEditDesc         {cons("sign-edit-desc_SP")}
+  'S'                                   -> SignEditDesc         {cons("sign-edit-desc_S")}
 
 %%R1018
-    'BN'
-  | 'BZ'                                -> BlankInterpEditDesc  {cons("blank-interp-edit-desc")}
+  'BN'                                  -> BlankInterpEditDesc  {cons("blank-interp-edit-desc_BN")}
+  'BZ'                                  -> BlankInterpEditDesc  {cons("blank-interp-edit-desc_BZ")}
 
 %%R1019
-    'RU'
-  | 'RD'
-  | 'RZ'
-  | 'RN'
-  | 'RC'
-  | 'RP'                                -> RoundEditDesc        {cons("round-edit-desc")}
+  'RU'                                  -> RoundEditDesc        {cons("round-edit-desc_RU")}
+  'RD'                                  -> RoundEditDesc        {cons("round-edit-desc_RD")}
+  'RZ'                                  -> RoundEditDesc        {cons("round-edit-desc_RZ")}
+  'RN'                                  -> RoundEditDesc        {cons("round-edit-desc_RN")}
+  'RC'                                  -> RoundEditDesc        {cons("round-edit-desc_RC")}
+  'RP'                                  -> RoundEditDesc        {cons("round-edit-desc_RP")}
 
 %%R1020
-    'DC'
-  | 'DP'                                -> DecimalEditDesc      {cons("decimal-edit-desc")}
+  'DC'                                  -> DecimalEditDesc      {cons("decimal-edit-desc_DC")}
+  'DP'                                  -> DecimalEditDesc      {cons("decimal-edit-desc_DP")}
 
 %%R1021
   Scon                                  -> CharStringEditDesc   {cons("char-string-edit-desc")}
