@@ -62,6 +62,7 @@ sorts
   ContiguousStmt                      %% R533
   DataStmt                            %% R534
   DataStmtSet                         %% R535
+  DataStmtSetList
   DataStmtObject                      %% R536
   DataImpliedDo                       %% R537
   DataIDoObject                       %% R538
@@ -81,7 +82,7 @@ sorts
   ProtectedStmt                       %% R552
   SaveStmt                            %% R553
   SavedEntity                         %% R554
-                                      %% R555  ProcPointerName - lex
+  ProcPointerName                     %% R555
   TargetStmt                          %% R556
   TargetDecl                          %% R557
   ValueStmt                           %% R558
@@ -118,24 +119,24 @@ context-free syntax
           ((',' {AttrSpec ','}+)? '::')? {EntityDecl ','}+
                                                   EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
 %%R502
-    (  AccessSpec                       )
-  | ( 'ALLOCATABLE'                     )
-  | ( 'ASYNCHRONOUS'                    )
-  | ( 'CODIMENSION' '[' CoarraySpec ']' )
-  | ( 'CONTIGUOUS'                      )
-  | ( 'DIMENSION' '(' ArraySpec ')'     )
-  | ( 'EXTERNAL'                        )
-  | ( 'INTENT' '(' IntentSpec ')'       )
-  | ( 'INTRINSIC'                       )
-  | (  LanguageBindingSpec              )
-  | ( 'OPTIONAL'                        )
-  | ( 'PARAMETER'                       )
-  | ( 'POINTER'                         )
-  | ( 'PROTECTED'                       )
-  | ( 'SAVE'                            )
-  | ( 'TARGET'                          )
-  | ( 'VALUE'                           )
-  | ( 'VOLATILE'                        )  -> AttrSpec  {cons("attr-spec")}
+   AccessSpec                                           -> AttrSpec  {cons("attr-spec_AS")}
+  'ALLOCATABLE'                                         -> AttrSpec  {cons("attr-spec_ALLOCATABLE")}
+  'ASYNCHRONOUS'                                        -> AttrSpec  {cons("attr-spec_ASYNCHRONOUS")}
+  'CODIMENSION' '[' CoarraySpec ']'                     -> AttrSpec  {cons("attr-spec_CODIMENSION")}
+  'CONTIGUOUS'                                          -> AttrSpec  {cons("attr-spec_CONTIGUOUS")}
+  'DIMENSION' '(' ArraySpec ')'                         -> AttrSpec  {cons("attr-spec_DIMENSION")}
+  'EXTERNAL'                                            -> AttrSpec  {cons("attr-spec_EXTERNAL")}
+  'INTENT' '(' IntentSpec ')'                           -> AttrSpec  {cons("attr-spec_INTENT")}
+  'INTRINSIC'                                           -> AttrSpec  {cons("attr-spec_INTRINSIC")}
+   LanguageBindingSpec                                  -> AttrSpec  {cons("attr-spec_LBS")}
+  'OPTIONAL'                                            -> AttrSpec  {cons("attr-spec_OPTIONAL")}
+  'PARAMETER'                                           -> AttrSpec  {cons("attr-spec_PARAMETER")}
+  'POINTER'                                             -> AttrSpec  {cons("attr-spec_POINTER")}
+  'PROTECTED'                                           -> AttrSpec  {cons("attr-spec_PROTECTED")}
+  'SAVE'                                                -> AttrSpec  {cons("attr-spec_SAVE")}
+  'TARGET'                                              -> AttrSpec  {cons("attr-spec_TARGET")}
+  'VALUE'                                               -> AttrSpec  {cons("attr-spec_VALUE")}
+  'VOLATILE'                                            -> AttrSpec  {cons("attr-spec_VOLATILE")}
 
 %%R503
   ObjectName    ( '(' ArraySpec ')'   )?
@@ -161,8 +162,8 @@ context-free syntax
 %%
 
 %%R507
-    'PUBLIC'
-  | 'PRIVATE'                                           -> AccessSpec      {cons("access-spec")}
+  'PUBLIC'                                              -> AccessSpec      {cons("access-spec_PUBLIC")}
+  'PRIVATE'                                             -> AccessSpec      {cons("access-spec_PRIVATE")}
 
 %%R508
 %%       Scon substituted for scalar-default-char-constant-expr
@@ -191,12 +192,12 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("dimension-spec")}
 
 %%R515
-    ( {ExplicitShapeSpec ','}+ )
-  | ( {AssumedShapeSpec  ','}+ )
-  | ( {DeferredShapeSpec ','}+ )
-  | (  AssumedSizeSpec         )
-  | ( {ImpliedShapeSpec  ','}+ )
-  | '..'                               -> ArraySpec            {cons("array-spec")}
+  {ExplicitShapeSpec ','}+             -> ArraySpec            {cons("array-spec_ESSL")}
+  {AssumedShapeSpec  ','}+             -> ArraySpec            {cons("array-spec_ASSL")}
+  {DeferredShapeSpec ','}+             -> ArraySpec            {cons("array-spec_DSSL")}
+   AssumedSizeSpec                     -> ArraySpec            {cons("array-spec_ASS")}
+  {ImpliedShapeSpec  ','}+             -> ArraySpec            {cons("array-spec_ISSL")}
+  '..'                                 -> ArraySpec            {cons("array-spec_ARS")}
 
 %%R516
   (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec  {cons("explicit-shape-spec")}
@@ -220,40 +221,39 @@ context-free syntax
   (LowerBound ':')? '*'                         -> ImpliedShapeSpec   {cons("implied-shape-spec")}
 
 %%R523
-    'IN'
-  | 'OUT'
-  | 'INOUT'
-  | 'IN OUT'                                    -> IntentSpec  {cons("intent-spec")}
+  'IN'                                          -> IntentSpec  {cons("intent-spec_IN")}
+  'OUT'                                         -> IntentSpec  {cons("intent-spec_OUT")}
+  'IN' 'OUT'                                    -> IntentSpec  {cons("intent-spec_INOUT")}
 
 
 %% 5.4 Attribute specification statements
 %%
 
 %%R524
-  LblDef AccessSpec ( '::'? {AccessId ','}+ )              EOS -> AccessStmt   {cons("access-stmt")}
+  LblDef AccessSpec ( OptCC {AccessId ','}+ )              EOS -> AccessStmt   {cons("access-stmt")}
 
 %%R525
 %%UseName           %% ambiguous with generic-spec
   GenericSpec                                                  -> AccessId     {cons("access-id")}
 
 %%R526
-  LblDef 'ALLOCATABLE' '::'? {AllocatableDecl ','}+        EOS -> AllocatableStmt  {cons("allocatable-stmt")}
+  LblDef 'ALLOCATABLE' OptCC {AllocatableDecl ','}+        EOS -> AllocatableStmt  {cons("allocatable-stmt")}
 
 %%R527
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> AllocatableDecl  {cons("allocatable-decl")}
 %%R528
-  LblDef 'ASYNCHRONOUS' '::'? {ObjectName ','}+            EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
+  LblDef 'ASYNCHRONOUS' OptCC {ObjectName ','}+            EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
 
 %%R529
-  LblDef LanguageBindingSpec '::'? {BindEntity ','}+       EOS -> BindStmt         {cons("bind-stmt")}
+  LblDef LanguageBindingSpec OptCC {BindEntity ','}+       EOS -> BindStmt         {cons("bind-stmt")}
 
 %%R530
-    ( EntityName              )
-  | ( '/' CommonBlockName '/' )                                -> BindEntity       {cons("bind-entity")}
+  EntityName                                                   -> BindEntity       {cons("bind-entity_EN")}
+  '/' CommonBlockName '/'                                      -> BindEntity       {cons("bind-entity_CBN")}
 
 %%R531
-  LblDef 'CODIMENSION' '::'? {CodimensionDecl ','}+        EOS -> CodimensionStmt  {cons("codimension-stmt")}      
+  LblDef 'CODIMENSION' OptCC {CodimensionDecl ','}+        EOS -> CodimensionStmt  {cons("codimension-stmt")}      
 %%R532
   CoarrayName '[' CoarraySpec ']'                              -> CodimensionDecl  {cons("codimension-decl")}
 
@@ -261,10 +261,13 @@ context-free syntax
   LblDef 'CONTIGUOUS' {ObjectName ','}+                    EOS -> ContiguousStmt   {cons("contiguous-stmt")}
 
 %%R534
-  LblDef 'DATA' {DataStmtSet ','?}+                        EOS -> DataStmt         {cons("data-stmt")}
+  LblDef 'DATA' DataStmtSetList                            EOS -> DataStmt         {cons("data-stmt")}
 
 %%R535
   {DataStmtObject ','}+ '/' {DataStmtValue ','}+ '/'           -> DataStmtSet      {cons("data-stmt-set")}
+  DataStmtSet                                                  -> DataStmtSetList  {cons("data-stmt-set-list")}
+  DataStmtSetList ',' DataStmtSet                              -> DataStmtSetList  {cons("data-stmt-set-list")}
+  DataStmtSetList     DataStmtSet                              -> DataStmtSetList  {cons("data-stmt-set-list")}
 
 %%R536
     Variable
@@ -315,16 +318,16 @@ context-free syntax
   Designator                                                   -> ConstantSubobject {cons("constant-subobject")}
 
 %%R545
-  LblDef 'DIMENSION' '::'?
+  LblDef 'DIMENSION' OptCC
                            ArrayName '(' ArraySpec ')'
                       (',' ArrayName '(' ArraySpec ')')*   EOS -> DimensionStmt  {cons("dimension-stmt")}
 
 %%R546
   LblDef 'INTENT' '(' IntentSpec ')'
-                    '::'? {DummyArgName ','}+              EOS -> IntentStmt   {cons("intent-stmt")}
+                    OptCC {DummyArgName ','}+              EOS -> IntentStmt   {cons("intent-stmt")}
 
 %%R547
-  LblDef 'OPTIONAL' '::'? {DummyArgName ','}+              EOS -> OptionalStmt {cons("optional-stmt")}
+  LblDef 'OPTIONAL' OptCC {DummyArgName ','}+              EOS -> OptionalStmt {cons("optional-stmt")}
 
 %%R548
   LblDef 'PARAMETER' '(' {NamedConstantDef ','}+ ')'       EOS -> ParameterStmt  {cons("parameter-stmt")}
@@ -333,17 +336,17 @@ context-free syntax
   NamedConstant '=' ConstantExpr                               -> NamedConstantDef  {cons("named-constnat-def")}
 
 %%R550
-  LblDef 'POINTER' '::'? {PointerDecl ','}+                EOS -> PointerStmt   {cons("pointer-stmt")}
+  LblDef 'POINTER' OptCC {PointerDecl ','}+                EOS -> PointerStmt   {cons("pointer-stmt")}
 
 %%R551
     ( ObjectName ( '(' {DeferredShapeSpec ','}+ ')' )? )
   |   ProcEntityName                                           -> PointerDecl   {cons("pointer-decl")}
 
 %%R552
-  LblDef 'PROTECTED' '::'? {EntityName ','}+               EOS -> ProtectedStmt {cons("protected-stmt")}
+  LblDef 'PROTECTED' OptCC {EntityName ','}+               EOS -> ProtectedStmt {cons("protected-stmt")}
 
 %%R553
-  LblDef 'SAVE' ('::'? {SavedEntity ','}+)?                EOS -> SaveStmt      {cons("save-stmt")}
+  LblDef 'SAVE' (OptCC {SavedEntity ','}+)?                EOS -> SaveStmt      {cons("save-stmt")}
 
 %%R554
     ( ObjectName              )
@@ -351,31 +354,28 @@ context-free syntax
   | ( '/' CommonBlockName '/' )                                -> SavedEntity   {cons("saved-entity")}
 
 %%R555
-%%ProcPointerName
+  Ident                                                        -> ProcPointerName  {cons("name")}
 
 %%R556
-  LblDef 'TARGET' '::'? {TargetDecl ','}+                  EOS -> TargetStmt   {cons("target-stmt")}
+  LblDef 'TARGET' OptCC {TargetDecl ','}+                  EOS -> TargetStmt   {cons("target-stmt")}
 
 %%R557
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> TargetDecl   {cons("target-decl")}
 
 %%R558
-  LblDef 'VALUE' '::'? {DummyArgName ','}+                 EOS -> ValueStmt    {cons("value-stmt")}
+  LblDef 'VALUE' OptCC {DummyArgName ','}+                 EOS -> ValueStmt    {cons("value-stmt")}
 
 %%R559
-  LblDef 'VOLATILE' '::'? {ObjectName ','}+                EOS -> VolatileStmt  {cons("volatile-stmt")}
+  LblDef 'VOLATILE' OptCC {ObjectName ','}+                EOS -> VolatileStmt  {cons("volatile-stmt")}
 
 
 %% 5.5 Implicit statement
 %%
 
 %%R560
-  LblDef 'IMPLICIT'
-            (
-               'NONE'
-              | {ImplicitSpec ','}+
-            )                                      EOS -> ImplicitStmt    {cons("implicit-stmt")}
+  LblDef 'IMPLICIT' {ImplicitSpec ','}+            EOS -> ImplicitStmt    {cons("implicit-stmt_ISL")}
+  LblDef 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("implicit-stmt_NONE")}
 
 %%R561
   DeclarationTypeSpec '(' {LetterSpec ','}+ ')'        -> ImplicitSpec    {cons("implicit-spec")}
@@ -390,8 +390,8 @@ context-free syntax
 %%R563
 %%TODO - inline NamelistGroup?
   LblDef 'NAMELIST'
-           '/' NamelistGroupName '/' {NamelistGroupObject ','}+
-    ( ','? '/' NamelistGroupName '/' {NamelistGroupObject ','}+ )*
+               '/' NamelistGroupName '/' {NamelistGroupObject ','}+
+    ( OptComma '/' NamelistGroupName '/' {NamelistGroupObject ','}+ )*
                                                          EOS -> NamelistStmt      {cons("namelist-stmt")}
 
 %%R564
@@ -414,8 +414,8 @@ context-free syntax
 
 %%R567
   LblDef 'COMMON'
-          ('/' CommonBlockName? '/')? {CommonBlockObject ','}+
-    (','?  '/' CommonBlockName? '/'   {CommonBlockObject ','}+ )*
+              ('/' CommonBlockName? '/')? {CommonBlockObject ','}+
+    (OptComma  '/' CommonBlockName? '/'   {CommonBlockObject ','}+ )*
                                                          EOS -> CommonStmt  {cons("common-stmt")}
 %%R569
   VariableName ( '(' ArraySpec ')' )?                        -> CommonBlockObject  {cons("common-block-object")}
