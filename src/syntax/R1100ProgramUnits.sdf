@@ -304,8 +304,8 @@ context-free syntax
                                            EOS -> UseStmt {cons("use-stmt")}
 
 %%R1110
-    'INTRINSIC'
-  | 'NON_INTRINSIC'                            -> ModuleNature  {cons("module-nature")}
+  'INTRINSIC'                                  -> ModuleNature  {cons("module-nature_INTRINSIC")}
+  'NON_INTRINSIC'                              -> ModuleNature  {cons("module-nature_NON_INTRINSIC")}
 
 
 %%1111
