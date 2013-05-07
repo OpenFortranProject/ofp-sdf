@@ -45,7 +45,7 @@ sorts
   FunctionSubprogram                  %% R1227
   FunctionStmt                        %% R1228
   ProcLanguageBindingSpec             %% R1229
-                                      %% R1230  DummyArgName (FortranLex)
+  DummyArgName                        %% R1230
   Suffix                              %% R1231
   EndFunctionStmt                     %% R1232
   SubroutineSubprogram                %% R1233
@@ -104,7 +104,8 @@ context-free syntax
 %%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
-  LblDef 'MODULE'? 'PROCEDURE' '::'? {ProcedureName ','}+  EOS -> ProcedureStmt  {cons("procedure-stmt")}
+  LblDef 'MODULE' 'PROCEDURE' OptCC {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt_MODULE")}
+  LblDef          'PROCEDURE' OptCC {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt")}
 
 %%R1207
     GenericName
@@ -119,10 +120,10 @@ context-free syntax
   | ( 'WRITE' '(' 'UNFORMATTED' ')' )           -> DefinedIoGenericSpec  {cons("defined-io-generic-spec")}
 
 %%R1209
-  LblDef 'IMPORT' ( '::'? {ImportName ','}+ )?             EOS -> ImportStmt     {cons("import-stmt")}
+  LblDef 'IMPORT' ( OptCC {ImportName ','}+ )?             EOS -> ImportStmt     {cons("import-stmt")}
 
 %%R1210
-  LblDef 'EXTERNAL' '::'? {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
+  LblDef 'EXTERNAL' OptCC {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
 
 %%R1211
   LblDef 'PROCEDURE'
@@ -136,12 +137,12 @@ context-free syntax
   | DeclarationTypeSpec                               -> ProcInterface  {cons("proc-interface")}
 
 %%R1213
-    ( AccessSpec                  )
-  | ( ProcLanguageBindingSpec     )
-  | ( 'INTENT' '(' IntentSpec ')' )
-  | ( 'OPTIONAL'                  )
-  | ( 'POINTER'                   )
-  | ( 'SAVE'                      )                   -> ProcAttrSpec  {cons("proc-attr-spec")}
+  AccessSpec                                          -> ProcAttrSpec  {cons("proc-attr-spec_AS")}
+  ProcLanguageBindingSpec                             -> ProcAttrSpec  {cons("proc-attr-spec_PBS")}
+  'INTENT' '(' IntentSpec ')'                         -> ProcAttrSpec  {cons("proc-attr-spec_INTENT")}
+  'OPTIONAL'                                          -> ProcAttrSpec  {cons("proc-attr-spec_OPTIONAL")}
+  'POINTER'                                           -> ProcAttrSpec  {cons("proc-attr-spec_POINTER")}
+  'SAVE'                                              -> ProcAttrSpec  {cons("proc-attr-spec_SAVE")}
 
 %%R1214
   ProcedureEntityName ( '=>' ProcPointerInit )?       -> ProcDecl      {cons("proc-decl")}
@@ -157,7 +158,7 @@ context-free syntax
   ProcedureName                                       -> InitialProcTarget  {cons("initial-proc-target")}
 
 %%R1218
-  LblDef 'INTRINSIC' '::'? {IntrinsicProcedureName ','}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
+  LblDef 'INTRINSIC' OptCC {IntrinsicProcedureName ','}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
 
 %%R1219
   ProcedureDesignator '(' {ActualArgSpec ','}* ')'    -> FunctionReference   {cons("function-reference")}
@@ -188,12 +189,12 @@ context-free syntax
   PrefixSpec+                                          -> Prefix             {cons("prefix")}
 
 %%1226
-    DeclarationTypeSpec
-  | 'ELEMENTAL'
-  | 'IMPURE'
-  | 'MODULE'
-  | 'PURE'
-  | 'RECURSIVE'                                        -> PrefixSpec         {cons("prefix-spec")}
+  DeclarationTypeSpec                                  -> PrefixSpec         {cons("prefix-spec_DTS")}
+  'ELEMENTAL'                                          -> PrefixSpec         {cons("prefix-spec_ELEMENTAL")}
+  'IMPURE'                                             -> PrefixSpec         {cons("prefix-spec_IMPURE")}
+  'MODULE'                                             -> PrefixSpec         {cons("prefix-spec_MODULE")}
+  'PURE'                                               -> PrefixSpec         {cons("prefix-spec_PURE")}
+  'RECURSIVE'                                          -> PrefixSpec         {cons("prefix-spec_RECURSIVE")}
 
 %%R1227
 %%     WARNING-MODIFICATION: 
@@ -213,6 +214,9 @@ context-free syntax
 
 %%R1229
   LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
+
+%%R1230
+  Ident                                                -> DummyArgName             {cons("name")}
 
 %%R1231
     ( ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')? )
@@ -241,8 +245,8 @@ context-free syntax
          )?                                 EOS -> SubroutineStmt        {cons("subroutine-stmt")}
 
 %%R1235
-    DummyArgName
-  | '*'                                         -> DummyArg              {cons("dummy-arg")}
+  DummyArgName                                  -> DummyArg              {cons("dummy-arg_DAN")}
+  '*'                                           -> DummyArg              {cons("dummy-arg_STAR")}
 
 %%R1236
   LblDef 'END' ('SUBROUTINE' SubroutineName?)?  EOS -> EndSubroutineStmt {cons("end-subroutine-stmt")}
