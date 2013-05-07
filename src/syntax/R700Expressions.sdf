@@ -28,19 +28,23 @@ sorts
   MultOperand                         %% R704
   AddOperand                          %% R705
   Level2Expr                          %% R706
-  
+  PowerOp                             %% R707
+  MultOp                              %% R708
+  AddOp                               %% R709
   Level3Expr                          %% R710
-
+  ConcatOp                            %% R711
   Level4Expr                          %% R712
-
+  RelOp                               %% R713
   AndOperand                          %% R714
   OrOperand                           %% R715
   EquivOperand                        %% R716
   Level5Expr                          %% R717
-
+  NotOp                               %% R718
+  AndOp                               %% R719
+  OrOp                                %% R720
+  EquivOp                             %% R721
   Expr                                %% R722
   DefinedBinaryOp                     %% R723
-
   LogicalExpr                         %% R724
   DefaultCharExpr                     %% R725
   IntExpr                             %% R726
@@ -83,17 +87,15 @@ context-free syntax
 
 
 %%R309
-    '**'                                                       %% power-op
-  | ('*' | '/')                                                %% mult-op
-  | ('+' | '-')                                                %% add-op
-  | '//'                                                       %% concat-op
-  | ( '.EQ.' | '.NE.' | '.LT.' | '.LE.' | '.GT.' | '.GE.' |
-      '=='   | '/='   | '<'    | '<='   | '>'    | '>=' )      %% rel-op
-  | '.NOT.'                                                    %% not-op
-  | '.AND.'                                                    %% and-op
-  | '.OR.'                                                     %% or-op
-  | ('.EQV.' | '.NEQV.')                                       %% equiv-op
-                                -> IntrinsicOperator     {cons("intrinsic-operator")}
+    PowerOp
+  | MultOp
+  | AddOp
+  | ConcatOp
+  | RelOp
+  | NotOp
+  | AndOp
+  | OrOp
+  | EquivOp                     -> IntrinsicOperator     {cons("intrinsic-operator")}
 
 %%R310
     DefinedUnaryOp
@@ -125,87 +127,74 @@ context-free syntax
   Dop                                      -> DefinedUnaryOp  {cons("defined-unary-op")}
 
 %%R704
-  Level1Expr  ('**'         MultOperand)?  -> MultOperand     {cons("mult-operand")}
+  Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("mult-operand")}
 
 %%R705
-  (AddOperand ('*' | '/'))? MultOperand    -> AddOperand      {cons("add-operand")}
+  (AddOperand MultOp)? MultOperand         -> AddOperand      {cons("add-operand")}
 
 %%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
 %%TODO-F08: is this still true?
 %%R706
-  (Level2Expr? ('+' | '-'))? AddOperand    -> Level2Expr      {cons("level-2-expr")}
+  (Level2Expr? AddOp)? AddOperand          -> Level2Expr      {cons("level-2-expr")}
 
 %%R707
-%%  '**'                                   -> PowerOp
+  '**'                                     -> PowerOp         {cons("power-op")}
 
 %%R708
-%%  ('*' | '/')                            -> MultOp
+  '*'                                      -> MultOp          {cons("mult-op_TIMES")}
+  '/'                                      -> MultOp          {cons("mult-op_DIV")}
 
 %%R709
-%%  ('+' | '-')                            -> AddOp
+  '+'                                      -> AddOp           {cons("add-op_PLUS")}
+  '-'                                      -> AddOp           {cons("add-op_MINUS")}
 
 %%R710
-  (Level3Expr  '//')? Level2Expr           -> Level3Expr      {cons("level-3-expr")}
+  (Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("level-3-expr")}
 
 %%R711
-%%  '//'                                   -> ConcatOp
+  '//'                                     -> ConcatOp        {cons("concat-op")}
 
 %%R712
-  ( Level3Expr
-      (    '.EQ.'
-         | '.NE.'
-         | '.LT.'
-         | '.LE.'
-         | '.GT.'
-         | '.GE.'
-         | '=='
-         | '/='
-         | '<'
-         | '<='
-         | '>'
-         | '>='
-      )
-   )? Level3Expr                           -> Level4Expr      {cons("level-4-expr")}
+  (Level3Expr RelOp)? Level3Expr           -> Level4Expr      {cons("level-4-expr")}
 
 %%R713
-%%    '.EQ.'
-%%  | '.NE.'
-%%  | '.LT.'
-%%  | '.LE.'
-%%  | '.GT.'
-%%  | '.GE.'
-%%  | '=='
-%%  | '/='
-%%  | '<'
-%%  | '<='
-%%  | '>'
-%%  | '>='                                 -> RelOp
+  '.EQ.'                                   -> RelOp           {cons("rel-op_EQ")}
+  '.NE.'                                   -> RelOp           {cons("rel-op_NE")}
+  '.LT.'                                   -> RelOp           {cons("rel-op_LT")}
+  '.LE.'                                   -> RelOp           {cons("rel-op_LE")}
+  '.GT.'                                   -> RelOp           {cons("rel-op_GT")}
+  '.GE.'                                   -> RelOp           {cons("rel-op_GE")}
+  '=='                                     -> RelOp           {cons("rel-op_EQ")}
+  '/='                                     -> RelOp           {cons("rel-op_NE")}
+  '<'                                      -> RelOp           {cons("rel-op_LT")}
+  '<='                                     -> RelOp           {cons("rel-op_LE")}
+  '>'                                      -> RelOp           {cons("rel-op_GT")}
+  '>='                                     -> RelOp           {cons("rel-op_GE")}
 
 %%R714
-  '.NOT.'? Level4Expr                      -> AndOperand      {cons("and-operand")}
+  NotOp? Level4Expr                        -> AndOperand      {cons("and-operand")}
 
 %%R715
-  ( OrOperand    '.AND.'   )? AndOperand   -> OrOperand       {cons("or-operand")}
+  (OrOperand AndOp)? AndOperand            -> OrOperand       {cons("or-operand")}
 
 %%R716
-  ( EquivOperand '.OR.'    )? OrOperand    -> EquivOperand    {cons("equiv-operand")}
+  (EquivOperand OrOp)? OrOperand           -> EquivOperand    {cons("equiv-operand")}
 
 %%R717
-  ( Level5Expr
-      ('.EQV.' | '.NEQV.') )? EquivOperand -> Level5Expr      {cons("level-5-expr")}
+  (Level5Expr EquivOp)? EquivOperand       -> Level5Expr      {cons("level-5-expr")}
 
 %%R718
-%% '.NOT.'                                 -> NotOp
+  '.NOT.'                                  -> NotOp           {cons("not-op")}
 
 %%R719
-%% '.AND.'                                 -> AndOp
+  '.AND.'                                  -> AndOp           {cons("and-op")}
 
 %%R720
-%%  '.OR.'                                 -> OrOp
+  '.OR.'                                   -> OrOp            {cons("or-op")}
 
 %%R721
-%%    '.EQV.'
-%%  | '.NEQV.'                             -> EquivOp
+  '.EQV.'                                  -> EquivOp         {cons("equiv-op_EQV")}
+  '.NEQV.'                                 -> EquivOp         {cons("equiv-op_NEQV")}
 
 %%R722
   ( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("expr")}
