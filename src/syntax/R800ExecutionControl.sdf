@@ -121,8 +121,8 @@ context-free syntax
 
 %%R805
 %%TODO-F08 is this ambiguous?
-    Expr
-  | Variable                                            -> Selector           {cons("selector")}
+  Expr                                                  -> Selector           {cons("selector_Expr")}
+  Variable                                              -> Selector           {cons("selector_Var")}
 
 %%R806
   LblDef 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("end-associate-stmt")}
@@ -188,9 +188,9 @@ context-free syntax
 %%        expr substituted for scalar-int-expr
 %%        expr substituted for scalar-logical-expr
 %%
-    ( ','? DoVariable '=' Expr ',' Expr (',' Expr)? )
-  | ( ','? 'WHILE' '(' Expr ')'                     )
-  | ( ','? 'CONCURRENT' ForallHeader                )   -> LoopControl    {cons("loop-control")}
+  OptComma DoVariable '=' Expr ',' Expr (',' Expr)?   -> LoopControl      {cons("loop-control_DV")}
+  OptComma 'WHILE' '(' Expr ')'                       -> LoopControl      {cons("loop-control_WHILE")}
+  OptComma 'CONCURRENT' ForallHeader                  -> LoopControl      {cons("loop-control_CONCURRENT")}
 
 %%R819
   ScalarIntVariableName                                 -> DoVariable     {cons("do-variable")}
@@ -290,8 +290,8 @@ context-free syntax
   Expr                                                  -> CaseExpr       {cons("case-expr")}
 
 %%R843
-    ( '(' {CaseValueRange ','}+ ')' )
-  | ( 'DEFAULT'                     )                   -> CaseSelector   {cons("case-selector")}
+  '(' {CaseValueRange ','}+ ')'                         -> CaseSelector   {cons("case-selector_CVRL")}
+  'DEFAULT'                                             -> CaseSelector   {cons("case-selector_DEFAULT")}
 
 %%R844
     (     CaseValue               )
@@ -315,10 +315,9 @@ context-free syntax
            '(' (AssociateName '=>')? Selector ')'   EOS -> SelectTypeStmt       {cons("select-type-stmt")}
 
 %%848
-    ( 'TYPE'  'IS' '(' TypeSpec        ')' SelectConstructName? )
-  | ( 'CLASS' 'IS' '(' DerivedTypeSpec ')' SelectConstructName? )
-  | ( 'CLASS' 'DEFAULT'                    SelectConstructName? )
-                                                    EOS -> TypeGuardStmt        {cons("type-guard-stmt")}
+  'TYPE'  'IS' '(' TypeSpec        ')' SelectConstructName? EOS -> TypeGuardStmt {cons("type-guard-stmt_TYPE")}
+  'CLASS' 'IS' '(' DerivedTypeSpec ')' SelectConstructName? EOS -> TypeGuardStmt {cons("type-guard-stmt_CLASS")}
+  'CLASS' 'DEFAULT'                    SelectConstructName? EOS -> TypeGuardStmt {cons("type-guard-stmt_CLASS_DEFAULT")}
 
 %%R849
   'END' 'SELECT' SelectConstructName?               EOS -> EndSelectTypeStmt    {cons("end-select-type-stmt")}
@@ -336,7 +335,7 @@ context-free syntax
 %%R852
 %%       expr substituted for scalar-int-expr
 %%
-  LblDef 'GO' 'TO' '(' {LblRef ','}+ ')' ','? Expr  EOS -> ComputedGotoStmt     {cons("computed-goto-stmt")}
+  LblDef 'GO' 'TO' '(' {LblRef ','}+ ')' OptComma Expr  EOS -> ComputedGotoStmt {cons("computed-goto-stmt")}
 
 %%R853
 %%       expr substituted for scalar-numeric-expr
@@ -361,11 +360,11 @@ context-free syntax
   LblDef 'ERROR' 'STOP' StopCode?                   EOS -> ErrorStopStmt        {cons("error-stop-stmt")}
 
 %%R857
-%%        Scon substituted for scalar-default-char-constant-expt
+%%        Scon substituted for scalar-default-char-constant-expr
 %%        Icon substituted for scalar-int-constant-expr
 %%
-    Scon
-  | Icon                                                -> StopCode             {cons("stop-code")}
+  Scon                                                  -> StopCode             {cons("stop-code_SDCCE")}
+  Icon                                                  -> StopCode             {cons("stop-code_SICE")}
 
 
 %% 8.5 Image execution control
@@ -376,16 +375,16 @@ context-free syntax
          ( '(' {SyncStat ','}* ')' )?               EOS -> SyncAllStmt          {cons("sync-all-stmt")}
 
 %%R859
-    ( 'STAT'   '=' StatVariable   )
-  | ( 'ERRMSG' '=' ErrmsgVariable )                     -> SyncStat             {cons("sync-stat")}
+  'STAT'   '=' StatVariable                             -> SyncStat             {cons("sync-stat_STAT")}
+  'ERRMSG' '=' ErrmsgVariable                           -> SyncStat             {cons("sync-stat_ERRMSG")}
 
 %%R860
   LblDef 'SYNC' 'IMAGES' '(' ImageSet
                 (',' {SyncStat ','}+ )? ')'         EOS -> SyncImagesStmt       {cons("sync-images-stmt")}
 
 %%R861
-    IntExpr
-  | '*'                                                 -> ImageSet             {cons("image-set")}
+  IntExpr                                             -> ImageSet               {cons("image-set_IE")}
+  '*'                                                 -> ImageSet               {cons("image-set_STAR")}
 
 %%R862
   LblDef 'SYNC' 'MEMORY'
@@ -396,8 +395,8 @@ context-free syntax
                  (',' {SyncStat ','}+ )? ')'        EOS -> LockStmt             {cons("lock-stmt")}
 
 %%R864
-    ( 'ACQUIRED_LOCK' '=' LogicalVariable )
-  | ( SyncStat                            )             -> LockStat             {cons("lock-stat")}
+  'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("lock-stat_ACQUIRED_LOCK")}
+  SyncStat                                              -> LockStat             {cons("lock-stat_SS")}
 
 %%R865
   LblDef 'UNLOCK' '(' LockVariable
