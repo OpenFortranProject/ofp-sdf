@@ -18,10 +18,10 @@ module FortranLex
 exports
  
 sorts
-  BinaryConstant Character Comment StartCommentBlock
+  BinaryConstant Character Comma ColonColon Comment StartCommentBlock
   Continuation Dop EOS HexConstant
   Icon Ident Label LblDef LblRef
-  Letter OctalConstant
+  Letter OctalConstant OptCC OptComma
   Rcon ScalarIntLiteralConstant  Scon
   SconDouble SconSingle 
 
@@ -38,24 +38,24 @@ sorts
   CaseConstructName CoarrayName ComponentName ConstructName CriticalConstructName
   DataPointerComponentName DoConstructName
   EntityName
-  GenericName NamelistGroupName TypeName EndName CommonBlockName
+  GenericName NamelistGroupName EndName CommonBlockName
   EntryName ExternalName FinalSubroutineName ForallConstructName
   FunctionName
   IfConstructName ImpliedDoVariable ImportName
   IndexName InterfaceName IntrinsicProcedureName LocalName
-  ModuleName ObjectName OnlyUseName ParentSubmoduleName
-  ParentTypeName PartName ProcedureName
+  ModuleName ObjectName OnlyUseName
+  ParentSubmoduleName ParentTypeName PartName ProcedureName
   ProcedureComponentName ProcedureEntityName ProcEntityName
   ProgramName ResultName
   ScalarIntConstantName ScalarIntVariableName ScalarVariableName
   SelectConstructName SubmoduleName SubroutineName
-  SubroutineNameUse TypeParamName VariableName UseName
+  SubroutineNameUse TypeName TypeParamName VariableName UseName
   
 
-  ProcPointerName                     %% R555
-  DummyArgName                        %% R1230
-
 lexical syntax
+
+  ','  -> Comma
+  '::' -> ColonColon
 
 %% Everything following a ! is comment. With the \n it is an End of Statement
   "!" ~[\n]*                            -> Comment
@@ -171,6 +171,9 @@ context-free restrictions
 
 context-free syntax
 
+  Comma?      -> OptComma                 {cons("Comma")}
+  ColonColon? -> OptCC                    {cons("ColonColon")}
+
   Label? -> LblDef                        {cons("label")}
   Label  -> LblRef                        {cons("label")}
 
@@ -192,14 +195,13 @@ context-free syntax
   Ident  -> ConstructName
   Ident  -> DataPointerComponentName
   Ident  -> DoConstructName
-  Ident  -> DummyArgName                %% R1230
   Ident  -> EndName
   Ident  -> EntityName
   Ident  -> EntryName
   Ident  -> ExternalName
   Ident  -> FinalSubroutineName
   Ident  -> ForallConstructName
-  Ident  -> FunctionName                  {cons("function-name")}
+  Ident  -> FunctionName                  {cons("name")}
   Ident  -> GenericName
   Ident  -> IfConstructName
   Ident  -> ImpliedDoVariable
@@ -208,9 +210,9 @@ context-free syntax
   Ident  -> IndexName
   Ident  -> IntrinsicProcedureName
   Ident  -> LocalName
-  Ident  -> ModuleName                    {cons("module-name")}
+  Ident  -> ModuleName                    {cons("name")}
   Ident  -> NamelistGroupName
-  Ident  -> ObjectName                    {cons("object-name")}
+  Ident  -> ObjectName                    {cons("name")}
   Ident  -> OnlyUseName
   Ident  -> ParentSubmoduleName
   Ident  -> ParentTypeName
@@ -219,8 +221,7 @@ context-free syntax
   Ident  -> ProcedureEntityName
   Ident  -> ProcedureName
   Ident  -> ProcEntityName
-  Ident  -> ProcPointerName             %% R555
-  Ident  -> ProgramName                   {cons("program-name")}
+  Ident  -> ProgramName                   {cons("name")}
   Ident  -> ResultName
   Ident  -> ScalarIntConstantName
   Ident  -> ScalarIntVariableName
@@ -229,7 +230,7 @@ context-free syntax
   Ident  -> SubmoduleName
   Ident  -> SubroutineName
   Ident  -> SubroutineNameUse
-  Ident  -> TypeName
+  Ident  -> TypeName                      {cons("name")}
   Ident  -> TypeParamName
   Ident  -> UseName
   Ident  -> VariableName
