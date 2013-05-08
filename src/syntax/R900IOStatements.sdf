@@ -79,9 +79,9 @@ context-free syntax
 %%         int-expr substituted for file-unit-number
 %%         char-variable substituted for internal-file-variable
 %%
-    IntExpr
-  | '*'
-  | CharVariable                                 -> IoUnit          {cons("io-unit")}
+  IntExpr                                        -> IoUnit          {cons("io-unit_FUN")}
+  '*'                                            -> IoUnit          {cons("io-unit_STAR")}
+  CharVariable                                   -> IoUnit          {cons("io-unit_IFV")}
 
 %%R902
 %%         int-expr substituted for scalar-int-expr
@@ -98,28 +98,27 @@ context-free syntax
 %%         default-char-expr substituted for scalar-default-char-expr
 %%         int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'         '=')? FileUnitNumber  )
-  | ( 'ACCESS'       '='   DefaultCharExpr )
-  | ( 'ACTION'       '='   DefaultCharExpr )
-  | ( 'ASYNCHRONOUS' '='   DefaultCharExpr )
-  | ( 'BLANK'        '='   DefaultCharExpr )
-  | ( 'DECIMAL'      '='   DefaultCharExpr )
-  | ( 'DELIM'        '='   DefaultCharExpr )
-  | ( 'ENCODING'     '='   DefaultCharExpr )
-  | ( 'ERR'          '='   LblRef          )
-  | ( 'FILE'         '='   FileNameExpr    )
-  | ( 'FORM'         '='   DefaultCharExpr )
-  | ( 'IOMSG'        '='   IomsgVariable   )
-  | ( 'IOSTAT'       '='   IntVariable     )
-  | ( 'NEWUNIT'      '='   IntVariable     )
-  | ( 'PAD'          '='   DefaultCharExpr )
-  | ( 'POSITION'     '='   DefaultCharExpr )
-  | ( 'RECL'         '='   IntExpr         )
-  | ( 'ROUND'        '='   DefaultCharExpr )
-  | ( 'SIGN'         '='   DefaultCharExpr )
-  | ( 'STATUS'       '='   DefaultCharExpr )
-%%| ( 'TEAM'         '='   ImageTeam       )  %%TODO - is this in standard for F08?
-                                                -> ConnectSpec    {cons("connect-spec")}
+  ('UNIT'         '=')? FileUnitNumber           -> ConnectSpec   {cons("connect-spec_UNIT")}
+   'ACCESS'       '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_ACCESS")}
+   'ACTION'       '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_ACTION")}
+   'ASYNCHRONOUS' '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_ASYNCHRONOUS")}
+   'BLANK'        '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_BLANK")}
+   'DECIMAL'      '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_DECIMAL")}
+   'DELIM'        '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_DELIM")}
+   'ENCODING'     '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_ENCODING")}
+   'ERR'          '='   LblRef                   -> ConnectSpec   {cons("connect-spec_ERR")}
+   'FILE'         '='   FileNameExpr             -> ConnectSpec   {cons("connect-spec_FILE")}
+   'FORM'         '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_FORM")}
+   'IOMSG'        '='   IomsgVariable            -> ConnectSpec   {cons("connect-spec_IOMSG")}
+   'IOSTAT'       '='   IntVariable              -> ConnectSpec   {cons("connect-spec_IOSTAT")}
+   'NEWUNIT'      '='   IntVariable              -> ConnectSpec   {cons("connect-spec_NEWUNIT")}
+   'PAD'          '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_PAD")}
+   'POSITION'     '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_POSITION")}
+   'RECL'         '='   IntExpr                  -> ConnectSpec   {cons("connect-spec_RECL")}
+   'ROUND'        '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_ROUND")}
+   'SIGN'         '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_SIGN")}
+   'STATUS'       '='   DefaultCharExpr          -> ConnectSpec   {cons("connect-spec_STATUS")}
+%% 'TEAM'         '='   ImageTeam          %%TODO - is this in standard for F08?
 
 %%R906
 %%           default-char-expr substituted for scalar-default-char-expr
@@ -136,22 +135,19 @@ context-free syntax
 %%           default-char-expr substituted for scalar-default-char-expr
 %%           int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'         '=')? FileUnitNumber )
-  | ( 'IOSTAT'       '=' IntVariable      )
-  | ( 'IOMSG'        '=' IomsgVariable    )
-  | ( 'ERR'          '=' LblRef           )
-  | ( 'STATUS'       '=' DefaultCharExpr       )     -> CloseSpec      {cons("close-spec")}
+  ('UNIT'         '=')? FileUnitNumber          -> CloseSpec      {cons("close-spec_UNIT")}
+   'IOSTAT'       '=' IntVariable               -> CloseSpec      {cons("close-spec_IOSTAT")}
+   'IOMSG'        '=' IomsgVariable             -> CloseSpec      {cons("close-spec_IOMSG")}
+   'ERR'          '=' LblRef                    -> CloseSpec      {cons("close-spec_ERR")}
+   'STATUS'       '=' DefaultCharExpr           -> CloseSpec      {cons("close-spec_STATUS")}
 
 
 %% 9.6 Data transfer statements
 %%
 
 %%910
-  LblDef 'READ'
-     (
-        ('(' {IoControlSpec ','}+ ')'     {InputItem ','}*   )
-      | (    Format                  (',' {InputItem ','}+)? )
-     )                                                          EOS -> ReadStmt  {cons("read-stmt")}
+  LblDef 'READ' '(' {IoControlSpec ','}+ ')' {InputItem ','}*   EOS -> ReadStmt  {cons("read-stmt_ICSL")}
+  LblDef 'READ' Format                  (',' {InputItem ','}+)? EOS -> ReadStmt  {cons("read-stmt_F")}
 
 %%R911
   LblDef 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("write-stmt")}
@@ -163,34 +159,34 @@ context-free syntax
 %% TODO-F08  io-unit and format must be first and second (without {UNIT,FMT}=)
 %%           default-char-expr substituted for scalar-default-char-expr
 %%
-    (('UNIT'         '=')? IoUnit            )
-  | (('FMT'          '=')? Format            )
-  | (('NML'          '=')? NamelistGroupName )
-  | ( 'ADVANCE'      '='   DefaultCharExpr   )
-  | ( 'ASYNCHRONOUS' '='   DefaultCharExpr   )
-  | ( 'BLANK'        '='   DefaultCharExpr   )
-  | ( 'DECIMAL'      '='   DefaultCharExpr   )
-  | ( 'DELIM'        '='   DefaultCharExpr   )
-  | ( 'END'          '='   LblRef            )
-  | ( 'EOR'          '='   LblRef            )
-  | ( 'ERR'          '='   LblRef            )
-  | ( 'ID'           '='   IdVariable        )
-  | ( 'IOMSG'        '='   IomsgVariable     )
-  | ( 'IOSTAT'       '='   IntVariable       )
-  | ( 'PAD'          '='   DefaultCharExpr   )
-  | ( 'POS'          '='   Expr              )
-  | ( 'REC'          '='   Expr              )
-  | ( 'ROUND'        '='   DefaultCharExpr   )
-  | ( 'SIGN'         '='   DefaultCharExpr   )
-  | ( 'SIZE'         '='   IntVariable       )    -> IoControlSpec  {cons("io-control-spec")}
+  ('UNIT'         '=')? IoUnit                    -> IoControlSpec  {cons("io-control-spec_UNIT")}
+  ('FMT'          '=')? Format                    -> IoControlSpec  {cons("io-control-spec_FMT")}
+  ('NML'          '=')? NamelistGroupName         -> IoControlSpec  {cons("io-control-spec_NML")}
+  'ADVANCE'      '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_ADVANCE")}
+  'ASYNCHRONOUS' '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_ASYNCHRONOUS")}
+  'BLANK'        '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_BLANK")}
+  'DECIMAL'      '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_DECIMAL")}
+  'DELIM'        '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_DELIM")}
+  'END'          '='   LblRef                     -> IoControlSpec  {cons("io-control-spec_END")}
+  'EOR'          '='   LblRef                     -> IoControlSpec  {cons("io-control-spec_EOR")}
+  'ERR'          '='   LblRef                     -> IoControlSpec  {cons("io-control-spec_ERR")}
+  'ID'           '='   IdVariable                 -> IoControlSpec  {cons("io-control-spec_ID")}
+  'IOMSG'        '='   IomsgVariable              -> IoControlSpec  {cons("io-control-spec_IOMSG")}
+  'IOSTAT'       '='   IntVariable                -> IoControlSpec  {cons("io-control-spec_IOSTAT")}
+  'PAD'          '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_PAD")}
+  'POS'          '='   Expr                       -> IoControlSpec  {cons("io-control-spec_POS")}
+  'REC'          '='   Expr                       -> IoControlSpec  {cons("io-control-spec_REC")}
+  'ROUND'        '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_ROUND")}
+  'SIGN'         '='   DefaultCharExpr            -> IoControlSpec  {cons("io-control-spec_SIGN")}
+  'SIZE'         '='   IntVariable                -> IoControlSpec  {cons("io-control-spec_SIZE")}
 
 %%R914
   IntVariable                                     -> IdVariable     {cons("id-variable")}
 
 %%R915
-    DefaultCharExpr
-  | Label
-  | '*'                                           -> Format         {cons("format")}
+  DefaultCharExpr                                 -> Format         {cons("format_DCE")}
+  Label                                           -> Format         {cons("format_L")}
+  '*'                                             -> Format         {cons("format_STAR")}
 
 %%R916
     Variable
@@ -223,64 +219,52 @@ context-free syntax
 %%           int-expr substituted for scalar-int-expr
 %%           int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'   '=')? FileUnitNumber )
-  | ( 'END'    '=' LblRef           )
-  | ( 'EOR'    '=' LblRef           )
-  | ( 'ERR'    '=' LblRef           )
-  | ( 'ID'     '=' IntExpr          )
-  | ( 'IOMSG'  '=' IomsgVariable    )
-  | ( 'IOSTAT' '=' IntExpr          )                   -> WaitSpec       {cons("wait-spec")}
+
+  ('UNIT'   '=')? FileUnitNumber                        -> WaitSpec       {cons("wait-spec_UNIT")}
+   'END'    '=' LblRef                                  -> WaitSpec       {cons("wait-spec_END")}
+   'EOR'    '=' LblRef                                  -> WaitSpec       {cons("wait-spec_EOR")}
+   'ERR'    '=' LblRef                                  -> WaitSpec       {cons("wait-spec_ERR")}
+   'ID'     '=' IntExpr                                 -> WaitSpec       {cons("wait-spec_ID")}
+   'IOMSG'  '=' IomsgVariable                           -> WaitSpec       {cons("wait-spec_IOMSG")}
+   'IOSTAT' '=' IntExpr                                 -> WaitSpec       {cons("wait-spec_IOSTAT")}
 
 
 %% 9.8 File positioning statements
 %%
 
 %%R924
-  LblDef 'BACKSPACE'
-     (
-           ( FileUnitNumber              )
-         | ( '(' {PositionSpec ","}+ ')' )
-     )                                              EOS -> BackspaceStmt  {cons("backspace-stmt")}
+  LblDef 'BACKSPACE' FileUnitNumber                EOS -> BackspaceStmt   {cons("backspace-stmt_FUN")}
+  LblDef 'BACKSPACE' '(' {PositionSpec ','}+ ')'   EOS -> BackspaceStmt   {cons("backspace-stmt_PSL")}
 
 %%R925
-%% note: 'endfile' without space is allowed
-  LblDef 'END' 'FILE'
-     (
-           ( FileUnitNumber              )
-         | ( '(' {PositionSpec ","}+ ')' )
-     )                                              EOS -> EndfileStmt    {cons("endfile-stmt")}
+  LblDef 'END' 'FILE' FileUnitNumber               EOS -> EndfileStmt     {cons("endfile-stmt_FUN")}
+  LblDef 'END' 'FILE' '(' {PositionSpec ","}+ ')'  EOS -> EndfileStmt     {cons("endfile-stmt_PSL")}
 
 %%R926
-  LblDef 'REWIND'
-     (
-           ( FileUnitNumber              )
-         | ( '(' {PositionSpec ","}+ ')' )
-     )                                              EOS -> RewindStmt     {cons("rewind-stmt")}
+  LblDef 'REWIND' FileUnitNumber                   EOS -> RewindStmt      {cons("rewind-stmt_FUN")}
+  LblDef 'REWIND' '(' {PositionSpec ","}+ ')'      EOS -> RewindStmt      {cons("rewind-stmt_PSL")}
 
 %%R927
-    (('UNIT'    '=')? FileUnitNumber )
-  | ( 'IOSTAT'  '=' IntVariable      )
-  | ( 'IOMSG'   '=' IomsgVariable    )
-  | ( 'ERR'     '=' LblRef           )                  -> PositionSpec   {cons("position-spec")}
+  ('UNIT'    '=')? FileUnitNumber                      -> PositionSpec    {cons("position-spec_UNIT")}
+   'IOSTAT'  '=' IntVariable                           -> PositionSpec    {cons("position-spec_IOSTAT")}
+   'IOMSG'   '=' IomsgVariable                         -> PositionSpec    {cons("position-spec_IOMSG")}
+   'ERR'     '=' LblRef                                -> PositionSpec    {cons("position-spec_ERR")}
 
 
 %% 9.9 FLUSH statement
 %%
 
 %%R928
-  LblDef 'FLUSH'
-     (
-            ( FileUnitNumber           )
-          | ( '(' {FlushSpec ','}+ ')' )
-     )                                              EOS -> FlushStmt   {cons("flush-stmt")}
+  LblDef 'FLUSH' FileUnitNumber                     EOS -> FlushStmt      {cons("flush-stmt_FUN')")}
+  LblDef 'FLUSH' '(' {FlushSpec ','}+ ')'           EOS -> FlushStmt      {cons("flush-stmt_FSL'")}
 
 %%R929
 %%           int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'    '=')? FileUnitNumber )
-  | ( 'IOSTAT'  '=' IntVariable      )
-  | ( 'IOMSG'   '=' IomsgVariable    )
-  | ( 'ERR'     '=' LblRef           )                  -> FlushSpec   {cons("flush-spec")}
+  ('UNIT'    '=')? FileUnitNumber                       -> FlushSpec      {cons("flush-spec_UNIT")}
+   'IOSTAT'  '=' IntVariable                            -> FlushSpec      {cons("flush-spec_IOSTAT")}
+   'IOMSG'   '=' IomsgVariable                          -> FlushSpec      {cons("flush-spec_IOMSG")}
+   'ERR'     '=' LblRef                                 -> FlushSpec      {cons("flush-spec_ERR")}
 
 
 %% 9.10 File inquiry statement
@@ -289,54 +273,49 @@ context-free syntax
 %%R930
 %%           int-variable substituted for scalar-int-variable
 %%
-  LblDef 'INQUIRE'
-             (
-               '(' {InquireSpec ','}+ ')'
-             )
-           | (
-               '(' 'IOLENGTH' '=' IntVariable ')' {OutputItem ','}+
-             )
-                                                    EOS -> InquireStmt {cons("inquire-stmt")}
+  LblDef 'INQUIRE' '(' {InquireSpec ','}+ ')'       EOS -> InquireStmt {cons("inquire-stmt_ISL")}
+  LblDef 'INQUIRE' '(' 'IOLENGTH' '=' IntVariable ')' {OutputItem ','}+
+                                                    EOS -> InquireStmt {cons("inquire-stmt_IOLENGTH")}
 
 %%R931
 %%           default-char-expr substituted for scalar-default-char-expr
 %%           logical-variable substituted for scalar-logical-variable
 %%           int-variable substituted for scalar-int-variable
 %%
-    (('UNIT'         '=')? FileUnitNumber )
-  | ( 'FILE'         '=' FileNameExpr     )
-  | ( 'ACCESS'       '=' DefaultCharExpr  )
-  | ( 'ACTION'       '=' DefaultCharExpr  )
-  | ( 'ASYNCHRONOUS' '=' DefaultCharExpr  )
-  | ( 'BLANK'        '=' DefaultCharExpr  )
-  | ( 'DECIMAL'      '=' DefaultCharExpr  )
-  | ( 'DELIM'        '=' DefaultCharExpr  )
-  | ( 'DIRECT'       '=' DefaultCharExpr  )
-  | ( 'ENCODING'     '=' DefaultCharExpr  )
-  | ( 'ERR'          '=' LblRef           )
-  | ( 'EXIST '       '=' LogicalVariable  )
-  | ( 'FORM'         '=' DefaultCharExpr  )
-  | ( 'FORMATTED'    '=' DefaultCharExpr  )
-  | ( 'ID'           '=' IntExpr          )
-  | ( 'IOMSG'        '=' IomsgVariable    )
-  | ( 'IOSTAT'       '=' IntVariable      )
-  | ( 'NAME'         '=' DefaultCharExpr  )
-  | ( 'NAMED'        '=' LogicalVariable  )
-  | ( 'NEXTREC'      '=' IntVariable      )
-  | ( 'NUMBER'       '=' IntVariable      )
-  | ( 'OPENED'       '=' LogicalVariable  )
-  | ( 'PAD'          '=' DefaultCharExpr  )
-  | ( 'PENDING'      '=' LogicalVariable  )
-  | ( 'POS'          '=' IntVariable      )
-  | ( 'POSITION'     '=' DefaultCharExpr  )
-  | ( 'READ'         '=' DefaultCharExpr  )
-  | ( 'READWRITE'    '=' DefaultCharExpr  )
-  | ( 'RECL'         '=' IntVariable      )
-  | ( 'ROUND'        '=' DefaultCharExpr  )
-  | ( 'SEQUENTIAL '  '=' DefaultCharExpr  )
-  | ( 'SIGN'         '=' DefaultCharExpr  )
-  | ( 'SIZE'         '=' IntVariable      )
-  | ( 'STREAM'       '=' DefaultCharExpr  )
-%%| ( 'TEAM'         '=' ImageTeam        )  %%TODO-F08
-  | ( 'UNFORMATTED'  '=' DefaultCharExpr  )
-  | ( 'WRITE'        '=' DefaultCharExpr  )            -> InquireSpec  {cons("inquire-spec")}
+  ('UNIT'         '=')? FileUnitNumber                 -> InquireSpec  {cons("inquire-spec_UNIT")} 
+   'FILE'         '=' FileNameExpr                     -> InquireSpec  {cons("inquire-spec_FILE")}  
+   'ACCESS'       '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_ACCESS")}  
+   'ACTION'       '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_ACTION")}  
+   'ASYNCHRONOUS' '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_ASYNCHRONOUS")}  
+   'BLANK'        '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_BLANK")}  
+   'DECIMAL'      '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_DECIMAL")}  
+   'DELIM'        '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_DELIM")}  
+   'DIRECT'       '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_DIRECT")}  
+   'ENCODING'     '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_ENCODING")}  
+   'ERR'          '=' LblRef                           -> InquireSpec  {cons("inquire-spec_ERR")}  
+   'EXIST '       '=' LogicalVariable                  -> InquireSpec  {cons("inquire-spec_EXIST")}  
+   'FORM'         '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_FORM")}  
+   'FORMATTED'    '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_FORMATTED")}
+   'ID'           '=' IntExpr                          -> InquireSpec  {cons("inquire-spec_ID")}  
+   'IOMSG'        '=' IomsgVariable                    -> InquireSpec  {cons("inquire-spec_IOMSG")}  
+   'IOSTAT'       '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_IOSTAT")}  
+   'NAME'         '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_NAME")}  
+   'NAMED'        '=' LogicalVariable                  -> InquireSpec  {cons("inquire-spec_NAMED")}  
+   'NEXTREC'      '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_NEXTREC")}  
+   'NUMBER'       '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_NUMBER")}  
+   'OPENED'       '=' LogicalVariable                  -> InquireSpec  {cons("inquire-spec_OPENED")}  
+   'PAD'          '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_PAD")}  
+   'PENDING'      '=' LogicalVariable                  -> InquireSpec  {cons("inquire-spec_PENDING")}  
+   'POS'          '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_POS")}  
+   'POSITION'     '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_POSITION")}  
+   'READ'         '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_READ")}  
+   'READWRITE'    '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_READWRITE")}  
+   'RECL'         '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_RECL")}  
+   'ROUND'        '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_ROUND")}  
+   'SEQUENTIAL '  '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_SEQUENTIAL")}  
+   'SIGN'         '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_SIGN")}  
+   'SIZE'         '=' IntVariable                      -> InquireSpec  {cons("inquire-spec_SIZE")}  
+   'STREAM'       '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_STREAM")}  
+%% 'TEAM'         '=' ImageTeam          %%TODO-F08
+   'UNFORMATTED'  '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_UNFORMATTED")}  
+   'WRITE'        '=' DefaultCharExpr                  -> InquireSpec  {cons("inquire-spec_WRITE")}
