@@ -58,7 +58,10 @@ lexical syntax
   '::' -> ColonColon
 
 %% Everything following a ! is comment. With the \n it is an End of Statement
+%% Treat preprocessor directives as comments
+%% TODO-F08 enforce leading pound character
   "!" ~[\n]*                            -> Comment
+  "#" ~[\n]*                            -> Comment
   (Comment? "\n" [\ \t]* )+             -> EOS
 %% ; at end of line is allowed
   (";" [\ \t]*)+ Comment? "\n" [\ \t]*  -> EOS
@@ -162,7 +165,7 @@ context-free restrictions
 
    Continuation? -/- ~[\n]  
 
-%% layout definition **without** \n due to the EOS definition. Lines are importent in Fortran.
+%% layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
 %% Continuation-char & should be part of continuation, so not layout.
    LAYOUT? -/- [\ \t\&]
 
