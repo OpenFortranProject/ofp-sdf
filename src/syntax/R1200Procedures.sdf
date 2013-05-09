@@ -165,7 +165,7 @@ context-free syntax
 
 %%R1220
   LblDef 'CALL' ProcedureDesignator
-                ( '(' {ActualArg ','}* ')' )?     EOS -> CallStmt            {cons("call-stmt")}
+                ('(' {ActualArgSpec ','}* ')')?   EOS -> CallStmt            {cons("call-stmt")}
 
 %%R1221
     ( ProcedureName           )
