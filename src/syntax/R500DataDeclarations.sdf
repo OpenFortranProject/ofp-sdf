@@ -230,7 +230,7 @@ context-free syntax
 %%
 
 %%R524
-  LblDef AccessSpec ( OptCC {AccessId ','}+ )              EOS -> AccessStmt   {cons("access-stmt")}
+  LblDef AccessSpec ( OptCC {AccessId ','}+ )?             EOS -> AccessStmt   {cons("access-stmt")}
 
 %%R525
 %%UseName           %% ambiguous with generic-spec
