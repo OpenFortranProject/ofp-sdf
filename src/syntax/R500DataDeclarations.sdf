@@ -45,6 +45,7 @@ sorts
   AssumedShapeSpec                    %% R519
   DeferredShapeSpec                   %% R520
   AssumedSizeSpec                     %% R521
+  AssumedRankSpec                     %% R522a TR 29113
   ImpliedShapeSpec                    %% R522
   IntentSpec                          %% R523
 
@@ -115,34 +116,34 @@ context-free syntax
 %%
 
 %%R501
-  LblDef DeclarationTypeSpec
+  LblDef? DeclarationTypeSpec
           ((',' {AttrSpec ','}+)? '::')? {EntityDecl ','}+
-                                                  EOS -> TypeDeclarationStmt  {cons("type-declaration-stmt")}
+                                                    EOS -> TypeDeclarationStmt  {cons("TypeDeclarationStmt")}
 %%R502
-   AccessSpec                                           -> AttrSpec  {cons("attr-spec_AS")}
-  'ALLOCATABLE'                                         -> AttrSpec  {cons("attr-spec_ALLOCATABLE")}
-  'ASYNCHRONOUS'                                        -> AttrSpec  {cons("attr-spec_ASYNCHRONOUS")}
-  'CODIMENSION' '[' CoarraySpec ']'                     -> AttrSpec  {cons("attr-spec_CODIMENSION")}
-  'CONTIGUOUS'                                          -> AttrSpec  {cons("attr-spec_CONTIGUOUS")}
-  'DIMENSION' '(' ArraySpec ')'                         -> AttrSpec  {cons("attr-spec_DIMENSION")}
-  'EXTERNAL'                                            -> AttrSpec  {cons("attr-spec_EXTERNAL")}
-  'INTENT' '(' IntentSpec ')'                           -> AttrSpec  {cons("attr-spec_INTENT")}
-  'INTRINSIC'                                           -> AttrSpec  {cons("attr-spec_INTRINSIC")}
-   LanguageBindingSpec                                  -> AttrSpec  {cons("attr-spec_LBS")}
-  'OPTIONAL'                                            -> AttrSpec  {cons("attr-spec_OPTIONAL")}
-  'PARAMETER'                                           -> AttrSpec  {cons("attr-spec_PARAMETER")}
-  'POINTER'                                             -> AttrSpec  {cons("attr-spec_POINTER")}
-  'PROTECTED'                                           -> AttrSpec  {cons("attr-spec_PROTECTED")}
-  'SAVE'                                                -> AttrSpec  {cons("attr-spec_SAVE")}
-  'TARGET'                                              -> AttrSpec  {cons("attr-spec_TARGET")}
-  'VALUE'                                               -> AttrSpec  {cons("attr-spec_VALUE")}
-  'VOLATILE'                                            -> AttrSpec  {cons("attr-spec_VOLATILE")}
+   AccessSpec                                           -> AttrSpec  {cons("AttrSpec_AS")}
+  'ALLOCATABLE'                                         -> AttrSpec  {cons("AttrSpec_ALLOCATABLE")}
+  'ASYNCHRONOUS'                                        -> AttrSpec  {cons("AttrSpec_ASYNCHRONOUS")}
+  'CODIMENSION' '[' CoarraySpec ']'                     -> AttrSpec  {cons("AttrSpec_CODIMENSION")}
+  'CONTIGUOUS'                                          -> AttrSpec  {cons("AttrSpec_CONTIGUOUS")}
+  'DIMENSION' '(' ArraySpec ')'                         -> AttrSpec  {cons("AttrSpec_DIMENSION")}
+  'EXTERNAL'                                            -> AttrSpec  {cons("AttrSpec_EXTERNAL")}
+  'INTENT' '(' IntentSpec ')'                           -> AttrSpec  {cons("AttrSpec_INTENT")}
+  'INTRINSIC'                                           -> AttrSpec  {cons("AttrSpec_INTRINSIC")}
+   LanguageBindingSpec                                  -> AttrSpec  {cons("AttrSpec_LBS")}
+  'OPTIONAL'                                            -> AttrSpec  {cons("AttrSpec_OPTIONAL")}
+  'PARAMETER'                                           -> AttrSpec  {cons("AttrSpec_PARAMETER")}
+  'POINTER'                                             -> AttrSpec  {cons("AttrSpec_POINTER")}
+  'PROTECTED'                                           -> AttrSpec  {cons("AttrSpec_PROTECTED")}
+  'SAVE'                                                -> AttrSpec  {cons("AttrSpec_SAVE")}
+  'TARGET'                                              -> AttrSpec  {cons("AttrSpec_TARGET")}
+  'VALUE'                                               -> AttrSpec  {cons("AttrSpec_VALUE")}
+  'VOLATILE'                                            -> AttrSpec  {cons("AttrSpec_VOLATILE")}
 
 %%R503
   ObjectName    ( '(' ArraySpec ')'   )?
                 ( '[' CoarraySpec ']' )?
                 ( '*' CharLength      )?
-                   Initialization?                      -> EntityDecl  {cons("entity-decl")}
+                   Initialization?                      -> EntityDecl  {cons("EntityDecl")}
 %%| FunctionName( '*' CharLength      )?  %%Ambiguous with object-name
 %%
 
@@ -192,21 +193,21 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("dimension-spec")}
 
 %%R515
-  {ExplicitShapeSpec ','}+             -> ArraySpec            {cons("array-spec_ESSL")}
-  {AssumedShapeSpec  ','}+             -> ArraySpec            {cons("array-spec_ASSL")}
-  {DeferredShapeSpec ','}+             -> ArraySpec            {cons("array-spec_DSSL")}
-   AssumedSizeSpec                     -> ArraySpec            {cons("array-spec_ASS")}
-  {ImpliedShapeSpec  ','}+             -> ArraySpec            {cons("array-spec_ISSL")}
-  '..'                                 -> ArraySpec            {cons("array-spec_ARS")}
+  {ExplicitShapeSpec ','}+           -> ArraySpec            {cons("ArraySpec")}
+  {AssumedShapeSpec  ','}+           -> ArraySpec            {cons("ArraySpec")}
+  {DeferredShapeSpec ','}+           -> ArraySpec            {cons("ArraySpec")}
+   AssumedSizeSpec                   -> ArraySpec            {cons("ArraySpec")}
+  {ImpliedShapeSpec  ','}+           -> ArraySpec            {cons("ArraySpec")}
+   AssumedRankSpec                   -> ArraySpec            {cons("ArraySpec")}
 
 %%R516
-  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec  {cons("explicit-shape-spec")}
+  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec  {cons("ExplicitShapeSpec")}
 
 %%R517
   SpecificationExpr                             -> LowerBound         {cons("lower-bound")}
 
 %%R518
-  SpecificationExpr                             -> UpperBound         {cons("upper-bound")}
+  SpecificationExpr                             -> UpperBound         {cons("UpperBound")}
 
 %%R519
   LowerBound? ':'                               -> AssumedShapeSpec   {cons("assumed-shape-spec")}
@@ -217,13 +218,16 @@ context-free syntax
 %%R521
   (ExplicitShapeSpec ',')* (LowerBound ':')? '*'  -> AssumedSizeSpec  {cons("assumed-size-spec")}
 
+%%R522a
+  '..'                                          -> AssumedRankSpec    {cons("AssumedRankSpec")}
+
 %%R522
   (LowerBound ':')? '*'                         -> ImpliedShapeSpec   {cons("implied-shape-spec")}
 
 %%R523
-  'IN'                                          -> IntentSpec  {cons("intent-spec_IN")}
-  'OUT'                                         -> IntentSpec  {cons("intent-spec_OUT")}
-  'IN' 'OUT'                                    -> IntentSpec  {cons("intent-spec_INOUT")}
+  'IN'                                          -> IntentSpec  {cons("IntentSpec_IN")}
+  'OUT'                                         -> IntentSpec  {cons("IntentSpec_OUT")}
+  'IN' 'OUT'                                    -> IntentSpec  {cons("IntentSpec_INOUT")}
 
 
 %% 5.4 Attribute specification statements
@@ -374,8 +378,8 @@ context-free syntax
 %%
 
 %%R560
-  LblDef 'IMPLICIT' {ImplicitSpec ','}+            EOS -> ImplicitStmt    {cons("implicit-stmt_ISL")}
-  LblDef 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("implicit-stmt_NONE")}
+  LblDef? 'IMPLICIT' {ImplicitSpec ','}+           EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  LblDef? 'IMPLICIT' 'NONE'                        EOS -> ImplicitStmt    {cons("ImplicitStmt")}
 
 %%R561
   DeclarationTypeSpec '(' {LetterSpec ','}+ ')'        -> ImplicitSpec    {cons("implicit-spec")}
