@@ -32,6 +32,12 @@ Fortran.rtg : Fortran.def
 Fortran.sig : Fortran.rtg
 	rtg2sig -i Fortran.rtg -o Fortran.sig
 
+FExpr.tbl : FExpr.sdf
+	pack-sdf -i $< -o FExpr.def
+	sdf2table -i FExpr.def -o $@ -m FExpr
+
+Fortran.def : $(SDF_FILES)
+
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
            do \
