@@ -1,0 +1,38 @@
+module FExpr
+
+exports
+
+sorts Program ProgramStmt EndProgramStmt AssignmentStmt
+      Name Expr
+      EOL EOS Comment
+
+context-free start-symbols
+
+  Program
+
+context-free syntax
+
+  ProgramStmt
+    AssignmentStmt*
+  EndProgramStmt              -> Program          {cons("Program")}
+
+  "PROGRAM" Name          EOS -> ProgramStmt      {cons("ProgramStmt")}
+  "end" "program"         EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+
+  Name '=' Expr           EOS -> AssignmentStmt   {cons("AssignmentStmt")}
+  
+  Name                        -> Expr             {cons("Expr")}
+
+lexical syntax
+
+  [a-zA-Z\_][a-zA-Z0-9\_]* -> Name
+
+  [\ ] -> LAYOUT
+
+  [\n]             -> EOL
+  [\r] [\n]        -> EOL
+
+  "!" ~[\n\r]*     -> Comment
+
+  EOL              -> EOS
+
