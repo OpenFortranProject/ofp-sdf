@@ -19,7 +19,7 @@ exports
  
 sorts
   BinaryConstant Character Comma ColonColon Comment StartCommentBlock
-  Continuation Dop EOS HexConstant
+  Continuation Dop EOL EOS HexConstant
   Icon Ident Label LblDef LblRef
   Letter OctalConstant OptCC OptComma
   Rcon ScalarIntLiteralConstant  Scon
@@ -43,7 +43,7 @@ sorts
   FunctionName
   IfConstructName ImpliedDoVariable ImportName
   IndexName InterfaceName IntrinsicProcedureName LocalName
-  ModuleName ObjectName OnlyUseName
+  ModuleName ObjectName
   ParentSubmoduleName ParentTypeName PartName ProcedureName
   ProcedureComponentName ProcedureEntityName ProcEntityName
   ProgramName ResultName
@@ -54,23 +54,29 @@ sorts
 
 lexical syntax
 
-  ','  -> Comma
-  '::' -> ColonColon
+  ','    -> Comma
+  '::'   -> ColonColon
+
+%% \r\n needed for DOS files
+%%
+  [\n]      -> EOL
+  [\r] [\n] -> EOL
 
 %% Everything following a ! is comment. With the \n it is an End of Statement
 %% Treat preprocessor directives as comments
 %% TODO-F08 enforce leading pound character
-  "!" ~[\n]*                            -> Comment
-  "#" ~[\n]*                            -> Comment
-  (Comment? "\n" [\ \t]* )+             -> EOS
+%%
+  "!" ~[\n\r]*                            -> Comment
+  "#" ~[\n\r]*                            -> Comment
+  (Comment? EOL [\ \t]* )+                -> EOS
 %% ; at end of line is allowed
-  (";" [\ \t]*)+ Comment? "\n" [\ \t]*  -> EOS
+  (";" [\ \t]*)+ Comment? EOL [\ \t]*     -> EOS
 
 %% Fixed source form comment rules (beware of code starting in 1st column!)
 %%TODO-F08 - need different language lexer for fixed format, don't combine
 %%TODO-F08
-%%TODO-F08  ("\n" [Cc\*] ~[\n]*)+         -> FixedComment
-%%TODO-F08   FixedComment "\n" [\ \t]*    -> EOS
+%%TODO-F08  (EOL [Cc\*] ~[\n\r]*)+        -> FixedComment
+%%TODO-F08   FixedComment EOL [\ \t]*     -> EOS
 
 %% commentlines at the start of a file/program are handled separately in Fortran90.sdf
   EOS  -> StartCommentBlock
@@ -79,7 +85,7 @@ lexical syntax
   ([\ \t]* ";" [\ \t]*)+        -> EOS
 %%
 %% Continuation can optionally be separated by comment. The & on the next line is also optional.
-   "&" [\ \t]* ("!" ~[\n]*)? "\n" ( [\ \t]+ "&" )?  -> Continuation
+   "&" [\ \t]* ("!" ~[\n\r]*)? EOL ( [\ \t]+ "&" )?  -> Continuation
    Continuation -> LAYOUT    
 
 %% Layout does NOT have a \n since that's part of EOS
@@ -156,14 +162,14 @@ lexical restrictions
   SconDouble -/- [\"]
 
 %% commentline should be the complete line until newline. This must be lexical restriction
-%%   Comment  -/- ~[\n]  
+%%   Comment  -/- ~[\n\r]  
 
 %% if  (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
    EOS -/- [\ \t]
 
 context-free restrictions
 
-   Continuation? -/- ~[\n]  
+   Continuation? -/- ~[\n\r]
 
 %% layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
 %% Continuation-char & should be part of continuation, so not layout.
@@ -177,11 +183,11 @@ context-free syntax
   Comma?      -> OptComma                 {cons("Comma")}
   ColonColon? -> OptCC                    {cons("ColonColon")}
 
-  Label? -> LblDef                        {cons("label")}
-  Label  -> LblRef                        {cons("label")}
+  Label  -> LblDef                        {cons("Label")}
+  Label  -> LblRef                        {cons("Label")}
 
 %% Ident Aliasses. TODO: put them in the right modules.
-  Ident  -> Name                          {cons("name")}
+  Ident  -> Name                          {cons("Name")}
   Ident  -> AncestorModuleName
   Ident  -> AssociateConstructName
   Ident  -> AssociateName
@@ -204,8 +210,8 @@ context-free syntax
   Ident  -> ExternalName
   Ident  -> FinalSubroutineName
   Ident  -> ForallConstructName
-  Ident  -> FunctionName                  {cons("name")}
-  Ident  -> GenericName
+  Ident  -> FunctionName                  {cons("Name")}
+  Ident  -> GenericName                   {cons("Name")}
   Ident  -> IfConstructName
   Ident  -> ImpliedDoVariable
   Ident  -> ImportName
@@ -213,10 +219,9 @@ context-free syntax
   Ident  -> IndexName
   Ident  -> IntrinsicProcedureName
   Ident  -> LocalName
-  Ident  -> ModuleName                    {cons("name")}
+  Ident  -> ModuleName                    {cons("Name")}
   Ident  -> NamelistGroupName
-  Ident  -> ObjectName                    {cons("name")}
-  Ident  -> OnlyUseName
+  Ident  -> ObjectName                    {cons("Name")}
   Ident  -> ParentSubmoduleName
   Ident  -> ParentTypeName
   Ident  -> PartName
@@ -224,16 +229,16 @@ context-free syntax
   Ident  -> ProcedureEntityName
   Ident  -> ProcedureName
   Ident  -> ProcEntityName
-  Ident  -> ProgramName                   {cons("name")}
+  Ident  -> ProgramName                   {cons("Name")}
   Ident  -> ResultName
   Ident  -> ScalarIntConstantName
   Ident  -> ScalarIntVariableName
   Ident  -> ScalarVariableName
   Ident  -> SelectConstructName
   Ident  -> SubmoduleName
-  Ident  -> SubroutineName
+  Ident  -> SubroutineName                {cons("Name")}
   Ident  -> SubroutineNameUse
-  Ident  -> TypeName                      {cons("name")}
+  Ident  -> TypeName                      {cons("Name")}
   Ident  -> TypeParamName
   Ident  -> UseName
   Ident  -> VariableName
