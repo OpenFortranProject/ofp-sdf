@@ -65,29 +65,27 @@ context-free syntax
 %%R1201
   InterfaceStmt
     InterfaceSpecification*
-  EndInterfaceStmt                -> InterfaceBlock          {cons("interface-block")}
+  EndInterfaceStmt                -> InterfaceBlock          {cons("InterfaceBlock")}
 
 %%R1202
     InterfaceBody
-  | ProcedureStmt                 -> InterfaceSpecification  {cons("interface-specification")}
+  | ProcedureStmt                 -> InterfaceSpecification  {cons("InterfaceSpecification")}
 
 
 %%R1203
-  LblDef (
-             ('INTERFACE' GenericSpec?)
-           | ('ABSTRACT' 'INTERFACE')
-         )                                         EOS -> InterfaceStmt     {cons("interface-stmt")}
+  LblDef? 'INTERFACE' GenericSpec?                 EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  LblDef? 'ABSTRACT' 'INTERFACE'                   EOS -> InterfaceStmt     {cons("InterfaceStmt")}
       
 %%R1204
-  LblDef 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("end-interface-stmt")}
+  LblDef? 'END' 'INTERFACE' GenericSpec?           EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
 
 %%R1205
 %%     WARNING-MODIFICATION: 
 %%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
-    (FunctionStmt   SpecificationPart EndFunctionStmt  )
-  | (SubroutineStmt SpecificationPart EndSubroutineStmt)  -> InterfaceBody  {cons("interface-body")}
+  FunctionStmt   SpecificationPart EndFunctionStmt     -> InterfaceBody  {cons("InterfaceBody")}
+  SubroutineStmt SpecificationPart EndSubroutineStmt   -> InterfaceBody  {cons("InterfaceBody")}
 
 %%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
 %%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
@@ -108,10 +106,10 @@ context-free syntax
   LblDef          'PROCEDURE' OptCC {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt")}
 
 %%R1207
-    GenericName
-  | ('OPERATOR'   '(' DefinedOperator ')')
-  | ('ASSIGNMENT' '(' '='             ')')
-  | DefinedIoGenericSpec                        -> GenericSpec           {cons("generic-spec")}
+  GenericName                                   -> GenericSpec           {cons("GenericSpec")}
+  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
+  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
+  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
 
 %%R1208
     ( 'READ'  '(' 'FORMATTED'   ')' )
@@ -126,15 +124,15 @@ context-free syntax
   LblDef 'EXTERNAL' OptCC {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
 
 %%R1211
-  LblDef 'PROCEDURE'
+  LblDef? 'PROCEDURE'
              '(' ProcInterface? ')'
              (( ',' {ProcAttrSpec ','}+ )? '::')?
                                       {ProcDecl ','}+      EOS -> ProcedureDeclarationStmt
-                                                                        {cons("procedure-declaration-stmt")}
+                                                                        {cons("ProcedureDeclarationStmt")}
 
 %%R1212
     InterfaceName
-  | DeclarationTypeSpec                               -> ProcInterface  {cons("proc-interface")}
+  | DeclarationTypeSpec                               -> ProcInterface  {cons("ProcInterface")}
 
 %%R1213
   AccessSpec                                          -> ProcAttrSpec  {cons("proc-attr-spec_AS")}
@@ -145,7 +143,7 @@ context-free syntax
   'SAVE'                                              -> ProcAttrSpec  {cons("proc-attr-spec_SAVE")}
 
 %%R1214
-  ProcedureEntityName ( '=>' ProcPointerInit )?       -> ProcDecl      {cons("proc-decl")}
+  ProcedureEntityName ( '=>' ProcPointerInit )?       -> ProcDecl      {cons("ProcDecl")}
 
 %%R1215
 %%Name                                                -> InterfaceName
@@ -182,6 +180,12 @@ context-free syntax
   | ProcComponentRef
   | AltReturnSpec                                      -> ActualArg          {cons("actual-arg")}
 
+context-free priorities
+
+  Variable -> ActualArg  >  Expr -> ActualArg
+
+context-free syntax
+
 %%1224
   '*' Label                                            -> AltReturnSpec      {cons("alt-return-spec")}
 
@@ -209,21 +213,21 @@ context-free syntax
   EndFunctionStmt                                      -> FunctionSubprogram  {cons("function-subprogram")}
 
 %%R1228
-  LblDef Prefix? 'FUNCTION' FunctionName
-              '(' {DummyArgName ','}* ')' Suffix?  EOS -> FunctionStmt        {cons("function-stmt")}
+  LblDef? Prefix? 'FUNCTION' FunctionName
+              '(' {DummyArgName ','}* ')' Suffix?  EOS -> FunctionStmt        {cons("FunctionStmt")}
 
 %%R1229
-  LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("proc-language-binding-spec")}
+  LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("ProcLanguageBindingSpec")}
 
 %%R1230
-  Ident                                                -> DummyArgName             {cons("name")}
+  Ident                                                -> DummyArgName     {cons("Name")}
 
 %%R1231
-    ( ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')? )
-  | ( 'RESULT' '(' ResultName ')' ProcLanguageBindingSpec?   )  -> Suffix  {cons("suffix")}
+  ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')?   -> Suffix       {cons("Suffix")}
+  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec?     -> Suffix       {cons("Suffix")}
 
 %%R1232
-  LblDef 'END' ('FUNCTION' FunctionName?)?  EOS -> EndFunctionStmt         {cons("end-function-stmt")}
+  LblDef? 'END' ('FUNCTION' FunctionName?)?        EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
 
 %%R1233
 %%     WARNING-MODIFICATION: 
@@ -238,18 +242,18 @@ context-free syntax
   EndSubroutineStmt                             -> SubroutineSubprogram  {cons("subroutine-subprogram")}
 
 %%1234
-  LblDef Prefix? 'SUBROUTINE' SubroutineName
+  LblDef? Prefix? 'SUBROUTINE' SubroutineName
          (
             '(' {DummyArg ','}* ')'
              ProcLanguageBindingSpec?
-         )?                                 EOS -> SubroutineStmt        {cons("subroutine-stmt")}
+         )?                                 EOS -> SubroutineStmt        {cons("SubroutineStmt")}
 
 %%R1235
-  DummyArgName                                  -> DummyArg              {cons("dummy-arg_DAN")}
-  '*'                                           -> DummyArg              {cons("dummy-arg_STAR")}
+  DummyArgName                                  -> DummyArg              {cons("DummyArg")}
+  '*'                                           -> DummyArg              {cons("DummyArg")}
 
 %%R1236
-  LblDef 'END' ('SUBROUTINE' SubroutineName?)?  EOS -> EndSubroutineStmt {cons("end-subroutine-stmt")}
+  LblDef? 'END' ('SUBROUTINE' SubroutineName?)? EOS -> EndSubroutineStmt {cons("EndSubroutineStmt")}
 
 %%R1237
 %%     WARNING-MODIFICATION: 
