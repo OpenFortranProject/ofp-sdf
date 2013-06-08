@@ -87,17 +87,18 @@ context-free syntax
 %%          AMB  ObjectName                    %% R613 part-name -> part-ref -> data-ref
 %%          AMB  ArrayElement                  %% R617 is data-ref
 %%          AMB  ArraySection                  %% R618 is data-ref [ (substring-range) ] 
-%%               CoindexedNamedObject
+%%          AMB  CoindexedNamedObject          %% R614 is data-ref
 %%          AMB  ComplexPartDesignator         %% R615 is designator % ('RE' | 'IM') -> data-ref
 %%          AMB  StructureComponent            %% R614 is data-ref
 %%          AMB  Substring                     %% R609 is data-ref '(' substring-range ')'
 %%
 %%      the above reduces to
 %%
-    ObjectName
-  | CoindexedNamedObject
-  | DataRef
-  | Substring                          -> Designator   {cons("designator")}
+
+%%    ObjectName
+%%  | CoindexedNamedObject
+  DataRef
+    | Substring                        -> Designator   {cons("Designator_AMB")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -169,7 +170,7 @@ context-free syntax
 %%REMOVE  DataRef  ArraySelector                                        -> DataRef   {cons("data-ref")}
 
 %%R611
-  PartRef ('%' PartRef)*                                 -> DataRef   {cons("data-ref")}
+  PartRef ('%' PartRef)*                                 -> DataRef   {cons("DataRef")}
 
 %%R612 part-ref
 %%REMOVE PartName                                   ImageSelector?     -> PartRef   {cons("part-ref")}
@@ -178,7 +179,7 @@ context-free syntax
 
 %%R612
   PartName ( '(' {SectionSubscript ','}+ ')' )?
-           ( '[' {SectionSubscript ','}+ ']' )?          -> PartRef   {cons("part-ref")}
+           ( '[' {SectionSubscript ','}+ ']' )?          -> PartRef   {cons("PartRef")}
 
 %%R613
   DataRef                                                -> StructureComponent  {cons("structure-component")}
