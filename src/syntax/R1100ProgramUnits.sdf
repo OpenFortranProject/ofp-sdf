@@ -66,7 +66,7 @@ sorts
   ModuleNature                        %% R1110
   Rename                              %% R1111
   Only                                %% R1112
-                                      %% R1113  OnlyUseName in FortranLex
+  OnlyUseName                         %% R1113
   LocalDefinedOperator                %% R1114
   UseDefinedOperator                  %% R1115
   Submodule                           %% R1116
@@ -86,14 +86,14 @@ context-free syntax
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram
 
 %%R201
-  StartCommentBlock?  ProgramUnit+             -> Program             {cons("program")}
+  StartCommentBlock?  ProgramUnit+             -> Program             {cons("Program")}
 
 %%R202
     MainProgram
   | ExternalSubprogram
   | Module
   | Submodule
-  | BlockData                                  -> ProgramUnit         {cons("program-unit")}
+  | BlockData                                  -> ProgramUnit         {cons("ProgramUnit")}
 
 %%R203
     FunctionSubprogram
@@ -103,16 +103,16 @@ context-free syntax
   UseStmt*
   ImportStmt*
   ImplicitPart?
-  DeclarationConstruct*                        -> SpecificationPart   {cons("specification-part")}
+  DeclarationConstruct*                        -> SpecificationPart   {cons("SpecificationPart")}
 
 %%R205
-  ImplicitPartStmt* ImplicitStmt               -> ImplicitPart        {cons("implicit-part")}
+  ImplicitPartStmt* ImplicitStmt               -> ImplicitPart        {cons("ImplicitPart")}
 
 %%R206
     ImplicitStmt
   | ParameterStmt
   | FormatStmt
-  | EntryStmt                                  -> ImplicitPartStmt    {cons("implicit-part-stmt")}
+  | EntryStmt                                  -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
 
 %%R207
     DerivedTypeDef
@@ -124,7 +124,7 @@ context-free syntax
   | ProcedureDeclarationStmt
   | OtherSpecificationStmt
   | TypeDeclarationStmt
-  | StmtFunctionStmt                           -> DeclarationConstruct    {cons("declaration-construct")}
+  | StmtFunctionStmt                           -> DeclarationConstruct    {cons("DeclarationConstruct")}
 
 %%R208
 %%     WARNING-MODIFICATION:
@@ -258,13 +258,13 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     InternalSubprogramPart?
-  EndProgramStmt                               -> MainProgram      {cons("main-program")}
+  EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
 
 %%R1102
-  LblDef 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("program-stmt")}
+  LblDef? 'PROGRAM'       ProgramName      EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
-  LblDef 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("end-program-stmt")}
+  LblDef? 'END' ('PROGRAM' ProgramName?)?  EOS -> EndProgramStmt   {cons("EndProgramStmt")}
 
 %%R1104
 %%     WARNING-MODIFICATION: 
@@ -274,13 +274,13 @@ context-free syntax
   ModuleStmt
     SpecificationPart
     ModuleSubprogramPart?
-  EndModuleStmt                                -> Module           {cons("module")}
+  EndModuleStmt                                -> Module           {cons("Module")}
 
 %%R1105
-  LblDef 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("module-stmt")}
+  LblDef? 'MODULE' ModuleName              EOS -> ModuleStmt       {cons("ModuleStmt")}
 
 %%R1106
-  LblDef 'END' ('MODULE' ModuleName?)?     EOS -> EndModuleStmt    {cons("end-module-stmt")}
+  LblDef? 'END' ('MODULE' ModuleName?)?    EOS -> EndModuleStmt    {cons("EndModuleStmt")}
 
 %%TODO-DELETE  SpecificationPartConstruct                   -> ModuleBody
 %%TODO-DELETE  ModuleSubprogramPartConstruct                -> ModuleBody
@@ -293,34 +293,31 @@ context-free syntax
 %%R1108
     FunctionSubprogram
   | SubroutineSubprogram
-  | SeparateModuleSubprogram                   -> ModuleSubprogram  {cons("module-subprogram")}
+  | SeparateModuleSubprogram                   -> ModuleSubprogram      {cons("module-subprogram")}
 
 %%R1109
-  LblDef 'USE' (("," ModuleNature)? "::")? ModuleName
-     (
-           (","            {Rename ","}*)
-        |  ("," 'ONLY' ":" {Only   ","}*)
-     )?
-                                           EOS -> UseStmt {cons("use-stmt")}
+  LblDef? 'USE' ((',' ModuleNature)? '::')? ModuleName
+           (','            {Rename ','}+)?              EOS -> UseStmt  {cons("UseStmt_Rename")}
+  LblDef? 'USE' ((',' ModuleNature)? '::')? ModuleName
+            ',' 'ONLY' ':' {Only   ','}*                EOS -> UseStmt  {cons("UseStmt_Only")}
 
 %%R1110
-  'INTRINSIC'                                  -> ModuleNature  {cons("module-nature_INTRINSIC")}
-  'NON_INTRINSIC'                              -> ModuleNature  {cons("module-nature_NON_INTRINSIC")}
+  'INTRINSIC'                                  -> ModuleNature  {cons("ModuleNature_INTRINSIC")}
+  'NON_INTRINSIC'                              -> ModuleNature  {cons("ModuleNature_NON_INTRINSIC")}
 
-
-%%1111
+%%R1111
     ( LocalName '=>' UseName                  )
   | ( 'OPERATOR' '(' LocalDefinedOperator ')'
                 '=>'
       'OPERATOR' '(' UseDefinedOperator   ')' )  -> Rename      {cons("rename")}
 
 %%R1112
-    GenericSpec
-  | OnlyUseName
-  | Rename                                       -> Only        {cons("only")}
+%%AMB-TODO-F08 PUTBACK    GenericSpec
+    OnlyUseName
+  | Rename                                       -> Only        {cons("Only")}
 
 %%R1113
-%%UseName -> OnlyUseName
+  Ident                                          -> OnlyUseName {cons("Name")}
 
 %%R1114
     DefinedUnaryOp
@@ -365,3 +362,8 @@ context-free syntax
 %%R1122
   LblDef 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
   LblDef 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+
+%%context-free priorities
+%%
+%%   OnlyUseName -> Only  {cons("Only_OUN")}
+%% > GenericSpec -> Only  {cons("Only_GS")}
