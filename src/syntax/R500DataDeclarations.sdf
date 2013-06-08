@@ -169,7 +169,7 @@ context-free syntax
 %%R508
 %%       Scon substituted for scalar-default-char-constant-expr
 %%
-  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'    -> LanguageBindingSpec      {cons("language-binding-spec")}
+  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'    -> LanguageBindingSpec      {cons("LanguageBindingSpec")}
 
 %%R509
     ( {DeferredCoshapeSpec ','}+ )
@@ -193,12 +193,12 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("dimension-spec")}
 
 %%R515
-  {ExplicitShapeSpec ','}+           -> ArraySpec            {cons("ArraySpec")}
-  {AssumedShapeSpec  ','}+           -> ArraySpec            {cons("ArraySpec")}
-  {DeferredShapeSpec ','}+           -> ArraySpec            {cons("ArraySpec")}
-   AssumedSizeSpec                   -> ArraySpec            {cons("ArraySpec")}
-  {ImpliedShapeSpec  ','}+           -> ArraySpec            {cons("ArraySpec")}
-   AssumedRankSpec                   -> ArraySpec            {cons("ArraySpec")}
+  {ExplicitShapeSpec ','}+             -> ArraySpec            {cons("ArraySpec")}
+  {AssumedShapeSpec  ','}+             -> ArraySpec            {cons("ArraySpec")}
+  {DeferredShapeSpec ','}+             -> ArraySpec            {cons("ArraySpec")}
+   AssumedSizeSpec                     -> ArraySpec            {cons("ArraySpec")}
+  {ImpliedShapeSpec  ','}+             -> ArraySpec            {cons("ArraySpec")}
+   AssumedRankSpec                     -> ArraySpec            {cons("ArraySpec")}
 
 %%R516
   (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec  {cons("ExplicitShapeSpec")}
@@ -216,13 +216,15 @@ context-free syntax
   ':'                                           -> DeferredShapeSpec  {cons("deferred-shape-spec")}
 
 %%R521
-  (ExplicitShapeSpec ',')* (LowerBound ':')? '*'  -> AssumedSizeSpec  {cons("assumed-size-spec")}
+%%AMB: explicit-shape-spec list made non-empty to remove ambiguity with implied-shape-spec-list
+%%
+  (ExplicitShapeSpec ',')+ (LowerBound ':')? '*'  -> AssumedSizeSpec  {cons("AssumedSizeSpec")}
 
 %%R522a
   '..'                                          -> AssumedRankSpec    {cons("AssumedRankSpec")}
 
 %%R522
-  (LowerBound ':')? '*'                         -> ImpliedShapeSpec   {cons("implied-shape-spec")}
+  (LowerBound ':')? '*'                         -> ImpliedShapeSpec   {cons("ImpliedShapeSpec")}
 
 %%R523
   'IN'                                          -> IntentSpec  {cons("IntentSpec_IN")}
