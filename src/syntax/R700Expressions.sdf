@@ -106,14 +106,15 @@ context-free syntax
   IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("extended-intrinsic-op")}
 
 %%R701
-    Constant
-  | Designator
-  | ArrayConstructor
-  | StructureConstructor
-  | FunctionReference
-  | TypeParamInquiry
-  | TypeParamName
-  | ( '(' Expr ')' )            -> Primary          {cons("primary")}
+%%TODO-AMB
+  Constant                      -> Primary          {cons("Primary_AMB")}
+  Designator                    -> Primary          {cons("Primary_AMB")}
+  ArrayConstructor              -> Primary          {cons("Primary_AMB")}
+  StructureConstructor          -> Primary          {cons("Primary_AMB")}
+  FunctionReference             -> Primary          {cons("Primary_AMB")}
+  TypeParamInquiry              -> Primary          {cons("Primary_AMB")}
+%%TypeParamName                 -> Primary          {reject}                %% > Designator
+  '(' Expr ')'                  -> Primary          {cons("Primary_AMB")}
 
 %%TODO-DELETE   Scon                          -> Primary          {cons("primary-scon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("const-expr")}
@@ -121,21 +122,21 @@ context-free syntax
 %%TODO ???????  ArrayConstructor              -> SFPrimary
 
 %%R702
-  DefinedUnaryOp? Primary                  -> Level1Expr      {cons("level-1-expr")}
+  DefinedUnaryOp? Primary                  -> Level1Expr      {cons("Level1Expr")}
 
 %%R703
   Dop                                      -> DefinedUnaryOp  {cons("defined-unary-op")}
 
 %%R704
-  Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("mult-operand")}
+  Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("MultOperand")}
 
 %%R705
-  (AddOperand MultOp)? MultOperand         -> AddOperand      {cons("add-operand")}
+  (AddOperand MultOp)? MultOperand         -> AddOperand      {cons("AddOperand")}
 
 %%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
 %%TODO-F08: is this still true?
 %%R706
-  (Level2Expr? AddOp)? AddOperand          -> Level2Expr      {cons("level-2-expr")}
+  (Level2Expr? AddOp)? AddOperand          -> Level2Expr      {cons("Level2Expr")}
 
 %%R707
   '**'                                     -> PowerOp         {cons("power-op")}
@@ -149,13 +150,13 @@ context-free syntax
   '-'                                      -> AddOp           {cons("add-op_MINUS")}
 
 %%R710
-  (Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("level-3-expr")}
+  (Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("Level3Expr")}
 
 %%R711
   '//'                                     -> ConcatOp        {cons("concat-op")}
 
 %%R712
-  (Level3Expr RelOp)? Level3Expr           -> Level4Expr      {cons("level-4-expr")}
+  (Level3Expr RelOp)? Level3Expr           -> Level4Expr      {cons("Level4Expr")}
 
 %%R713
   '.EQ.'                                   -> RelOp           {cons("rel-op_EQ")}
@@ -172,16 +173,16 @@ context-free syntax
   '>='                                     -> RelOp           {cons("rel-op_GE")}
 
 %%R714
-  NotOp? Level4Expr                        -> AndOperand      {cons("and-operand")}
+  NotOp? Level4Expr                        -> AndOperand      {cons("AndOperand")}
 
 %%R715
-  (OrOperand AndOp)? AndOperand            -> OrOperand       {cons("or-operand")}
+  (OrOperand AndOp)? AndOperand            -> OrOperand       {cons("OrOperand")}
 
 %%R716
-  (EquivOperand OrOp)? OrOperand           -> EquivOperand    {cons("equiv-operand")}
+  (EquivOperand OrOp)? OrOperand           -> EquivOperand    {cons("EquivOperand")}
 
 %%R717
-  (Level5Expr EquivOp)? EquivOperand       -> Level5Expr      {cons("level-5-expr")}
+  (Level5Expr EquivOp)? EquivOperand       -> Level5Expr      {cons("Level5Expr")}
 
 %%R718
   '.NOT.'                                  -> NotOp           {cons("not-op")}
@@ -197,7 +198,11 @@ context-free syntax
   '.NEQV.'                                 -> EquivOp         {cons("equiv-op_NEQV")}
 
 %%R722
-  ( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("expr")}
+%%TODO-short circuit the expr nonsense and make it more sensible
+%%TODO-PUTBACK/FIXME  ( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("expr")}
+%%Primary                                    -> Expr            {cons("Expr")}
+
+
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("defined-binary-op")}
@@ -212,7 +217,7 @@ context-free syntax
   Expr                                     -> DefaultCharExpr {cons("default-char-expr")}
 
 %%R726
-  Expr                                     -> IntExpr         {cons("int-expr")}
+  Expr                                     -> IntExpr         {cons("IntExpr")}
 
 %%R727
   Expr                                     -> NumericExpr     {cons("numeric-expr")}
@@ -220,7 +225,7 @@ context-free syntax
 %%R728
 %%       scalar-int-expr replaced by int-expr
 %%
-  IntExpr                                  -> SpecificationExpr  {cons("specification-expr")}
+  IntExpr                                  -> SpecificationExpr  {cons("SpecificationExpr")}
 
 %%R729
   Expr                                     -> ConstantExpr    {cons("constant-expr")}
@@ -428,3 +433,44 @@ context-free syntax
 %%  DataRef                                       -> SFPrimary
 %%  FunctionReference                             -> SFPrimary
 %%  '(' Expr ')'                                  -> SFPrimary
+
+
+context-free priorities
+
+%% See Clause 7.1.3 for precedence of operators
+
+%% defined-unary-op has highest priority followed by **
+%%
+  Expr '**' Expr        -> Expr {cons("PowerExpr"), right}
+  >
+  { left:
+    Expr '*' Expr       -> Expr {cons("MultExpr"), left}
+    Expr '/' Expr       -> Expr {cons("DivExpr"),  left}
+  }
+  >
+  {
+    '+' Expr            -> Expr {cons("UnaryPlusExpr")}
+    '-' Expr            -> Expr {cons("UnaryMinusExpr")}
+  }
+  >
+  { left:
+    Expr '+'  Expr      -> Expr {cons("PlusExpr"),  left}
+    Expr '-'  Expr      -> Expr {cons("MinusExpr"), left}
+  }
+  > Expr '//' Expr      -> Expr {cons("ConcatExpr"), left}
+  >
+  { left:
+    Expr '=='  Expr     -> Expr {cons("EqExpr"),    left}
+    Expr '/='  Expr     -> Expr {cons("NotEqExpr"), left}
+  }
+  > Expr '.NOT.' Expr   -> Expr {cons("NotExpr"), left}
+  > Expr '.AND.' Expr   -> Expr {cons("AndExpr"), left}
+  > Expr '.OR.'  Expr   -> Expr {cons("OrExpr"),  left}
+  >
+  { left:
+    Expr '.EQV.'  Expr  -> Expr {cons("EqvExpr"),    left}
+    Expr '.NEQV.' Expr  -> Expr {cons("NotEqvExpr"), left}
+  }
+%%
+%% defined-binary-op has lowest priority
+
