@@ -236,38 +236,38 @@ context-free syntax
 %%
 
 %%R524
-  LblDef AccessSpec ( OptCC {AccessId ','}+ )?             EOS -> AccessStmt   {cons("access-stmt")}
+  LblDef? AccessSpec ( OptCC {AccessId ','}+ )?            EOS -> AccessStmt   {cons("access-stmt")}
 
 %%R525
 %%UseName           %% ambiguous with generic-spec
   GenericSpec                                                  -> AccessId     {cons("access-id")}
 
 %%R526
-  LblDef 'ALLOCATABLE' OptCC {AllocatableDecl ','}+        EOS -> AllocatableStmt  {cons("allocatable-stmt")}
+  LblDef? 'ALLOCATABLE' OptCC {AllocatableDecl ','}+       EOS -> AllocatableStmt  {cons("allocatable-stmt")}
 
 %%R527
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> AllocatableDecl  {cons("allocatable-decl")}
 %%R528
-  LblDef 'ASYNCHRONOUS' OptCC {ObjectName ','}+            EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
+  LblDef? 'ASYNCHRONOUS' OptCC {ObjectName ','}+           EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
 
 %%R529
-  LblDef LanguageBindingSpec OptCC {BindEntity ','}+       EOS -> BindStmt         {cons("bind-stmt")}
+  LblDef? LanguageBindingSpec OptCC {BindEntity ','}+      EOS -> BindStmt         {cons("bind-stmt")}
 
 %%R530
   EntityName                                                   -> BindEntity       {cons("bind-entity_EN")}
   '/' CommonBlockName '/'                                      -> BindEntity       {cons("bind-entity_CBN")}
 
 %%R531
-  LblDef 'CODIMENSION' OptCC {CodimensionDecl ','}+        EOS -> CodimensionStmt  {cons("codimension-stmt")}      
+  LblDef? 'CODIMENSION' OptCC {CodimensionDecl ','}+       EOS -> CodimensionStmt  {cons("codimension-stmt")}      
 %%R532
   CoarrayName '[' CoarraySpec ']'                              -> CodimensionDecl  {cons("codimension-decl")}
 
 %%R533
-  LblDef 'CONTIGUOUS' {ObjectName ','}+                    EOS -> ContiguousStmt   {cons("contiguous-stmt")}
+  LblDef? 'CONTIGUOUS' {ObjectName ','}+                   EOS -> ContiguousStmt   {cons("contiguous-stmt")}
 
 %%R534
-  LblDef 'DATA' DataStmtSetList                            EOS -> DataStmt         {cons("data-stmt")}
+  LblDef? 'DATA' DataStmtSetList                           EOS -> DataStmt         {cons("data-stmt")}
 
 %%R535
   {DataStmtObject ','}+ '/' {DataStmtValue ','}+ '/'           -> DataStmtSet      {cons("data-stmt-set")}
@@ -324,35 +324,36 @@ context-free syntax
   Designator                                                   -> ConstantSubobject {cons("constant-subobject")}
 
 %%R545
-  LblDef 'DIMENSION' OptCC
+  LblDef? 'DIMENSION' OptCC
                            ArrayName '(' ArraySpec ')'
                       (',' ArrayName '(' ArraySpec ')')*   EOS -> DimensionStmt  {cons("dimension-stmt")}
 
 %%R546
-  LblDef 'INTENT' '(' IntentSpec ')'
+  LblDef? 'INTENT' '(' IntentSpec ')'
                     OptCC {DummyArgName ','}+              EOS -> IntentStmt   {cons("intent-stmt")}
 
 %%R547
-  LblDef 'OPTIONAL' OptCC {DummyArgName ','}+              EOS -> OptionalStmt {cons("optional-stmt")}
+  LblDef? 'OPTIONAL' OptCC {DummyArgName ','}+             EOS -> OptionalStmt {cons("optional-stmt")}
 
 %%R548
-  LblDef 'PARAMETER' '(' {NamedConstantDef ','}+ ')'       EOS -> ParameterStmt  {cons("parameter-stmt")}
+  LblDef? 'PARAMETER' '(' {NamedConstantDef ','}+ ')'      EOS -> ParameterStmt  {cons("parameter-stmt")}
 
 %%R549
   NamedConstant '=' ConstantExpr                               -> NamedConstantDef  {cons("named-constnat-def")}
 
 %%R550
-  LblDef 'POINTER' OptCC {PointerDecl ','}+                EOS -> PointerStmt   {cons("pointer-stmt")}
+  LblDef? 'POINTER' OptCC {PointerDecl ','}+               EOS -> PointerStmt   {cons("pointer-stmt")}
 
 %%R551
     ( ObjectName ( '(' {DeferredShapeSpec ','}+ ')' )? )
   |   ProcEntityName                                           -> PointerDecl   {cons("pointer-decl")}
 
 %%R552
-  LblDef 'PROTECTED' OptCC {EntityName ','}+               EOS -> ProtectedStmt {cons("protected-stmt")}
+  LblDef? 'PROTECTED' OptCC {EntityName ','}+              EOS -> ProtectedStmt {cons("protected-stmt")}
 
 %%R553
-  LblDef 'SAVE' (OptCC {SavedEntity ','}+)?                EOS -> SaveStmt      {cons("save-stmt")}
+  LblDef? 'SAVE' '::' {SavedEntity ','}+                   EOS -> SaveStmt      {cons("SaveStmt")}
+  LblDef? 'SAVE'      {SavedEntity ','}*                   EOS -> SaveStmt      {cons("SaveStmt")}
 
 %%R554
     ( ObjectName              )
@@ -363,17 +364,17 @@ context-free syntax
   Ident                                                        -> ProcPointerName  {cons("name")}
 
 %%R556
-  LblDef 'TARGET' OptCC {TargetDecl ','}+                  EOS -> TargetStmt   {cons("target-stmt")}
+  LblDef? 'TARGET' OptCC {TargetDecl ','}+                 EOS -> TargetStmt   {cons("target-stmt")}
 
 %%R557
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> TargetDecl   {cons("target-decl")}
 
 %%R558
-  LblDef 'VALUE' OptCC {DummyArgName ','}+                 EOS -> ValueStmt    {cons("value-stmt")}
+  LblDef? 'VALUE' OptCC {DummyArgName ','}+                EOS -> ValueStmt    {cons("value-stmt")}
 
 %%R559
-  LblDef 'VOLATILE' OptCC {ObjectName ','}+                EOS -> VolatileStmt  {cons("volatile-stmt")}
+  LblDef? 'VOLATILE' OptCC {ObjectName ','}+               EOS -> VolatileStmt  {cons("volatile-stmt")}
 
 
 %% 5.5 Implicit statement
@@ -395,7 +396,7 @@ context-free syntax
 
 %%R563
 %%TODO - inline NamelistGroup?
-  LblDef 'NAMELIST'
+  LblDef? 'NAMELIST'
                '/' NamelistGroupName '/' {NamelistGroupObject ','}+
     ( OptComma '/' NamelistGroupName '/' {NamelistGroupObject ','}+ )*
                                                          EOS -> NamelistStmt      {cons("namelist-stmt")}
@@ -408,7 +409,7 @@ context-free syntax
 %%
 
 %%R565
-  LblDef 'EQUIVALENCE' {EquivalenceSet ','}+             EOS -> EquivalenceStmt   {cons("equivalence-stmt")}
+  LblDef? 'EQUIVALENCE' {EquivalenceSet ','}+            EOS -> EquivalenceStmt   {cons("equivalence-stmt")}
 
 %%R566
   '(' EquivalenceObject ',' {EquivalenceObject ','}+ ')'     -> EquivalenceSet    {cons("equivalence-set")}
@@ -419,7 +420,7 @@ context-free syntax
 %%| Substring     %% Ambiguous - included in variable
 
 %%R567
-  LblDef 'COMMON'
+  LblDef? 'COMMON'
               ('/' CommonBlockName? '/')? {CommonBlockObject ','}+
     (OptComma  '/' CommonBlockName? '/'   {CommonBlockObject ','}+ )*
                                                          EOS -> CommonStmt  {cons("common-stmt")}
