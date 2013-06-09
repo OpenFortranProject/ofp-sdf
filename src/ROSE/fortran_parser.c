@@ -8,7 +8,7 @@ int main(int argc, char * argv[])
 
    parse_table[0] = '\0';
 
-   if (argc < 2) {
+   if (argc < 4) {
       printf("usage: fortran_parser --parseTable parse_table_path filename(s)\n");
       return 1;
    }
