@@ -113,7 +113,7 @@ context-free syntax
   EndAssociateStmt                                      -> AssociateConstruct {cons("associate-construct")}
 
 %%R803
-  LblDef (AssociateConstructName ':')?
+  Label? (AssociateConstructName ':')?
      'ASSOCIATE' '(' {Association ','}+ ')'         EOS -> AssociateStmt      {cons("associate-stmt")}
 
 %%R804
@@ -125,7 +125,7 @@ context-free syntax
   Variable                                              -> Selector           {cons("selector_Var")}
 
 %%R806
-  LblDef 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("end-associate-stmt")}
+  Label? 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("end-associate-stmt")}
 
 %%R807
 %%       The optional specification-part is ambiguous.  The lack of a specification-part
@@ -137,10 +137,10 @@ context-free syntax
   EndBlockStmt                                          -> BlockConstruct     {cons("block-construct")}
 
 %%R808
-  LblDef ( BlockConstructName ':' )? 'BLOCK'        EOS -> BlockStmt          {cons("block-stmt")}
+  Label? ( BlockConstructName ':' )? 'BLOCK'        EOS -> BlockStmt          {cons("block-stmt")}
 
 %%R809
-  LblDef 'END' 'BLOCK' BlockConstructName?          EOS -> EndBlockStmt       {cons("end-block-stmt")}
+  Label? 'END' 'BLOCK' BlockConstructName?          EOS -> EndBlockStmt       {cons("end-block-stmt")}
 
 %%R810
   CriticalStmt
@@ -148,10 +148,10 @@ context-free syntax
   EndCriticalStmt                                       -> CriticalConstruct  {cons("critical-construct")}
 
 %%R811
-  LblDef ( CriticalConstructName ':' )? 'CRITICAL'  EOS -> CriticalStmt       {cons("critical-stmt")}
+  Label? ( CriticalConstructName ':' )? 'CRITICAL'  EOS -> CriticalStmt       {cons("critical-stmt")}
 
 %%R812
-  LblDef 'END' 'CRITICAL' CriticalConstructName?    EOS -> EndCriticalStmt    {cons("end-critical-stmt")}
+  Label? 'END' 'CRITICAL' CriticalConstructName?    EOS -> EndCriticalStmt    {cons("end-critical-stmt")}
 
 
 %% Block DO constructs cannot be recognized syntactically because there is
@@ -177,11 +177,11 @@ context-free syntax
 %%AMB  | NonlableDoStmt                                 -> DoStmt
 
 %%R816
-  LblDef (DoConstructName ':')?
+  Label? (DoConstructName ':')?
          'DO' LblRef LoopControl?                   EOS -> LabelDoStmt    {cons("label-do-stmt")}
 
 %%R817
-  LblDef (DoConstructName ':')?
+  Label? (DoConstructName ':')?
          'DO'        LoopControl?                   EOS -> NonlabelDoStmt {cons("nonlabel-do-stmt")}
 
 %%R818
@@ -203,7 +203,7 @@ context-free syntax
 %%AMB | ContinueStmt                                    -> EndDo
 
 %%R822
-  LblDef 'END' 'DO' DoConstructName?                EOS -> EndDoStmt      {cons("end-do-stmt")}
+  Label? 'END' 'DO' DoConstructName?                EOS -> EndDoStmt      {cons("end-do-stmt")}
 
 %%R823
 %%AMB   ActionTermDoConstruct
@@ -238,7 +238,7 @@ context-free syntax
 %%AMB ActionStmt                                        -> DoTermSharedStmt
 
 %%R831
-  LblDef 'CYCLE' DoConstructName?                   EOS -> CycleStmt      {cons("cycle-stmt")}
+  Label? 'CYCLE' DoConstructName?                   EOS -> CycleStmt      {cons("cycle-stmt")}
 
 %%R832
    IfThenStmt Block
@@ -249,25 +249,25 @@ context-free syntax
 %%R833
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  LblDef (IfConstructName ':')?
+  Label? (IfConstructName ':')?
          'IF' '(' LogicalExpr ')' 'THEN'            EOS -> IfThenStmt     {cons("if-then-stmt")}
 
 %%R834
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  LblDef 'ELSE' 'IF' '(' LogicalExpr ')'
+  Label? 'ELSE' 'IF' '(' LogicalExpr ')'
          'THEN' IfConstructName?                    EOS -> ElseIfStmt     {cons("else-if-stmt")}
 
 %%R835
-  LblDef 'ELSE' IfConstructName?                    EOS -> ElseStmt       {cons("else-stmt")}
+  Label? 'ELSE' IfConstructName?                    EOS -> ElseStmt       {cons("else-stmt")}
 
 %%R836
-  LblDef 'END' 'IF' IfConstructName?                EOS -> EndIfStmt      {cons("end-if-stmt")}
+  Label? 'END' 'IF' IfConstructName?                EOS -> EndIfStmt      {cons("end-if-stmt")}
 
 %%R837
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  LblDef 'IF' '(' LogicalExpr ')' ActionStmt            -> IfStmt         {cons("if-stmt")}
+  Label? 'IF' '(' LogicalExpr ')' ActionStmt            -> IfStmt         {cons("if-stmt")}
 
 %%R838
   SelectCaseStmt
@@ -275,14 +275,14 @@ context-free syntax
   EndSelectStmt                                         -> CaseConstruct  {cons("case-construct")}
 
 %%R839
-  LblDef ( CaseConstructName ':' )?
+  Label? ( CaseConstructName ':' )?
      'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("select-case-stmt")}
 
 %%R840
-  LblDef 'CASE' CaseSelector CaseConstructName?     EOS -> CaseStmt       {cons("case-stmt")}
+  Label? 'CASE' CaseSelector CaseConstructName?     EOS -> CaseStmt       {cons("case-stmt")}
 
 %%R841
-  LblDef 'END' 'SELECT' CaseConstructName?          EOS -> EndSelectStmt  {cons("end-case-stmt")}
+  Label? 'END' 'SELECT' CaseConstructName?          EOS -> EndSelectStmt  {cons("end-case-stmt")}
 
 %%R842
 %%       expr substituted for scalar-expr
@@ -323,41 +323,41 @@ context-free syntax
   'END' 'SELECT' SelectConstructName?               EOS -> EndSelectTypeStmt    {cons("end-select-type-stmt")}
 
 %%R850
-  LblDef 'EXIT' ConstructName?                      EOS -> ExitStmt             {cons("exit-stmt")}
+  Label? 'EXIT' ConstructName?                      EOS -> ExitStmt             {cons("exit-stmt")}
 
 
 %% 8.2 Branching
 %%
 
 %%R851
-  LblDef 'GO' 'TO' LblRef                           EOS -> GotoStmt             {cons("goto-stmt")}
+  Label? 'GO' 'TO' LblRef                           EOS -> GotoStmt             {cons("goto-stmt")}
 
 %%R852
 %%       expr substituted for scalar-int-expr
 %%
-  LblDef 'GO' 'TO' '(' {LblRef ','}+ ')' OptComma Expr  EOS -> ComputedGotoStmt {cons("computed-goto-stmt")}
+  Label? 'GO' 'TO' '(' {LblRef ','}+ ')' OptComma Expr  EOS -> ComputedGotoStmt {cons("computed-goto-stmt")}
 
 %%R853
 %%       expr substituted for scalar-numeric-expr
 %%
-  LblDef 'IF' '(' Expr ')' LblRef ',' LblRef ',' LblRef EOS -> ArithmeticIfStmt {cons("arithmetic-if-stmt")}
+  Label? 'IF' '(' Expr ')' LblRef ',' LblRef ',' LblRef EOS -> ArithmeticIfStmt {cons("arithmetic-if-stmt")}
 
 
 %% 8.3 Continue statement
 %%
 
 %%R854
-  LblDef 'CONTINUE'                                 EOS -> ContinueStmt         {cons("continue-stmt")}
+  Label? 'CONTINUE'                                 EOS -> ContinueStmt         {cons("continue-stmt")}
 
 
 %% 8.4 Stop and Error Stop statements
 %%
 
 %%R855
-  LblDef         'STOP' StopCode?                   EOS -> StopStmt             {cons("stop-stmt")}
+  Label?         'STOP' StopCode?                   EOS -> StopStmt             {cons("stop-stmt")}
 
 %%R856
-  LblDef 'ERROR' 'STOP' StopCode?                   EOS -> ErrorStopStmt        {cons("error-stop-stmt")}
+  Label? 'ERROR' 'STOP' StopCode?                   EOS -> ErrorStopStmt        {cons("error-stop-stmt")}
 
 %%R857
 %%        Scon substituted for scalar-default-char-constant-expr
@@ -371,7 +371,7 @@ context-free syntax
 %%
 
 %%R858
-  LblDef 'SYNC' 'ALL'
+  Label? 'SYNC' 'ALL'
          ( '(' {SyncStat ','}* ')' )?               EOS -> SyncAllStmt          {cons("sync-all-stmt")}
 
 %%R859
@@ -379,7 +379,7 @@ context-free syntax
   'ERRMSG' '=' ErrmsgVariable                           -> SyncStat             {cons("sync-stat_ERRMSG")}
 
 %%R860
-  LblDef 'SYNC' 'IMAGES' '(' ImageSet
+  Label? 'SYNC' 'IMAGES' '(' ImageSet
                 (',' {SyncStat ','}+ )? ')'         EOS -> SyncImagesStmt       {cons("sync-images-stmt")}
 
 %%R861
@@ -387,11 +387,11 @@ context-free syntax
   '*'                                                 -> ImageSet               {cons("image-set_STAR")}
 
 %%R862
-  LblDef 'SYNC' 'MEMORY'
+  Label? 'SYNC' 'MEMORY'
          ( '(' {SyncStat ','}* ')' )?               EOS -> SyncMemoryStmt       {cons("sync-memory-stmt")}
 
 %%R863
-  LblDef 'LOCK' '(' LockVariable
+  Label? 'LOCK' '(' LockVariable
                  (',' {SyncStat ','}+ )? ')'        EOS -> LockStmt             {cons("lock-stmt")}
 
 %%R864
@@ -399,7 +399,7 @@ context-free syntax
   SyncStat                                              -> LockStat             {cons("lock-stat_SS")}
 
 %%R865
-  LblDef 'UNLOCK' '(' LockVariable
+  Label? 'UNLOCK' '(' LockVariable
                    (',' {SyncStat ','}+ )? ')'      EOS -> UnlockStmt           {cons("unlock-stmt")}
 
 %%866

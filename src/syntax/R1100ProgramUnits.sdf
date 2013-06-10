@@ -131,7 +131,7 @@ context-free syntax
 %%       Removed the leading ExecutableConstruct to allow an empty list to
 %%       be an ExecutionPart.  Check order of statements in a separate stage.
 %%
-  ExecutionPartConstruct*                      -> ExecutionPart           {cons("execution-part")}
+  ExecutionPartConstruct*                      -> ExecutionPart           {cons("ExecutionPart")}
 
 %%R209
     ExecutableConstruct
@@ -140,7 +140,7 @@ context-free syntax
   | DataStmt                                   -> ExecutionPartConstruct  {cons("execution-part-construct")}
 
 %%R210
-  ContainsStmt InternalSubprogram*             -> InternalSubprogramPart  {cons("internal-subprogram-part")}
+  ContainsStmt InternalSubprogram*             -> InternalSubprogramPart  {cons("InternalSubprogramPart")}
 
 %%R211
     FunctionSubprogram
@@ -261,10 +261,10 @@ context-free syntax
   EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
 
 %%R1102
-  LblDef? 'PROGRAM'       ProgramName      EOS -> ProgramStmt      {cons("ProgramStmt")}
+  Label? 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
-  LblDef? 'END' ('PROGRAM' ProgramName?)?  EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("EndProgramStmt")}
 
 %%R1104
 %%     WARNING-MODIFICATION: 
@@ -277,10 +277,10 @@ context-free syntax
   EndModuleStmt                                -> Module           {cons("Module")}
 
 %%R1105
-  LblDef? 'MODULE' ModuleName              EOS -> ModuleStmt       {cons("ModuleStmt")}
+  Label? 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("ModuleStmt")}
 
 %%R1106
-  LblDef? 'END' ('MODULE' ModuleName?)?    EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+  Label? 'END' ('MODULE' ModuleName?)?     EOS -> EndModuleStmt    {cons("EndModuleStmt")}
 
 %%TODO-DELETE  SpecificationPartConstruct                   -> ModuleBody
 %%TODO-DELETE  ModuleSubprogramPartConstruct                -> ModuleBody
@@ -296,9 +296,9 @@ context-free syntax
   | SeparateModuleSubprogram                   -> ModuleSubprogram      {cons("module-subprogram")}
 
 %%R1109
-  LblDef? 'USE' ((',' ModuleNature)? '::')? ModuleName
+  Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
            (','            {Rename ','}+)?              EOS -> UseStmt  {cons("UseStmt_Rename")}
-  LblDef? 'USE' ((',' ModuleNature)? '::')? ModuleName
+  Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
             ',' 'ONLY' ':' {Only   ','}*                EOS -> UseStmt  {cons("UseStmt_Only")}
 
 %%R1110
@@ -338,14 +338,14 @@ context-free syntax
   EndSubmoduleStmt                               -> Submodule         {cons("submodule")}
 
 %%R1117
-  LblDef 'SUBMODULE' '(' ParentIdentifier ')'
+  Label? 'SUBMODULE' '(' ParentIdentifier ')'
          SubmoduleName                       EOS -> SubmoduleStmt     {cons("submodule-stmt")}
 
 %%R1118
   AncestorModuleName (':' ParentSubmoduleName)?  -> ParentIdentifier  {cons("parent-identifier")}
 
 %%R1119
-  LblDef 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
+  Label? 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
 
 %%R1120
 %%     WARNING-MODIFICATION: 
@@ -357,11 +357,11 @@ context-free syntax
   EndBlockDataStmt                               -> BlockData         {cons("block-data")}
 
 %%R1121
-  LblDef 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("block-data-stmt")}
+  Label? 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("block-data-stmt")}
 
 %%R1122
-  LblDef 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
-  LblDef 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+  Label? 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
 
 %%context-free priorities
 %%

@@ -295,7 +295,7 @@ context-free syntax
   EndTypeStmt                           -> DerivedTypeDef          {cons("derived-type-def")}
 
 %%R426
-  LblDef 'TYPE'
+  Label? 'TYPE'
              ( (',' {TypeAttrSpec ','}+)? '::' )?
              TypeName
              ( '('  {TypeParamName ','}+ ')'   )?          EOS -> DerivedTypeStmt  {cons("derived-type-stmt")}
@@ -320,13 +320,13 @@ context-free syntax
   | SequenceStmt                                               -> PrivateOrSequence  {cons("private-components-stmt")}
 
 %%R429
-  LblDef 'END' 'TYPE' TypeName?                            EOS -> EndTypeStmt      {cons("end-type-stmt")}
+  Label? 'END' 'TYPE' TypeName?                            EOS -> EndTypeStmt      {cons("end-type-stmt")}
 
 %%R430
-  LblDef 'SEQUENCE'                                        EOS -> SequenceStmt     {cons("sequence-stmt")}
+  Label? 'SEQUENCE'                                        EOS -> SequenceStmt     {cons("sequence-stmt")}
 
 %%R431
-  LblDef 'INTEGER' KindSelector? ','   TypeParamAttrSpec
+  Label? 'INTEGER' KindSelector? ','   TypeParamAttrSpec
                                  '::' {TypeParamDecl ','}+ EOS -> TypeParamDefStmt {cons("type-param-def-stmt")}
 
 %%R432
@@ -346,7 +346,7 @@ context-free syntax
   | ProcComponentDefStmt                -> ComponentDefStmt  {cons("component-def-stmt")}
 
 %%R436
-  LblDef DeclarationTypeSpec
+  Label? DeclarationTypeSpec
            ( (',' {ComponentAttrSpec ','}+ )? '::' )?
                   {ComponentDecl     ','}+             EOS   -> DataComponentDefStmt  {cons("data-component-def-stmt")}
 
@@ -368,7 +368,7 @@ context-free syntax
   | ( {DeferredShapeSpec ','}+ )                -> ComponentArraySpec  {cons("component-array-spec")}
 
 %%R440
-  LblDef 'PROCEDURE'
+  Label? 'PROCEDURE'
            '('   ProcInterface? ')' ','
                 {ProcComponentAttrSpec ','}+
            '::' {ProcDecl              ','}+  EOS  -> ProcComponentDefStmt  {cons("proc-component-def-stmt")}
@@ -389,7 +389,7 @@ context-free syntax
   Designator                                       -> InitialDataTarget      {cons("initial-data-target")}
 
 %%R444
-  LblDef 'PRIVATE'                             EOS -> PrivateComponentsStmt  {cons("private-components-stmt")}
+  Label? 'PRIVATE'                             EOS -> PrivateComponentsStmt  {cons("private-components-stmt")}
 
 %%R445
   ContainsStmt
@@ -397,7 +397,7 @@ context-free syntax
     TypeBoundProcBinding*                          -> TypeBoundProcedurePart {cons("type-bound-procedure-part")}
 
 %%R446
-  LblDef 'PRIVATE'                             EOS -> BindingPrivateStmt     {cons("binding-private--stmt")}
+  Label? 'PRIVATE'                             EOS -> BindingPrivateStmt     {cons("binding-private--stmt")}
 
 %%R447
     TypeBoundProcedureStmt
@@ -405,7 +405,7 @@ context-free syntax
   | FinalProcedureStmt                             -> TypeBoundProcBinding   {cons("type-bound-proc-binding")}
 
 %%R448
-  LblDef 'PROCEDURE'
+  Label? 'PROCEDURE'
             ( (( ',' {BindingAttr ','}+ )? '::')?
                      {TypeBoundProcDecl ','}+    )
           | ( '(' InterfaceName ')'
@@ -417,7 +417,7 @@ context-free syntax
   BindingName ( '=>' ProcedureName )?              -> TypeBoundProcDecl       {cons("type-bound-proc-decl")}
 
 %%R450
-  LblDef 'GENERIC' ( ',' AccessSpec )?
+  Label? 'GENERIC' ( ',' AccessSpec )?
      '::' GenericSpec '=>' {BindingName ','}+  EOS -> TypeBoundGenericStmt    {cons("type-bound-generic-stmt")}
 
 %%451
@@ -428,7 +428,7 @@ context-free syntax
   AccessSpec                                       -> BindingAttr             {cons("binding-attr_AS")}
 
 %%452
-  LblDef 'FINAL'
+  Label? 'FINAL'
          OptCC {FinalSubroutineName ','}+      EOS -> FinalProcedureStmt      {cons("final-procedure-stmt")}
 
 %%R453
@@ -458,10 +458,10 @@ context-free syntax
   EndEnumStmt                                      -> EnumDef                 {cons("enum-def")}
 
 %%R459
-  LblDef 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("enum-def-stmt")}
+  Label? 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("enum-def-stmt")}
 
 %%R460
-  LblDef 'ENUMERATOR' OptCC
+  Label? 'ENUMERATOR' OptCC
          {Enumerator ','}+                     EOS -> EnumeratorDefStmt       {cons("enumerator-def-stmt")}
 
 %%R461
@@ -470,7 +470,7 @@ context-free syntax
   NamedConstant ('=' IntConstantExpr)?             -> Enumerator              {cons("enumerator")}
 
 %%R462
-  LblDef 'END' 'ENUM'                          EOS -> EndEnumStmt             {cons("end-enum-stmt")}
+  Label? 'END' 'ENUM'                          EOS -> EndEnumStmt             {cons("end-enum-stmt")}
 
 
 %% 4.7 Binary, octal, and hexadecimal literal constants

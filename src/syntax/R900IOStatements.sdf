@@ -92,7 +92,7 @@ context-free syntax
   CharVariable                                   -> InternalFileVariable  {cons("internal-file-variable")}
 
 %%R904
-  LblDef 'OPEN' '(' {ConnectSpec ','}+ ')'   EOS -> OpenStmt        {cons("open-stmt")}
+  Label? 'OPEN' '(' {ConnectSpec ','}+ ')'   EOS -> OpenStmt        {cons("open-stmt")}
 
 %%R905
 %%         default-char-expr substituted for scalar-default-char-expr
@@ -129,7 +129,7 @@ context-free syntax
   DefaultCharExpr                               -> IomsgVariable  {cons("iomsg-variable")}
 
 %%R908
-  LblDef 'CLOSE' '(' {CloseSpec ','}+ ')'   EOS -> CloseStmt      {cons("close-stmt")}
+  Label? 'CLOSE' '(' {CloseSpec ','}+ ')'   EOS -> CloseStmt      {cons("close-stmt")}
 
 %%R909
 %%           default-char-expr substituted for scalar-default-char-expr
@@ -146,14 +146,14 @@ context-free syntax
 %%
 
 %%910
-  LblDef 'READ' '(' {IoControlSpec ','}+ ')' {InputItem ','}*   EOS -> ReadStmt  {cons("read-stmt_ICSL")}
-  LblDef 'READ' Format                  (',' {InputItem ','}+)? EOS -> ReadStmt  {cons("read-stmt_F")}
+  Label? 'READ' '(' {IoControlSpec ','}+ ')' {InputItem ','}*   EOS -> ReadStmt  {cons("read-stmt_ICSL")}
+  Label? 'READ' Format                  (',' {InputItem ','}+)? EOS -> ReadStmt  {cons("read-stmt_F")}
 
 %%R911
-  LblDef 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("write-stmt")}
+  Label? 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("write-stmt")}
 
 %%R912
-  LblDef 'PRINT' Format (',' {OutputItem ','}+ )?               EOS -> PrintStmt {cons("print-stmt")}
+  Label? 'PRINT' Format (',' {OutputItem ','}+ )?               EOS -> PrintStmt {cons("print-stmt")}
 
 %%R913
 %% TODO-F08  io-unit and format must be first and second (without {UNIT,FMT}=)
@@ -213,7 +213,7 @@ context-free syntax
 %%
 
 %%R922
-  LblDef 'WAIT' '(' {WaitSpec ','}+ ')'             EOS -> WaitStmt       {cons("wait-stmt")}
+  Label? 'WAIT' '(' {WaitSpec ','}+ ')'             EOS -> WaitStmt       {cons("wait-stmt")}
 
 %%R923
 %%           int-expr substituted for scalar-int-expr
@@ -233,16 +233,16 @@ context-free syntax
 %%
 
 %%R924
-  LblDef 'BACKSPACE' FileUnitNumber                EOS -> BackspaceStmt   {cons("backspace-stmt_FUN")}
-  LblDef 'BACKSPACE' '(' {PositionSpec ','}+ ')'   EOS -> BackspaceStmt   {cons("backspace-stmt_PSL")}
+  Label? 'BACKSPACE' FileUnitNumber                EOS -> BackspaceStmt   {cons("backspace-stmt_FUN")}
+  Label? 'BACKSPACE' '(' {PositionSpec ','}+ ')'   EOS -> BackspaceStmt   {cons("backspace-stmt_PSL")}
 
 %%R925
-  LblDef 'END' 'FILE' FileUnitNumber               EOS -> EndfileStmt     {cons("endfile-stmt_FUN")}
-  LblDef 'END' 'FILE' '(' {PositionSpec ","}+ ')'  EOS -> EndfileStmt     {cons("endfile-stmt_PSL")}
+  Label? 'END' 'FILE' FileUnitNumber               EOS -> EndfileStmt     {cons("endfile-stmt_FUN")}
+  Label? 'END' 'FILE' '(' {PositionSpec ","}+ ')'  EOS -> EndfileStmt     {cons("endfile-stmt_PSL")}
 
 %%R926
-  LblDef 'REWIND' FileUnitNumber                   EOS -> RewindStmt      {cons("rewind-stmt_FUN")}
-  LblDef 'REWIND' '(' {PositionSpec ","}+ ')'      EOS -> RewindStmt      {cons("rewind-stmt_PSL")}
+  Label? 'REWIND' FileUnitNumber                   EOS -> RewindStmt      {cons("rewind-stmt_FUN")}
+  Label? 'REWIND' '(' {PositionSpec ","}+ ')'      EOS -> RewindStmt      {cons("rewind-stmt_PSL")}
 
 %%R927
   ('UNIT'    '=')? FileUnitNumber                      -> PositionSpec    {cons("position-spec_UNIT")}
@@ -255,8 +255,8 @@ context-free syntax
 %%
 
 %%R928
-  LblDef 'FLUSH' FileUnitNumber                     EOS -> FlushStmt      {cons("flush-stmt_FUN')")}
-  LblDef 'FLUSH' '(' {FlushSpec ','}+ ')'           EOS -> FlushStmt      {cons("flush-stmt_FSL'")}
+  Label? 'FLUSH' FileUnitNumber                     EOS -> FlushStmt      {cons("flush-stmt_FUN')")}
+  Label? 'FLUSH' '(' {FlushSpec ','}+ ')'           EOS -> FlushStmt      {cons("flush-stmt_FSL'")}
 
 %%R929
 %%           int-variable substituted for scalar-int-variable
@@ -273,8 +273,8 @@ context-free syntax
 %%R930
 %%           int-variable substituted for scalar-int-variable
 %%
-  LblDef 'INQUIRE' '(' {InquireSpec ','}+ ')'       EOS -> InquireStmt {cons("inquire-stmt_ISL")}
-  LblDef 'INQUIRE' '(' 'IOLENGTH' '=' IntVariable ')' {OutputItem ','}+
+  Label? 'INQUIRE' '(' {InquireSpec ','}+ ')'       EOS -> InquireStmt {cons("inquire-stmt_ISL")}
+  Label? 'INQUIRE' '(' 'IOLENGTH' '=' IntVariable ')' {OutputItem ','}+
                                                     EOS -> InquireStmt {cons("inquire-stmt_IOLENGTH")}
 
 %%R931

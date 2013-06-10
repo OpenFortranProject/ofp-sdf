@@ -237,7 +237,7 @@ context-free syntax
   IntExpr                                  -> IntConstantExpr {cons("int-constant-expr")}
 
 %%R732
-  LblDef Variable '=' Expr             EOS -> AssignmentStmt  {cons("assignment-stmt")}
+  Label? Variable '=' Expr             EOS -> AssignmentStmt  {cons("assignment-stmt")}
 
 %% todo: check. Original ISO: assignmentStatement is variable '=' expression
 %%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
@@ -251,7 +251,7 @@ context-free syntax
 %%TODO-DELETE   LblDef Name '(' SFExprList ')' SubstringRange '=' Expr EOS             -> AssignmentStmt
 
 %%R733
-  LblDef
+  Label?
        ( DataPointerObject ( '(' {BoundsSpec      ','}+ ')' )? '=>' DataTarget )
     |  ( DataPointerObject   '(' {BoundsRemapping ','}+ ')'    '=>' DataTarget )
     |  ( ProcPointerObject                                     '=>' ProcTarget )
@@ -297,7 +297,7 @@ context-free syntax
   | ProcComponentRef                                   -> ProcTarget        {cons("proc-target")}
 
 %%R741
-  LblDef 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("where-stmt")}
+  Label? 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("where-stmt")}
 
 %%R742
 %%TODO-F08-FIXME
@@ -322,7 +322,7 @@ context-free syntax
 %%R743
 %%       Ident substituted for where-construct-name
 %%
-  LblDef (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("where-construct-stmt")}
+  Label? (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("where-construct-stmt")}
 
 %%R744
     WhereAssignmentStmt
@@ -340,17 +340,17 @@ context-free syntax
 %%R747
 %%       Ident substituted for where-construct-name
 %%
-  LblDef 'ELSEWHERE' '(' MaskExpr ')' Ident?   EOS -> MaskedElsewhereStmt {cons("masked-elsewhere-stmt")}
+  Label? 'ELSEWHERE' '(' MaskExpr ')' Ident?   EOS -> MaskedElsewhereStmt {cons("masked-elsewhere-stmt")}
 
 %%R748
 %%       Ident substituted for where-construct-name
 %%
-  LblDef 'ELSEWHERE' Ident?                    EOS -> ElsewhereStmt       {cons("elsewhere-stmt")}
+  Label? 'ELSEWHERE' Ident?                    EOS -> ElsewhereStmt       {cons("elsewhere-stmt")}
 
 %%R749
 %%       Ident substituted for where-construct-name
 %%
-  LblDef 'END' 'WHERE' Ident?                  EOS -> EndWhereStmt        {cons("end-where-stmt")}
+  Label? 'END' 'WHERE' Ident?                  EOS -> EndWhereStmt        {cons("end-where-stmt")}
 
 %%R750
   ForallConstructStmt
@@ -358,7 +358,7 @@ context-free syntax
   EndForallStmt                                    -> ForallConstruct     {cons("forall-construct")}
 
 %%R751
-  LblDef (ForallConstructName ':')?
+  Label? (ForallConstructName ':')?
          'FORALL' ForallHeader                 EOS -> ForallConstructStmt  {cons("forall-construct-stmt")}
 
 %%752
@@ -395,10 +395,10 @@ context-free syntax
   | PointerAssignmentStmt                          -> ForallAssignmentStmt {cons("forall-assignment-stmt")}
 
 %%758
-  LblDef 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("end-forall-stmt")}
+  Label? 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("end-forall-stmt")}
 
 %%759
-  LblDef 'FORALL' ForallHeader ForallAssignmentStmt  EOS -> ForallStmt     {cons("forall-stmt")}
+  Label? 'FORALL' ForallHeader ForallAssignmentStmt  EOS -> ForallStmt     {cons("forall-stmt")}
 
 
 %%TODO - what with the following

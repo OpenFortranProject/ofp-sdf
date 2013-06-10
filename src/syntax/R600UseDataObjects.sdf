@@ -244,7 +244,7 @@ context-free syntax
 %%
 
 %%R626
-  LblDef 'ALLOCATE'
+  Label? 'ALLOCATE'
            '(' (TypeSpec '::')?
                     {Allocation ','}+
                (',' {AllocOpt   ','}+)?
@@ -301,7 +301,7 @@ context-free syntax
   ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateCoshapeSpec  {cons("allocate-coshape-spec")}
 
 %%R638
-  LblDef 'NULLIFY' '(' {PointerObject ','}+ ')'      EOS -> NullifyStmt          {cons("nullify-stmt")}
+  Label? 'NULLIFY' '(' {PointerObject ','}+ ')'      EOS -> NullifyStmt          {cons("nullify-stmt")}
 
 %%R639
     VariableName
@@ -309,7 +309,7 @@ context-free syntax
   | ProcPointerName                                      -> PointerObject        {cons("pointer-object")}
    
 %%R640
-  LblDef 'DEALLOCATE'
+  Label? 'DEALLOCATE'
             '('
                        {AllocateObject ','}+
                   (',' {DeallocOpt     ','}+)?
