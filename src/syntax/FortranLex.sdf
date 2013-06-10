@@ -21,7 +21,7 @@ sorts
   BinaryConstant Character Comma ColonColon Comment StartCommentBlock
   Continuation Dop EOL EOS HexConstant
   Icon Ident Label LblDef LblRef
-  Letter OctalConstant OptCC OptComma
+  Letter OctalConstant OptComma
   Rcon ScalarIntLiteralConstant  Scon
   SconDouble SconSingle 
 
@@ -181,7 +181,6 @@ context-free restrictions
 context-free syntax
 
   Comma?      -> OptComma                 {cons("Comma")}
-  ColonColon? -> OptCC                    {cons("ColonColon")}
 
   Label  -> LblDef                        {cons("Label")}
   Label  -> LblRef                        {cons("Label")}

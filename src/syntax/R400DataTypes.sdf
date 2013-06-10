@@ -429,7 +429,7 @@ context-free syntax
 
 %%452
   Label? 'FINAL'
-         OptCC {FinalSubroutineName ','}+      EOS -> FinalProcedureStmt      {cons("final-procedure-stmt")}
+         '::'? {FinalSubroutineName ','}+      EOS -> FinalProcedureStmt      {cons("final-procedure-stmt")}
 
 %%R453
   TypeName ( '(' {TypeParamSpec ','}+ ')' )?       -> DerivedTypeSpec         {cons("DerivedTypeSpec")}
@@ -461,7 +461,7 @@ context-free syntax
   Label? 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("enum-def-stmt")}
 
 %%R460
-  Label? 'ENUMERATOR' OptCC
+  Label? 'ENUMERATOR' '::'?
          {Enumerator ','}+                     EOS -> EnumeratorDefStmt       {cons("enumerator-def-stmt")}
 
 %%R461

@@ -236,30 +236,31 @@ context-free syntax
 %%
 
 %%R524
-  Label? AccessSpec ( OptCC {AccessId ','}+ )?             EOS -> AccessStmt   {cons("access-stmt")}
+  Label? AccessSpec '::'  {AccessId ','}+                  EOS -> AccessStmt   {cons("AccessStmt")}
+  Label? AccessSpec       {AccessId ','}*                  EOS -> AccessStmt   {cons("AccessStmt")}
 
 %%R525
 %%UseName           %% ambiguous with generic-spec
   GenericSpec                                                  -> AccessId     {cons("access-id")}
 
 %%R526
-  Label? 'ALLOCATABLE' OptCC {AllocatableDecl ','}+        EOS -> AllocatableStmt  {cons("allocatable-stmt")}
+  Label? 'ALLOCATABLE' '::'? {AllocatableDecl ','}+        EOS -> AllocatableStmt  {cons("allocatable-stmt")}
 
 %%R527
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> AllocatableDecl  {cons("allocatable-decl")}
 %%R528
-  Label? 'ASYNCHRONOUS' OptCC {ObjectName ','}+            EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
+  Label? 'ASYNCHRONOUS' '::'? {ObjectName ','}+            EOS -> AsynchronousStmt {cons("asynchronous-stmt")}
 
 %%R529
-  Label? LanguageBindingSpec OptCC {BindEntity ','}+       EOS -> BindStmt         {cons("bind-stmt")}
+  Label? LanguageBindingSpec '::'? {BindEntity ','}+       EOS -> BindStmt         {cons("bind-stmt")}
 
 %%R530
   EntityName                                                   -> BindEntity       {cons("bind-entity_EN")}
   '/' CommonBlockName '/'                                      -> BindEntity       {cons("bind-entity_CBN")}
 
 %%R531
-  Label? 'CODIMENSION' OptCC {CodimensionDecl ','}+        EOS -> CodimensionStmt  {cons("codimension-stmt")}      
+  Label? 'CODIMENSION' '::'? {CodimensionDecl ','}+        EOS -> CodimensionStmt  {cons("codimension-stmt")}      
 %%R532
   CoarrayName '[' CoarraySpec ']'                              -> CodimensionDecl  {cons("codimension-decl")}
 
@@ -324,16 +325,16 @@ context-free syntax
   Designator                                                   -> ConstantSubobject {cons("constant-subobject")}
 
 %%R545
-  Label? 'DIMENSION' OptCC
+  Label? 'DIMENSION' '::'?
                            ArrayName '(' ArraySpec ')'
                       (',' ArrayName '(' ArraySpec ')')*   EOS -> DimensionStmt  {cons("dimension-stmt")}
 
 %%R546
   Label? 'INTENT' '(' IntentSpec ')'
-                    OptCC {DummyArgName ','}+              EOS -> IntentStmt   {cons("intent-stmt")}
+                    '::'? {DummyArgName ','}+              EOS -> IntentStmt   {cons("intent-stmt")}
 
 %%R547
-  Label? 'OPTIONAL' OptCC {DummyArgName ','}+              EOS -> OptionalStmt {cons("optional-stmt")}
+  Label? 'OPTIONAL' '::'? {DummyArgName ','}+              EOS -> OptionalStmt {cons("optional-stmt")}
 
 %%R548
   Label? 'PARAMETER' '(' {NamedConstantDef ','}+ ')'       EOS -> ParameterStmt  {cons("parameter-stmt")}
@@ -342,14 +343,14 @@ context-free syntax
   NamedConstant '=' ConstantExpr                               -> NamedConstantDef  {cons("named-constnat-def")}
 
 %%R550
-  Label? 'POINTER' OptCC {PointerDecl ','}+                EOS -> PointerStmt   {cons("pointer-stmt")}
+  Label? 'POINTER' '::'? {PointerDecl ','}+                EOS -> PointerStmt   {cons("pointer-stmt")}
 
 %%R551
     ( ObjectName ( '(' {DeferredShapeSpec ','}+ ')' )? )
   |   ProcEntityName                                           -> PointerDecl   {cons("pointer-decl")}
 
 %%R552
-  Label? 'PROTECTED' OptCC {EntityName ','}+               EOS -> ProtectedStmt {cons("protected-stmt")}
+  Label? 'PROTECTED' '::'? {EntityName ','}+               EOS -> ProtectedStmt {cons("protected-stmt")}
 
 %%R553
   Label? 'SAVE' '::' {SavedEntity ','}+                    EOS -> SaveStmt      {cons("SaveStmt")}
@@ -364,17 +365,17 @@ context-free syntax
   Ident                                                        -> ProcPointerName  {cons("name")}
 
 %%R556
-  Label? 'TARGET' OptCC {TargetDecl ','}+                  EOS -> TargetStmt   {cons("target-stmt")}
+  Label? 'TARGET' '::'? {TargetDecl ','}+                  EOS -> TargetStmt   {cons("target-stmt")}
 
 %%R557
   ObjectName ( '(' ArraySpec   ')' )?
              ( '[' CoarraySpec ']' )?                          -> TargetDecl   {cons("target-decl")}
 
 %%R558
-  Label? 'VALUE' OptCC {DummyArgName ','}+                 EOS -> ValueStmt    {cons("value-stmt")}
+  Label? 'VALUE' '::'? {DummyArgName ','}+                 EOS -> ValueStmt    {cons("value-stmt")}
 
 %%R559
-  Label? 'VOLATILE' OptCC {ObjectName ','}+                EOS -> VolatileStmt  {cons("volatile-stmt")}
+  Label? 'VOLATILE' '::'? {ObjectName ','}+                EOS -> VolatileStmt  {cons("volatile-stmt")}
 
 
 %% 5.5 Implicit statement

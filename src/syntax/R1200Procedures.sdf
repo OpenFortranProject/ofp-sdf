@@ -102,8 +102,8 @@ context-free syntax
 %%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
-  Label? 'MODULE' 'PROCEDURE' OptCC {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt_MODULE")}
-  Label?          'PROCEDURE' OptCC {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt")}
+  Label? 'MODULE' 'PROCEDURE' '::'? {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt_MODULE")}
+  Label?          'PROCEDURE' '::'? {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt")}
 
 %%R1207
   GenericName                                   -> GenericSpec           {cons("GenericSpec")}
@@ -118,10 +118,11 @@ context-free syntax
   | ( 'WRITE' '(' 'UNFORMATTED' ')' )           -> DefinedIoGenericSpec  {cons("defined-io-generic-spec")}
 
 %%R1209
-  Label? 'IMPORT' ( OptCC {ImportName ','}+ )?             EOS -> ImportStmt     {cons("import-stmt")}
+  Label? 'IMPORT' '::' {ImportName ','}+                   EOS -> ImportStmt     {cons("ImportStmt")}
+  Label? 'IMPORT'      {ImportName ','}*                   EOS -> ImportStmt     {cons("ImportStmt")}
 
 %%R1210
-  Label? 'EXTERNAL' OptCC {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
+  Label? 'EXTERNAL' '::'? {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
 
 %%R1211
   Label? 'PROCEDURE'
@@ -156,7 +157,7 @@ context-free syntax
   ProcedureName                                       -> InitialProcTarget  {cons("initial-proc-target")}
 
 %%R1218
-  Label? 'INTRINSIC' OptCC {IntrinsicProcedureName ','}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
+  Label? 'INTRINSIC' '::'? {IntrinsicProcedureName ','}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
 
 %%R1219
   ProcedureDesignator '(' {ActualArgSpec ','}* ')'    -> FunctionReference   {cons("function-reference")}
