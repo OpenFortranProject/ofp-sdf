@@ -51,7 +51,7 @@ context-free syntax
 %%
 
 %%R1001
-  LblDef? 'FORMAT' FormatSpecification          EOS -> FormatStmt           {cons("format-stmt")}
+  Label? 'FORMAT' FormatSpecification           EOS -> FormatStmt           {cons("format-stmt")}
 
 %%R1002
   '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("format-specification_alt1")}
