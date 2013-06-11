@@ -13,52 +13,75 @@ typedef struct OFP_Traverse_struct
    OFP_Traverse, * pOFP_Traverse;
 
 /* R201 */
-ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse StartCommentBlock_opt, pOFP_Traverse ProgramUnit_list);
+ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program);
 
 /* R202 */
 ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit);
 
 /* R204 */
-ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse UseStmt_list, pOFP_Traverse ImportStmt_list, pOFP_Traverse ImplicitPart_opt, pOFP_Traverse DeclarationConstruct_list);
+ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPart);
 
-ATbool ofp_traverse_declaration_construct         (ATerm term);       // R207-F08
-ATbool ofp_traverse_declaration_construct_list    (ATerm term);
+/* R207 */
+ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct);
 
 /* R208 */
-ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPartConstruct_list);
+ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart);
 
-ATbool ofp_traverse_execution_part_construct      (ATerm term);       // R209-F08
-ATbool ofp_traverse_executable_part_construct_list(ATerm term);
+/* R209 */
+ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPartConstruct);
 
 /* R210 */
-ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse ContainsStmt, pOFP_Traverse InternalSubprogram_list);
+ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart);
 
-ATbool ofp_traverse_executable_construct          (ATerm term);       // R213-F08
-ATbool ofp_traverse_action_stmt                   (ATerm term);       // R214-F08
+/* R213 */
+ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableConstruct);
 
-ATbool ofp_traverse_declaration_type_spec        (ATerm term);        // R403-F08
-ATbool ofp_traverse_intrinsic_type_spec          (ATerm term);        // R404-F08
-ATbool ofp_traverse_int_literal_constant         (ATerm term);        // R407-F08
+/* R214 */
+ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt);
 
-ATbool ofp_traverse_type_declaration_stmt        (ATerm term);        // R501-F08
-ATbool ofp_traverse_entity_decl                  (ATerm term);        // R503-F08
-ATbool ofp_traverse_entity_decl_list             (ATerm term);
+/* R403 */
+ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec);
 
-ATbool ofp_traverse_designator                   (ATerm term);        // R601-F08
-ATbool ofp_traverse_variable                     (ATerm term);        // R602-F08
-ATbool ofp_traverse_data_ref                     (ATerm term);        // R611-F08
-ATbool ofp_traverse_part_ref                     (ATerm term);        // R612-F08
+/* R404 */
+ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpec);
 
-ATbool ofp_traverse_expr                         (ATerm term);        // R722-F08
-ATbool ofp_traverse_assignment_stmt              (ATerm term);        // R732-F08
+/* R405 */
+ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector);
+
+/* R407 */
+ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConstant);
+
+/* R501 */
+ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt);
+
+/* R503 */
+ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl);
+
+/* R601 */
+ATbool ofp_traverse_Designator(ATerm term, pOFP_Traverse Designator);
+
+/* R602 */
+ATbool ofp_traverse_Variable(ATerm term, pOFP_Traverse Variable);
+
+/* R611 */
+ATbool ofp_traverse_DataRef(ATerm term, pOFP_Traverse DataRef);
+
+/* R612 */
+ATbool ofp_traverse_PartRef(ATerm term, pOFP_Traverse PartRef);
+
+/* R722 */
+ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr);
+
+/* R732 */
+ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt);
 
 /* R1101 */
-ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse ProgramStmt_opt, pOFP_Traverse SpecificationPart, pOFP_Traverse ExecutionPart, pOFP_Traverse InternalSubprogramPart_opt, pOFP_Traverse EndProgramStmt);
+ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram);
 
 /* R1102 */
-ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse Label_opt, pOFP_Traverse ProgramName, pOFP_Traverse EOS);
+ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt);
 
 /* R1103 */
-ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse Label_opt, pOFP_Traverse ProgramName_opt, pOFP_Traverse EOS);
+ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt);
 
 #endif

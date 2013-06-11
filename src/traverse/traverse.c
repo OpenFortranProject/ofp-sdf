@@ -5,8 +5,6 @@
 
 int main(int argc, char * argv[])
 {
-   ATbool success;
-   ATerm term;
    OFP_Traverse StartCommentBlock_opt, Program;
    
    if (argc < 2) {
@@ -22,13 +20,13 @@ int main(int argc, char * argv[])
 
    ATinitialize(argc, argv); 
 
-   term = ATreadFromTextFile(file);
+   Program.term = ATreadFromTextFile(file);
 
-   printf("\n%s\n\n", ATwriteToString(term));
+   printf("\n%s\n\n", ATwriteToString(Program.term));
 
-   success = ofp_traverse_Program(term, &StartCommentBlock_opt, &Program);
-
-   if (success) printf("\nWoot!\n");
+   if (ofp_traverse_Program(Program.term, &Program)) {
+      printf("\nWoot!\n");
+   } else return 1;
 
    return 0;
 }
