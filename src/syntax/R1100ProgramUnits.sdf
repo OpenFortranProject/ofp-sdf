@@ -137,7 +137,7 @@ context-free syntax
     ExecutableConstruct
   | FormatStmt
   | EntryStmt
-  | DataStmt                                   -> ExecutionPartConstruct  {cons("execution-part-construct")}
+  | DataStmt                                   -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
 
 %%R210
   ContainsStmt InternalSubprogram*             -> InternalSubprogramPart  {cons("InternalSubprogramPart")}
