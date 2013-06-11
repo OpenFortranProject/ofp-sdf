@@ -237,7 +237,7 @@ context-free syntax
   IntExpr                                  -> IntConstantExpr {cons("int-constant-expr")}
 
 %%R732
-  Label? Variable '=' Expr             EOS -> AssignmentStmt  {cons("assignment-stmt")}
+  Label? Variable '=' Expr             EOS -> AssignmentStmt  {cons("AssignmentStmt")}
 
 %% todo: check. Original ISO: assignmentStatement is variable '=' expression
 %%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
