@@ -12,13 +12,13 @@ check : $(SYNTAX)/Fortran.tbl
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
-           pp-aterm -i $$file.ast -o $$file.ast.pp; \
+           pp-aterm -i $$file.ast -o $$file.ast.aterm; \
         done;
 
 junk :
 	sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 -o junk.f90.ast
-	pp-aterm -i junk.f90.ast -o junk.f90.acff
+	pp-aterm -i junk.f90.ast -o junk.f90.aterm
 
 clean :
-	rm -f *.ast *.ast.pp
+	rm -f *.ast *.ast.aterm
 	rm -f *.o *.mod
