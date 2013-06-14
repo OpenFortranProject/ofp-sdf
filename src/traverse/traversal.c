@@ -50,7 +50,7 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
 }
 
 //========================================================================================
-// R201 program
+// R201 Program
 //----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
 {
@@ -59,12 +59,12 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
 #endif
 
    OFP_Traverse StartCommentBlock, ProgramUnit_list;
-   if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit_list.term) ) {
+   if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit_list.term)) {
 
-      char * String;
-      if (ATmatch(StartCommentBlock.term, "Some(<str>)", &String)) {
+      char * str;
+      if (ATmatch(StartCommentBlock.term, "Some(<str>)", &str)) {
          // MATCHED StartCommentBlock
-      }
+      } else return ATfalse;
 
       ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit_list.term);
       while (! ATisEmpty(ProgramUnit_tail)) {
@@ -671,6 +671,7 @@ ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 //========================================================================================
 // R1102 program-stmt
 //----------------------------------------------------------------------------------------
+
 ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 {
 #ifdef DEBUG_PRINT
@@ -732,3 +733,38 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt)
 
    return ATfalse;
 }
+
+#ifdef DONE
+//========================================================================================
+// R201 program
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
+{
+#ifdef DEBUG_PRINT
+   printf("Program: %s\n", ATwriteToString(term));
+#endif
+
+   OFP_Traverse StartCommentBlock, ProgramUnit_list;
+   if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit_list.term)) {
+
+      char * str;
+      if (ATmatch(StartCommentBlock.term, "Some(<str>)", &str)) {
+         // MATCHED StartCommentBlock
+      } else return ATfalse;
+
+      ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit_list.term);
+      while (! ATisEmpty(ProgramUnit_tail)) {
+         OFP_Traverse ProgramUnit;
+         ProgramUnit.term = ATgetFirst(ProgramUnit_tail);
+         ProgramUnit_tail = ATgetNext(ProgramUnit_tail);
+         if (ofp_traverse_ProgramUnit(ProgramUnit.term, &ProgramUnit)) {
+            // MATCHED ProgramUnit
+         } else return ATfalse;
+      }
+
+      return ATtrue;
+   }
+
+   return ATfalse;
+}
+#endif
