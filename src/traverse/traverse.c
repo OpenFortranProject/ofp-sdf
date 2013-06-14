@@ -5,7 +5,7 @@
 
 int main(int argc, char * argv[])
 {
-   OFP_Traverse StartCommentBlock_opt, Program;
+   OFP_Traverse Program;
    
    if (argc < 2) {
       fprintf(stderr, "usage: traverse filename\n");
