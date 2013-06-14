@@ -12,19 +12,30 @@ CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = traverse.o      \
-       traversal.o
+       traversal.o     \
+       traverse_f.o    \
+       traversal_f.o
 
-all: traverse $(OBJS)
+all: traverse traverse_f $(OBJS)
 
 traverse.o: traverse.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
+traverse_f.o: traverse_f.c
+	$(CC) -c $< -o $@ $(CFLAGS)
+
 traverse: traverse.o $(OBJS)
-	$(CC) -o $@ $(ARCH) $(OBJS) $(LIBS)
+	$(CC) -o $@ $(ARCH) $< traversal.o $(LIBS)
+
+traverse_f: traverse_f.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traversal_f.o $(LIBS)
 
 support.o: support.c support.h
 
 traversal.o: traversal.c traversal.h
+	$(CC) -c $(CFLAGS) $<
+
+traversal_f.o: traversal_f.c traversal_f.h
 	$(CC) -c $(CFLAGS) $<
 
 check: traverse
