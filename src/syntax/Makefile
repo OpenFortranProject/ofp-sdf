@@ -1,5 +1,7 @@
 TEST_DIR = ../../tests/rule-tests
 
+STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoStratego.tbl
+
 TestFiles = $(wildcard $(TEST_DIR)/*.f90)
 ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 
@@ -50,6 +52,9 @@ pretty : Fortran.tbl
               echo "Pretty printing $$File..." ; \
               pp-aterm -i $$File -o $$File.pp ; \
            done
+
+Fortran.sig.aterm : Fortran.sig
+	sglri -p $(STRATEGO_TBL) -i Fortran.sig | implode-asfix | pp-aterm -o Fortran.sig.aterm
 
 junk.ptree : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
