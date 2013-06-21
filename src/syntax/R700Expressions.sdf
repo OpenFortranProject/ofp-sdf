@@ -199,10 +199,8 @@ context-free syntax
 
 %%R722
 %%TODO-short circuit the expr nonsense and make it more sensible
-%%TODO-PUTBACK/FIXME  ( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("expr")}
-%%Primary                                    -> Expr            {cons("Expr")}
-
-
+%%( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("Expr")}
+Primary                                    -> Expr            {cons("Expr")}
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("defined-binary-op")}
