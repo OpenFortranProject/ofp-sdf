@@ -1,0 +1,67 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  LOPe DSL definition
+%%
+%%  Copyright ((c)) 2013, TBD.
+%%  All rights reserved. See the file "LICENSE" for details.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+definition
+module Main
+
+language LOPe
+
+title       "Halo array extensions to Fortran for stencil-based computation"
+
+summary     "This DSL provides syntax for extending array declarations in      "
+            "Fortran so that arrays explicitly have a halo region surrounding  "
+            "the interior portion of a normal array.  Explicit halo            "
+            "declarations allows the compiler to manage the memory of an       "
+            "array that is distributed across memory boundaries.  In particular"
+            "the declaration of a halo region provides the compiler with       "
+            "information regarding the regions of the array that are shared    "
+            "between processing (and memory) elements.                         "
+
+version     1.0
+maintainer  rasmus@uoregon.edu
+web site    dtec-xstack.org
+
+host        Fortran
+requires    none
+id          org.dtec-xstack.uoregon.lope
+
+%%------------------------------------------------------------------------------
+concrete syntax
+%%------------------------------------------------------------------------------
+
+extends host sorts
+AttrSpec PrefixSpec OtherSpecificationStmt
+
+uses host sorts
+ArrayName LowerBound UpperBound EOS
+
+private sorts
+HaloStmt HaloSpec HaloAssumedShapeSpec HaloExplicitShapeSpec
+
+context-free rules
+
+%%R212
+  HaloStmt                                -> OtherSpecificationStmt {cons("OtherSpecificationStmt")}
+
+%%R502
+  'HALO' '(' HaloSpec ')'                 -> AttrSpec               {cons("AttrSpec_HALO")}
+
+  {HaloAssumedShapeSpec  ','}+            -> HaloSpec               {cons("HaloSpec_ASSUMED")}
+  {HaloExplicitShapeSpec ','}+            -> HaloSpec               {cons("HaloSpec_EXPLICIT")}
+
+  ':'                                     -> HaloAssumedShapeSpec   {cons("HaloAssumedShapeSpec")}
+  LowerBound ':' '*' ':' UpperBound       -> HaloExplicitShapeSpec  {cons("HaloExplicitShapeSpec")}
+
+  Label? 'HALO' '::'
+         ArrayName '(' HaloSpec ')'
+    (',' ArrayName '(' HaloSpec ')')* EOS -> HaloStmt               {cons("HaloStmt")}
+
+%%1226
+  'CONCURRENT'                            -> PrefixSpec             {cons("PrefixSpec_CONCURRENT")}
