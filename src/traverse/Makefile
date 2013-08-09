@@ -40,10 +40,10 @@ traversal.o: traversal.c traversal.h ofp_traverse_productions.c
 traversal_f.o: traversal_f.c traversal_f.h
 	$(CC) -c $(CFLAGS) $<
 
-check: traverse
+check: traverse traverse_f
+	traverse_f Fortran.f90.aterm
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
 	traverse testfile.f90.aterm
 
 clean:
 	rm -f *.o $(EXES) $(OBJS)
-	rm -f *.aterm
