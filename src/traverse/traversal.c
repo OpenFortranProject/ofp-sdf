@@ -5,14 +5,17 @@
 
 ATbool ofp_traverse_EOS(ATerm term, pOFP_Traverse EOS)
 {
-   char * EOS_val;
-
 #ifdef DEBUG_PRINT
    printf("EOS: %s\n", ATwriteToString(term));
 #endif
 
-   if (ATmatch(term, "<str>", &EOS_val)) {
-      return ATtrue;
+   if (ATmatch(term, "<term>", &EOS->term)) {
+      char * EOS_val;
+      if (ATmatch(term, "<str>", &EOS_val)) {
+         // MATCHED EOS
+         return ATtrue;
+      }
+      return ATfalse;
    }
    return ATfalse;
 }
@@ -23,9 +26,10 @@ ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label)
    printf("Label: %s\n", ATwriteToString(term));
 #endif
 
-   if (ATmatch(term, "Label(<term>)", &Label->term)) {
-      int Label_val;
-      if (ATmatch(term, "Label(<int>)", &Label_val)) {
+   if (ATmatch(term, "<term>", &Label->term)) {
+      char * Label_val;
+      if (ATmatch(term, "<str>", &Label_val)) {
+         // MATCHED Label
          return ATtrue;
       }
       return ATfalse;
@@ -42,6 +46,7 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
    if (ATmatch(term, "Name(<term>)", &Name->term)) {
       char * Name_val;
       if (ATmatch(term, "Name(<str>)", &Name_val)) {
+         // MATCHED Name
          return ATtrue;
       }
       return ATfalse;
@@ -49,64 +54,24 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
    return ATfalse;
 }
 
-//========================================================================================
-// R201 Program
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
+ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBlock)
 {
 #ifdef DEBUG_PRINT
-   printf("Program: %s\n", ATwriteToString(term));
+   printf("StartCommentBlock: %s\n", ATwriteToString(term));
 #endif
 
-   OFP_Traverse StartCommentBlock, ProgramUnit_list;
-   if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit_list.term)) {
-
-      char * str;
-      if (ATmatch(StartCommentBlock.term, "Some(<str>)", &str)) {
+   if (ATmatch(term, "<term>", &StartCommentBlock->term)) {
+      char * StartCommentBlock_val;
+      if (ATmatch(term, "<str>", &StartCommentBlock_val)) {
          // MATCHED StartCommentBlock
-      } else return ATfalse;
-
-      ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit_list.term);
-      while (! ATisEmpty(ProgramUnit_tail)) {
-         OFP_Traverse ProgramUnit;
-         ProgramUnit.term = ATgetFirst(ProgramUnit_tail);
-         ProgramUnit_tail = ATgetNext(ProgramUnit_tail);
-         if (ofp_traverse_ProgramUnit(ProgramUnit.term, &ProgramUnit)) {
-            // MATCHED ProgramUnit
-         } else return ATfalse;
+         return ATtrue;
       }
-
-      return ATtrue;
+      return ATfalse;
    }
-
    return ATfalse;
 }
 
-//========================================================================================
-// R202 program-unit
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
-{
-#ifdef DEBUG_PRINT
-   printf("\nProgramUnit: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse MainProgram;
-   if (ATmatch(term, "ProgramUnit(<term>)", &MainProgram.term)) {
-      if (ofp_traverse_MainProgram(MainProgram.term, &MainProgram)) {
-         // MATCHED MainProgram
-      } else return ATfalse;
-
-      return ATtrue;
-   }
-
-   //TODO | ExternalSubprogram
-   //TODO | Module
-   //TODO | Submodule
-   //TODO | BlockData
-
-   return ATfalse;
-}
+#include "ofp_traverse_productions.c"
 
 //========================================================================================
 // R204 specification-part
@@ -627,9 +592,9 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt)
 }
 
 //========================================================================================
-// R1101 main-program
+// R1101 MainProgram
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
+ATbool ofp_traverse_MainProgram_old(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT
    printf("\nMainProgram: %s\n", ATwriteToString(term));
@@ -649,6 +614,7 @@ ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
       } else return ATfalse;
 
       if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
+
          // MATCHED ExecutionPart
       } else return ATfalse;
 
@@ -672,7 +638,7 @@ ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 // R1102 program-stmt
 //----------------------------------------------------------------------------------------
 
-ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
+ATbool ofp_traverse_ProgramStmt_orig(ATerm term, pOFP_Traverse ProgramStmt)
 {
 #ifdef DEBUG_PRINT
    printf("\nProgramStmt: %s\n", ATwriteToString(term));
@@ -704,7 +670,7 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 //========================================================================================
 // R1103 end-program-stmt
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt)
+ATbool ofp_traverse_EndProgramStmt_orig(ATerm term, pOFP_Traverse EndProgramStmt)
 {
 #ifdef DEBUG_PRINT
    printf("\nEndProgramStmt: %s\n", ATwriteToString(term));
