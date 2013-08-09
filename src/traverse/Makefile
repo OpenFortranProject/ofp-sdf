@@ -32,7 +32,7 @@ traverse_f: traverse_f.o $(OBJS)
 
 support.o: support.c support.h
 
-traversal.o: traversal.c traversal.h
+traversal.o: traversal.c traversal.h ofp_traverse_productions.c
 	$(CC) -c $(CFLAGS) $<
 
 traversal_f.o: traversal_f.c traversal_f.h
