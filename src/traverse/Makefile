@@ -16,7 +16,9 @@ OBJS = traverse.o      \
        traverse_f.o    \
        traversal_f.o
 
-all: traverse traverse_f $(OBJS)
+EXES = traverse traverse_f
+
+all: $(EXES) $(OBJS)
 
 traverse.o: traverse.c
 	$(CC) -c $< -o $@ $(CFLAGS)
@@ -43,5 +45,5 @@ check: traverse
 	traverse testfile.f90.aterm
 
 clean:
-	rm -f *.o traverse $(OBJS)
+	rm -f *.o $(EXES) $(OBJS)
 	rm -f *.aterm
