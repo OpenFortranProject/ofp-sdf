@@ -1,0 +1,127 @@
+Module(
+  "Fortran"
+, [ Signature(
+      [ Constructors(
+          [ OpDecl(
+              "EndProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptProgramName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndProgramStmt"))
+              )
+            )
+          , OpDecl(
+              "ProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProgramName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProgramStmt"))
+              )
+            )
+          , OpDecl(
+              "MainProgram"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(SortNoArgs("ExecutionPart"))
+                , ConstType(Sort("Option", [SortNoArgs("InternalSubprogramPart")]))
+                , ConstType(SortNoArgs("EndProgramStmt"))
+                ]
+              , ConstType(SortNoArgs("MainProgram"))
+              )
+            )
+          , OpDecl(
+              "InternalSubprogramPart"
+            , FunType(
+                [ConstType(SortNoArgs("ContainsStmt")), ConstType(Sort("List", [SortNoArgs("InternalSubprogram")]))]
+              , ConstType(SortNoArgs("InternalSubprogramPart"))
+              )
+            )
+          , OpDecl(
+              "ExecutionPartConstruct"
+            , FunType([ConstType(SortNoArgs("ExecutableConstruct_FormatStmt_EntryStmt_DataStmt0"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
+            )
+          , OpDecl(
+              "ExecutionPart"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ExecutionPartConstruct")]))]
+              , ConstType(SortNoArgs("ExecutionPart"))
+              )
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "ImplicitPartStmt"
+            , FunType([ConstType(SortNoArgs("ImplicitStmt_ParameterStmt_FormatStmt_EntryStmt0"))], ConstType(SortNoArgs("ImplicitPartStmt")))
+            )
+          , OpDecl(
+              "ImplicitPart"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ImplicitPartStmt")])), ConstType(SortNoArgs("ImplicitStmt"))]
+              , ConstType(SortNoArgs("ImplicitPart"))
+              )
+            )
+          , OpDecl(
+              "SpecificationPart"
+            , FunType(
+                [ ConstType(Sort("List", [SortNoArgs("UseStmt")]))
+                , ConstType(Sort("List", [SortNoArgs("ImportStmt")]))
+                , ConstType(Sort("Option", [SortNoArgs("ImplicitPart")]))
+                , ConstType(Sort("List", [SortNoArgs("DeclarationConstruct")]))
+                ]
+              , ConstType(SortNoArgs("SpecificationPart"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("BlockData"))], ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Submodule"))], ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Module"))], ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ExternalSubprogram"))], ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("MainProgram"))], ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0")))
+            )
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("MainProgram_ExternalSubprogram_Module_Submodule_BlockData0"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("String"))], ConstType(SortNoArgs("StartCommentBlock")))
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ProgramName")]))]
+              , ConstType(SortNoArgs("OptProgramName1"))
+              )
+            )
+          , OpDecl(
+              "Name"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProgramName")))
+            )
+          , OpDecl(
+              "Program"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("StartCommentBlock")]))
+                , ConstType(Sort("List", [SortNoArgs("ProgramUnit")]))
+                ]
+              , ConstType(SortNoArgs("Program"))
+              )
+            )
+          ]
+        )
+      ]
+    )
+  ]
+)
