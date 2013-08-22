@@ -287,7 +287,7 @@ Primary                                    -> Expr            {cons("Expr")}
 %%R739
 %%          variable substituted for scalar-variable
 %%
-  Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("proc-component-ref")}
+  Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("ProcComponentRef")}
 
 %%R740
     Expr
@@ -458,8 +458,18 @@ context-free priorities
   > Expr '//' Expr      -> Expr {cons("ConcatExpr"), left}
   >
   { left:
-    Expr '=='  Expr     -> Expr {cons("EqExpr"),    left}
-    Expr '/='  Expr     -> Expr {cons("NotEqExpr"), left}
+    Expr '.EQ.' Expr     -> Expr {cons("EQ_Expr"), left}
+    Expr '.NE.' Expr     -> Expr {cons("NE_Expr"), left}
+    Expr '.LT.' Expr     -> Expr {cons("LT_Expr"), left}
+    Expr '.LE.' Expr     -> Expr {cons("LE_Expr"), left}
+    Expr '.GT.' Expr     -> Expr {cons("GT_Expr"), left}
+    Expr '.GE.' Expr     -> Expr {cons("GE_Expr"), left}
+    Expr '=='   Expr     -> Expr {cons("EQ_Expr"), left}
+    Expr '/='   Expr     -> Expr {cons("NE_Expr"), left}
+    Expr '<'    Expr     -> Expr {cons("LT_Expr"), left}
+    Expr '<='   Expr     -> Expr {cons("LE_Expr"), left}
+    Expr '>'    Expr     -> Expr {cons("GT_Expr"), left}
+    Expr '>='   Expr     -> Expr {cons("GE_Expr"), left}
   }
   > Expr '.NOT.' Expr   -> Expr {cons("NotExpr"), left}
   > Expr '.AND.' Expr   -> Expr {cons("AndExpr"), left}
