@@ -192,7 +192,7 @@ context-free syntax
   Ident  -> AssociateName
   Ident  -> ArgName
   Ident  -> ArrayName
-  Ident  -> BindingName
+  Ident  -> BindingName                   {cons("BindingName")}
   Ident  -> BlockConstructName
   Ident  -> BlockDataName
   Ident  -> CaseConstructName
@@ -226,7 +226,7 @@ context-free syntax
   Ident  -> PartName
   Ident  -> ProcedureComponentName
   Ident  -> ProcedureEntityName
-  Ident  -> ProcedureName
+  Ident  -> ProcedureName                 {cons("ProcedureName")}
   Ident  -> ProcEntityName
   Ident  -> ProgramName                   {cons("Name")}
   Ident  -> ResultName
