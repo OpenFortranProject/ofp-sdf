@@ -274,34 +274,35 @@ context-free syntax
 %%R631
    AllocateObject
         ( '(' {AllocateShapeSpec ','}+ ')' )?
-        ( '[' AllocateCoarraySpec      ']' )?            -> Allocation           {cons("allocation")}
+        ( '[' AllocateCoarraySpec      ']' )?            -> Allocation           {cons("Allocation")}
 
 %%R632
-    VariableName
-  | StructureComponent                                   -> AllocateObject       {cons("allocate-object")}
+%%  VariableName         %% AMB with alt2
+%%| StructureComponent
+    StructureComponent                                   -> AllocateObject       {cons("AllocateObject_AMB")}
 
 %%R633
-  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateShapeSpec    {cons("allocate-shape-spec")}
+  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
 
 %%R634
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> LowerBoundExpr       {cons("lower-bound-expr")}
+  IntExpr                                                -> LowerBoundExpr       {cons("LowerBoundExpr")}
 
 %%R635
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> UpperBoundExpr       {cons("upper-bound-expr")}
+  IntExpr                                                -> UpperBoundExpr       {cons("UpperBoundExpr")}
 
 %%R636
-  ( {AllocateCoshapeSpec ','}+ )?
-  ( LowerBoundExpr ':'         )?  '*'                   -> AllocateCoarraySpec  {cons("allocate-coarray-spec")}
+  ( {AllocateCoshapeSpec ','}+ ',' )?
+  ( LowerBoundExpr ':'             )?  '*'               -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
 
 %%R637
-  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateCoshapeSpec  {cons("allocate-coshape-spec")}
+  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateCoshapeSpec  {cons("AllocateCoshapeSpec")}
 
 %%R638
-  Label? 'NULLIFY' '(' {PointerObject ','}+ ')'      EOS -> NullifyStmt          {cons("nullify-stmt")}
+  Label? 'NULLIFY' '(' {PointerObject ','}+ ')'      EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
     VariableName
