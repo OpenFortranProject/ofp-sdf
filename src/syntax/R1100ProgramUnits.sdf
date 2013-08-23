@@ -184,7 +184,7 @@ context-free syntax
   | IfConstruct
   | SelectTypeConstruct
   | WhereConstruct
-                                               -> ExecutableConstruct  {cons("executable-construct")}
+                                               -> ExecutableConstruct  {cons("ExecutableConstruct")}
 
 %%R214
 %%TODO-REMOVE  AssignStmt
@@ -233,10 +233,10 @@ context-free syntax
 %% Following added as replacement for DoConstruct (because ambiguous)
   | LabelDoStmt     
   | NonlabelDoStmt
-  | EndDoStmt                          -> ActionStmt  {cons("action-stmt")}
+  | EndDoStmt                          -> ActionStmt  {cons("ActionStmt")}
 
 %%215
-  Name                                 -> Keyword     {cons("keyword")}
+  Name                                 -> Keyword     {cons("Keyword")}
 
 %%R1101
 %%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
