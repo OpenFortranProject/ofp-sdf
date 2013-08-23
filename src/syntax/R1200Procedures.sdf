@@ -164,42 +164,36 @@ context-free syntax
 
 %%R1220
   Label? 'CALL' ProcedureDesignator
-                ('(' {ActualArgSpec ','}* ')')?   EOS -> CallStmt            {cons("call-stmt")}
+                ('(' {ActualArgSpec ','}* ')')?   EOS -> CallStmt            {cons("CallStmt")}
 
 %%R1221
-    ( ProcedureName           )
-  | ( ProcComponentRef        )
-  | ( DataRef '%' BindingName )                       -> ProcedureDesignator {cons("procedure-designator")}
+  ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
+%%ProcComponentRef   %% AMB with alt3
+  DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator_AMB")}
 
 %%R1222
-  ( Keyword '=' )? ActualArg                          -> ActualArgSpec       {cons("actual-arg-spec")}
+  ( Keyword '=' )? ActualArg                          -> ActualArgSpec       {cons("ActualArgSpec")}
 
 %%R1223
-    Expr
-  | Variable
-  | ProcedureName
-  | ProcComponentRef
-  | AltReturnSpec                                      -> ActualArg          {cons("actual-arg")}
-
-context-free priorities
-
-  Variable -> ActualArg  >  Expr -> ActualArg
-
-context-free syntax
+    Expr                                              -> ActualArg           {cons("ActualArg_AMB")}
+%%| Variable           %% AMB with alt1
+%%| ProcedureName      %% AMB with alt1
+%%| ProcComponentRef   %% AMB with alt1
+    AltReturnSpec                                     -> ActualArg           {cons("ActualArg")}
 
 %%1224
-  '*' Label                                            -> AltReturnSpec      {cons("alt-return-spec")}
+  '*' Label                                           -> AltReturnSpec       {cons("AltReturnSpec")}
 
 %%1225
-  PrefixSpec+                                          -> Prefix             {cons("prefix")}
+  PrefixSpec+                                         -> Prefix              {cons("Prefix")}
 
 %%1226
-  DeclarationTypeSpec                                  -> PrefixSpec         {cons("prefix-spec_DTS")}
-  'ELEMENTAL'                                          -> PrefixSpec         {cons("prefix-spec_ELEMENTAL")}
-  'IMPURE'                                             -> PrefixSpec         {cons("prefix-spec_IMPURE")}
-  'MODULE'                                             -> PrefixSpec         {cons("prefix-spec_MODULE")}
-  'PURE'                                               -> PrefixSpec         {cons("prefix-spec_PURE")}
-  'RECURSIVE'                                          -> PrefixSpec         {cons("prefix-spec_RECURSIVE")}
+  DeclarationTypeSpec                                 -> PrefixSpec          {cons("PrefixSpec")}
+  'ELEMENTAL'                                         -> PrefixSpec          {cons("PrefixSpec_ELEMENTAL")}
+  'IMPURE'                                            -> PrefixSpec          {cons("PrefixSpec_IMPURE")}
+  'MODULE'                                            -> PrefixSpec          {cons("PrefixSpec_MODULE")}
+  'PURE'                                              -> PrefixSpec          {cons("PrefixSpec_PURE")}
+  'RECURSIVE'                                         -> PrefixSpec          {cons("PrefixSpec_RECURSIVE")}
 
 %%R1227
 %%     WARNING-MODIFICATION: 
