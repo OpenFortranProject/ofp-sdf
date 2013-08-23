@@ -1,0 +1,17 @@
+!! R609 parent-string
+!    is scalar-variable-name
+!    or array-element
+!    or coindexed-named-object
+!    or scalar-structure-component
+!    or scalar-constant
+!
+! from NOTE 6.2
+
+a = B(1)(1:5)
+a = P%NAME(1:1)
+a = ID(4:9)
+a = '0123456789'(N:N)
+
+b = coarray_string[5]
+
+end
