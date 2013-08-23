@@ -4,6 +4,8 @@
 
 allocate (this, that, theother)
 
+allocate( T[3,*] )
+
 ! NOTE 618
 ALLOCATE(T[*])
 ALLOCATE(T%AAC(N))
