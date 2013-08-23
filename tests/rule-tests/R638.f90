@@ -5,7 +5,7 @@
 
 real, pointer :: a
 
-nullify(a)
+13 nullify(a)
 nullify(a%b)
 
 end
