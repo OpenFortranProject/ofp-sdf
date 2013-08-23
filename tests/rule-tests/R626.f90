@@ -7,5 +7,8 @@
 allocate(integer::a,b)
 allocate(a,stat=i, errmsg=blah, source=k)
 
+! NOTE 6.19
+ALLOCATE (X (N), B (-3 : M, 0:9), STAT = IERR_ALLOC)
+
 end
 
