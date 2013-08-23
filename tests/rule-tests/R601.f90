@@ -9,7 +9,7 @@
 ! Full tests for each of the alternatives is done separately.  
 !
 ! designator tested as part of a variable (R602), which is used as part of 
-! an assignment-stmt (R734).
+! an assignment-stmt (R732).
 
 a = 1
 a(1) = 1
