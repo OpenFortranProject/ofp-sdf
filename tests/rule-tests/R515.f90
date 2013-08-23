@@ -1,4 +1,4 @@
-!! R510 array-spec
+!! R515 array-spec
 !    is explicit-shape-spec-list
 !    or assumed-shape-spec-list
 !    or deferred-shape-spec-list
