@@ -7,4 +7,7 @@
 deallocate(a,stat=i)
 deallocate(a, stat=i, errmsg=m)
 
+! NOTE 6.22
+DEALLOCATE (X, B)
+
 end
