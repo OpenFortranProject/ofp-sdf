@@ -125,7 +125,7 @@ context-free syntax
   DefinedUnaryOp? Primary                  -> Level1Expr      {cons("Level1Expr")}
 
 %%R703
-  Dop                                      -> DefinedUnaryOp  {cons("defined-unary-op")}
+  Dop                                      -> DefinedUnaryOp  {cons("DefinedUnaryOp")}
 
 %%R704
   Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("MultOperand")}
@@ -203,7 +203,7 @@ context-free syntax
 Primary                                    -> Expr            {cons("Expr")}
 
 %%R723
-  Dop                                      -> DefinedBinaryOp {cons("defined-binary-op")}
+  Dop                                      -> DefinedBinaryOp {cons("DefinedBinaryOp")}
 
 %%TODO - what to do about this
 %%R725-R734 chain rule deleted
@@ -439,7 +439,9 @@ context-free priorities
 
 %% defined-unary-op has highest priority followed by **
 %%
-  Expr '**' Expr        -> Expr {cons("PowerExpr"), right}
+    DefinedUnaryOp Expr   -> Expr {cons("DefUnaryExpr")}
+  >
+    Expr '**' Expr        -> Expr {cons("PowerExpr"), right}
   >
   { left:
     Expr '*' Expr       -> Expr {cons("MultExpr"), left}
@@ -481,4 +483,5 @@ context-free priorities
   }
 %%
 %% defined-binary-op has lowest priority
+  > Expr DefinedBinaryOp Expr -> Expr {cons("DefBinExpr")}
 
