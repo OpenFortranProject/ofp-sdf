@@ -1,4 +1,4 @@
-!! R568 common-block-object
+!! R569 common-block-object
 !   is variable-name [ ( array-spec ) ]
 !   or proc-pointer-name
 
