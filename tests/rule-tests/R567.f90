@@ -1,4 +1,4 @@
-!! R566 equivalence-object
+!! R567 equivalence-object
 !    is variable-name
 !    or array-element
 !    or substring
