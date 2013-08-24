@@ -4,5 +4,6 @@
 !
 13  TARGET :: A (1000, 1000)[1000,*], B
    target A[*]
+   target    B(10)[:]
 
 end
