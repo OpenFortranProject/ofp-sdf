@@ -18,11 +18,11 @@ module FortranLex
 exports
  
 sorts
-  BinaryConstant Character Comma ColonColon Comment StartCommentBlock
+  BinaryConstant Character Comma Comment StartCommentBlock
   Continuation Dop EOL EOS HexConstant
   Icon Ident Label LblDef LblRef
   Letter OctalConstant OptComma
-  Rcon ScalarIntLiteralConstant  Scon
+  Rcon ScalarIntLiteralConstant Scon
   SconDouble SconSingle 
 
 %%TODO-DELETE  SignedIntLiteralConstant            %% R406
@@ -55,7 +55,6 @@ sorts
 lexical syntax
 
   ','    -> Comma
-  '::'   -> ColonColon
 
 %% \r\n needed for DOS files
 %%
@@ -197,7 +196,7 @@ context-free syntax
   Ident  -> BlockDataName
   Ident  -> CaseConstructName
   Ident  -> CriticalConstructName
-  Ident  -> CoarrayName
+  Ident  -> CoarrayName                   {cons("CoarrayName")}
   Ident  -> CommonBlockName
   Ident  -> ComponentName
   Ident  -> ConstructName
@@ -220,7 +219,7 @@ context-free syntax
   Ident  -> LocalName
   Ident  -> ModuleName                    {cons("Name")}
   Ident  -> NamelistGroupName
-  Ident  -> ObjectName                    {cons("Name")}
+  Ident  -> ObjectName                    {cons("ObjectName")}
   Ident  -> ParentSubmoduleName
   Ident  -> ParentTypeName
   Ident  -> PartName
@@ -228,7 +227,7 @@ context-free syntax
   Ident  -> ProcedureEntityName
   Ident  -> ProcedureName                 {cons("ProcedureName")}
   Ident  -> ProcEntityName
-  Ident  -> ProgramName                   {cons("Name")}
+  Ident  -> ProgramName                   {cons("ProgramName")}
   Ident  -> ResultName
   Ident  -> ScalarIntConstantName
   Ident  -> ScalarIntVariableName
