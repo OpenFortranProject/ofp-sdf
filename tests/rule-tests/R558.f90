@@ -1,4 +1,4 @@
-!! R557 value-stmt
+!! R558 value-stmt
 !    is VALUE [ :: ] dummy-arg-name-list
 
 SUBROUTINE val(a,b,c,z)
