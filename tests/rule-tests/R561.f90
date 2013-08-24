@@ -1,4 +1,4 @@
-!! R560 implicit-spec
+!! R561 implicit-spec
 !    is declaration-type-spec ( letter-spec-list )
 
 10 IMPLICIT integer(kind=4) (i)
