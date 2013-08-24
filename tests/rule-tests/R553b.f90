@@ -1,4 +1,4 @@
-!! R552 save-stmt
+!! R553 save-stmt
 !    is POINTER [ :: ] pointer-decl-list
 
 !TODO - fix Ambiguity in common-stmt
