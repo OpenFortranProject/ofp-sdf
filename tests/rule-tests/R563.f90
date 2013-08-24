@@ -1,4 +1,4 @@
-!! R562 namelist-stmt
+!! R563 namelist-stmt
 !    is NAMELIST
 !         / namelist-group-name / namelist-group-object-list
 !         [ [ , ] / namelist-group-name / namelist-group-object-list ] ...
