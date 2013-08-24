@@ -1,4 +1,4 @@
-!! R545 intent-spec
+!! R546 intent-spec
 !    is INTENT ( intent-spec ) [ :: ] dummy-arg-name-list
 
 ! intent-spec tested in R523
