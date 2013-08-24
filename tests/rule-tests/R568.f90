@@ -1,4 +1,4 @@
-!! R567 common-stmt
+!! R568 common-stmt
 !    is COMMON [       / [ common-block-name ] / ] common-block-object-list
 !              [ [ , ] / [ common-block-name ] /   common-block-object-list ] ...
 common i
