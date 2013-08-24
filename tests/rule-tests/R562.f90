@@ -1,4 +1,4 @@
-!! R561 letter-spec
+!! R562 letter-spec
 !    is letter [ – letter ]
 
 implicit real (a,b,c)
