@@ -1,4 +1,4 @@
-!! R546 optional-stmt
+!! R547 optional-stmt
 !    is OPTIONAL [ :: ] dummy-arg-name-list
 
 subroutine foo(A, b, C, d)
