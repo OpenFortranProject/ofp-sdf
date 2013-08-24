@@ -158,10 +158,10 @@ context-free syntax
 %%TODO-F08 the following rules look way ambiguous
 
 %%R307
-  Constant                              -> IntConstant      {cons("int-constant")}
+  Constant                              -> IntConstant      {cons("IntConstant")}
 
 %%R308
-  Constant                              -> CharConstant     {cons("char-constant")}
+  Constant                              -> CharConstant     {cons("CharConstant")}
 
 
 %% 4.2 Type parameters
@@ -211,30 +211,30 @@ context-free syntax
   '*' Icon                              -> KindSelector  {cons("KindSelector_STAR")}
 
 %%406
-  Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("signed-int-literal-constant")}
+  Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
   DigitString ('_' KindParam)?          -> IntLiteralConstant  {cons("IntLiteralConstant")}
 
 %%R408
     DigitString
-  | ScalarIntConstantName               -> KindParam          {cons("kind-param")}
+  | ScalarIntConstantName               -> KindParam          {cons("KindParam")}
 
 %%R409
-  Sign? DigitString                     -> SignedDigitString  {cons("signed-digit-string")}
+  Sign? DigitString                     -> SignedDigitString  {cons("SignedDigitString")}
 
 %%R410
   Icon                                  -> DigitString        {cons("DigitString")}
 
 %%R411
-  '+'                                   -> Sign               {cons("sign_PLUS")}
-  '-'                                   -> Sign               {cons("sign_MINUS")}
+  '+'                                   -> Sign               {cons("Sign_PLUS")}
+  '-'                                   -> Sign               {cons("Sign_MINUS")}
 
 %%R412
-  Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("signed-real-literal-constant")}
+  Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
-  Rcon ('_' KindParam)?                 -> RealLiteralConstant        {cons("real-literal-constant")}
+  Rcon ('_' KindParam)?                 -> RealLiteralConstant        {cons("RealLiteralConstant")}
 
 %%R414 significand     - lex
 
@@ -243,17 +243,17 @@ context-free syntax
 %%R416 exponent        - lex
 
 %%R417
-  '(' RealPart ',' ImagPart ')'         -> ComplexLiteralConstant  {cons("complex-literal-constant")}
+  '(' RealPart ',' ImagPart ')'         -> ComplexLiteralConstant  {cons("ComplexLiteralConstant")}
 
 %%418
     SignedIntLiteralConstant
   | SignedRealLiteralConstant
-  | NamedConstant                       -> RealPart                {cons("real-part")}
+  | NamedConstant                       -> RealPart                {cons("RealPart")}
 
 %%419
     SignedIntLiteralConstant
   | SignedRealLiteralConstant
-  | NamedConstant                       -> ImagPart                {cons("imag-part")}
+  | NamedConstant                       -> ImagPart                {cons("ImagPart")}
 
 %%R420
 %%       expr substituted for scalar-int-constant-expr
@@ -273,14 +273,14 @@ context-free syntax
 
 %%R422
     ( '(' TypeParamValue ')' )
-  | ( Icon                   )                                 -> CharLength      {cons("char-length")}
+  | ( Icon                   )                                 -> CharLength      {cons("CharLength")}
 
 %%R423
-  (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("char-literal-constant")}
+  (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("CharLiteralConstant")}
 
 %%R424
-  '.TRUE.'  ('_' KindParam)?            -> LogicalLiteralConstant  {cons("logical-literal-constant_TRUE")}
-  '.FALSE.' ('_' KindParam)?            -> LogicalLiteralConstant  {cons("logical-literal-constant_FALSE")}
+  '.TRUE.'  ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
+  '.FALSE.' ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
 
 
 %% 4.5 Derived types
