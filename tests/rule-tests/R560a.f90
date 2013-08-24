@@ -1,11 +1,11 @@
-!! R559 implicit-stmt
+!! R560 implicit-stmt
 !    is IMPLICIT implicit-spec-list
 !    or IMPLICIT NONE
 !
-!  implicit-spec
+!! R561 implicit-spec
 !    is declaration-type-spec ( letter-spec-list )
 !
-!  letter-spec
+!! R562 letter-spec
 !    is letter [ – letter ]
 
 10 IMPLICIT None
