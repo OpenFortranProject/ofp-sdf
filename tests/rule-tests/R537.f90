@@ -2,6 +2,8 @@
 !    is ( data-i-do-object-list, data-i-do-variable
 !       = scalar-int-constant-expr, scalar-int-constant-expr [ , scalar-int-constant-expr ] )
 !
+! TODO- Fix AMBIGUITIES
+!
 ! From NOTE 5.29
 !
 CHARACTER (LEN = 10)  NAME
@@ -9,12 +11,12 @@ INTEGER, DIMENSION (0:9) :: MILES
 REAL, DIMENSION (100, 100) :: SKEW
 TYPE (NODE), POINTER :: HEAD_OF_LIST
 TYPE (PERSON) MYNAME, YOURNAME
-DATA NAME / ’JOHN DOE’ /, MILES / 10 * 0 /
+DATA NAME / 'JOHN DOE' /, MILES / 10 * 0 /
 DATA ((SKEW (K, J), J = 1, K), K = 1, 100) / 5050 * 0.0 /
 DATA ((SKEW (K, J), J = K + 1, 100), K = 1, 99) / 4950 * 1.0 /
 DATA HEAD_OF_LIST / NULL() /
-DATA MYNAME / PERSON (21, ’JOHN SMITH’) /
-DATA YOURNAME % AGE, YOURNAME % NAME / 35, ’FRED BROWN’ /
+DATA MYNAME / PERSON (21, 'JOHN SMITH') /
+DATA YOURNAME % AGE, YOURNAME % NAME / 35, 'FRED BROWN' /
 
 END
 
