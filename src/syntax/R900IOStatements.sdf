@@ -255,8 +255,8 @@ context-free syntax
 %%
 
 %%R928
-  Label? 'FLUSH' FileUnitNumber                     EOS -> FlushStmt      {cons("flush-stmt_FUN')")}
-  Label? 'FLUSH' '(' {FlushSpec ','}+ ')'           EOS -> FlushStmt      {cons("flush-stmt_FSL'")}
+  Label? 'FLUSH' FileUnitNumber                     EOS -> FlushStmt      {cons("FlushStmt_FUN")}
+  Label? 'FLUSH' '(' {FlushSpec ','}+ ')'           EOS -> FlushStmt      {cons("FlushStmt_FSL")}
 
 %%R929
 %%           int-variable substituted for scalar-int-variable
