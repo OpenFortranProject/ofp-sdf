@@ -1,4 +1,4 @@
-!! R553 saved-entity
+!! R554 saved-entity
 !    is object-name
 !    or proc-pointer-name
 !    or / common-block-name /
