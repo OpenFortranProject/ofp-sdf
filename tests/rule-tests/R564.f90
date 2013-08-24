@@ -1,4 +1,4 @@
-!! R563 namelist-group-object
+!! R564 namelist-group-object
 !    is variable-name
 
 ! Testing namelist-group-object-list.
