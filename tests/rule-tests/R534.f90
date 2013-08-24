@@ -1,4 +1,4 @@
-!! R532 data-stmt
+!! R534 data-stmt
 !    is DATA data-stmt-set [ [ , ] data-stmt-set ] ...
 
 character(9) :: name
