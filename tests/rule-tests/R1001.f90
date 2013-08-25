@@ -7,11 +7,10 @@
 !
 ! Not [completely] tested here: format-item-list.
 !
-000 FORMAT (I12, i1)
-001 format (1pe12.4)
-002 format (1PE12.4, I10)
-003 format (I12 / 'Dates:', 22I3)
-004 format (1x, ''isn''''t'', 1x)
+001 FORMAT (I12, i1)
+002 format (1pe12.4)
+003 format (1PE12.4, I10)
+004 format (I12 / 'Dates:', 22I3)
 005 format(//)
 006 format(:)
 007 format(:::)
