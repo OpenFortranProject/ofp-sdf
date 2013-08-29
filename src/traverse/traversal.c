@@ -54,6 +54,23 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
    return ATfalse;
 }
 
+ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse Name)
+{
+#ifdef DEBUG_PRINT
+   printf("ObjectName: %s\n", ATwriteToString(term));
+#endif
+
+   //   if (ATmatch(term, "ObjectName(<term>)", &Name->term)) {
+      char * Name_val;
+      if (ATmatch(term, "ObjectName(<str>)", &Name_val)) {
+         // MATCHED Name
+         return ATtrue;
+      }
+      return ATfalse;
+      //   }
+      //   return ATfalse;
+}
+
 ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBlock)
 {
 #ifdef DEBUG_PRINT
@@ -76,7 +93,7 @@ ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBloc
 //========================================================================================
 // R204 specification-part
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPart)
+ATbool ofp_traverse_SpecificationPart_orig(ATerm term, pOFP_Traverse SpecificationPart)
 {
 #ifdef DEBUG_PRINT
    printf("\nSpecificationPart: %s\n", ATwriteToString(term));
@@ -109,7 +126,7 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
 //========================================================================================
 // R207 declaration-construct
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct)
+ATbool ofp_traverse_DeclarationConstruct_orig(ATerm term, pOFP_Traverse DeclarationConstruct)
 {
 #ifdef DEBUG_PRINT
    printf("\nDeclarationConstruct: %s\n", ATwriteToString(term));
@@ -364,9 +381,9 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConst
  */
 
 //========================================================================================
-// R501 type-declaration-stmt
+// R501 TypeDeclarationStmt
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt)
+ATbool ofp_traverse_TypeDeclarationStmt_orig(ATerm term, pOFP_Traverse TypeDeclarationStmt)
 {
 #ifdef DEBUG_PRINT
    printf("\nTypeDeclarationStmt: %s\n", ATwriteToString(term));
@@ -430,7 +447,7 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
    OFP_Traverse ObjectName, ArraySpec, CorraySpec, CharLength, Initialization;
    if (ATmatch(term, "EntityDecl(<term>,<term>,<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CorraySpec.term, &CharLength.term, &Initialization.term)) {
 
-      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
          // MATCHED ObjectName (and ambiguous form for FunctionName)
       } else return ATfalse;
 
