@@ -94,6 +94,238 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
 }
 
 //========================================================================================
+// R204 specification-part
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPart)
+{
+#ifdef DEBUG_PRINT
+   printf("\nSpecificationPart: %s\n", ATwriteToString(term));
+#endif
+
+   OFP_Traverse UseStmt_list, ImportStmt_list, ImplicitPart_term, DeclarationConstruct_list;
+   if (ATmatch(term, "SpecificationPart(<term>,<term>,<term>,<term>)", &UseStmt_list.term, &ImportStmt_list.term, &ImplicitPart_term.term, &DeclarationConstruct_list.term)) {
+
+#ifdef NOT_YET
+      OFP_Traverse UseStmt;
+      ATermList UseStmt_tail = (ATermList) ATmake("<term>", UseStmt_list.term);
+      while (! ATisEmpty(UseStmt_tail)) {
+         UseStmt.term = ATgetFirst(UseStmt_tail);
+         UseStmt_tail = ATgetNext(UseStmt_tail);
+         if (ofp_traverse_UseStmt(UseStmt.term, &UseStmt)) {
+            // MATCHED UseStmt
+         } else return ATfalse;
+      }
+
+      OFP_Traverse ImportStmt;
+      ATermList ImportStmt_tail = (ATermList) ATmake("<term>", ImportStmt_list.term);
+      while (! ATisEmpty(ImportStmt_tail)) {
+         ImportStmt.term = ATgetFirst(ImportStmt_tail);
+         ImportStmt_tail = ATgetNext(ImportStmt_tail);
+         if (ofp_traverse_ImportStmt(ImportStmt.term, &ImportStmt)) {
+            // MATCHED ImportStmt
+         } else return ATfalse;
+      }
+
+      OFP_Traverse ImplicitPart;
+      if (ATmatch(ImplicitPart_term.term, "Some(<term>)", &ImplicitPart.term)) {
+         if (ofp_traverse_ImplicitPart(ImplicitPart.term, &ImplicitPart)) {
+            // MATCHED ImplicitPart
+         } else return ATfalse;
+      }
+#endif
+
+      OFP_Traverse DeclarationConstruct;
+      ATermList DeclarationConstruct_tail = (ATermList) ATmake("<term>", DeclarationConstruct_list.term);
+      while (! ATisEmpty(DeclarationConstruct_tail)) {
+         DeclarationConstruct.term = ATgetFirst(DeclarationConstruct_tail);
+         DeclarationConstruct_tail = ATgetNext(DeclarationConstruct_tail);
+         if (ofp_traverse_DeclarationConstruct(DeclarationConstruct.term, &DeclarationConstruct)) {
+            // MATCHED DeclarationConstruct
+         } else return ATfalse;
+      }
+
+      return ATtrue;
+   }
+
+   return ATfalse;
+}
+
+//========================================================================================
+// R207 declaration-construct
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct)
+{
+#ifdef DEBUG_PRINT
+   printf("\nDeclarationConstruct: %s\n", ATwriteToString(term));
+#endif
+
+   OFP_Traverse DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term;
+   if (ATmatch(term, "DeclarationConstruct(<term>)", &DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term)) {
+
+      OFP_Traverse TypeDeclarationStmt;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &TypeDeclarationStmt.term)) {
+         if (ofp_traverse_TypeDeclarationStmt(TypeDeclarationStmt.term, &TypeDeclarationStmt)) {
+            // MATCHED TypeDeclarationStmt
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+#ifdef NOTYET
+      OFP_Traverse OtherSpecificationStmt;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &OtherSpecificationStmt.term)) {
+         if (ofp_traverse_OtherSpecificationStmt(OtherSpecificationStmt.term, &OtherSpecificationStmt)) {
+            // MATCHED OtherSpecificationStmt
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse ProcedureDeclarationStmt;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &ProcedureDeclarationStmt.term)) {
+         if (ofp_traverse_ProcedureDeclarationStmt(ProcedureDeclarationStmt.term, &ProcedureDeclarationStmt)) {
+            // MATCHED ProcedureDeclarationStmt
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse InterfaceBlock;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &InterfaceBlock.term)) {
+         if (ofp_traverse_InterfaceBlock(InterfaceBlock.term, &InterfaceBlock)) {
+            // MATCHED InterfaceBlock
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse FormatStmt;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &FormatStmt.term)) {
+         if (ofp_traverse_FormatStmt(FormatStmt.term, &FormatStmt)) {
+            // MATCHED FormatStmt
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse EnumDef;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &EnumDef.term)) {
+         if (ofp_traverse_EnumDef(EnumDef.term, &EnumDef)) {
+            // MATCHED EnumDef
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse EntryStmt;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &EntryStmt.term)) {
+         if (ofp_traverse_EntryStmt(EntryStmt.term, &EntryStmt)) {
+            // MATCHED EntryStmt
+            return ATtrue;
+         } else return ATfalse;
+      }
+
+      OFP_Traverse DerivedTypeDef;
+      if (ATmatch(DerivedTypeDef_EntryStmt_EnumDef_FormatStmt_InterfaceBlock_ParameterStmt_ProcedureDeclarationStmt_OtherSpecificationStmt_TypeDeclarationStmt_StmtFunctionStmt0_term.term, "<term>", &DerivedTypeDef.term)) {
+         if (ofp_traverse_DerivedTypeDef(DerivedTypeDef.term, &DerivedTypeDef)) {
+            // MATCHED DerivedTypeDef
+            return ATtrue;
+         } else return ATfalse;
+      }
+#endif
+
+      return ATfalse; /* for set of OR productions */
+
+      return ATtrue;
+   }
+
+   return ATfalse;
+}
+
+//========================================================================================
+// R501 TypeDeclarationStmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeDeclarationStmt: %s\n", ATwriteToString(term));
+#endif
+
+   OFP_Traverse Label_term, DeclarationTypeSpec_term, OptListPlusOfAttrSpec1_term, EntityDecl_list, EOS_term;
+   if (ATmatch(term, "TypeDeclarationStmt(<term>,<term>,<term>,<term>,<term>)", &Label_term.term, &DeclarationTypeSpec_term.term, &OptListPlusOfAttrSpec1_term.term, &EntityDecl_list.term, &EOS_term.term)) {
+
+      OFP_Traverse Label;
+      if (ATmatch(Label_term.term, "Some(<term>)", &Label.term)) {
+         if (ofp_traverse_Label(Label.term, &Label)) {
+            // MATCHED Label
+         } else return ATfalse;
+      }
+
+      OFP_Traverse DeclarationTypeSpec;
+      if (ATmatch(DeclarationTypeSpec_term.term, "<term>", &DeclarationTypeSpec.term)) {
+         if (ofp_traverse_DeclarationTypeSpec(DeclarationTypeSpec.term, &DeclarationTypeSpec)) {
+            // MATCHED DeclarationTypeSpec
+         } else return ATfalse;
+      } else return ATfalse;
+
+      OFP_Traverse OptListPlusOfAttrSpec1;
+      if (ATmatch(OptListPlusOfAttrSpec1_term.term, "Some((<term>))", &OptListPlusOfAttrSpec1.term)) {
+
+         printf("OptListPlusOfAttrSpec1: %s\n", ATwriteToString(OptListPlusOfAttrSpec1.term));
+         
+         OFP_Traverse ListPlusOfAttrSpec1;
+         if (ATmatch(OptListPlusOfAttrSpec1.term, "Some((<term>))", &ListPlusOfAttrSpec1.term)) {
+            OFP_Traverse AttrSpec;
+
+            printf("ListPlusOfAttrSpec1: %s\n", ATwriteToString(ListPlusOfAttrSpec1.term));
+
+
+            ATermList AttrSpec_tail = (ATermList) ATmake("<term>", ListPlusOfAttrSpec1.term);
+            printf("AttrSpec_tail: %s\n", ATwriteToString((ATerm)AttrSpec_tail));
+
+            while (! ATisEmpty(AttrSpec_tail)) {
+               AttrSpec.term = ATgetFirst(AttrSpec_tail);
+               AttrSpec_tail = ATgetNext(AttrSpec_tail);
+            printf("AttrSpec_tail: %s\n", ATwriteToString(AttrSpec.term));
+#ifdef NOT_YET
+               if (ofp_traverse_AttrSpec(AttrSpec.term, &AttrSpec)) {
+                  // MATCHED AttrSpec
+               } else return ATfalse;
+#endif
+               // TODO AttrSpec                                                                       
+               printf("AttrSpec: %s\n", ATwriteToString(AttrSpec.term));
+            }
+
+
+         }
+      }
+#ifdef OLD_OLD_OLD
+      OFP_Traverse ListPlusOfAttrSpec1;
+      if (ATmatch(OptListPlusOfAttrSpec1_term.term, "Some((Some(<term>)))", &ListPlusOfAttrSpec1.term)) {
+         if (ofp_traverse_ListPlusOfAttrSpec1(ListPlusOfAttrSpec1.term, &ListPlusOfAttrSpec1)) {
+            // MATCHED ListPlusOfAttrSpec1
+         } else return ATfalse;
+      } else return ATfalse;
+#endif
+
+      OFP_Traverse EntityDecl;
+      ATermList EntityDecl_tail = (ATermList) ATmake("<term>", EntityDecl_list.term);
+      while (! ATisEmpty(EntityDecl_tail)) {
+         EntityDecl.term = ATgetFirst(EntityDecl_tail);
+         EntityDecl_tail = ATgetNext(EntityDecl_tail);
+         if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
+            // MATCHED EntityDecl
+         } else return ATfalse;
+      }
+
+      OFP_Traverse EOS;
+      if (ATmatch(EOS_term.term, "<term>", &EOS.term)) {
+         if (ofp_traverse_EOS(EOS.term, &EOS)) {
+            // MATCHED EOS
+         } else return ATfalse;
+      } else return ATfalse;
+
+      return ATtrue;
+   }
+
+   return ATfalse;
+}
+
+//========================================================================================
 // R1101 MainProgram
 //----------------------------------------------------------------------------------------
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
@@ -156,7 +388,7 @@ ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName)
 #endif
 
    OFP_Traverse Ident_term;
-   if (ATmatch(term, "Name(<term>)", &Ident_term.term)) {
+   if (ATmatch(term, "ProgramName(<term>)", &Ident_term.term)) {
       char * Ident_val;
       if (ATmatch(Ident_term.term, "<str>", &Ident_val)) {
          // MATCHED Ident
