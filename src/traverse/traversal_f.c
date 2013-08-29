@@ -6,6 +6,16 @@
 
 ATermList gTypeTable;
 
+enum DataType
+{
+   UNKNOWN,
+   STRING,
+   LIST,
+   OR
+};
+
+void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth);
+
 char * ofp_getArgNameStr(ATerm arg, char ** name)
 {
    ATerm kind;
@@ -32,6 +42,16 @@ ATbool ofp_isArgListKind(ATerm list)
    ATerm kind, name;
    assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
    if (ATmatch(kind, "\"List\"")) {
+      return ATtrue;
+   }
+   return ATfalse;
+}
+
+ATbool ofp_isArgOrKind(ATerm list)
+{
+   ATerm kind, name;
+   assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
+   if (ATmatch(kind, "\"Or\"")) {
       return ATtrue;
    }
    return ATfalse;
@@ -146,9 +166,29 @@ ATerm ofp_getArgType(ATerm term, ATbool * isOptType)
    return ATmake("None");
 }
 
+enum DataType ofp_getArgDataType(ATerm term)
+{
+   ATbool isOptType;
+   ATerm type = ofp_getArgType(term, &isOptType);
+
+   if (ofp_isStringType(type))   return STRING;
+   if (ofp_isArgListKind(term))  return LIST;
+   if (ofp_isArgOrKind(term))    return OR;
+
+   return UNKNOWN;
+}
+
+static void indent(int depth)
+{
+   int i;
+   for (i = 0; i < depth; i++) {
+      printf("   ");
+   }
+}
+
 /** Make traversal calls for a production
  */
-ATbool ofp_build_node_traversal(ATerm name, ATerm arg, ATerm kind)
+ATbool ofp_build_old_node_traversal(ATerm name, ATerm arg, ATerm kind)
 {
    ATerm typeList;
    ATbool isOptType;
@@ -228,6 +268,106 @@ ATbool ofp_build_node_traversal(ATerm name, ATerm arg, ATerm kind)
    return ATtrue;
 }
 
+void ofp_build_term_format(ATerm arg, char * base_format)
+{
+   if (ofp_isArgOptionKind(arg)) printf("\"Some(%s)\"", base_format);
+   else                          printf("\"%s\"", base_format);
+}
+
+ATbool ofp_build_string_match(ATerm arg, char * src_suffix, int depth)
+{
+   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
+
+   indent(depth);  printf("char * %s_val;\n", arg_name);
+   indent(depth);  printf("if (ATmatch(%s%s.term, ", arg_name, src_suffix);
+                   ofp_build_term_format(arg, "<str>");
+                   printf(", &%s_val)) {\n", arg_name);
+   indent(depth);  printf("   // MATCHED %s\n", arg_name);
+                   if (ofp_isArgOptionKind(arg))  printf("      }\n\n");
+                   else                           printf("      } else return ATfalse;\n\n");
+}
+
+void ofp_build_term_traversal(ATerm arg, char * src_suffix, int depth)
+{
+   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
+   ATerm kind = ofp_getArgKind(arg);
+
+   indent(depth);  printf("if (ofp_traverse_%s(%s.term, &%s)) {\n", arg_name, arg_name, arg_name);
+   indent(depth);  printf("   // MATCHED %s\n", arg_name);
+   indent(depth);  if (! ATmatch(kind, "\"Or\""))  printf("} else return ATfalse;\n");
+                   else                            printf("}\n");
+}
+
+void ofp_build_list_traversal(ATerm arg, char * src_suffix, int depth)
+{
+   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
+   ATerm kind = ofp_getArgKind(arg);
+
+   indent(depth);  printf("OFP_Traverse %s;\n", arg_name);
+   indent(depth);  printf("ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s%s.term);\n", arg_name, arg_name, src_suffix);
+   indent(depth);  printf("while (! ATisEmpty(%s_tail)) {\n", arg_name);
+   indent(depth);  printf("   %s.term = ATgetFirst(%s_tail);\n", arg_name, arg_name);
+   indent(depth);  printf("   %s_tail = ATgetNext(%s_tail);\n", arg_name, arg_name);
+
+   ofp_build_term_traversal(arg, "", depth+1);
+
+   indent(depth);  printf("}\n");
+}
+
+void ofp_build_or_traversal(ATerm arg, char * src_suffix, int depth)
+{
+   int i;
+   ATbool isOptType;
+   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
+   ATerm kind = ofp_getArgKind(arg);
+   ATerm type = ofp_getArgType(arg, &isOptType);
+   ATermList nameList = (ATermList) type;
+
+   indent(depth);  printf("OR traversal......... %s;\n", ATwriteToString(type));
+
+   for (i = 0; i < ATgetLength(nameList); i++) {
+      printf("OR traversal.........kind=%s\n", ATwriteToString(kind));
+      //      ATerm argi = ATmake("[<term>,<term>]", kind, ATelementAt(nameList, i));
+      //      ofp_build_node_traversal(argi, "", depth);
+   }
+
+   // This is a production with or rules so one of the traversals must have
+   // matched and returned ATtrue. So return ATfalse in case none matched.
+   indent(depth);  printf("return ATfalse; /* for set of OR productions */\n");
+
+}
+
+void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth)
+{
+   ATbool isOptType;
+   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
+
+   indent(depth);  printf("====================================\n");
+   indent(depth);  printf("   arg: %s%s.term: %s\n", arg_name, src_suffix, ATwriteToString(arg));
+   indent(depth);  printf("------------------------------------\n");
+   ATerm type = ofp_getArgType(arg, &isOptType);
+   ATerm kind = ofp_getArgKind(arg);
+   ATerm name = ofp_getArgName(arg);
+   printf(".....arg....... %s\n", ATwriteToString(arg));
+   printf(".....type...... %s\n", ATwriteToString(type));
+   printf(".....kind...... %s\n", ATwriteToString(kind));
+   printf(".....name...... %s\n", ATwriteToString(name));
+
+   switch (ofp_getArgDataType(arg)) {
+   case STRING:
+      ofp_build_string_match(arg, src_suffix, depth+1);
+      break;
+   case LIST:
+      ofp_build_list_traversal(arg, src_suffix, depth+1);
+      break;
+   case OR:
+      ofp_build_or_traversal(arg, src_suffix, depth+1);
+      break;
+   default:
+      ofp_build_old_node_traversal(ofp_getArgName(arg), arg, kind);
+   }
+}
+
 ATbool ofp_traverse_FunType_arg(ATerm term, pOFP_Traverse FunType_arg)
 {
    ATbool isOptType;
@@ -290,9 +430,9 @@ ATbool ofp_traverse_FunType(ATerm term, pOFP_Traverse FunType)
    char * name = "None";
    ATermList args = (ATermList) ATmake("[]");
 
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
    printf("\nFunType: %s\n", ATwriteToString(term));
-#endif
+//#endif
 
    OFP_Traverse FunType_args, FunType_result;
    if (ATmatch(term, "FunType(<term>,<term>)", &FunType_args.term, &FunType_result.term) ) {
@@ -329,6 +469,13 @@ ATbool ofp_traverse_FunType(ATerm term, pOFP_Traverse FunType)
    printf("#ifdef DEBUG_PRINT\n");
    printf("   printf(\"%s: %s\\n\", ATwriteToString(term));\n", name, percent_s);
    printf("#endif\n\n");
+
+   for (i = 0; i <  ATgetLength(args); i++) {
+      ATerm arg = ATelementAt(args, i);
+      ATbool list_type = ofp_isArgListKind(arg);
+      if (list_type) ofp_build_node_traversal(arg, "_list", 1);
+      else           ofp_build_node_traversal(arg, "_term", 1);
+   }
 
    /** Declare input (args) to production 
     */
@@ -376,25 +523,20 @@ ATbool ofp_traverse_FunType(ATerm term, pOFP_Traverse FunType)
       ATerm type = ofp_getArgType(arg, &isOptType);
       ATerm kind = ofp_getArgKind(arg);
       ATerm name = ofp_getArgName(arg);
-      printf(".....arg....... %s\n", ATwriteToString(arg));
-      printf(".....type...... %s\n", ATwriteToString(type));
-      printf(".....kind...... %s\n", ATwriteToString(kind));
-      printf(".....name...... %s\n", ATwriteToString(name));
 
       if (ofp_isTypeNameList(type)) {
          int j;
          ATermList nameList = (ATermList) type;
          for (j = 0; j < ATgetLength(nameList); j++) {
             arg = ATmake("[<term>,<term>]", kind, ATelementAt(nameList, j));
-            ofp_build_node_traversal(name, arg, kind);
+            ofp_build_old_node_traversal(name, arg, kind);
          }
          // This is a production with or rules so one of the traversals must have
          // matched and returned ATtrue. So return ATfalse in case none matched.
          printf("      return ATfalse; /* for set of OR productions */\n");
       }
       else {
-         printf("building::::::::: %s\n", ATwriteToString(ofp_getArgName(arg)));
-         ofp_build_node_traversal(ofp_getArgName(arg), arg, kind);
+         ofp_build_old_node_traversal(ofp_getArgName(arg), arg, kind);
       }
    }
 
