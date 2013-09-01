@@ -188,9 +188,9 @@ context-free syntax
 %%        expr substituted for scalar-int-expr
 %%        expr substituted for scalar-logical-expr
 %%
-  OptComma DoVariable '=' Expr ',' Expr (',' Expr)?   -> LoopControl      {cons("loop-control_DV")}
-  OptComma 'WHILE' '(' Expr ')'                       -> LoopControl      {cons("loop-control_WHILE")}
-  OptComma 'CONCURRENT' ForallHeader                  -> LoopControl      {cons("loop-control_CONCURRENT")}
+  ','? DoVariable '=' Expr ',' Expr (',' Expr)?         -> LoopControl    {cons("LoopControl_DV")}
+  ','? 'WHILE' '(' Expr ')'                             -> LoopControl    {cons("LoopControl_WHILE")}
+  ','? 'CONCURRENT' ForallHeader                        -> LoopControl    {cons("LoopControl_CONCURRENT")}
 
 %%R819
   ScalarIntVariableName                                 -> DoVariable     {cons("do-variable")}
@@ -335,7 +335,7 @@ context-free syntax
 %%R852
 %%       expr substituted for scalar-int-expr
 %%
-  Label? 'GO' 'TO' '(' {LblRef ','}+ ')' OptComma Expr  EOS -> ComputedGotoStmt {cons("computed-goto-stmt")}
+  Label? 'GO' 'TO' '(' {LblRef ','}+ ')' ','? Expr  EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
 
 %%R853
 %%       expr substituted for scalar-numeric-expr
