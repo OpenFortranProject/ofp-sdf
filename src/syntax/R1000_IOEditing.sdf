@@ -62,7 +62,7 @@ context-free syntax
 %%
 
 %%R1003
-  FormatItem (OptComma FormatItem)*                 -> FormatItems          {cons("FormatItems")}
+  FormatItem (','? FormatItem)*                     -> FormatItems          {cons("FormatItems")}
 
 %%R1004
   REditDesc? DataEditDesc                           -> FormatItem           {cons("FormatItem_alt1")}
