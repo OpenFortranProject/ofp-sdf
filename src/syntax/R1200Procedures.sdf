@@ -30,6 +30,7 @@ sorts
   ProcInterface                       %% R1212
   ProcAttrSpec                        %% R1213
   ProcDecl                            %% R1214
+  ProcDeclList
                                       %% R1215  InterfaceName (FortranLex)
   ProcPointerInit                     %% R1216
   InitialProcTarget                   %% R1217
@@ -59,6 +60,9 @@ sorts
   ReturnStmt                          %% R1241
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
+
+  ActualArgSpecList DummyArgList DummyArgNameList ExternalNameList
+  ImportNameList IntrinsicProcedureNameList ProcAttrSpecList ProcedureNameList
 
 context-free syntax
 
@@ -102,8 +106,10 @@ context-free syntax
 %%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
-  Label? 'MODULE' 'PROCEDURE' '::'? {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt_MODULE")}
-  Label?          'PROCEDURE' '::'? {ProcedureName ','}+  EOS -> ProcedureStmt {cons("procedure-stmt")}
+  Label? 'MODULE' 'PROCEDURE' '::'? ProcedureNameList  EOS -> ProcedureStmt     {cons("ProcedureStmt_MODULE")}
+  Label?          'PROCEDURE' '::'? ProcedureNameList  EOS -> ProcedureStmt     {cons("ProcedureStmt")}
+
+  {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNameList")}
 
 %%R1207
   GenericName                                   -> GenericSpec           {cons("GenericSpec")}
@@ -115,56 +121,63 @@ context-free syntax
     ( 'READ'  '(' 'FORMATTED'   ')' )
   | ( 'READ'  '(' 'UNFORMATTED' ')' )
   | ( 'WRITE' '(' 'FORMATTED'   ')' )
-  | ( 'WRITE' '(' 'UNFORMATTED' ')' )           -> DefinedIoGenericSpec  {cons("defined-io-generic-spec")}
+  | ( 'WRITE' '(' 'UNFORMATTED' ')' )           -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec")}
 
 %%R1209
-  Label? 'IMPORT' '::' {ImportName ','}+                   EOS -> ImportStmt     {cons("ImportStmt")}
-  Label? 'IMPORT'      {ImportName ','}*                   EOS -> ImportStmt     {cons("ImportStmt")}
+  Label? 'IMPORT' ( '::'? ImportNameList )?       EOS -> ImportStmt       {cons("ImportStmt")}
+
+  {ImportName ','}+                                   -> ImportNameList   {cons("ImportNameList")}
 
 %%R1210
-  Label? 'EXTERNAL' '::'? {ExternalName ','}+              EOS -> ExternalStmt   {cons("external-stmt")}
+  Label? 'EXTERNAL' '::'? ExternalNameList        EOS -> ExternalStmt     {cons("ExternalStmt")}
+
+  {ExternalName ','}+                                 -> ExternalNameList {cons("ExternalNameList")}
 
 %%R1211
   Label? 'PROCEDURE'
              '(' ProcInterface? ')'
-             (( ',' {ProcAttrSpec ','}+ )? '::')?
-                                      {ProcDecl ','}+      EOS -> ProcedureDeclarationStmt
-                                                                        {cons("ProcedureDeclarationStmt")}
+             (( ',' ProcAttrSpecList )? '::')?
+                                    ProcDeclList  EOS -> ProcedureDeclarationStmt
+                                                                          {cons("ProcedureDeclarationStmt")}
 
 %%R1212
     InterfaceName
-  | DeclarationTypeSpec                               -> ProcInterface  {cons("ProcInterface")}
+  | DeclarationTypeSpec                               -> ProcInterface    {cons("ProcInterface")}
 
 %%R1213
-  AccessSpec                                          -> ProcAttrSpec  {cons("proc-attr-spec_AS")}
-  ProcLanguageBindingSpec                             -> ProcAttrSpec  {cons("proc-attr-spec_PBS")}
-  'INTENT' '(' IntentSpec ')'                         -> ProcAttrSpec  {cons("proc-attr-spec_INTENT")}
-  'OPTIONAL'                                          -> ProcAttrSpec  {cons("proc-attr-spec_OPTIONAL")}
-  'POINTER'                                           -> ProcAttrSpec  {cons("proc-attr-spec_POINTER")}
-  'SAVE'                                              -> ProcAttrSpec  {cons("proc-attr-spec_SAVE")}
+  AccessSpec                                          -> ProcAttrSpec     {cons("ProcAttrSpec_AS")}
+  ProcLanguageBindingSpec                             -> ProcAttrSpec     {cons("ProcAttrSpec_PBS")}
+  'INTENT' '(' IntentSpec ')'                         -> ProcAttrSpec     {cons("ProcAttrSpec_INTENT")}
+  'OPTIONAL'                                          -> ProcAttrSpec     {cons("ProcAttrSpec_OPTIONAL")}
+  'POINTER'                                           -> ProcAttrSpec     {cons("ProcAttrSpec_POINTER")}
+  'SAVE'                                              -> ProcAttrSpec     {cons("ProcAttrSpec_SAVE")}
+  {ProcAttrSpec ','}+                                 -> ProcAttrSpecList {cons("ProcAttrSpecList")}
 
 %%R1214
   ProcedureEntityName ( '=>' ProcPointerInit )?       -> ProcDecl      {cons("ProcDecl")}
+  {ProcDecl ','}+                                     -> ProcDeclList  {cons("ProcDeclList")}
 
 %%R1215
 %%Name                                                -> InterfaceName
 
 %%R1216
     NullInit
-  | InitialProcTarget                                 -> ProcPointerInit    {cons("proc-pointer-init")}
+  | InitialProcTarget                                 -> ProcPointerInit    {cons("ProcPointerInit")}
 
 %%R1217
-  ProcedureName                                       -> InitialProcTarget  {cons("initial-proc-target")}
+  ProcedureName                                       -> InitialProcTarget  {cons("InitialProcTarget")}
 
 %%R1218
-  Label? 'INTRINSIC' '::'? {IntrinsicProcedureName ','}+   EOS -> IntrinsicStmt  {cons("intrinsic-stmt")}
+  Label? 'INTRINSIC' '::'? IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+
+  {IntrinsicProcedureName ','}+                            -> IntrinsicProcedureNameList {cons("IntrinsicProcedureNameList")}
 
 %%R1219
-  ProcedureDesignator '(' {ActualArgSpec ','}* ')'    -> FunctionReference   {cons("function-reference")}
+  ProcedureDesignator '(' ActualArgSpecList? ')'      -> FunctionReference   {cons("FunctionReference")}
 
 %%R1220
   Label? 'CALL' ProcedureDesignator
-                ('(' {ActualArgSpec ','}* ')')?   EOS -> CallStmt            {cons("CallStmt")}
+                ( '(' ActualArgSpecList? ')' )?   EOS -> CallStmt            {cons("CallStmt")}
 
 %%R1221
   ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
@@ -173,6 +186,7 @@ context-free syntax
 
 %%R1222
   ( Keyword '=' )? ActualArg                          -> ActualArgSpec       {cons("ActualArgSpec")}
+  {ActualArgSpec ','}+                                -> ActualArgSpecList   {cons("ActualArgSpecList")}
 
 %%R1223
     Expr                                              -> ActualArg           {cons("ActualArg_AMB")}
@@ -205,17 +219,18 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     InternalSubprogramPart?
-  EndFunctionStmt                                      -> FunctionSubprogram  {cons("function-subprogram")}
+  EndFunctionStmt                                      -> FunctionSubprogram  {cons("FunctionSubprogram")}
 
 %%R1228
   Label? Prefix? 'FUNCTION' FunctionName
-              '(' {DummyArgName ','}* ')' Suffix?  EOS -> FunctionStmt        {cons("FunctionStmt")}
+              '(' DummyArgNameList? ')' Suffix?    EOS -> FunctionStmt        {cons("FunctionStmt")}
 
 %%R1229
   LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("ProcLanguageBindingSpec")}
 
 %%R1230
-  Ident                                                -> DummyArgName     {cons("Name")}
+  Ident                                                -> DummyArgName     {cons("DummyArgName")}
+  {DummyArgName ','}+                                  -> DummyArgNameList {cons("DummyArgNameList")}
 
 %%R1231
   ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')?   -> Suffix       {cons("Suffix")}
@@ -234,18 +249,19 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     InternalSubprogramPart?
-  EndSubroutineStmt                             -> SubroutineSubprogram  {cons("subroutine-subprogram")}
+  EndSubroutineStmt                             -> SubroutineSubprogram  {cons("SubroutineSubprogram")}
 
 %%1234
   Label? Prefix? 'SUBROUTINE' SubroutineName
          (
-            '(' {DummyArg ','}* ')'
+            '(' DummyArgList? ')'
              ProcLanguageBindingSpec?
          )?                                 EOS -> SubroutineStmt        {cons("SubroutineStmt")}
 
 %%R1235
   DummyArgName                                  -> DummyArg              {cons("DummyArg")}
   '*'                                           -> DummyArg              {cons("DummyArg")}
+  {DummyArg ','}+                               -> DummyArgList          {cons("DummyArgList")}
 
 %%R1236
   Label? 'END' ('SUBROUTINE' SubroutineName?)? EOS -> EndSubroutineStmt {cons("EndSubroutineStmt")}
@@ -260,26 +276,26 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     InternalSubprogramPart?
-  EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("separate-module-subprogram")}
+  EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("SeparateModuleSubprogram")}
 
 %%R1238
-  Label? 'MODULE' 'PROCEDURE' ProcedureName  EOS -> MpSubprogramStmt         {cons("mp-subprogram-stmt")}
+  Label? 'MODULE' 'PROCEDURE' ProcedureName  EOS -> MpSubprogramStmt         {cons("MpSubprogramStmt")}
 
 %%R1239
-  Label? 'END' ('PROCEDURE' ProcedureName?)? EOS -> EndMpSubprogramStmt      {cons("end-mp-subprogram-stmt")}
+  Label? 'END' ('PROCEDURE' ProcedureName?)? EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
 
 %%R1240
-  Label? 'ENTRY' EntryName ( '(' {DummyArg ','}* ')' Suffix? )?  EOS -> EntryStmt  {cons("entry-stmt")}
+  Label? 'ENTRY' EntryName ( '(' DummyArgList? ')' Suffix? )?  EOS -> EntryStmt  {cons("EntryStmt")}
 
 %%R1241
 %%       expr substituted for scalar-int-expr
 %%
-  Label? 'RETURN' Expr?                     EOS -> ReturnStmt          {cons("return-stmt")}
+  Label? 'RETURN' Expr?                     EOS -> ReturnStmt          {cons("ReturnStmt")}
 
 %%R1242
-  Label? 'CONTAINS'                         EOS -> ContainsStmt        {cons("contains-stmt")}
+  Label? 'CONTAINS'                         EOS -> ContainsStmt        {cons("ContainsStmt")}
 
 %%R1243
 %%          scalar-expr replaced by expr
 %%
-  Label? FunctionName '(' {DummyArgName ','}* ')' '=' Expr  EOS -> StmtFunctionStmt  {cons("stmt-function-stmt")}
+  Label? FunctionName '(' DummyArgNameList? ')' '=' Expr  EOS -> StmtFunctionStmt  {cons("StmtFunctionStmt")}
