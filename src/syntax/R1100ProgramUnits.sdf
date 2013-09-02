@@ -77,6 +77,8 @@ sorts
   BlockDataStmt                       %% R1121
   EndBlockDataStmt                    %% R1122
 
+  OnlyList RenameList
+
 context-free start-symbols 
   Program
 
@@ -97,7 +99,7 @@ context-free syntax
 
 %%R203
     FunctionSubprogram
-  | SubroutineSubprogram                       -> ExternalSubprogram  {cons("external-subprogram")}
+  | SubroutineSubprogram                       -> ExternalSubprogram  {cons("ExternalSubprogram")}
   
 %%R204
   UseStmt*
@@ -240,10 +242,10 @@ context-free syntax
   Name                                 -> Keyword     {cons("Keyword")}
 
 %%R1101
-%%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("main-program")}
-%%TODO-REMOVE  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("main-range")}
-%%TODO-REMOVE  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("main-range")}
-%%TODO-REMOVE  EndProgramStmt                               -> MainRange        {cons("main-range")}
+%%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("Mainprogram")}
+%%TODO-REMOVE  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("MainRange")}
+%%TODO-REMOVE  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("MainRange")}
+%%TODO-REMOVE  EndProgramStmt                               -> MainRange        {cons("MainRange")}
 
 %%TODO-REMOVE  SpecificationPart                            -> BodyConstruct
 %%TODO-REMOVE  ExecutableConstruct                          -> BodyConstruct
@@ -289,18 +291,18 @@ context-free syntax
 %%TODO-DELETE  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
 
 %%R1107
-  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("module-subprogram-part")}
+  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("ModuleSubprogramPart")}
 
 %%R1108
     FunctionSubprogram
   | SubroutineSubprogram
-  | SeparateModuleSubprogram                   -> ModuleSubprogram      {cons("module-subprogram")}
+  | SeparateModuleSubprogram                   -> ModuleSubprogram      {cons("ModuleSubprogram")}
 
 %%R1109
   Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
-           (','            {Rename ','}+)?              EOS -> UseStmt  {cons("UseStmt_Rename")}
+           (','            RenameList   )?              EOS -> UseStmt  {cons("UseStmt_Rename")}
   Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
-            ',' 'ONLY' ':' {Only   ','}*                EOS -> UseStmt  {cons("UseStmt_Only")}
+            ',' 'ONLY' ':' OnlyList?                    EOS -> UseStmt  {cons("UseStmt_Only")}
 
 %%R1110
   'INTRINSIC'                                  -> ModuleNature  {cons("ModuleNature_INTRINSIC")}
@@ -310,23 +312,25 @@ context-free syntax
     ( LocalName '=>' UseName                  )
   | ( 'OPERATOR' '(' LocalDefinedOperator ')'
                 '=>'
-      'OPERATOR' '(' UseDefinedOperator   ')' )  -> Rename      {cons("rename")}
+      'OPERATOR' '(' UseDefinedOperator   ')' )  -> Rename      {cons("Rename")}
+  {Rename ','}+                                  -> RenameList  {cons("RenameList")}
 
 %%R1112
 %%AMB-TODO-F08 PUTBACK    GenericSpec
     OnlyUseName
   | Rename                                       -> Only        {cons("Only")}
+  {Only ','}+                                    -> OnlyList    {cons("OnlyList")}
 
 %%R1113
-  Ident                                          -> OnlyUseName {cons("Name")}
+  Ident                                          -> OnlyUseName {cons("OnlyUseName")}
 
 %%R1114
     DefinedUnaryOp
-  | DefinedBinaryOp                              -> LocalDefinedOperator  {cons("local-defined-operator")}
+  | DefinedBinaryOp                              -> LocalDefinedOperator  {cons("LocalDefinedOperator")}
 
 %%R1115
     DefinedUnaryOp
-  | DefinedBinaryOp                              -> UseDefinedOperator  {cons("use-defined-operator")}
+  | DefinedBinaryOp                              -> UseDefinedOperator    {cons("UseDefinedOperator")}
 
 %%R1116
 %%     WARNING-MODIFICATION: 
@@ -336,17 +340,17 @@ context-free syntax
   SubmoduleStmt
     SpecificationPart
     ModuleSubprogramPart?
-  EndSubmoduleStmt                               -> Submodule         {cons("submodule")}
+  EndSubmoduleStmt                               -> Submodule         {cons("Submodule")}
 
 %%R1117
   Label? 'SUBMODULE' '(' ParentIdentifier ')'
-         SubmoduleName                       EOS -> SubmoduleStmt     {cons("submodule-stmt")}
+         SubmoduleName                       EOS -> SubmoduleStmt     {cons("SubmoduleStmt")}
 
 %%R1118
-  AncestorModuleName (':' ParentSubmoduleName)?  -> ParentIdentifier  {cons("parent-identifier")}
+  AncestorModuleName (':' ParentSubmoduleName)?  -> ParentIdentifier  {cons("ParentIdentifier")}
 
 %%R1119
-  Label? 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("end-submodule-stmt")}
+  Label? 'END' ('SUBMODULE' SubmoduleName?)? EOS -> EndSubmoduleStmt  {cons("EndSubmoduleStmt")}
 
 %%R1120
 %%     WARNING-MODIFICATION: 
@@ -355,14 +359,14 @@ context-free syntax
 %%
   BlockDataStmt
     SpecificationPart
-  EndBlockDataStmt                               -> BlockData         {cons("block-data")}
+  EndBlockDataStmt                               -> BlockData         {cons("BlockData")}
 
 %%R1121
-  Label? 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("block-data-stmt")}
+  Label? 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("BlockDataStmt")}
 
 %%R1122
-  Label? 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
-  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("end-block-data-stmt")}
+  Label? 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
+  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
 
 %%context-free priorities
 %%
