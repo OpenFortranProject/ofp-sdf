@@ -43,6 +43,7 @@ sorts
   DecimalEditDesc                     %% R1020
   CharStringEditDesc                  %% R1021
 
+  VEditDescList
 
 context-free syntax
 
@@ -91,7 +92,7 @@ context-free syntax
   'L'  WEditDesc                                    -> DataEditDesc       {cons("DataEditDesc_L")}
   'A'  WEditDesc?                                   -> DataEditDesc       {cons("DataEditDesc_A")}
   'D'  WEditDesc  '.' DEditDesc                     -> DataEditDesc       {cons("DataEditDesc_D")}
-  'DT' Scon? ( '('   {VEditDesc ','}+ ')' )?        -> DataEditDesc       {cons("DataEditDesc_DT")}
+  'DT' Scon? ( '('    VEditDescList ')' )?          -> DataEditDesc       {cons("DataEditDesc_DT")}
 
 %%R1008
   Icon                                  -> WEditDesc            {cons("W")}
@@ -107,6 +108,7 @@ context-free syntax
 
 %%R1012
   Icon                                  -> VEditDesc            {cons("V")}
+  {VEditDesc ','}+                      -> VEditDescList        {cons("VList")}
 
 %%R1013
   PositionEditDesc                      -> ControlEditDesc      {cons("ControlEditDesc_alt1")}
