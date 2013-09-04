@@ -485,7 +485,7 @@ context-free syntax
 %%       IntConstantExpr substituted for ScalarIntConstantExpr
 %%
   NamedConstant ('=' IntConstantExpr)?             -> Enumerator              {cons("Enumerator")}
-  {Enumerator ','}+                                -> EnumeratorList          {cons("Enumerator")}
+  {Enumerator ','}+                                -> EnumeratorList          {cons("EnumeratorList")}
 
 %%R462
   Label? 'END' 'ENUM'                          EOS -> EndEnumStmt             {cons("EndEnumStmt")}
