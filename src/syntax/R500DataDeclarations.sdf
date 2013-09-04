@@ -246,7 +246,7 @@ context-free syntax
 
 %%R522
   (LowerBound ':')? '*'                         -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
-  {ImpliedShapeSpec ','}+                       -> ImpliedShapeSpecList {cons("ImpliedShapeSpec")}
+  {ImpliedShapeSpec ','}+                       -> ImpliedShapeSpecList {cons("ImpliedShapeSpecList")}
 
 %%R523
   'IN'                                          -> IntentSpec  {cons("IntentSpec_IN")}
