@@ -1,4 +1,4 @@
-#include "traversal_f.h"
+#include "traversal.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,8 +21,6 @@ int main(int argc, char * argv[])
    ATinitialize(argc, argv); 
 
    Module.term = ATreadFromTextFile(file);
-
-   printf("\n%s\n\n", ATwriteToString(Module.term));
 
    if (ofp_traverse_Module(Module.term, &Module)) {
       printf("\nWoot!\n");
