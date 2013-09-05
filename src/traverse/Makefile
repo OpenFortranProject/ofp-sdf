@@ -11,37 +11,41 @@ ARCH = -m32
 CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
-OBJS = traverse.o      \
-       traversal.o     \
-       traverse_f.o    \
-       traversal_f.o
+OBJS = ofp_builder.o
 
-EXES = traverse traverse_f
+EXES = build_aliases build_includes traverse traverse_sig \
+       check_cons_name
 
-all: $(EXES) $(OBJS)
+%.o: %.c
+	@echo 'Compiling file: $<'
+	@$(CC) -c $(CFLAGS) -o $@ $<
 
-traverse.o: traverse.c
-	$(CC) -c $< -o $@ $(CFLAGS)
+all: $(OBJS) $(EXES)
 
-traverse_f.o: traverse_f.c
-	$(CC) -c $< -o $@ $(CFLAGS)
-
-traverse: traverse.o $(OBJS)
+traverse: traverse.o traversal.o
 	$(CC) -o $@ $(ARCH) $< traversal.o $(LIBS)
 
-traverse_f: traverse_f.o $(OBJS)
-	$(CC) -o $@ $(ARCH) $< traversal_f.o $(LIBS)
+traverse_sig: traverse_sig.o traversal_f.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traversal_f.o $(OBJS) $(LIBS)
+
+build_includes: build_includes.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+build_aliases: build_aliases.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+build_productions: build_productions.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+check_cons_name: check_cons_name.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 support.o: support.c support.h
-
 traversal.o: traversal.c traversal.h ofp_traverse_productions.c
-	$(CC) -c $(CFLAGS) $<
+traversal_f.o: traversal_f.c traversal.h
 
-traversal_f.o: traversal_f.c traversal_f.h
-	$(CC) -c $(CFLAGS) $<
-
-check: traverse traverse_f
-	traverse_f Fortran.f90.aterm
+check: traverse traverse_sig
+	traverse_sig Fortran.sig.aterm
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
 	traverse testfile.f90.aterm
 
