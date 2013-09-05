@@ -4,15 +4,22 @@
 
 #undef DEBUG_PRINT
 
-ATermList gTypeTable;
+//---------------------------------------------------------------
+// Steps to traverse a production
+//    1. Get production name
+//    2. Get list of source terms
+//    3.  a. build source variable list
+//        b. match prodution term populating source variables
+//    4. For all source terms
+//        a. if source is a terminal, match source         -- FINISHED
+//        b. if source is not a terminal, traverse source  -- RECUR
+//        c. if source is optional, match, traverse source -- RECUR
+//        d. if source is a list, traverse all sources     -- RECUR
+//        e. if source is an alias?????
+//---------------------------------------------------------------
 
-enum DataType
-{
-   UNKNOWN,
-   STRING,
-   LIST,
-   OR
-};
+
+ATermList gTypeTable;
 
 void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth);
 
@@ -85,7 +92,7 @@ ATbool ofp_isOptionOrKind(ATerm kind)
    return ATfalse;
 }
 
-ATbool ofp_isStringType(ATerm term)
+ATbool ofp_isOldStringType(ATerm term)
 {
    if (ATmatch(term, "[\"String\"]")) {
       return ATtrue;
@@ -701,64 +708,6 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
       }
 
       printf("\nTYPES: %s\n", ATwriteToString((ATerm) gTypeTable));
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-ATbool ofp_traverse_Signature(ATerm term, pOFP_Traverse Signature)
-{
-#ifdef DEBUG_PRINT
-   printf("\nSignature: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse Constructors_list;
-   if (ATmatch(term, "Signature(<term>)", &Constructors_list.term) ) {
-
-      ATermList Constructors_tail = (ATermList) ATmake("<term>", Constructors_list.term);
-      while (! ATisEmpty(Constructors_tail)) {
-         OFP_Traverse Constructors;
-         Constructors.term = ATgetFirst(Constructors_tail);
-         Constructors_tail = ATgetNext(Constructors_tail);
-
-         if (ofp_traverse_Constructors(Constructors.term, &Constructors)) {
-            // MATCHED Constructors
-         } else return ATfalse;
-      }
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-ATbool ofp_traverse_Module(ATerm term, pOFP_Traverse Module)
-{
-#ifdef DEBUG_PRINT
-   printf("Module: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse Name, Signature_list;
-   if (ATmatch(term, "Module(<term>,<term>)", &Name.term, &Signature_list.term) ) {
-
-      char * String;
-      if (ATmatch(Name.term, "<str>", &String)) {
-         // MATCHED module name
-         printf("\nModule name: %s\n", String);
-      }
-
-      ATermList Signature_tail = (ATermList) ATmake("<term>", Signature_list.term);
-      while (! ATisEmpty(Signature_tail)) {
-         OFP_Traverse Signature;
-         Signature.term = ATgetFirst(Signature_tail);
-         Signature_tail = ATgetNext(Signature_tail);
-
-         if (ofp_traverse_Signature(Signature.term, &Signature)) {
-            // MATCHED Signature
-         } else return ATfalse;
-      }
 
       return ATtrue;
    }
