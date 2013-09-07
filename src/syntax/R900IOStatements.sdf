@@ -202,13 +202,13 @@ context-free syntax
   '*'                                             -> Format         {cons("Format_STAR")}
 
 %%R916
-    Variable
-  | IoImpliedDo                                   -> InputItem      {cons("InputItem")}
+  Variable                                        -> InputItem      {cons("InputItem")}
+  IoImpliedDo                                     -> InputItem      {cons("InputItem")}
   {InputItem ','}+                                -> InputItemList  {cons("InputItemList")}
 
 %%R917
-    Expr
-  | IoImpliedDo                                   -> OutputItem     {cons("OutputItem")}
+  Expr                                            -> OutputItem     {cons("OutputItem")}
+  IoImpliedDo                                     -> OutputItem     {cons("OutputItem")}
   {OutputItem ','}+                               -> OutputItemList {cons("OutputItemList")}
 
 %%R918
@@ -217,8 +217,8 @@ context-free syntax
   ')'                                             -> IoImpliedDo    {cons("IoImpliedDo")}
 
 %%R919
-    InputItem
-  | OutputItem                                    -> IoImpliedDoObject     {cons("IoImpliedDoObject")}
+  InputItem                                       -> IoImpliedDoObject     {cons("IoImpliedDoObject")}
+  OutputItem                                      -> IoImpliedDoObject     {cons("IoImpliedDoObject")}
   {IoImpliedDoObject ','}+                        -> IoImpliedDoObjectList {cons("IoImpliedDoObjectList")}
 
 %%R920
