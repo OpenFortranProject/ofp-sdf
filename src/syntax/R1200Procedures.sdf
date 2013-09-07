@@ -72,8 +72,8 @@ context-free syntax
   EndInterfaceStmt                -> InterfaceBlock          {cons("InterfaceBlock")}
 
 %%R1202
-    InterfaceBody
-  | ProcedureStmt                 -> InterfaceSpecification  {cons("InterfaceSpecification")}
+  InterfaceBody                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
+  ProcedureStmt                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
 
 
 %%R1203
@@ -118,10 +118,10 @@ context-free syntax
   DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
 
 %%R1208
-    ( 'READ'  '(' 'FORMATTED'   ')' )
-  | ( 'READ'  '(' 'UNFORMATTED' ')' )
-  | ( 'WRITE' '(' 'FORMATTED'   ')' )
-  | ( 'WRITE' '(' 'UNFORMATTED' ')' )           -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec")}
+  'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RF")}
+  'READ'  '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RU")}
+  'WRITE' '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WF")}
+  'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WU")}
 
 %%R1209
   Label? 'IMPORT' ( '::'? ImportNameList )?       EOS -> ImportStmt       {cons("ImportStmt")}
@@ -141,8 +141,8 @@ context-free syntax
                                                                           {cons("ProcedureDeclarationStmt")}
 
 %%R1212
-    InterfaceName
-  | DeclarationTypeSpec                               -> ProcInterface    {cons("ProcInterface")}
+  InterfaceName                                       -> ProcInterface    {cons("ProcInterface")}
+  DeclarationTypeSpec                                 -> ProcInterface    {cons("ProcInterface")}
 
 %%R1213
   AccessSpec                                          -> ProcAttrSpec     {cons("ProcAttrSpec_AS")}
@@ -161,8 +161,8 @@ context-free syntax
 %%Name                                                -> InterfaceName
 
 %%R1216
-    NullInit
-  | InitialProcTarget                                 -> ProcPointerInit    {cons("ProcPointerInit")}
+  NullInit                                            -> ProcPointerInit    {cons("ProcPointerInit")}
+  InitialProcTarget                                   -> ProcPointerInit    {cons("ProcPointerInit")}
 
 %%R1217
   ProcedureName                                       -> InitialProcTarget  {cons("InitialProcTarget")}
@@ -189,11 +189,11 @@ context-free syntax
   {ActualArgSpec ','}+                                -> ActualArgSpecList   {cons("ActualArgSpecList")}
 
 %%R1223
-    Expr                                              -> ActualArg           {cons("ActualArg_AMB")}
-%%| Variable           %% AMB with alt1
-%%| ProcedureName      %% AMB with alt1
-%%| ProcComponentRef   %% AMB with alt1
-    AltReturnSpec                                     -> ActualArg           {cons("ActualArg")}
+  Expr                                                -> ActualArg           {cons("ActualArg_AMB")}
+%%Variable           %% AMB with alt1
+%%ProcedureName      %% AMB with alt1
+%%ProcComponentRef   %% AMB with alt1
+  AltReturnSpec                                       -> ActualArg           {cons("ActualArg")}
 
 %%1224
   '*' Label                                           -> AltReturnSpec       {cons("AltReturnSpec")}
