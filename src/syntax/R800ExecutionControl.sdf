@@ -120,8 +120,8 @@ context-free syntax
      'ASSOCIATE' '(' AssociationList ')'            EOS -> AssociateStmt      {cons("AssociateStmt")}
 
 %%R804
-  AssociateName '=>' Selector                           -> Association        {cons("Associatiation")}
-  {Association ','}+                                    -> AssociationList    {cons("AssociatiationList")}
+  AssociateName '=>' Selector                           -> Association        {cons("Association")}
+  {Association ','}+                                    -> AssociationList    {cons("AssociationList")}
 
 %%R805
 %%TODO-F08 is this ambiguous?
@@ -168,17 +168,17 @@ context-free syntax
 %%
 
 %%R813
-%%AMB   BlockDoConstruct
-%%AMB | NonblockDoConstruct                             -> DoConstruct
+%%AMB BlockDoConstruct                                  -> DoConstruct
+%%AMB NonblockDoConstruct                               -> DoConstruct
 
 %%R814
-%%AMB  DoStmt
-%%AMB    DoBlock
-%%AMB  EndDo                                            -> BlockDoConstruct
+%%AMB DoStmt
+%%AMB   DoBlock
+%%AMB EndDo                                             -> BlockDoConstruct
 
 %%R815
-%%AMB    LabelDoStmt
-%%AMB  | NonlableDoStmt                                 -> DoStmt
+%%AMB LabelDoStmt                                       -> DoStmt
+%%AMB NonlableDoStmt                                    -> DoStmt
 
 %%R816
   Label? (DoConstructName ':')?
@@ -203,15 +203,15 @@ context-free syntax
 %%AMB  Block                                            -> DoBlock
 
 %%821
-%%AMB   EndDoStmt
-%%AMB | ContinueStmt                                    -> EndDo
+%%AMB EndDoStmt                                         -> EndDo
+%%AMB ContinueStmt                                      -> EndDo
 
 %%R822
   Label? 'END' 'DO' DoConstructName?                EOS -> EndDoStmt      {cons("EndDoStmt")}
 
 %%R823
-%%AMB   ActionTermDoConstruct
-%%AMB | OuterSharedDoConstruct                          -> NonblockDoConstruct
+%%AMB ActionTermDoConstruct                             -> NonblockDoConstruct
+%%AMB OuterSharedDoConstruct                            -> NonblockDoConstruct
 
 %%R824
 %%AMB LabelDoStmt
@@ -230,8 +230,8 @@ context-free syntax
 %%AMB SharedTermDoConstruct                             -> OuterSharedDoConstruct
 
 %%R828
-%%AMB   OuterSharedDoConstruct
-%%AMB | InnerSharedDoConstruct                          -> SharedTermDoConstruct
+%%AMB OuterSharedDoConstruct                            -> SharedTermDoConstruct
+%%AMB InnerSharedDoConstruct                            -> SharedTermDoConstruct
 
 %%R829
 %%AMB LabelDoStmt
@@ -286,7 +286,7 @@ context-free syntax
   Label? 'CASE' CaseSelector CaseConstructName?     EOS -> CaseStmt       {cons("CaseStmt")}
 
 %%R841
-  Label? 'END' 'SELECT' CaseConstructName?          EOS -> EndSelectStmt  {cons("EndCaseStmt")}
+  Label? 'END' 'SELECT' CaseConstructName?          EOS -> EndSelectStmt  {cons("EndSelectStmt")}
 
 %%R842
 %%       expr substituted for scalar-expr
@@ -298,10 +298,10 @@ context-free syntax
   'DEFAULT'                                             -> CaseSelector   {cons("CaseSelector_DEFAULT")}
 
 %%R844
-    (     CaseValue               )
-  | (     CaseValue ':'           )
-  | ( ':' CaseValue               )
-  | (     CaseValue ':' CaseValue )                     -> CaseValueRange     {cons("CaseValueRange")}
+      CaseValue                                         -> CaseValueRange     {cons("CaseValueRange")}
+      CaseValue ':'                                     -> CaseValueRange     {cons("CaseValueRange")}
+  ':' CaseValue                                         -> CaseValueRange     {cons("CaseValueRange")}
+      CaseValue ':' CaseValue                           -> CaseValueRange     {cons("CaseValueRange")}
   {CaseValueRange ','}+                                 -> CaseValueRangeList {cons("CaseValueRangeList")}
 
 %%R845
