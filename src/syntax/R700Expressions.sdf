@@ -88,20 +88,20 @@ context-free syntax
 
 
 %%R309
-    PowerOp
-  | MultOp
-  | AddOp
-  | ConcatOp
-  | RelOp
-  | NotOp
-  | AndOp
-  | OrOp
-  | EquivOp                     -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  PowerOp                       -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  MultOp                        -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  AddOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  ConcatOp                      -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  RelOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  NotOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  AndOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  OrOp                          -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  EquivOp                       -> IntrinsicOperator     {cons("IntrinsicOperator")}
 
 %%R310
-    DefinedUnaryOp
-  | DefinedBinaryOp
-  | ExtendedIntrinsicOp         -> DefinedOperator       {cons("DefinedOperator")}
+  DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator")}
+  DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator")}
+  ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator")}
 
 %%R311
   IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("ExtendedIntrinsicOp")}
@@ -250,11 +250,11 @@ Primary                                    -> Expr            {cons("Expr")}
 %%TODO-DELETE   LblDef Name '(' SFExprList ')' SubstringRange '=' Expr EOS             -> AssignmentStmt
 
 %%R733
-  Label?
-       ( DataPointerObject ( '(' BoundsSpecList      ')' )? '=>' DataTarget )
-    |  ( DataPointerObject   '(' BoundsRemappingList ')'    '=>' DataTarget )
-    |  ( ProcPointerObject                                  '=>' ProcTarget )
-    EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+  Label? DataPointerObject ( '(' BoundsSpecList ')' )?
+                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+  Label? DataPointerObject   '(' BoundsRemappingList ')'
+                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+  Label? ProcPointerObject '=>' ProcTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
 
 %%TODO-DELETE these
 %%TODO   LblDef Name '%' Name '=>' DataTarget EOS                               -> PointerAssignmentStmt
@@ -267,16 +267,16 @@ Primary                                    -> Expr            {cons("Expr")}
 %%R734
 %%          variable substituted for scalar-variable
 %%
-    ( VariableName                          )
-  | ( Variable '%' DataPointerComponentName )            -> DataPointerObject  {cons("DataPointerObject")}
+  VariableName                                           -> DataPointerObject  {cons("DataPointerObject")}
+  Variable '%' DataPointerComponentName                  -> DataPointerObject  {cons("DataPointerObject")}
 
 %%R735
   LowerBoundExpr ':'                                     -> BoundsSpec         {cons("BoundsSpec")}
   {BoundsSpec ','}+                                      -> BoundsSpecList     {cons("BoundsSpecList")}
 
 %%R736
-  LowerBoundExpr ':' UpperBoundExpr                      -> BoundsRemapping    {cons("BoundsRemappig")}
-  {BoundsRemapping ','}+                                 -> BoundsRemappingList{cons("BoundsRemappigList")}
+  LowerBoundExpr ':' UpperBoundExpr                      -> BoundsRemapping    {cons("BoundsRemapping")}
+  {BoundsRemapping ','}+                                 -> BoundsRemappingList{cons("BoundsRemappingList")}
 
 %%R737
 %%       Variable producing DataTarget is Ambiguous
@@ -284,8 +284,8 @@ Primary                                    -> Expr            {cons("Expr")}
   Expr      -> DataTarget
 
 %%R738
-    ProcPointerName
-  | ProcComponentRef                                   -> ProcPointerObject {cons("ProcPointerObject")}
+  ProcPointerName                                      -> ProcPointerObject {cons("ProcPointerObject")}
+  ProcComponentRef                                     -> ProcPointerObject {cons("ProcPointerObject")}
 
 %%R739
 %%          variable substituted for scalar-variable
@@ -293,9 +293,9 @@ Primary                                    -> Expr            {cons("Expr")}
   Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("ProcComponentRef")}
 
 %%R740
-    Expr
-  | ProcedureName
-  | ProcComponentRef                                   -> ProcTarget        {cons("ProcTarget")}
+  Expr                                                 -> ProcTarget        {cons("ProcTarget")}
+  ProcedureName                                        -> ProcTarget        {cons("ProcTarget")}
+  ProcComponentRef                                     -> ProcTarget        {cons("ProcTarget")}
 
 %%R741
   Label? 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("WhereStmt")}
@@ -326,9 +326,9 @@ Primary                                    -> Expr            {cons("Expr")}
   Label? (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("WhereConstructStmt")}
 
 %%R744
-    WhereAssignmentStmt
-  | WhereStmt
-  | WhereConstruct                                 -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
+  WhereAssignmentStmt                              -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
+  WhereStmt                                        -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
+  WhereConstruct                                   -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
 
 %%R745
 %%TODO-F08 - make it so label can't be part of assignment-stmt
@@ -386,15 +386,15 @@ Primary                                    -> Expr            {cons("Expr")}
   IntExpr                                          -> ForallStep           {cons("ForallStep")}
 
 %%756
-    ForallAssignmentStmt
-  | WhereStmt
-  | WhereConstruct
-  | ForallConstruct
-  | ForallStmt                                     -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  ForallAssignmentStmt                             -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  WhereStmt                                        -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  WhereConstruct                                   -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  ForallConstruct                                  -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  ForallStmt                                       -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
 
 %%757
-    AssignmentStmt
-  | PointerAssignmentStmt                          -> ForallAssignmentStmt {cons("ForallAssignmentStmt")}
+  AssignmentStmt                                   -> ForallAssignmentStmt {cons("ForallAssignmentStmt")}
+  PointerAssignmentStmt                            -> ForallAssignmentStmt {cons("ForallAssignmentStmt")}
 
 %%758
   Label? 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("EndForallStmt")}
