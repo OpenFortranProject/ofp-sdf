@@ -101,10 +101,10 @@ context-free syntax
 %%      the above reduces to
 %%
 
-%%    ObjectName
-%%  | CoindexedNamedObject
-  DataRef
-    | Substring                        -> Designator   {cons("Designator_AMB")}
+%%  ObjectName
+%%  CoindexedNamedObject
+  DataRef                              -> Designator   {cons("Designator_AMB")}
+  Substring                            -> Designator   {cons("Designator_AMB")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -153,11 +153,11 @@ context-free syntax
 %%      constant substituted for scalar-constant
 %%      structure-component substituted for scalar-structure-component
 %%
-    ScalarVariableName
-  | ArrayElement
-  | CoindexedNamedObject
-  | StructureComponent
-  | Constant                           -> ParentString     {cons("ParentString")}
+  ScalarVariableName                   -> ParentString     {cons("ParentString")}
+  ArrayElement                         -> ParentString     {cons("ParentString")}
+  CoindexedNamedObject                 -> ParentString     {cons("ParentString")}
+  StructureComponent                   -> ParentString     {cons("ParentString")}
+  Constant                             -> ParentString     {cons("ParentString")}
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -194,8 +194,8 @@ context-free syntax
   DataRef                                                -> CoindexedNamedObject {cons("CoindexedNamedObject")}
 
 %%R615
-    ( Designator '%' 'RE' )
-  | ( Designator '%' 'IM' )                              -> ComplexPartDesignator {cons("ComplexPartDesignator")}
+  Designator '%' 'RE'                                    -> ComplexPartDesignator {cons("ComplexPartDesignator_RE")}
+  Designator '%' 'IM'                                    -> ComplexPartDesignator {cons("ComplexPartDesignator_IM")}
 
 %%R616
   Designator '%' TypeParamName                           -> TypeParamInquiry     {cons("TypeParamInquiry")}
@@ -208,8 +208,8 @@ context-free syntax
   DataRef                                                -> ArrayElement         {cons("ArrayElement")}
 
 %%R618
-    DataRef ( ('(' SubstringRange ')')? )
-  | ComplexPartDesignator                                -> ArraySection         {cons("ArraySection")}
+  DataRef ('(' SubstringRange ')')?
+  ComplexPartDesignator                                  -> ArraySection         {cons("ArraySection")}
 
 %%R619
 %%      int-expr substituted for scalar-int-expr
@@ -217,10 +217,10 @@ context-free syntax
   IntExpr                                                -> Subscript            {cons("Subscript")}
 
 %%R620
-    Subscript
-  | SubscriptTriplet
-%%| VectorSubscript     %%AMB with subscript
-                                                         -> SectionSubscript     {cons("SectionSubscript")}
+  Subscript                                              -> SectionSubscript     {cons("SectionSubscript")}
+  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
+%%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
+
   {SectionSubscript ','}+                                -> SectionSubscriptList {cons("SectionSubscriptList")}
 
 %%R621
@@ -261,10 +261,10 @@ context-free syntax
 %%R627
 %%      expr substituted for source-expr
 %%
-    ( 'ERRMSG' '=' ErrmsgVariable )
-  | ( 'MOLD'   '=' Expr           )
-  | ( 'SOURCE' '=' Expr           )
-  | ( 'STAT'   '=' StatVariable   )                      -> AllocOpt             {cons("AllocOpt")}
+  'ERRMSG' '=' ErrmsgVariable                            -> AllocOpt             {cons("AllocOpt_ERR")}
+  'MOLD'   '=' Expr                                      -> AllocOpt             {cons("AllocOpt_MOLD")}
+  'SOURCE' '=' Expr                                      -> AllocOpt             {cons("AllocOpt_SRC")}
+  'STAT'   '=' StatVariable                              -> AllocOpt             {cons("AllocOpt_STAT")}
   {AllocOpt ','}+                                        -> AllocOptList         {cons("AllocOptList")}
 
 %%R628
@@ -287,9 +287,9 @@ context-free syntax
   {Allocation ','}+                                      -> AllocationList       {cons("AllocationList")}
 
 %%R632
-%%  VariableName         %% AMB with alt2
-%%| StructureComponent
-    StructureComponent                                   -> AllocateObject       {cons("AllocateObject_AMB")}
+%% VariableName         %% AMB with alt2
+%% StructureComponent
+  StructureComponent                                     -> AllocateObject       {cons("AllocateObject_AMB")}
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
@@ -318,9 +318,9 @@ context-free syntax
   Label? 'NULLIFY' '(' PointerObjectList ')'         EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
-    VariableName
-  | StructureComponent
-  | ProcPointerName                                      -> PointerObject        {cons("PointerObject")}
+  VariableName                                           -> PointerObject        {cons("PointerObject")}
+  StructureComponent                                     -> PointerObject        {cons("PointerObject")}
+  ProcPointerName                                        -> PointerObject        {cons("PointerObject")}
   {PointerObject ','}+                                   -> PointerObjectList    {cons("PointerObjectList")}
 
 %%R640
@@ -331,6 +331,6 @@ context-free syntax
             ')'                                      EOS -> DeallocateStmt       {cons("DeallocateStmt")}
 
 %%641
-    ( 'STAT'   '=' StatVariable   )
-  | ( 'ERRMSG' '=' ErrmsgVariable )                      -> DeallocOpt           {cons("DeallocOpt")}
+  'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("DeallocOpt")}
+  'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("DeallocOpt")}
   {DeallocOpt ','}+                                      -> DeallocOptList       {cons("DeallocOptList")}
