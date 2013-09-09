@@ -6,9 +6,11 @@ allocate (this, that, theother)
 
 allocate( T[3,*] )
 
-! NOTE 618
+! NOTE 6.18
 ALLOCATE(T[*])
 ALLOCATE(T%AAC(N))
 ALLOCATE(T[Q]%AAC(N))    ! MUST be executed on image Q to be correct
+
+   ALLOCATE(T(9))
 
 end
