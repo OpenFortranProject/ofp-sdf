@@ -206,8 +206,8 @@ context-free syntax
   Ident  -> ExternalName
   Ident  -> FinalSubroutineName
   Ident  -> ForallConstructName
-  Ident  -> FunctionName                  {cons("Name")}
-  Ident  -> GenericName                   {cons("Name")}
+  Ident  -> FunctionName                  {cons("FunctionName")}
+  Ident  -> GenericName                   {cons("GenericName")}
   Ident  -> IfConstructName
   Ident  -> ImpliedDoVariable
   Ident  -> ImportName
@@ -215,7 +215,7 @@ context-free syntax
   Ident  -> IndexName
   Ident  -> IntrinsicProcedureName
   Ident  -> LocalName
-  Ident  -> ModuleName                    {cons("Name")}
+  Ident  -> ModuleName                    {cons("ModuleName")}
   Ident  -> NamelistGroupName
   Ident  -> ObjectName                    {cons("ObjectName")}
   Ident  -> ParentSubmoduleName
@@ -232,9 +232,9 @@ context-free syntax
   Ident  -> ScalarVariableName
   Ident  -> SelectConstructName
   Ident  -> SubmoduleName
-  Ident  -> SubroutineName                {cons("Name")}
+  Ident  -> SubroutineName                {cons("SubroutineName")}
   Ident  -> SubroutineNameUse
-  Ident  -> TypeName                      {cons("Name")}
+  Ident  -> TypeName                      {cons("TypeName")}
   Ident  -> TypeParamName
   Ident  -> UseName
   Ident  -> VariableName
