@@ -208,7 +208,7 @@ context-free syntax
   DataRef                                                -> ArrayElement         {cons("ArrayElement")}
 
 %%R618
-  DataRef ('(' SubstringRange ')')?
+  DataRef ('(' SubstringRange ')')?                      -> ArraySection         {cons("ArraySection")}
   ComplexPartDesignator                                  -> ArraySection         {cons("ArraySection")}
 
 %%R619
