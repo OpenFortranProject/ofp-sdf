@@ -1,4 +1,4 @@
-!! R1204 interface-body
+!! R1205 interface-body
 !                is  function-stmt
 !                        [ specification-part ]
 !                      end-function-stmt
