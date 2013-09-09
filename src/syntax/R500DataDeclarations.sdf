@@ -168,9 +168,9 @@ context-free syntax
 %%Name - lex
 
 %%R505
-    ( '='   ConstantExpr      )
-  | ( '=>'  NullInit          )
-  | ( '=>'  InitialDataTarget )                         -> Initialization  {cons("Initialization")}
+  '='   ConstantExpr                                    -> Initialization  {cons("Initialization")}
+  '=>'  NullInit                                        -> Initialization  {cons("Initialization")}
+  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization")}
 
 %%R506
   FunctionReference                                     -> NullInit        {cons("NullInit")}
@@ -189,8 +189,8 @@ context-free syntax
   'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'    -> LanguageBindingSpec      {cons("LanguageBindingSpec")}
 
 %%R509
-    DeferredCoshapeSpecList
-  |  ExplicitCoshapeSpec               -> CoarraySpec             {cons("CoarraySpec")}
+  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec")}
+  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec")}
 
 %%R510
   ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshapeSpec")}
@@ -312,8 +312,8 @@ context-free syntax
   DataStmtSetList     DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList")}
 
 %%R536
-    Variable
-  | DataImpliedDo                                           -> DataStmtObject     {cons("DataStmtObject")}
+  Variable                                                  -> DataStmtObject     {cons("DataStmtObject")}
+  DataImpliedDo                                             -> DataStmtObject     {cons("DataStmtObject")}
   {DataStmtObject ','}+                                     -> DataStmtObjectList {cons("DataStmtObjectList")}
 
 %%R537
@@ -325,9 +325,9 @@ context-free syntax
   ')'                                                       -> DataImpliedDo    {cons("DataImpliedDo")}
 
 %%R538
-    ArrayElement
-  | StructureComponent
-  | DataImpliedDo                                           -> DataIDoObject    {cons("DataIDoObject")}
+  ArrayElement                                              -> DataIDoObject    {cons("DataIDoObject")}
+  StructureComponent                                        -> DataIDoObject    {cons("DataIDoObject")}
+  DataImpliedDo                                             -> DataIDoObject    {cons("DataIDoObject")}
   {DataIDoObject ','}+                                      -> DataIDoObjectList{cons("DataIDoObjectList")}
 
 %%R539
@@ -341,20 +341,20 @@ context-free syntax
 %%         Icon substituted for scalar-int-constant
 %%         int-constant-subobject substituted for scalar-int-constant-subobject
 %%
-    Icon
-  | IntConstantSubobject                                    -> DataStmtRepeat   {cons("DataStmtRepeat")}
+  Icon                                                      -> DataStmtRepeat   {cons("DataStmtRepeat")}
+  IntConstantSubobject                                      -> DataStmtRepeat   {cons("DataStmtRepeat")}
 
 %%R542
 %%       constant substituted for scalar-constant
 %%       constant-subobject substituted for scalar-constant-subobject
 %%
-    Constant
-  | ConstantSubobject
-  | SignedIntLiteralConstant
-  | SignedRealLiteralConstant
-  | NullInit
-  | InitialDataTarget
-  | StructureConstructor                                    -> DataStmtConstant  {cons("DataStmtConstant")}
+  Constant                                                  -> DataStmtConstant  {cons("DataStmtConstant")}
+  ConstantSubobject                                         -> DataStmtConstant  {cons("DataStmtConstant")}
+  SignedIntLiteralConstant                                  -> DataStmtConstant  {cons("DataStmtConstant")}
+  SignedRealLiteralConstant                                 -> DataStmtConstant  {cons("DataStmtConstant")}
+  NullInit                                                  -> DataStmtConstant  {cons("DataStmtConstant")}
+  InitialDataTarget                                         -> DataStmtConstant  {cons("DataStmtConstant")}
+  StructureConstructor                                      -> DataStmtConstant  {cons("DataStmtConstant")}
 
 %%R543
   ConstantSubobject                                         -> IntConstantSubobject  {cons("IntConstantSubobject")}
@@ -392,8 +392,8 @@ context-free syntax
   Label? 'POINTER'      PointerDeclList                    EOS -> PointerStmt     {cons("PointerStmt")}
 
 %%R551
-    ( ObjectName ( '(' DeferredShapeSpecList ')' )? )
-  |   ProcEntityName                                           -> PointerDecl     {cons("PointerDecl")}
+  ObjectName ( '(' DeferredShapeSpecList ')' )?                -> PointerDecl     {cons("PointerDecl")}
+  ProcEntityName                                               -> PointerDecl     {cons("PointerDecl")}
   {PointerDecl ','}+                                           -> PointerDeclList {cons("PointerDeclList")}
 
 %%R552
@@ -407,9 +407,9 @@ context-free syntax
   Label? 'SAVE'                                            EOS -> SaveStmt        {cons("SaveStmt")}
 
 %%R554
-    ( ObjectName              )
-%%| ( ProcPointerName         )  %% Ambiguous with object-name
-  | ( '/' CommonBlockName '/' )                                -> SavedEntity     {cons("SavedEntity")}
+  ObjectName                                                   -> SavedEntity     {cons("SavedEntity")}
+%%ProcPointerName           %% Ambiguous with object-name
+  '/' CommonBlockName '/'                                      -> SavedEntity     {cons("SavedEntity")}
   {SavedEntity ','}+                                           -> SavedEntityList {cons("SavedEntityList")}
 
 %%R555
@@ -475,9 +475,9 @@ context-free syntax
   {EquivalenceSet ','}+                                      -> EquivalenceSetList{cons("EquivalenceSetList")}
 
 %%R567
-    Variable                                                 -> EquivalenceObject {cons("EquivalenceObject")}
-%%| ArrayElement  %% Ambiguous - included in variable
-%%| Substring     %% Ambiguous - included in variable
+  Variable                                                   -> EquivalenceObject {cons("EquivalenceObject")}
+%%ArrayElement     %% Ambiguous - included in variable
+%%Substring        %% Ambiguous - included in variable
   {EquivalenceObject ','}+                                   -> EquivalenceObjectList {cons("EquivalenceObjectList")}
 
 %%R568
