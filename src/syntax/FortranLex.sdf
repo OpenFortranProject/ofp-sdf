@@ -70,6 +70,8 @@ lexical syntax
   (Comment? EOL [\ \t]* )+                -> EOS
 %% ; at end of line is allowed
   (";" [\ \t]*)+ Comment? EOL [\ \t]*     -> EOS
+%% ; at beginning of line is allowed
+  EOS ";" [\ \t]* EOL?                    -> EOS
 
 %% Fixed source form comment rules (beware of code starting in 1st column!)
 %%TODO-F08 - need different language lexer for fixed format, don't combine
