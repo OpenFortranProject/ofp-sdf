@@ -1,4 +1,4 @@
-!! R810 case-construct
+!! R838 case-construct
 !
 !      case-construct  is  select-case-stmt
 !                            [ case-stmt
