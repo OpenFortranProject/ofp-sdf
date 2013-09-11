@@ -60,6 +60,7 @@ lexical syntax
 %%
   [\n]      -> EOL
   [\r] [\n] -> EOL
+  ";"       -> EOL      %% semicolon acts like an EOL
 
 %% Everything following a ! is comment. With the \n it is an End of Statement
 %% Treat preprocessor directives as comments
@@ -67,11 +68,8 @@ lexical syntax
 %%
   "!" ~[\n\r]*                            -> Comment
   "#" ~[\n\r]*                            -> Comment
+
   (Comment? EOL [\ \t]* )+                -> EOS
-%% ; at end of line is allowed
-  (";" [\ \t]*)+ Comment? EOL [\ \t]*     -> EOS
-%% ; at beginning of line is allowed
-  EOS ";" [\ \t]* EOL?                    -> EOS
 
 %% Fixed source form comment rules (beware of code starting in 1st column!)
 %%TODO-F08 - need different language lexer for fixed format, don't combine
@@ -82,9 +80,6 @@ lexical syntax
 %% commentlines at the start of a file/program are handled separately in Fortran90.sdf
   EOS  -> StartCommentBlock
 
-%% Statement separator is also EOS (used seldomly)
-  ([\ \t]* ";" [\ \t]*)+        -> EOS
-%%
 %% Continuation can optionally be separated by comment. The & on the next line is also optional.
    "&" [\ \t]* ("!" ~[\n\r]*)? EOL ( [\ \t]+ "&" )?  -> Continuation
    Continuation -> LAYOUT    
