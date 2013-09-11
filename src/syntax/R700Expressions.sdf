@@ -400,8 +400,7 @@ Primary                                    -> Expr            {cons("Expr")}
   Label? 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("EndForallStmt")}
 
 %%759
-  Label? 'FORALL' ForallHeader ForallAssignmentStmt  EOS -> ForallStmt     {cons("ForallStmt")}
-
+  Label? 'FORALL' ForallHeader ForallAssignmentStmt-> ForallStmt           {cons("ForallStmt")}
 
 %%TODO - what with the following
 %%
