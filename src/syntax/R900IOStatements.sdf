@@ -9,8 +9,8 @@ module R900IOStatements
 imports
 %%TODO  languages/fortran/syntax/FortranLex
 %%TODO  languages/fortran/syntax/Fortran90
- FortranLex
- Fortran
+  FortranLex
+  R600UseDataObjects
 
 exports
 
