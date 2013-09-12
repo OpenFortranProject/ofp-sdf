@@ -10,7 +10,7 @@ imports
   %% languages/fortran/syntax/FortranLex
   %% languages/fortran/syntax/Fortran90
   FortranLex
-  Fortran
+  R1100ProgramUnits
 
 exports
 
