@@ -5,8 +5,7 @@ STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoSt
 TestFiles = $(wildcard $(TEST_DIR)/*.f90)
 ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 
-SDF_FILES =  Fortran.sdf              \
-             FortranLex.sdf           \
+SDF_FILES =  FortranLex.sdf           \
              R400DataTypes.sdf        \
              R500DataDeclarations.sdf \
              R600UseDataObjects.sdf   \
@@ -22,10 +21,13 @@ SDF_FILES =  Fortran.sdf              \
 
 all : Fortran.tbl
 
-Fortran.tbl : Fortran.def
-	sdf2table -i $< -o $@ -m Fortran
+Main.def : Main.sdf $(SDF_FILES)
+	pack-sdf -i $< -o $@
 
-Fortran.def : $(SDF_FILES)
+Fortran.tbl : Main.def
+	sdf2table -i $< -o $@ -m Main
+
+Fortran.def : Fortran.sdf $(SDF_FILES)
 	pack-sdf -i $< -o $@
 
 Fortran.rtg : Fortran.def
@@ -37,8 +39,6 @@ Fortran.sig : Fortran.rtg
 FExpr.tbl : FExpr.sdf
 	pack-sdf -i $< -o FExpr.def
 	sdf2table -i FExpr.def -o $@ -m FExpr
-
-Fortran.def : $(SDF_FILES)
 
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
@@ -66,7 +66,7 @@ junk.ast-info.pp : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl | addPosInfo -i junk.pt -p junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
-	rm -f *.def *.tbl
+	rm -f *.def *.tbl *.rtg *.sig
 	rm -f *.ast *.pp
 	rm -f *.o *.mod
 	rm -f $(TEST_DIR)/*.ast $(TEST_DIR)/*.ast.pp
