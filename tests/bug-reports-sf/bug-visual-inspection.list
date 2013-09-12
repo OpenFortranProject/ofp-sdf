@@ -1,0 +1,11 @@
+!
+! This list requires visual inspection of output using --verbose
+!
+bug-3182835.f90
+bug-3222998.f90
+!
+! These should produce intrinsic-type-specs for the character type-spec
+! in the array constructors
+!
+bug-3165426.f90
+bug-3133759.f90
