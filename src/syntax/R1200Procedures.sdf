@@ -10,7 +10,8 @@ imports
   %% languages/fortran/syntax/FortranLex
   %% languages/fortran/syntax/Fortran90
   FortranLex
-  Fortran
+  R500DataDeclarations
+  R800ExecutionControl
 
 exports
 
