@@ -1,0 +1,24 @@
+%%%%%%%%%%
+%%
+%% The LOPe (Locally Oriented Programming extensions) language
+%% extends Fortran to simplify programming stencil-based algorithms.
+%%
+%%%%%%%%%%
+
+module LOPe
+
+imports Main
+
+exports
+
+sorts
+
+  PrefixSpec    %% R1226  
+
+context-free start-symbols 
+  Program
+
+context-free syntax
+
+%%1226
+  "CONCURRENT"            -> PrefixSpec          {cons("CONCURRENT")}
