@@ -19,7 +19,7 @@ exports
  
 sorts
   BinaryConstant Character Comma Comment StartCommentBlock
-  Continuation Dop EOL EOS HexConstant
+  Continuation Dop EOL EOLOrSemicolon EOS HexConstant
   Icon Ident Label LblDef LblRef
   Letter OctalConstant
   Rcon ScalarIntLiteralConstant Scon
@@ -60,16 +60,21 @@ lexical syntax
 %%
   [\n]      -> EOL
   [\r] [\n] -> EOL
-  ";"       -> EOL      %% semicolon acts like an EOL
+
+%% semicolon acts like an EOL
+%%
+  EOL       -> EOLOrSemicolon
+  ";"       -> EOLOrSemicolon
 
 %% Everything following a ! is comment. With the \n it is an End of Statement
 %% Treat preprocessor directives as comments
 %% TODO-F08 enforce leading pound character
+%% TODO-F08 name # as Directive and fix
 %%
   "!" ~[\n\r]*                            -> Comment
   "#" ~[\n\r]*                            -> Comment
 
-  (Comment? EOL [\ \t]* )+                -> EOS
+  (Comment? EOLOrSemicolon [\ \t]* )+     -> EOS
 
 %% Fixed source form comment rules (beware of code starting in 1st column!)
 %%TODO-F08 - need different language lexer for fixed format, don't combine
@@ -80,9 +85,12 @@ lexical syntax
 %% commentlines at the start of a file/program are handled separately in Fortran90.sdf
   EOS  -> StartCommentBlock
 
-%% Continuation can optionally be separated by comment. The & on the next line is also optional.
+%% Continuation can optionally be separated by comment.
+%% The & on the next line is also optional.
+%%
    "&" [\ \t]* ("!" ~[\n\r]*)? EOL ( [\ \t]+ "&" )?  -> Continuation
-   Continuation -> LAYOUT    
+   Continuation                                      -> LAYOUT    
+   Continuation "!" ~[\n\r]* EOL                     -> LAYOUT    
 
 %% Layout does NOT have a \n since that's part of EOS
    [\ \t] -> LAYOUT
