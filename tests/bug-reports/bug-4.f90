@@ -1,4 +1,4 @@
 integer :: &
-! this is a comment line splitting a continued statement
-              i
+           ! this is a comment line splitting a continued statement
+           i
 end
