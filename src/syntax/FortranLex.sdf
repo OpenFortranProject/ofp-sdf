@@ -90,7 +90,7 @@ lexical syntax
 %%
    "&" [\ \t]* ("!" ~[\n\r]*)? EOL ( [\ \t]+ "&" )?  -> Continuation
    Continuation                                      -> LAYOUT    
-   Continuation "!" ~[\n\r]* EOL                     -> LAYOUT    
+   Continuation [\ \t]* "!" ~[\n\r]* EOL             -> LAYOUT    
 
 %% Layout does NOT have a \n since that's part of EOS
    [\ \t] -> LAYOUT
