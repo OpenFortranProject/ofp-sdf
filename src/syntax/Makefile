@@ -56,11 +56,11 @@ pretty : Fortran.tbl
 Fortran.sig.aterm : Fortran.sig
 	sglri -p $(STRATEGO_TBL) -i Fortran.sig | implode-asfix | pp-aterm -o Fortran.sig.aterm
 
+junk : junk.f90 Fortran.tbl
+	sglri -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.f90.aterm
+
 junk.ptree : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
-
-junk.ast.pp : junk.f90 Fortran.tbl
-	sglri -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.ast.pp
 
 junk.ast-info.pp : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl | addPosInfo -i junk.pt -p junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
