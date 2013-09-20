@@ -1,13 +1,13 @@
 !... convolve kernel function using Locally Oriented Programming extensions
 !
-CONCURRENT subroutine convolve(OutArray, InArray, Stencil)
+CONCURRENT subroutine convolve(S, Image, Filter)
    use size_module
    implicit none
-   real, intent(out) :: OutArray(0:,0:)
-   real, intent(in ) :: InArray(0:,0:)
-   HALO              :: InArray(NPAD:*:NPAD,NPAD:*:NPAD)
-   real, intent(in ) :: Stencil(-NPAD:NPAD,-NPAD:NPAD)
+   real, intent(out) :: S      (0:,0:)
+   real, intent(in ) :: Image  (0:,0:)
+   HALO              :: Image  (NPAD:*:NPAD,NPAD:*:NPAD)
+   real, intent(in ) :: Filter (-NPAD:NPAD,-NPAD:NPAD)
 
-   OutArray(0,0) = sum( Stencil*InArray )
+   S(0,0) = sum( Filter*Image )
 
 end subroutine convolve
