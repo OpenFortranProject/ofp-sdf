@@ -1,24 +1,89 @@
-%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% The LOPe (Locally Oriented Programming extensions) language
-%% extends Fortran to simplify programming stencil-based algorithms.
+%%  LOPe DSL definition
 %%
-%%%%%%%%%%
+%%  Copyright ((c)) 2013, TBD.
+%%  All rights reserved. See the file "LICENSE" for details.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Rosebud syntax
+%% definition
 
 module LOPe
 
+%% Rosebud syntax
+%% language LOPe
+
+%% Rosebud syntax
+%% title       "Halo array extensions to Fortran for stencil-based computation"
+
+%% Rosebud
+%% summary     "This DSL provides syntax for extending array declarations in      "
+%%             "Fortran so that arrays explicitly have a halo region surrounding  "
+%%             "the interior portion of a normal array.  Explicit halo            "
+%%             "declarations allows the compiler to manage the memory of an       "
+%%             "array that is distributed across memory boundaries.  In particular"
+%%             "the declaration of a halo region provides the compiler with       "
+%%             "information regarding the regions of the array that are shared    "
+%%             "between processing (and memory) elements.                         "
+
+%% Rosebud syntax
+%% version     1.0
+%% maintainer  rasmus@uoregon.edu
+%% web site    dtec-xstack.org
+
+%% Rosebud syntax
+%% host        Fortran
+%% requires    none
+%% id          org.dtec-xstack.uoregon.lope
+
 imports Main
+
+%%------------------------------------------------------------------------------
+%% Rosebud syntax
+%% concrete syntax
+%%------------------------------------------------------------------------------
+
+%% Rosebud syntax
+%% extends host sorts
 
 exports
 
 sorts
 
-  PrefixSpec    %% R1226  
+  AttrSpec PrefixSpec OtherSpecificationStmt
 
-context-free start-symbols 
-  Program
+%% Rosebud syntax
+%% uses host sorts
+%% ArrayName LowerBound UpperBound EOS
+
+%% Rosebud syntax
+%% private sorts
+
+  HaloStmt HaloSpec HaloAssumedShapeSpec HaloExplicitShapeSpec
+
+%% Rosebud syntax
+%% context-free rules
 
 context-free syntax
 
+%%R212
+  HaloStmt                                -> OtherSpecificationStmt {cons("OtherSpecificationStmt")}
+
+%%R502
+  "HALO" "(" HaloSpec ")"                 -> AttrSpec               {cons("HALO")}
+
+  {HaloAssumedShapeSpec  ","}+            -> HaloSpec               {cons("ASSUMED")}
+  {HaloExplicitShapeSpec ","}+            -> HaloSpec               {cons("EXPLICIT")}
+
+  ":"                                     -> HaloAssumedShapeSpec   {cons("HaloAssumedShapeSpec")}
+  LowerBound ":" "*" ":" UpperBound       -> HaloExplicitShapeSpec  {cons("HaloExplicitShapeSpec")}
+
+  Label? "HALO" "::"
+         ArrayName "(" HaloSpec ")"
+    ("," ArrayName "(" HaloSpec ")")* EOS -> HaloStmt               {cons("HaloStmt")}
+
 %%1226
-  "CONCURRENT"            -> PrefixSpec          {cons("CONCURRENT")}
+  "CONCURRENT"                            -> PrefixSpec             {cons("CONCURRENT")}
