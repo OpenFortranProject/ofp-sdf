@@ -1,0 +1,13 @@
+!... convolve kernel function using Locally Oriented Programming extensions
+!
+CONCURRENT subroutine convolve(OutArray, InArray, Stencil)
+   use size_module
+   implicit none
+   real, intent(out) :: OutArray(0:,0:)
+   real, intent(in ) :: InArray(0:,0:)
+   HALO              :: InArray(NPAD:*:NPAD,NPAD:*:NPAD)
+   real, intent(in ) :: Stencil(-NPAD:NPAD,-NPAD:NPAD)
+
+   OutArray(0,0) = sum( Stencil*InArray )
+
+end subroutine convolve
