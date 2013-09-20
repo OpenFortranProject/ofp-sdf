@@ -1,6 +1,6 @@
 
-%%module languages/fortran/syntax/FortranLex
 module FortranLex
+
 %%
 %% Input restrictions:
 %% -Make sure that the last statement at the end of the file has a '\n' to prevent a parse error.
