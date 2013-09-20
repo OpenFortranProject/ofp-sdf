@@ -3,12 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 section R8xx Execution Control
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/R800ExecutionControl
 module R800ExecutionControl
 
 imports
-  %% languages/fortran/syntax/FortranLex
-  %% languages/fortran/syntax/Fortran90
+
   FortranLex
   R1100ProgramUnits
 
