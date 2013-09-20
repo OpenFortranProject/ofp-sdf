@@ -3,13 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
 %%%%%%%%%%
 
-%% module languages/fortran/syntax/R700Expressions
 module R700Expressions
 
 imports
-  %% languages/fortran/syntax/FortranLex
-  %% languages/fortran/syntax/R1200Procedures
-  %% languages/fortran/syntax/R600UseDataObjects
+
   FortranLex
   R1200Procedures
   R600UseDataObjects

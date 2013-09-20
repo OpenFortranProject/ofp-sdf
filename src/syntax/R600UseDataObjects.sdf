@@ -3,12 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 section R6xx Use of Data Objects
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/R600UseDataObjects
 module R600UseDataObjects
 
 imports
-  %%  languages/fortran/syntax/FortranLex
-  %%  languages/fortran/syntax/R700Expressions
+
   FortranLex
   R700Expressions
 
