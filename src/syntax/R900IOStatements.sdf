@@ -3,12 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 section R9xx Input/Output Statements
 %%%%%%%%%%
 
-%%TODO module languages/fortran/syntax/R900IOStatements
 module R900IOStatements
 
 imports
-%%TODO  languages/fortran/syntax/FortranLex
-%%TODO  languages/fortran/syntax/Fortran90
+
   FortranLex
   R600UseDataObjects
 
