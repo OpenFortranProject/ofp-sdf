@@ -3,12 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 section 12xx Procedures section
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/R1200Procedures
 module R1200Procedures
 
 imports
-  %% languages/fortran/syntax/FortranLex
-  %% languages/fortran/syntax/Fortran90
+
   FortranLex
   R500DataDeclarations
   R800ExecutionControl
