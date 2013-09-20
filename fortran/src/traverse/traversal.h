@@ -3,6 +3,15 @@
 
 #include <aterm2.h>
 
+enum DataType
+{
+   UNKNOWN,
+   STRING,
+   IDENT,
+   LIST,
+   OR
+};
+
 typedef struct OFP_Traverse_struct
 {
    ATerm       term;
@@ -11,6 +20,9 @@ typedef struct OFP_Traverse_struct
 
 }
    OFP_Traverse, * pOFP_Traverse;
+
+#include "ofp_builder.h"
+#include "ofp_traverse.h"
 
 /* R201 */
 ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program);

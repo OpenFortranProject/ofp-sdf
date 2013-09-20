@@ -20,19 +20,17 @@ ATbool ofp_traverse_EOS(ATerm term, pOFP_Traverse EOS)
    return ATfalse;
 }
 
+// This is a terminal
 ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label)
 {
 #ifdef DEBUG_PRINT
    printf("Label: %s\n", ATwriteToString(term));
 #endif
 
-   if (ATmatch(term, "<term>", &Label->term)) {
-      char * Label_val;
-      if (ATmatch(term, "<str>", &Label_val)) {
-         // MATCHED Label
-         return ATtrue;
-      }
-      return ATfalse;
+   char * Label_val;
+   if (ATmatch(term, "<str>", &Label_val)) {
+      // MATCHED Label
+      return ATtrue;
    }
    return ATfalse;
 }

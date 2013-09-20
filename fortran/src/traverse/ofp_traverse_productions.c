@@ -1,3 +1,24 @@
+ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
+
+
+// This is an alias
+ATbool ofp_traverse_OptProgramName1(ATerm term, pOFP_Traverse OptProgramName1)
+{
+#ifdef DEBUG_PRINT
+   printf("OptProgramName1: %s\n", ATwriteToString(term));
+#endif
+
+   if (ATmatch(term, "(Some(<term>))", &OptProgramName1->term)) {
+      OFP_Traverse ProgramName;
+      if (ofp_traverse_ProgramName(OptProgramName1->term, &ProgramName)) {
+         // MATCHED ProgramName
+      } else return ATfalse;
+   }
+   return ATtrue;
+}
+
+
+
 //========================================================================================
 // R201 Program
 //----------------------------------------------------------------------------------------
@@ -410,20 +431,20 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt)
    printf("EndProgramStmt: %s\n", ATwriteToString(term));
 #endif
 
-   OFP_Traverse Label_term, OptProgramName1_term, EOS_term;
-   if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label_term.term, &OptProgramName1_term.term, &EOS_term.term)) {
+   OFP_Traverse Label_opt, OptProgramName1_opt, EOS_term;
+   if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label_opt.term, &OptProgramName1_opt.term, &EOS_term.term)) {
 
       OFP_Traverse Label;
-      if (ATmatch(Label_term.term, "Some(<term>)", &Label.term)) {
+      if (ATmatch(Label_opt.term, "Some(<term>)", &Label.term)) {
          if (ofp_traverse_Label(Label.term, &Label)) {
             // MATCHED Label
          } else return ATfalse;
       }
 
-      OFP_Traverse ProgramName;
-      if (ATmatch(OptProgramName1_term.term, "Some((Some(<term>)))", &ProgramName.term)) {
-         if (ofp_traverse_ProgramName(ProgramName.term, &ProgramName)) {
-            // MATCHED ProgramName
+      OFP_Traverse OptProgramName1;
+      if (ATmatch(OptProgramName1_opt.term, "Some(<term>)", &OptProgramName1.term)) {
+         if (ofp_traverse_OptProgramName1(OptProgramName1.term, &OptProgramName1)) {
+            // MATCHED OptProgramName1
          } else return ATfalse;
       } else return ATfalse;
 

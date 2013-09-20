@@ -13,7 +13,8 @@ LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
-EXES = build_aliases build_includes traverse traverse_sig \
+EXES = build_aliases build_includes build_lists \
+       traverse traverse_sig \
        check_cons_name
 
 %.o: %.c
@@ -32,6 +33,9 @@ build_includes: build_includes.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 build_aliases: build_aliases.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+build_lists: build_lists.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 build_productions: build_productions.o traverse_sig.o $(OBJS)

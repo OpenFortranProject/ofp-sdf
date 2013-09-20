@@ -1,0 +1,21 @@
+module elim-main-range
+imports libstrategolib
+
+signature
+  constructors
+    main-range : A -> B
+
+rules
+  Elim : main-range(x) -> x
+
+strategies
+
+  elim-main-range = 
+    io-wrap(elim-main-range-options, rewr)
+
+  elim-main-range-options =
+    Option("--graph", 
+	where(<set-config>("--graph", ())); !Graph(), 
+	!"--graph           visualize term keeping graph structure") 
+
+  rewr = innermost(Elim)
