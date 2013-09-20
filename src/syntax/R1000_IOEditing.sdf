@@ -3,14 +3,12 @@
 %% Fortran ISO/IEC 1539:1991 section R10xx Input/Output Editing
 %%%%%%%%%
 
-%% module languages/fortran/syntax/R1000_IOEditing
 module R1000_IOEditing
 
-%%  languages/fortran/syntax/FortranLex
-%%  languages/fortran/syntax/R400DataTypes
+imports
 
-imports  FortranLex
-imports R400DataTypes
+  FortranLex
+  R400DataTypes
 
 exports
 
