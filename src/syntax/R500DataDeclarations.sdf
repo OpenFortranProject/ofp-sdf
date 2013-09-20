@@ -3,13 +3,9 @@
 %%Fortran ISO/IEC 1539:1991 section R5xx Data Object declarations and Specifications
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/R500DataDeclarations
 module R500DataDeclarations
 
 imports
-  %% languages/fortran/syntax/FortranLex
-  %% languages/fortran/syntax/R400DataTypes
-  %% languages/fortran/syntax/R700Expressions
 
   FortranLex
   R400DataTypes
