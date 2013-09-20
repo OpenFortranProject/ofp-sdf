@@ -21,6 +21,9 @@ LOPe.def : LOPe.sdf $(FOR_ROOT)/Main.def
 convolve : convolve.lope LOPe.tbl
 	sglri -i convolve.lope -p LOPe.tbl | implode-asfix | pp-aterm -o convolve.lope.aterm
 
+stencil : stencil.lope LOPe.tbl
+	sglri -i stencil.lope -p LOPe.tbl | implode-asfix | pp-aterm -o stencil.lope.aterm
+
 clean :
 	rm -f *.def *.tbl *.rtg *.sig
 	rm -f *.aterm
