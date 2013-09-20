@@ -3,12 +3,10 @@
 %% Fortran ISO/IEC 1539:1991 4xx DataTypes
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/R400DataTypes
 module R400DataTypes
 
 imports
-%%  languages/fortran/syntax/FortranLex
-%%  languages/fortran/syntax/R500DataDeclarations
+
   FortranLex
   R500DataDeclarations
 
