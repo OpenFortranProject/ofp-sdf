@@ -1,4 +1,4 @@
-SYNTAX = ../../src/syntax
+SYNTAX = ../../fortran/syntax
 
 all : check
 
