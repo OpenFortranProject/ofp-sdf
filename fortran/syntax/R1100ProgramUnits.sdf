@@ -181,7 +181,6 @@ context-free syntax
 %%R214
 %%TODO-REMOVE  AssignStmt
 %%TODO-REMOVE  AssignedGotoStmt
-%%TODO-REMOVE  PauseStmt
 %%TODO-REMOVE  StmtFunctionStmt  %% see R1226 comment
 %%TODO-REMOVE  AllstopStmt
   AllocateStmt                           -> ActionStmt  {cons("ActionStmt")}
@@ -226,6 +225,8 @@ context-free syntax
   LabelDoStmt                            -> ActionStmt  {cons("ActionStmt")}
   NonlabelDoStmt                         -> ActionStmt  {cons("ActionStmt")}
   EndDoStmt                              -> ActionStmt  {cons("ActionStmt")}
+%% Deleted features
+  PauseStmt                              -> PauseStmt   {cons("ActionStmt")}
 
 %%215
   Name                                 -> Keyword     {cons("Keyword")}
