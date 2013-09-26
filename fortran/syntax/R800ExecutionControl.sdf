@@ -99,6 +99,10 @@ sorts
 
   LabelList LockStatList SyncStatList
 
+%% Deleted features
+
+  PauseStmt
+
 context-free syntax
 
 
@@ -409,7 +413,13 @@ context-free syntax
   Label? 'UNLOCK' '(' LockVariable
                    (',' SyncStatList )? ')'         EOS -> UnlockStmt           {cons("UnlockStmt")}
 
-%%866
+%%R866
 %%          variable substituted for scalar-variable
 %%
   Variable                                              -> LockVariable         {cons("LockVariable")}
+
+
+%% Deleted Statements
+%%
+  Label? 'PAUSE' StopCode?                          EOS -> StopStmt             {cons("PauseStmt")}
+
