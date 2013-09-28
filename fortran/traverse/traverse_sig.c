@@ -22,9 +22,11 @@ int main(int argc, char * argv[])
 
    Module.term = ATreadFromTextFile(file);
 
+   ofp_traverse_init();
    if (ofp_traverse_Module(Module.term, &Module)) {
       printf("\nWoot!\n");
    } else return 1;
+   ofp_traverse_finalize();
 
    return 0;
 }
