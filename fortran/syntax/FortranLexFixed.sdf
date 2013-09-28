@@ -32,7 +32,7 @@ lexical syntax
 %%  (FixedComment? EOLOrSemicolon [\ \t]* )+   -> EOS
 
 %%
-   EOL "     &"                                -> Continuation
+   EOL "     " ~[ \t\n\r]                      -> Continuation
    Continuation                                -> LAYOUT    
 
 context-free restrictions
