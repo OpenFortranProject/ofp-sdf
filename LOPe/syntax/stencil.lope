@@ -7,9 +7,11 @@ CONCURRENT subroutine apply_stencil(Array, Stencil)
    real, intent(in out) :: Stencil (-NPAD:NPAD,-NPAD:NPAD)
    HALO                 :: Array   (NPAD:*:NPAD,NPAD:*:NPAD)
 
-   OutArray(0,0) =   Stencil(-1, 0)*InArray(-1, 0)     & ! up
-                   + Stencil(+1, 0)*InArray(+1, 0)     & ! down
-                   + Stencil( 0,-1)*InArray( 0,-1)     & ! left
-                   + Stencil( 0,-1)*InArray( 0,-1)       ! right
+   !... indexing based on (0,0) at center of stencil
+   !
+   Array(0,0) =   Stencil(-1, 0)*Array(-1, 0)     & ! up
+                + Stencil(+1, 0)*Array(+1, 0)     & ! down
+                + Stencil( 0,-1)*Array( 0,-1)     & ! left
+                + Stencil( 0,-1)*Array( 0,-1)       ! right
 
 end subroutine apply_stencil
