@@ -7,19 +7,12 @@ module FortranLex
 %% -Userdefined operators (.XYZ.) are not handled yet
 %% -include 'file' lines must first be processed or make it a comment (put a ! in front)
 %%
-%% F77 fixed format text can also be parsed if some pre-processing is done first,
-%% Minimal changes needed for fixed form source handling:
-%% a. change continuation symbols in 6th column by a & on the previous line (but not in a comment of course)
-%%    in VIM regexp: :g/^     [^ ]/-1s/$/ \&/ followed by :%/^     [^ ]/      / (5 spaces+nonspace -> 6 spaces) 
-%% b. change every comment-symbol (* or C) in the first column into a !.
-%%    in VIM regexp: %s/^[C\*]/!/
-
 
 exports
  
 sorts
   BinaryConstant Character Comma Comment StartCommentBlock
-  Continuation Dop EOL EOLOrSemicolon EOS HexConstant
+  Dop EOL EOLOrSemicolon EOS HexConstant
   Icon Ident Label LblDef LblRef
   Letter OctalConstant
   Rcon ScalarIntLiteralConstant Scon
@@ -76,21 +69,8 @@ lexical syntax
 
   (Comment? EOLOrSemicolon [\ \t]* )+     -> EOS
 
-%% Fixed source form comment rules (beware of code starting in 1st column!)
-%%TODO-F08 - need different language lexer for fixed format, don't combine
-%%TODO-F08
-%%TODO-F08  (EOL [Cc\*] ~[\n\r]*)+        -> FixedComment
-%%TODO-F08   FixedComment EOL [\ \t]*     -> EOS
-
 %% commentlines at the start of a file/program are handled separately in Fortran90.sdf
   EOS  -> StartCommentBlock
-
-%% Continuation can optionally be separated by comment.
-%% The & on the next line is also optional.
-%%
-   "&" [\ \t]* ("!" ~[\n\r]*)? EOL ( [\ \t]+ "&" )?  -> Continuation
-   Continuation                                      -> LAYOUT    
-   Continuation [\ \t]* "!" ~[\n\r]* EOL             -> LAYOUT    
 
 %% Layout does NOT have a \n since that's part of EOS
    [\ \t] -> LAYOUT
@@ -173,11 +153,8 @@ lexical restrictions
 
 context-free restrictions
 
-   Continuation? -/- ~[\n\r]
-
 %% layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
-%% Continuation-char & should be part of continuation, so not layout.
-   LAYOUT? -/- [\ \t\&]
+   LAYOUT? -/- [\ \t]
 
 %% to prevent layout/comment parsed as after LblDef (which causes ambigs)
    LblDef -/- [\!]
