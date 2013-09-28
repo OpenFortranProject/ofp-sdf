@@ -6,6 +6,8 @@ TestFiles = $(wildcard $(TEST_DIR)/*.f90)
 ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 
 SDF_FILES =  FortranLex.sdf           \
+             FortranLexFixed.sdf      \
+             FortranLexFree.sdf       \
              R400DataTypes.sdf        \
              R500DataDeclarations.sdf \
              R600UseDataObjects.sdf   \
@@ -19,13 +21,19 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl
+all : Fortran.tbl FortranFixed.tbl
 
 Main.def : Main.sdf $(SDF_FILES)
 	pack-sdf -i $< -o $@
 
+FortranFixed.def : FortranFixed.sdf $(SDF_FILES)
+	pack-sdf -i $< -o $@
+
 Fortran.tbl : Main.def
 	sdf2table -i $< -o $@ -m Main
+
+FortranFixed.tbl : FortranFixed.def
+	sdf2table -i $< -o $@ -m FortranFixed
 
 Fortran.def : Fortran.sdf $(SDF_FILES)
 	pack-sdf -i $< -o $@
@@ -54,6 +62,9 @@ Fortran.sig.aterm : Fortran.sig
 
 junk : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.f90.aterm
+
+junkf : junk.f FortranFixed.tbl
+	sglri -i junk.f -p FortranFixed.tbl | implode-asfix | pp-aterm -o junk.f.aterm
 
 junk.ptree : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
