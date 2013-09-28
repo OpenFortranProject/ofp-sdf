@@ -4,6 +4,37 @@
 
 #undef DEBUG_PRINT
 
+/** global variables
+ */
+FILE * fph = NULL;
+
+/**
+ * Perform any necessary initialization for this traversal
+ */
+ATbool ofp_traverse_init()
+{
+   fph = fopen("ofp_list_builder.h", "w");    assert(fph != NULL);
+
+   fprintf(fph, "#ifndef OFP_TRAVERSE_H\n");
+   fprintf(fph, "#define OFP_TRAVERSE_H\n\n");
+
+   fprintf(fph, "#include <aterm2.h>\n\n");
+
+   return ATtrue;
+}
+
+/**
+ * Perform finalization tasks for this traversal
+ */
+ATbool ofp_traverse_finalize()
+{
+   fprintf(fph, "\n");
+   fprintf(fph, "#endif //OFP_TRAVERSE_H\n");
+
+   fclose(fph);
+   return ATtrue;
+}
+
 ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
 {
 #ifdef DEBUG_PRINT
@@ -43,7 +74,7 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
             /** Output function signature
              */
-            printf("ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n\n", name, name);
+            fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n\n", name, name);
          }
       }
       return ATtrue;
