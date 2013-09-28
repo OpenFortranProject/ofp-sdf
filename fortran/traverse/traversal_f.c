@@ -21,6 +21,22 @@
 
 ATermList gTypeTable;
 
+/**
+ * Perform any necessary initialization for this traversal
+ */
+ATbool ofp_traverse_init()
+{
+   return ATtrue;
+}
+
+/**
+ * Perform finalization tasks for this traversal
+ */
+ATbool ofp_traverse_finalize()
+{
+   return ATtrue;
+}
+
 void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth);
 
 char * ofp_getArgNameStr(ATerm arg, char ** name)
