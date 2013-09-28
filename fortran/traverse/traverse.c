@@ -20,6 +20,8 @@ int main(int argc, char * argv[])
 
    ATinitialize(argc, argv); 
 
+   if (ofp_traverse_init() != ATtrue) exit(1);
+
    Program.term = ATreadFromTextFile(file);
 
    printf("\n%s\n\n", ATwriteToString(Program.term));
