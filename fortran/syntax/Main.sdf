@@ -13,6 +13,7 @@ module Main
 imports
 
   FortranLex
+  FortranLexFree
   R400DataTypes
   R500DataDeclarations
   R600UseDataObjects
