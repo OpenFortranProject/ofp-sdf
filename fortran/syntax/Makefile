@@ -70,7 +70,7 @@ junk.ptree : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
 
 junk.ast-info.pp : junk.f90 Fortran.tbl
-	sglri -i junk.f90 -p Fortran.tbl | addPosInfo -i junk.pt -p junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
+	sglr -i junk.f90 -p Fortran.tbl | addPosInfo -p ./junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
 	rm -f *.def *.tbl *.rtg *.sig
