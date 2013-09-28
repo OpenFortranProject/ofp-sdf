@@ -20,6 +20,22 @@
 
 ATermList gTypeAliases;
 
+/**
+ * Perform any necessary initialization for this traversal
+ */
+ATbool ofp_traverse_init()
+{
+   return ATtrue;
+}
+
+/**
+ * Perform finalization tasks for this traversal
+ */
+ATbool ofp_traverse_finalize()
+{
+   return ATtrue;
+}
+
 ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
 {
 #ifdef DEBUG_PRINT
