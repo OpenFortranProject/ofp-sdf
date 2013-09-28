@@ -1,0 +1,32 @@
+
+module FortranLexFixed
+
+%%
+%% F77 fixed format text can also be parsed if some pre-processing is done first,
+%% Minimal changes needed for fixed form source handling:
+%% a. change continuation symbols in 6th column by a & on the previous line (but not in a comment of course)
+%%    in VIM regexp: :g/^     [^ ]/-1s/$/ \&/ followed by :%/^     [^ ]/      / (5 spaces+nonspace -> 6 spaces) 
+%% b. change every comment-symbol (* or C) in the first column into a !.
+%%    in VIM regexp: %s/^[C\*]/!/
+
+
+imports
+
+  FortranLex
+
+exports
+ 
+sorts
+
+  FixedComment
+
+lexical syntax
+
+  (EOL [Cc\*] ~[\n\r]*)+                       -> FixedComment
+  FixedComment                                 -> Comment
+
+%%  EOL [     \&]                              -> Continuation
+
+%%TODO-F08  (EOL [Cc\*] ~[\n\r]*)+        -> FixedComment
+%%TODO-F08   FixedComment EOL [\ \t]*     -> EOS
+%%  (FixedComment? EOLOrSemicolon [\ \t]* )+     -> EOS
