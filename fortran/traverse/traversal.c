@@ -3,6 +3,14 @@
 
 #define DEBUG_PRINT
 
+/**
+ * Perform any necessary initialization for this traversal
+ */
+ATbool ofp_traverse_init()
+{
+   return ATtrue;
+}
+
 ATbool ofp_traverse_EOS(ATerm term, pOFP_Traverse EOS)
 {
 #ifdef DEBUG_PRINT
