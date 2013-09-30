@@ -63,19 +63,29 @@ ATbool ofp_build_list_traversal(ATerm term, ATerm name)
 
       /** write to header file
        */
-      fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", listStr, listStr);
+      //fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", listStr, listStr);
 
       /** write to implementation file
        */
       fprintf(fpc, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s)\n", listStr, listStr);
       fprintf(fpc, "{\n");
 
+      /** Debugging output
+       */
       fprintf(fpc, "#ifdef DEBUG_PRINT\n");
       fprintf(fpc, "   printf(\"ofp_traverse_%s: %s\\n\", ATwriteToString(term));\n", listStr, percs);
       fprintf(fpc, "#endif\n\n");
 
+      /** Match the list term, otherwise return false
+       */
+      fprintf(fpc, "   if (! ATmatch(term, \"%s(<term>)\", &%s->term)) {\n", listStr, listStr);
+      fprintf(fpc, "      return ATfalse;\n");
+      fprintf(fpc, "   }\n\n");
+
+      /** Traverse the list
+       */
       fprintf(fpc, "   OFP_Traverse %s;\n", nameStr);
-      fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", term);\n", nameStr);
+      fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s->term);\n", nameStr, listStr);
       fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
       fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
       fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
