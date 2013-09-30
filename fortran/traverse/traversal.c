@@ -467,6 +467,30 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
    return ATfalse;
 }
 
+ATbool ofp_traverse_AttrSpecList(ATerm term, pOFP_Traverse AttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("ofp_traverse_AttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+   if (! ATmatch(term, "AttrSpecList(<term>)", &AttrSpecList->term)) {
+      return ATfalse;
+   }
+
+   OFP_Traverse AttrSpec;
+   ATermList AttrSpec_tail = (ATermList) ATmake("<term>", AttrSpecList->term);
+   while (! ATisEmpty(AttrSpec_tail)) {
+      AttrSpec.term = ATgetFirst(AttrSpec_tail);
+      AttrSpec_tail = ATgetNext (AttrSpec_tail);
+#ifdef TODO
+      if (ofp_traverse_AttrSpec(AttrSpec.term, &AttrSpec)) {
+         // MATCHED AttrSpec
+      } else return ATfalse;
+#endif
+   }
+   return ATtrue;
+}
+
 ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList)
 {
 #ifdef DEBUG_PRINT
