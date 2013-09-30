@@ -311,7 +311,6 @@ ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclaratio
                printf("AttrSpec: %s\n", ATwriteToString(AttrSpec.term));
             }
 
-
          }
       }
 #ifdef OLD_OLD_OLD
@@ -323,15 +322,10 @@ ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclaratio
       } else return ATfalse;
 #endif
 
-      OFP_Traverse EntityDecl;
-      ATermList EntityDecl_tail = (ATermList) ATmake("<term>", EntityDecl_list.term);
-      while (! ATisEmpty(EntityDecl_tail)) {
-         EntityDecl.term = ATgetFirst(EntityDecl_tail);
-         EntityDecl_tail = ATgetNext(EntityDecl_tail);
-         if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
-            // MATCHED EntityDecl
-         } else return ATfalse;
-      }
+      OFP_Traverse EntityDeclList;
+      if (ofp_traverse_EntityDeclList(EntityDecl_list.term, &EntityDeclList)) {
+         // MATCHED EntityDeclList
+      } else return ATfalse;
 
       OFP_Traverse EOS;
       if (ATmatch(EOS_term.term, "<term>", &EOS.term)) {
