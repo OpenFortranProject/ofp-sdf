@@ -286,41 +286,14 @@ ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclaratio
       OFP_Traverse OptListPlusOfAttrSpec1;
       if (ATmatch(OptListPlusOfAttrSpec1_term.term, "Some((<term>))", &OptListPlusOfAttrSpec1.term)) {
 
-         printf("OptListPlusOfAttrSpec1: %s\n", ATwriteToString(OptListPlusOfAttrSpec1.term));
-         
          OFP_Traverse ListPlusOfAttrSpec1;
          if (ATmatch(OptListPlusOfAttrSpec1.term, "Some((<term>))", &ListPlusOfAttrSpec1.term)) {
-            OFP_Traverse AttrSpec;
-
-            printf("ListPlusOfAttrSpec1: %s\n", ATwriteToString(ListPlusOfAttrSpec1.term));
-
-
-            ATermList AttrSpec_tail = (ATermList) ATmake("<term>", ListPlusOfAttrSpec1.term);
-            printf("AttrSpec_tail: %s\n", ATwriteToString((ATerm)AttrSpec_tail));
-
-            while (! ATisEmpty(AttrSpec_tail)) {
-               AttrSpec.term = ATgetFirst(AttrSpec_tail);
-               AttrSpec_tail = ATgetNext(AttrSpec_tail);
-            printf("AttrSpec_tail: %s\n", ATwriteToString(AttrSpec.term));
-#ifdef NOT_YET
-               if (ofp_traverse_AttrSpec(AttrSpec.term, &AttrSpec)) {
-                  // MATCHED AttrSpec
-               } else return ATfalse;
-#endif
-               // TODO AttrSpec                                                                       
-               printf("AttrSpec: %s\n", ATwriteToString(AttrSpec.term));
-            }
-
+            OFP_Traverse AttrSpecList;
+            if (ofp_traverse_AttrSpecList(ListPlusOfAttrSpec1.term, &AttrSpecList)) {
+               // MATCHED AttrSpeclList
+            } else return ATfalse;
          }
       }
-#ifdef OLD_OLD_OLD
-      OFP_Traverse ListPlusOfAttrSpec1;
-      if (ATmatch(OptListPlusOfAttrSpec1_term.term, "Some((Some(<term>)))", &ListPlusOfAttrSpec1.term)) {
-         if (ofp_traverse_ListPlusOfAttrSpec1(ListPlusOfAttrSpec1.term, &ListPlusOfAttrSpec1)) {
-            // MATCHED ListPlusOfAttrSpec1
-         } else return ATfalse;
-      } else return ATfalse;
-#endif
 
       OFP_Traverse EntityDeclList;
       if (ofp_traverse_EntityDeclList(EntityDecl_list.term, &EntityDeclList)) {
