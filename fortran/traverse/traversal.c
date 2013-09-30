@@ -467,6 +467,28 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
    return ATfalse;
 }
 
+ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList)
+{
+#ifdef DEBUG_PRINT
+   printf("ofp_traverse_EntityDeclList: %s\n", ATwriteToString(term));
+#endif
+
+   if (! ATmatch(term, "EntityDeclList(<term>)", &EntityDeclList->term)) {
+      return ATfalse;
+   }
+
+   OFP_Traverse EntityDecl;
+   ATermList EntityDecl_tail = (ATermList) ATmake("<term>", EntityDeclList->term);
+   while (! ATisEmpty(EntityDecl_tail)) {
+      EntityDecl.term = ATgetFirst(EntityDecl_tail);
+      EntityDecl_tail = ATgetNext (EntityDecl_tail);
+      if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
+         // MATCHED EntityDecl
+      } else return ATfalse;
+   }
+   return ATtrue;
+}
+
 //========================================================================================
 // R601 designator
 //----------------------------------------------------------------------------------------
