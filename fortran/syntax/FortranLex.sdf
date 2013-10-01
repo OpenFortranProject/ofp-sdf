@@ -156,20 +156,20 @@ lexical restrictions
   SconSingle -/- [\']
   SconDouble -/- [\"]
 
-%% commentline should be the complete line until newline. This must be lexical restriction
-%%   Comment  -/- ~[\n\r]  
+%% Comment line should be the complete line until newline. This must be lexical restriction
+%%  Comment  -/- ~[\n\r]  
 
-%% if  (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
+%% If (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
 %%
   EOS -/- [\ \t]
 
 context-free restrictions
 
-%% layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
+%% Layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
 %%
   LAYOUT? -/- [\ \t]
 
-%% to prevent layout/comment parsed as after LblDef (which causes ambigs)
+%% To prevent layout/comment parsed as after LblDef (which causes ambigs)
 %%
   LblDef -/- [\!]
 
