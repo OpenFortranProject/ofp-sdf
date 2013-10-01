@@ -11,6 +11,7 @@ module FortranLex
 exports
  
 sorts
+
   BinaryConstant Character Comma Comment StartCommentBlock
   Dop EOL EOLOrSemicolon EOS HexConstant
   Icon Ident Label LblDef LblRef
@@ -25,6 +26,7 @@ sorts
 %%TODO-F08  FixedComment
 
 %% Ident Aliases:
+%%
   Name
   AncestorModuleName ArgName ArrayName AssociateConstructName AssociateName
   BindingName BlockConstructName BlockDataName
@@ -43,18 +45,17 @@ sorts
   ScalarIntConstantName ScalarIntVariableName ScalarVariableName
   SelectConstructName SubmoduleName SubroutineName
   SubroutineNameUse TypeName TypeParamName VariableName UseName
-  
 
 lexical syntax
 
-  ','    -> Comma
+  ","    -> Comma
 
 %% \r\n needed for DOS files
 %%
   [\n]      -> EOL
   [\r] [\n] -> EOL
 
-%% semicolon acts like an EOL
+%% Semicolon acts like an EOL
 %%
   EOL       -> EOLOrSemicolon
   ";"       -> EOLOrSemicolon
@@ -64,39 +65,46 @@ lexical syntax
 %% TODO-F08 enforce leading pound character
 %% TODO-F08 name # as Directive and fix
 %%
-  "!" ~[\n\r]*                            -> Comment
-  "#" ~[\n\r]*                            -> Comment
+  "!" ~[\n\r]*                          -> Comment
+  "#" ~[\n\r]*                          -> Comment
 
-  (Comment? EOLOrSemicolon [\ \t]* )+     -> EOS
+  (Comment? EOLOrSemicolon [\ \t]* )+   -> EOS
 
-%% commentlines at the start of a file/program are handled separately in Fortran90.sdf
-  EOS  -> StartCommentBlock
+%% Comment lines at the start of a file/program are handled separately
+%%
+  EOS                                   -> StartCommentBlock
 
 %% Layout does NOT have a \n since that's part of EOS
-   [\ \t] -> LAYOUT
+%%
+  [\ \t]                                -> LAYOUT
 
-%% number as label: max 5 digits with space in 6th pos
-    [0-9][0-9][0-9][0-9][0-9]    -> Label
-    [0-9][0-9][0-9][0-9]         -> Label
-    [0-9][0-9][0-9]              -> Label   
-    [0-9][0-9]                   -> Label
-    [0-9]                        -> Label
-
+%% Number as label: max 5 digits with space in 6th pos
+%%
+  [0-9][0-9][0-9][0-9][0-9]             -> Label
+  [0-9][0-9][0-9][0-9]                  -> Label
+  [0-9][0-9][0-9]                       -> Label   
+  [0-9][0-9]                            -> Label
+  [0-9]                                 -> Label
 
 %%3.1.2
+%%
   [a-zA-Z]                       -> Letter
   [A-Za-z][A-Za-z0-9\_]*         -> Ident
+
 %% Integer Constant
+%%
   [0-9]+                         -> Icon
 
 %%R420 Character constants allow '' and "" as escaped ' and " in string literals like 'don''t' (="don't")
 %% separate names needed for lexical restrictions later 
 %% NOTE: continuated strings like 'hello&\n   &world' will be parsed as one string with & embedded.
+%%
   [\'] (~[\'] | "''")*  [\']    -> SconSingle
   [\"] (~[\"] | '""')*  [\"]    -> SconDouble
   SconSingle | SconDouble       -> Scon
 
 %%R301: character definition with the 21 specials from table 3.1
+%%
   [a-zA-Z0-9\ \=\+\-\*\/\(\)\,\;\'\:\!\"\%\&\<\>\\\?\$] -> Character
 
 %%R412-R416 Real and Double Literal Constant. Kind is handled in R400Datatypes.sdf
@@ -114,9 +122,11 @@ lexical syntax
 %%R408
   [Bb] [\'] [01]+ [\']             -> BinaryConstant
   [Bb] [\"] [01]+ [\"]             -> BinaryConstant
+
 %%R409
   [Oo] [\'] [0-7]+ [\']            -> OctalConstant
   [Oo] [\"] [0-7]+ [\']            -> OctalConstant
+
 %%R410
   [Zz] [\'] [0-9A-Fa-f]+ [\"]      -> HexConstant
   [Zz] [\"] [0-9A-Fa-f]+ [\"]      -> HexConstant
@@ -142,6 +152,7 @@ lexical syntax
   '.NEQV.'                      -> Dop  {reject}
 
 lexical restrictions
+
   SconSingle -/- [\']
   SconDouble -/- [\"]
 
@@ -149,22 +160,26 @@ lexical restrictions
 %%   Comment  -/- ~[\n\r]  
 
 %% if  (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
-   EOS -/- [\ \t]
+%%
+  EOS -/- [\ \t]
 
 context-free restrictions
 
 %% layout definition **without** \n due to the EOS definition. Lines are important in Fortran.
-   LAYOUT? -/- [\ \t]
+%%
+  LAYOUT? -/- [\ \t]
 
 %% to prevent layout/comment parsed as after LblDef (which causes ambigs)
-   LblDef -/- [\!]
+%%
+  LblDef -/- [\!]
 
 context-free syntax
 
   Label  -> LblDef                        {cons("Label")}
   Label  -> LblRef                        {cons("Label")}
 
-%% Ident Aliasses. TODO: put them in the right modules.
+%% Ident Aliases. TODO: put them in the right modules.
+%%
   Ident  -> Name                          {cons("Name")}
   Ident  -> AncestorModuleName
   Ident  -> AssociateConstructName
