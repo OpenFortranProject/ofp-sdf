@@ -1,14 +1,9 @@
-#include "traversal.h"
+#include "ofp_builder.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
 #undef DEBUG_PRINT
-
-// global variables
-//
-FILE * fph = NULL;
-FILE * fpc = NULL;
 
 /**
  * Perform any necessary initialization for this traversal
@@ -30,62 +25,6 @@ ATbool ofp_traverse_finalize()
    return ATtrue;
 }
 
-ATbool ofp_build_list_traversal(ATerm term, ATerm name)
-{
-   ATerm listName;
-   char * percs = "%s";
-
-   if (ATmatch(term, "ConstType(SortNoArgs(<term>))", &listName)) {
-      char * listStr, * nameStr;
-      if (!ATmatch(listName, "<str>", &listStr) || !ATmatch(name, "<str>", &nameStr)) {
-         return ATfalse;
-      }
-      // sanity check of list name
-      if (strncmp(listStr, nameStr, strlen(nameStr)) != 0) {
-         return ATfalse;
-      }
-
-      /** write to header file
-       */
-      //fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", listStr, listStr);
-
-      /** write to implementation file
-       */
-      fprintf(fpc, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s)\n", listStr, listStr);
-      fprintf(fpc, "{\n");
-
-      /** Debugging output
-       */
-      fprintf(fpc, "#ifdef DEBUG_PRINT\n");
-      fprintf(fpc, "   printf(\"ofp_traverse_%s: %s\\n\", ATwriteToString(term));\n", listStr, percs);
-      fprintf(fpc, "#endif\n\n");
-
-      /** Match the list term, otherwise return false
-       */
-      fprintf(fpc, "   if (! ATmatch(term, \"%s(<term>)\", &%s->term)) {\n", listStr, listStr);
-      fprintf(fpc, "      return ATfalse;\n");
-      fprintf(fpc, "   }\n\n");
-
-      /** Traverse the list
-       */
-      fprintf(fpc, "   OFP_Traverse %s;\n", nameStr);
-      fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s->term);\n", nameStr, listStr);
-      fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
-      fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
-      fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
-      fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
-      fprintf(fpc, "         // MATCHED %s\n", nameStr);
-      fprintf(fpc, "      } else return ATfalse;\n");
-      fprintf(fpc, "   }\n");
-      fprintf(fpc, "   return ATtrue;\n");
-      fprintf(fpc, "}\n\n");
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
 ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
 {
 #ifdef DEBUG_PRINT
@@ -94,7 +33,8 @@ ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
 
    OFP_Traverse name, funType;
    if (ATmatch(term, "OpDecl(<term>,<term>)", &name.term, &funType.term) ) {
-      ATerm sortType, sortName, prod;
+      char * listStr, * nameStr;
+      ATerm sortType, sortName, listName, prod;
 
       if (! ATmatch(funType.term,
                     "FunType([ConstType(Sort(<term>, [SortNoArgs(<term>)]))],<term>)",
@@ -108,7 +48,21 @@ ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
          return ATfalse;
       }
 
-      ofp_build_list_traversal(prod, sortName);
+      if (! ATmatch(prod, "ConstType(SortNoArgs(<term>))", &listName)) {
+         return ATfalse;
+      }
+
+      if (! ATmatch(listName, "<str>", &listStr) || !ATmatch(sortName, "<str>", &nameStr)) {
+         return ATfalse;
+      }
+      // sanity check of list name
+      if (strncmp(listStr, nameStr, strlen(nameStr)) != 0) {
+         return ATfalse;
+      }
+
+      ofp_build_traversal_func_begin(listName);
+      ofp_build_list_traversal(sortName);
+      ofp_build_traversal_func_end(listName, ATtrue);
 
       return ATtrue;
    }
