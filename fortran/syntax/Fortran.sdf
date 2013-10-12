@@ -8,21 +8,10 @@
 %% ISO/IEC 1539:1991 section R2xx Fortran terms and concepts
 %%%%%%%%%%
 
-%%module languages/fortran/syntax/Fortran90
 module Fortran
 
-%%imports languages/fortran/syntax/FortranLex
-%%imports languages/fortran/syntax/R400DataTypes
-%%imports languages/fortran/syntax/R500DataDeclarations
-%%imports languages/fortran/syntax/R600UseDataObjects
-%%imports languages/fortran/syntax/R700Expressions
-%%imports languages/fortran/syntax/R800ExecutionControl
-%%imports languages/fortran/syntax/R900IOStatements
-%%imports languages/fortran/syntax/R1000_IOEditing
-%%imports languages/fortran/syntax/R1100ProgramUnits
-%%imports languages/fortran/syntax/R1200Procedures
-
 imports FortranLex
+imports FortranLexFree
 imports R400DataTypes
 imports R500DataDeclarations
 imports R600UseDataObjects
