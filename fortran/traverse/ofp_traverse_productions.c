@@ -1,5 +1,8 @@
-ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
+#include "traversal.h"
 
+#ifdef DELETE_ME
+ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
+#endif
 
 // This is an alias
 ATbool ofp_traverse_OptProgramName1(ATerm term, pOFP_Traverse OptProgramName1)
@@ -17,8 +20,6 @@ ATbool ofp_traverse_OptProgramName1(ATerm term, pOFP_Traverse OptProgramName1)
    return ATtrue;
 }
 
-
-
 //========================================================================================
 // R201 Program
 //----------------------------------------------------------------------------------------
@@ -31,10 +32,19 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
    OFP_Traverse StartCommentBlock_term, ProgramUnit_list;
    if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock_term.term, &ProgramUnit_list.term)) {
 
+      OFP_Traverse StartCommentBlock;
+      if (ATmatch(StartCommentBlock_term.term, "Some(<term>)", &StartCommentBlock.term)) {
+         if (ofp_traverse_StartCommentBlock(StartCommentBlock.term, &StartCommentBlock)) {
+            // MATCHED StartCommentBlock
+         } else return ATfalse;
+      }
+
+#ifdef OLD
       char * StartCommentBlock_val;
       if (ATmatch(StartCommentBlock_term.term, "Some(<str>)", &StartCommentBlock_val)) {
          // MATCHED StartCommentBlock
       }
+#endif
 
       OFP_Traverse ProgramUnit;
       ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit_list.term);
@@ -55,7 +65,7 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
 //========================================================================================
 // R202 ProgramUnit
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
+ATbool ofp_traverse_ProgramUnit_orig(ATerm term, pOFP_Traverse ProgramUnit)
 {
 #ifdef DEBUG_PRINT
    printf("ProgramUnit: %s\n\n", ATwriteToString(term));
