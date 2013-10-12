@@ -81,8 +81,20 @@ sorts
 
   BoundsRemappingList BoundsSpecList ForallTripletSpecList
 
+%% Identifier aliases
+
+  DataPointerComponentName ForallConstructName IndexName
+  ProcedureComponentName
+
 context-free syntax
 
+%% Identifier aliases
+%%
+
+  Ident   -> DataPointerComponentName  {cons("DataPointerComponentName")}
+  Ident   -> ForallConstructName       {cons("ForallConstructName")}
+  Ident   -> IndexName                 {cons("IndexName")}
+  Ident   -> ProcedureComponentName    {cons("ProcedureComponentName")}
 
 %%R309
   PowerOp                       -> IntrinsicOperator     {cons("IntrinsicOperator")}
@@ -278,7 +290,7 @@ Primary                                    -> Expr            {cons("Expr")}
 %%R737
 %%       Variable producing DataTarget is Ambiguous
 %%
-  Expr      -> DataTarget
+  Expr                                                 -> DataTarget        {cons("DataTarget")}
 
 %%R738
   ProcPointerName                                      -> ProcPointerObject {cons("ProcPointerObject")}

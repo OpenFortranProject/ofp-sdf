@@ -21,7 +21,7 @@ sorts
 %% 6.2 Variable
 
   Variable                            %% R602
-                                      %% R603  VariableName - lex
+  VariableName                        %% R603
   LogicalVariable                     %% R604
   CharVariable                        %% R605
   DefaultCharVariable                 %% R606
@@ -81,8 +81,17 @@ sorts
   AllocateCoshapeSpecList AllocateObjectList AllocateShapeSpecList
   AllocationList AllocOptList DeallocOptList PointerObjectList
 
+%% Identifier aliases
+
+  PartName ScalarVariableName
+
 context-free syntax
 
+%% Identifier aliases
+%%
+
+  Ident   -> PartName                  {cons("PartName")}
+  Ident   -> ScalarVariableName        {cons("ScalarVariableName")}
 
 %% 6.1 Designator
 %%
@@ -126,19 +135,19 @@ context-free syntax
 %%TODO-AMB   Expr                                                          -> Subscript
 
 %%R603
-%% VariableName
+  Ident              -> VariableName                       {cons("VariableName")}
 
 %%R604
-  Variable           -> LogicalVariable
+  Variable           -> LogicalVariable                    {cons("LogicalVariable")}
 
 %%605
-  Variable           -> CharVariable
+  Variable           -> CharVariable                       {cons("CharVariable")}
 
 %%R606
-  Variable           -> DefaultCharVariable
+  Variable           -> DefaultCharVariable                {cons("DefaultCharVariable")}
 
 %%607
-  Variable           -> IntVariable
+  Variable           -> IntVariable                         {cons("IntVariable")}
 
 
 %% 6.4 Scalars

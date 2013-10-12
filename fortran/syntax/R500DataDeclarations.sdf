@@ -120,8 +120,24 @@ sorts
   CommonBlockObjectList DummyArgNameList EntityNameList
   EquivalenceObjectList EquivalenceSetList ObjectNameList
 
+%% Identifier aliases
+
+  ArrayName CoarrayName CommonBlockName
+  EntityName NamelistGroupName ObjectName
+  ProcEntityName
+
 context-free syntax
 
+%% Identifier aliases
+%%
+
+  Ident   -> ArrayName                 {cons("ArrayName")}
+  Ident   -> CommonBlockName           {cons("CommonBlockName")}
+  Ident   -> CoarrayName               {cons("CoarrayName")}
+  Ident   -> EntityName                {cons("EntityName")}
+  Ident   -> NamelistGroupName         {cons("NamelistGroupName")}
+  Ident   -> ObjectName                {cons("ObjectName")}
+  Ident   -> ProcEntityName            {cons("ProcEntityName")}
 
 %% 5.2 Type declaration statements
 %%

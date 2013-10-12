@@ -63,7 +63,29 @@ sorts
   ActualArgSpecList DummyArgList DummyArgNameList ExternalNameList
   ImportNameList IntrinsicProcedureNameList ProcAttrSpecList ProcedureNameList
 
+%% Identifier aliases
+
+  EntryName ExternalName FunctionName
+  GenericName ImportName IntrinsicProcedureName
+  ProcedureEntityName ProgramName ResultName
+  SubroutineName
+
 context-free syntax
+
+%% Identifier aliases
+%%
+
+  Ident   -> EntryName                 {cons("EntryName")}
+  Ident   -> ExternalName              {cons("ExternalName")}
+  Ident   -> FunctionName              {cons("FunctionName")}
+  Ident   -> GenericName               {cons("GenericName")}
+  Ident   -> ImportName                {cons("ImportName")}
+  Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
+  Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
+  Ident   -> ProgramName               {cons("ProgramName")}
+  Ident   -> ResultName                {cons("ResultName")}
+  Ident   -> SubroutineName            {cons("SubroutineName")}
+
 
 %%R1201
   InterfaceStmt

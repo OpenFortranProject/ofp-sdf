@@ -69,10 +69,28 @@ sorts
 
   OnlyList RenameList
 
+%% Identifier aliases
+
+  AncestorModuleName BlockDataName LocalName
+  ModuleName ParentSubmoduleName SubmoduleName
+  UseName
+
 context-free start-symbols 
+
   Program
 
 context-free syntax
+
+%% Identifier aliases
+%%
+
+  Ident   -> AncestorModuleName        {cons("AncestorModuleName")}
+  Ident   -> BlockDataName             {cons("BlockDataName")}
+  Ident   -> LocalName                 {cons("LocalName")}
+  Ident   -> ModuleName                {cons("ModuleName")}
+  Ident   -> ParentSubmoduleName       {cons("ParentSubmoduleName")}
+  Ident   -> SubmoduleName             {cons("SubmoduleName")}
+  Ident   -> UseName                   {cons("UseName")}
 
 %%R201 JD: the optional startcommentblock is needed to parse comment lines in 1st lines of a file.
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram

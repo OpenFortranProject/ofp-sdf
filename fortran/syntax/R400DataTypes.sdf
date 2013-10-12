@@ -126,7 +126,30 @@ sorts
 
   AcValueList BindingNameList FinalSubroutineNameList TypeParamNameList
 
+%% Identifier aliases
+
+  ArgName BindingName ComponentName
+  FinalSubroutineName ImpliedDoVariable
+  InterfaceName Name ParentTypeName ProcedureName
+  ScalarIntConstantName TypeName TypeParamName
+
 context-free syntax
+
+%% Identifier aliases
+%%
+
+  Ident   -> ArgName                   {cons("ArgName")}
+  Ident   -> BindingName               {cons("BindingName")}
+  Ident   -> ComponentName             {cons("ComponentName")}
+  Ident   -> FinalSubroutineName       {cons("FinalSubroutineName")}
+  Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
+  Ident   -> InterfaceName             {cons("InterfaceName")}
+  Ident   -> Name                      {cons("Name")}
+  Ident   -> ParentTypeName            {cons("ParentTypeName")}
+  Ident   -> ProcedureName             {cons("ProcedureName")}
+  Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
+  Ident   -> TypeName                  {cons("TypeName")}
+  Ident   -> TypeParamName             {cons("TypeParamName")}
 
 %%TODO-F08 - move to clause 300
 

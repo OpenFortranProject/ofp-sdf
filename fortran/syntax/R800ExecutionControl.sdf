@@ -103,8 +103,28 @@ sorts
 
   PauseStmt
 
+%% Identifier aliases
+
+  AssociateConstructName AssociateName BlockConstructName
+  CaseConstructName ConstructName CriticalConstructName
+  DoConstructName IfConstructName ScalarIntVariableName
+  SelectConstructName
+
 context-free syntax
 
+%% Identifier aliases
+%%
+
+  Ident   -> AssociateConstructName    {cons("AssociateConstructName")}
+  Ident   -> AssociateName             {cons("AssociateName")}
+  Ident   -> BlockConstructName        {cons("BlockConstructName")}
+  Ident   -> CaseConstructName         {cons("CaseConstructName")}
+  Ident   -> ConstructName             {cons("ConstructName")}
+  Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
+  Ident   -> DoConstructName           {cons("DoConstructName")}
+  Ident   -> IfConstructName           {cons("IfConstructName")}
+  Ident   -> ScalarIntVariableName     {cons("ScalarIntVariableName")}
+  Ident   -> SelectConstructName       {cons("SelectConstructName")}
 
 %% 8.1 Executable constructs containing blocks
 %%
