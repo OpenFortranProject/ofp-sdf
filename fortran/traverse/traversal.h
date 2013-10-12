@@ -1,6 +1,8 @@
 #ifndef	OFP_TRAVERSAL_H
 #define	OFP_TRAVERSAL_H
 
+#define DEBUG_PRINT
+
 #include <aterm2.h>
 
 enum DataType
@@ -20,9 +22,6 @@ typedef struct OFP_Traverse_struct
 
 }
    OFP_Traverse, * pOFP_Traverse;
-
-#include "ofp_builder.h"
-#include "ofp_traverse.h"
 
 /* R201 */
 ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program);
@@ -95,5 +94,9 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt);
 
 /* R1103 */
 ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt);
+
+// Collection for other routines.  Perhaps this should come from separate include files.
+//
+ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
 
 #endif
