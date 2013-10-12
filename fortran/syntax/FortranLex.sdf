@@ -25,27 +25,6 @@ sorts
 
 %%TODO-F08  FixedComment
 
-%% Ident Aliases:
-%%
-  Name
-  AncestorModuleName ArgName ArrayName AssociateConstructName AssociateName
-  BindingName BlockConstructName BlockDataName
-  CaseConstructName CoarrayName ComponentName ConstructName CriticalConstructName
-  DataPointerComponentName DoConstructName
-  EntityName
-  GenericName NamelistGroupName EndName CommonBlockName
-  EntryName ExternalName FinalSubroutineName ForallConstructName
-  FunctionName
-  IfConstructName ImpliedDoVariable ImportName
-  IndexName InterfaceName IntrinsicProcedureName LocalName
-  ModuleName ObjectName
-  ParentSubmoduleName ParentTypeName PartName ProcedureName
-  ProcedureComponentName ProcedureEntityName ProcEntityName
-  ProgramName ResultName
-  ScalarIntConstantName ScalarIntVariableName ScalarVariableName
-  SelectConstructName SubmoduleName SubroutineName
-  SubroutineNameUse TypeName TypeParamName VariableName UseName
-
 lexical syntax
 
   ","    -> Comma
@@ -177,61 +156,3 @@ context-free syntax
 
   Label  -> LblDef                        {cons("Label")}
   Label  -> LblRef                        {cons("Label")}
-
-%% Ident Aliases. TODO: put them in the right modules.
-%%
-  Ident  -> Name                          {cons("Name")}
-  Ident  -> AncestorModuleName
-  Ident  -> AssociateConstructName
-  Ident  -> AssociateName
-  Ident  -> ArgName
-  Ident  -> ArrayName
-  Ident  -> BindingName                   {cons("BindingName")}
-  Ident  -> BlockConstructName
-  Ident  -> BlockDataName
-  Ident  -> CaseConstructName
-  Ident  -> CriticalConstructName
-  Ident  -> CoarrayName                   {cons("CoarrayName")}
-  Ident  -> CommonBlockName
-  Ident  -> ComponentName
-  Ident  -> ConstructName
-  Ident  -> DataPointerComponentName
-  Ident  -> DoConstructName
-  Ident  -> EndName
-  Ident  -> EntityName
-  Ident  -> EntryName
-  Ident  -> ExternalName
-  Ident  -> FinalSubroutineName
-  Ident  -> ForallConstructName
-  Ident  -> FunctionName                  {cons("FunctionName")}
-  Ident  -> GenericName                   {cons("GenericName")}
-  Ident  -> IfConstructName
-  Ident  -> ImpliedDoVariable
-  Ident  -> ImportName
-  Ident  -> InterfaceName
-  Ident  -> IndexName
-  Ident  -> IntrinsicProcedureName
-  Ident  -> LocalName
-  Ident  -> ModuleName                    {cons("ModuleName")}
-  Ident  -> NamelistGroupName
-  Ident  -> ObjectName                    {cons("ObjectName")}
-  Ident  -> ParentSubmoduleName
-  Ident  -> ParentTypeName
-  Ident  -> PartName
-  Ident  -> ProcedureComponentName
-  Ident  -> ProcedureEntityName
-  Ident  -> ProcedureName                 {cons("ProcedureName")}
-  Ident  -> ProcEntityName
-  Ident  -> ProgramName                   {cons("ProgramName")}
-  Ident  -> ResultName
-  Ident  -> ScalarIntConstantName
-  Ident  -> ScalarIntVariableName
-  Ident  -> ScalarVariableName
-  Ident  -> SelectConstructName
-  Ident  -> SubmoduleName
-  Ident  -> SubroutineName                {cons("SubroutineName")}
-  Ident  -> SubroutineNameUse
-  Ident  -> TypeName                      {cons("TypeName")}
-  Ident  -> TypeParamName
-  Ident  -> UseName
-  Ident  -> VariableName
