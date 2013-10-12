@@ -13,7 +13,11 @@ LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
-EXES = build_aliases build_includes build_lists \
+TRAVERSE_OBJS = traversal.o ofp_traverse_strings.o ofp_traverse_lists.o \
+                ofp_traverse_simple.o ofp_traverse_productions.o
+
+EXES = build_string_traversals build_aliases build_includes build_list_traversals \
+       build_simple_traversals \
        traverse traverse_sig \
        check_cons_name
 
@@ -23,8 +27,8 @@ EXES = build_aliases build_includes build_lists \
 
 all: $(OBJS) $(EXES)
 
-traverse: traverse.o traversal.o
-	$(CC) -o $@ $(ARCH) $< traversal.o $(LIBS)
+traverse: traverse.o $(TRAVERSE_OBJS)
+	$(CC) -o $@ $(ARCH) $< $(TRAVERSE_OBJS) $(LIBS)
 
 traverse_sig: traverse_sig.o traversal_f.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traversal_f.o $(OBJS) $(LIBS)
@@ -35,7 +39,13 @@ build_includes: build_includes.o traverse_sig.o $(OBJS)
 build_aliases: build_aliases.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
-build_lists: build_lists.o traverse_sig.o $(OBJS)
+build_simple_traversals: build_simple_traversals.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+build_list_traversals: build_list_traversals.o traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
+
+build_string_traversals: build_string_traversals.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 build_productions: build_productions.o traverse_sig.o $(OBJS)
