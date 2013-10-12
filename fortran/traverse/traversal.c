@@ -11,38 +11,6 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
-ATbool ofp_traverse_EOS(ATerm term, pOFP_Traverse EOS)
-{
-#ifdef DEBUG_PRINT
-   printf("EOS: %s\n", ATwriteToString(term));
-#endif
-
-   if (ATmatch(term, "<term>", &EOS->term)) {
-      char * EOS_val;
-      if (ATmatch(term, "<str>", &EOS_val)) {
-         // MATCHED EOS
-         return ATtrue;
-      }
-      return ATfalse;
-   }
-   return ATfalse;
-}
-
-// This is a terminal
-ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label)
-{
-#ifdef DEBUG_PRINT
-   printf("Label: %s\n", ATwriteToString(term));
-#endif
-
-   char * Label_val;
-   if (ATmatch(term, "<str>", &Label_val)) {
-      // MATCHED Label
-      return ATtrue;
-   }
-   return ATfalse;
-}
-
 ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
 {
 #ifdef DEBUG_PRINT
@@ -76,25 +44,6 @@ ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse Name)
       //   }
       //   return ATfalse;
 }
-
-ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBlock)
-{
-#ifdef DEBUG_PRINT
-   printf("StartCommentBlock: %s\n", ATwriteToString(term));
-#endif
-
-   if (ATmatch(term, "<term>", &StartCommentBlock->term)) {
-      char * StartCommentBlock_val;
-      if (ATmatch(term, "<str>", &StartCommentBlock_val)) {
-         // MATCHED StartCommentBlock
-         return ATtrue;
-      }
-      return ATfalse;
-   }
-   return ATfalse;
-}
-
-#include "ofp_traverse_productions.c"
 
 //========================================================================================
 // R204 specification-part
@@ -467,6 +416,7 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
    return ATfalse;
 }
 
+#ifdef DELETE_ME
 ATbool ofp_traverse_AttrSpecList(ATerm term, pOFP_Traverse AttrSpecList)
 {
 #ifdef DEBUG_PRINT
@@ -490,7 +440,9 @@ ATbool ofp_traverse_AttrSpecList(ATerm term, pOFP_Traverse AttrSpecList)
    }
    return ATtrue;
 }
+#endif
 
+#ifdef DELETE_ME
 ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList)
 {
 #ifdef DEBUG_PRINT
@@ -512,6 +464,7 @@ ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList)
    }
    return ATtrue;
 }
+#endif
 
 //========================================================================================
 // R601 designator
@@ -660,10 +613,11 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt)
    return ATfalse;
 }
 
+#ifdef DELETE_ME
 //========================================================================================
 // R1101 MainProgram
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_MainProgram_old(ATerm term, pOFP_Traverse MainProgram)
+ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT
    printf("\nMainProgram: %s\n", ATwriteToString(term));
@@ -702,12 +656,13 @@ ATbool ofp_traverse_MainProgram_old(ATerm term, pOFP_Traverse MainProgram)
 
    return ATfalse;
 }
+#endif
 
+#ifdef DELETE_ME
 //========================================================================================
 // R1102 program-stmt
 //----------------------------------------------------------------------------------------
-
-ATbool ofp_traverse_ProgramStmt_orig(ATerm term, pOFP_Traverse ProgramStmt)
+ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 {
 #ifdef DEBUG_PRINT
    printf("\nProgramStmt: %s\n", ATwriteToString(term));
@@ -735,6 +690,7 @@ ATbool ofp_traverse_ProgramStmt_orig(ATerm term, pOFP_Traverse ProgramStmt)
 
    return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R1103 end-program-stmt
