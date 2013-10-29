@@ -20,7 +20,6 @@ imports
   R800ExecutionControl
   R900IOStatements
   R1000_IOEditing
-  R1100ProgramUnits
   R1200Procedures
 
 exports
