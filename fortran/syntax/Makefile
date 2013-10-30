@@ -8,20 +8,12 @@ ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 SDF_FILES =  FortranLex.sdf           \
              FortranLexFixed.sdf      \
              FortranLexFree.sdf       \
-             R400DataTypes.sdf        \
-             R500DataDeclarations.sdf \
-             R600UseDataObjects.sdf   \
-             R700Expressions.sdf      \
-             R800ExecutionControl.sdf \
-             R900IOStatements.sdf     \
-             R1000_IOEditing.sdf      \
-             R1100ProgramUnits.sdf    \
-             R1200Procedures.sdf
+             Main.sdf
 
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl FortranFixed.tbl
+all : Fortran.tbl
 
 Main.def : Main.sdf $(SDF_FILES)
 	pack-sdf -i $< -o $@
