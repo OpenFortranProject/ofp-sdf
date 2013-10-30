@@ -13,16 +13,6 @@ Module(
               )
             )
           , OpDecl(
-              "ProgramStmt"
-            , FunType(
-                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
-                , ConstType(SortNoArgs("ProgramName"))
-                , ConstType(SortNoArgs("EOS"))
-                ]
-              , ConstType(SortNoArgs("ProgramStmt"))
-              )
-            )
-          , OpDecl(
               "MainProgram"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))
@@ -103,6 +93,18 @@ Module(
           , OpDecl(
               "DeclarationConstruct"
             , FunType([ConstType(SortNoArgs("DerivedTypeDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "TypeDeclarationStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("DeclarationTypeSpec"))
+                , ConstType(Sort("Option", [SortNoArgs("OptAttrSpecList1")]))
+                , ConstType(SortNoArgs("EntityDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeDeclarationStmt"))
+              )
             )
           , OpDecl(
               "ImplicitPartStmt"
@@ -209,6 +211,16 @@ Module(
           , OpDecl(
               "AttrSpec_AS"
             , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+          , OpDecl(
+              "ProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProgramName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProgramStmt"))
+              )
             )
           , OpDecl(
               "Program"
