@@ -8,17 +8,18 @@ ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
 SDF_FILES =  FortranLex.sdf           \
              FortranLexFixed.sdf      \
              FortranLexFree.sdf       \
+             FortranFixed.sdf         \
              Main.sdf
 
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl
+all : Fortran.tbl FortranFixed.tbl
 
-Main.def : Main.sdf $(SDF_FILES)
+Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
 
-FortranFixed.def : FortranFixed.sdf $(SDF_FILES)
+FortranFixed.def : FortranFixed.sdf FortranLex.sdf FortranLexFixed.sdf
 	pack-sdf -i $< -o $@
 
 Fortran.tbl : Main.def
@@ -27,7 +28,7 @@ Fortran.tbl : Main.def
 FortranFixed.tbl : FortranFixed.def
 	sdf2table -i $< -o $@ -m FortranFixed
 
-Fortran.def : Fortran.sdf $(SDF_FILES)
+Fortran.def : Fortran.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
 
 Fortran.rtg : Fortran.def
