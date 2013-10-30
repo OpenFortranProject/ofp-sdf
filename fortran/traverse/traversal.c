@@ -11,6 +11,7 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
+#ifdef FINISHED
 ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
 {
 #ifdef DEBUG_PRINT
@@ -27,7 +28,9 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
    }
    return ATfalse;
 }
+#endif
 
+#ifdef FINISHED
 ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse Name)
 {
 #ifdef DEBUG_PRINT
@@ -44,6 +47,7 @@ ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse Name)
       //   }
       //   return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R204 specification-part
@@ -216,6 +220,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
 //========================================================================================
 // R214 action-stmt
 //----------------------------------------------------------------------------------------
+#ifdef FINISHED
 ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 {
 #ifdef DEBUG_PRINT
@@ -233,7 +238,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 
    return ATfalse;
 }
-
+#endif
 
 /**
  * Section/Clause 4: Types
@@ -288,6 +293,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
 //========================================================================================
 // R405 kind-selector
 //----------------------------------------------------------------------------------------
+#ifdef DELETE_ME
 ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
 {
 #ifdef DEBUG_PRINT
@@ -305,6 +311,7 @@ ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
 
    return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R407 int-literal-constant

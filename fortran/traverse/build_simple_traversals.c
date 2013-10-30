@@ -10,8 +10,13 @@
  */
 ATbool ofp_traverse_init()
 {
+   // symbol table
+   gSymTable = ATtableCreate(200, 50);
+
    fpc = fopen("ofp_traverse_simple.c", "w");    assert(fpc != NULL);
-   fprintf(fpc, "#include \"traversal.h\"\n\n");
+   fph = fopen("ofp_traverse_simple.h", "w");    assert(fph != NULL);
+   fprintf(fpc, "#include \"traversal.h\"\n");
+   fprintf(fpc, "#include \"ofp_traverse_simple.h\"\n\n");
 
    return ATtrue;
 }
@@ -22,6 +27,7 @@ ATbool ofp_traverse_init()
 ATbool ofp_traverse_finalize()
 {
    fclose(fpc);
+   ATtableDestroy(gSymTable);
    return ATtrue;
 }
 
@@ -50,7 +56,38 @@ ATbool ofp_traverse_Prod_name_common(ATerm term, pOFP_Traverse Prod, ATerm symbo
       printf("         Prod(name match): %s", ATwriteToString(constructor));
       printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
 
-      ofp_build_traversal_nonterminals_common(symbol, constructor, symbols);
+      return ofp_build_traversal_nonterminals_common(symbol, constructor, symbols);
+   }
+
+   return ATfalse;
+}
+
+/**
+ * Traverse a production: Prod("constructor name", [args])
+ */
+ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
+{
+#ifdef DEBUG_PRINT
+   printf("ofp_traverse_Prod: %s\n", ATwriteToString(term));
+#endif
+
+   ATerm constructor;
+   ATermList symbols;
+   if (ATmatch(term, "Prod(<term>,<term>)", &constructor, &symbols)) {
+      ATermList args = ofp_getArgList((ATermList)symbols);
+
+      if (ATisEmpty(symbols)) {
+         printf("WARNING: Prod (name match): has empty sub-production list%s\n", ATwriteToString(term));
+         return ATfalse;
+      }
+      ofp_build_match_begin(symbol, args);
+
+      printf("         Prod(name match): %s", ATwriteToString(constructor));
+      printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
+
+      ofp_build_traversal_production(symbol, constructor, symbols);
+
+      ofp_build_match_end(symbol);
    }
 
    return ATfalse;
@@ -81,7 +118,7 @@ ATbool ofp_traverse_Prod_name(ATerm term, pOFP_Traverse Prod, ATerm symbol)
       printf("         Prod(no name match): %s", ATwriteToString(constructor));
       printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
 
-      ofp_build_traversal_nonterminals(constructor, symbols);
+      return ofp_build_traversal_nonterminals(constructor, symbols);
    }
 
    return ATfalse;
@@ -145,7 +182,8 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
       printf("     symbol: %s\n", ATwriteToString(Symbol->term));
       printf("     prods : %s\n", ATwriteToString((ATerm)productions));
 
-      ofp_build_traversal_func_begin(Symbol->term);
+      ofp_build_traversal_func_header(Symbol->term);
+      ofp_build_traversal_func_begin (Symbol->term);
 
       /** There are three separate traversals of the productions:
        *    - traverse productions whose constructor name matches the symbol name
@@ -153,26 +191,28 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
        *    - traverse terminal productions (constructors (Prod) with empty production list)
        */
 
-
-      // These traversals share common constructor name (the original symbol
-      ofp_build_match_begin(Symbol->term);
+      // Reset symbol table for new scope
+      ATtableReset(gSymTable);
+      ATtablePut(gSymTable, Symbol->term, ATmake("<int>", 0));
 
       OFP_Traverse Prod;
       ATermList Prod_tail = (ATermList) ATmake("<term>", productions);
       while (! ATisEmpty(Prod_tail)) {
          Prod.term = ATgetFirst(Prod_tail);
          Prod_tail = ATgetNext (Prod_tail);
-         if (ofp_traverse_Prod_name_common(Prod.term, &Prod, Symbol->term)) {
-            // MATCHED Prod with constructor name sharing common symbol name
+
+         if (ofp_traverse_Prod(Prod.term, &Prod, Symbol->term)) {
+            printf("============== matched %s\n", ATwriteToString(Prod.term));
          }
       }
-      ofp_build_match_end(Symbol->term);
 
+#ifdef OBSOLETE_YEAH
       Prod_tail = (ATermList) ATmake("<term>", productions);
       while (! ATisEmpty(Prod_tail)) {
          Prod.term = ATgetFirst(Prod_tail);
          Prod_tail = ATgetNext (Prod_tail);
          if (ofp_traverse_Prod_name(Prod.term, &Prod, Symbol->term)) {
+            printf("============== matched %s\n", ATwriteToString(Prod.term));
             // MATCHED Prod with constructor name not sharing common symbol name
          }
       }
@@ -182,9 +222,11 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
          Prod.term = ATgetFirst(Prod_tail);
          Prod_tail = ATgetNext (Prod_tail);
          if (ofp_traverse_Prod_terminal(Prod.term, &Prod, Symbol->term)) {
+            printf("============== matched %s\n", ATwriteToString(Prod.term));
             // MATCHED Prod terminal
          }
       }
+#endif
 
       // one of the productions must match, otherwise return ATfalse
       ofp_build_traversal_func_end(Symbol->term, ATfalse);
@@ -205,8 +247,7 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
       /* First build the production table. It is needed when matching productions.
        */
       gProdTable = ofp_build_production_table(OpDecl_list.term);
-
-      //printf("%s\n", ATwriteToString((ATerm)gProdTable));
+      ATprotectTerm(gProdTable);
 
       if (ATisEmpty(gProdTable)) {
          return ATfalse;
@@ -214,17 +255,17 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
       OFP_Traverse Symbol;
       ATermList    Symbols_tail;
-      Symbol.term  = ATgetFirst(gProdTable);
       Symbols_tail = ATgetNext (gProdTable);
-      do {
+      Symbols_tail = (ATermList) ATmake("<term>", gProdTable);
+      while (! ATisEmpty(Symbols_tail)) {
+         Symbol.term  = ATgetFirst(Symbols_tail);
+         Symbols_tail = ATgetNext (Symbols_tail);
          if (ofp_traverse_Symbol(Symbol.term, &Symbol)) {
             // MATCHED Symbol
          }
+      }
 
-         Symbol.term  = ATgetFirst(Symbols_tail);
-         Symbols_tail = ATgetNext (Symbols_tail);
-
-      } while (! ATisEmpty(Symbols_tail));
+      //printf("%s\n", ATwriteToString((ATerm)gProdTable));
 
       return ATtrue;
    }

@@ -1,8 +1,46 @@
 #include "ofp_builder.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #undef DEBUG_PRINT
+
+/**
+ * Returns the symbol, or a modified form of the symbol if it
+ * is already present.
+ */
+ATerm ofp_uniqueSymbol(ATermTable table, ATerm symbol)
+{
+   int id = 0;
+   ATerm sym = symbol;
+   ATerm value = ATtableGet(table, symbol);
+
+   if (value) {
+      fprintf(fpc, "//.......       from table: %s\n", ATwriteToString(value));
+      assert(ATmatch(value, "<int>", &id));
+      id += 1;
+      fprintf(fpc, "//.......               id: %d\n", id);
+
+      int len;
+      char * symString, * uniqueString;
+
+      assert(ATmatch(symbol, "<str>", &symString));
+      assert(id < 1000);    // ensures that new name fits
+
+      len = strlen(symString) + 3;
+      uniqueString = (char*) malloc(len);
+      sprintf(uniqueString, "%s%d", symString, id);
+
+      sym = ATmake("<str>", uniqueString);
+
+      fprintf(fpc, "//.......       unique sym: %s\n", ATwriteToString(sym));
+      free(uniqueString);
+   }
+
+   ATtablePut(table, symbol, ATmake("<int>", id));
+
+   return sym;   
+}
 
 ATbool ofp_isStringType(ATerm term)
 {
@@ -36,6 +74,79 @@ ATbool ofp_isPrimitiveType(ATerm term)
          return ATtrue;
    }
    return ATfalse;
+}
+
+char * ofp_getChars(ATerm term)
+{
+   char * cptr;
+   assert(ATmatch(term, "<str>", &cptr));
+   return cptr;
+}
+
+ATerm ofp_getArgName(ATerm term)
+{
+   ATerm name, type;
+
+   assert(ATmatch(term, "Arg(<term>,<term>)", &name, &type));
+   return name;
+}
+
+ATerm ofp_getArgType(ATerm term)
+{
+   ATerm name, type;
+
+   assert(ATmatch(term, "Arg(<term>,<term>)", &name, &type));
+   return type;
+}
+
+ATerm ofp_getProdArgName(ATerm term)
+{
+   ATerm name;
+   if (ATmatch(term, "ConstType(SortNoArgs(<term>))", &name)) {
+      return name;
+   }
+   else if (ATmatch(term, "ConstType(Sort(\"Option\",[SortNoArgs(<term>)]))", &name)) {
+      return name;
+   }
+   else if (ATmatch(term, "ConstType(Sort(\"List\",[SortNoArgs(<term>)]))", &name)) {
+      return name;
+   }
+
+   return ATmake("<str>", "UNKNOWN");
+}
+
+ATerm ofp_getProdArgType(ATerm term)
+{
+   ATerm name, type;
+   if (ATmatch(term, "ConstType(SortNoArgs(<term>))", &name)) {
+      return ATmake("<str>", "Const");
+   }
+   else if (ATmatch(term, "ConstType(Sort(\"Option\",[SortNoArgs(<term>)]))", &name)) {
+      return ATmake("<str>", "Option");
+   }
+   else if (ATmatch(term, "ConstType(Sort(\"List\",[SortNoArgs(<term>)]))", &name)) {
+      return ATmake("<str>", "List");
+   }
+
+   return ATmake("<str>", "UNKNOWN");
+}
+
+ATermList ofp_getArgList(ATermList alist)
+{
+   ATerm name, type;
+
+   ATermList args = (ATermList) ATmake("[]");
+
+   ATermList tail = (ATermList) ATmake("<term>", alist);
+   while (! ATisEmpty(tail)) {
+      ATerm head = ATgetFirst(tail);
+      ATerm name = ofp_getProdArgName(head);
+      ATerm type = ofp_getProdArgType(head);
+      tail = ATgetNext(tail);
+      args = ATappend(args, ATmake("Arg(<term>,<term>)", name, type));
+   }
+
+   return args;
 }
 
 ATbool ofp_traverse_Signature(ATerm term, pOFP_Traverse Signature)
@@ -123,7 +234,6 @@ ATermList ofp_coalesceProdTable(ATermList oldTable)
       assert( ATmatch(next, "Symbol(<term>,<term>)", &nextName, &nextProd) );
 
       plist = ATappend(plist, headProd);
-      printf("-------- %s\n", ATwriteToString((ATerm)plist));
 
       // coalesce multiple productions of same name
       while (ATisEqual(headName, nextName)) {
@@ -137,7 +247,6 @@ ATermList ofp_coalesceProdTable(ATermList oldTable)
          assert( ATmatch(next, "Symbol(<term>,<term>)", &nextName, &nextProd) );
 
          plist = ATappend(plist, headProd);
-         printf("++++++++ %s\n", ATwriteToString((ATerm)plist));
       }
 
       symbol = ATmake("Symbol(<term>,<term>)", headName, plist);
@@ -182,7 +291,8 @@ ATermList ofp_build_production_table(ATerm term)
       else if (ATmatch(symType, "FunType(<term>, ConstType(SortNoArgs(<term>)))", &plist, &symName) ) {
          prod   = ATmake("Prod(<term>, <term>)", consName, plist);
          symbol = ATmake("Symbol(<term>,<term>)", symName, prod);
-         printf("******** %s\n", ATwriteToString(symbol));
+         printf("******** Prod(%d) ", ATgetLength(plist));
+         printf("%s\n", ATwriteToString(symbol));
       }
       else {
          printf("???????????????????? %s\n", ATwriteToString(symName));
@@ -217,13 +327,13 @@ ATermList ofp_coalesceAliasTable(ATermList oldTable)
    tail = ATgetNext(tail);
 
    while (1) {
-      ATerm headType, headAlias, next, nextType, nextAlias;
+      ATerm headSymbol, headAlias, headType, next, nextSymbol, nextAlias, nextType;
 
-      if (ATisEmpty(tail)) next = ATmake("Alias(None,None)");
+      if (ATisEmpty(tail)) next = ATmake("Alias(None,None,None)");
       else                 next = ATgetFirst(tail);
 
-      assert( ATmatch(head, "Alias(<term>,<term>)", &headType, &headAlias) );
-      assert( ATmatch(next, "Alias(<term>,<term>)", &nextType, &nextAlias) );
+      assert( ATmatch(head, "Alias(<term>,<term>,<term>)", &headSymbol, &headAlias, &headType) );
+      assert( ATmatch(next, "Alias(<term>,<term>,<term>)", &nextSymbol, &nextAlias, &nextType) );
 
       // throw away multiple productions of same alias
       if (ATisEqual(headAlias, nextAlias)) {
@@ -235,14 +345,14 @@ ATermList ofp_coalesceAliasTable(ATermList oldTable)
             head = ATgetFirst(tail);
             tail = ATgetNext(tail);
 
-            if (ATisEmpty(tail)) next = ATmake("Alias(None,None)");
+            if (ATisEmpty(tail)) next = ATmake("Alias(None,None,None)");
             else                 next = ATgetFirst(tail);
 
-            assert( ATmatch(head, "Alias(<term>,<term>)", &headType, &headAlias) );
-            assert( ATmatch(next, "Alias(<term>,<term>)", &nextType, &nextAlias) );
+            assert( ATmatch(head, "Alias(<term>,<term>,<term>)", &headSymbol, &headAlias, &headType) );
+            assert( ATmatch(next, "Alias(<term>,<term>,<term>)", &nextSymbol, &nextAlias, &nextType) );
          }
       }
-      else if (!ofp_isPrimitiveType(headType)) {
+      else if (!ofp_isPrimitiveType(headSymbol)) {
          // skip primitive types
          table = ATappend(table, head);
       }
@@ -254,6 +364,22 @@ ATermList ofp_coalesceAliasTable(ATermList oldTable)
    }
 
    return table;
+}
+
+ATbool ofp_build_traversal_func_header(ATerm name)
+{
+   char * percs = "%s";
+   char * nameStr;
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
+   /** write to header file
+    */
+   fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", nameStr, nameStr);
+
+   return ATtrue;
 }
 
 ATbool ofp_build_traversal_func_begin(ATerm name)
@@ -276,13 +402,17 @@ ATbool ofp_build_traversal_func_begin(ATerm name)
    fprintf(fpc, "   printf(\"%s: %s\\n\", ATwriteToString(term));\n", nameStr, percs);
    fprintf(fpc, "#endif\n\n");
 
+   /** Return condition
+    */
+   fprintf(fpc, " ATbool matched = ATfalse;\n");
+
    return ATtrue;
 }
 
 ATbool ofp_build_traversal_func_end(ATerm name, ATbool returnTrue)
 {
-   if (returnTrue) fprintf(fpc, "   return ATtrue;\n");
-   else            fprintf(fpc, "   return ATfalse;\n");
+   if (returnTrue) fprintf(fpc, " return ATtrue;\n");
+   else            fprintf(fpc, " return ATfalse;\n");
    fprintf(fpc, "}\n\n");
    return ATtrue;
 }
@@ -323,22 +453,65 @@ ATbool ofp_build_match_terminal(ATerm terminal)
    return ATtrue;
 }
 
-ATbool ofp_build_match_begin(ATerm symbol)
+ATbool ofp_build_match_args_decl(ATermList args)
 {
-   char * sym_name;
-   if (! ATmatch(symbol,      "<str>", &sym_name )) return ATfalse;
+   char * comma = "";
+   ATermList tail = (ATermList) ATmake("<term>", args);
 
-   /** Match into the symbol name traversal struct
-    */
-   fprintf(fpc, " // This match may not be required for some productions.\n");
-   fprintf(fpc, " if (ATmatch(term, \"%s(<term>)\", &%s->term)) {\n", sym_name, sym_name);
+   fprintf(fpc, " OFP_Traverse");
+   while (! ATisEmpty(tail)) {
+      ATerm head = ATgetFirst(tail);
+      ATerm name = ofp_getArgName(head);
+      tail = ATgetNext(tail);
+      fprintf(fpc, "%s %s", comma, ofp_getChars(name));
+      comma = ",";
+   }
+   fprintf(fpc, ";\n");
+
+   return ATtrue;
+}
+
+ATbool ofp_build_match_begin(ATerm symbol, ATermList args)
+{
+   int i, len;
+   ATerm cons, prod, arglist;
+   char * comma = "";
+
+   ofp_build_match_args_decl(args);
+   len = ATgetLength(args);
+
+   fprintf(fpc, " if (ATmatch(term, \"%s(", ofp_getChars(symbol));
+   for (i = 0; i < len; i++) {
+      fprintf(fpc, "%s<term>", comma);
+      comma = ",";
+   }
+   fprintf(fpc, ")\"");
+   for (i = 0; i < len; i++) {
+      ATerm name = ofp_getArgName(ATelementAt(args, i));
+      fprintf(fpc, ", &%s.term", ofp_getChars(name));
+   }
+   fprintf(fpc, ")) {\n");
 
    return ATtrue;
 }
 
 ATbool ofp_build_match_end(ATerm symbol)
 {
+   fprintf(fpc, "\n   if (matched) return ATtrue;\n");
    fprintf(fpc, " }\n\n");
+   return ATtrue;
+}
+
+ATbool ofp_build_match_sort_option_begin(ATerm symbol)
+{
+   char * name = ofp_getChars(symbol);
+   fprintf(fpc, "\n   if (ATmatch(%s.term, \"Some(<term>)\", &%s.term)) {\n", name, name);
+   return ATtrue;
+}
+
+ATbool ofp_build_match_sort_option_end(ATerm symbol)
+{
+   fprintf(fpc, "   }\n");
    return ATtrue;
 }
 
@@ -362,32 +535,73 @@ ATbool ofp_build_match_nonterminal_end(ATerm constructor, ATerm symbol)
    return ATtrue;
 }
 
-ATbool ofp_build_traversal_nonterminal_common(ATerm symbol, ATerm prod_symbol)
+ATbool ofp_build_traversal_nonterminal_common(ATerm symbol, ATerm prod_symbol, ATerm unique_sym)
 {
-   char * sym_name, * prod_name;
+   char * sym_name, * prod_name, * unique;
    if (! ATmatch(symbol,      "<str>", &sym_name )) return ATfalse;
    if (! ATmatch(prod_symbol, "<str>", &prod_name)) return ATfalse;
+   if (! ATmatch(unique_sym,  "<str>", &unique   )) return ATfalse;
 
-   fprintf(fpc, "   OFP_Traverse %s;\n", prod_name);
-   fprintf(fpc, "   if (ofp_traverse_%s(%s->term, &%s)) {\n", prod_name, sym_name, prod_name);
-   fprintf(fpc, "      // MATCHED %s\n", prod_name);
-   fprintf(fpc, "      return ATtrue;\n");
-   fprintf(fpc, "   } \n");
+   //TODO - figure this out
+   //fprintf(fpc, "   OFP_Traverse %s;\n", unique);
+   //fprintf(fpc, "   if (ofp_traverse_%s(%s->term, &%s)) {\n", prod_name, sym_name, unique);
+   fprintf(fpc, "    if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, unique);
+   fprintf(fpc, "       // MATCHED %s\n", prod_name);
+   //fprintf(fpc, "       return ATtrue;\n");
+   //fprintf(fpc, "    } \n");
+   fprintf(fpc, "    } else return ATfalse;\n");
 
    return ATtrue;
 }
 
-ATbool ofp_build_traversal_nonterminal(ATerm symbol)
+ATbool ofp_build_traversal_nonterminal(ATerm symbol, ATerm prod_symbol, ATerm unique_sym)
 {
-   char * name;
-   if (! ATmatch(symbol, "<str>", &name)) {
-      return ATfalse;
-   }
+   char * sym_name, * prod_name, * unique;
+   assert(ATmatch(symbol,      "<str>", &sym_name ));
+   assert(ATmatch(prod_symbol, "<str>", &prod_name));
+   assert(ATmatch(unique_sym,  "<str>", &unique   ));
 
-   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", name, name, name);
-   fprintf(fpc, "         // MATCHED %s\n", name);
-   fprintf(fpc, "         return ATtrue;\n");
+   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, unique);
+   fprintf(fpc, "         // MATCHED %s\n", prod_name);
+   fprintf(fpc, "         matched = ATtrue;\n");
    fprintf(fpc, "      } else return ATfalse;\n");
+
+   return ATtrue;
+}
+
+ATbool ofp_build_traversal_production(ATerm symbol, ATerm constructor, ATermList prod_symbols)
+{
+   ATermList tail = (ATermList) ATmake("<term>", prod_symbols);
+   while (! ATisEmpty(tail)) {
+      ATerm head, prod_symbol;
+      head = ATgetFirst(tail);
+      tail = ATgetNext(tail);
+
+      if (! ATmatch(head, "ConstType(<term>)", &head)) {
+         return ATfalse;
+      }
+
+      if (ATmatch(head, "Sort(\"Option\", [SortNoArgs(<term>)])", &prod_symbol)) {
+         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ofp_build_match_sort_option_begin(unique);
+         ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
+         ofp_build_match_sort_option_end(unique);
+      }
+      else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
+         fprintf(fpc, "\n");
+         ofp_build_list_traversal(prod_symbol);
+      }
+      else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
+         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         fprintf(fpc, "\n");  // make spacing same as Sort match
+         ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
+      }
+      else {
+         printf("ofp_build_traversal_nonterminals_common: need to match something else: %s\n",
+                 ATwriteToString(head));
+         return ATfalse;
+      }
+   }
 
    return ATtrue;
 }
@@ -400,11 +614,32 @@ ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, 
       head = ATgetFirst(tail);
       tail = ATgetNext(tail);
 
-      if (! ATmatch(head, "ConstType(SortNoArgs(<term>))", &prod_symbol)) {
+      if (! ATmatch(head, "ConstType(<term>)", &head)) {
          return ATfalse;
       }
-      ofp_build_traversal_nonterminal_common(symbol, prod_symbol);
+
+      if (ATmatch(head, "Sort(\"Option\", [SortNoArgs(<term>)])", &prod_symbol)) {
+         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ofp_build_match_sort_option_begin(unique);
+         ofp_build_traversal_nonterminal_common(symbol, prod_symbol, unique);
+         ofp_build_match_sort_option_end(unique);
+      }
+      else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
+         fprintf(fpc, "    //########### ==need to match LIST: %s\n", ATwriteToString(prod_symbol));
+         return ofp_build_list_traversal(prod_symbol);
+      }
+      else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
+         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ofp_build_traversal_nonterminal_common(symbol, prod_symbol, unique);
+         return ATtrue;
+      }
+      else {
+         printf("ofp_build_traversal_nonterminals_common: need to match something else: %s\n",
+                 ATwriteToString(head));
+         return ATfalse;
+      }
    }
+
    return ATtrue;
 }
 
@@ -422,12 +657,11 @@ ATbool ofp_build_traversal_nonterminals(ATerm constructor, ATermList prod_symbol
       tail = ATgetNext(tail);
 
       if (ATmatch(head, "ConstType(SortNoArgs(<term>))", &prod_symbol)) {
-         printf("....... symbol: %s\n", ATwriteToString(prod_symbol));
+         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ofp_build_match_nonterminal_begin(constructor, unique);
+         //ofp_build_traversal_nonterminal(prod_symbol, unique);
+         ofp_build_match_nonterminal_end(constructor, unique);
       }
-
-      ofp_build_match_nonterminal_begin(constructor, prod_symbol);
-      ofp_build_traversal_nonterminal(prod_symbol);
-      ofp_build_match_nonterminal_end(constructor, prod_symbol);
    }
 
    return ATtrue;
@@ -461,6 +695,31 @@ ATbool ofp_build_list_traversal(ATerm name)
       return ATfalse;
    }
 
+   /** Traverse the list
+    */
+   fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s.term);\n", nameStr, nameStr);
+   fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
+   fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
+   fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
+   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
+   fprintf(fpc, "         // MATCHED %s\n", nameStr);
+   fprintf(fpc, "         matched = ATtrue;\n", nameStr);
+   fprintf(fpc, "      } else return ATfalse;\n");
+   fprintf(fpc, "   }\n");
+
+   return ATtrue;
+}
+
+#ifdef OBSOLETE
+ATbool ofp_build_list_traversal(ATerm name)
+{
+   char * nameStr;
+   char * percs = "%s";
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
    /** write to header file
     */
    //fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", listStr, listStr);
@@ -485,3 +744,4 @@ ATbool ofp_build_list_traversal(ATerm name)
 
    return ATtrue;
 }
+#endif

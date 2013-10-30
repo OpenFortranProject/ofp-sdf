@@ -58,28 +58,45 @@ ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
 
 ATbool ofp_traverse_OpDeclInj(ATerm term, pOFP_Traverse OpDeclInj)
 {
-   ATerm alias, type, opt;
-   int isOptType = 0;
+   ATerm alias, symbol, type;
 
    if (ATmatch(term, "OpDeclInj(<term>)", &OpDeclInj->term)) {
 #ifdef DEBUG_PRINT
       printf("\nofp_traverse_OpDeclInj: %s\n", ATwriteToString(OpDeclInj->term));
 #endif
-      if (ATmatch(OpDeclInj->term, "FunType(<term>,<term>)", &type, &alias)) {
+      if (ATmatch(OpDeclInj->term, "FunType(<term>,<term>)", &symbol, &alias)) {
          ATermList list;
-         if (ATmatch(type, "<term>", &list)) {
-            // not a simple alias
-            if (ATgetLength(list) > 1) return ATfalse;
-         } else return ATfalse;
-         if (ATmatch(type, "[ConstType(SortNoArgs(<term>))]", &type)) {
-            // MATCHED object type
+         if (ATmatch(symbol, "<term>", &list)) {
+            if (ATgetLength(list) > 1) {
+               // not a simple alias
+               //printf("------     compound type : %s\n", ATwriteToString(symbol));
+               return ATfalse;
+            }
          } else return ATfalse;
          if (ATmatch(alias, "ConstType(SortNoArgs(<term>))", &alias)) {
             // MATCHED object alias
-         } else return ATfalse;
+         }
+         else {
+            printf("****** not a simple alias: %s\n", ATwriteToString(alias));
+            return ATfalse;
+         }
+
+         if (ATmatch(symbol, "[ConstType(SortNoArgs(<term>))]", &symbol)) {
+            // MATCHED symbol
+            type = ATmake("<str>", "Const");
+         }
+         else if (ATmatch(symbol, "[ConstType(Sort(\"Option\",[SortNoArgs(<term>)]))]", &symbol)) {
+            printf("...... option type : %s\n", ATwriteToString(symbol));
+            printf("......       alias : %s\n", ATwriteToString(alias));
+            type = ATmake("<str>", "Option");
+         }
+         else {
+            printf("......  ????? type : %s\n", ATwriteToString(symbol));
+            return ATfalse;
+         }
       } else return ATfalse;
 
-      OpDeclInj->term = ATmake("Alias(<term>,<term>)", type, alias);
+      OpDeclInj->term = ATmake("Alias(<term>,<term>,<term>)", symbol, alias, type);
 
       return ATtrue;
    }

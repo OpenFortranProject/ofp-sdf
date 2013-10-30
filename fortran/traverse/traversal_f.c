@@ -46,12 +46,14 @@ char * ofp_getArgNameStr(ATerm arg, char ** name)
    return *name;
 }
 
+#ifdef OBSOLETE
 ATerm ofp_getArgName(ATerm arg)
 {
    ATerm kind, name;
    assert(ATmatch(arg, "[<term>,<term>]", &kind, &name));
    return name;
 }
+#endif
 
 ATerm ofp_getArgKind(ATerm arg)
 {
@@ -321,6 +323,7 @@ void ofp_build_term_traversal(ATerm arg, char * src_suffix, int depth)
                    else                            printf("}\n");
 }
 
+#ifdef EXPIRED
 void ofp_build_list_traversal(ATerm arg, char * src_suffix, int depth)
 {
    char * arg_name = ofp_getArgNameStr(arg, &arg_name);
@@ -336,6 +339,7 @@ void ofp_build_list_traversal(ATerm arg, char * src_suffix, int depth)
 
    indent(depth);  printf("}\n");
 }
+#endif
 
 void ofp_build_or_traversal(ATerm arg, char * src_suffix, int depth)
 {
@@ -646,6 +650,10 @@ ATermList ofp_coalesceTypeTable(ATermList oldTable)
    ATermList table = (ATermList) ATmake("[]");
    ATermList types = (ATermList) ATmake("[]");
    ATermList tail  = (ATermList) ATmake("<term>", oldTable);
+
+   if (ATisEmpty(tail)) {
+      return oldTable;
+   }
 
    head = ATgetFirst(tail);
    tail = ATgetNext(tail);
