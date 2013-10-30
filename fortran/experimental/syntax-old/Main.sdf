@@ -1,0 +1,40 @@
+      
+%%%%%%%%%%
+%% This Fortran grammar is structured according to document ISO/IEC 1539:1991. 
+%% Rulenumbers are named R2xx - R12xx as in Annex D of 1539:1991
+%% The grammar is adapted from an ELI project grammer, http://eli-project.cvs.sourceforge.net/eli-project
+%%
+%%%%%%%%%%
+%% ISO/IEC 1539:1991 section R2xx Fortran terms and concepts
+%%%%%%%%%%
+
+module Main
+
+imports
+
+  FortranLex
+  FortranLexFree
+  R400DataTypes
+  R500DataDeclarations
+  R600UseDataObjects
+  R700Expressions
+  R800ExecutionControl
+  R900IOStatements
+  R1000_IOEditing
+  R1100ProgramUnits
+  R1200Procedures
+
+exports
+
+context-free start-symbols 
+  Program
+
+context-free syntax
+
+%%R201 JD: the optional startcommentblock is needed to parse comment lines in 1st lines of a file.
+%% original: ExecutableProgram ProgramUnit -> ExecutableProgram
+
+%%R201
+  StartCommentBlock? ProgramUnit+              -> Program          {cons("Program")}
+
+%%TODO - Figure out what Fortran.sdf really does
