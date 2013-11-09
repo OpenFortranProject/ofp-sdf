@@ -398,6 +398,116 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
  return ATfalse;
 }
 
+ATbool ofp_traverse_CharSelector(ATerm term, pOFP_Traverse CharSelector)
+{
+#ifdef DEBUG_PRINT
+   printf("CharSelector: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "CharSelector_KIND(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED CharSelector_KIND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr1, TypeParamValue;
+ if (ATmatch(term, "CharSelector_KIND_LEN(<term>,<term>)", &Expr1.term, &TypeParamValue.term)) {
+
+      if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
+         // MATCHED Expr
+         matched = ATtrue;
+      } else return ATfalse;
+
+      if (ofp_traverse_TypeParamValue(TypeParamValue.term, &TypeParamValue)) {
+         // MATCHED TypeParamValue
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED CharSelector_KIND_LEN
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeParamValue1, Expr2;
+ if (ATmatch(term, "CharSelector_LEN_KIND(<term>,<term>)", &TypeParamValue1.term, &Expr2.term)) {
+
+      if (ofp_traverse_TypeParamValue(TypeParamValue1.term, &TypeParamValue1)) {
+         // MATCHED TypeParamValue
+         matched = ATtrue;
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr2.term, &Expr2)) {
+         // MATCHED Expr
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED CharSelector_LEN_KIND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LengthSelector;
+ if (ATmatch(term, "CharSelector_LS(<term>)", &LengthSelector.term)) {
+
+      if (ofp_traverse_LengthSelector(LengthSelector.term, &LengthSelector)) {
+         // MATCHED LengthSelector
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED CharSelector_LS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LengthSelector(ATerm term, pOFP_Traverse LengthSelector)
+{
+#ifdef DEBUG_PRINT
+   printf("LengthSelector: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse CharLength;
+ if (ATmatch(term, "LengthSelector_STAR(<term>)", &CharLength.term)) {
+
+      if (ofp_traverse_CharLength(CharLength.term, &CharLength)) {
+         // MATCHED CharLength
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED LengthSelector_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeParamValue;
+ if (ATmatch(term, "LengthSelector_LEN(<term>)", &TypeParamValue.term)) {
+
+      if (ofp_traverse_TypeParamValue(TypeParamValue.term, &TypeParamValue)) {
+         // MATCHED TypeParamValue
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED LengthSelector_LEN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt)
 {
 #ifdef DEBUG_PRINT
