@@ -551,10 +551,17 @@ ATbool ofp_build_match_begin(ATerm symbol, ATerm constructor, ATermList args)
    return ATtrue;
 }
 
-ATbool ofp_build_match_end(ATerm symbol)
+ATbool ofp_build_match_end(ATerm symbol, ATerm constructor)
 {
-   fprintf(fpc, "\n   if (matched) return ATtrue;\n");
+   if (ATisEqual(symbol, constructor)) {
+      fprintf(fpc, "\n   if (matched) return ATtrue;\n");
+   }
+   else {
+      fprintf(fpc, "\n   // MATCHED %s\n", ATwriteToString(constructor));
+      fprintf(fpc, "\n   return ATtrue;\n");
+   }
    fprintf(fpc, " }\n\n");
+
    return ATtrue;
 }
 
@@ -672,7 +679,7 @@ ATbool ofp_build_traversal_nonterminal(ATerm symbol, ATerm prod_symbol, ATerm un
    assert(ATmatch(prod_symbol, "<str>", &prod_name));
    assert(ATmatch(unique_sym,  "<str>", &unique   ));
 
-   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, unique);
+   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, unique, unique);
    fprintf(fpc, "         // MATCHED %s\n", prod_name);
    fprintf(fpc, "         matched = ATtrue;\n");
    fprintf(fpc, "      } else return ATfalse;\n");
