@@ -6,10 +6,23 @@
 #undef DEBUG_PRINT
 
 /**
+ * Returns the ultimate symbol found after traversing the alias table
+ */
+ATerm ofp_getUltimateSymbol(ATermTable table, ATerm symbol)
+{
+   ATerm alias = ATtableGet(table, symbol);
+   if (alias != NULL) {
+      ATerm aname = ofp_getAliasSymbol(alias);
+      return ofp_getUltimateSymbol(table, aname);
+   }
+   return symbol;
+}
+
+/**
  * Returns the symbol, or a modified form of the symbol if it
  * is already present.
  */
-ATerm ofp_uniqueSymbol(ATermTable table, ATerm symbol)
+ATerm ofp_getUniqueSymbol(ATermTable table, ATerm symbol)
 {
    int id = 0;
    ATerm sym = symbol;
@@ -58,10 +71,28 @@ ATbool ofp_isIdentType(ATerm term)
    return ATfalse;
 }
 
+ATbool ofp_isOptionType(ATerm term)
+{
+   if (ATmatch(term, "\"Option\"")) {
+      return ATtrue;
+   }
+   return ATfalse;
+}
+
+ATbool ofp_isConstType(ATerm term)
+{
+   if (ATmatch(term, "\"Const\"")) {
+      return ATtrue;
+   }
+   return ATfalse;
+}
+
 enum DataType ofp_getDataType(ATerm term)
 {
    if (ofp_isStringType(term)) return STRING;
    if (ofp_isIdentType (term)) return IDENT;
+   if (ofp_isOptionType(term)) return OPTION;
+   if (ofp_isConstType (term)) return CONST;
 
    return UNKNOWN;
 }
@@ -96,6 +127,30 @@ ATerm ofp_getArgType(ATerm term)
    ATerm name, type;
 
    assert(ATmatch(term, "Arg(<term>,<term>)", &name, &type));
+   return type;
+}
+
+ATerm ofp_getAliasSymbol(ATerm term)
+{
+   ATerm symbol, alias, type;
+
+   assert(ATmatch(term, "Alias(<term>,<term>,<term>)", &symbol, &alias, &type));
+   return symbol;
+}
+
+ATerm ofp_getAliasName(ATerm term)
+{
+   ATerm symbol, alias, type;
+
+   assert(ATmatch(term, "Alias(<term>,<term>,<term>)", &symbol, &alias, &type));
+   return alias;
+}
+
+ATerm ofp_getAliasType(ATerm term)
+{
+   ATerm symbol, alias, type;
+
+   assert(ATmatch(term, "Alias(<term>,<term>,<term>)", &symbol, &alias, &type));
    return type;
 }
 
@@ -140,8 +195,9 @@ ATermList ofp_getArgList(ATermList alist)
    ATermList tail = (ATermList) ATmake("<term>", alist);
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
-      ATerm name = ofp_getProdArgName(head);
+      ATerm name = ofp_getUltimateSymbol(gAliasTable, ofp_getProdArgName(head));
       ATerm type = ofp_getProdArgType(head);
+
       tail = ATgetNext(tail);
       args = ATappend(args, ATmake("Arg(<term>,<term>)", name, type));
    }
@@ -471,7 +527,7 @@ ATbool ofp_build_match_args_decl(ATermList args)
    return ATtrue;
 }
 
-ATbool ofp_build_match_begin(ATerm symbol, ATermList args)
+ATbool ofp_build_match_begin(ATerm symbol, ATerm constructor, ATermList args)
 {
    int i, len;
    ATerm cons, prod, arglist;
@@ -480,7 +536,7 @@ ATbool ofp_build_match_begin(ATerm symbol, ATermList args)
    ofp_build_match_args_decl(args);
    len = ATgetLength(args);
 
-   fprintf(fpc, " if (ATmatch(term, \"%s(", ofp_getChars(symbol));
+   fprintf(fpc, " if (ATmatch(term, \"%s(", ofp_getChars(constructor));
    for (i = 0; i < len; i++) {
       fprintf(fpc, "%s<term>", comma);
       comma = ",";
@@ -502,10 +558,65 @@ ATbool ofp_build_match_end(ATerm symbol)
    return ATtrue;
 }
 
-ATbool ofp_build_match_sort_option_begin(ATerm symbol)
+ATbool ofp_build_match_all_begin(ATerm symbol, ATerm unique, ATerm type, ATbool aliased)
+{
+   char * name;
+
+   switch (ofp_getDataType(type)) {
+      case OPTION:
+         ofp_build_match_sort_option_begin(unique, aliased);
+         break;
+      case CONST:
+         name = ofp_getChars(unique);
+         fprintf(fpc, "   if (ATmatch(%s.term, \"(<term>)\", &%s.term)) {\n", name, name);
+         break;
+      default:
+         printf("ERROR: ofp_build_match_all_begin: symbol type not handled: %s\n", ATwriteToString(type));
+         break;
+   }
+
+   /* Recurs if an alias exists */
+   ATerm alias = ATtableGet(gAliasTable, symbol);
+   if (alias != NULL) {
+      ATerm aname   = ofp_getAliasName(alias);
+      ATerm asymbol = ofp_getAliasSymbol(alias);
+      type = ofp_getAliasType(alias);
+      printf("------ recursion: %s\n", ATwriteToString(alias));
+      printf("------     alias: %s\n", ATwriteToString(asymbol));
+      printf("------    unique: %s\n", ATwriteToString(unique));
+      printf("------      type: %s\n", ATwriteToString(type));
+
+      ofp_build_match_all_begin(asymbol, unique, type, ATtrue);
+   }
+
+   return ATtrue;
+}
+
+ATbool ofp_build_match_all_end(ATerm symbol, ATerm unique, ATerm type)
+{
+   fprintf(fpc, "   }\n");
+
+   /* Recurs if an alias exists */
+   ATerm alias = ATtableGet(gAliasTable, symbol);
+   if (alias != NULL) {
+      ATerm asymbol = ofp_getAliasSymbol(alias);
+      printf("++++++     alias: %s\n", ATwriteToString(asymbol));
+      ofp_build_match_all_end(asymbol, unique, type);
+   }
+
+   return ATtrue;
+
+}
+
+ATbool ofp_build_match_sort_option_begin(ATerm symbol, ATbool aliased)
 {
    char * name = ofp_getChars(symbol);
-   fprintf(fpc, "\n   if (ATmatch(%s.term, \"Some(<term>)\", &%s.term)) {\n", name, name);
+   if (aliased) {
+      fprintf(fpc, "   if (ATmatch(%s.term, \"(Some(<term>))\", &%s.term)) {\n", name, name);
+   }
+   else {
+      fprintf(fpc, "   if (ATmatch(%s.term, \"Some(<term>)\", &%s.term)) {\n", name, name);
+   }
    return ATtrue;
 }
 
@@ -582,17 +693,31 @@ ATbool ofp_build_traversal_production(ATerm symbol, ATerm constructor, ATermList
       }
 
       if (ATmatch(head, "Sort(\"Option\", [SortNoArgs(<term>)])", &prod_symbol)) {
-         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
-         ofp_build_match_sort_option_begin(unique);
-         ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
-         ofp_build_match_sort_option_end(unique);
+         ATerm ultimate = ofp_getUltimateSymbol (gAliasTable, prod_symbol);
+         ATerm unique   = ofp_getUniqueSymbol   (gSymTable,   ultimate);
+         ATerm alias    = ATtableGet            (gAliasTable, prod_symbol);
+
+                      printf(".....     cons  : %s\n", ATwriteToString(constructor));
+                      printf(".....     symbol: %s\n", ATwriteToString(symbol));
+                      printf(".....sort symbol: %s\n", ATwriteToString(prod_symbol));
+                      printf(".....ulti symbol: %s\n", ATwriteToString(ultimate));
+                      printf(".....uniq symbol: %s\n", ATwriteToString(unique));
+   if (alias != NULL) printf(".....     alias : %s\n", ATwriteToString(alias));
+
+         //ofp_build_match_sort_option_begin(unique);
+         fprintf(fpc, "\n");  // pretty printing
+         ofp_build_match_all_begin(prod_symbol, unique, ATmake("<str>", "Option"), ATfalse);
+         ofp_build_traversal_nonterminal(symbol, ultimate, unique);
+         //ofp_build_match_sort_option_end(unique);
+         ofp_build_match_all_end(prod_symbol, unique, ATmake("<str>", "Option"));
       }
       else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
          fprintf(fpc, "\n");
          ofp_build_list_traversal(prod_symbol);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
-         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+   printf(".....arg  symbol: %s\n", ATwriteToString(prod_symbol));
+         ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
          fprintf(fpc, "\n");  // make spacing same as Sort match
          ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
       }
@@ -619,8 +744,8 @@ ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, 
       }
 
       if (ATmatch(head, "Sort(\"Option\", [SortNoArgs(<term>)])", &prod_symbol)) {
-         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
-         ofp_build_match_sort_option_begin(unique);
+         ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
+         ofp_build_match_sort_option_begin(unique, ATfalse);
          ofp_build_traversal_nonterminal_common(symbol, prod_symbol, unique);
          ofp_build_match_sort_option_end(unique);
       }
@@ -629,7 +754,7 @@ ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, 
          return ofp_build_list_traversal(prod_symbol);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
-         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
          ofp_build_traversal_nonterminal_common(symbol, prod_symbol, unique);
          return ATtrue;
       }
@@ -657,7 +782,7 @@ ATbool ofp_build_traversal_nonterminals(ATerm constructor, ATermList prod_symbol
       tail = ATgetNext(tail);
 
       if (ATmatch(head, "ConstType(SortNoArgs(<term>))", &prod_symbol)) {
-         ATerm unique = ofp_uniqueSymbol(gSymTable, prod_symbol);
+         ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
          ofp_build_match_nonterminal_begin(constructor, unique);
          //ofp_build_traversal_nonterminal(prod_symbol, unique);
          ofp_build_match_nonterminal_end(constructor, unique);
