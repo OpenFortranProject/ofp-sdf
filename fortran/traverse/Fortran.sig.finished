@@ -1,0 +1,173 @@
+Module(
+  "Fortran"
+, [ Signature(
+      [ Constructors(
+          [
+
+            OpDecl(
+              "Program"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("StartCommentBlock")]))
+                , ConstType(Sort("List", [SortNoArgs("ProgramUnit")]))
+                ]
+              , ConstType(SortNoArgs("Program"))
+              )
+            )
+
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("BlockData"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("Submodule"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("Module"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("ExternalSubprogram"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+          , OpDecl(
+              "ProgramUnit"
+            , FunType([ConstType(SortNoArgs("MainProgram"))], ConstType(SortNoArgs("ProgramUnit")))
+            )
+
+          , OpDecl(
+              "SpecificationPart"
+            , FunType(
+                [ ConstType(Sort("List", [SortNoArgs("UseStmt")]))
+                , ConstType(Sort("List", [SortNoArgs("ImportStmt")]))
+                , ConstType(Sort("Option", [SortNoArgs("ImplicitPart")]))
+                , ConstType(Sort("List", [SortNoArgs("DeclarationConstruct")]))
+                ]
+              , ConstType(SortNoArgs("SpecificationPart"))
+              )
+            )
+
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("StmtFunctionStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("TypeDeclarationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("OtherSpecificationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("ProcedureDeclarationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("ParameterStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("InterfaceBlock"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("EnumDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+          , OpDecl(
+              "DeclarationConstruct"
+            , FunType([ConstType(SortNoArgs("DerivedTypeDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+
+          , OpDecl(
+              "DeclarationTypeSpec"
+            , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+            )
+
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("AttrSpecList0")]))]
+              , ConstType(SortNoArgs("OptAttrSpecList1"))
+              )
+            )
+          , OpDecl(
+              "TypeDeclarationStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("DeclarationTypeSpec"))
+                , ConstType(Sort("Option", [SortNoArgs("OptAttrSpecList1")]))
+                , ConstType(SortNoArgs("EntityDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeDeclarationStmt"))
+              )
+            )
+
+          , OpDecl(
+              "MainProgram"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(SortNoArgs("ExecutionPart"))
+                , ConstType(Sort("Option", [SortNoArgs("InternalSubprogramPart")]))
+                , ConstType(SortNoArgs("EndProgramStmt"))
+                ]
+              , ConstType(SortNoArgs("MainProgram"))
+              )
+            )
+
+          , OpDecl(
+              "ProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProgramName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProgramStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptProgramName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndProgramStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ProgramName")]))]
+              , ConstType(SortNoArgs("OptProgramName1"))
+              )
+            )
+
+          , OpDecl(
+              "ObjectName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ObjectName")))
+            )
+          , OpDecl(
+              "ProgramName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProgramName")))
+            )
+
+          ]
+        )
+      ]
+    )
+  ]
+)
