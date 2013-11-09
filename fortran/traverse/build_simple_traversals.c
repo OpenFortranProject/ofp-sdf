@@ -6,12 +6,52 @@
 #undef DEBUG_PRINT
 
 /**
+ * Build table of aliases.
+ * An entry in the table is Alias(symbol, alias, type)
+ */
+ATbool ofp_build_alias_table(ATermTable aTable, ATerm term)
+{
+   ATermList tail = (ATermList) ATmake("<term>", term);
+   while (! ATisEmpty(tail)) {
+      ATerm head, funtype, alias, symbol, type;
+
+      head = ATgetFirst(tail);
+      tail = ATgetNext(tail);
+
+      if (! ATmatch(head, "OpDeclInj(<term>)", &funtype)) {
+         continue;
+      }
+
+      assert (ATmatch(funtype, "FunType([<term>],ConstType(SortNoArgs(<term>)))", &symbol, &alias));
+
+      if (ATmatch(symbol, "ConstType(SortNoArgs(<term>))", &symbol)) {
+         // MATCHED symbol
+         type = ATmake("<str>", "Const");
+      }
+      else if (ATmatch(symbol, "ConstType(Sort(\"Option\",[SortNoArgs(<term>)]))", &symbol)) {
+            printf("...... option type : %s\n", ATwriteToString(symbol));
+            printf("......       alias : %s\n", ATwriteToString(alias));
+            type = ATmake("<str>", "Option");
+      }
+      else {
+         printf("......  ????? type : %s\n", ATwriteToString(symbol));
+         continue;
+      }
+
+      ATtablePut(aTable, alias, ATmake("Alias(<term>,<term>,<term>)", symbol, alias, type));
+   }
+
+   return ATtrue;
+}
+
+/**
  * Perform any necessary initialization for this traversal
  */
 ATbool ofp_traverse_init()
 {
-   // symbol table
-   gSymTable = ATtableCreate(200, 50);
+   // symbol and alias tables
+   gSymTable   = ATtableCreate(200, 50);
+   gAliasTable = ATtableCreate(200, 50);
 
    fpc = fopen("ofp_traverse_simple.c", "w");    assert(fpc != NULL);
    fph = fopen("ofp_traverse_simple.h", "w");    assert(fph != NULL);
@@ -28,6 +68,7 @@ ATbool ofp_traverse_finalize()
 {
    fclose(fpc);
    ATtableDestroy(gSymTable);
+   ATtableDestroy(gAliasTable);
    return ATtrue;
 }
 
@@ -80,14 +121,15 @@ ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
          printf("WARNING: Prod (name match): has empty sub-production list%s\n", ATwriteToString(term));
          return ATfalse;
       }
-      ofp_build_match_begin(symbol, args);
+      ofp_build_match_begin(symbol, constructor, args);
 
-      printf("         Prod(name match): %s", ATwriteToString(constructor));
+      printf("     Prod(name match): %s", ATwriteToString(constructor));
       printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
 
       ofp_build_traversal_production(symbol, constructor, symbols);
-
       ofp_build_match_end(symbol);
+
+      return ATtrue;
    }
 
    return ATfalse;
@@ -253,6 +295,10 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
          return ATfalse;
       }
 
+      ofp_build_alias_table(gAliasTable, OpDecl_list.term);
+
+      //gAliasTable = ofp_build_alias_table(OpDecl_list.term);
+
       OFP_Traverse Symbol;
       ATermList    Symbols_tail;
       Symbols_tail = ATgetNext (gProdTable);
@@ -265,6 +311,8 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
          }
       }
 
+      ATermList alist = ATtableValues(gAliasTable);
+      printf("\n...... aTable: %s\n\n\n", ATwriteToString((ATerm)alist));
       //printf("%s\n", ATwriteToString((ATerm)gProdTable));
 
       return ATtrue;
