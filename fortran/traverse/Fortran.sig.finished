@@ -185,6 +185,40 @@ Module(
               )
             )
 
+          , OpDecl("AttrSpec_VOLATILE", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_VALUE", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_TARGET", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_SAVE", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_PROTECTED", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_POINTER", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_PARAMETER", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_OPTIONAL", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl(
+              "AttrSpec_LBS"
+            , FunType([ConstType(SortNoArgs("LanguageBindingSpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+          , OpDecl("AttrSpec_INTRINSIC", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl(
+              "AttrSpec_INTENT"
+            , FunType([ConstType(SortNoArgs("IntentSpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+          , OpDecl("AttrSpec_EXTERNAL", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl(
+              "AttrSpec_DIMENSION"
+            , FunType([ConstType(SortNoArgs("ArraySpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+          , OpDecl("AttrSpec_CONTIGUOUS", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl(
+              "AttrSpec_CODIMENSION"
+            , FunType([ConstType(SortNoArgs("CoarraySpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+          , OpDecl("AttrSpec_ASYNCHRONOUS", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl("AttrSpec_ALLOCATABLE", ConstType(SortNoArgs("AttrSpec")))
+          , OpDecl(
+              "AttrSpec_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("AttrSpec")))
+            )
+
           , OpDecl(
               "MainProgram"
             , FunType(

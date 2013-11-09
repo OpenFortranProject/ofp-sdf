@@ -558,6 +558,173 @@ ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclaratio
  return ATfalse;
 }
 
+ATbool ofp_traverse_AttrSpec(ATerm term, pOFP_Traverse AttrSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("AttrSpec: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ if (ATmatch(term, "AttrSpec_VOLATILE")) {
+
+   // MATCHED AttrSpec_VOLATILE
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_VALUE")) {
+
+   // MATCHED AttrSpec_VALUE
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_TARGET")) {
+
+   // MATCHED AttrSpec_TARGET
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_SAVE")) {
+
+   // MATCHED AttrSpec_SAVE
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_PROTECTED")) {
+
+   // MATCHED AttrSpec_PROTECTED
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_POINTER")) {
+
+   // MATCHED AttrSpec_POINTER
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_PARAMETER")) {
+
+   // MATCHED AttrSpec_PARAMETER
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_OPTIONAL")) {
+
+   // MATCHED AttrSpec_OPTIONAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LanguageBindingSpec;
+ if (ATmatch(term, "AttrSpec_LBS(<term>)", &LanguageBindingSpec.term)) {
+
+      if (ofp_traverse_LanguageBindingSpec(LanguageBindingSpec.term, &LanguageBindingSpec)) {
+         // MATCHED LanguageBindingSpec
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED AttrSpec_LBS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_INTRINSIC")) {
+
+   // MATCHED AttrSpec_INTRINSIC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntentSpec;
+ if (ATmatch(term, "AttrSpec_INTENT(<term>)", &IntentSpec.term)) {
+
+      if (ofp_traverse_IntentSpec(IntentSpec.term, &IntentSpec)) {
+         // MATCHED IntentSpec
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED AttrSpec_INTENT
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_EXTERNAL")) {
+
+   // MATCHED AttrSpec_EXTERNAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ArraySpec;
+ if (ATmatch(term, "AttrSpec_DIMENSION(<term>)", &ArraySpec.term)) {
+
+      if (ofp_traverse_ArraySpec(ArraySpec.term, &ArraySpec)) {
+         // MATCHED ArraySpec
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED AttrSpec_DIMENSION
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_CONTIGUOUS")) {
+
+   // MATCHED AttrSpec_CONTIGUOUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CoarraySpec;
+ if (ATmatch(term, "AttrSpec_CODIMENSION(<term>)", &CoarraySpec.term)) {
+
+      if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
+         // MATCHED CoarraySpec
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED AttrSpec_CODIMENSION
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_ASYNCHRONOUS")) {
+
+   // MATCHED AttrSpec_ASYNCHRONOUS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "AttrSpec_ALLOCATABLE")) {
+
+   // MATCHED AttrSpec_ALLOCATABLE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse AccessSpec;
+ if (ATmatch(term, "AttrSpec_AS(<term>)", &AccessSpec.term)) {
+
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED AttrSpec_AS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT
