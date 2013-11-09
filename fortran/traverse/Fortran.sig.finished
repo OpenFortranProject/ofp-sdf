@@ -219,6 +219,28 @@ Module(
             , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("AttrSpec")))
             )
 
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ArraySpec"))], ConstType(SortNoArgs("ArraySpec0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("CoarraySpec"))], ConstType(SortNoArgs("CoarraySpec0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("CharLength"))], ConstType(SortNoArgs("CharLength0")))
+            )
+          , OpDecl(
+              "EntityDecl"
+            , FunType(
+                [ ConstType(SortNoArgs("ObjectName"))
+                , ConstType(Sort("Option", [SortNoArgs("ArraySpec0")]))
+                , ConstType(Sort("Option", [SortNoArgs("CoarraySpec0")]))
+                , ConstType(Sort("Option", [SortNoArgs("CharLength0")]))
+                , ConstType(Sort("Option", [SortNoArgs("Initialization")]))
+                ]
+              , ConstType(SortNoArgs("EntityDecl"))
+              )
+            )
+
           , OpDecl(
               "MainProgram"
             , FunType(

@@ -725,6 +725,62 @@ ATbool ofp_traverse_AttrSpec(ATerm term, pOFP_Traverse AttrSpec)
  return ATfalse;
 }
 
+ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
+{
+#ifdef DEBUG_PRINT
+   printf("EntityDecl: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse ObjectName, ArraySpec, CoarraySpec, CharLength, Initialization;
+ if (ATmatch(term, "EntityDecl(<term>,<term>,<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CoarraySpec.term, &CharLength.term, &Initialization.term)) {
+
+      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
+         // MATCHED ObjectName
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (ATmatch(ArraySpec.term, "Some(<term>)", &ArraySpec.term)) {
+   if (ATmatch(ArraySpec.term, "(<term>)", &ArraySpec.term)) {
+      if (ofp_traverse_ArraySpec(ArraySpec.term, &ArraySpec)) {
+         // MATCHED ArraySpec
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(CoarraySpec.term, "Some(<term>)", &CoarraySpec.term)) {
+   if (ATmatch(CoarraySpec.term, "(<term>)", &CoarraySpec.term)) {
+      if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
+         // MATCHED CoarraySpec
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(CharLength.term, "Some(<term>)", &CharLength.term)) {
+   if (ATmatch(CharLength.term, "(<term>)", &CharLength.term)) {
+      if (ofp_traverse_CharLength(CharLength.term, &CharLength)) {
+         // MATCHED CharLength
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(Initialization.term, "Some(<term>)", &Initialization.term)) {
+      if (ofp_traverse_Initialization(Initialization.term, &Initialization)) {
+         // MATCHED Initialization
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT
