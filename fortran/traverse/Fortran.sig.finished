@@ -131,6 +131,38 @@ Module(
               )
             )
 
+          , OpDecl(
+              "CharSelector_KIND"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("CharSelector")))
+            )
+          , OpDecl(
+              "CharSelector_KIND_LEN"
+            , FunType(
+                [ConstType(SortNoArgs("Expr")), ConstType(SortNoArgs("TypeParamValue"))]
+              , ConstType(SortNoArgs("CharSelector"))
+              )
+            )
+          , OpDecl(
+              "CharSelector_LEN_KIND"
+            , FunType(
+                [ConstType(SortNoArgs("TypeParamValue")), ConstType(SortNoArgs("Expr"))]
+              , ConstType(SortNoArgs("CharSelector"))
+              )
+            )
+          , OpDecl(
+              "CharSelector_LS"
+            , FunType([ConstType(SortNoArgs("LengthSelector"))], ConstType(SortNoArgs("CharSelector")))
+            )
+
+          , OpDecl(
+              "LengthSelector_STAR"
+            , FunType([ConstType(SortNoArgs("CharLength"))], ConstType(SortNoArgs("LengthSelector")))
+            )
+          , OpDecl(
+              "LengthSelector_LEN"
+            , FunType([ConstType(SortNoArgs("TypeParamValue"))], ConstType(SortNoArgs("LengthSelector")))
+            )
+
           , OpDeclInj(
               FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
             )
