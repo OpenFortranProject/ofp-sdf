@@ -8,6 +8,7 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse StartCommentBlock, ProgramUnit;
  if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit.term)) {
 
@@ -41,6 +42,7 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse BlockData;
  if (ATmatch(term, "ProgramUnit(<term>)", &BlockData.term)) {
 
@@ -106,6 +108,7 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse UseStmt, ImportStmt, ImplicitPart, DeclarationConstruct;
  if (ATmatch(term, "SpecificationPart(<term>,<term>,<term>,<term>)", &UseStmt.term, &ImportStmt.term, &ImplicitPart.term, &DeclarationConstruct.term)) {
 
@@ -159,6 +162,7 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationCo
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse StmtFunctionStmt;
  if (ATmatch(term, "DeclarationConstruct(<term>)", &StmtFunctionStmt.term)) {
 
@@ -279,6 +283,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTyp
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse IntrinsicTypeSpec;
  if (ATmatch(term, "DeclarationTypeSpec(<term>)", &IntrinsicTypeSpec.term)) {
 
@@ -293,6 +298,106 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTyp
  return ATfalse;
 }
 
+ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("IntrinsicTypeSpec: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ if (ATmatch(term, "IntrinsicTypeSpec_DOUBLE_COMPLEX")) {
+
+   // MATCHED IntrinsicTypeSpec_DOUBLE_COMPLEX
+
+   return ATtrue;
+ }
+
+ OFP_Traverse KindSelector;
+ if (ATmatch(term, "IntrinsicTypeSpec_LOGICAL(<term>)", &KindSelector.term)) {
+
+   if (ATmatch(KindSelector.term, "Some(<term>)", &KindSelector.term)) {
+      if (ofp_traverse_KindSelector(KindSelector.term, &KindSelector)) {
+         // MATCHED KindSelector
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   // MATCHED IntrinsicTypeSpec_LOGICAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CharSelector;
+ if (ATmatch(term, "IntrinsicTypeSpec_CHARACTER(<term>)", &CharSelector.term)) {
+
+   if (ATmatch(CharSelector.term, "Some(<term>)", &CharSelector.term)) {
+      if (ofp_traverse_CharSelector(CharSelector.term, &CharSelector)) {
+         // MATCHED CharSelector
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   // MATCHED IntrinsicTypeSpec_CHARACTER
+
+   return ATtrue;
+ }
+
+ OFP_Traverse KindSelector1;
+ if (ATmatch(term, "IntrinsicTypeSpec_COMPLEX(<term>)", &KindSelector1.term)) {
+
+   if (ATmatch(KindSelector1.term, "Some(<term>)", &KindSelector1.term)) {
+      if (ofp_traverse_KindSelector(KindSelector1.term, &KindSelector1)) {
+         // MATCHED KindSelector
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   // MATCHED IntrinsicTypeSpec_COMPLEX
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "IntrinsicTypeSpec_DOUBLE_PRECISION")) {
+
+   // MATCHED IntrinsicTypeSpec_DOUBLE_PRECISION
+
+   return ATtrue;
+ }
+
+ OFP_Traverse KindSelector2;
+ if (ATmatch(term, "IntrinsicTypeSpec_REAL(<term>)", &KindSelector2.term)) {
+
+   if (ATmatch(KindSelector2.term, "Some(<term>)", &KindSelector2.term)) {
+      if (ofp_traverse_KindSelector(KindSelector2.term, &KindSelector2)) {
+         // MATCHED KindSelector
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   // MATCHED IntrinsicTypeSpec_REAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse KindSelector3;
+ if (ATmatch(term, "IntrinsicTypeSpec_INTEGER(<term>)", &KindSelector3.term)) {
+
+   if (ATmatch(KindSelector3.term, "Some(<term>)", &KindSelector3.term)) {
+      if (ofp_traverse_KindSelector(KindSelector3.term, &KindSelector3)) {
+         // MATCHED KindSelector
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   // MATCHED IntrinsicTypeSpec_INTEGER
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt)
 {
 #ifdef DEBUG_PRINT
@@ -300,6 +405,7 @@ ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclaratio
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse Label, DeclarationTypeSpec, AttrSpecList, EntityDeclList, EOS;
  if (ATmatch(term, "TypeDeclarationStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &DeclarationTypeSpec.term, &AttrSpecList.term, &EntityDeclList.term, &EOS.term)) {
 
@@ -349,6 +455,7 @@ ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse ProgramStmt, SpecificationPart, ExecutionPart, InternalSubprogramPart, EndProgramStmt;
  if (ATmatch(term, "MainProgram(<term>,<term>,<term>,<term>,<term>)", &ProgramStmt.term, &SpecificationPart.term, &ExecutionPart.term, &InternalSubprogramPart.term, &EndProgramStmt.term)) {
 
@@ -394,6 +501,7 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse Label, ProgramName, EOS;
  if (ATmatch(term, "ProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
@@ -427,6 +535,7 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse Label, ProgramName, EOS;
  if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
@@ -464,6 +573,7 @@ ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse Ident;
  if (ATmatch(term, "ObjectName(<term>)", &Ident.term)) {
 
@@ -485,6 +595,7 @@ ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName)
 #endif
 
  ATbool matched = ATfalse;
+
  OFP_Traverse Ident;
  if (ATmatch(term, "ProgramName(<term>)", &Ident.term)) {
 
