@@ -93,6 +93,44 @@ Module(
             , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
             )
 
+          , OpDecl("IntrinsicTypeSpec_DOUBLE_COMPLEX", ConstType(SortNoArgs("IntrinsicTypeSpec")))
+          , OpDecl(
+              "IntrinsicTypeSpec_LOGICAL"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
+              , ConstType(SortNoArgs("IntrinsicTypeSpec"))
+              )
+            )
+          , OpDecl(
+              "IntrinsicTypeSpec_CHARACTER"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("CharSelector")]))]
+              , ConstType(SortNoArgs("IntrinsicTypeSpec"))
+              )
+            )
+          , OpDecl(
+              "IntrinsicTypeSpec_COMPLEX"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
+              , ConstType(SortNoArgs("IntrinsicTypeSpec"))
+              )
+            )
+          , OpDecl("IntrinsicTypeSpec_DOUBLE_PRECISION", ConstType(SortNoArgs("IntrinsicTypeSpec")))
+          , OpDecl(
+              "IntrinsicTypeSpec_REAL"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
+              , ConstType(SortNoArgs("IntrinsicTypeSpec"))
+              )
+            )
+          , OpDecl(
+              "IntrinsicTypeSpec_INTEGER"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
+              , ConstType(SortNoArgs("IntrinsicTypeSpec"))
+              )
+            )
+
           , OpDeclInj(
               FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
             )
