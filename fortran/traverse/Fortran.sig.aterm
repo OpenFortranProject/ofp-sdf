@@ -3,16 +3,6 @@ Module(
 , [ Signature(
       [ Constructors(
           [ OpDecl(
-              "EndProgramStmt"
-            , FunType(
-                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
-                , ConstType(Sort("Option", [SortNoArgs("OptProgramName1")]))
-                , ConstType(SortNoArgs("EOS"))
-                ]
-              , ConstType(SortNoArgs("EndProgramStmt"))
-              )
-            )
-          , OpDecl(
               "MainProgram"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))
@@ -169,7 +159,19 @@ Module(
             , FunType([ConstType(SortNoArgs("MainProgram"))], ConstType(SortNoArgs("ProgramUnit")))
             )
           , OpDeclInj(
-              FunType([ConstType(SortNoArgs("String"))], ConstType(SortNoArgs("StartCommentBlock")))
+              FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("AttrSpecList0")]))]
+              , ConstType(SortNoArgs("OptAttrSpecList1"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ProgramName")]))]
+              , ConstType(SortNoArgs("OptProgramName1"))
+              )
             )
           , OpDecl(
               "AcValue"
@@ -229,6 +231,16 @@ Module(
                 , ConstType(Sort("List", [SortNoArgs("ProgramUnit")]))
                 ]
               , ConstType(SortNoArgs("Program"))
+              )
+            )
+          , OpDecl(
+              "EndProgramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptProgramName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndProgramStmt"))
               )
             )
           ]
