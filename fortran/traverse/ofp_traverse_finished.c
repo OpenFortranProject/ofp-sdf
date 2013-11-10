@@ -20,6 +20,7 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
    }
 
    ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit.term);
+   if (ATisEmpty(ProgramUnit_tail)) matched = ATtrue;
    while (! ATisEmpty(ProgramUnit_tail)) {
       ProgramUnit.term = ATgetFirst(ProgramUnit_tail);
       ProgramUnit_tail = ATgetNext (ProgramUnit_tail);
@@ -101,6 +102,39 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
  return ATfalse;
 }
 
+ATbool ofp_traverse_ExternalSubprogram(ATerm term, pOFP_Traverse ExternalSubprogram)
+{
+#ifdef DEBUG_PRINT
+   printf("ExternalSubprogram: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse SubroutineSubprogram;
+ if (ATmatch(term, "ExternalSubprogram(<term>)", &SubroutineSubprogram.term)) {
+
+      if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
+         // MATCHED SubroutineSubprogram
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse FunctionSubprogram;
+ if (ATmatch(term, "ExternalSubprogram(<term>)", &FunctionSubprogram.term)) {
+
+      if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
+         // MATCHED FunctionSubprogram
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPart)
 {
 #ifdef DEBUG_PRINT
@@ -113,6 +147,7 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
  if (ATmatch(term, "SpecificationPart(<term>,<term>,<term>,<term>)", &UseStmt.term, &ImportStmt.term, &ImplicitPart.term, &DeclarationConstruct.term)) {
 
    ATermList UseStmt_tail = (ATermList) ATmake("<term>", UseStmt.term);
+   if (ATisEmpty(UseStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(UseStmt_tail)) {
       UseStmt.term = ATgetFirst(UseStmt_tail);
       UseStmt_tail = ATgetNext (UseStmt_tail);
@@ -123,6 +158,7 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    }
 
    ATermList ImportStmt_tail = (ATermList) ATmake("<term>", ImportStmt.term);
+   if (ATisEmpty(ImportStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(ImportStmt_tail)) {
       ImportStmt.term = ATgetFirst(ImportStmt_tail);
       ImportStmt_tail = ATgetNext (ImportStmt_tail);
@@ -140,6 +176,7 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    }
 
    ATermList DeclarationConstruct_tail = (ATermList) ATmake("<term>", DeclarationConstruct.term);
+   if (ATisEmpty(DeclarationConstruct_tail)) matched = ATtrue;
    while (! ATisEmpty(DeclarationConstruct_tail)) {
       DeclarationConstruct.term = ATgetFirst(DeclarationConstruct_tail);
       DeclarationConstruct_tail = ATgetNext (DeclarationConstruct_tail);
@@ -269,6 +306,34 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationCo
          // MATCHED DerivedTypeDef
          matched = ATtrue;
       } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart)
+{
+#ifdef DEBUG_PRINT
+   printf("ExecutionPart: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse ExecutionPartConstruct;
+ if (ATmatch(term, "ExecutionPart(<term>)", &ExecutionPartConstruct.term)) {
+
+   ATermList ExecutionPartConstruct_tail = (ATermList) ATmake("<term>", ExecutionPartConstruct.term);
+   if (ATisEmpty(ExecutionPartConstruct_tail)) matched = ATtrue;
+   while (! ATisEmpty(ExecutionPartConstruct_tail)) {
+      ExecutionPartConstruct.term = ATgetFirst(ExecutionPartConstruct_tail);
+      ExecutionPartConstruct_tail = ATgetNext (ExecutionPartConstruct_tail);
+      if (ofp_traverse_ExecutionPartConstruct(ExecutionPartConstruct.term, &ExecutionPartConstruct)) {
+         // MATCHED ExecutionPartConstruct
+         matched = ATtrue;
+      } else return ATfalse;
+   }
 
    if (matched) return ATtrue;
  }
