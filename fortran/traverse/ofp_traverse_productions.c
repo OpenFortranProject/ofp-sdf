@@ -57,12 +57,10 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
  OFP_Traverse BlockData;
  if (ATmatch(term, "ProgramUnit(<term>)", &BlockData.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_BlockData(BlockData.term, &BlockData)) {
          // MATCHED BlockData
          matched = ATtrue;
       } else return ATfalse;
-#endif
 
    if (matched) return ATtrue;
  }
@@ -179,12 +177,10 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    while (! ATisEmpty(UseStmt_tail)) {
       UseStmt.term = ATgetFirst(UseStmt_tail);
       UseStmt_tail = ATgetNext (UseStmt_tail);
-#ifdef NOT_YET
       if (ofp_traverse_UseStmt(UseStmt.term, &UseStmt)) {
          // MATCHED UseStmt
          matched = ATtrue;
       } else return ATfalse;
-#endif
    }
 
    ATermList ImportStmt_tail = (ATermList) ATmake("<term>", ImportStmt.term);
