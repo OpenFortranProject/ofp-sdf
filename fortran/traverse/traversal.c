@@ -11,7 +11,6 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
-#ifdef FINISHED
 ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
 {
 #ifdef DEBUG_PRINT
@@ -28,26 +27,6 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
    }
    return ATfalse;
 }
-#endif
-
-#ifdef FINISHED
-ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse Name)
-{
-#ifdef DEBUG_PRINT
-   printf("ObjectName: %s\n", ATwriteToString(term));
-#endif
-
-   //   if (ATmatch(term, "ObjectName(<term>)", &Name->term)) {
-      char * Name_val;
-      if (ATmatch(term, "ObjectName(<str>)", &Name_val)) {
-         // MATCHED Name
-         return ATtrue;
-      }
-      return ATfalse;
-      //   }
-      //   return ATfalse;
-}
-#endif
 
 //========================================================================================
 // R204 specification-part
@@ -116,6 +95,7 @@ ATbool ofp_traverse_DeclarationConstruct_orig(ATerm term, pOFP_Traverse Declarat
    return ATfalse;
 }
 
+#ifdef FINISHED
 //========================================================================================
 // R208 execution-part
 //----------------------------------------------------------------------------------------
@@ -142,7 +122,9 @@ ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart)
 
    return ATfalse;
 }
+#endif
 
+#ifdef FINISHED
 //========================================================================================
 // R209 execution-part-construct
 //----------------------------------------------------------------------------------------
@@ -166,11 +148,13 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPa
 
    return ATfalse;
 }
+#endif
 
+#ifdef FINISHED
 //========================================================================================
 // R210 internal-subprogram-part
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart)
+vATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart)
 {
 #ifdef DEBUG_PRINT
    printf("\nInternalSubprogramPart: %s\n", ATwriteToString(term));
@@ -184,6 +168,7 @@ ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSub
 
    return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R213 executable-construct
@@ -220,7 +205,6 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
 //========================================================================================
 // R214 action-stmt
 //----------------------------------------------------------------------------------------
-#ifdef FINISHED
 ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 {
 #ifdef DEBUG_PRINT
@@ -238,62 +222,14 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 
    return ATfalse;
 }
-#endif
 
 /**
  * Section/Clause 4: Types
  */
 
 //========================================================================================
-// R403 declaration-type-spec
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec)
-{
-#ifdef DEBUG_PRINT
-   printf("DeclarationTypeSpec: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse IntrinsicTypeSpec;
-   if (ATmatch(term, "DeclarationTypeSpec(<term>)", &IntrinsicTypeSpec.term)) {
-      if (ofp_traverse_IntrinsicTypeSpec(IntrinsicTypeSpec.term, &IntrinsicTypeSpec)) {
-         // MATCHED IntrinsicTypeSpec
-      } else return ATfalse;
-
-      return ATtrue;
-   } 
-
-   // TODO DeclarationTypeSpec options
-
-   return ATfalse;
-}
-
-//========================================================================================
-// R404 intrinsic-type-spec
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpec)
-{
-#ifdef DEBUG_PRINT
-   printf("IntrinsicTypeSpec: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse KindSelector;
-   if (ATmatch(term, "IntrinsicTypeSpec_INTEGER(<term>)", &KindSelector.term)) {
-      if (ATmatch(term, "IntrinsicTypeSpec_INTEGER(Some(<term>))", &KindSelector.term)) {
-         if (ofp_traverse_KindSelector(KindSelector.term, &KindSelector)) {
-            // MATCHED KindSelector
-         } else return ATfalse;
-      }
-      // MATCHED IntrinsicTypeSpec_INTEGER
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-//========================================================================================
 // R405 kind-selector
 //----------------------------------------------------------------------------------------
-#ifdef DELETE_ME
 ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
 {
 #ifdef DEBUG_PRINT
@@ -311,7 +247,6 @@ ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
 
    return ATfalse;
 }
-#endif
 
 //========================================================================================
 // R407 int-literal-constant
@@ -396,82 +331,6 @@ ATbool ofp_traverse_TypeDeclarationStmt_orig(ATerm term, pOFP_Traverse TypeDecla
 
    return ATfalse;
 }
-
-//========================================================================================
-// R503-F08 entity-decl
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
-{
-#ifdef DEBUG_PRINT
-   printf("EntityDecl: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse ObjectName, ArraySpec, CorraySpec, CharLength, Initialization;
-   if (ATmatch(term, "EntityDecl(<term>,<term>,<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CorraySpec.term, &CharLength.term, &Initialization.term)) {
-
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName (and ambiguous form for FunctionName)
-      } else return ATfalse;
-
-      // TODO ArraySpec
-      // TODO CoArraySpec
-      // TODO CharLength
-      // TODO Initialization
-   
-      return ATtrue;
-   }
-   return ATfalse;
-}
-
-#ifdef DELETE_ME
-ATbool ofp_traverse_AttrSpecList(ATerm term, pOFP_Traverse AttrSpecList)
-{
-#ifdef DEBUG_PRINT
-   printf("ofp_traverse_AttrSpecList: %s\n", ATwriteToString(term));
-#endif
-
-   if (! ATmatch(term, "AttrSpecList(<term>)", &AttrSpecList->term)) {
-      return ATfalse;
-   }
-
-   OFP_Traverse AttrSpec;
-   ATermList AttrSpec_tail = (ATermList) ATmake("<term>", AttrSpecList->term);
-   while (! ATisEmpty(AttrSpec_tail)) {
-      AttrSpec.term = ATgetFirst(AttrSpec_tail);
-      AttrSpec_tail = ATgetNext (AttrSpec_tail);
-#ifdef TODO
-      if (ofp_traverse_AttrSpec(AttrSpec.term, &AttrSpec)) {
-         // MATCHED AttrSpec
-      } else return ATfalse;
-#endif
-   }
-   return ATtrue;
-}
-#endif
-
-#ifdef DELETE_ME
-ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList)
-{
-#ifdef DEBUG_PRINT
-   printf("ofp_traverse_EntityDeclList: %s\n", ATwriteToString(term));
-#endif
-
-   if (! ATmatch(term, "EntityDeclList(<term>)", &EntityDeclList->term)) {
-      return ATfalse;
-   }
-
-   OFP_Traverse EntityDecl;
-   ATermList EntityDecl_tail = (ATermList) ATmake("<term>", EntityDeclList->term);
-   while (! ATisEmpty(EntityDecl_tail)) {
-      EntityDecl.term = ATgetFirst(EntityDecl_tail);
-      EntityDecl_tail = ATgetNext (EntityDecl_tail);
-      if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
-         // MATCHED EntityDecl
-      } else return ATfalse;
-   }
-   return ATtrue;
-}
-#endif
 
 //========================================================================================
 // R601 designator
@@ -619,150 +478,3 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt)
    }
    return ATfalse;
 }
-
-#ifdef DELETE_ME
-//========================================================================================
-// R1101 MainProgram
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
-{
-#ifdef DEBUG_PRINT
-   printf("\nMainProgram: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse ProgramStmt, SpecificationPart, ExecutionPart, InternalSubprogramPart, EndProgramStmt;
-   if (ATmatch(term, "MainProgram(<term>,<term>,<term>,<term>,<term>)", &ProgramStmt.term, &SpecificationPart.term, &ExecutionPart.term, &InternalSubprogramPart.term, &EndProgramStmt.term)) {
-
-      if (ATmatch(ProgramStmt.term, "Some(<term>)", &ProgramStmt.term)) {
-         if (ofp_traverse_ProgramStmt(ProgramStmt.term, &ProgramStmt)) {
-            // MATCHED ProgramStmt
-         } else return ATfalse;
-      }
-
-      if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
-         // MATCHED SpecificationPart
-      } else return ATfalse;
-
-      if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
-
-         // MATCHED ExecutionPart
-      } else return ATfalse;
-
-      if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
-         if (ofp_traverse_InternalSubprogramPart(InternalSubprogramPart.term, &InternalSubprogramPart)) {
-            // MATCHED InternalSubprogramPart
-         } else return ATfalse;
-      }
-
-      if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
-         // MATCHED EndProgramStmt
-      } else return ATfalse;
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-#endif
-
-#ifdef DELETE_ME
-//========================================================================================
-// R1102 program-stmt
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
-{
-#ifdef DEBUG_PRINT
-   printf("\nProgramStmt: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse Label, ProgramName, EOS;
-   if (ATmatch(term, "ProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
-
-      if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
-         if (ofp_traverse_Label(Label.term, &Label)) {
-            // MATCHED Label
-         } else return ATfalse;
-      }
-
-      if (ofp_traverse_Name(ProgramName.term, &ProgramName)) {
-         // MATCHED ProgramName
-      } else return ATfalse;
-
-      if (ofp_traverse_EOS(EOS.term, &EOS)) {
-         // MATCHED EOS
-      } else return ATfalse;
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-#endif
-
-//========================================================================================
-// R1103 end-program-stmt
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_EndProgramStmt_orig(ATerm term, pOFP_Traverse EndProgramStmt)
-{
-#ifdef DEBUG_PRINT
-   printf("\nEndProgramStmt: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse Label, ProgramName, EOS;
-   if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
-      if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
-         if (ofp_traverse_Label(Label.term, &Label)) {
-            // MATCHED Label
-         } else return ATfalse;
-      }
-
-      if (ATmatch(ProgramName.term, "Some((Some(<term>)))", &ProgramName.term)) {
-         if (ofp_traverse_Name(ProgramName.term, &ProgramName)) {
-            // MATCHED ProgramName
-         } else return ATfalse;
-      }
-
-      if (ofp_traverse_EOS(EOS.term, &EOS)) {
-         // MATCHED EOS
-      } else return ATfalse;
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-#ifdef DONE
-//========================================================================================
-// R201 program
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
-{
-#ifdef DEBUG_PRINT
-   printf("Program: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse StartCommentBlock, ProgramUnit_list;
-   if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit_list.term)) {
-
-      char * str;
-      if (ATmatch(StartCommentBlock.term, "Some(<str>)", &str)) {
-         // MATCHED StartCommentBlock
-      } else return ATfalse;
-
-      ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit_list.term);
-      while (! ATisEmpty(ProgramUnit_tail)) {
-         OFP_Traverse ProgramUnit;
-         ProgramUnit.term = ATgetFirst(ProgramUnit_tail);
-         ProgramUnit_tail = ATgetNext(ProgramUnit_tail);
-         if (ofp_traverse_ProgramUnit(ProgramUnit.term, &ProgramUnit)) {
-            // MATCHED ProgramUnit
-         } else return ATfalse;
-      }
-
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-#endif
