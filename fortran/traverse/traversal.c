@@ -11,61 +11,6 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
-#ifdef FINISHED
-//========================================================================================
-// R213 executable-construct
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableConstruct)
-{
-#ifdef DEBUG_PRINT
-   printf("\ExecutableConstruct: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse ActionStmt;
-   if (ATmatch(term, "ExecutableConstruct(<term>)", &ActionStmt.term)) {
-
-      if (ofp_traverse_ActionStmt(ActionStmt.term, &ActionStmt)) {
-         // MATCHED ActionStmt
-      } else return ATfalse;
-
-         // | AssociateConstruct
-         // | BlockConstruct
-         // | CaseConstruct
-         // | CriticalConstruct
-         // %%| DoConstruct          %% Ambiguous - placed related statements in action-stmt
-         // | ForallConstruct
-         // | IfConstruct
-         // | SelectTypeConstruct
-         // | WhereConstruct
-
-      return ATtrue;
-    }
-
-   return ATfalse;
-}
-
-//========================================================================================
-// R214 action-stmt
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
-{
-#ifdef DEBUG_PRINT
-   printf("\ExecutableConstruct: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse AssignmentStmt;
-   if (ATmatch(term, "ActionStmt(<term>)", &AssignmentStmt.term)) {
-      if (ofp_traverse_AssignmentStmt(AssignmentStmt.term, &AssignmentStmt)) {
-         // MATCHED AssignmentStmt
-         return ATtrue;
-      }
-      // TODO other options
-   }
-
-   return ATfalse;
-}
-#endif
-
 /**
  * Section/Clause 4: Types
  */
