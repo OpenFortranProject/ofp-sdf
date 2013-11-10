@@ -694,12 +694,273 @@ Module(
             )
 
           , OpDecl(
+              "Module"
+            , FunType(
+                [ ConstType(SortNoArgs("ModuleStmt"))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(Sort("Option", [SortNoArgs("ModuleSubprogramPart")]))
+                , ConstType(SortNoArgs("EndModuleStmt"))
+                ]
+              , ConstType(SortNoArgs("Module"))
+              )
+            )
+
+          , OpDecl(
+              "ModuleStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ModuleName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ModuleStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndModuleStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptModuleName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndModuleStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ModuleName")]))]
+              , ConstType(SortNoArgs("OptModuleName1"))
+              )
+            )
+
+          , OpDecl(
+              "ModuleSubprogramPart"
+            , FunType(
+                [ConstType(SortNoArgs("ContainsStmt")), ConstType(Sort("List", [SortNoArgs("ModuleSubprogram")]))]
+              , ConstType(SortNoArgs("ModuleSubprogramPart"))
+              )
+            )
+
+          , OpDecl(
+              "ModuleSubprogram"
+            , FunType([ConstType(SortNoArgs("SeparateModuleSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
+            )
+          , OpDecl(
+              "ModuleSubprogram"
+            , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
+            )
+          , OpDecl(
+              "ModuleSubprogram"
+            , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
+            )
+
+          , OpDecl(
+              "UseStmt_Only"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
+                , ConstType(SortNoArgs("ModuleName"))
+                , ConstType(Sort("Option", [SortNoArgs("OnlyList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("UseStmt"))
+              )
+            )
+          , OpDecl(
+              "UseStmt_Rename"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
+                , ConstType(SortNoArgs("ModuleName"))
+                , ConstType(Sort("Option", [SortNoArgs("RenameList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("UseStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ModuleNature"))], ConstType(SortNoArgs("ModuleNature0")))
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ModuleNature0")]))]
+              , ConstType(SortNoArgs("OptModuleNature1"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("RenameList"))], ConstType(SortNoArgs("RenameList0")))
+            )
+
+          , OpDecl("ModuleNature_NON_INTRINSIC", ConstType(SortNoArgs("ModuleNature")))
+          , OpDecl("ModuleNature_INTRINSIC", ConstType(SortNoArgs("ModuleNature")))
+
+          , OpDecl(
+              "Rename"
+            , FunType(
+                [ConstType(SortNoArgs("LocalDefinedOperator")), ConstType(SortNoArgs("UseDefinedOperator"))]
+              , ConstType(SortNoArgs("Rename"))
+              )
+            )
+          , OpDecl(
+              "Rename"
+            , FunType(
+                [ConstType(SortNoArgs("LocalName")), ConstType(SortNoArgs("UseName"))]
+              , ConstType(SortNoArgs("Rename"))
+              )
+            )
+
+          , OpDecl(
+              "RenameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("Rename")]))]
+              , ConstType(SortNoArgs("RenameList"))
+              )
+            )
+
+          , OpDecl(
+              "Only"
+            , FunType([ConstType(SortNoArgs("Rename"))], ConstType(SortNoArgs("Only")))
+            )
+          , OpDecl(
+              "Only"
+            , FunType([ConstType(SortNoArgs("OnlyUseName"))], ConstType(SortNoArgs("Only")))
+            )
+
+          , OpDecl(
+              "OnlyList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("Only")]))]
+              , ConstType(SortNoArgs("OnlyList"))
+              )
+            )
+
+          , OpDecl(
+              "OnlyUseName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("OnlyUseName")))
+            )
+
+          , OpDecl(
+              "LocalDefinedOperator"
+            , FunType([ConstType(SortNoArgs("DefinedBinaryOp"))], ConstType(SortNoArgs("LocalDefinedOperator")))
+            )
+          , OpDecl(
+              "LocalDefinedOperator"
+            , FunType([ConstType(SortNoArgs("DefinedUnaryOp"))], ConstType(SortNoArgs("LocalDefinedOperator")))
+            )
+
+          , OpDecl(
+              "UseDefinedOperator"
+            , FunType([ConstType(SortNoArgs("DefinedBinaryOp"))], ConstType(SortNoArgs("UseDefinedOperator")))
+            )
+          , OpDecl(
+              "UseDefinedOperator"
+            , FunType([ConstType(SortNoArgs("DefinedUnaryOp"))], ConstType(SortNoArgs("UseDefinedOperator")))
+            )
+
+          , OpDecl(
+              "Submodule"
+            , FunType(
+                [ ConstType(SortNoArgs("SubmoduleStmt"))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(Sort("Option", [SortNoArgs("ModuleSubprogramPart")]))
+                , ConstType(SortNoArgs("EndSubmoduleStmt"))
+                ]
+              , ConstType(SortNoArgs("Submodule"))
+              )
+            )
+
+          , OpDecl(
+              "SubmoduleStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ParentIdentifier"))
+                , ConstType(SortNoArgs("SubmoduleName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SubmoduleStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ParentIdentifier"
+            , FunType(
+                [ConstType(SortNoArgs("AncestorModuleName")), ConstType(Sort("Option", [SortNoArgs("ParentSubmoduleName0")]))]
+              , ConstType(SortNoArgs("ParentIdentifier"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ParentSubmoduleName"))], ConstType(SortNoArgs("ParentSubmoduleName0")))
+            )
+
+          , OpDecl(
+              "EndSubmoduleStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptSubmoduleName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndSubmoduleStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("SubmoduleName")]))]
+              , ConstType(SortNoArgs("OptSubmoduleName1"))
+              )
+            )
+
+          , OpDecl(
+              "BlockData"
+            , FunType(
+                [ConstType(SortNoArgs("BlockDataStmt")), ConstType(SortNoArgs("SpecificationPart")), ConstType(SortNoArgs("EndBlockDataStmt"))]
+              , ConstType(SortNoArgs("BlockData"))
+              )
+            )
+
+          , OpDecl(
+              "BlockDataStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("BlockDataName")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("BlockDataStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndBlockDataStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("EndBlockDataStmt"))
+              )
+            )
+          , OpDecl(
+              "EndBlockDataStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("BlockDataName")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndBlockDataStmt"))
+              )
+            )
+
+          , OpDecl(
+              "AncestorModuleName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("AncestorModuleName")))
+            )
+          , OpDecl(
               "ArgName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ArgName")))
             )
           , OpDecl(
               "BindingName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("BindingName")))
+            )
+          , OpDecl(
+              "BlockDataName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("BlockDataName")))
             )
           , OpDecl(
               "ComponentName"
@@ -714,12 +975,24 @@ Module(
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("InterfaceName")))
             )
           , OpDecl(
+              "LocalName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("LocalName")))
+            )
+          , OpDecl(
+              "ModuleName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ModuleName")))
+            )
+          , OpDecl(
               "Name"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("Name")))
             )
           , OpDecl(
               "ObjectName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ObjectName")))
+            )
+          , OpDecl(
+              "ParentSubmoduleName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ParentSubmoduleName")))
             )
           , OpDecl(
               "ParentTypeName"
@@ -738,12 +1011,20 @@ Module(
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ScalarIntConstantName")))
             )
           , OpDecl(
+              "SubmoduleName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("SubmoduleName")))
+            )
+          , OpDecl(
               "TypeName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("TypeName")))
             )
           , OpDecl(
               "TypeParamName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("TypeParamName")))
+            )
+          , OpDecl(
+              "UseName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("UseName")))
             )
 
           ]
