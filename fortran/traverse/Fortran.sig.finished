@@ -156,6 +156,307 @@ Module(
             )
 
           , OpDecl(
+              "InternalSubprogram"
+            , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("InternalSubprogram")))
+            )
+          , OpDecl(
+              "InternalSubprogram"
+            , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("InternalSubprogram")))
+            )
+
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("ValueStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("VolatileStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("TargetStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("SaveStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("ProtectedStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("PointerStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("OptionalStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("NamelistStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("IntrinsicStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("IntentStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("ExternalStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("EquivalenceStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("DimensionStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("DataStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("CommonStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("ContiguousStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("CodimensionStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("BindStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("AsynchronousStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("AllocatableStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+          , OpDecl(
+              "OtherSpecificationStmt"
+            , FunType([ConstType(SortNoArgs("AccessStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
+            )
+
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("WhereConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("SelectTypeConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("IfConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("ForallConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("CriticalConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("CaseConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("BlockConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("AssociateConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+          , OpDecl(
+              "ExecutableConstruct"
+            , FunType([ConstType(SortNoArgs("ActionStmt"))], ConstType(SortNoArgs("ExecutableConstruct")))
+            )
+
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("NonlabelDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("LabelDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ComputedGotoStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ArithmeticIfStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("WriteStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("WhereStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("WaitStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("UnlockStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("SyncMemoryStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("SyncImagesStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("SyncAllStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("StopStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("RewindStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ReturnStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ReadStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("PrintStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("PointerAssignmentStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("OpenStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("NullifyStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("LockStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("InquireStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("IfStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("GotoStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ForallStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("FlushStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ExitStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ErrorStopStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndfileStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndSubroutineStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndProgramStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndMpSubprogramStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("EndFunctionStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("DeallocateStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("CycleStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("ContinueStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("CloseStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("CallStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("BackspaceStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("AssignmentStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+          , OpDecl(
+              "ActionStmt"
+            , FunType([ConstType(SortNoArgs("AllocateStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
+
+          , OpDecl(
+              "Keyword"
+            , FunType([ConstType(SortNoArgs("Name"))], ConstType(SortNoArgs("Keyword")))
+            )
+
+          , OpDecl(
               "DeclarationTypeSpec"
             , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
             )
@@ -359,12 +660,56 @@ Module(
             )
 
           , OpDecl(
+              "ArgName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ArgName")))
+            )
+          , OpDecl(
+              "BindingName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("BindingName")))
+            )
+          , OpDecl(
+              "ComponentName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ComponentName")))
+            )
+          , OpDecl(
+              "FinalSubroutineName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("FinalSubroutineName")))
+            )
+          , OpDecl(
+              "InterfaceName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("InterfaceName")))
+            )
+          , OpDecl(
+              "Name"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("Name")))
+            )
+          , OpDecl(
               "ObjectName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ObjectName")))
             )
           , OpDecl(
+              "ParentTypeName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ParentTypeName")))
+            )
+          , OpDecl(
+              "ProcedureName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProcedureName")))
+            )
+          , OpDecl(
               "ProgramName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProgramName")))
+            )
+          , OpDecl(
+              "ScalarIntConstantName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ScalarIntConstantName")))
+            )
+          , OpDecl(
+              "TypeName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("TypeName")))
+            )
+          , OpDecl(
+              "TypeParamName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("TypeParamName")))
             )
 
           ]
