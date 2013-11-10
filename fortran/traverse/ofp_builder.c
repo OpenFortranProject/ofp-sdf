@@ -341,13 +341,10 @@ ATermList ofp_build_production_table(ATerm term)
       if (ATmatch(symType, "ConstType(SortNoArgs(<term>))", &symName) ) {
          prod   = ATmake("Prod(<term>, <term>)", consName, empty);
          symbol = ATmake("Symbol(<term>,<term>)", symName, prod);
-         printf("........ %s\n", ATwriteToString(symbol));
       }
       else if (ATmatch(symType, "FunType(<term>, ConstType(SortNoArgs(<term>)))", &plist, &symName) ) {
          prod   = ATmake("Prod(<term>, <term>)", consName, plist);
          symbol = ATmake("Symbol(<term>,<term>)", symName, prod);
-         printf("******** Prod(%d) ", ATgetLength(plist));
-         printf("%s\n", ATwriteToString(symbol));
       }
       else {
          printf("???????????????????? %s\n", ATwriteToString(symName));
@@ -742,9 +739,7 @@ ATbool ofp_build_traversal_production(ATerm symbol, ATerm constructor, ATermList
          ofp_build_list_traversal(prod_symbol);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
-   printf(".....arg  symbol: %s\n", ATwriteToString(prod_symbol));
-         //ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
-         fprintf(fpc, "\n");  // make spacing same as Sort match
+         fprintf(fpc, "\n");  // to make spacing same as sort match
          ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
       }
       else {
