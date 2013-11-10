@@ -11,6 +11,8 @@ enum DataType
    STRING,
    IDENT,
    LIST,
+   OPTION,
+   CONST,
    OR
 };
 
@@ -31,6 +33,12 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit);
 
 /* R204 */
 ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPart);
+
+/* R205 */
+ATbool ofp_traverse_ImplicitPart(ATerm term, pOFP_Traverse ImplicitPart);
+
+/* R206 */
+ATbool ofp_traverse_ImplicitPartStmt(ATerm term, pOFP_Traverse ImplicitPartStmt);
 
 /* R207 */
 ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct);
@@ -61,6 +69,12 @@ ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector);
 
 /* R407 */
 ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConstant);
+
+/* R420 */
+ATbool ofp_traverse_CharSelector(ATerm term, pOFP_Traverse CharSelector);
+
+/* R421 */
+ATbool ofp_traverse_LengthSelector(ATerm term, pOFP_Traverse LengthSelector);
 
 /* R501 */
 ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt);
@@ -95,8 +109,11 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt);
 /* R1103 */
 ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt);
 
-// Collection for other routines.  Perhaps this should come from separate include files.
-//
+
+/** Identifier aliases
+ */
+
+ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName);
 ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
 
 #endif
