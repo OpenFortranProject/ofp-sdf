@@ -894,6 +894,11 @@ ATbool ofp_traverse_AcValue(ATerm term, pOFP_Traverse AcValue)
  return ATfalse;
 }
 
+
+/**
+ * Section/Clause 5: Attribute declarations and specifications
+ */
+
 //========================================================================================
 // R501 type-declaration-stmt
 //----------------------------------------------------------------------------------------
