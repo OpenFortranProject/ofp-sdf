@@ -230,6 +230,15 @@ Module(
             , FunType([ConstType(SortNoArgs("TypeParamValue"))], ConstType(SortNoArgs("LengthSelector")))
             )
 
+          , OpDecl(
+              "AcValue"
+            , FunType([ConstType(SortNoArgs("AcImpliedDo"))], ConstType(SortNoArgs("AcValue")))
+            )
+          , OpDecl(
+              "AcValue"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("AcValue")))
+            )
+
           , OpDeclInj(
               FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
             )

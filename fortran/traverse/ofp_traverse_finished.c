@@ -749,6 +749,39 @@ ATbool ofp_traverse_LengthSelector(ATerm term, pOFP_Traverse LengthSelector)
  return ATfalse;
 }
 
+ATbool ofp_traverse_AcValue(ATerm term, pOFP_Traverse AcValue)
+{
+#ifdef DEBUG_PRINT
+   printf("AcValue: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse AcImpliedDo;
+ if (ATmatch(term, "AcValue(<term>)", &AcImpliedDo.term)) {
+
+      if (ofp_traverse_AcImpliedDo(AcImpliedDo.term, &AcImpliedDo)) {
+         // MATCHED AcImpliedDo
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "AcValue(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt)
 {
 #ifdef DEBUG_PRINT
