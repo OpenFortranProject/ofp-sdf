@@ -36,6 +36,15 @@ Module(
             )
 
           , OpDecl(
+              "ExternalSubprogram"
+            , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("ExternalSubprogram")))
+            )
+          , OpDecl(
+              "ExternalSubprogram"
+            , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("ExternalSubprogram")))
+            )
+
+          , OpDecl(
               "SpecificationPart"
             , FunType(
                 [ ConstType(Sort("List", [SortNoArgs("UseStmt")]))
@@ -86,6 +95,14 @@ Module(
           , OpDecl(
               "DeclarationConstruct"
             , FunType([ConstType(SortNoArgs("DerivedTypeDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
+            )
+
+          , OpDecl(
+              "ExecutionPart"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ExecutionPartConstruct")]))]
+              , ConstType(SortNoArgs("ExecutionPart"))
+              )
             )
 
           , OpDecl(
