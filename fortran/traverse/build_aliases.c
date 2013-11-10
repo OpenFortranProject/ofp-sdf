@@ -1,4 +1,5 @@
 #include "traversal.h"
+#include "ofp_builder.h"
 #include <assert.h>
 #include <stdlib.h>
 
@@ -42,17 +43,6 @@ ATbool ofp_traverse_OpDecl(ATerm term, pOFP_Traverse OpDecl)
    printf("\nOpDecl: %s\n", ATwriteToString(term));
 #endif
 
-   OFP_Traverse Name, FunType;
-   if (ATmatch(term, "OpDecl(<term>,<term>)", &Name.term, &FunType.term) ) {
-
-      char * String;
-      if (ATmatch(Name.term, "<str>", &String)) {
-         // MATCHED OpDecl name
-         FunType.pre  = String;
-         OpDecl->post = String;
-      }
-      return ATtrue;
-   }
    return ATfalse;
 }
 
@@ -64,12 +54,14 @@ ATbool ofp_traverse_OpDeclInj(ATerm term, pOFP_Traverse OpDeclInj)
 #ifdef DEBUG_PRINT
       printf("\nofp_traverse_OpDeclInj: %s\n", ATwriteToString(OpDeclInj->term));
 #endif
+      printf("\nofp_traverse_OpDeclInj: %s\n", ATwriteToString(OpDeclInj->term));
+
       if (ATmatch(OpDeclInj->term, "FunType(<term>,<term>)", &symbol, &alias)) {
          ATermList list;
          if (ATmatch(symbol, "<term>", &list)) {
             if (ATgetLength(list) > 1) {
                // not a simple alias
-               //printf("------     compound type : %s\n", ATwriteToString(symbol));
+               printf("------     compound type : %s\n", ATwriteToString(symbol));
                return ATfalse;
             }
          } else return ATfalse;
@@ -123,6 +115,7 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
          if (ofp_traverse_OpDeclInj(OpDeclInj.term, &OpDeclInj)) {
             // MATCHED OpDeclInj
+            printf("....... appending: %s\n", ATwriteToString(OpDeclInj.term));
             gTypeAliases = ATappend(gTypeAliases, OpDeclInj.term);
          }
       }
