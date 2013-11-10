@@ -57,6 +57,31 @@ Module(
             )
 
           , OpDecl(
+              "ImplicitPart"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ImplicitPartStmt")])), ConstType(SortNoArgs("ImplicitStmt"))]
+              , ConstType(SortNoArgs("ImplicitPart"))
+              )
+            )
+
+          , OpDecl(
+              "ImplicitPartStmt"
+            , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
+            )
+          , OpDecl(
+              "ImplicitPartStmt"
+            , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
+            )
+          , OpDecl(
+              "ImplicitPartStmt"
+            , FunType([ConstType(SortNoArgs("ParameterStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
+            )
+          , OpDecl(
+              "ImplicitPartStmt"
+            , FunType([ConstType(SortNoArgs("ImplicitStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
+            )
+
+          , OpDecl(
               "DeclarationConstruct"
             , FunType([ConstType(SortNoArgs("StmtFunctionStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
