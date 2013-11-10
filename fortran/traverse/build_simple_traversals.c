@@ -242,7 +242,7 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
          Prod_tail = ATgetNext (Prod_tail);
 
          if (ofp_traverse_Prod(Prod.term, &Prod, Symbol->term)) {
-            printf("============== PROD: matched %s\n", ATwriteToString(Prod.term));
+            // MATCHED Prod
          }
       }
 
