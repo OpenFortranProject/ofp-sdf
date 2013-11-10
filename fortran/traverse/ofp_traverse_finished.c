@@ -429,6 +429,94 @@ ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart)
  return ATfalse;
 }
 
+ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPartConstruct)
+{
+#ifdef DEBUG_PRINT
+   printf("ExecutionPartConstruct: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse DataStmt;
+ if (ATmatch(term, "ExecutionPartConstruct(<term>)", &DataStmt.term)) {
+
+      if (ofp_traverse_DataStmt(DataStmt.term, &DataStmt)) {
+         // MATCHED DataStmt
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse EntryStmt;
+ if (ATmatch(term, "ExecutionPartConstruct(<term>)", &EntryStmt.term)) {
+
+      if (ofp_traverse_EntryStmt(EntryStmt.term, &EntryStmt)) {
+         // MATCHED EntryStmt
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse FormatStmt;
+ if (ATmatch(term, "ExecutionPartConstruct(<term>)", &FormatStmt.term)) {
+
+      if (ofp_traverse_FormatStmt(FormatStmt.term, &FormatStmt)) {
+         // MATCHED FormatStmt
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse ExecutableConstruct;
+ if (ATmatch(term, "ExecutionPartConstruct(<term>)", &ExecutableConstruct.term)) {
+
+      if (ofp_traverse_ExecutableConstruct(ExecutableConstruct.term, &ExecutableConstruct)) {
+         // MATCHED ExecutableConstruct
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart)
+{
+#ifdef DEBUG_PRINT
+   printf("InternalSubprogramPart: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse ContainsStmt, InternalSubprogram;
+ if (ATmatch(term, "InternalSubprogramPart(<term>,<term>)", &ContainsStmt.term, &InternalSubprogram.term)) {
+
+      if (ofp_traverse_ContainsStmt(ContainsStmt.term, &ContainsStmt)) {
+         // MATCHED ContainsStmt
+         matched = ATtrue;
+      } else return ATfalse;
+
+   ATermList InternalSubprogram_tail = (ATermList) ATmake("<term>", InternalSubprogram.term);
+   if (ATisEmpty(InternalSubprogram_tail)) matched = ATtrue;
+   while (! ATisEmpty(InternalSubprogram_tail)) {
+      InternalSubprogram.term = ATgetFirst(InternalSubprogram_tail);
+      InternalSubprogram_tail = ATgetNext (InternalSubprogram_tail);
+      if (ofp_traverse_InternalSubprogram(InternalSubprogram.term, &InternalSubprogram)) {
+         // MATCHED InternalSubprogram
+         matched = ATtrue;
+      } else return ATfalse;
+   }
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec)
 {
 #ifdef DEBUG_PRINT

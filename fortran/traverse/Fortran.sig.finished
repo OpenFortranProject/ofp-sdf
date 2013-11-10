@@ -131,6 +131,31 @@ Module(
             )
 
           , OpDecl(
+              "ExecutionPartConstruct"
+            , FunType([ConstType(SortNoArgs("DataStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
+            )
+          , OpDecl(
+              "ExecutionPartConstruct"
+            , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
+            )
+          , OpDecl(
+              "ExecutionPartConstruct"
+            , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
+            )
+          , OpDecl(
+              "ExecutionPartConstruct"
+            , FunType([ConstType(SortNoArgs("ExecutableConstruct"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
+            )
+
+          , OpDecl(
+              "InternalSubprogramPart"
+            , FunType(
+                [ConstType(SortNoArgs("ContainsStmt")), ConstType(Sort("List", [SortNoArgs("InternalSubprogram")]))]
+              , ConstType(SortNoArgs("InternalSubprogramPart"))
+              )
+            )
+
+          , OpDecl(
               "DeclarationTypeSpec"
             , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
             )
