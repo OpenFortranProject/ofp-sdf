@@ -457,6 +457,40 @@ Module(
             )
 
           , OpDecl(
+              "Constant_AMB"
+            , FunType([ConstType(SortNoArgs("LiteralConstant"))], ConstType(SortNoArgs("Constant")))
+            )
+
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("BozLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("CharLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("LogicalLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("ComplexLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("RealLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+          , OpDecl(
+              "LiteralConstant"
+            , FunType([ConstType(SortNoArgs("IntLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
+            )
+
+          , OpDecl(
+              "NamedConstant"
+            , FunType([ConstType(SortNoArgs("Name"))], ConstType(SortNoArgs("NamedConstant")))
+            )
+          , OpDecl(
               "DeclarationTypeSpec"
             , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
             )

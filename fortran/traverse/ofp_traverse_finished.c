@@ -1386,6 +1386,129 @@ ATbool ofp_traverse_Keyword(ATerm term, pOFP_Traverse Keyword)
  return ATfalse;
 }
 
+ATbool ofp_traverse_Constant(ATerm term, pOFP_Traverse Constant)
+{
+#ifdef DEBUG_PRINT
+   printf("Constant: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse LiteralConstant;
+ if (ATmatch(term, "Constant_AMB(<term>)", &LiteralConstant.term)) {
+
+      if (ofp_traverse_LiteralConstant(LiteralConstant.term, &LiteralConstant)) {
+         // MATCHED LiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   // MATCHED Constant_AMB
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LiteralConstant(ATerm term, pOFP_Traverse LiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("LiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse BozLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &BozLiteralConstant.term)) {
+
+      if (ofp_traverse_BozLiteralConstant(BozLiteralConstant.term, &BozLiteralConstant)) {
+         // MATCHED BozLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse CharLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &CharLiteralConstant.term)) {
+
+      if (ofp_traverse_CharLiteralConstant(CharLiteralConstant.term, &CharLiteralConstant)) {
+         // MATCHED CharLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse LogicalLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &LogicalLiteralConstant.term)) {
+
+      if (ofp_traverse_LogicalLiteralConstant(LogicalLiteralConstant.term, &LogicalLiteralConstant)) {
+         // MATCHED LogicalLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse ComplexLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &ComplexLiteralConstant.term)) {
+
+      if (ofp_traverse_ComplexLiteralConstant(ComplexLiteralConstant.term, &ComplexLiteralConstant)) {
+         // MATCHED ComplexLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse RealLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &RealLiteralConstant.term)) {
+
+      if (ofp_traverse_RealLiteralConstant(RealLiteralConstant.term, &RealLiteralConstant)) {
+         // MATCHED RealLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ OFP_Traverse IntLiteralConstant;
+ if (ATmatch(term, "LiteralConstant(<term>)", &IntLiteralConstant.term)) {
+
+      if (ofp_traverse_IntLiteralConstant(IntLiteralConstant.term, &IntLiteralConstant)) {
+         // MATCHED IntLiteralConstant
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_NamedConstant(ATerm term, pOFP_Traverse NamedConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("NamedConstant: %s\n", ATwriteToString(term));
+#endif
+
+ ATbool matched = ATfalse;
+
+ OFP_Traverse Name;
+ if (ATmatch(term, "NamedConstant(<term>)", &Name.term)) {
+
+      if (ofp_traverse_Name(Name.term, &Name)) {
+         // MATCHED Name
+         matched = ATtrue;
+      } else return ATfalse;
+
+   if (matched) return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec)
 {
 #ifdef DEBUG_PRINT
