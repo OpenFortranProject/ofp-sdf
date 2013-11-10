@@ -118,16 +118,14 @@ ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
       ATermList args = ofp_getArgList((ATermList)symbols);
 
       if (ATisEmpty(symbols)) {
-         printf("WARNING: Prod (name match): has empty sub-production list%s\n", ATwriteToString(term));
+         ofp_build_match_begin(symbol, constructor, args);
+         ofp_build_match_end(symbol, constructor);
          return ATfalse;
       }
+
       ofp_build_match_begin(symbol, constructor, args);
-
-      printf("     Prod(name match): %s", ATwriteToString(constructor));
-      printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
-
-      ofp_build_traversal_production(symbol, constructor, symbols);
-      ofp_build_match_end(symbol);
+      ofp_build_traversal_production(symbol, constructor, symbols, args);
+      ofp_build_match_end(symbol, constructor);
 
       return ATtrue;
    }
@@ -244,7 +242,7 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
          Prod_tail = ATgetNext (Prod_tail);
 
          if (ofp_traverse_Prod(Prod.term, &Prod, Symbol->term)) {
-            printf("============== matched %s\n", ATwriteToString(Prod.term));
+            printf("============== PROD: matched %s\n", ATwriteToString(Prod.term));
          }
       }
 
@@ -254,7 +252,7 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
          Prod.term = ATgetFirst(Prod_tail);
          Prod_tail = ATgetNext (Prod_tail);
          if (ofp_traverse_Prod_name(Prod.term, &Prod, Symbol->term)) {
-            printf("============== matched %s\n", ATwriteToString(Prod.term));
+            printf("============== PROD_NAME: matched %s\n", ATwriteToString(Prod.term));
             // MATCHED Prod with constructor name not sharing common symbol name
          }
       }
