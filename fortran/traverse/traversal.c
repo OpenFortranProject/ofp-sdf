@@ -11,23 +11,7 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
-ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
-{
-#ifdef DEBUG_PRINT
-   printf("Name: %s\n", ATwriteToString(term));
-#endif
-
-   if (ATmatch(term, "Name(<term>)", &Name->term)) {
-      char * Name_val;
-      if (ATmatch(term, "Name(<str>)", &Name_val)) {
-         // MATCHED Name
-         return ATtrue;
-      }
-      return ATfalse;
-   }
-   return ATfalse;
-}
-
+#ifdef FINISHED
 //========================================================================================
 // R213 executable-construct
 //----------------------------------------------------------------------------------------
@@ -80,6 +64,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 
    return ATfalse;
 }
+#endif
 
 /**
  * Section/Clause 4: Types
