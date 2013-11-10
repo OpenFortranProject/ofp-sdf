@@ -58,6 +58,9 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
 /* R214 */
 ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt);
 
+/* R215 */
+ATbool ofp_traverse_Keyword(ATerm term, pOFP_Traverse Keyword);
+
 /* R403 */
 ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec);
 
@@ -113,7 +116,18 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, pOFP_Traverse EndProgramStmt);
 /** Identifier aliases
  */
 
+ATbool ofp_traverse_ArgName(ATerm term, pOFP_Traverse ArgName);
+ATbool ofp_traverse_BindingName(ATerm term, pOFP_Traverse BindingName);
+ATbool ofp_traverse_ComponentName(ATerm term, pOFP_Traverse ComponentName);
+ATbool ofp_traverse_FinalSubroutineName(ATerm term, pOFP_Traverse FinalSubroutineName);
+ATbool ofp_traverse_InterfaceName(ATerm term, pOFP_Traverse InterfaceName);
+ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name);
 ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName);
+ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName);
+ATbool ofp_traverse_ProcedureName(ATerm term, pOFP_Traverse ProcedureName);
 ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
+ATbool ofp_traverse_ScalarIntConstantName(ATerm term, pOFP_Traverse ScalarIntConstantName);
+ATbool ofp_traverse_TypeName(ATerm term, pOFP_Traverse TypeName);
+ATbool ofp_traverse_TypeParamName(ATerm term, pOFP_Traverse TypeParamName);
 
-#endif
+#endif /* OFP_TRAVERSAL_H */
