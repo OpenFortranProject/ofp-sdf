@@ -7,30 +7,25 @@ ATbool ofp_traverse_Program(ATerm term, pOFP_Traverse Program)
    printf("Program: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse StartCommentBlock, ProgramUnit;
  if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit.term)) {
 
    if (ATmatch(StartCommentBlock.term, "Some(<term>)", &StartCommentBlock.term)) {
       if (ofp_traverse_StartCommentBlock(StartCommentBlock.term, &StartCommentBlock)) {
          // MATCHED StartCommentBlock
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit.term);
-   if (ATisEmpty(ProgramUnit_tail)) matched = ATtrue;
    while (! ATisEmpty(ProgramUnit_tail)) {
       ProgramUnit.term = ATgetFirst(ProgramUnit_tail);
       ProgramUnit_tail = ATgetNext (ProgramUnit_tail);
       if (ofp_traverse_ProgramUnit(ProgramUnit.term, &ProgramUnit)) {
          // MATCHED ProgramUnit
-         matched = ATtrue;
       } else return ATfalse;
    }
 
-   if (matched) return ATtrue;
+   return ATtrue;
  }
 
  return ATfalse;
@@ -42,61 +37,64 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, pOFP_Traverse ProgramUnit)
    printf("ProgramUnit: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse BlockData;
- if (ATmatch(term, "ProgramUnit(<term>)", &BlockData.term)) {
+ if (ATmatch(term, "ProgramUnit_BD(<term>)", &BlockData.term)) {
 
       if (ofp_traverse_BlockData(BlockData.term, &BlockData)) {
          // MATCHED BlockData
-         matched = ATtrue;
-      }
+      } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ProgramUnit_BD
+
+   return ATtrue;
  }
 
  OFP_Traverse Submodule;
- if (ATmatch(term, "ProgramUnit(<term>)", &Submodule.term)) {
+ if (ATmatch(term, "ProgramUnit_S(<term>)", &Submodule.term)) {
 
       if (ofp_traverse_Submodule(Submodule.term, &Submodule)) {
          // MATCHED Submodule
-         matched = ATtrue;
-      }
+      } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ProgramUnit_S
+
+   return ATtrue;
  }
 
  OFP_Traverse Module;
- if (ATmatch(term, "ProgramUnit(<term>)", &Module.term)) {
+ if (ATmatch(term, "ProgramUnit_M(<term>)", &Module.term)) {
 
       if (ofp_traverse_Module(Module.term, &Module)) {
          // MATCHED Module
-         matched = ATtrue;
-      }
+      } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ProgramUnit_M
+
+   return ATtrue;
  }
 
  OFP_Traverse ExternalSubprogram;
- if (ATmatch(term, "ProgramUnit(<term>)", &ExternalSubprogram.term)) {
+ if (ATmatch(term, "ProgramUnit_ES(<term>)", &ExternalSubprogram.term)) {
 
       if (ofp_traverse_ExternalSubprogram(ExternalSubprogram.term, &ExternalSubprogram)) {
          // MATCHED ExternalSubprogram
-         matched = ATtrue;
-      }
+      } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ProgramUnit_ES
+
+   return ATtrue;
  }
 
  OFP_Traverse MainProgram;
- if (ATmatch(term, "ProgramUnit(<term>)", &MainProgram.term)) {
+ if (ATmatch(term, "ProgramUnit_MP(<term>)", &MainProgram.term)) {
 
       if (ofp_traverse_MainProgram(MainProgram.term, &MainProgram)) {
          // MATCHED MainProgram
-         matched = ATtrue;
-      }
+      } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ProgramUnit_MP
+
+   return ATtrue;
  }
 
  return ATfalse;
@@ -108,28 +106,28 @@ ATbool ofp_traverse_ExternalSubprogram(ATerm term, pOFP_Traverse ExternalSubprog
    printf("ExternalSubprogram: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse SubroutineSubprogram;
- if (ATmatch(term, "ExternalSubprogram(<term>)", &SubroutineSubprogram.term)) {
+ if (ATmatch(term, "ExternalSubprogram_SS(<term>)", &SubroutineSubprogram.term)) {
 
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
          // MATCHED SubroutineSubprogram
-         matched = ATtrue;
       } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ExternalSubprogram_SS
+
+   return ATtrue;
  }
 
  OFP_Traverse FunctionSubprogram;
- if (ATmatch(term, "ExternalSubprogram(<term>)", &FunctionSubprogram.term)) {
+ if (ATmatch(term, "ExternalSubprogram_FS(<term>)", &FunctionSubprogram.term)) {
 
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
-         matched = ATtrue;
       } else return ATfalse;
 
-   if (matched) return ATtrue;
+   // MATCHED ExternalSubprogram_FS
+
+   return ATtrue;
  }
 
  return ATfalse;

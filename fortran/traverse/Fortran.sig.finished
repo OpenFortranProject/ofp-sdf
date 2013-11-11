@@ -15,32 +15,32 @@ Module(
             )
 
           , OpDecl(
-              "ProgramUnit"
+              "ProgramUnit_BD"
             , FunType([ConstType(SortNoArgs("BlockData"))], ConstType(SortNoArgs("ProgramUnit")))
             )
           , OpDecl(
-              "ProgramUnit"
+              "ProgramUnit_S"
             , FunType([ConstType(SortNoArgs("Submodule"))], ConstType(SortNoArgs("ProgramUnit")))
             )
           , OpDecl(
-              "ProgramUnit"
+              "ProgramUnit_M"
             , FunType([ConstType(SortNoArgs("Module"))], ConstType(SortNoArgs("ProgramUnit")))
             )
           , OpDecl(
-              "ProgramUnit"
+              "ProgramUnit_ES"
             , FunType([ConstType(SortNoArgs("ExternalSubprogram"))], ConstType(SortNoArgs("ProgramUnit")))
             )
           , OpDecl(
-              "ProgramUnit"
+              "ProgramUnit_MP"
             , FunType([ConstType(SortNoArgs("MainProgram"))], ConstType(SortNoArgs("ProgramUnit")))
             )
 
           , OpDecl(
-              "ExternalSubprogram"
+              "ExternalSubprogram_SS"
             , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("ExternalSubprogram")))
             )
           , OpDecl(
-              "ExternalSubprogram"
+              "ExternalSubprogram_FS"
             , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("ExternalSubprogram")))
             )
 
