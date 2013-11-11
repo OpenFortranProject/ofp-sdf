@@ -139,52 +139,43 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    printf("SpecificationPart: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse UseStmt, ImportStmt, ImplicitPart, DeclarationConstruct;
  if (ATmatch(term, "SpecificationPart(<term>,<term>,<term>,<term>)", &UseStmt.term, &ImportStmt.term, &ImplicitPart.term, &DeclarationConstruct.term)) {
 
    ATermList UseStmt_tail = (ATermList) ATmake("<term>", UseStmt.term);
-   if (ATisEmpty(UseStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(UseStmt_tail)) {
       UseStmt.term = ATgetFirst(UseStmt_tail);
       UseStmt_tail = ATgetNext (UseStmt_tail);
       if (ofp_traverse_UseStmt(UseStmt.term, &UseStmt)) {
          // MATCHED UseStmt
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    ATermList ImportStmt_tail = (ATermList) ATmake("<term>", ImportStmt.term);
-   if (ATisEmpty(ImportStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(ImportStmt_tail)) {
       ImportStmt.term = ATgetFirst(ImportStmt_tail);
       ImportStmt_tail = ATgetNext (ImportStmt_tail);
       if (ofp_traverse_ImportStmt(ImportStmt.term, &ImportStmt)) {
          // MATCHED ImportStmt
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    if (ATmatch(ImplicitPart.term, "Some(<term>)", &ImplicitPart.term)) {
       if (ofp_traverse_ImplicitPart(ImplicitPart.term, &ImplicitPart)) {
          // MATCHED ImplicitPart
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    ATermList DeclarationConstruct_tail = (ATermList) ATmake("<term>", DeclarationConstruct.term);
-   if (ATisEmpty(DeclarationConstruct_tail)) matched = ATtrue;
    while (! ATisEmpty(DeclarationConstruct_tail)) {
       DeclarationConstruct.term = ATgetFirst(DeclarationConstruct_tail);
       DeclarationConstruct_tail = ATgetNext (DeclarationConstruct_tail);
       if (ofp_traverse_DeclarationConstruct(DeclarationConstruct.term, &DeclarationConstruct)) {
          // MATCHED DeclarationConstruct
-         matched = ATtrue;
       } else return ATfalse;
    }
 
-   if (matched) return ATtrue;
+   return ATtrue;
  }
 
  return ATfalse;

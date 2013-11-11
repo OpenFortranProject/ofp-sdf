@@ -65,19 +65,19 @@ Module(
             )
 
           , OpDecl(
-              "ImplicitPartStmt"
+              "ImplicitPartStmt_ES"
             , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
             )
           , OpDecl(
-              "ImplicitPartStmt"
+              "ImplicitPartStmt_FS"
             , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
             )
           , OpDecl(
-              "ImplicitPartStmt"
+              "ImplicitPartStmt_PS"
             , FunType([ConstType(SortNoArgs("ParameterStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
             )
           , OpDecl(
-              "ImplicitPartStmt"
+              "ImplicitPartStmt_IS"
             , FunType([ConstType(SortNoArgs("ImplicitStmt"))], ConstType(SortNoArgs("ImplicitPartStmt")))
             )
 

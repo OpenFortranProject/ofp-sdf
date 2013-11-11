@@ -156,30 +156,25 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    printf("\nSpecificationPart: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
  OFP_Traverse UseStmt, ImportStmt, ImplicitPart, DeclarationConstruct;
  if (ATmatch(term, "SpecificationPart(<term>,<term>,<term>,<term>)", &UseStmt.term, &ImportStmt.term, &ImplicitPart.term, &DeclarationConstruct.term)) {
 
    ATermList UseStmt_tail = (ATermList) ATmake("<term>", UseStmt.term);
-   if (ATisEmpty(UseStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(UseStmt_tail)) {
       UseStmt.term = ATgetFirst(UseStmt_tail);
       UseStmt_tail = ATgetNext (UseStmt_tail);
       if (ofp_traverse_UseStmt(UseStmt.term, &UseStmt)) {
          // MATCHED UseStmt
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    ATermList ImportStmt_tail = (ATermList) ATmake("<term>", ImportStmt.term);
-   if (ATisEmpty(ImportStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(ImportStmt_tail)) {
       ImportStmt.term = ATgetFirst(ImportStmt_tail);
       ImportStmt_tail = ATgetNext (ImportStmt_tail);
 #ifdef NOT_YET
       if (ofp_traverse_ImportStmt(ImportStmt.term, &ImportStmt)) {
          // MATCHED ImportStmt
-         matched = ATtrue;
       } else return ATfalse;
 #endif
    }
@@ -187,22 +182,19 @@ ATbool ofp_traverse_SpecificationPart(ATerm term, pOFP_Traverse SpecificationPar
    if (ATmatch(ImplicitPart.term, "Some(<term>)", &ImplicitPart.term)) {
       if (ofp_traverse_ImplicitPart(ImplicitPart.term, &ImplicitPart)) {
          // MATCHED ImplicitPart
-         matched = ATtrue;
       } else return ATfalse;
    }
 
    ATermList DeclarationConstruct_tail = (ATermList) ATmake("<term>", DeclarationConstruct.term);
-   if (ATisEmpty(DeclarationConstruct_tail)) matched = ATtrue;
    while (! ATisEmpty(DeclarationConstruct_tail)) {
       DeclarationConstruct.term = ATgetFirst(DeclarationConstruct_tail);
       DeclarationConstruct_tail = ATgetNext (DeclarationConstruct_tail);
       if (ofp_traverse_DeclarationConstruct(DeclarationConstruct.term, &DeclarationConstruct)) {
          // MATCHED DeclarationConstruct
-         matched = ATtrue;
       } else return ATfalse;
    }
 
-   if (matched) return ATtrue;
+   return ATtrue;
  }
 
  return ATfalse;
@@ -255,58 +247,58 @@ ATbool ofp_traverse_ImplicitPartStmt(ATerm term, pOFP_Traverse ImplicitPartStmt)
    printf("ImplicitPartStmt: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse EntryStmt;
- if (ATmatch(term, "ImplicitPartStmt(<term>)", &EntryStmt.term)) {
+ if (ATmatch(term, "ImplicitPartStmt_ES(<term>)", &EntryStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EntryStmt(EntryStmt.term, &EntryStmt)) {
          // MATCHED EntryStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED ImplicitPartStmt_ES
+
+   return ATtrue;
  }
 
  OFP_Traverse FormatStmt;
- if (ATmatch(term, "ImplicitPartStmt(<term>)", &FormatStmt.term)) {
+ if (ATmatch(term, "ImplicitPartStmt_FS(<term>)", &FormatStmt.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_FormatStmt(FormatStmt.term, &FormatStmt)) {
          // MATCHED FormatStmt
-         matched = ATtrue;
       } else return ATfalse;
 #endif
 
-   if (matched) return ATtrue;
+   // MATCHED ImplicitPartStmt_FS
+
+   return ATtrue;
  }
 
  OFP_Traverse ParameterStmt;
- if (ATmatch(term, "ImplicitPartStmt(<term>)", &ParameterStmt.term)) {
+ if (ATmatch(term, "ImplicitPartStmt_PS(<term>)", &ParameterStmt.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_ParameterStmt(ParameterStmt.term, &ParameterStmt)) {
          // MATCHED ParameterStmt
-         matched = ATtrue;
       } else return ATfalse;
 #endif
 
-   if (matched) return ATtrue;
+   // MATCHED ImplicitPartStmt_PS
+
+   return ATtrue;
  }
 
  OFP_Traverse ImplicitStmt;
- if (ATmatch(term, "ImplicitPartStmt(<term>)", &ImplicitStmt.term)) {
+ if (ATmatch(term, "ImplicitPartStmt_IS(<term>)", &ImplicitStmt.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_ImplicitStmt(ImplicitStmt.term, &ImplicitStmt)) {
          // MATCHED ImplicitStmt
-         matched = ATtrue;
       } else return ATfalse;
 #endif
 
-   if (matched) return ATtrue;
+   // MATCHED ImplicitPartStmt_IS
+
+   return ATtrue;
  }
 
  return ATfalse;
@@ -336,14 +328,13 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationCo
  }
 
  OFP_Traverse TypeDeclarationStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &TypeDeclarationStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_TDS(<term>)", &TypeDeclarationStmt.term)) {
 
       if (ofp_traverse_TypeDeclarationStmt(TypeDeclarationStmt.term, &TypeDeclarationStmt)) {
          // MATCHED TypeDeclarationStmt
-         matched = ATtrue;
       } else return ATfalse;
 
-   if (matched) return ATtrue;
+   return ATtrue;
  }
 
  OFP_Traverse OtherSpecificationStmt;
