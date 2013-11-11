@@ -755,7 +755,7 @@ Module(
             )
 
           , OpDecl(
-              "UseStmt_Only"
+              "UseStmt_ONLY"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
@@ -767,7 +767,7 @@ Module(
               )
             )
           , OpDecl(
-              "UseStmt_Rename"
+              "UseStmt_RENAME"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
@@ -947,6 +947,589 @@ Module(
             )
 
           , OpDecl(
+              "InterfaceBlock"
+            , FunType(
+                [ ConstType(SortNoArgs("InterfaceStmt"))
+                , ConstType(Sort("List", [SortNoArgs("InterfaceSpecification")]))
+                , ConstType(SortNoArgs("EndInterfaceStmt"))
+                ]
+              , ConstType(SortNoArgs("InterfaceBlock"))
+              )
+            )
+
+          , OpDecl(
+              "InterfaceSpecification"
+            , FunType([ConstType(SortNoArgs("ProcedureStmt"))], ConstType(SortNoArgs("InterfaceSpecification")))
+            )
+          , OpDecl(
+              "InterfaceSpecification"
+            , FunType([ConstType(SortNoArgs("InterfaceBody"))], ConstType(SortNoArgs("InterfaceSpecification")))
+            )
+
+          , OpDecl(
+              "InterfaceStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("InterfaceStmt"))
+              )
+            )
+          , OpDecl(
+              "InterfaceStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("GenericSpec")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("InterfaceStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndInterfaceStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("GenericSpec")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndInterfaceStmt"))
+              )
+            )
+
+          , OpDecl(
+              "InterfaceBody"
+            , FunType(
+                [ConstType(SortNoArgs("SubroutineStmt")), ConstType(SortNoArgs("SpecificationPart")), ConstType(SortNoArgs("EndSubroutineStmt"))]
+              , ConstType(SortNoArgs("InterfaceBody"))
+              )
+            )
+          , OpDecl(
+              "InterfaceBody"
+            , FunType(
+                [ConstType(SortNoArgs("FunctionStmt")), ConstType(SortNoArgs("SpecificationPart")), ConstType(SortNoArgs("EndFunctionStmt"))]
+              , ConstType(SortNoArgs("InterfaceBody"))
+              )
+            )
+
+          , OpDecl(
+              "ProcedureStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProcedureNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProcedureStmt"))
+              )
+            )
+          , OpDecl(
+              "ProcedureStmt_MODULE"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProcedureNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProcedureStmt"))
+              )
+            )
+          , OpDecl(
+              "ProcedureNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ProcedureName")]))]
+              , ConstType(SortNoArgs("ProcedureNameList"))
+              )
+            )
+
+          , OpDecl(
+              "GenericSpec"
+            , FunType([ConstType(SortNoArgs("DefinedIoGenericSpec"))], ConstType(SortNoArgs("GenericSpec")))
+            )
+          , OpDecl("GenericSpec", ConstType(SortNoArgs("GenericSpec")))
+          , OpDecl(
+              "GenericSpec"
+            , FunType([ConstType(SortNoArgs("DefinedOperator"))], ConstType(SortNoArgs("GenericSpec")))
+            )
+          , OpDecl(
+              "GenericSpec"
+            , FunType([ConstType(SortNoArgs("GenericName"))], ConstType(SortNoArgs("GenericSpec")))
+            )
+
+          , OpDecl("DefinedIoGenericSpec_WU", ConstType(SortNoArgs("DefinedIoGenericSpec")))
+          , OpDecl("DefinedIoGenericSpec_WF", ConstType(SortNoArgs("DefinedIoGenericSpec")))
+          , OpDecl("DefinedIoGenericSpec_RU", ConstType(SortNoArgs("DefinedIoGenericSpec")))
+          , OpDecl("DefinedIoGenericSpec_RF", ConstType(SortNoArgs("DefinedIoGenericSpec")))
+
+          , OpDecl(
+              "ImportStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("ImportStmt"))
+              )
+            )
+          , OpDecl(
+              "ImportStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ImportNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ImportStmt"))
+              )
+            )
+          , OpDecl(
+              "ImportNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ImportName")]))]
+              , ConstType(SortNoArgs("ImportNameList"))
+              )
+            )
+
+          , OpDecl(
+              "ExternalStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ExternalNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ExternalStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ProcedureDeclarationStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("ProcInterface")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptProcAttrSpecList1")]))
+                , ConstType(SortNoArgs("ProcDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProcedureDeclarationStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ProcAttrSpecList"))], ConstType(SortNoArgs("ProcAttrSpecList0")))
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ProcAttrSpecList0")]))]
+              , ConstType(SortNoArgs("OptProcAttrSpecList1"))
+              )
+            )
+
+          , OpDecl(
+              "ProcInterface"
+            , FunType([ConstType(SortNoArgs("DeclarationTypeSpec"))], ConstType(SortNoArgs("ProcInterface")))
+            )
+          , OpDecl(
+              "ProcInterface"
+            , FunType([ConstType(SortNoArgs("InterfaceName"))], ConstType(SortNoArgs("ProcInterface")))
+            )
+
+          , OpDecl("ProcAttrSpec_SAVE", ConstType(SortNoArgs("ProcAttrSpec")))
+          , OpDecl("ProcAttrSpec_POINTER", ConstType(SortNoArgs("ProcAttrSpec")))
+          , OpDecl("ProcAttrSpec_OPTIONAL", ConstType(SortNoArgs("ProcAttrSpec")))
+          , OpDecl(
+              "ProcAttrSpec_INTENT"
+            , FunType([ConstType(SortNoArgs("IntentSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
+            )
+          , OpDecl(
+              "ProcAttrSpec_PBS"
+            , FunType([ConstType(SortNoArgs("ProcLanguageBindingSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
+            )
+          , OpDecl(
+              "ProcAttrSpec_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
+            )
+          , OpDecl(
+              "ProcAttrSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ProcAttrSpec")]))]
+              , ConstType(SortNoArgs("ProcAttrSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "ProcDecl"
+            , FunType(
+                [ConstType(SortNoArgs("ProcedureEntityName")), ConstType(Sort("Option", [SortNoArgs("ProcPointerInit0")]))]
+              , ConstType(SortNoArgs("ProcDecl"))
+              )
+            )
+          , OpDecl(
+              "ProcDeclList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ProcDecl")]))]
+              , ConstType(SortNoArgs("ProcDeclList"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ProcPointerInit"))], ConstType(SortNoArgs("ProcPointerInit0")))
+            )
+
+          , OpDecl(
+              "InterfaceName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("InterfaceName")))
+            )
+
+          , OpDecl(
+              "ProcPointerInit"
+            , FunType([ConstType(SortNoArgs("InitialProcTarget"))], ConstType(SortNoArgs("ProcPointerInit")))
+            )
+          , OpDecl(
+              "ProcPointerInit"
+            , FunType([ConstType(SortNoArgs("NullInit"))], ConstType(SortNoArgs("ProcPointerInit")))
+            )
+
+          , OpDecl(
+              "InitialProcTarget"
+            , FunType([ConstType(SortNoArgs("ProcedureName"))], ConstType(SortNoArgs("InitialProcTarget")))
+            )
+
+          , OpDecl(
+              "IntrinsicStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("IntrinsicProcedureNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("IntrinsicStmt"))
+              )
+            )
+          , OpDecl(
+              "IntrinsicProcedureNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("IntrinsicProcedureName")]))]
+              , ConstType(SortNoArgs("IntrinsicProcedureNameList"))
+              )
+            )
+
+          , OpDecl(
+              "FunctionReference"
+            , FunType(
+                [ConstType(SortNoArgs("ProcedureDesignator")), ConstType(Sort("Option", [SortNoArgs("ActualArgSpecList")]))]
+              , ConstType(SortNoArgs("FunctionReference"))
+              )
+            )
+
+          , OpDecl(
+              "CallStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProcedureDesignator"))
+                , ConstType(Sort("Option", [SortNoArgs("OptActualArgSpecList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("CallStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ActualArgSpecList")]))]
+              , ConstType(SortNoArgs("OptActualArgSpecList0"))
+              )
+            )
+
+          , OpDecl(
+              "ProcedureDesignator_AMB"
+            , FunType(
+                [ConstType(SortNoArgs("DataRef")), ConstType(SortNoArgs("BindingName"))]
+              , ConstType(SortNoArgs("ProcedureDesignator"))
+              )
+            )
+          , OpDecl(
+              "ProcedureDesignator"
+            , FunType([ConstType(SortNoArgs("ProcedureName"))], ConstType(SortNoArgs("ProcedureDesignator")))
+            )
+
+          , OpDecl(
+              "ActualArgSpec"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Keyword0")])), ConstType(SortNoArgs("ActualArg"))]
+              , ConstType(SortNoArgs("ActualArgSpec"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Keyword"))], ConstType(SortNoArgs("Keyword0")))
+            )
+
+          , OpDecl(
+              "ActualArgSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ActualArgSpec")]))]
+              , ConstType(SortNoArgs("ActualArgSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "ActualArg"
+            , FunType([ConstType(SortNoArgs("AltReturnSpec"))], ConstType(SortNoArgs("ActualArg")))
+            )
+          , OpDecl(
+              "ActualArg_AMB"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("ActualArg")))
+            )
+
+          , OpDecl(
+              "AltReturnSpec"
+            , FunType([ConstType(SortNoArgs("Label"))], ConstType(SortNoArgs("AltReturnSpec")))
+            )
+
+          , OpDecl(
+              "Prefix"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("PrefixSpec")]))]
+              , ConstType(SortNoArgs("Prefix"))
+              )
+            )
+
+          , OpDecl("PrefixSpec_RECURSIVE", ConstType(SortNoArgs("PrefixSpec")))
+          , OpDecl("PrefixSpec_PURE", ConstType(SortNoArgs("PrefixSpec")))
+          , OpDecl("PrefixSpec_MODULE", ConstType(SortNoArgs("PrefixSpec")))
+          , OpDecl("PrefixSpec_IMPURE", ConstType(SortNoArgs("PrefixSpec")))
+          , OpDecl("PrefixSpec_ELEMENTAL", ConstType(SortNoArgs("PrefixSpec")))
+          , OpDecl(
+              "PrefixSpec"
+            , FunType([ConstType(SortNoArgs("DeclarationTypeSpec"))], ConstType(SortNoArgs("PrefixSpec")))
+            )
+
+          , OpDecl(
+              "FunctionSubprogram"
+            , FunType(
+                [ ConstType(SortNoArgs("FunctionStmt"))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(SortNoArgs("ExecutionPart"))
+                , ConstType(Sort("Option", [SortNoArgs("InternalSubprogramPart")]))
+                , ConstType(SortNoArgs("EndFunctionStmt"))
+                ]
+              , ConstType(SortNoArgs("FunctionSubprogram"))
+              )
+            )
+
+          , OpDecl(
+              "FunctionStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("Prefix")]))
+                , ConstType(SortNoArgs("FunctionName"))
+                , ConstType(Sort("Option", [SortNoArgs("DummyArgNameList")]))
+                , ConstType(Sort("Option", [SortNoArgs("Suffix")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("FunctionStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ProcLanguageBindingSpec"
+            , FunType([ConstType(SortNoArgs("LanguageBindingSpec"))], ConstType(SortNoArgs("ProcLanguageBindingSpec")))
+            )
+
+          , OpDecl(
+              "DummyArgName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("DummyArgName")))
+            )
+ 
+          , OpDecl(
+              "Suffix"
+            , FunType(
+                [ConstType(SortNoArgs("ResultName")), ConstType(Sort("Option", [SortNoArgs("ProcLanguageBindingSpec")]))]
+              , ConstType(SortNoArgs("Suffix"))
+              )
+            )
+          , OpDecl(
+              "Suffix"
+            , FunType(
+                [ConstType(SortNoArgs("ProcLanguageBindingSpec")), ConstType(Sort("Option", [SortNoArgs("ResultName0")]))]
+              , ConstType(SortNoArgs("Suffix"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ResultName"))], ConstType(SortNoArgs("ResultName0")))
+            )
+
+          , OpDecl(
+              "EndFunctionStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptFunctionName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndFunctionStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("FunctionName")]))]
+              , ConstType(SortNoArgs("OptFunctionName1"))
+              )
+            )
+
+          , OpDecl(
+              "SubroutineSubprogram"
+            , FunType(
+                [ ConstType(SortNoArgs("SubroutineStmt"))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(SortNoArgs("ExecutionPart"))
+                , ConstType(Sort("Option", [SortNoArgs("InternalSubprogramPart")]))
+                , ConstType(SortNoArgs("EndSubroutineStmt"))
+                ]
+              , ConstType(SortNoArgs("SubroutineSubprogram"))
+              )
+            )
+
+          , OpDecl(
+              "SubroutineStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("Prefix")]))
+                , ConstType(SortNoArgs("SubroutineName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SubroutineStmt"))
+              )
+            )
+          , OpDecl(
+              "SubroutineStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("Prefix")]))
+                , ConstType(SortNoArgs("SubroutineName"))
+                , ConstType(Sort("Option", [SortNoArgs("DummyArgList")]))
+                , ConstType(Sort("Option", [SortNoArgs("ProcLanguageBindingSpec")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SubroutineStmt"))
+              )
+            )
+
+          , OpDecl("DummyArg", ConstType(SortNoArgs("DummyArg")))
+          , OpDecl(
+              "DummyArg"
+            , FunType([ConstType(SortNoArgs("DummyArgName"))], ConstType(SortNoArgs("DummyArg")))
+            )
+
+          , OpDecl(
+              "DummyArgList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("DummyArg")]))]
+              , ConstType(SortNoArgs("DummyArgList"))
+              )
+            )
+
+          , OpDecl(
+              "EndSubroutineStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptSubroutineName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndSubroutineStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("SubroutineName")]))]
+              , ConstType(SortNoArgs("OptSubroutineName1"))
+              )
+            )
+
+          , OpDecl(
+              "SeparateModuleSubprogram"
+            , FunType(
+                [ ConstType(SortNoArgs("MpSubprogramStmt"))
+                , ConstType(SortNoArgs("SpecificationPart"))
+                , ConstType(SortNoArgs("ExecutionPart"))
+                , ConstType(Sort("Option", [SortNoArgs("InternalSubprogramPart")]))
+                , ConstType(SortNoArgs("EndMpSubprogramStmt"))
+                ]
+              , ConstType(SortNoArgs("SeparateModuleSubprogram"))
+              )
+            )
+
+          , OpDecl(
+              "MpSubprogramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ProcedureName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("MpSubprogramStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndMpSubprogramStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptProcedureName1")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndMpSubprogramStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ProcedureName")]))]
+              , ConstType(SortNoArgs("OptProcedureName1"))
+              )
+            )
+
+          , OpDecl(
+              "EntryStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("EntryName"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EntryStmt"))
+              )
+            )
+          , OpDecl(
+              "EntryStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("EntryName"))
+                , ConstType(Sort("Option", [SortNoArgs("DummyArgList")]))
+                , ConstType(Sort("Option", [SortNoArgs("Suffix")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EntryStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ReturnStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("Expr")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ReturnStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ContainsStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("ContainsStmt"))
+              )
+            )
+
+          , OpDecl(
+              "StmtFunctionStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FunctionName"))
+                , ConstType(Sort("Option", [SortNoArgs("DummyArgNameList")]))
+                , ConstType(SortNoArgs("Expr"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("StmtFunctionStmt"))
+              )
+            )
+
+
+          , OpDecl(
               "AncestorModuleName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("AncestorModuleName")))
             )
@@ -967,12 +1550,36 @@ Module(
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ComponentName")))
             )
           , OpDecl(
+              "EntryName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("EntryName")))
+            )
+          , OpDecl(
+              "ExternalName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ExternalName")))
+            )
+          , OpDecl(
               "FinalSubroutineName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("FinalSubroutineName")))
             )
           , OpDecl(
+              "FunctionName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("FunctionName")))
+            )
+          , OpDecl(
+              "GenericName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("GenericName")))
+            )
+          , OpDecl(
+              "ImportName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ImportName")))
+            )
+          , OpDecl(
               "InterfaceName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("InterfaceName")))
+            )
+          , OpDecl(
+              "IntrinsicProcedureName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("IntrinsicProcedureName")))
             )
           , OpDecl(
               "LocalName"
@@ -999,6 +1606,10 @@ Module(
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ParentTypeName")))
             )
           , OpDecl(
+              "ProcedureEntityName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProcedureEntityName")))
+            )
+          , OpDecl(
               "ProcedureName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProcedureName")))
             )
@@ -1007,12 +1618,20 @@ Module(
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ProgramName")))
             )
           , OpDecl(
+              "ResultName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ResultName")))
+            )
+          , OpDecl(
               "ScalarIntConstantName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ScalarIntConstantName")))
             )
           , OpDecl(
               "SubmoduleName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("SubmoduleName")))
+            )
+          , OpDecl(
+              "SubroutineName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("SubroutineName")))
             )
           , OpDecl(
               "TypeName"
@@ -1025,6 +1644,23 @@ Module(
           , OpDecl(
               "UseName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("UseName")))
+            )
+
+
+          , OpDecl(
+              "ExternalNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ExternalName")]))]
+              , ConstType(SortNoArgs("ExternalNameList"))
+              )
+            )
+
+          , OpDecl(
+              "DummyArgNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("DummyArgName")]))]
+              , ConstType(SortNoArgs("DummyArgNameList"))
+              )
             )
 
           ]
