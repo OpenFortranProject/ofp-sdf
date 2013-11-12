@@ -31,11 +31,11 @@ FortranFixed.tbl : FortranFixed.def
 Fortran.def : Fortran.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
 
-Fortran.rtg : Fortran.def
-	sdf2rtg -i Fortran.def -m Fortran -o Fortran.rtg --ignore-missing-cons
+Main.rtg : Main.def
+	sdf2rtg -i Main.def -m Main -o Main.rtg --ignore-missing-cons
 
-Fortran.sig : Fortran.rtg
-	rtg2sig -i Fortran.rtg -o Fortran.sig
+Main.sig : Main.rtg
+	rtg2sig -i Main.rtg -o Main.sig
 
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
@@ -50,8 +50,8 @@ pretty : Fortran.tbl
               pp-aterm -i $$File -o $$File.pp ; \
            done
 
-Fortran.sig.aterm : Fortran.sig
-	sglri -p $(STRATEGO_TBL) -i Fortran.sig | implode-asfix | pp-aterm -o Fortran.sig.aterm
+Fortran.sig.aterm : Main.sig
+	sglri -p $(STRATEGO_TBL) -i Main.sig | implode-asfix | pp-aterm -o Fortran.sig.aterm
 
 junk : junk.f90 Fortran.tbl
 	sglri -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.f90.aterm
