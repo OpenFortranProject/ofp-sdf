@@ -131,19 +131,19 @@ Module(
             )
 
           , OpDecl(
-              "ExecutionPartConstruct"
+              "ExecutionPartConstruct_DS"
             , FunType([ConstType(SortNoArgs("DataStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
             )
           , OpDecl(
-              "ExecutionPartConstruct"
+              "ExecutionPartConstruct_ES"
             , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
             )
           , OpDecl(
-              "ExecutionPartConstruct"
+              "ExecutionPartConstruct_FS"
             , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
             )
           , OpDecl(
-              "ExecutionPartConstruct"
+              "ExecutionPartConstruct_EC"
             , FunType([ConstType(SortNoArgs("ExecutableConstruct"))], ConstType(SortNoArgs("ExecutionPartConstruct")))
             )
 
