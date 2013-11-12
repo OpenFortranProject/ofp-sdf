@@ -4122,6 +4122,1108 @@ ATbool ofp_traverse_IoImpliedDoControl(ATerm term, pOFP_Traverse IoImpliedDoCont
  return ATfalse;
 }
 
+ATbool ofp_traverse_WaitStmt(ATerm term, pOFP_Traverse WaitStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("WaitStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, WaitSpecList, EOS;
+ if (ATmatch(term, "WaitStmt(<term>,<term>,<term>)", &Label.term, &WaitSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_WaitSpecList(WaitSpecList.term, &WaitSpecList)) {
+         // MATCHED WaitSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_WaitSpec(ATerm term, pOFP_Traverse WaitSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("WaitSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "WaitSpec_IOSTAT(<term>)", &IntExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED WaitSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "WaitSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED WaitSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr1;
+ if (ATmatch(term, "WaitSpec_ID(<term>)", &IntExpr1.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr1.term, &IntExpr1)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED WaitSpec_ID
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "WaitSpec_ERR(<term>)", &LblRef.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED WaitSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef1;
+ if (ATmatch(term, "WaitSpec_EOR(<term>)", &LblRef1.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef1.term, &LblRef1)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED WaitSpec_EOR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef2;
+ if (ATmatch(term, "WaitSpec_END(<term>)", &LblRef2.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef2.term, &LblRef2)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED WaitSpec_END
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "WaitSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED WaitSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_WaitSpecList(ATerm term, pOFP_Traverse WaitSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("WaitSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse WaitSpec;
+ if (ATmatch(term, "WaitSpecList(<term>)", &WaitSpec.term)) {
+
+   ATermList WaitSpec_tail = (ATermList) ATmake("<term>", WaitSpec.term);
+   while (! ATisEmpty(WaitSpec_tail)) {
+      WaitSpec.term = ATgetFirst(WaitSpec_tail);
+      WaitSpec_tail = ATgetNext (WaitSpec_tail);
+      if (ofp_traverse_WaitSpec(WaitSpec.term, &WaitSpec)) {
+         // MATCHED WaitSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BackspaceStmt(ATerm term, pOFP_Traverse BackspaceStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("BackspaceStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, PositionSpecList, EOS;
+ if (ATmatch(term, "BackspaceStmt_PSL(<term>,<term>,<term>)", &Label.term, &PositionSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_PositionSpecList(PositionSpecList.term, &PositionSpecList)) {
+         // MATCHED PositionSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED BackspaceStmt_PSL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, FileUnitNumber, EOS1;
+ if (ATmatch(term, "BackspaceStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED BackspaceStmt_FUN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndfileStmt(ATerm term, pOFP_Traverse EndfileStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndfileStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, PositionSpecList, EOS;
+ if (ATmatch(term, "EndfileStmt_PSL(<term>,<term>,<term>)", &Label.term, &PositionSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_PositionSpecList(PositionSpecList.term, &PositionSpecList)) {
+         // MATCHED PositionSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED EndfileStmt_PSL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, FileUnitNumber, EOS1;
+ if (ATmatch(term, "EndfileStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED EndfileStmt_FUN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_RewindStmt(ATerm term, pOFP_Traverse RewindStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("RewindStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, PositionSpecList, EOS;
+ if (ATmatch(term, "RewindStmt_PSL(<term>,<term>,<term>)", &Label.term, &PositionSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_PositionSpecList(PositionSpecList.term, &PositionSpecList)) {
+         // MATCHED PositionSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED RewindStmt_PSL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, FileUnitNumber, EOS1;
+ if (ATmatch(term, "RewindStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED RewindStmt_FUN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PositionSpec(ATerm term, pOFP_Traverse PositionSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("PositionSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "PositionSpec_ERR(<term>)", &LblRef.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED PositionSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "PositionSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED PositionSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "PositionSpec_IOSTAT(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED PositionSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "PositionSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED PositionSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PositionSpecList(ATerm term, pOFP_Traverse PositionSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("PositionSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse PositionSpec;
+ if (ATmatch(term, "PositionSpecList(<term>)", &PositionSpec.term)) {
+
+   ATermList PositionSpec_tail = (ATermList) ATmake("<term>", PositionSpec.term);
+   while (! ATisEmpty(PositionSpec_tail)) {
+      PositionSpec.term = ATgetFirst(PositionSpec_tail);
+      PositionSpec_tail = ATgetNext (PositionSpec_tail);
+      if (ofp_traverse_PositionSpec(PositionSpec.term, &PositionSpec)) {
+         // MATCHED PositionSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FlushStmt(ATerm term, pOFP_Traverse FlushStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("FlushStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, FlushSpecList, EOS;
+ if (ATmatch(term, "FlushStmt_FSL(<term>,<term>,<term>)", &Label.term, &FlushSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FlushSpecList(FlushSpecList.term, &FlushSpecList)) {
+         // MATCHED FlushSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED FlushStmt_FSL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, FileUnitNumber, EOS1;
+ if (ATmatch(term, "FlushStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED FlushStmt_FUN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FlushSpec(ATerm term, pOFP_Traverse FlushSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("FlushSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "FlushSpec_ERR(<term>)", &LblRef.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED FlushSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "FlushSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED FlushSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "FlushSpec_IOSTAT(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED FlushSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "FlushSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED FlushSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FlushSpecList(ATerm term, pOFP_Traverse FlushSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("FlushSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse FlushSpec;
+ if (ATmatch(term, "FlushSpecList(<term>)", &FlushSpec.term)) {
+
+   ATermList FlushSpec_tail = (ATermList) ATmake("<term>", FlushSpec.term);
+   while (! ATisEmpty(FlushSpec_tail)) {
+      FlushSpec.term = ATgetFirst(FlushSpec_tail);
+      FlushSpec_tail = ATgetNext (FlushSpec_tail);
+      if (ofp_traverse_FlushSpec(FlushSpec.term, &FlushSpec)) {
+         // MATCHED FlushSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InquireStmt(ATerm term, pOFP_Traverse InquireStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("InquireStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, IntVariable, OutputItemList, EOS;
+ if (ATmatch(term, "InquireStmt_IV(<term>,<term>,<term>,<term>)", &Label.term, &IntVariable.term, &OutputItemList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+      if (ofp_traverse_OutputItemList(OutputItemList.term, &OutputItemList)) {
+         // MATCHED OutputItemList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED InquireStmt_IV
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, InquireSpecList, EOS1;
+ if (ATmatch(term, "InquireStmt_ISL(<term>,<term>,<term>)", &Label1.term, &InquireSpecList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_InquireSpecList(InquireSpecList.term, &InquireSpecList)) {
+         // MATCHED InquireSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED InquireStmt_ISL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InquireSpec(ATerm term, pOFP_Traverse InquireSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("InquireSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "InquireSpec_WRITE(<term>)", &DefaultCharExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_WRITE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr1;
+ if (ATmatch(term, "InquireSpec_UNFORMATTED(<term>)", &DefaultCharExpr1.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_UNFORMATTED
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr2;
+ if (ATmatch(term, "InquireSpec_STREAM(<term>)", &DefaultCharExpr2.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_STREAM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "InquireSpec_SIZE(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_SIZE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr3;
+ if (ATmatch(term, "InquireSpec_SIGN(<term>)", &DefaultCharExpr3.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_SIGN
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr4;
+ if (ATmatch(term, "InquireSpec_SEQUENTIAL(<term>)", &DefaultCharExpr4.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_SEQUENTIAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr5;
+ if (ATmatch(term, "InquireSpec_ROUND(<term>)", &DefaultCharExpr5.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ROUND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable1;
+ if (ATmatch(term, "InquireSpec_RECL(<term>)", &IntVariable1.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_RECL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr6;
+ if (ATmatch(term, "InquireSpec_READWRITE(<term>)", &DefaultCharExpr6.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_READWRITE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr7;
+ if (ATmatch(term, "InquireSpec_READ(<term>)", &DefaultCharExpr7.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_READ
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr8;
+ if (ATmatch(term, "InquireSpec_POSITION(<term>)", &DefaultCharExpr8.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr8.term, &DefaultCharExpr8)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_POSITION
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable2;
+ if (ATmatch(term, "InquireSpec_POS(<term>)", &IntVariable2.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable2.term, &IntVariable2)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_POS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable;
+ if (ATmatch(term, "InquireSpec_PENDING(<term>)", &LogicalVariable.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable.term, &LogicalVariable)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_PENDING
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr9;
+ if (ATmatch(term, "InquireSpec_PAD(<term>)", &DefaultCharExpr9.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr9.term, &DefaultCharExpr9)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_PAD
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable1;
+ if (ATmatch(term, "InquireSpec_OPENED(<term>)", &LogicalVariable1.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable1.term, &LogicalVariable1)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_OPENED
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable3;
+ if (ATmatch(term, "InquireSpec_NUMBER(<term>)", &IntVariable3.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable3.term, &IntVariable3)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_NUMBER
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable4;
+ if (ATmatch(term, "InquireSpec_NEXTREC(<term>)", &IntVariable4.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable4.term, &IntVariable4)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_NEXTREC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable2;
+ if (ATmatch(term, "InquireSpec_NAMED(<term>)", &LogicalVariable2.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable2.term, &LogicalVariable2)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_NAMED
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr10;
+ if (ATmatch(term, "InquireSpec_NAME(<term>)", &DefaultCharExpr10.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr10.term, &DefaultCharExpr10)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_NAME
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable5;
+ if (ATmatch(term, "InquireSpec_IOSTAT(<term>)", &IntVariable5.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable5.term, &IntVariable5)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "InquireSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "InquireSpec_ID(<term>)", &IntExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ID
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr11;
+ if (ATmatch(term, "InquireSpec_FORMATTED(<term>)", &DefaultCharExpr11.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr11.term, &DefaultCharExpr11)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_FORMATTED
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr12;
+ if (ATmatch(term, "InquireSpec_FORM(<term>)", &DefaultCharExpr12.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr12.term, &DefaultCharExpr12)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_FORM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable3;
+ if (ATmatch(term, "InquireSpec_EXIST(<term>)", &LogicalVariable3.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable3.term, &LogicalVariable3)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_EXIST
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "InquireSpec_ERR(<term>)", &LblRef.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr13;
+ if (ATmatch(term, "InquireSpec_ENCODING(<term>)", &DefaultCharExpr13.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr13.term, &DefaultCharExpr13)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ENCODING
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr14;
+ if (ATmatch(term, "InquireSpec_DIRECT(<term>)", &DefaultCharExpr14.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr14.term, &DefaultCharExpr14)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_DIRECT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr15;
+ if (ATmatch(term, "InquireSpec_DELIM(<term>)", &DefaultCharExpr15.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr15.term, &DefaultCharExpr15)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_DELIM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr16;
+ if (ATmatch(term, "InquireSpec_DECIMAL(<term>)", &DefaultCharExpr16.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr16.term, &DefaultCharExpr16)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_DECIMAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr17;
+ if (ATmatch(term, "InquireSpec_BLANK(<term>)", &DefaultCharExpr17.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr17.term, &DefaultCharExpr17)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_BLANK
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr18;
+ if (ATmatch(term, "InquireSpec_ASYNCHRONOUS(<term>)", &DefaultCharExpr18.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr18.term, &DefaultCharExpr18)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ASYNCHRONOUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr19;
+ if (ATmatch(term, "InquireSpec_ACTION(<term>)", &DefaultCharExpr19.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr19.term, &DefaultCharExpr19)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ACTION
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr20;
+ if (ATmatch(term, "InquireSpec_ACCESS(<term>)", &DefaultCharExpr20.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr20.term, &DefaultCharExpr20)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED InquireSpec_ACCESS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileNameExpr;
+ if (ATmatch(term, "InquireSpec_FILE(<term>)", &FileNameExpr.term)) {
+
+      if (ofp_traverse_FileNameExpr(FileNameExpr.term, &FileNameExpr)) {
+         // MATCHED FileNameExpr
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_FILE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "InquireSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED InquireSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InquireSpecList(ATerm term, pOFP_Traverse InquireSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("InquireSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse InquireSpec;
+ if (ATmatch(term, "InquireSpecList(<term>)", &InquireSpec.term)) {
+
+   ATermList InquireSpec_tail = (ATermList) ATmake("<term>", InquireSpec.term);
+   while (! ATisEmpty(InquireSpec_tail)) {
+      InquireSpec.term = ATgetFirst(InquireSpec_tail);
+      InquireSpec_tail = ATgetNext (InquireSpec_tail);
+      if (ofp_traverse_InquireSpec(InquireSpec.term, &InquireSpec)) {
+         // MATCHED InquireSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 //========================================================================================
 // R1101 main-program
 //----------------------------------------------------------------------------------------

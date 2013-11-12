@@ -229,8 +229,42 @@ ATbool ofp_traverse_IoImpliedDo(ATerm term, pOFP_Traverse IoImpliedDo);
 ATbool ofp_traverse_IoImpliedDoObject(ATerm term, pOFP_Traverse IoImpliedDoObject);
 ATbool ofp_traverse_IoImpliedDoObjectList(ATerm term, pOFP_Traverse IoImpliedDoObjectList);
 
-/* R920 */
+/* R921 */
 ATbool ofp_traverse_IoImpliedDoControl(ATerm term, pOFP_Traverse IoImpliedDoControl);
+
+/* R922 */
+ATbool ofp_traverse_WaitStmt(ATerm term, pOFP_Traverse WaitStmt);
+
+/* R923 */
+ATbool ofp_traverse_WaitSpec(ATerm term, pOFP_Traverse WaitSpec);
+ATbool ofp_traverse_WaitSpecList(ATerm term, pOFP_Traverse WaitSpecList);
+
+/* R924 */
+ATbool ofp_traverse_BackspaceStmt(ATerm term, pOFP_Traverse BackspaceStmt);
+
+/* R925 */
+ATbool ofp_traverse_EndfileStmt(ATerm term, pOFP_Traverse EndfileStmt);
+
+/* R926 */
+ATbool ofp_traverse_RewindStmt(ATerm term, pOFP_Traverse RewindStmt);
+
+/* R927 */
+ATbool ofp_traverse_PositionSpec(ATerm term, pOFP_Traverse PositionSpec);
+ATbool ofp_traverse_PositionSpecList(ATerm term, pOFP_Traverse PositionSpecList);
+
+/* R928 */
+ATbool ofp_traverse_FlushStmt(ATerm term, pOFP_Traverse FlushStmt);
+
+/* R929 */
+ATbool ofp_traverse_FlushSpec(ATerm term, pOFP_Traverse FlushSpec);
+ATbool ofp_traverse_FlushSpecList(ATerm term, pOFP_Traverse FlushSpecList);
+
+/* R930 */
+ATbool ofp_traverse_InquireStmt(ATerm term, pOFP_Traverse InquireStmt);
+
+/* R931 */
+ATbool ofp_traverse_InquireSpec(ATerm term, pOFP_Traverse InquireSpec);
+ATbool ofp_traverse_InquireSpecList(ATerm term, pOFP_Traverse InquireSpecList);
 
 /* R1101 */
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram);

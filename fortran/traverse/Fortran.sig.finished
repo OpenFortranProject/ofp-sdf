@@ -1170,6 +1170,363 @@ Module(
               FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("IntExpr0")))
             )
 
+          , OpDecl(
+              "WaitStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("WaitSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("WaitStmt"))
+              )
+            )
+
+          , OpDecl(
+              "WaitSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_ID"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_EOR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_END"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+          , OpDecl(
+              "WaitSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("WaitSpec")))
+            )
+
+          , OpDecl(
+              "WaitSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("WaitSpec")]))]
+              , ConstType(SortNoArgs("WaitSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "BackspaceStmt_PSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("PositionSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("BackspaceStmt"))
+              )
+            )
+          , OpDecl(
+              "BackspaceStmt_FUN"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FileUnitNumber"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("BackspaceStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EndfileStmt_PSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("PositionSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndfileStmt"))
+              )
+            )
+          , OpDecl(
+              "EndfileStmt_FUN"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FileUnitNumber"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndfileStmt"))
+              )
+            )
+
+          , OpDecl(
+              "RewindStmt_PSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("PositionSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("RewindStmt"))
+              )
+            )
+          , OpDecl(
+              "RewindStmt_FUN"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FileUnitNumber"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("RewindStmt"))
+              )
+            )
+
+          , OpDecl(
+              "PositionSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("PositionSpec")))
+            )
+          , OpDecl(
+              "PositionSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("PositionSpec")))
+            )
+          , OpDecl(
+              "PositionSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("PositionSpec")))
+            )
+          , OpDecl(
+              "PositionSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("PositionSpec")))
+            )
+
+          , OpDecl(
+              "PositionSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("PositionSpec")]))]
+              , ConstType(SortNoArgs("PositionSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "FlushStmt_FSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FlushSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("FlushStmt"))
+              )
+            )
+          , OpDecl(
+              "FlushStmt_FUN"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FileUnitNumber"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("FlushStmt"))
+              )
+            )
+
+          , OpDecl(
+              "FlushSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("FlushSpec")))
+            )
+          , OpDecl(
+              "FlushSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("FlushSpec")))
+            )
+          , OpDecl(
+              "FlushSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("FlushSpec")))
+            )
+          , OpDecl(
+              "FlushSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("FlushSpec")))
+            )
+
+          , OpDecl(
+              "FlushSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("FlushSpec")]))]
+              , ConstType(SortNoArgs("FlushSpecList"))
+              )
+            )
+
+            , OpDecl(
+              "InquireStmt_IV"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("IntVariable"))
+                , ConstType(SortNoArgs("OutputItemList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("InquireStmt"))
+              )
+            )
+          , OpDecl(
+              "InquireStmt_ISL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("InquireSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("InquireStmt"))
+              )
+            )
+
+        , OpDecl(
+              "InquireSpec_WRITE"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_UNFORMATTED"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_STREAM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_SIZE"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_SIGN"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_SEQUENTIAL"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ROUND"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_RECL"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_READWRITE"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_READ"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_POSITION"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_POS"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_PENDING"
+            , FunType([ConstType(SortNoArgs("LogicalVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_PAD"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_OPENED"
+            , FunType([ConstType(SortNoArgs("LogicalVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_NUMBER"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_NEXTREC"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_NAMED"
+            , FunType([ConstType(SortNoArgs("LogicalVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_NAME"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ID"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_FORMATTED"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_FORM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_EXIST"
+            , FunType([ConstType(SortNoArgs("LogicalVariable"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ENCODING"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_DIRECT"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_DELIM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_DECIMAL"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_BLANK"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ASYNCHRONOUS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ACTION"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_ACCESS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_FILE"
+            , FunType([ConstType(SortNoArgs("FileNameExpr"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+          , OpDecl(
+              "InquireSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("InquireSpec")))
+            )
+
+          , OpDecl(
+              "InquireSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("InquireSpec")]))]
+              , ConstType(SortNoArgs("InquireSpecList"))
+              )
+            )
+
 
 
           , OpDecl(
