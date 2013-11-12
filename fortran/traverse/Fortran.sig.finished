@@ -1065,7 +1065,7 @@ Module(
               )
             )
           , OpDecl(
-              "ImportStmt"
+              "ImportStmt_INL"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("ImportNameList"))
@@ -1074,6 +1074,7 @@ Module(
               , ConstType(SortNoArgs("ImportStmt"))
               )
             )
+
           , OpDecl(
               "ImportNameList"
             , FunType(
@@ -1116,11 +1117,11 @@ Module(
             )
 
           , OpDecl(
-              "ProcInterface"
+              "ProcInterface_DTS"
             , FunType([ConstType(SortNoArgs("DeclarationTypeSpec"))], ConstType(SortNoArgs("ProcInterface")))
             )
           , OpDecl(
-              "ProcInterface"
+              "ProcInterface_IN"
             , FunType([ConstType(SortNoArgs("InterfaceName"))], ConstType(SortNoArgs("ProcInterface")))
             )
 
@@ -1132,13 +1133,14 @@ Module(
             , FunType([ConstType(SortNoArgs("IntentSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
             )
           , OpDecl(
-              "ProcAttrSpec_PBS"
+              "ProcAttrSpec_PLBS"
             , FunType([ConstType(SortNoArgs("ProcLanguageBindingSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
             )
           , OpDecl(
               "ProcAttrSpec_AS"
             , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("ProcAttrSpec")))
             )
+
           , OpDecl(
               "ProcAttrSpecList"
             , FunType(

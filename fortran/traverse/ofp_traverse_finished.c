@@ -3239,7 +3239,7 @@ ATbool ofp_traverse_ImportStmt(ATerm term, pOFP_Traverse ImportStmt)
  }
 
  OFP_Traverse Label1, ImportNameList, EOS1;
- if (ATmatch(term, "ImportStmt(<term>,<term>,<term>)", &Label1.term, &ImportNameList.term, &EOS1.term)) {
+ if (ATmatch(term, "ImportStmt_INL(<term>,<term>,<term>)", &Label1.term, &ImportNameList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -3254,6 +3254,8 @@ ATbool ofp_traverse_ImportStmt(ATerm term, pOFP_Traverse ImportStmt)
       if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
          // MATCHED EOS
       } else return ATfalse;
+
+   // MATCHED ImportStmt_INL
 
    return ATtrue;
  }
@@ -3366,21 +3368,25 @@ ATbool ofp_traverse_ProcInterface(ATerm term, pOFP_Traverse ProcInterface)
 #endif
 
  OFP_Traverse DeclarationTypeSpec;
- if (ATmatch(term, "ProcInterface(<term>)", &DeclarationTypeSpec.term)) {
+ if (ATmatch(term, "ProcInterface_DTS(<term>)", &DeclarationTypeSpec.term)) {
 
       if (ofp_traverse_DeclarationTypeSpec(DeclarationTypeSpec.term, &DeclarationTypeSpec)) {
          // MATCHED DeclarationTypeSpec
       } else return ATfalse;
 
+   // MATCHED ProcInterface_DTS
+
    return ATtrue;
  }
 
  OFP_Traverse InterfaceName;
- if (ATmatch(term, "ProcInterface(<term>)", &InterfaceName.term)) {
+ if (ATmatch(term, "ProcInterface_IN(<term>)", &InterfaceName.term)) {
 
       if (ofp_traverse_InterfaceName(InterfaceName.term, &InterfaceName)) {
          // MATCHED InterfaceName
       } else return ATfalse;
+
+   // MATCHED ProcInterface_IN
 
    return ATtrue;
  }
@@ -3428,13 +3434,13 @@ ATbool ofp_traverse_ProcAttrSpec(ATerm term, pOFP_Traverse ProcAttrSpec)
  }
 
  OFP_Traverse ProcLanguageBindingSpec;
- if (ATmatch(term, "ProcAttrSpec_PBS(<term>)", &ProcLanguageBindingSpec.term)) {
+ if (ATmatch(term, "ProcAttrSpec_PLBS(<term>)", &ProcLanguageBindingSpec.term)) {
 
       if (ofp_traverse_ProcLanguageBindingSpec(ProcLanguageBindingSpec.term, &ProcLanguageBindingSpec)) {
          // MATCHED ProcLanguageBindingSpec
       } else return ATfalse;
 
-   // MATCHED ProcAttrSpec_PBS
+   // MATCHED ProcAttrSpec_PLBS
 
    return ATtrue;
  }
