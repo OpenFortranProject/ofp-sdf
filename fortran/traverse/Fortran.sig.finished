@@ -165,87 +165,87 @@ Module(
             )
 
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_VS2"
             , FunType([ConstType(SortNoArgs("ValueStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_VS1"
             , FunType([ConstType(SortNoArgs("VolatileStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_TS"
             , FunType([ConstType(SortNoArgs("TargetStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_SS"
             , FunType([ConstType(SortNoArgs("SaveStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_PS2"
             , FunType([ConstType(SortNoArgs("ProtectedStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_PS1"
             , FunType([ConstType(SortNoArgs("PointerStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_OS"
             , FunType([ConstType(SortNoArgs("OptionalStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_NS"
             , FunType([ConstType(SortNoArgs("NamelistStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_IS2"
             , FunType([ConstType(SortNoArgs("IntrinsicStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_IS1"
             , FunType([ConstType(SortNoArgs("IntentStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_ES2"
             , FunType([ConstType(SortNoArgs("ExternalStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_ES1"
             , FunType([ConstType(SortNoArgs("EquivalenceStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_DS2"
             , FunType([ConstType(SortNoArgs("DimensionStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_DS1"
             , FunType([ConstType(SortNoArgs("DataStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_CS3"
             , FunType([ConstType(SortNoArgs("CommonStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_CS2"
             , FunType([ConstType(SortNoArgs("ContiguousStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_CS1"
             , FunType([ConstType(SortNoArgs("CodimensionStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_BS"
             , FunType([ConstType(SortNoArgs("BindStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_AS3"
             , FunType([ConstType(SortNoArgs("AsynchronousStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_AS2"
             , FunType([ConstType(SortNoArgs("AllocatableStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
           , OpDecl(
-              "OtherSpecificationStmt"
+              "OtherSpecificationStmt_AS1"
             , FunType([ConstType(SortNoArgs("AccessStmt"))], ConstType(SortNoArgs("OtherSpecificationStmt")))
             )
 

@@ -611,253 +611,253 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
 #endif
 
  OFP_Traverse ValueStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &ValueStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_VS2(<term>)", &ValueStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ValueStmt(ValueStmt.term, &ValueStmt)) {
          // MATCHED ValueStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_VS2
 
    return ATtrue;
  }
 
  OFP_Traverse VolatileStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &VolatileStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_VS1(<term>)", &VolatileStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_VolatileStmt(VolatileStmt.term, &VolatileStmt)) {
          // MATCHED VolatileStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_VS1
 
    return ATtrue;
  }
 
  OFP_Traverse TargetStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &TargetStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_TS(<term>)", &TargetStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_TargetStmt(TargetStmt.term, &TargetStmt)) {
          // MATCHED TargetStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_TS
 
    return ATtrue;
  }
 
  OFP_Traverse SaveStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &SaveStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_SS(<term>)", &SaveStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SaveStmt(SaveStmt.term, &SaveStmt)) {
          // MATCHED SaveStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_SS
 
    return ATtrue;
  }
 
  OFP_Traverse ProtectedStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &ProtectedStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_PS2(<term>)", &ProtectedStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ProtectedStmt(ProtectedStmt.term, &ProtectedStmt)) {
          // MATCHED ProtectedStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_PS2
 
    return ATtrue;
  }
 
  OFP_Traverse PointerStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &PointerStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_PS1(<term>)", &PointerStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_PointerStmt(PointerStmt.term, &PointerStmt)) {
          // MATCHED PointerStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_PS1
 
    return ATtrue;
  }
 
  OFP_Traverse OptionalStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &OptionalStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_OS(<term>)", &OptionalStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_OptionalStmt(OptionalStmt.term, &OptionalStmt)) {
          // MATCHED OptionalStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_OS
 
    return ATtrue;
  }
 
  OFP_Traverse NamelistStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &NamelistStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_NS(<term>)", &NamelistStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_NamelistStmt(NamelistStmt.term, &NamelistStmt)) {
          // MATCHED NamelistStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_NS
 
    return ATtrue;
  }
 
  OFP_Traverse IntrinsicStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &IntrinsicStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_IS2(<term>)", &IntrinsicStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_IntrinsicStmt(IntrinsicStmt.term, &IntrinsicStmt)) {
          // MATCHED IntrinsicStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_IS2
 
    return ATtrue;
  }
 
  OFP_Traverse IntentStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &IntentStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_IS1(<term>)", &IntentStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_IntentStmt(IntentStmt.term, &IntentStmt)) {
          // MATCHED IntentStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_IS1
 
    return ATtrue;
  }
 
  OFP_Traverse ExternalStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &ExternalStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_ES2(<term>)", &ExternalStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ExternalStmt(ExternalStmt.term, &ExternalStmt)) {
          // MATCHED ExternalStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_ES2
 
    return ATtrue;
  }
 
  OFP_Traverse EquivalenceStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &EquivalenceStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_ES1(<term>)", &EquivalenceStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EquivalenceStmt(EquivalenceStmt.term, &EquivalenceStmt)) {
          // MATCHED EquivalenceStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_ES1
 
    return ATtrue;
  }
 
  OFP_Traverse DimensionStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &DimensionStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_DS2(<term>)", &DimensionStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_DimensionStmt(DimensionStmt.term, &DimensionStmt)) {
          // MATCHED DimensionStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_DS2
 
    return ATtrue;
  }
 
  OFP_Traverse DataStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &DataStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_DS1(<term>)", &DataStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_DataStmt(DataStmt.term, &DataStmt)) {
          // MATCHED DataStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_DS1
 
    return ATtrue;
  }
 
  OFP_Traverse CommonStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &CommonStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_CS3(<term>)", &CommonStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_CommonStmt(CommonStmt.term, &CommonStmt)) {
          // MATCHED CommonStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_CS3
 
    return ATtrue;
  }
 
  OFP_Traverse ContiguousStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &ContiguousStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_CS2(<term>)", &ContiguousStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ContiguousStmt(ContiguousStmt.term, &ContiguousStmt)) {
          // MATCHED ContiguousStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_CS2
 
    return ATtrue;
  }
 
  OFP_Traverse CodimensionStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &CodimensionStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_CS1(<term>)", &CodimensionStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_CodimensionStmt(CodimensionStmt.term, &CodimensionStmt)) {
          // MATCHED CodimensionStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_CS1
 
    return ATtrue;
  }
 
  OFP_Traverse BindStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &BindStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_BS(<term>)", &BindStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_BindStmt(BindStmt.term, &BindStmt)) {
          // MATCHED BindStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_BS
 
    return ATtrue;
  }
 
  OFP_Traverse AsynchronousStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &AsynchronousStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_AS3(<term>)", &AsynchronousStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_AsynchronousStmt(AsynchronousStmt.term, &AsynchronousStmt)) {
          // MATCHED AsynchronousStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_AS3
 
    return ATtrue;
  }
 
  OFP_Traverse AllocatableStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &AllocatableStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_AS2(<term>)", &AllocatableStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_AllocatableStmt(AllocatableStmt.term, &AllocatableStmt)) {
          // MATCHED AllocatableStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_AS2
 
    return ATtrue;
  }
 
  OFP_Traverse AccessStmt;
- if (ATmatch(term, "OtherSpecificationStmt(<term>)", &AccessStmt.term)) {
+ if (ATmatch(term, "OtherSpecificationStmt_AS1(<term>)", &AccessStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_AccessStmt(AccessStmt.term, &AccessStmt)) {
          // MATCHED AccessStmt
       } else return ATfalse;
-#endif
+
+   // MATCHED OtherSpecificationStmt_AS1
 
    return ATtrue;
  }
