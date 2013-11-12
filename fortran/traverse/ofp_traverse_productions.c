@@ -4693,7 +4693,7 @@ ATbool ofp_traverse_SubroutineStmt(ATerm term, pOFP_Traverse SubroutineStmt)
  }
 
  OFP_Traverse Label1, Prefix1, SubroutineName1, DummyArgList, ProcLanguageBindingSpec, EOS1;
- if (ATmatch(term, "SubroutineStmt(<term>,<term>,<term>,<term>,<term>,<term>)", &Label1.term, &Prefix1.term, &SubroutineName1.term, &DummyArgList.term, &ProcLanguageBindingSpec.term, &EOS1.term)) {
+ if (ATmatch(term, "SubroutineStmt_DAL(<term>,<term>,<term>,<term>,<term>,<term>)", &Label1.term, &Prefix1.term, &SubroutineName1.term, &DummyArgList.term, &ProcLanguageBindingSpec.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -4727,6 +4727,8 @@ ATbool ofp_traverse_SubroutineStmt(ATerm term, pOFP_Traverse SubroutineStmt)
          // MATCHED EOS
       } else return ATfalse;
 
+   // MATCHED SubroutineStmt_DAL
+
    return ATtrue;
  }
 
@@ -4742,17 +4744,21 @@ ATbool ofp_traverse_DummyArg(ATerm term, pOFP_Traverse DummyArg)
    printf("DummyArg: %s\n", ATwriteToString(term));
 #endif
 
- if (ATmatch(term, "DummyArg")) {
+ if (ATmatch(term, "DummyArg_STAR")) {
+
+   // MATCHED DummyArg_STAR
 
    return ATtrue;
  }
 
  OFP_Traverse DummyArgName;
- if (ATmatch(term, "DummyArg(<term>)", &DummyArgName.term)) {
+ if (ATmatch(term, "DummyArg_DAN(<term>)", &DummyArgName.term)) {
 
       if (ofp_traverse_DummyArgName(DummyArgName.term, &DummyArgName)) {
          // MATCHED DummyArgName
       } else return ATfalse;
+
+   // MATCHED DummyArg_DAN
 
    return ATtrue;
  }
@@ -4958,7 +4964,7 @@ ATbool ofp_traverse_EntryStmt(ATerm term, pOFP_Traverse EntryStmt)
  }
 
  OFP_Traverse Label1, EntryName1, DummyArgList, Suffix, EOS1;
- if (ATmatch(term, "EntryStmt(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &EntryName1.term, &DummyArgList.term, &Suffix.term, &EOS1.term)) {
+ if (ATmatch(term, "EntryStmt_DAL(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &EntryName1.term, &DummyArgList.term, &Suffix.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -4985,6 +4991,8 @@ ATbool ofp_traverse_EntryStmt(ATerm term, pOFP_Traverse EntryStmt)
       if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
          // MATCHED EOS
       } else return ATfalse;
+
+   // MATCHED EntryStmt_DAL
 
    return ATtrue;
  }

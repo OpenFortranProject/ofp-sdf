@@ -1390,7 +1390,7 @@ Module(
               )
             )
           , OpDecl(
-              "SubroutineStmt"
+              "SubroutineStmt_DAL"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("Prefix")]))
@@ -1403,9 +1403,9 @@ Module(
               )
             )
 
-          , OpDecl("DummyArg", ConstType(SortNoArgs("DummyArg")))
+          , OpDecl("DummyArg_STAR", ConstType(SortNoArgs("DummyArg")))
           , OpDecl(
-              "DummyArg"
+              "DummyArg_DAN"
             , FunType([ConstType(SortNoArgs("DummyArgName"))], ConstType(SortNoArgs("DummyArg")))
             )
 
@@ -1486,7 +1486,7 @@ Module(
               )
             )
           , OpDecl(
-              "EntryStmt"
+              "EntryStmt_DAL"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("EntryName"))
