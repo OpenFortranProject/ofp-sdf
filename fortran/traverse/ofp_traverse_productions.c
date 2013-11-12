@@ -2322,6 +2322,451 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
 }
 
 //========================================================================================
+// R601 designator
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_Designator(ATerm term, pOFP_Traverse Designator)
+{
+#ifdef DEBUG_PRINT
+   printf("Designator: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Substring;
+ if (ATmatch(term, "Designator_AMB(<term>)", &Substring.term)) {
+
+      if (ofp_traverse_Substring(Substring.term, &Substring)) {
+         // MATCHED Substring
+      } else return ATfalse;
+
+   // MATCHED Designator_AMB
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "Designator_AMB(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   // MATCHED Designator_AMB
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R602 variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_Variable(ATerm term, pOFP_Traverse Variable)
+{
+#ifdef DEBUG_PRINT
+   printf("Variable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Designator;
+ if (ATmatch(term, "Variable(<term>)", &Designator.term)) {
+
+      if (ofp_traverse_Designator(Designator.term, &Designator)) {
+         // MATCHED Designator
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R603 variable-name
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_VariableName(ATerm term, pOFP_Traverse VariableName)
+{
+#ifdef DEBUG_PRINT
+   printf("VariableName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "VariableName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R604 logical-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_LogicalVariable(ATerm term, pOFP_Traverse LogicalVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("LogicalVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "LogicalVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R605 char-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_CharVariable(ATerm term, pOFP_Traverse CharVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("CharVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "CharVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R606 default-char-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_DefaultCharVariable(ATerm term, pOFP_Traverse DefaultCharVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("DefaultCharVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "DefaultCharVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R607 int-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IntVariable(ATerm term, pOFP_Traverse IntVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("IntVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "IntVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R608 substring
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_Substring(ATerm term, pOFP_Traverse Substring)
+{
+#ifdef DEBUG_PRINT
+   printf("Substring: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ParentString, SubstringRange;
+ if (ATmatch(term, "Substring(<term>,<term>)", &ParentString.term, &SubstringRange.term)) {
+
+      if (ofp_traverse_ParentString(ParentString.term, &ParentString)) {
+         // MATCHED ParentString
+      } else return ATfalse;
+
+      if (ofp_traverse_SubstringRange(SubstringRange.term, &SubstringRange)) {
+         // MATCHED SubstringRange
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R609 parent-string
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_ParentString(ATerm term, pOFP_Traverse ParentString)
+{
+#ifdef DEBUG_PRINT
+   printf("ParentString: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Constant;
+ if (ATmatch(term, "ParentString_C(<term>)", &Constant.term)) {
+
+      if (ofp_traverse_Constant(Constant.term, &Constant)) {
+         // MATCHED Constant
+      } else return ATfalse;
+
+   // MATCHED ParentString_C
+
+   return ATtrue;
+ }
+
+ OFP_Traverse StructureComponent;
+ if (ATmatch(term, "ParentString_SC(<term>)", &StructureComponent.term)) {
+
+      if (ofp_traverse_StructureComponent(StructureComponent.term, &StructureComponent)) {
+         // MATCHED StructureComponent
+      } else return ATfalse;
+
+   // MATCHED ParentString_SC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CoindexedNamedObject;
+ if (ATmatch(term, "ParentString_CNO(<term>)", &CoindexedNamedObject.term)) {
+
+      if (ofp_traverse_CoindexedNamedObject(CoindexedNamedObject.term, &CoindexedNamedObject)) {
+         // MATCHED CoindexedNamedObject
+      } else return ATfalse;
+
+   // MATCHED ParentString_CNO
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ArrayElement;
+ if (ATmatch(term, "ParentString_AE(<term>)", &ArrayElement.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_ArrayElement(ArrayElement.term, &ArrayElement)) {
+         // MATCHED ArrayElement
+      } else return ATfalse;
+#endif
+
+   // MATCHED ParentString_AE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ScalarVariableName;
+ if (ATmatch(term, "ParentString_SVN(<term>)", &ScalarVariableName.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_ScalarVariableName(ScalarVariableName.term, &ScalarVariableName)) {
+         // MATCHED ScalarVariableName
+      } else return ATfalse;
+#endif
+
+   // MATCHED ParentString_SVN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R610 substring-range
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SubstringRange(ATerm term, pOFP_Traverse SubstringRange)
+{
+#ifdef DEBUG_PRINT
+   printf("SubstringRange: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntExpr, IntExpr1;
+ if (ATmatch(term, "SubstringRange(<term>,<term>)", &IntExpr.term, &IntExpr1.term)) {
+
+   if (ATmatch(IntExpr.term, "Some(<term>)", &IntExpr.term)) {
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+   }
+
+   if (ATmatch(IntExpr1.term, "Some(<term>)", &IntExpr1.term)) {
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr1.term, &IntExpr1)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R611 data-ref
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_DataRef(ATerm term, pOFP_Traverse DataRef)
+{
+#ifdef DEBUG_PRINT
+   printf("DataRef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse PartRef;
+ if (ATmatch(term, "DataRef(<term>)", &PartRef.term)) {
+
+   ATermList PartRef_tail = (ATermList) ATmake("<term>", PartRef.term);
+   while (! ATisEmpty(PartRef_tail)) {
+      PartRef.term = ATgetFirst(PartRef_tail);
+      PartRef_tail = ATgetNext (PartRef_tail);
+      if (ofp_traverse_PartRef(PartRef.term, &PartRef)) {
+         // MATCHED PartRef
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R612 part-ref
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_PartRef(ATerm term, pOFP_Traverse PartRef)
+{
+#ifdef DEBUG_PRINT
+   printf("PartRef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse PartName, SectionSubscriptList, ImageSelector;
+ if (ATmatch(term, "PartRef(<term>,<term>,<term>)", &PartName.term, &SectionSubscriptList.term, &ImageSelector.term)) {
+
+      if (ofp_traverse_PartName(PartName.term, &PartName)) {
+         // MATCHED PartName
+      } else return ATfalse;
+
+   if (ATmatch(SectionSubscriptList.term, "Some(<term>)", &SectionSubscriptList.term)) {
+   if (ATmatch(SectionSubscriptList.term, "(<term>)", &SectionSubscriptList.term)) {
+#ifdef NOT_YET
+      if (ofp_traverse_SectionSubscriptList(SectionSubscriptList.term, &SectionSubscriptList)) {
+         // MATCHED SectionSubscriptList
+      } else return ATfalse;
+#endif
+   }
+   }
+
+   if (ATmatch(ImageSelector.term, "Some(<term>)", &ImageSelector.term)) {
+#ifdef NOT_YET
+      if (ofp_traverse_ImageSelector(ImageSelector.term, &ImageSelector)) {
+         // MATCHED ImageSelector
+      } else return ATfalse;
+#endif
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R613 structure-component
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_StructureComponent(ATerm term, pOFP_Traverse StructureComponent)
+{
+#ifdef DEBUG_PRINT
+   printf("StructureComponent: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "StructureComponent(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R614 coindexed-named-object
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_CoindexedNamedObject(ATerm term, pOFP_Traverse CoindexedNamedObject)
+{
+#ifdef DEBUG_PRINT
+   printf("CoindexedNamedObject: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "CoindexedNamedObject(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R615 complex-part-designator
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R616 type-param-inquiry
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamInquiry: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Designator, TypeParamName;
+ if (ATmatch(term, "TypeParamInquiry(<term>,<term>)", &Designator.term, &TypeParamName.term)) {
+
+      if (ofp_traverse_Designator(Designator.term, &Designator)) {
+         // MATCHED Designator
+      } else return ATfalse;
+
+      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
+         // MATCHED TypeParamName
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
 // R901 io-unit
 //----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit)
@@ -2352,9 +2797,11 @@ ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit)
  OFP_Traverse IntExpr;
  if (ATmatch(term, "IoUnit_FUN(<term>)", &IntExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
          // MATCHED IntExpr
       } else return ATfalse;
+#endif
 
    // MATCHED IoUnit_FUN
 
@@ -2376,9 +2823,11 @@ ATbool ofp_traverse_FileUnitNumber(ATerm term, pOFP_Traverse FileUnitNumber)
  OFP_Traverse IntExpr;
  if (ATmatch(term, "FileUnitNumber(<term>)", &IntExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
          // MATCHED IntExpr
       } else return ATfalse;
+#endif
 
    return ATtrue;
  }
@@ -2434,9 +2883,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr;
  if (ATmatch(term, "ConnectSpec_STATUS(<term>)", &DefaultCharExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_STATUS
 
@@ -2446,9 +2897,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr1;
  if (ATmatch(term, "ConnectSpec_SIGN(<term>)", &DefaultCharExpr1.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_SIGN
 
@@ -2458,9 +2911,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr2;
  if (ATmatch(term, "ConnectSpec_ROUND(<term>)", &DefaultCharExpr2.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ROUND
 
@@ -2470,9 +2925,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse IntExpr;
  if (ATmatch(term, "ConnectSpec_RECL(<term>)", &IntExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
          // MATCHED IntExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_RECL
 
@@ -2482,9 +2939,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr3;
  if (ATmatch(term, "ConnectSpec_POSITION(<term>)", &DefaultCharExpr3.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_POSITION
 
@@ -2494,9 +2953,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr4;
  if (ATmatch(term, "ConnectSpec_PAD(<term>)", &DefaultCharExpr4.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_PAD
 
@@ -2542,9 +3003,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr5;
  if (ATmatch(term, "ConnectSpec_FORM(<term>)", &DefaultCharExpr5.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_FORM
 
@@ -2566,9 +3029,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse LblRef;
  if (ATmatch(term, "ConnectSpec_ERR(<term>)", &LblRef.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
          // MATCHED LblRef
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ERR
 
@@ -2578,9 +3043,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr6;
  if (ATmatch(term, "ConnectSpec_ENCODING(<term>)", &DefaultCharExpr6.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ENCODING
 
@@ -2590,9 +3057,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr7;
  if (ATmatch(term, "ConnectSpec_DELIM(<term>)", &DefaultCharExpr7.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_DELIM
 
@@ -2602,9 +3071,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr8;
  if (ATmatch(term, "ConnectSpec_DECIMAL(<term>)", &DefaultCharExpr8.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr8.term, &DefaultCharExpr8)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_DECIMAL
 
@@ -2614,9 +3085,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr9;
  if (ATmatch(term, "ConnectSpec_BLANK(<term>)", &DefaultCharExpr9.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr9.term, &DefaultCharExpr9)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_BLANK
 
@@ -2626,9 +3099,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr10;
  if (ATmatch(term, "ConnectSpec_ASYNCHRONOUS(<term>)", &DefaultCharExpr10.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr10.term, &DefaultCharExpr10)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ASYNCHRONOUS
 
@@ -2638,9 +3113,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr11;
  if (ATmatch(term, "ConnectSpec_ACTION(<term>)", &DefaultCharExpr11.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr11.term, &DefaultCharExpr11)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ACTION
 
@@ -2650,9 +3127,11 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
  OFP_Traverse DefaultCharExpr12;
  if (ATmatch(term, "ConnectSpec_ACCESS(<term>)", &DefaultCharExpr12.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr12.term, &DefaultCharExpr12)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED ConnectSpec_ACCESS
 
@@ -2710,9 +3189,11 @@ ATbool ofp_traverse_FileNameExpr(ATerm term, pOFP_Traverse FileNameExpr)
  OFP_Traverse DefaultCharExpr;
  if (ATmatch(term, "FileNameExpr(<term>)", &DefaultCharExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    return ATtrue;
  }
@@ -2732,9 +3213,11 @@ ATbool ofp_traverse_IomsgVariable(ATerm term, pOFP_Traverse IomsgVariable)
  OFP_Traverse DefaultCharExpr;
  if (ATmatch(term, "IomsgVariable(<term>)", &DefaultCharExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    return ATtrue;
  }
@@ -2786,9 +3269,11 @@ ATbool ofp_traverse_CloseSpec(ATerm term, pOFP_Traverse CloseSpec)
  OFP_Traverse DefaultCharExpr;
  if (ATmatch(term, "CloseSpec_STATUS(<term>)", &DefaultCharExpr.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
          // MATCHED DefaultCharExpr
       } else return ATfalse;
+#endif
 
    // MATCHED CloseSpec_STATUS
 
@@ -2798,9 +3283,11 @@ ATbool ofp_traverse_CloseSpec(ATerm term, pOFP_Traverse CloseSpec)
  OFP_Traverse LblRef;
  if (ATmatch(term, "CloseSpec_ERR(<term>)", &LblRef.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
          // MATCHED LblRef
       } else return ATfalse;
+#endif
 
    // MATCHED CloseSpec_ERR
 
@@ -5984,6 +6471,25 @@ ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "ParentTypeName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PartName(ATerm term, pOFP_Traverse PartName)
+{
+#ifdef DEBUG_PRINT
+   printf("PartName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "PartName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident

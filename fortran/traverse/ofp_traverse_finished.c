@@ -2035,6 +2035,390 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
  return ATfalse;
 }
 
+ATbool ofp_traverse_Designator(ATerm term, pOFP_Traverse Designator)
+{
+#ifdef DEBUG_PRINT
+   printf("Designator: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Substring;
+ if (ATmatch(term, "Designator_AMB(<term>)", &Substring.term)) {
+
+      if (ofp_traverse_Substring(Substring.term, &Substring)) {
+         // MATCHED Substring
+      } else return ATfalse;
+
+   // MATCHED Designator_AMB
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "Designator_AMB(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   // MATCHED Designator_AMB
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Variable(ATerm term, pOFP_Traverse Variable)
+{
+#ifdef DEBUG_PRINT
+   printf("Variable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Designator;
+ if (ATmatch(term, "Variable(<term>)", &Designator.term)) {
+
+      if (ofp_traverse_Designator(Designator.term, &Designator)) {
+         // MATCHED Designator
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_VariableName(ATerm term, pOFP_Traverse VariableName)
+{
+#ifdef DEBUG_PRINT
+   printf("VariableName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "VariableName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LogicalVariable(ATerm term, pOFP_Traverse LogicalVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("LogicalVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "LogicalVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CharVariable(ATerm term, pOFP_Traverse CharVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("CharVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "CharVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DefaultCharVariable(ATerm term, pOFP_Traverse DefaultCharVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("DefaultCharVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "DefaultCharVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IntVariable(ATerm term, pOFP_Traverse IntVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("IntVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "IntVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Substring(ATerm term, pOFP_Traverse Substring)
+{
+#ifdef DEBUG_PRINT
+   printf("Substring: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ParentString, SubstringRange;
+ if (ATmatch(term, "Substring(<term>,<term>)", &ParentString.term, &SubstringRange.term)) {
+
+      if (ofp_traverse_ParentString(ParentString.term, &ParentString)) {
+         // MATCHED ParentString
+      } else return ATfalse;
+
+      if (ofp_traverse_SubstringRange(SubstringRange.term, &SubstringRange)) {
+         // MATCHED SubstringRange
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ParentString(ATerm term, pOFP_Traverse ParentString)
+{
+#ifdef DEBUG_PRINT
+   printf("ParentString: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Constant;
+ if (ATmatch(term, "ParentString_C(<term>)", &Constant.term)) {
+
+      if (ofp_traverse_Constant(Constant.term, &Constant)) {
+         // MATCHED Constant
+      } else return ATfalse;
+
+   // MATCHED ParentString_C
+
+   return ATtrue;
+ }
+
+ OFP_Traverse StructureComponent;
+ if (ATmatch(term, "ParentString_SC(<term>)", &StructureComponent.term)) {
+
+      if (ofp_traverse_StructureComponent(StructureComponent.term, &StructureComponent)) {
+         // MATCHED StructureComponent
+      } else return ATfalse;
+
+   // MATCHED ParentString_SC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CoindexedNamedObject;
+ if (ATmatch(term, "ParentString_CNO(<term>)", &CoindexedNamedObject.term)) {
+
+      if (ofp_traverse_CoindexedNamedObject(CoindexedNamedObject.term, &CoindexedNamedObject)) {
+         // MATCHED CoindexedNamedObject
+      } else return ATfalse;
+
+   // MATCHED ParentString_CNO
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ArrayElement;
+ if (ATmatch(term, "ParentString_AE(<term>)", &ArrayElement.term)) {
+
+      if (ofp_traverse_ArrayElement(ArrayElement.term, &ArrayElement)) {
+         // MATCHED ArrayElement
+      } else return ATfalse;
+
+   // MATCHED ParentString_AE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ScalarVariableName;
+ if (ATmatch(term, "ParentString_SVN(<term>)", &ScalarVariableName.term)) {
+
+      if (ofp_traverse_ScalarVariableName(ScalarVariableName.term, &ScalarVariableName)) {
+         // MATCHED ScalarVariableName
+      } else return ATfalse;
+
+   // MATCHED ParentString_SVN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SubstringRange(ATerm term, pOFP_Traverse SubstringRange)
+{
+#ifdef DEBUG_PRINT
+   printf("SubstringRange: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntExpr, IntExpr1;
+ if (ATmatch(term, "SubstringRange(<term>,<term>)", &IntExpr.term, &IntExpr1.term)) {
+
+   if (ATmatch(IntExpr.term, "Some(<term>)", &IntExpr.term)) {
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+   }
+
+   if (ATmatch(IntExpr1.term, "Some(<term>)", &IntExpr1.term)) {
+      if (ofp_traverse_IntExpr(IntExpr1.term, &IntExpr1)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DataRef(ATerm term, pOFP_Traverse DataRef)
+{
+#ifdef DEBUG_PRINT
+   printf("DataRef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse PartRef;
+ if (ATmatch(term, "DataRef(<term>)", &PartRef.term)) {
+
+   ATermList PartRef_tail = (ATermList) ATmake("<term>", PartRef.term);
+   while (! ATisEmpty(PartRef_tail)) {
+      PartRef.term = ATgetFirst(PartRef_tail);
+      PartRef_tail = ATgetNext (PartRef_tail);
+      if (ofp_traverse_PartRef(PartRef.term, &PartRef)) {
+         // MATCHED PartRef
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PartRef(ATerm term, pOFP_Traverse PartRef)
+{
+#ifdef DEBUG_PRINT
+   printf("PartRef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse PartName, SectionSubscriptList, ImageSelector;
+ if (ATmatch(term, "PartRef(<term>,<term>,<term>)", &PartName.term, &SectionSubscriptList.term, &ImageSelector.term)) {
+
+      if (ofp_traverse_PartName(PartName.term, &PartName)) {
+         // MATCHED PartName
+      } else return ATfalse;
+
+   if (ATmatch(SectionSubscriptList.term, "Some(<term>)", &SectionSubscriptList.term)) {
+   if (ATmatch(SectionSubscriptList.term, "(<term>)", &SectionSubscriptList.term)) {
+      if (ofp_traverse_SectionSubscriptList(SectionSubscriptList.term, &SectionSubscriptList)) {
+         // MATCHED SectionSubscriptList
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(ImageSelector.term, "Some(<term>)", &ImageSelector.term)) {
+      if (ofp_traverse_ImageSelector(ImageSelector.term, &ImageSelector)) {
+         // MATCHED ImageSelector
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_StructureComponent(ATerm term, pOFP_Traverse StructureComponent)
+{
+#ifdef DEBUG_PRINT
+   printf("StructureComponent: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "StructureComponent(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CoindexedNamedObject(ATerm term, pOFP_Traverse CoindexedNamedObject)
+{
+#ifdef DEBUG_PRINT
+   printf("CoindexedNamedObject: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DataRef;
+ if (ATmatch(term, "CoindexedNamedObject(<term>)", &DataRef.term)) {
+
+      if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
+         // MATCHED DataRef
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamInquiry: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Designator, TypeParamName;
+ if (ATmatch(term, "TypeParamInquiry(<term>,<term>)", &Designator.term, &TypeParamName.term)) {
+
+      if (ofp_traverse_Designator(Designator.term, &Designator)) {
+         // MATCHED Designator
+      } else return ATfalse;
+
+      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
+         // MATCHED TypeParamName
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit)
 {
 #ifdef DEBUG_PRINT
@@ -5466,6 +5850,25 @@ ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "ParentTypeName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PartName(ATerm term, pOFP_Traverse PartName)
+{
+#ifdef DEBUG_PRINT
+   printf("PartName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "PartName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident

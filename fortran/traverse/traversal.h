@@ -121,11 +121,47 @@ ATbool ofp_traverse_Designator(ATerm term, pOFP_Traverse Designator);
 /* R602 */
 ATbool ofp_traverse_Variable(ATerm term, pOFP_Traverse Variable);
 
+/* R603 */
+ATbool ofp_traverse_VariableName(ATerm term, pOFP_Traverse VariableName);
+
+/* R604 */
+ATbool ofp_traverse_LogicalVariable(ATerm term, pOFP_Traverse LogicalVariable);
+
+/* R605 */
+ATbool ofp_traverse_CharVariable(ATerm term, pOFP_Traverse CharVariable);
+
+/* R606 */
+ATbool ofp_traverse_DefaultCharVariable(ATerm term, pOFP_Traverse DefaultCharVariable);
+
+/* R607 */
+ATbool ofp_traverse_IntVariable(ATerm term, pOFP_Traverse IntVariable);
+
+/* R608 */
+ATbool ofp_traverse_Substring(ATerm term, pOFP_Traverse Substring);
+
+/* R609 */
+ATbool ofp_traverse_ParentString(ATerm term, pOFP_Traverse ParentString);
+
+/* R610 */
+ATbool ofp_traverse_SubstringRange(ATerm term, pOFP_Traverse SubstringRange);
+
 /* R611 */
 ATbool ofp_traverse_DataRef(ATerm term, pOFP_Traverse DataRef);
 
 /* R612 */
 ATbool ofp_traverse_PartRef(ATerm term, pOFP_Traverse PartRef);
+
+/* R613 */
+ATbool ofp_traverse_StructureComponent(ATerm term, pOFP_Traverse StructureComponent);
+
+/* R614 */
+ATbool ofp_traverse_CoindexedNamedObject(ATerm term, pOFP_Traverse CoindexedNamedObject);
+
+/* R615 ComplexPartDesignator */
+
+/* R616 */
+ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry);
+
 
 /* R722 */
 ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr);
@@ -384,6 +420,7 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name);
 ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName);
 ATbool ofp_traverse_ParentSubmoduleName(ATerm term, pOFP_Traverse ParentSubmoduleName);
 ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName);
+ATbool ofp_traverse_PartName(ATerm term, pOFP_Traverse PartName);
 ATbool ofp_traverse_ProcedureEntityName(ATerm term, pOFP_Traverse ProcedureEntityName);
 ATbool ofp_traverse_ProcedureName(ATerm term, pOFP_Traverse ProcedureName);
 ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);

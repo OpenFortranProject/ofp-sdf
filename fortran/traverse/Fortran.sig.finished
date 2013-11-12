@@ -652,6 +652,128 @@ Module(
               )
             )
 
+
+
+          , OpDecl(
+              "Designator_AMB"
+            , FunType([ConstType(SortNoArgs("Substring"))], ConstType(SortNoArgs("Designator")))
+            )
+          , OpDecl(
+              "Designator_AMB"
+            , FunType([ConstType(SortNoArgs("DataRef"))], ConstType(SortNoArgs("Designator")))
+            )
+
+          , OpDecl(
+              "Variable"
+            , FunType([ConstType(SortNoArgs("Designator"))], ConstType(SortNoArgs("Variable")))
+            )
+
+          , OpDecl(
+              "VariableName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("VariableName")))
+            )
+
+          , OpDecl(
+              "LogicalVariable"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("LogicalVariable")))
+            )
+
+          , OpDecl(
+              "CharVariable"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("CharVariable")))
+            )
+
+          , OpDecl(
+              "DefaultCharVariable"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("DefaultCharVariable")))
+            )
+
+          , OpDecl(
+              "IntVariable"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("IntVariable")))
+            )
+
+          , OpDecl(
+              "Substring"
+            , FunType(
+                [ConstType(SortNoArgs("ParentString")), ConstType(SortNoArgs("SubstringRange"))]
+              , ConstType(SortNoArgs("Substring"))
+              )
+            )
+
+          , OpDecl(
+              "ParentString_C"
+            , FunType([ConstType(SortNoArgs("Constant"))], ConstType(SortNoArgs("ParentString")))
+            )
+          , OpDecl(
+              "ParentString_SC"
+            , FunType([ConstType(SortNoArgs("StructureComponent"))], ConstType(SortNoArgs("ParentString")))
+            )
+          , OpDecl(
+              "ParentString_CNO"
+            , FunType([ConstType(SortNoArgs("CoindexedNamedObject"))], ConstType(SortNoArgs("ParentString")))
+            )
+          , OpDecl(
+              "ParentString_AE"
+            , FunType([ConstType(SortNoArgs("ArrayElement"))], ConstType(SortNoArgs("ParentString")))
+            )
+          , OpDecl(
+              "ParentString_SVN"
+            , FunType([ConstType(SortNoArgs("ScalarVariableName"))], ConstType(SortNoArgs("ParentString")))
+            )
+
+          , OpDecl(
+              "SubstringRange"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("IntExpr")]))
+                , ConstType(Sort("Option", [SortNoArgs("IntExpr")]))
+                ]
+              , ConstType(SortNoArgs("SubstringRange"))
+              )
+            )
+
+          , OpDecl(
+              "DataRef"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("PartRef")]))]
+              , ConstType(SortNoArgs("DataRef"))
+              )
+            )
+
+          , OpDecl(
+              "PartRef"
+            , FunType(
+                [ ConstType(SortNoArgs("PartName"))
+                , ConstType(Sort("Option", [SortNoArgs("SectionSubscriptList0")]))
+                , ConstType(Sort("Option", [SortNoArgs("ImageSelector")]))
+                ]
+              , ConstType(SortNoArgs("PartRef"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("SectionSubscriptList"))], ConstType(SortNoArgs("SectionSubscriptList0")))
+            )
+
+          , OpDecl(
+              "StructureComponent"
+            , FunType([ConstType(SortNoArgs("DataRef"))], ConstType(SortNoArgs("StructureComponent")))
+            )
+
+          , OpDecl(
+              "CoindexedNamedObject"
+            , FunType([ConstType(SortNoArgs("DataRef"))], ConstType(SortNoArgs("CoindexedNamedObject")))
+            )
+
+          , OpDecl(
+              "TypeParamInquiry"
+            , FunType(
+                [ConstType(SortNoArgs("Designator")), ConstType(SortNoArgs("TypeParamName"))]
+              , ConstType(SortNoArgs("TypeParamInquiry"))
+              )
+            )
+
+
+
           , OpDecl(
               "IoUnit_IFV"
             , FunType([ConstType(SortNoArgs("CharVariable"))], ConstType(SortNoArgs("IoUnit")))
@@ -1771,6 +1893,10 @@ Module(
           , OpDecl(
               "ParentTypeName"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("ParentTypeName")))
+            )
+          , OpDecl(
+              "PartName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("PartName")))
             )
           , OpDecl(
               "ProcedureEntityName"
