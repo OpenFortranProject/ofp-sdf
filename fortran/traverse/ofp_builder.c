@@ -4,6 +4,7 @@
 #include <string.h>
 
 #undef DEBUG_PRINT
+#undef USE_MATCHED_VARIABLE
 
 /**
  * Returns the ultimate symbol found after traversing the alias table
@@ -454,9 +455,11 @@ ATbool ofp_build_traversal_func_begin(ATerm name)
    fprintf(fpc, "   printf(\"%s: %s\\n\", ATwriteToString(term));\n", nameStr, percs);
    fprintf(fpc, "#endif\n\n");
 
+#ifdef USE_MATCHED_VARIABLE
    /** Return condition
     */
    fprintf(fpc, " ATbool matched = ATfalse;\n\n");
+#endif
 
    return ATtrue;
 }
@@ -466,25 +469,6 @@ ATbool ofp_build_traversal_func_end(ATerm name, ATbool returnTrue)
    if (returnTrue) fprintf(fpc, " return ATtrue;\n");
    else            fprintf(fpc, " return ATfalse;\n");
    fprintf(fpc, "}\n\n");
-   return ATtrue;
-}
-
-ATbool ofp_build_traversal_string_match(ATerm name)
-{
-   char * nameStr;
-
-   if (! ATmatch(name, "<str>", &nameStr)) {
-      return ATfalse;
-   }
-
-   /** Match the name term, otherwise return false
-    */
-   fprintf(fpc, "   char * %s_val;\n", nameStr);
-   fprintf(fpc, "   if (ATmatch(term, \"<str>\", &%s_val)) {\n", nameStr);
-   fprintf(fpc, "      // MATCHED %s\n", nameStr);
-   fprintf(fpc, "      return ATtrue;\n");
-   fprintf(fpc, "   } else return ATfalse;\n\n");
-
    return ATtrue;
 }
 
@@ -560,7 +544,11 @@ ATbool ofp_build_match_begin(ATerm symbol, ATerm constructor, ATermList args)
 ATbool ofp_build_match_end(ATerm symbol, ATerm constructor)
 {
    if (ATisEqual(symbol, constructor)) {
+#ifdef USE_MATCHED_VARIABLE
       fprintf(fpc, "\n   if (matched) return ATtrue;\n");
+#else
+      fprintf(fpc, "\n   return ATtrue;\n");
+#endif
    }
    else {
       fprintf(fpc, "\n   // MATCHED %s\n", ofp_getChars(constructor));
@@ -659,25 +647,6 @@ ATbool ofp_build_match_nonterminal_end(ATerm constructor, ATerm symbol)
    return ATtrue;
 }
 
-ATbool ofp_build_traversal_nonterminal_common(ATerm symbol, ATerm prod_symbol, ATerm unique_sym)
-{
-   char * sym_name, * prod_name, * unique;
-   if (! ATmatch(symbol,      "<str>", &sym_name )) return ATfalse;
-   if (! ATmatch(prod_symbol, "<str>", &prod_name)) return ATfalse;
-   if (! ATmatch(unique_sym,  "<str>", &unique   )) return ATfalse;
-
-   //TODO - figure this out
-   //fprintf(fpc, "   OFP_Traverse %s;\n", unique);
-   //fprintf(fpc, "   if (ofp_traverse_%s(%s->term, &%s)) {\n", prod_name, sym_name, unique);
-   fprintf(fpc, "    if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, unique);
-   fprintf(fpc, "       // MATCHED %s\n", prod_name);
-   //fprintf(fpc, "       return ATtrue;\n");
-   //fprintf(fpc, "    } \n");
-   fprintf(fpc, "    } else return ATfalse;\n");
-
-   return ATtrue;
-}
-
 ATbool ofp_build_traversal_nonterminal(ATerm symbol, ATerm prod_symbol, ATerm unique_sym)
 {
    char * prod_name, * unique;
@@ -686,7 +655,9 @@ ATbool ofp_build_traversal_nonterminal(ATerm symbol, ATerm prod_symbol, ATerm un
 
    fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, unique, unique);
    fprintf(fpc, "         // MATCHED %s\n", prod_name);
+#ifdef USE_MATCHED_VARIABLE
    fprintf(fpc, "         matched = ATtrue;\n");
+#endif
    fprintf(fpc, "      } else return ATfalse;\n");
 
    return ATtrue;
@@ -736,14 +707,14 @@ ATbool ofp_build_traversal_production(ATerm symbol, ATerm constructor, ATermList
       }
       else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
          fprintf(fpc, "\n");
-         ofp_build_list_traversal(prod_symbol);
+         ofp_build_traversal_list(prod_symbol);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
          fprintf(fpc, "\n");  // to make spacing same as sort match
          ofp_build_traversal_nonterminal(symbol, prod_symbol, unique);
       }
       else {
-         printf("ofp_build_traversal_nonterminals_common: need to match something else: %s\n",
+         printf("ofp_build_traversal_production: need to match something else: %s\n",
                  ATwriteToString(head));
          return ATfalse;
       }
@@ -752,6 +723,57 @@ ATbool ofp_build_traversal_production(ATerm symbol, ATerm constructor, ATermList
    return ATtrue;
 }
 
+ATbool ofp_build_traversal_list(ATerm name)
+{
+   char * nameStr;
+   char * percs = "%s";
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
+   /** Traverse the list
+    */
+   fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s.term);\n", nameStr, nameStr);
+#ifdef USE_MATCHED_VARIABLE
+   fprintf(fpc, "   if (ATisEmpty(%s_tail)) matched = ATtrue;\n", nameStr);
+#endif
+   fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
+   fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
+   fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
+   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
+   fprintf(fpc, "         // MATCHED %s\n", nameStr);
+#ifdef USE_MATCHED_VARIABLE
+   fprintf(fpc, "         matched = ATtrue;\n", nameStr);
+#endif
+   fprintf(fpc, "      } else return ATfalse;\n");
+   fprintf(fpc, "   }\n");
+
+   return ATtrue;
+}
+
+#ifdef OBSOLETE
+ATbool ofp_build_traversal_nonterminal_common(ATerm symbol, ATerm prod_symbol, ATerm unique_sym)
+{
+   char * sym_name, * prod_name, * unique;
+   if (! ATmatch(symbol,      "<str>", &sym_name )) return ATfalse;
+   if (! ATmatch(prod_symbol, "<str>", &prod_name)) return ATfalse;
+   if (! ATmatch(unique_sym,  "<str>", &unique   )) return ATfalse;
+
+   //TODO - figure this out
+   //fprintf(fpc, "   OFP_Traverse %s;\n", unique);
+   //fprintf(fpc, "   if (ofp_traverse_%s(%s->term, &%s)) {\n", prod_name, sym_name, unique);
+   fprintf(fpc, "    if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, unique);
+   fprintf(fpc, "       // MATCHED %s\n", prod_name);
+   //fprintf(fpc, "       return ATtrue;\n");
+   //fprintf(fpc, "    } \n");
+   fprintf(fpc, "    } else return ATfalse;\n");
+
+   return ATtrue;
+}
+#endif
+
+#ifdef OBSOLETE
 ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, ATermList prod_symbols)
 {
    ATermList tail = (ATermList) ATmake("<term>", prod_symbols);
@@ -772,7 +794,7 @@ ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, 
       }
       else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
          fprintf(fpc, "    //########### ==need to match LIST: %s\n", ATwriteToString(prod_symbol));
-         return ofp_build_list_traversal(prod_symbol);
+         return ofp_build_traversal_list(prod_symbol);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
          ATerm unique = ofp_getUniqueSymbol(gSymTable, prod_symbol);
@@ -788,7 +810,9 @@ ATbool ofp_build_traversal_nonterminals_common(ATerm symbol, ATerm constructor, 
 
    return ATtrue;
 }
+#endif
 
+#ifdef OBSOLETE
 ATbool ofp_build_traversal_nonterminals(ATerm constructor, ATermList prod_symbols)
 {
    char * name;
@@ -812,8 +836,31 @@ ATbool ofp_build_traversal_nonterminals(ATerm constructor, ATermList prod_symbol
 
    return ATtrue;
 }
+#endif
 
-ATbool ofp_build_string_traversal(ATerm type, ATerm name)
+#ifdef OBSOLETE
+ATbool ofp_build_traversal_string_match(ATerm name)
+{
+   char * nameStr;
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
+   /** Match the name term, otherwise return false
+    */
+   fprintf(fpc, "   char * %s_val;\n", nameStr);
+   fprintf(fpc, "   if (ATmatch(term, \"<str>\", &%s_val)) {\n", nameStr);
+   fprintf(fpc, "      // MATCHED %s\n", nameStr);
+   fprintf(fpc, "      return ATtrue;\n");
+   fprintf(fpc, "   } else return ATfalse;\n\n");
+
+   return ATtrue;
+}
+#endif
+
+#ifdef OBSOLETE
+ATbool ofp_build_traversal_string(ATerm type, ATerm name)
 {
    char * nameStr;
 
@@ -831,64 +878,5 @@ ATbool ofp_build_string_traversal(ATerm type, ATerm name)
 
    return ATfalse;
 }
-
-ATbool ofp_build_list_traversal(ATerm name)
-{
-   char * nameStr;
-   char * percs = "%s";
-
-   if (! ATmatch(name, "<str>", &nameStr)) {
-      return ATfalse;
-   }
-
-   /** Traverse the list
-    */
-   fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s.term);\n", nameStr, nameStr);
-   fprintf(fpc, "   if (ATisEmpty(%s_tail)) matched = ATtrue;\n", nameStr);
-   fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
-   fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
-   fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
-   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
-   fprintf(fpc, "         // MATCHED %s\n", nameStr);
-   fprintf(fpc, "         matched = ATtrue;\n", nameStr);
-   fprintf(fpc, "      } else return ATfalse;\n");
-   fprintf(fpc, "   }\n");
-
-   return ATtrue;
-}
-
-#ifdef OBSOLETE
-ATbool ofp_build_list_traversal(ATerm name)
-{
-   char * nameStr;
-   char * percs = "%s";
-
-   if (! ATmatch(name, "<str>", &nameStr)) {
-      return ATfalse;
-   }
-
-   /** write to header file
-    */
-   //fprintf(fph, "ATbool ofp_traverse_%s(ATerm term, pOFP_Traverse %s);\n", listStr, listStr);
-
-   /** Match the list term, otherwise return false
-    */
-   fprintf(fpc, "   if (! ATmatch(term, \"%sList(<term>)\", &%sList->term)) {\n", nameStr, nameStr);
-   fprintf(fpc, "      return ATfalse;\n");
-   fprintf(fpc, "   }\n\n");
-
-   /** Traverse the list
-    */
-   fprintf(fpc, "   OFP_Traverse %s;\n", nameStr);
-   fprintf(fpc, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %sList->term);\n", nameStr, nameStr);
-   fprintf(fpc, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
-   fprintf(fpc, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
-   fprintf(fpc, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
-   fprintf(fpc, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
-   fprintf(fpc, "         // MATCHED %s\n", nameStr);
-   fprintf(fpc, "      } else return ATfalse;\n");
-   fprintf(fpc, "   }\n");
-
-   return ATtrue;
-}
 #endif
+
