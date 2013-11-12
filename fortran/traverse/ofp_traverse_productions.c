@@ -2634,7 +2634,7 @@ ATbool ofp_traverse_UseStmt(ATerm term, pOFP_Traverse UseStmt)
 #endif
 
  OFP_Traverse Label, ModuleNature, ModuleName, OnlyList, EOS;
- if (ATmatch(term, "UseStmt_ONLY(<term>,<term>,<term>,<term>,<term>)", &Label.term, &ModuleNature.term, &ModuleName.term, &OnlyList.term, &EOS.term)) {
+ if (ATmatch(term, "UseStmt_OL(<term>,<term>,<term>,<term>,<term>)", &Label.term, &ModuleNature.term, &ModuleName.term, &OnlyList.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
@@ -2666,13 +2666,13 @@ ATbool ofp_traverse_UseStmt(ATerm term, pOFP_Traverse UseStmt)
          // MATCHED EOS
       } else return ATfalse;
 
-   // MATCHED UseStmt_ONLY
+   // MATCHED UseStmt_OL
 
    return ATtrue;
  }
 
  OFP_Traverse Label1, ModuleNature1, ModuleName1, RenameList, EOS1;
- if (ATmatch(term, "UseStmt_RENAME(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &ModuleNature1.term, &ModuleName1.term, &RenameList.term, &EOS1.term)) {
+ if (ATmatch(term, "UseStmt_RL(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &ModuleNature1.term, &ModuleName1.term, &RenameList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -2706,7 +2706,7 @@ ATbool ofp_traverse_UseStmt(ATerm term, pOFP_Traverse UseStmt)
          // MATCHED EOS
       } else return ATfalse;
 
-   // MATCHED UseStmt_RENAME
+   // MATCHED UseStmt_RL
 
    return ATtrue;
  }

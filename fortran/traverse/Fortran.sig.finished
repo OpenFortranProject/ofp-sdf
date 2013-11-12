@@ -755,7 +755,7 @@ Module(
             )
 
           , OpDecl(
-              "UseStmt_ONLY"
+              "UseStmt_OL"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
@@ -767,7 +767,7 @@ Module(
               )
             )
           , OpDecl(
-              "UseStmt_RENAME"
+              "UseStmt_RL"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("OptModuleNature1")]))
