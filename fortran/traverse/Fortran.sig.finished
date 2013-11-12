@@ -156,11 +156,11 @@ Module(
             )
 
           , OpDecl(
-              "InternalSubprogram"
+              "InternalSubprogram_SS"
             , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("InternalSubprogram")))
             )
           , OpDecl(
-              "InternalSubprogram"
+              "InternalSubprogram_FS"
             , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("InternalSubprogram")))
             )
 

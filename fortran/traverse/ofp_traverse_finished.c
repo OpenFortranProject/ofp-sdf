@@ -511,21 +511,25 @@ ATbool ofp_traverse_InternalSubprogram(ATerm term, pOFP_Traverse InternalSubprog
 #endif
 
  OFP_Traverse SubroutineSubprogram;
- if (ATmatch(term, "InternalSubprogram(<term>)", &SubroutineSubprogram.term)) {
+ if (ATmatch(term, "InternalSubprogram_SS(<term>)", &SubroutineSubprogram.term)) {
 
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
          // MATCHED SubroutineSubprogram
       } else return ATfalse;
 
+   // MATCHED InternalSubprogram_SS
+
    return ATtrue;
  }
 
  OFP_Traverse FunctionSubprogram;
- if (ATmatch(term, "InternalSubprogram(<term>)", &FunctionSubprogram.term)) {
+ if (ATmatch(term, "InternalSubprogram_FS(<term>)", &FunctionSubprogram.term)) {
 
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
       } else return ATfalse;
+
+   // MATCHED InternalSubprogram_FS
 
    return ATtrue;
  }

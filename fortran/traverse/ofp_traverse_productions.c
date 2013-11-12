@@ -305,7 +305,7 @@ ATbool ofp_traverse_ImplicitPartStmt(ATerm term, pOFP_Traverse ImplicitPartStmt)
 ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct)
 {
 #ifdef DEBUG_PRINT
-   printf("DeclarationConstruct: %s\n", ATwriteToString(term));
+   printf("\nDeclarationConstruct: %s\n", ATwriteToString(term));
 #endif
 
  OFP_Traverse StmtFunctionStmt;
@@ -2466,7 +2466,7 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
  }
 
  OFP_Traverse SubroutineSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &SubroutineSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_SS(<term>)", &SubroutineSubprogram.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
@@ -2474,17 +2474,21 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
       } else return ATfalse;
 #endif
 
+   // MATCHED InternalSubprogram_SS
+
    return ATtrue;
  }
 
  OFP_Traverse FunctionSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &FunctionSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_FS(<term>)", &FunctionSubprogram.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
       } else return ATfalse;
 #endif
+
+   // MATCHED InternalSubprogram_FS
 
    return ATtrue;
  }
