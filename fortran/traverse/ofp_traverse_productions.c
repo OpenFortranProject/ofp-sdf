@@ -3358,9 +3358,773 @@ ATbool ofp_traverse_CloseSpecList(ATerm term, pOFP_Traverse CloseSpecList)
 }
 
 //========================================================================================
+// R910 read-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_ReadStmt(ATerm term, pOFP_Traverse ReadStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ReadStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, Format, InputItemList, EOS;
+ if (ATmatch(term, "ReadStmt_F(<term>,<term>,<term>,<term>)", &Label.term, &Format.term, &InputItemList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_Format(Format.term, &Format)) {
+         // MATCHED Format
+      } else return ATfalse;
+
+   if (ATmatch(InputItemList.term, "Some(<term>)", &InputItemList.term)) {
+   if (ATmatch(InputItemList.term, "(<term>)", &InputItemList.term)) {
+      if (ofp_traverse_InputItemList(InputItemList.term, &InputItemList)) {
+         // MATCHED InputItemList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED ReadStmt_F
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, IoControlSpecList, InputItemList1, EOS1;
+ if (ATmatch(term, "ReadStmt_ICSL(<term>,<term>,<term>,<term>)", &Label1.term, &IoControlSpecList.term, &InputItemList1.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_IoControlSpecList(IoControlSpecList.term, &IoControlSpecList)) {
+         // MATCHED IoControlSpecList
+      } else return ATfalse;
+
+   if (ATmatch(InputItemList1.term, "Some(<term>)", &InputItemList1.term)) {
+      if (ofp_traverse_InputItemList(InputItemList1.term, &InputItemList1)) {
+         // MATCHED InputItemList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED ReadStmt_ICSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R911 write-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_WriteStmt(ATerm term, pOFP_Traverse WriteStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("WriteStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, IoControlSpecList, OutputItemList, EOS;
+ if (ATmatch(term, "WriteStmt(<term>,<term>,<term>,<term>)", &Label.term, &IoControlSpecList.term, &OutputItemList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_IoControlSpecList(IoControlSpecList.term, &IoControlSpecList)) {
+         // MATCHED IoControlSpecList
+      } else return ATfalse;
+
+   if (ATmatch(OutputItemList.term, "Some(<term>)", &OutputItemList.term)) {
+      if (ofp_traverse_OutputItemList(OutputItemList.term, &OutputItemList)) {
+         // MATCHED OutputItemList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R912 print-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_PrintStmt(ATerm term, pOFP_Traverse PrintStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("PrintStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, Format, OutputItemList, EOS;
+ if (ATmatch(term, "PrintStmt(<term>,<term>,<term>,<term>)", &Label.term, &Format.term, &OutputItemList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_Format(Format.term, &Format)) {
+         // MATCHED Format
+      } else return ATfalse;
+
+   if (ATmatch(OutputItemList.term, "Some(<term>)", &OutputItemList.term)) {
+   if (ATmatch(OutputItemList.term, "(<term>)", &OutputItemList.term)) {
+      if (ofp_traverse_OutputItemList(OutputItemList.term, &OutputItemList)) {
+         // MATCHED OutputItemList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R913 io-control-spec
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IoControlSpec(ATerm term, pOFP_Traverse IoControlSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("IoControlSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "IoControlSpec_SIZE(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_SIZE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "IoControlSpec_SIGN(<term>)", &DefaultCharExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_SIGN
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr1;
+ if (ATmatch(term, "IoControlSpec_ROUND(<term>)", &DefaultCharExpr1.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_ROUND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "IoControlSpec_REC(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_REC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr1;
+ if (ATmatch(term, "IoControlSpec_POS(<term>)", &Expr1.term)) {
+
+      if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_POS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr2;
+ if (ATmatch(term, "IoControlSpec_PAD(<term>)", &DefaultCharExpr2.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_PAD
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable1;
+ if (ATmatch(term, "IoControlSpec_IOSTAT(<term>)", &IntVariable1.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "IoControlSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IdVariable;
+ if (ATmatch(term, "IoControlSpec_ID(<term>)", &IdVariable.term)) {
+
+      if (ofp_traverse_IdVariable(IdVariable.term, &IdVariable)) {
+         // MATCHED IdVariable
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_ID
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "IoControlSpec_ERR(<term>)", &LblRef.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef1;
+ if (ATmatch(term, "IoControlSpec_EOR(<term>)", &LblRef1.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef1.term, &LblRef1)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_EOR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef2;
+ if (ATmatch(term, "IoControlSpec_END(<term>)", &LblRef2.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_LblRef(LblRef2.term, &LblRef2)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_END
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr3;
+ if (ATmatch(term, "IoControlSpec_DELIM(<term>)", &DefaultCharExpr3.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_DELIM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr4;
+ if (ATmatch(term, "IoControlSpec_DECIMAL(<term>)", &DefaultCharExpr4.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_DECIMAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr5;
+ if (ATmatch(term, "IoControlSpec_BLANK(<term>)", &DefaultCharExpr5.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_BLANK
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr6;
+ if (ATmatch(term, "IoControlSpec_ASYNCHRONOUS(<term>)", &DefaultCharExpr6.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_ASYNCHRONOUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr7;
+ if (ATmatch(term, "IoControlSpec_ADVANCE(<term>)", &DefaultCharExpr7.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED IoControlSpec_ADVANCE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse NamelistGroupName;
+ if (ATmatch(term, "IoControlSpec_NML(<term>)", &NamelistGroupName.term)) {
+
+      if (ofp_traverse_NamelistGroupName(NamelistGroupName.term, &NamelistGroupName)) {
+         // MATCHED NamelistGroupName
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_NML
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Format;
+ if (ATmatch(term, "IoControlSpec_FMT(<term>)", &Format.term)) {
+
+      if (ofp_traverse_Format(Format.term, &Format)) {
+         // MATCHED Format
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_FMT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IoUnit;
+ if (ATmatch(term, "IoControlSpec_UNIT(<term>)", &IoUnit.term)) {
+
+      if (ofp_traverse_IoUnit(IoUnit.term, &IoUnit)) {
+         // MATCHED IoUnit
+      } else return ATfalse;
+
+   // MATCHED IoControlSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IoControlSpecList(ATerm term, pOFP_Traverse IoControlSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("IoControlSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IoControlSpec;
+ if (ATmatch(term, "IoControlSpecList(<term>)", &IoControlSpec.term)) {
+
+   ATermList IoControlSpec_tail = (ATermList) ATmake("<term>", IoControlSpec.term);
+   while (! ATisEmpty(IoControlSpec_tail)) {
+      IoControlSpec.term = ATgetFirst(IoControlSpec_tail);
+      IoControlSpec_tail = ATgetNext (IoControlSpec_tail);
+      if (ofp_traverse_IoControlSpec(IoControlSpec.term, &IoControlSpec)) {
+         // MATCHED IoControlSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R914 id-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IdVariable(ATerm term, pOFP_Traverse IdVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("IdVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "IdVariable(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R915 format
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_Format(ATerm term, pOFP_Traverse Format)
+{
+#ifdef DEBUG_PRINT
+   printf("Format: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "Format_STAR")) {
+
+   // MATCHED Format_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label;
+ if (ATmatch(term, "Format_L(<term>)", &Label.term)) {
+
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+
+   // MATCHED Format_L
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "Format_DCE(<term>)", &DefaultCharExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED Format_DCE
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R916 input-item
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_InputItem(ATerm term, pOFP_Traverse InputItem)
+{
+#ifdef DEBUG_PRINT
+   printf("InputItem: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IoImpliedDo;
+ if (ATmatch(term, "InputItem_IID(<term>)", &IoImpliedDo.term)) {
+
+      if (ofp_traverse_IoImpliedDo(IoImpliedDo.term, &IoImpliedDo)) {
+         // MATCHED IoImpliedDo
+      } else return ATfalse;
+
+   // MATCHED InputItem_IID
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "InputItem_V(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   // MATCHED InputItem_V
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InputItemList(ATerm term, pOFP_Traverse InputItemList)
+{
+#ifdef DEBUG_PRINT
+   printf("InputItemList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse InputItem;
+ if (ATmatch(term, "InputItemList(<term>)", &InputItem.term)) {
+
+   ATermList InputItem_tail = (ATermList) ATmake("<term>", InputItem.term);
+   while (! ATisEmpty(InputItem_tail)) {
+      InputItem.term = ATgetFirst(InputItem_tail);
+      InputItem_tail = ATgetNext (InputItem_tail);
+      if (ofp_traverse_InputItem(InputItem.term, &InputItem)) {
+         // MATCHED InputItem
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R917 output-item
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_OutputItem(ATerm term, pOFP_Traverse OutputItem)
+{
+#ifdef DEBUG_PRINT
+   printf("OutputItem: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IoImpliedDo;
+ if (ATmatch(term, "OutputItem_IID(<term>)", &IoImpliedDo.term)) {
+
+      if (ofp_traverse_IoImpliedDo(IoImpliedDo.term, &IoImpliedDo)) {
+         // MATCHED IoImpliedDo
+      } else return ATfalse;
+
+   // MATCHED OutputItem_IID
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "OutputItem_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED OutputItem_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_OutputItemList(ATerm term, pOFP_Traverse OutputItemList)
+{
+#ifdef DEBUG_PRINT
+   printf("OutputItemList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse OutputItem;
+ if (ATmatch(term, "OutputItemList(<term>)", &OutputItem.term)) {
+
+   ATermList OutputItem_tail = (ATermList) ATmake("<term>", OutputItem.term);
+   while (! ATisEmpty(OutputItem_tail)) {
+      OutputItem.term = ATgetFirst(OutputItem_tail);
+      OutputItem_tail = ATgetNext (OutputItem_tail);
+      if (ofp_traverse_OutputItem(OutputItem.term, &OutputItem)) {
+         // MATCHED OutputItem
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R918 io-implied-do
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IoImpliedDo(ATerm term, pOFP_Traverse IoImpliedDo)
+{
+#ifdef DEBUG_PRINT
+   printf("IoImpliedDo: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IoImpliedDoObjectList, IoImpliedDoControl;
+ if (ATmatch(term, "IoImpliedDo(<term>,<term>)", &IoImpliedDoObjectList.term, &IoImpliedDoControl.term)) {
+
+      if (ofp_traverse_IoImpliedDoObjectList(IoImpliedDoObjectList.term, &IoImpliedDoObjectList)) {
+         // MATCHED IoImpliedDoObjectList
+      } else return ATfalse;
+
+      if (ofp_traverse_IoImpliedDoControl(IoImpliedDoControl.term, &IoImpliedDoControl)) {
+         // MATCHED IoImpliedDoControl
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R919 io-implied-do-object
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IoImpliedDoObject(ATerm term, pOFP_Traverse IoImpliedDoObject)
+{
+#ifdef DEBUG_PRINT
+   printf("IoImpliedDoObject: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse OutputItem;
+ if (ATmatch(term, "IoImpliedDoObject_OI(<term>)", &OutputItem.term)) {
+
+      if (ofp_traverse_OutputItem(OutputItem.term, &OutputItem)) {
+         // MATCHED OutputItem
+      } else return ATfalse;
+
+   // MATCHED IoImpliedDoObject_OI
+
+   return ATtrue;
+ }
+
+ OFP_Traverse InputItem;
+ if (ATmatch(term, "IoImpliedDoObject_II(<term>)", &InputItem.term)) {
+
+      if (ofp_traverse_InputItem(InputItem.term, &InputItem)) {
+         // MATCHED InputItem
+      } else return ATfalse;
+
+   // MATCHED IoImpliedDoObject_II
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IoImpliedDoObjectList(ATerm term, pOFP_Traverse IoImpliedDoObjectList)
+{
+#ifdef DEBUG_PRINT
+   printf("IoImpliedDoObjectList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IoImpliedDoObject;
+ if (ATmatch(term, "IoImpliedDoObjectList(<term>)", &IoImpliedDoObject.term)) {
+
+   ATermList IoImpliedDoObject_tail = (ATermList) ATmake("<term>", IoImpliedDoObject.term);
+   while (! ATisEmpty(IoImpliedDoObject_tail)) {
+      IoImpliedDoObject.term = ATgetFirst(IoImpliedDoObject_tail);
+      IoImpliedDoObject_tail = ATgetNext (IoImpliedDoObject_tail);
+      if (ofp_traverse_IoImpliedDoObject(IoImpliedDoObject.term, &IoImpliedDoObject)) {
+         // MATCHED IoImpliedDoObject
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R920 io-implied-do-control
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IoImpliedDoControl(ATerm term, pOFP_Traverse IoImpliedDoControl)
+{
+#ifdef DEBUG_PRINT
+   printf("IoImpliedDoControl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DoVariable, IntExpr, IntExpr1, IntExpr2;
+ if (ATmatch(term, "IoImpliedDoControl(<term>,<term>,<term>,<term>)", &DoVariable.term, &IntExpr.term, &IntExpr1.term, &IntExpr2.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_DoVariable(DoVariable.term, &DoVariable)) {
+         // MATCHED DoVariable
+      } else return ATfalse;
+#endif
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr1.term, &IntExpr1)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+   if (ATmatch(IntExpr2.term, "Some(<term>)", &IntExpr2.term)) {
+   if (ATmatch(IntExpr2.term, "(<term>)", &IntExpr2.term)) {
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr2.term, &IntExpr2)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
 // R1101 main-program
 //----------------------------------------------------------------------------------------
-#ifdef USE_FINISHED
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT
@@ -3399,12 +4163,10 @@ ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 
  return ATfalse;
 }
-#endif
 
 //========================================================================================
 // R1102 program-stmt
 //----------------------------------------------------------------------------------------
-#ifdef USE_FINISHED
 ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3433,7 +4195,6 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, pOFP_Traverse ProgramStmt)
 
  return ATfalse;
 }
-#endif
 
 //========================================================================================
 // R1103 end-program-stmt
@@ -6414,6 +7175,25 @@ ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "Name(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_NamelistGroupName(ATerm term, pOFP_Traverse NamelistGroupName)
+{
+#ifdef DEBUG_PRINT
+   printf("NamelistGroupName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "NamelistGroupName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident

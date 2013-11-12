@@ -195,6 +195,43 @@ ATbool ofp_traverse_CloseStmt(ATerm term, pOFP_Traverse CloseStmt);
 ATbool ofp_traverse_CloseSpec(ATerm term, pOFP_Traverse CloseSpec);
 ATbool ofp_traverse_CloseSpecList(ATerm term, pOFP_Traverse CloseSpecList);
 
+/* R910 */
+ATbool ofp_traverse_ReadStmt(ATerm term, pOFP_Traverse ReadStmt);
+
+/* R911 */
+ATbool ofp_traverse_WriteStmt(ATerm term, pOFP_Traverse WriteStmt);
+
+/* R912 */
+ATbool ofp_traverse_PrintStmt(ATerm term, pOFP_Traverse PrintStmt);
+
+/* R913 */
+ATbool ofp_traverse_IoControlSpec(ATerm term, pOFP_Traverse IoControlSpec);
+ATbool ofp_traverse_IoControlSpecList(ATerm term, pOFP_Traverse IoControlSpecList);
+
+/* R914 */
+ATbool ofp_traverse_IdVariable(ATerm term, pOFP_Traverse IdVariable);
+
+/* R915 */
+ATbool ofp_traverse_Format(ATerm term, pOFP_Traverse Format);
+
+/* R916 */
+ATbool ofp_traverse_InputItem(ATerm term, pOFP_Traverse InputItem);
+ATbool ofp_traverse_InputItemList(ATerm term, pOFP_Traverse InputItemList);
+
+/* R917 */
+ATbool ofp_traverse_OutputItem(ATerm term, pOFP_Traverse OutputItem);
+ATbool ofp_traverse_OutputItemList(ATerm term, pOFP_Traverse OutputItemList);
+
+/* R918 */
+ATbool ofp_traverse_IoImpliedDo(ATerm term, pOFP_Traverse IoImpliedDo);
+
+/* R919 */
+ATbool ofp_traverse_IoImpliedDoObject(ATerm term, pOFP_Traverse IoImpliedDoObject);
+ATbool ofp_traverse_IoImpliedDoObjectList(ATerm term, pOFP_Traverse IoImpliedDoObjectList);
+
+/* R920 */
+ATbool ofp_traverse_IoImpliedDoControl(ATerm term, pOFP_Traverse IoImpliedDoControl);
+
 /* R1101 */
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram);
 
@@ -417,6 +454,7 @@ ATbool ofp_traverse_IntrinsicProcedureName(ATerm term, pOFP_Traverse IntrinsicPr
 ATbool ofp_traverse_LocalName(ATerm term, pOFP_Traverse LocalName);
 ATbool ofp_traverse_ModuleName(ATerm term, pOFP_Traverse ModuleName);
 ATbool ofp_traverse_Name(ATerm term, pOFP_Traverse Name);
+ATbool ofp_traverse_NamelistGroupName(ATerm term, pOFP_Traverse NamelistGroupName);
 ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName);
 ATbool ofp_traverse_ParentSubmoduleName(ATerm term, pOFP_Traverse ParentSubmoduleName);
 ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName);

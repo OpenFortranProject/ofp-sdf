@@ -940,6 +940,239 @@ Module(
             )
 
           , OpDecl(
+              "ReadStmt_F"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("Format"))
+                , ConstType(Sort("Option", [SortNoArgs("InputItemList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ReadStmt"))
+              )
+            )
+          , OpDecl(
+              "ReadStmt_ICSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("IoControlSpecList"))
+                , ConstType(Sort("Option", [SortNoArgs("InputItemList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ReadStmt"))
+              )
+            )
+
+          , OpDecl(
+              "WriteStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("IoControlSpecList"))
+                , ConstType(Sort("Option", [SortNoArgs("OutputItemList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("WriteStmt"))
+              )
+            )
+
+          , OpDecl(
+              "PrintStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("Format"))
+                , ConstType(Sort("Option", [SortNoArgs("OutputItemList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("PrintStmt"))
+              )
+            )
+
+          , OpDecl(
+              "IoControlSpec_SIZE"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_SIGN"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_ROUND"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_REC"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_POS"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_PAD"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_ID"
+            , FunType([ConstType(SortNoArgs("IdVariable"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_EOR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_END"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_DELIM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_DECIMAL"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_BLANK"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_ASYNCHRONOUS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_ADVANCE"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_NML"
+            , FunType([ConstType(SortNoArgs("NamelistGroupName"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_FMT"
+            , FunType([ConstType(SortNoArgs("Format"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+          , OpDecl(
+              "IoControlSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("IoUnit"))], ConstType(SortNoArgs("IoControlSpec")))
+            )
+
+          , OpDecl(
+              "IoControlSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("IoControlSpec")]))]
+              , ConstType(SortNoArgs("IoControlSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "IdVariable"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("IdVariable")))
+            )
+
+          , OpDecl("Format_STAR", ConstType(SortNoArgs("Format")))
+          , OpDecl(
+              "Format_L"
+            , FunType([ConstType(SortNoArgs("Label"))], ConstType(SortNoArgs("Format")))
+            )
+          , OpDecl(
+              "Format_DCE"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("Format")))
+            )
+
+          , OpDecl(
+              "InputItem_IID"
+            , FunType([ConstType(SortNoArgs("IoImpliedDo"))], ConstType(SortNoArgs("InputItem")))
+            )
+          , OpDecl(
+              "InputItem_V"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("InputItem")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("InputItemList"))], ConstType(SortNoArgs("InputItemList0")))
+            )
+
+          , OpDecl(
+              "InputItemList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("InputItem")]))]
+              , ConstType(SortNoArgs("InputItemList"))
+              )
+            )
+
+          , OpDecl(
+              "OutputItem_IID"
+            , FunType([ConstType(SortNoArgs("IoImpliedDo"))], ConstType(SortNoArgs("OutputItem")))
+            )
+          , OpDecl(
+              "OutputItem_E"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("OutputItem")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("OutputItemList"))], ConstType(SortNoArgs("OutputItemList0")))
+            )
+
+          , OpDecl(
+              "OutputItemList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("OutputItem")]))]
+              , ConstType(SortNoArgs("OutputItemList"))
+              )
+            )
+
+          , OpDecl(
+              "IoImpliedDo"
+            , FunType(
+                [ConstType(SortNoArgs("IoImpliedDoObjectList")), ConstType(SortNoArgs("IoImpliedDoControl"))]
+              , ConstType(SortNoArgs("IoImpliedDo"))
+              )
+            )
+
+          , OpDecl(
+              "IoImpliedDoObject_OI"
+            , FunType([ConstType(SortNoArgs("OutputItem"))], ConstType(SortNoArgs("IoImpliedDoObject")))
+            )
+          , OpDecl(
+              "IoImpliedDoObject_II"
+            , FunType([ConstType(SortNoArgs("InputItem"))], ConstType(SortNoArgs("IoImpliedDoObject")))
+            )
+
+          , OpDecl(
+              "IoImpliedDoObjectList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("IoImpliedDoObject")]))]
+              , ConstType(SortNoArgs("IoImpliedDoObjectList"))
+              )
+            )
+
+          , OpDecl(
+              "IoImpliedDoControl"
+            , FunType(
+                [ ConstType(SortNoArgs("DoVariable"))
+                , ConstType(SortNoArgs("IntExpr"))
+                , ConstType(SortNoArgs("IntExpr"))
+                , ConstType(Sort("Option", [SortNoArgs("IntExpr0")]))
+                ]
+              , ConstType(SortNoArgs("IoImpliedDoControl"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("IntExpr0")))
+            )
+
+
+
+          , OpDecl(
               "MainProgram"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))
@@ -1881,6 +2114,10 @@ Module(
           , OpDecl(
               "Name"
             , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("Name")))
+            )
+          , OpDecl(
+              "NamelistGroupName"
+            , FunType([ConstType(SortNoArgs("Ident"))], ConstType(SortNoArgs("NamelistGroupName")))
             )
           , OpDecl(
               "ObjectName"
