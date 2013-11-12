@@ -287,167 +287,167 @@ Module(
             )
 
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_EDS"
             , FunType([ConstType(SortNoArgs("EndDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_NDS"
             , FunType([ConstType(SortNoArgs("NonlabelDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_LDS"
             , FunType([ConstType(SortNoArgs("LabelDoStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_CGS"
             , FunType([ConstType(SortNoArgs("ComputedGotoStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_AIS"
             , FunType([ConstType(SortNoArgs("ArithmeticIfStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_WS3"
             , FunType([ConstType(SortNoArgs("WriteStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_WS2"
             , FunType([ConstType(SortNoArgs("WhereStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_WS1"
             , FunType([ConstType(SortNoArgs("WaitStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_US"
             , FunType([ConstType(SortNoArgs("UnlockStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_SMS"
             , FunType([ConstType(SortNoArgs("SyncMemoryStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_SIS"
             , FunType([ConstType(SortNoArgs("SyncImagesStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_SAS"
             , FunType([ConstType(SortNoArgs("SyncAllStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_SS"
             , FunType([ConstType(SortNoArgs("StopStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_RS3"
             , FunType([ConstType(SortNoArgs("RewindStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_RS2"
             , FunType([ConstType(SortNoArgs("ReturnStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_RS1"
             , FunType([ConstType(SortNoArgs("ReadStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_PS1"
             , FunType([ConstType(SortNoArgs("PrintStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_PAS"
             , FunType([ConstType(SortNoArgs("PointerAssignmentStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_OS"
             , FunType([ConstType(SortNoArgs("OpenStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_NS"
             , FunType([ConstType(SortNoArgs("NullifyStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_LS"
             , FunType([ConstType(SortNoArgs("LockStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_IS2"
             , FunType([ConstType(SortNoArgs("InquireStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_IS1"
             , FunType([ConstType(SortNoArgs("IfStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_GS"
             , FunType([ConstType(SortNoArgs("GotoStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_FS2"
             , FunType([ConstType(SortNoArgs("ForallStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_FS1"
             , FunType([ConstType(SortNoArgs("FlushStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_ES2"
             , FunType([ConstType(SortNoArgs("ExitStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_ESS2"
             , FunType([ConstType(SortNoArgs("ErrorStopStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_ES1"
             , FunType([ConstType(SortNoArgs("EndfileStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_ESS1"
             , FunType([ConstType(SortNoArgs("EndSubroutineStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_EPS"
             , FunType([ConstType(SortNoArgs("EndProgramStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_EMSS"
             , FunType([ConstType(SortNoArgs("EndMpSubprogramStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_EFS"
             , FunType([ConstType(SortNoArgs("EndFunctionStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_DS"
             , FunType([ConstType(SortNoArgs("DeallocateStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_CS4"
             , FunType([ConstType(SortNoArgs("CycleStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_CS3"
             , FunType([ConstType(SortNoArgs("ContinueStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_CS2"
             , FunType([ConstType(SortNoArgs("CloseStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_CS1"
             , FunType([ConstType(SortNoArgs("CallStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_BS"
             , FunType([ConstType(SortNoArgs("BackspaceStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_AS2"
             , FunType([ConstType(SortNoArgs("AssignmentStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
           , OpDecl(
-              "ActionStmt"
+              "ActionStmt_AS1"
             , FunType([ConstType(SortNoArgs("AllocateStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
 

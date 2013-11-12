@@ -922,411 +922,493 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 #endif
 
  OFP_Traverse EndDoStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndDoStmt.term)) {
+ if (ATmatch(term, "ActionStmt_EDS(<term>)", &EndDoStmt.term)) {
 
       if (ofp_traverse_EndDoStmt(EndDoStmt.term, &EndDoStmt)) {
          // MATCHED EndDoStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_EDS
+
    return ATtrue;
  }
 
  OFP_Traverse NonlabelDoStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &NonlabelDoStmt.term)) {
+ if (ATmatch(term, "ActionStmt_NDS(<term>)", &NonlabelDoStmt.term)) {
 
       if (ofp_traverse_NonlabelDoStmt(NonlabelDoStmt.term, &NonlabelDoStmt)) {
          // MATCHED NonlabelDoStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_NDS
+
    return ATtrue;
  }
 
  OFP_Traverse LabelDoStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &LabelDoStmt.term)) {
+ if (ATmatch(term, "ActionStmt_LDS(<term>)", &LabelDoStmt.term)) {
 
       if (ofp_traverse_LabelDoStmt(LabelDoStmt.term, &LabelDoStmt)) {
          // MATCHED LabelDoStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_LDS
+
    return ATtrue;
  }
 
  OFP_Traverse ComputedGotoStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ComputedGotoStmt.term)) {
+ if (ATmatch(term, "ActionStmt_CGS(<term>)", &ComputedGotoStmt.term)) {
 
       if (ofp_traverse_ComputedGotoStmt(ComputedGotoStmt.term, &ComputedGotoStmt)) {
          // MATCHED ComputedGotoStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_CGS
+
    return ATtrue;
  }
 
  OFP_Traverse ArithmeticIfStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ArithmeticIfStmt.term)) {
+ if (ATmatch(term, "ActionStmt_AIS(<term>)", &ArithmeticIfStmt.term)) {
 
       if (ofp_traverse_ArithmeticIfStmt(ArithmeticIfStmt.term, &ArithmeticIfStmt)) {
          // MATCHED ArithmeticIfStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_AIS
+
    return ATtrue;
  }
 
  OFP_Traverse WriteStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &WriteStmt.term)) {
+ if (ATmatch(term, "ActionStmt_WS3(<term>)", &WriteStmt.term)) {
 
       if (ofp_traverse_WriteStmt(WriteStmt.term, &WriteStmt)) {
          // MATCHED WriteStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_WS3
+
    return ATtrue;
  }
 
  OFP_Traverse WhereStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &WhereStmt.term)) {
+ if (ATmatch(term, "ActionStmt_WS2(<term>)", &WhereStmt.term)) {
 
       if (ofp_traverse_WhereStmt(WhereStmt.term, &WhereStmt)) {
          // MATCHED WhereStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_WS2
+
    return ATtrue;
  }
 
  OFP_Traverse WaitStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &WaitStmt.term)) {
+ if (ATmatch(term, "ActionStmt_WS1(<term>)", &WaitStmt.term)) {
 
       if (ofp_traverse_WaitStmt(WaitStmt.term, &WaitStmt)) {
          // MATCHED WaitStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_WS1
+
    return ATtrue;
  }
 
  OFP_Traverse UnlockStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &UnlockStmt.term)) {
+ if (ATmatch(term, "ActionStmt_US(<term>)", &UnlockStmt.term)) {
 
       if (ofp_traverse_UnlockStmt(UnlockStmt.term, &UnlockStmt)) {
          // MATCHED UnlockStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_US
+
    return ATtrue;
  }
 
  OFP_Traverse SyncMemoryStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &SyncMemoryStmt.term)) {
+ if (ATmatch(term, "ActionStmt_SMS(<term>)", &SyncMemoryStmt.term)) {
 
       if (ofp_traverse_SyncMemoryStmt(SyncMemoryStmt.term, &SyncMemoryStmt)) {
          // MATCHED SyncMemoryStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_SMS
+
    return ATtrue;
  }
 
  OFP_Traverse SyncImagesStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &SyncImagesStmt.term)) {
+ if (ATmatch(term, "ActionStmt_SIS(<term>)", &SyncImagesStmt.term)) {
 
       if (ofp_traverse_SyncImagesStmt(SyncImagesStmt.term, &SyncImagesStmt)) {
          // MATCHED SyncImagesStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_SIS
+
    return ATtrue;
  }
 
  OFP_Traverse SyncAllStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &SyncAllStmt.term)) {
+ if (ATmatch(term, "ActionStmt_SAS(<term>)", &SyncAllStmt.term)) {
 
       if (ofp_traverse_SyncAllStmt(SyncAllStmt.term, &SyncAllStmt)) {
          // MATCHED SyncAllStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_SAS
+
    return ATtrue;
  }
 
  OFP_Traverse StopStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &StopStmt.term)) {
+ if (ATmatch(term, "ActionStmt_SS(<term>)", &StopStmt.term)) {
 
       if (ofp_traverse_StopStmt(StopStmt.term, &StopStmt)) {
          // MATCHED StopStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_SS
+
    return ATtrue;
  }
 
  OFP_Traverse RewindStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &RewindStmt.term)) {
+ if (ATmatch(term, "ActionStmt_RS3(<term>)", &RewindStmt.term)) {
 
       if (ofp_traverse_RewindStmt(RewindStmt.term, &RewindStmt)) {
          // MATCHED RewindStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_RS3
+
    return ATtrue;
  }
 
  OFP_Traverse ReturnStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ReturnStmt.term)) {
+ if (ATmatch(term, "ActionStmt_RS2(<term>)", &ReturnStmt.term)) {
 
       if (ofp_traverse_ReturnStmt(ReturnStmt.term, &ReturnStmt)) {
          // MATCHED ReturnStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_RS2
+
    return ATtrue;
  }
 
  OFP_Traverse ReadStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ReadStmt.term)) {
+ if (ATmatch(term, "ActionStmt_RS1(<term>)", &ReadStmt.term)) {
 
       if (ofp_traverse_ReadStmt(ReadStmt.term, &ReadStmt)) {
          // MATCHED ReadStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_RS1
+
    return ATtrue;
  }
 
  OFP_Traverse PrintStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &PrintStmt.term)) {
+ if (ATmatch(term, "ActionStmt_PS1(<term>)", &PrintStmt.term)) {
 
       if (ofp_traverse_PrintStmt(PrintStmt.term, &PrintStmt)) {
          // MATCHED PrintStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_PS1
+
    return ATtrue;
  }
 
  OFP_Traverse PointerAssignmentStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &PointerAssignmentStmt.term)) {
+ if (ATmatch(term, "ActionStmt_PAS(<term>)", &PointerAssignmentStmt.term)) {
 
       if (ofp_traverse_PointerAssignmentStmt(PointerAssignmentStmt.term, &PointerAssignmentStmt)) {
          // MATCHED PointerAssignmentStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_PAS
+
    return ATtrue;
  }
 
  OFP_Traverse OpenStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &OpenStmt.term)) {
+ if (ATmatch(term, "ActionStmt_OS(<term>)", &OpenStmt.term)) {
 
       if (ofp_traverse_OpenStmt(OpenStmt.term, &OpenStmt)) {
          // MATCHED OpenStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_OS
+
    return ATtrue;
  }
 
  OFP_Traverse NullifyStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &NullifyStmt.term)) {
+ if (ATmatch(term, "ActionStmt_NS(<term>)", &NullifyStmt.term)) {
 
       if (ofp_traverse_NullifyStmt(NullifyStmt.term, &NullifyStmt)) {
          // MATCHED NullifyStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_NS
+
    return ATtrue;
  }
 
  OFP_Traverse LockStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &LockStmt.term)) {
+ if (ATmatch(term, "ActionStmt_LS(<term>)", &LockStmt.term)) {
 
       if (ofp_traverse_LockStmt(LockStmt.term, &LockStmt)) {
          // MATCHED LockStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_LS
+
    return ATtrue;
  }
 
  OFP_Traverse InquireStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &InquireStmt.term)) {
+ if (ATmatch(term, "ActionStmt_IS2(<term>)", &InquireStmt.term)) {
 
       if (ofp_traverse_InquireStmt(InquireStmt.term, &InquireStmt)) {
          // MATCHED InquireStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_IS2
+
    return ATtrue;
  }
 
  OFP_Traverse IfStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &IfStmt.term)) {
+ if (ATmatch(term, "ActionStmt_IS1(<term>)", &IfStmt.term)) {
 
       if (ofp_traverse_IfStmt(IfStmt.term, &IfStmt)) {
          // MATCHED IfStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_IS1
+
    return ATtrue;
  }
 
  OFP_Traverse GotoStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &GotoStmt.term)) {
+ if (ATmatch(term, "ActionStmt_GS(<term>)", &GotoStmt.term)) {
 
       if (ofp_traverse_GotoStmt(GotoStmt.term, &GotoStmt)) {
          // MATCHED GotoStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_GS
+
    return ATtrue;
  }
 
  OFP_Traverse ForallStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ForallStmt.term)) {
+ if (ATmatch(term, "ActionStmt_FS2(<term>)", &ForallStmt.term)) {
 
       if (ofp_traverse_ForallStmt(ForallStmt.term, &ForallStmt)) {
          // MATCHED ForallStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_FS2
+
    return ATtrue;
  }
 
  OFP_Traverse FlushStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &FlushStmt.term)) {
+ if (ATmatch(term, "ActionStmt_FS1(<term>)", &FlushStmt.term)) {
 
       if (ofp_traverse_FlushStmt(FlushStmt.term, &FlushStmt)) {
          // MATCHED FlushStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_FS1
+
    return ATtrue;
  }
 
  OFP_Traverse ExitStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ExitStmt.term)) {
+ if (ATmatch(term, "ActionStmt_ES2(<term>)", &ExitStmt.term)) {
 
       if (ofp_traverse_ExitStmt(ExitStmt.term, &ExitStmt)) {
          // MATCHED ExitStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_ES2
+
    return ATtrue;
  }
 
  OFP_Traverse ErrorStopStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ErrorStopStmt.term)) {
+ if (ATmatch(term, "ActionStmt_ESS2(<term>)", &ErrorStopStmt.term)) {
 
       if (ofp_traverse_ErrorStopStmt(ErrorStopStmt.term, &ErrorStopStmt)) {
          // MATCHED ErrorStopStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_ESS2
+
    return ATtrue;
  }
 
  OFP_Traverse EndfileStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndfileStmt.term)) {
+ if (ATmatch(term, "ActionStmt_ES1(<term>)", &EndfileStmt.term)) {
 
       if (ofp_traverse_EndfileStmt(EndfileStmt.term, &EndfileStmt)) {
          // MATCHED EndfileStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_ES1
+
    return ATtrue;
  }
 
  OFP_Traverse EndSubroutineStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndSubroutineStmt.term)) {
+ if (ATmatch(term, "ActionStmt_ESS1(<term>)", &EndSubroutineStmt.term)) {
 
       if (ofp_traverse_EndSubroutineStmt(EndSubroutineStmt.term, &EndSubroutineStmt)) {
          // MATCHED EndSubroutineStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_ESS1
+
    return ATtrue;
  }
 
  OFP_Traverse EndProgramStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndProgramStmt.term)) {
+ if (ATmatch(term, "ActionStmt_EPS(<term>)", &EndProgramStmt.term)) {
 
       if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
          // MATCHED EndProgramStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_EPS
+
    return ATtrue;
  }
 
  OFP_Traverse EndMpSubprogramStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndMpSubprogramStmt.term)) {
+ if (ATmatch(term, "ActionStmt_EMSS(<term>)", &EndMpSubprogramStmt.term)) {
 
       if (ofp_traverse_EndMpSubprogramStmt(EndMpSubprogramStmt.term, &EndMpSubprogramStmt)) {
          // MATCHED EndMpSubprogramStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_EMSS
+
    return ATtrue;
  }
 
  OFP_Traverse EndFunctionStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &EndFunctionStmt.term)) {
+ if (ATmatch(term, "ActionStmt_EFS(<term>)", &EndFunctionStmt.term)) {
 
       if (ofp_traverse_EndFunctionStmt(EndFunctionStmt.term, &EndFunctionStmt)) {
          // MATCHED EndFunctionStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_EFS
+
    return ATtrue;
  }
 
  OFP_Traverse DeallocateStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &DeallocateStmt.term)) {
+ if (ATmatch(term, "ActionStmt_DS(<term>)", &DeallocateStmt.term)) {
 
       if (ofp_traverse_DeallocateStmt(DeallocateStmt.term, &DeallocateStmt)) {
          // MATCHED DeallocateStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_DS
+
    return ATtrue;
  }
 
  OFP_Traverse CycleStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &CycleStmt.term)) {
+ if (ATmatch(term, "ActionStmt_CS4(<term>)", &CycleStmt.term)) {
 
       if (ofp_traverse_CycleStmt(CycleStmt.term, &CycleStmt)) {
          // MATCHED CycleStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_CS4
+
    return ATtrue;
  }
 
  OFP_Traverse ContinueStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &ContinueStmt.term)) {
+ if (ATmatch(term, "ActionStmt_CS3(<term>)", &ContinueStmt.term)) {
 
       if (ofp_traverse_ContinueStmt(ContinueStmt.term, &ContinueStmt)) {
          // MATCHED ContinueStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_CS3
+
    return ATtrue;
  }
 
  OFP_Traverse CloseStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &CloseStmt.term)) {
+ if (ATmatch(term, "ActionStmt_CS2(<term>)", &CloseStmt.term)) {
 
       if (ofp_traverse_CloseStmt(CloseStmt.term, &CloseStmt)) {
          // MATCHED CloseStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_CS2
+
    return ATtrue;
  }
 
  OFP_Traverse CallStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &CallStmt.term)) {
+ if (ATmatch(term, "ActionStmt_CS1(<term>)", &CallStmt.term)) {
 
       if (ofp_traverse_CallStmt(CallStmt.term, &CallStmt)) {
          // MATCHED CallStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_CS1
+
    return ATtrue;
  }
 
  OFP_Traverse BackspaceStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &BackspaceStmt.term)) {
+ if (ATmatch(term, "ActionStmt_BS(<term>)", &BackspaceStmt.term)) {
 
       if (ofp_traverse_BackspaceStmt(BackspaceStmt.term, &BackspaceStmt)) {
          // MATCHED BackspaceStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_BS
+
    return ATtrue;
  }
 
  OFP_Traverse AssignmentStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &AssignmentStmt.term)) {
+ if (ATmatch(term, "ActionStmt_AS2(<term>)", &AssignmentStmt.term)) {
 
       if (ofp_traverse_AssignmentStmt(AssignmentStmt.term, &AssignmentStmt)) {
          // MATCHED AssignmentStmt
       } else return ATfalse;
 
+   // MATCHED ActionStmt_AS2
+
    return ATtrue;
  }
 
  OFP_Traverse AllocateStmt;
- if (ATmatch(term, "ActionStmt(<term>)", &AllocateStmt.term)) {
+ if (ATmatch(term, "ActionStmt_AS1(<term>)", &AllocateStmt.term)) {
 
       if (ofp_traverse_AllocateStmt(AllocateStmt.term, &AllocateStmt)) {
          // MATCHED AllocateStmt
       } else return ATfalse;
+
+   // MATCHED ActionStmt_AS1
 
    return ATtrue;
  }
