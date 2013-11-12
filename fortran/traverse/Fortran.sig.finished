@@ -967,14 +967,14 @@ Module(
             )
 
           , OpDecl(
-              "InterfaceStmt"
+              "InterfaceStmt_AB"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("InterfaceStmt"))
               )
             )
           , OpDecl(
-              "InterfaceStmt"
+              "InterfaceStmt_GS"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("GenericSpec")]))

@@ -3305,7 +3305,7 @@ ATbool ofp_traverse_InterfaceStmt(ATerm term, pOFP_Traverse InterfaceStmt)
 #endif
 
  OFP_Traverse Label, EOS;
- if (ATmatch(term, "InterfaceStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+ if (ATmatch(term, "InterfaceStmt_AB(<term>,<term>)", &Label.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
@@ -3317,11 +3317,13 @@ ATbool ofp_traverse_InterfaceStmt(ATerm term, pOFP_Traverse InterfaceStmt)
          // MATCHED EOS
       } else return ATfalse;
 
+   // MATCHED InterfaceStmt_AB
+
    return ATtrue;
  }
 
  OFP_Traverse Label1, GenericSpec, EOS1;
- if (ATmatch(term, "InterfaceStmt(<term>,<term>,<term>)", &Label1.term, &GenericSpec.term, &EOS1.term)) {
+ if (ATmatch(term, "InterfaceStmt_GS(<term>,<term>,<term>)", &Label1.term, &GenericSpec.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -3338,6 +3340,8 @@ ATbool ofp_traverse_InterfaceStmt(ATerm term, pOFP_Traverse InterfaceStmt)
       if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
          // MATCHED EOS
       } else return ATfalse;
+
+   // MATCHED InterfaceStmt_GS
 
    return ATtrue;
  }
