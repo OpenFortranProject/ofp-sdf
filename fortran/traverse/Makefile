@@ -58,8 +58,7 @@ support.o: support.c support.h
 traversal.o: traversal.c traversal.h ofp_traverse_productions.c
 traversal_f.o: traversal_f.c traversal.h
 
-check: traverse traverse_sig
-	traverse_sig Fortran.sig.aterm
+check: traverse
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
 	traverse testfile.f90.aterm
 
