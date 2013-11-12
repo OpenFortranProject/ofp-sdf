@@ -613,9 +613,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse ValueStmt;
  if (ATmatch(term, "OtherSpecificationStmt_VS2(<term>)", &ValueStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ValueStmt(ValueStmt.term, &ValueStmt)) {
          // MATCHED ValueStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_VS2
 
@@ -625,9 +627,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse VolatileStmt;
  if (ATmatch(term, "OtherSpecificationStmt_VS1(<term>)", &VolatileStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_VolatileStmt(VolatileStmt.term, &VolatileStmt)) {
          // MATCHED VolatileStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_VS1
 
@@ -637,9 +641,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse TargetStmt;
  if (ATmatch(term, "OtherSpecificationStmt_TS(<term>)", &TargetStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_TargetStmt(TargetStmt.term, &TargetStmt)) {
          // MATCHED TargetStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_TS
 
@@ -649,9 +655,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse SaveStmt;
  if (ATmatch(term, "OtherSpecificationStmt_SS(<term>)", &SaveStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_SaveStmt(SaveStmt.term, &SaveStmt)) {
          // MATCHED SaveStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_SS
 
@@ -661,9 +669,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse ProtectedStmt;
  if (ATmatch(term, "OtherSpecificationStmt_PS2(<term>)", &ProtectedStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ProtectedStmt(ProtectedStmt.term, &ProtectedStmt)) {
          // MATCHED ProtectedStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_PS2
 
@@ -673,9 +683,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse PointerStmt;
  if (ATmatch(term, "OtherSpecificationStmt_PS1(<term>)", &PointerStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_PointerStmt(PointerStmt.term, &PointerStmt)) {
          // MATCHED PointerStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_PS1
 
@@ -685,9 +697,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse OptionalStmt;
  if (ATmatch(term, "OtherSpecificationStmt_OS(<term>)", &OptionalStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_OptionalStmt(OptionalStmt.term, &OptionalStmt)) {
          // MATCHED OptionalStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_OS
 
@@ -697,9 +711,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse NamelistStmt;
  if (ATmatch(term, "OtherSpecificationStmt_NS(<term>)", &NamelistStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_NamelistStmt(NamelistStmt.term, &NamelistStmt)) {
          // MATCHED NamelistStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_NS
 
@@ -721,9 +737,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse IntentStmt;
  if (ATmatch(term, "OtherSpecificationStmt_IS1(<term>)", &IntentStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_IntentStmt(IntentStmt.term, &IntentStmt)) {
          // MATCHED IntentStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_IS1
 
@@ -745,9 +763,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse EquivalenceStmt;
  if (ATmatch(term, "OtherSpecificationStmt_ES1(<term>)", &EquivalenceStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_EquivalenceStmt(EquivalenceStmt.term, &EquivalenceStmt)) {
          // MATCHED EquivalenceStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_ES1
 
@@ -757,9 +777,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse DimensionStmt;
  if (ATmatch(term, "OtherSpecificationStmt_DS2(<term>)", &DimensionStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DimensionStmt(DimensionStmt.term, &DimensionStmt)) {
          // MATCHED DimensionStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_DS2
 
@@ -769,9 +791,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse DataStmt;
  if (ATmatch(term, "OtherSpecificationStmt_DS1(<term>)", &DataStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DataStmt(DataStmt.term, &DataStmt)) {
          // MATCHED DataStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_DS1
 
@@ -781,9 +805,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse CommonStmt;
  if (ATmatch(term, "OtherSpecificationStmt_CS3(<term>)", &CommonStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_CommonStmt(CommonStmt.term, &CommonStmt)) {
          // MATCHED CommonStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_CS3
 
@@ -793,9 +819,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse ContiguousStmt;
  if (ATmatch(term, "OtherSpecificationStmt_CS2(<term>)", &ContiguousStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ContiguousStmt(ContiguousStmt.term, &ContiguousStmt)) {
          // MATCHED ContiguousStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_CS2
 
@@ -805,9 +833,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse CodimensionStmt;
  if (ATmatch(term, "OtherSpecificationStmt_CS1(<term>)", &CodimensionStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_CodimensionStmt(CodimensionStmt.term, &CodimensionStmt)) {
          // MATCHED CodimensionStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_CS1
 
@@ -817,9 +847,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse BindStmt;
  if (ATmatch(term, "OtherSpecificationStmt_BS(<term>)", &BindStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_BindStmt(BindStmt.term, &BindStmt)) {
          // MATCHED BindStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_BS
 
@@ -829,9 +861,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse AsynchronousStmt;
  if (ATmatch(term, "OtherSpecificationStmt_AS3(<term>)", &AsynchronousStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_AsynchronousStmt(AsynchronousStmt.term, &AsynchronousStmt)) {
          // MATCHED AsynchronousStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_AS3
 
@@ -841,9 +875,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse AllocatableStmt;
  if (ATmatch(term, "OtherSpecificationStmt_AS2(<term>)", &AllocatableStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_AllocatableStmt(AllocatableStmt.term, &AllocatableStmt)) {
          // MATCHED AllocatableStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_AS2
 
@@ -853,9 +889,11 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  OFP_Traverse AccessStmt;
  if (ATmatch(term, "OtherSpecificationStmt_AS1(<term>)", &AccessStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_AccessStmt(AccessStmt.term, &AccessStmt)) {
          // MATCHED AccessStmt
       } else return ATfalse;
+#endif
 
    // MATCHED OtherSpecificationStmt_AS1
 
@@ -875,7 +913,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
 #endif
 
  OFP_Traverse WhereConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &WhereConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_WC(<term>)", &WhereConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_WhereConstruct(WhereConstruct.term, &WhereConstruct)) {
@@ -883,11 +921,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_WC
+
    return ATtrue;
  }
 
  OFP_Traverse SelectTypeConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &SelectTypeConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_STC(<term>)", &SelectTypeConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_SelectTypeConstruct(SelectTypeConstruct.term, &SelectTypeConstruct)) {
@@ -895,11 +935,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_STC
+
    return ATtrue;
  }
 
  OFP_Traverse IfConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &IfConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_IC(<term>)", &IfConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_IfConstruct(IfConstruct.term, &IfConstruct)) {
@@ -907,11 +949,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_IC
+
    return ATtrue;
  }
 
  OFP_Traverse ForallConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &ForallConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_FC(<term>)", &ForallConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_ForallConstruct(ForallConstruct.term, &ForallConstruct)) {
@@ -919,11 +963,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_FC
+
    return ATtrue;
  }
 
  OFP_Traverse CriticalConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &CriticalConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_CC2(<term>)", &CriticalConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_CriticalConstruct(CriticalConstruct.term, &CriticalConstruct)) {
@@ -931,11 +977,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_CC2
+
    return ATtrue;
  }
 
  OFP_Traverse CaseConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &CaseConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_CC1(<term>)", &CaseConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_CaseConstruct(CaseConstruct.term, &CaseConstruct)) {
@@ -943,11 +991,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_CC1
+
    return ATtrue;
  }
 
  OFP_Traverse BlockConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &BlockConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_BC(<term>)", &BlockConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_BlockConstruct(BlockConstruct.term, &BlockConstruct)) {
@@ -955,11 +1005,13 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_BC
+
    return ATtrue;
  }
 
  OFP_Traverse AssociateConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &AssociateConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_AC(<term>)", &AssociateConstruct.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_AssociateConstruct(AssociateConstruct.term, &AssociateConstruct)) {
@@ -967,15 +1019,19 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
       } else return ATfalse;
 #endif
 
+   // MATCHED ExecutableConstruct_AC
+
    return ATtrue;
  }
 
  OFP_Traverse ActionStmt;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &ActionStmt.term)) {
+ if (ATmatch(term, "ExecutableConstruct_AS(<term>)", &ActionStmt.term)) {
 
       if (ofp_traverse_ActionStmt(ActionStmt.term, &ActionStmt)) {
          // MATCHED ActionStmt
       } else return ATfalse;
+
+   // MATCHED ExecutableConstruct_AS
 
    return ATtrue;
  }

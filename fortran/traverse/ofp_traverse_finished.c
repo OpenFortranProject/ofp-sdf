@@ -805,91 +805,109 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
 #endif
 
  OFP_Traverse WhereConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &WhereConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_WC(<term>)", &WhereConstruct.term)) {
 
       if (ofp_traverse_WhereConstruct(WhereConstruct.term, &WhereConstruct)) {
          // MATCHED WhereConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_WC
+
    return ATtrue;
  }
 
  OFP_Traverse SelectTypeConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &SelectTypeConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_STC(<term>)", &SelectTypeConstruct.term)) {
 
       if (ofp_traverse_SelectTypeConstruct(SelectTypeConstruct.term, &SelectTypeConstruct)) {
          // MATCHED SelectTypeConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_STC
+
    return ATtrue;
  }
 
  OFP_Traverse IfConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &IfConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_IC(<term>)", &IfConstruct.term)) {
 
       if (ofp_traverse_IfConstruct(IfConstruct.term, &IfConstruct)) {
          // MATCHED IfConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_IC
+
    return ATtrue;
  }
 
  OFP_Traverse ForallConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &ForallConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_FC(<term>)", &ForallConstruct.term)) {
 
       if (ofp_traverse_ForallConstruct(ForallConstruct.term, &ForallConstruct)) {
          // MATCHED ForallConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_FC
+
    return ATtrue;
  }
 
  OFP_Traverse CriticalConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &CriticalConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_CC2(<term>)", &CriticalConstruct.term)) {
 
       if (ofp_traverse_CriticalConstruct(CriticalConstruct.term, &CriticalConstruct)) {
          // MATCHED CriticalConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_CC2
+
    return ATtrue;
  }
 
  OFP_Traverse CaseConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &CaseConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_CC1(<term>)", &CaseConstruct.term)) {
 
       if (ofp_traverse_CaseConstruct(CaseConstruct.term, &CaseConstruct)) {
          // MATCHED CaseConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_CC1
+
    return ATtrue;
  }
 
  OFP_Traverse BlockConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &BlockConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_BC(<term>)", &BlockConstruct.term)) {
 
       if (ofp_traverse_BlockConstruct(BlockConstruct.term, &BlockConstruct)) {
          // MATCHED BlockConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_BC
+
    return ATtrue;
  }
 
  OFP_Traverse AssociateConstruct;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &AssociateConstruct.term)) {
+ if (ATmatch(term, "ExecutableConstruct_AC(<term>)", &AssociateConstruct.term)) {
 
       if (ofp_traverse_AssociateConstruct(AssociateConstruct.term, &AssociateConstruct)) {
          // MATCHED AssociateConstruct
       } else return ATfalse;
 
+   // MATCHED ExecutableConstruct_AC
+
    return ATtrue;
  }
 
  OFP_Traverse ActionStmt;
- if (ATmatch(term, "ExecutableConstruct(<term>)", &ActionStmt.term)) {
+ if (ATmatch(term, "ExecutableConstruct_AS(<term>)", &ActionStmt.term)) {
 
       if (ofp_traverse_ActionStmt(ActionStmt.term, &ActionStmt)) {
          // MATCHED ActionStmt
       } else return ATfalse;
+
+   // MATCHED ExecutableConstruct_AS
 
    return ATtrue;
  }

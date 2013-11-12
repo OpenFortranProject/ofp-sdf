@@ -250,39 +250,39 @@ Module(
             )
 
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_WC"
             , FunType([ConstType(SortNoArgs("WhereConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_STC"
             , FunType([ConstType(SortNoArgs("SelectTypeConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_IC"
             , FunType([ConstType(SortNoArgs("IfConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_FC"
             , FunType([ConstType(SortNoArgs("ForallConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_CC2"
             , FunType([ConstType(SortNoArgs("CriticalConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_CC1"
             , FunType([ConstType(SortNoArgs("CaseConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_BC"
             , FunType([ConstType(SortNoArgs("BlockConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_AC"
             , FunType([ConstType(SortNoArgs("AssociateConstruct"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
           , OpDecl(
-              "ExecutableConstruct"
+              "ExecutableConstruct_AS"
             , FunType([ConstType(SortNoArgs("ActionStmt"))], ConstType(SortNoArgs("ExecutableConstruct")))
             )
 
