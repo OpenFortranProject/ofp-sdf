@@ -936,7 +936,7 @@ Module(
               )
             )
           , OpDecl(
-              "EndBlockDataStmt"
+              "EndBlockDataStmt_BDN"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("BlockDataName")]))
@@ -958,11 +958,11 @@ Module(
             )
 
           , OpDecl(
-              "InterfaceSpecification"
+              "InterfaceSpecification_PS"
             , FunType([ConstType(SortNoArgs("ProcedureStmt"))], ConstType(SortNoArgs("InterfaceSpecification")))
             )
           , OpDecl(
-              "InterfaceSpecification"
+              "InterfaceSpecification_IB"
             , FunType([ConstType(SortNoArgs("InterfaceBody"))], ConstType(SortNoArgs("InterfaceSpecification")))
             )
 

@@ -2828,7 +2828,7 @@ ATbool ofp_traverse_EndBlockDataStmt(ATerm term, pOFP_Traverse EndBlockDataStmt)
  }
 
  OFP_Traverse Label1, BlockDataName, EOS1;
- if (ATmatch(term, "EndBlockDataStmt(<term>,<term>,<term>)", &Label1.term, &BlockDataName.term, &EOS1.term)) {
+ if (ATmatch(term, "EndBlockDataStmt_BDN(<term>,<term>,<term>)", &Label1.term, &BlockDataName.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -2845,6 +2845,8 @@ ATbool ofp_traverse_EndBlockDataStmt(ATerm term, pOFP_Traverse EndBlockDataStmt)
       if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
          // MATCHED EOS
       } else return ATfalse;
+
+   // MATCHED EndBlockDataStmt_BDN
 
    return ATtrue;
  }
@@ -2891,21 +2893,25 @@ ATbool ofp_traverse_InterfaceSpecification(ATerm term, pOFP_Traverse InterfaceSp
 #endif
 
  OFP_Traverse ProcedureStmt;
- if (ATmatch(term, "InterfaceSpecification(<term>)", &ProcedureStmt.term)) {
+ if (ATmatch(term, "InterfaceSpecification_PS(<term>)", &ProcedureStmt.term)) {
 
       if (ofp_traverse_ProcedureStmt(ProcedureStmt.term, &ProcedureStmt)) {
          // MATCHED ProcedureStmt
       } else return ATfalse;
 
+   // MATCHED InterfaceSpecification_PS
+
    return ATtrue;
  }
 
  OFP_Traverse InterfaceBody;
- if (ATmatch(term, "InterfaceSpecification(<term>)", &InterfaceBody.term)) {
+ if (ATmatch(term, "InterfaceSpecification_IB(<term>)", &InterfaceBody.term)) {
 
       if (ofp_traverse_InterfaceBody(InterfaceBody.term, &InterfaceBody)) {
          // MATCHED InterfaceBody
       } else return ATfalse;
+
+   // MATCHED InterfaceSpecification_IB
 
    return ATtrue;
  }
