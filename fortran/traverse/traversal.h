@@ -59,6 +59,12 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPa
 /* R210 */
 ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart);
 
+/* R211 */
+ATbool ofp_traverse_InternalSubprogram(ATerm term, pOFP_Traverse InternalSubprogram);
+
+/* R212 */
+ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecificationStmt);
+
 /* R213 */
 ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableConstruct);
 
