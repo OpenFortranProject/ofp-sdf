@@ -3561,21 +3561,25 @@ ATbool ofp_traverse_ProcPointerInit(ATerm term, pOFP_Traverse ProcPointerInit)
 #endif
 
  OFP_Traverse InitialProcTarget;
- if (ATmatch(term, "ProcPointerInit(<term>)", &InitialProcTarget.term)) {
+ if (ATmatch(term, "ProcPointerInit_IPT(<term>)", &InitialProcTarget.term)) {
 
       if (ofp_traverse_InitialProcTarget(InitialProcTarget.term, &InitialProcTarget)) {
          // MATCHED InitialProcTarget
       } else return ATfalse;
 
+   // MATCHED ProcPointerInit_IPT
+
    return ATtrue;
  }
 
  OFP_Traverse NullInit;
- if (ATmatch(term, "ProcPointerInit(<term>)", &NullInit.term)) {
+ if (ATmatch(term, "ProcPointerInit_NI(<term>)", &NullInit.term)) {
 
       if (ofp_traverse_NullInit(NullInit.term, &NullInit)) {
          // MATCHED NullInit
       } else return ATfalse;
+
+   // MATCHED ProcPointerInit_NI
 
    return ATtrue;
  }
@@ -3740,11 +3744,13 @@ ATbool ofp_traverse_ProcedureDesignator(ATerm term, pOFP_Traverse ProcedureDesig
  }
 
  OFP_Traverse ProcedureName;
- if (ATmatch(term, "ProcedureDesignator(<term>)", &ProcedureName.term)) {
+ if (ATmatch(term, "ProcedureDesignator_PN(<term>)", &ProcedureName.term)) {
 
       if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
          // MATCHED ProcedureName
       } else return ATfalse;
+
+   // MATCHED ProcedureDesignator_PN
 
    return ATtrue;
  }
@@ -3919,11 +3925,13 @@ ATbool ofp_traverse_PrefixSpec(ATerm term, pOFP_Traverse PrefixSpec)
  }
 
  OFP_Traverse DeclarationTypeSpec;
- if (ATmatch(term, "PrefixSpec(<term>)", &DeclarationTypeSpec.term)) {
+ if (ATmatch(term, "PrefixSpec_DTS(<term>)", &DeclarationTypeSpec.term)) {
 
       if (ofp_traverse_DeclarationTypeSpec(DeclarationTypeSpec.term, &DeclarationTypeSpec)) {
          // MATCHED DeclarationTypeSpec
       } else return ATfalse;
+
+   // MATCHED PrefixSpec_DTS
 
    return ATtrue;
  }
@@ -4060,7 +4068,7 @@ ATbool ofp_traverse_Suffix(ATerm term, pOFP_Traverse Suffix)
 #endif
 
  OFP_Traverse ResultName, ProcLanguageBindingSpec;
- if (ATmatch(term, "Suffix(<term>,<term>)", &ResultName.term, &ProcLanguageBindingSpec.term)) {
+ if (ATmatch(term, "Suffix_RP(<term>,<term>)", &ResultName.term, &ProcLanguageBindingSpec.term)) {
 
       if (ofp_traverse_ResultName(ResultName.term, &ResultName)) {
          // MATCHED ResultName
@@ -4072,11 +4080,13 @@ ATbool ofp_traverse_Suffix(ATerm term, pOFP_Traverse Suffix)
       } else return ATfalse;
    }
 
+   // MATCHED Suffix_RP
+
    return ATtrue;
  }
 
  OFP_Traverse ProcLanguageBindingSpec1, ResultName1;
- if (ATmatch(term, "Suffix(<term>,<term>)", &ProcLanguageBindingSpec1.term, &ResultName1.term)) {
+ if (ATmatch(term, "Suffix_PR(<term>,<term>)", &ProcLanguageBindingSpec1.term, &ResultName1.term)) {
 
       if (ofp_traverse_ProcLanguageBindingSpec(ProcLanguageBindingSpec1.term, &ProcLanguageBindingSpec1)) {
          // MATCHED ProcLanguageBindingSpec
@@ -4089,6 +4099,8 @@ ATbool ofp_traverse_Suffix(ATerm term, pOFP_Traverse Suffix)
       } else return ATfalse;
    }
    }
+
+   // MATCHED Suffix_PR
 
    return ATtrue;
  }

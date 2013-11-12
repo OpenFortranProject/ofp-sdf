@@ -1173,11 +1173,11 @@ Module(
             )
 
           , OpDecl(
-              "ProcPointerInit"
+              "ProcPointerInit_IPT"
             , FunType([ConstType(SortNoArgs("InitialProcTarget"))], ConstType(SortNoArgs("ProcPointerInit")))
             )
           , OpDecl(
-              "ProcPointerInit"
+              "ProcPointerInit_NI"
             , FunType([ConstType(SortNoArgs("NullInit"))], ConstType(SortNoArgs("ProcPointerInit")))
             )
 
@@ -1238,7 +1238,7 @@ Module(
               )
             )
           , OpDecl(
-              "ProcedureDesignator"
+              "ProcedureDesignator_PN"
             , FunType([ConstType(SortNoArgs("ProcedureName"))], ConstType(SortNoArgs("ProcedureDesignator")))
             )
 
@@ -1289,7 +1289,7 @@ Module(
           , OpDecl("PrefixSpec_IMPURE", ConstType(SortNoArgs("PrefixSpec")))
           , OpDecl("PrefixSpec_ELEMENTAL", ConstType(SortNoArgs("PrefixSpec")))
           , OpDecl(
-              "PrefixSpec"
+              "PrefixSpec_DTS"
             , FunType([ConstType(SortNoArgs("DeclarationTypeSpec"))], ConstType(SortNoArgs("PrefixSpec")))
             )
 
@@ -1331,14 +1331,14 @@ Module(
             )
  
           , OpDecl(
-              "Suffix"
+              "Suffix_RP"
             , FunType(
                 [ConstType(SortNoArgs("ResultName")), ConstType(Sort("Option", [SortNoArgs("ProcLanguageBindingSpec")]))]
               , ConstType(SortNoArgs("Suffix"))
               )
             )
           , OpDecl(
-              "Suffix"
+              "Suffix_PR"
             , FunType(
                 [ConstType(SortNoArgs("ProcLanguageBindingSpec")), ConstType(Sort("Option", [SortNoArgs("ResultName0")]))]
               , ConstType(SortNoArgs("Suffix"))
