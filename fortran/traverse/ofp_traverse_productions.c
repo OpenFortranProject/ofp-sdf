@@ -1149,11 +1149,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse WaitStmt;
  if (ATmatch(term, "ActionStmt_WS1(<term>)", &WaitStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_WaitStmt(WaitStmt.term, &WaitStmt)) {
          // MATCHED WaitStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_WS1
 
@@ -1233,11 +1231,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse RewindStmt;
  if (ATmatch(term, "ActionStmt_RS3(<term>)", &RewindStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_RewindStmt(RewindStmt.term, &RewindStmt)) {
          // MATCHED RewindStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_RS3
 
@@ -1343,11 +1339,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse InquireStmt;
  if (ATmatch(term, "ActionStmt_IS2(<term>)", &InquireStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_InquireStmt(InquireStmt.term, &InquireStmt)) {
          // MATCHED InquireStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_IS2
 
@@ -1399,11 +1393,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse FlushStmt;
  if (ATmatch(term, "ActionStmt_FS1(<term>)", &FlushStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_FlushStmt(FlushStmt.term, &FlushStmt)) {
          // MATCHED FlushStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_FS1
 
@@ -1441,11 +1433,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse EndfileStmt;
  if (ATmatch(term, "ActionStmt_ES1(<term>)", &EndfileStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EndfileStmt(EndfileStmt.term, &EndfileStmt)) {
          // MATCHED EndfileStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_ES1
 
@@ -1571,11 +1561,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse BackspaceStmt;
  if (ATmatch(term, "ActionStmt_BS(<term>)", &BackspaceStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_BackspaceStmt(BackspaceStmt.term, &BackspaceStmt)) {
          // MATCHED BackspaceStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_BS
 
