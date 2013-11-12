@@ -653,6 +653,171 @@ Module(
             )
 
           , OpDecl(
+              "IoUnit_IFV"
+            , FunType([ConstType(SortNoArgs("CharVariable"))], ConstType(SortNoArgs("IoUnit")))
+            )
+          , OpDecl("IoUnit_STAR", ConstType(SortNoArgs("IoUnit")))
+          , OpDecl(
+              "IoUnit_FUN"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("IoUnit")))
+            )
+
+          , OpDecl(
+              "FileUnitNumber"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("FileUnitNumber")))
+            )
+
+          , OpDecl(
+              "OpenStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ConnectSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("OpenStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ConnectSpec_STATUS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_SIGN"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ROUND"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_RECL"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_POSITION"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_PAD"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_NEWUNIT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_FORM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_FILE"
+            , FunType([ConstType(SortNoArgs("FileNameExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ENCODING"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_DELIM"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_DECIMAL"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_BLANK"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ASYNCHRONOUS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ACTION"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_ACCESS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+          , OpDecl(
+              "ConnectSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("ConnectSpec")))
+            )
+
+          , OpDecl(
+              "ConnectSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ConnectSpec")]))]
+              , ConstType(SortNoArgs("ConnectSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "FileNameExpr"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("FileNameExpr")))
+            )
+
+          , OpDecl(
+              "IomsgVariable"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("IomsgVariable")))
+            )
+
+          , OpDecl(
+              "CloseStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("CloseSpecList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("CloseStmt"))
+              )
+            )
+
+          , OpDecl(
+              "CloseSpec_STATUS"
+            , FunType([ConstType(SortNoArgs("DefaultCharExpr"))], ConstType(SortNoArgs("CloseSpec")))
+            )
+          , OpDecl(
+              "CloseSpec_ERR"
+            , FunType([ConstType(SortNoArgs("LblRef"))], ConstType(SortNoArgs("CloseSpec")))
+            )
+          , OpDecl(
+              "CloseSpec_IOMSG"
+            , FunType([ConstType(SortNoArgs("IomsgVariable"))], ConstType(SortNoArgs("CloseSpec")))
+            )
+          , OpDecl(
+              "CloseSpec_IOSTAT"
+            , FunType([ConstType(SortNoArgs("IntVariable"))], ConstType(SortNoArgs("CloseSpec")))
+            )
+          , OpDecl(
+              "CloseSpec_UNIT"
+            , FunType([ConstType(SortNoArgs("FileUnitNumber"))], ConstType(SortNoArgs("CloseSpec")))
+            )
+
+          , OpDecl(
+              "CloseSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("CloseSpec")]))]
+              , ConstType(SortNoArgs("CloseSpecList"))
+              )
+            )
+
+          , OpDecl(
               "MainProgram"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("ProgramStmt")]))

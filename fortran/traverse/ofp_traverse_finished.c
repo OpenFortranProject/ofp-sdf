@@ -2035,6 +2035,527 @@ ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl)
  return ATfalse;
 }
 
+ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit)
+{
+#ifdef DEBUG_PRINT
+   printf("IoUnit: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse CharVariable;
+ if (ATmatch(term, "IoUnit_IFV(<term>)", &CharVariable.term)) {
+
+      if (ofp_traverse_CharVariable(CharVariable.term, &CharVariable)) {
+         // MATCHED CharVariable
+      } else return ATfalse;
+
+   // MATCHED IoUnit_IFV
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "IoUnit_STAR")) {
+
+   // MATCHED IoUnit_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "IoUnit_FUN(<term>)", &IntExpr.term)) {
+
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+
+   // MATCHED IoUnit_FUN
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FileUnitNumber(ATerm term, pOFP_Traverse FileUnitNumber)
+{
+#ifdef DEBUG_PRINT
+   printf("FileUnitNumber: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "FileUnitNumber(<term>)", &IntExpr.term)) {
+
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_OpenStmt(ATerm term, pOFP_Traverse OpenStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("OpenStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, ConnectSpecList, EOS;
+ if (ATmatch(term, "OpenStmt(<term>,<term>,<term>)", &Label.term, &ConnectSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_ConnectSpecList(ConnectSpecList.term, &ConnectSpecList)) {
+         // MATCHED ConnectSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("ConnectSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "ConnectSpec_STATUS(<term>)", &DefaultCharExpr.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_STATUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr1;
+ if (ATmatch(term, "ConnectSpec_SIGN(<term>)", &DefaultCharExpr1.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_SIGN
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr2;
+ if (ATmatch(term, "ConnectSpec_ROUND(<term>)", &DefaultCharExpr2.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ROUND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "ConnectSpec_RECL(<term>)", &IntExpr.term)) {
+
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_RECL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr3;
+ if (ATmatch(term, "ConnectSpec_POSITION(<term>)", &DefaultCharExpr3.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_POSITION
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr4;
+ if (ATmatch(term, "ConnectSpec_PAD(<term>)", &DefaultCharExpr4.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_PAD
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "ConnectSpec_NEWUNIT(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_NEWUNIT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable1;
+ if (ATmatch(term, "ConnectSpec_IOSTAT(<term>)", &IntVariable1.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "ConnectSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr5;
+ if (ATmatch(term, "ConnectSpec_FORM(<term>)", &DefaultCharExpr5.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_FORM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileNameExpr;
+ if (ATmatch(term, "ConnectSpec_FILE(<term>)", &FileNameExpr.term)) {
+
+      if (ofp_traverse_FileNameExpr(FileNameExpr.term, &FileNameExpr)) {
+         // MATCHED FileNameExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_FILE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "ConnectSpec_ERR(<term>)", &LblRef.term)) {
+
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr6;
+ if (ATmatch(term, "ConnectSpec_ENCODING(<term>)", &DefaultCharExpr6.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ENCODING
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr7;
+ if (ATmatch(term, "ConnectSpec_DELIM(<term>)", &DefaultCharExpr7.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_DELIM
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr8;
+ if (ATmatch(term, "ConnectSpec_DECIMAL(<term>)", &DefaultCharExpr8.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr8.term, &DefaultCharExpr8)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_DECIMAL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr9;
+ if (ATmatch(term, "ConnectSpec_BLANK(<term>)", &DefaultCharExpr9.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr9.term, &DefaultCharExpr9)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_BLANK
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr10;
+ if (ATmatch(term, "ConnectSpec_ASYNCHRONOUS(<term>)", &DefaultCharExpr10.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr10.term, &DefaultCharExpr10)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ASYNCHRONOUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr11;
+ if (ATmatch(term, "ConnectSpec_ACTION(<term>)", &DefaultCharExpr11.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr11.term, &DefaultCharExpr11)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ACTION
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DefaultCharExpr12;
+ if (ATmatch(term, "ConnectSpec_ACCESS(<term>)", &DefaultCharExpr12.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr12.term, &DefaultCharExpr12)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_ACCESS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "ConnectSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED ConnectSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ConnectSpecList(ATerm term, pOFP_Traverse ConnectSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("ConnectSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ConnectSpec;
+ if (ATmatch(term, "ConnectSpecList(<term>)", &ConnectSpec.term)) {
+
+   ATermList ConnectSpec_tail = (ATermList) ATmake("<term>", ConnectSpec.term);
+   while (! ATisEmpty(ConnectSpec_tail)) {
+      ConnectSpec.term = ATgetFirst(ConnectSpec_tail);
+      ConnectSpec_tail = ATgetNext (ConnectSpec_tail);
+      if (ofp_traverse_ConnectSpec(ConnectSpec.term, &ConnectSpec)) {
+         // MATCHED ConnectSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FileNameExpr(ATerm term, pOFP_Traverse FileNameExpr)
+{
+#ifdef DEBUG_PRINT
+   printf("FileNameExpr: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "FileNameExpr(<term>)", &DefaultCharExpr.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IomsgVariable(ATerm term, pOFP_Traverse IomsgVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("IomsgVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "IomsgVariable(<term>)", &DefaultCharExpr.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CloseStmt(ATerm term, pOFP_Traverse CloseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("CloseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CloseSpecList, EOS;
+ if (ATmatch(term, "CloseStmt(<term>,<term>,<term>)", &Label.term, &CloseSpecList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_CloseSpecList(CloseSpecList.term, &CloseSpecList)) {
+         // MATCHED CloseSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CloseSpec(ATerm term, pOFP_Traverse CloseSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("CloseSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DefaultCharExpr;
+ if (ATmatch(term, "CloseSpec_STATUS(<term>)", &DefaultCharExpr.term)) {
+
+      if (ofp_traverse_DefaultCharExpr(DefaultCharExpr.term, &DefaultCharExpr)) {
+         // MATCHED DefaultCharExpr
+      } else return ATfalse;
+
+   // MATCHED CloseSpec_STATUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "CloseSpec_ERR(<term>)", &LblRef.term)) {
+
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+   // MATCHED CloseSpec_ERR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IomsgVariable;
+ if (ATmatch(term, "CloseSpec_IOMSG(<term>)", &IomsgVariable.term)) {
+
+      if (ofp_traverse_IomsgVariable(IomsgVariable.term, &IomsgVariable)) {
+         // MATCHED IomsgVariable
+      } else return ATfalse;
+
+   // MATCHED CloseSpec_IOMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntVariable;
+ if (ATmatch(term, "CloseSpec_IOSTAT(<term>)", &IntVariable.term)) {
+
+      if (ofp_traverse_IntVariable(IntVariable.term, &IntVariable)) {
+         // MATCHED IntVariable
+      } else return ATfalse;
+
+   // MATCHED CloseSpec_IOSTAT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse FileUnitNumber;
+ if (ATmatch(term, "CloseSpec_UNIT(<term>)", &FileUnitNumber.term)) {
+
+      if (ofp_traverse_FileUnitNumber(FileUnitNumber.term, &FileUnitNumber)) {
+         // MATCHED FileUnitNumber
+      } else return ATfalse;
+
+   // MATCHED CloseSpec_UNIT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CloseSpecList(ATerm term, pOFP_Traverse CloseSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("CloseSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse CloseSpec;
+ if (ATmatch(term, "CloseSpecList(<term>)", &CloseSpec.term)) {
+
+   ATermList CloseSpec_tail = (ATermList) ATmake("<term>", CloseSpec.term);
+   while (! ATisEmpty(CloseSpec_tail)) {
+      CloseSpec.term = ATgetFirst(CloseSpec_tail);
+      CloseSpec_tail = ATgetNext (CloseSpec_tail);
+      if (ofp_traverse_CloseSpec(CloseSpec.term, &CloseSpec)) {
+         // MATCHED CloseSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram)
 {
 #ifdef DEBUG_PRINT

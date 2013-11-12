@@ -133,6 +133,32 @@ ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr);
 /* R732 */
 ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt);
 
+/* R901 */
+ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit);
+
+/* R902 */
+ATbool ofp_traverse_FileUnitNumber(ATerm term, pOFP_Traverse FileUnitNumber);
+
+/* R904 */
+ATbool ofp_traverse_OpenStmt(ATerm term, pOFP_Traverse OpenStmt);
+
+/* R905 */
+ATbool ofp_traverse_ConnectSpec(ATerm term, pOFP_Traverse ConnectSpec);
+ATbool ofp_traverse_ConnectSpecList(ATerm term, pOFP_Traverse ConnectSpecList);
+
+/* R906 */
+ATbool ofp_traverse_FileNameExpr(ATerm term, pOFP_Traverse FileNameExpr);
+
+/* R907 */
+ATbool ofp_traverse_IomsgVariable(ATerm term, pOFP_Traverse IomsgVariable);
+
+/* R908 */
+ATbool ofp_traverse_CloseStmt(ATerm term, pOFP_Traverse CloseStmt);
+
+/* R909 */
+ATbool ofp_traverse_CloseSpec(ATerm term, pOFP_Traverse CloseSpec);
+ATbool ofp_traverse_CloseSpecList(ATerm term, pOFP_Traverse CloseSpecList);
+
 /* R1101 */
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram);
 
