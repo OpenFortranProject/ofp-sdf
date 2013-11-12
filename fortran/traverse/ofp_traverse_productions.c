@@ -2900,7 +2900,7 @@ ATbool ofp_traverse_LocalDefinedOperator(ATerm term, pOFP_Traverse LocalDefinedO
 #endif
 
  OFP_Traverse DefinedBinaryOp;
- if (ATmatch(term, "LocalDefinedOperator(<term>)", &DefinedBinaryOp.term)) {
+ if (ATmatch(term, "LocalDefinedOperator_DBO(<term>)", &DefinedBinaryOp.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_DefinedBinaryOp(DefinedBinaryOp.term, &DefinedBinaryOp)) {
@@ -2908,17 +2908,21 @@ ATbool ofp_traverse_LocalDefinedOperator(ATerm term, pOFP_Traverse LocalDefinedO
       } else return ATfalse;
 #endif
 
+   // MATCHED LocalDefinedOperator_DBO
+
    return ATtrue;
  }
 
  OFP_Traverse DefinedUnaryOp;
- if (ATmatch(term, "LocalDefinedOperator(<term>)", &DefinedUnaryOp.term)) {
+ if (ATmatch(term, "LocalDefinedOperator_DUO(<term>)", &DefinedUnaryOp.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_DefinedUnaryOp(DefinedUnaryOp.term, &DefinedUnaryOp)) {
          // MATCHED DefinedUnaryOp
       } else return ATfalse;
 #endif
+
+   // MATCHED LocalDefinedOperator_DUO
 
    return ATtrue;
  }
@@ -2936,7 +2940,7 @@ ATbool ofp_traverse_UseDefinedOperator(ATerm term, pOFP_Traverse UseDefinedOpera
 #endif
 
  OFP_Traverse DefinedBinaryOp;
- if (ATmatch(term, "UseDefinedOperator(<term>)", &DefinedBinaryOp.term)) {
+ if (ATmatch(term, "UseDefinedOperator_DBO(<term>)", &DefinedBinaryOp.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_DefinedBinaryOp(DefinedBinaryOp.term, &DefinedBinaryOp)) {
@@ -2944,17 +2948,21 @@ ATbool ofp_traverse_UseDefinedOperator(ATerm term, pOFP_Traverse UseDefinedOpera
       } else return ATfalse;
 #endif
 
+   // MATCHED UseDefinedOperator_DBO
+
    return ATtrue;
  }
 
  OFP_Traverse DefinedUnaryOp;
- if (ATmatch(term, "UseDefinedOperator(<term>)", &DefinedUnaryOp.term)) {
+ if (ATmatch(term, "UseDefinedOperator_DUO(<term>)", &DefinedUnaryOp.term)) {
 
 #ifdef NOT_YET
       if (ofp_traverse_DefinedUnaryOp(DefinedUnaryOp.term, &DefinedUnaryOp)) {
          // MATCHED DefinedUnaryOp
       } else return ATfalse;
 #endif
+
+   // MATCHED UseDefinedOperator_DUO
 
    return ATtrue;
  }

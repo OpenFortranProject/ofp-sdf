@@ -840,20 +840,20 @@ Module(
             )
 
           , OpDecl(
-              "LocalDefinedOperator"
+              "LocalDefinedOperator_DBO"
             , FunType([ConstType(SortNoArgs("DefinedBinaryOp"))], ConstType(SortNoArgs("LocalDefinedOperator")))
             )
           , OpDecl(
-              "LocalDefinedOperator"
+              "LocalDefinedOperator_DUO"
             , FunType([ConstType(SortNoArgs("DefinedUnaryOp"))], ConstType(SortNoArgs("LocalDefinedOperator")))
             )
 
           , OpDecl(
-              "UseDefinedOperator"
+              "UseDefinedOperator_DBO"
             , FunType([ConstType(SortNoArgs("DefinedBinaryOp"))], ConstType(SortNoArgs("UseDefinedOperator")))
             )
           , OpDecl(
-              "UseDefinedOperator"
+              "UseDefinedOperator_DUO"
             , FunType([ConstType(SortNoArgs("DefinedUnaryOp"))], ConstType(SortNoArgs("UseDefinedOperator")))
             )
 
