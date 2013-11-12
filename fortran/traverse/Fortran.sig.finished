@@ -742,15 +742,15 @@ Module(
             )
 
           , OpDecl(
-              "ModuleSubprogram"
+              "ModuleSubprogram_SMS"
             , FunType([ConstType(SortNoArgs("SeparateModuleSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
             )
           , OpDecl(
-              "ModuleSubprogram"
+              "ModuleSubprogram_SS"
             , FunType([ConstType(SortNoArgs("SubroutineSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
             )
           , OpDecl(
-              "ModuleSubprogram"
+              "ModuleSubprogram_FS"
             , FunType([ConstType(SortNoArgs("FunctionSubprogram"))], ConstType(SortNoArgs("ModuleSubprogram")))
             )
 

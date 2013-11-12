@@ -2266,31 +2266,37 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
 #endif
 
  OFP_Traverse SeparateModuleSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &SeparateModuleSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_SMS(<term>)", &SeparateModuleSubprogram.term)) {
 
       if (ofp_traverse_SeparateModuleSubprogram(SeparateModuleSubprogram.term, &SeparateModuleSubprogram)) {
          // MATCHED SeparateModuleSubprogram
       } else return ATfalse;
 
+   // MATCHED ModuleSubprogram_SMS
+
    return ATtrue;
  }
 
  OFP_Traverse SubroutineSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &SubroutineSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_SS(<term>)", &SubroutineSubprogram.term)) {
 
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
          // MATCHED SubroutineSubprogram
       } else return ATfalse;
 
+   // MATCHED ModuleSubprogram_SS
+
    return ATtrue;
  }
 
  OFP_Traverse FunctionSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &FunctionSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_FS(<term>)", &FunctionSubprogram.term)) {
 
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
       } else return ATfalse;
+
+   // MATCHED ModuleSubprogram_FS
 
    return ATtrue;
  }

@@ -1051,9 +1051,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse EndDoStmt;
  if (ATmatch(term, "ActionStmt_EDS(<term>)", &EndDoStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_EndDoStmt(EndDoStmt.term, &EndDoStmt)) {
          // MATCHED EndDoStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_EDS
 
@@ -1063,9 +1065,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse NonlabelDoStmt;
  if (ATmatch(term, "ActionStmt_NDS(<term>)", &NonlabelDoStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_NonlabelDoStmt(NonlabelDoStmt.term, &NonlabelDoStmt)) {
          // MATCHED NonlabelDoStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_NDS
 
@@ -1075,9 +1079,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse LabelDoStmt;
  if (ATmatch(term, "ActionStmt_LDS(<term>)", &LabelDoStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_LabelDoStmt(LabelDoStmt.term, &LabelDoStmt)) {
          // MATCHED LabelDoStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_LDS
 
@@ -1087,9 +1093,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ComputedGotoStmt;
  if (ATmatch(term, "ActionStmt_CGS(<term>)", &ComputedGotoStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ComputedGotoStmt(ComputedGotoStmt.term, &ComputedGotoStmt)) {
          // MATCHED ComputedGotoStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_CGS
 
@@ -1099,9 +1107,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ArithmeticIfStmt;
  if (ATmatch(term, "ActionStmt_AIS(<term>)", &ArithmeticIfStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ArithmeticIfStmt(ArithmeticIfStmt.term, &ArithmeticIfStmt)) {
          // MATCHED ArithmeticIfStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_AIS
 
@@ -1111,9 +1121,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse WriteStmt;
  if (ATmatch(term, "ActionStmt_WS3(<term>)", &WriteStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_WriteStmt(WriteStmt.term, &WriteStmt)) {
          // MATCHED WriteStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_WS3
 
@@ -1123,9 +1135,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse WhereStmt;
  if (ATmatch(term, "ActionStmt_WS2(<term>)", &WhereStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_WhereStmt(WhereStmt.term, &WhereStmt)) {
          // MATCHED WhereStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_WS2
 
@@ -1135,9 +1149,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse WaitStmt;
  if (ATmatch(term, "ActionStmt_WS1(<term>)", &WaitStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_WaitStmt(WaitStmt.term, &WaitStmt)) {
          // MATCHED WaitStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_WS1
 
@@ -1147,9 +1163,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse UnlockStmt;
  if (ATmatch(term, "ActionStmt_US(<term>)", &UnlockStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_UnlockStmt(UnlockStmt.term, &UnlockStmt)) {
          // MATCHED UnlockStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_US
 
@@ -1159,9 +1177,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncMemoryStmt;
  if (ATmatch(term, "ActionStmt_SMS(<term>)", &SyncMemoryStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_SyncMemoryStmt(SyncMemoryStmt.term, &SyncMemoryStmt)) {
          // MATCHED SyncMemoryStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_SMS
 
@@ -1171,9 +1191,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncImagesStmt;
  if (ATmatch(term, "ActionStmt_SIS(<term>)", &SyncImagesStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_SyncImagesStmt(SyncImagesStmt.term, &SyncImagesStmt)) {
          // MATCHED SyncImagesStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_SIS
 
@@ -1183,9 +1205,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncAllStmt;
  if (ATmatch(term, "ActionStmt_SAS(<term>)", &SyncAllStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_SyncAllStmt(SyncAllStmt.term, &SyncAllStmt)) {
          // MATCHED SyncAllStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_SAS
 
@@ -1195,9 +1219,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse StopStmt;
  if (ATmatch(term, "ActionStmt_SS(<term>)", &StopStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_StopStmt(StopStmt.term, &StopStmt)) {
          // MATCHED StopStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_SS
 
@@ -1207,9 +1233,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse RewindStmt;
  if (ATmatch(term, "ActionStmt_RS3(<term>)", &RewindStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_RewindStmt(RewindStmt.term, &RewindStmt)) {
          // MATCHED RewindStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_RS3
 
@@ -1219,9 +1247,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ReturnStmt;
  if (ATmatch(term, "ActionStmt_RS2(<term>)", &ReturnStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ReturnStmt(ReturnStmt.term, &ReturnStmt)) {
          // MATCHED ReturnStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_RS2
 
@@ -1231,9 +1261,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ReadStmt;
  if (ATmatch(term, "ActionStmt_RS1(<term>)", &ReadStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ReadStmt(ReadStmt.term, &ReadStmt)) {
          // MATCHED ReadStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_RS1
 
@@ -1243,9 +1275,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse PrintStmt;
  if (ATmatch(term, "ActionStmt_PS1(<term>)", &PrintStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_PrintStmt(PrintStmt.term, &PrintStmt)) {
          // MATCHED PrintStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_PS1
 
@@ -1255,9 +1289,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse PointerAssignmentStmt;
  if (ATmatch(term, "ActionStmt_PAS(<term>)", &PointerAssignmentStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_PointerAssignmentStmt(PointerAssignmentStmt.term, &PointerAssignmentStmt)) {
          // MATCHED PointerAssignmentStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_PAS
 
@@ -1267,9 +1303,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse OpenStmt;
  if (ATmatch(term, "ActionStmt_OS(<term>)", &OpenStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_OpenStmt(OpenStmt.term, &OpenStmt)) {
          // MATCHED OpenStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_OS
 
@@ -1279,9 +1317,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse NullifyStmt;
  if (ATmatch(term, "ActionStmt_NS(<term>)", &NullifyStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_NullifyStmt(NullifyStmt.term, &NullifyStmt)) {
          // MATCHED NullifyStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_NS
 
@@ -1291,9 +1331,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse LockStmt;
  if (ATmatch(term, "ActionStmt_LS(<term>)", &LockStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_LockStmt(LockStmt.term, &LockStmt)) {
          // MATCHED LockStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_LS
 
@@ -1303,9 +1345,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse InquireStmt;
  if (ATmatch(term, "ActionStmt_IS2(<term>)", &InquireStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_InquireStmt(InquireStmt.term, &InquireStmt)) {
          // MATCHED InquireStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_IS2
 
@@ -1315,9 +1359,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse IfStmt;
  if (ATmatch(term, "ActionStmt_IS1(<term>)", &IfStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_IfStmt(IfStmt.term, &IfStmt)) {
          // MATCHED IfStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_IS1
 
@@ -1327,9 +1373,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse GotoStmt;
  if (ATmatch(term, "ActionStmt_GS(<term>)", &GotoStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_GotoStmt(GotoStmt.term, &GotoStmt)) {
          // MATCHED GotoStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_GS
 
@@ -1339,9 +1387,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ForallStmt;
  if (ATmatch(term, "ActionStmt_FS2(<term>)", &ForallStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ForallStmt(ForallStmt.term, &ForallStmt)) {
          // MATCHED ForallStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_FS2
 
@@ -1351,9 +1401,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse FlushStmt;
  if (ATmatch(term, "ActionStmt_FS1(<term>)", &FlushStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_FlushStmt(FlushStmt.term, &FlushStmt)) {
          // MATCHED FlushStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_FS1
 
@@ -1363,9 +1415,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ExitStmt;
  if (ATmatch(term, "ActionStmt_ES2(<term>)", &ExitStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ExitStmt(ExitStmt.term, &ExitStmt)) {
          // MATCHED ExitStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_ES2
 
@@ -1375,9 +1429,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ErrorStopStmt;
  if (ATmatch(term, "ActionStmt_ESS2(<term>)", &ErrorStopStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ErrorStopStmt(ErrorStopStmt.term, &ErrorStopStmt)) {
          // MATCHED ErrorStopStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_ESS2
 
@@ -1387,9 +1443,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse EndfileStmt;
  if (ATmatch(term, "ActionStmt_ES1(<term>)", &EndfileStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_EndfileStmt(EndfileStmt.term, &EndfileStmt)) {
          // MATCHED EndfileStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_ES1
 
@@ -1447,9 +1505,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse DeallocateStmt;
  if (ATmatch(term, "ActionStmt_DS(<term>)", &DeallocateStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_DeallocateStmt(DeallocateStmt.term, &DeallocateStmt)) {
          // MATCHED DeallocateStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_DS
 
@@ -1459,9 +1519,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse CycleStmt;
  if (ATmatch(term, "ActionStmt_CS4(<term>)", &CycleStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_CycleStmt(CycleStmt.term, &CycleStmt)) {
          // MATCHED CycleStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_CS4
 
@@ -1471,9 +1533,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ContinueStmt;
  if (ATmatch(term, "ActionStmt_CS3(<term>)", &ContinueStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_ContinueStmt(ContinueStmt.term, &ContinueStmt)) {
          // MATCHED ContinueStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_CS3
 
@@ -1483,9 +1547,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse CloseStmt;
  if (ATmatch(term, "ActionStmt_CS2(<term>)", &CloseStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_CloseStmt(CloseStmt.term, &CloseStmt)) {
          // MATCHED CloseStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_CS2
 
@@ -1495,9 +1561,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse CallStmt;
  if (ATmatch(term, "ActionStmt_CS1(<term>)", &CallStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_CallStmt(CallStmt.term, &CallStmt)) {
          // MATCHED CallStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_CS1
 
@@ -1507,9 +1575,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse BackspaceStmt;
  if (ATmatch(term, "ActionStmt_BS(<term>)", &BackspaceStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_BackspaceStmt(BackspaceStmt.term, &BackspaceStmt)) {
          // MATCHED BackspaceStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_BS
 
@@ -1531,9 +1601,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse AllocateStmt;
  if (ATmatch(term, "ActionStmt_AS1(<term>)", &AllocateStmt.term)) {
 
+#ifdef NOT_YET
       if (ofp_traverse_AllocateStmt(AllocateStmt.term, &AllocateStmt)) {
          // MATCHED AllocateStmt
       } else return ATfalse;
+#endif
 
    // MATCHED ActionStmt_AS1
 
@@ -2514,13 +2586,13 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
 #endif
 
  OFP_Traverse SeparateModuleSubprogram;
- if (ATmatch(term, "ModuleSubprogram(<term>)", &SeparateModuleSubprogram.term)) {
+ if (ATmatch(term, "ModuleSubprogram_SMS(<term>)", &SeparateModuleSubprogram.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SeparateModuleSubprogram(SeparateModuleSubprogram.term, &SeparateModuleSubprogram)) {
          // MATCHED SeparateModuleSubprogram
       } else return ATfalse;
-#endif
+
+   // MATCHED ModuleSubprogram_SMS
 
    return ATtrue;
  }
@@ -2528,13 +2600,11 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
  OFP_Traverse SubroutineSubprogram;
  if (ATmatch(term, "ModuleSubprogram_SS(<term>)", &SubroutineSubprogram.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
          // MATCHED SubroutineSubprogram
       } else return ATfalse;
-#endif
 
-   // MATCHED InternalSubprogram_SS
+   // MATCHED ModuleSubprogram_SS
 
    return ATtrue;
  }
@@ -2542,13 +2612,11 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, pOFP_Traverse ModuleSubprogram)
  OFP_Traverse FunctionSubprogram;
  if (ATmatch(term, "ModuleSubprogram_FS(<term>)", &FunctionSubprogram.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
       } else return ATfalse;
-#endif
 
-   // MATCHED InternalSubprogram_FS
+   // MATCHED ModuleSubprogram_FS
 
    return ATtrue;
  }
