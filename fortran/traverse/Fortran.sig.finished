@@ -795,14 +795,14 @@ Module(
           , OpDecl("ModuleNature_INTRINSIC", ConstType(SortNoArgs("ModuleNature")))
 
           , OpDecl(
-              "Rename"
+              "Rename_OP"
             , FunType(
                 [ConstType(SortNoArgs("LocalDefinedOperator")), ConstType(SortNoArgs("UseDefinedOperator"))]
               , ConstType(SortNoArgs("Rename"))
               )
             )
           , OpDecl(
-              "Rename"
+              "Rename_LN"
             , FunType(
                 [ConstType(SortNoArgs("LocalName")), ConstType(SortNoArgs("UseName"))]
               , ConstType(SortNoArgs("Rename"))
@@ -818,11 +818,11 @@ Module(
             )
 
           , OpDecl(
-              "Only"
+              "Only_R"
             , FunType([ConstType(SortNoArgs("Rename"))], ConstType(SortNoArgs("Only")))
             )
           , OpDecl(
-              "Only"
+              "Only_OUN"
             , FunType([ConstType(SortNoArgs("OnlyUseName"))], ConstType(SortNoArgs("Only")))
             )
 

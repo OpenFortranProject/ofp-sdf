@@ -2750,23 +2750,23 @@ ATbool ofp_traverse_Rename(ATerm term, pOFP_Traverse Rename)
 #endif
 
  OFP_Traverse LocalDefinedOperator, UseDefinedOperator;
- if (ATmatch(term, "Rename(<term>,<term>)", &LocalDefinedOperator.term, &UseDefinedOperator.term)) {
+ if (ATmatch(term, "Rename_OP(<term>,<term>)", &LocalDefinedOperator.term, &UseDefinedOperator.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_LocalDefinedOperator(LocalDefinedOperator.term, &LocalDefinedOperator)) {
          // MATCHED LocalDefinedOperator
       } else return ATfalse;
-#endif
 
       if (ofp_traverse_UseDefinedOperator(UseDefinedOperator.term, &UseDefinedOperator)) {
          // MATCHED UseDefinedOperator
       } else return ATfalse;
 
+   // MATCHED Rename_OP
+
    return ATtrue;
  }
 
  OFP_Traverse LocalName, UseName;
- if (ATmatch(term, "Rename(<term>,<term>)", &LocalName.term, &UseName.term)) {
+ if (ATmatch(term, "Rename_LN(<term>,<term>)", &LocalName.term, &UseName.term)) {
 
       if (ofp_traverse_LocalName(LocalName.term, &LocalName)) {
          // MATCHED LocalName
@@ -2775,6 +2775,8 @@ ATbool ofp_traverse_Rename(ATerm term, pOFP_Traverse Rename)
       if (ofp_traverse_UseName(UseName.term, &UseName)) {
          // MATCHED UseName
       } else return ATfalse;
+
+   // MATCHED Rename_LN
 
    return ATtrue;
  }
@@ -2816,21 +2818,25 @@ ATbool ofp_traverse_Only(ATerm term, pOFP_Traverse Only)
 #endif
 
  OFP_Traverse Rename;
- if (ATmatch(term, "Only(<term>)", &Rename.term)) {
+ if (ATmatch(term, "Only_R(<term>)", &Rename.term)) {
 
       if (ofp_traverse_Rename(Rename.term, &Rename)) {
          // MATCHED Rename
       } else return ATfalse;
 
+   // MATCHED Only_R
+
    return ATtrue;
  }
 
  OFP_Traverse OnlyUseName;
- if (ATmatch(term, "Only(<term>)", &OnlyUseName.term)) {
+ if (ATmatch(term, "Only_OUN(<term>)", &OnlyUseName.term)) {
 
       if (ofp_traverse_OnlyUseName(OnlyUseName.term, &OnlyUseName)) {
          // MATCHED OnlyUseName
       } else return ATfalse;
+
+   // MATCHED Only_OUN
 
    return ATtrue;
  }
