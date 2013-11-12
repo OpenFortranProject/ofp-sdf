@@ -209,30 +209,25 @@ ATbool ofp_traverse_ImplicitPart(ATerm term, pOFP_Traverse ImplicitPart)
    printf("ImplicitPart: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
-
  OFP_Traverse ImplicitPartStmt, ImplicitStmt;
  if (ATmatch(term, "ImplicitPart(<term>,<term>)", &ImplicitPartStmt.term, &ImplicitStmt.term)) {
 
    ATermList ImplicitPartStmt_tail = (ATermList) ATmake("<term>", ImplicitPartStmt.term);
-   if (ATisEmpty(ImplicitPartStmt_tail)) matched = ATtrue;
    while (! ATisEmpty(ImplicitPartStmt_tail)) {
       ImplicitPartStmt.term = ATgetFirst(ImplicitPartStmt_tail);
       ImplicitPartStmt_tail = ATgetNext (ImplicitPartStmt_tail);
       if (ofp_traverse_ImplicitPartStmt(ImplicitPartStmt.term, &ImplicitPartStmt)) {
          // MATCHED ImplicitPartStmt
-         matched = ATtrue;
       } else return ATfalse;
    }
 
 #ifdef NOT_YET
       if (ofp_traverse_ImplicitStmt(ImplicitStmt.term, &ImplicitStmt)) {
          // MATCHED ImplicitStmt
-         matched = ATtrue;
       } else return ATfalse;
 #endif
 
-   if (matched) return ATtrue;
+   return ATtrue;
  }
 
  return ATfalse;
@@ -310,21 +305,19 @@ ATbool ofp_traverse_ImplicitPartStmt(ATerm term, pOFP_Traverse ImplicitPartStmt)
 ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationConstruct)
 {
 #ifdef DEBUG_PRINT
-   printf("\nDeclarationConstruct: %s\n", ATwriteToString(term));
+   printf("DeclarationConstruct: %s\n", ATwriteToString(term));
 #endif
 
- ATbool matched = ATfalse;
  OFP_Traverse StmtFunctionStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &StmtFunctionStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_SFS(<term>)", &StmtFunctionStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_StmtFunctionStmt(StmtFunctionStmt.term, &StmtFunctionStmt)) {
          // MATCHED StmtFunctionStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_SFS
+
+   return ATtrue;
  }
 
  OFP_Traverse TypeDeclarationStmt;
@@ -334,111 +327,105 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationCo
          // MATCHED TypeDeclarationStmt
       } else return ATfalse;
 
+   // MATCHED DeclarationConstruct_TDS
+
    return ATtrue;
  }
 
  OFP_Traverse OtherSpecificationStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &OtherSpecificationStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_OSS(<term>)", &OtherSpecificationStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_OtherSpecificationStmt(OtherSpecificationStmt.term, &OtherSpecificationStmt)) {
          // MATCHED OtherSpecificationStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_OSS
+
+   return ATtrue;
  }
 
  OFP_Traverse ProcedureDeclarationStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &ProcedureDeclarationStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_PDS(<term>)", &ProcedureDeclarationStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ProcedureDeclarationStmt(ProcedureDeclarationStmt.term, &ProcedureDeclarationStmt)) {
          // MATCHED ProcedureDeclarationStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_PDS
+
+   return ATtrue;
  }
 
  OFP_Traverse ParameterStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &ParameterStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_PS(<term>)", &ParameterStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ParameterStmt(ParameterStmt.term, &ParameterStmt)) {
          // MATCHED ParameterStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_PS
+
+   return ATtrue;
  }
 
  OFP_Traverse InterfaceBlock;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &InterfaceBlock.term)) {
+ if (ATmatch(term, "DeclarationConstruct_IB(<term>)", &InterfaceBlock.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_InterfaceBlock(InterfaceBlock.term, &InterfaceBlock)) {
          // MATCHED InterfaceBlock
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_IB
+
+   return ATtrue;
  }
 
  OFP_Traverse FormatStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &FormatStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_FS(<term>)", &FormatStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_FormatStmt(FormatStmt.term, &FormatStmt)) {
          // MATCHED FormatStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_FS
+
+   return ATtrue;
  }
 
  OFP_Traverse EnumDef;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &EnumDef.term)) {
+ if (ATmatch(term, "DeclarationConstruct_ED(<term>)", &EnumDef.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EnumDef(EnumDef.term, &EnumDef)) {
          // MATCHED EnumDef
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_ED
+
+   return ATtrue;
  }
 
  OFP_Traverse EntryStmt;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &EntryStmt.term)) {
+ if (ATmatch(term, "DeclarationConstruct_ES(<term>)", &EntryStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EntryStmt(EntryStmt.term, &EntryStmt)) {
          // MATCHED EntryStmt
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_ES
+
+   return ATtrue;
  }
 
  OFP_Traverse DerivedTypeDef;
- if (ATmatch(term, "DeclarationConstruct(<term>)", &DerivedTypeDef.term)) {
+ if (ATmatch(term, "DeclarationConstruct_DTD(<term>)", &DerivedTypeDef.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_DerivedTypeDef(DerivedTypeDef.term, &DerivedTypeDef)) {
          // MATCHED DerivedTypeDef
-         matched = ATtrue;
       } else return ATfalse;
-#endif
 
-   if (matched) return ATtrue;
+   // MATCHED DeclarationConstruct_DTD
+
+   return ATtrue;
  }
 
  return ATfalse;

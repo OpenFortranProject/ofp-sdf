@@ -82,43 +82,43 @@ Module(
             )
 
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_SFS"
             , FunType([ConstType(SortNoArgs("StmtFunctionStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_TDS"
             , FunType([ConstType(SortNoArgs("TypeDeclarationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_OSS"
             , FunType([ConstType(SortNoArgs("OtherSpecificationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_PDS"
             , FunType([ConstType(SortNoArgs("ProcedureDeclarationStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_PS"
             , FunType([ConstType(SortNoArgs("ParameterStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_IB"
             , FunType([ConstType(SortNoArgs("InterfaceBlock"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_FS"
             , FunType([ConstType(SortNoArgs("FormatStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_ED"
             , FunType([ConstType(SortNoArgs("EnumDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_ES"
             , FunType([ConstType(SortNoArgs("EntryStmt"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
           , OpDecl(
-              "DeclarationConstruct"
+              "DeclarationConstruct_DTD"
             , FunType([ConstType(SortNoArgs("DerivedTypeDef"))], ConstType(SortNoArgs("DeclarationConstruct")))
             )
 
