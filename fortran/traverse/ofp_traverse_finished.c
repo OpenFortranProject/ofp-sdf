@@ -3008,7 +3008,7 @@ ATbool ofp_traverse_InterfaceBody(ATerm term, pOFP_Traverse InterfaceBody)
 #endif
 
  OFP_Traverse SubroutineStmt, SpecificationPart, EndSubroutineStmt;
- if (ATmatch(term, "InterfaceBody(<term>,<term>,<term>)", &SubroutineStmt.term, &SpecificationPart.term, &EndSubroutineStmt.term)) {
+ if (ATmatch(term, "InterfaceBody_SS(<term>,<term>,<term>)", &SubroutineStmt.term, &SpecificationPart.term, &EndSubroutineStmt.term)) {
 
       if (ofp_traverse_SubroutineStmt(SubroutineStmt.term, &SubroutineStmt)) {
          // MATCHED SubroutineStmt
@@ -3022,11 +3022,13 @@ ATbool ofp_traverse_InterfaceBody(ATerm term, pOFP_Traverse InterfaceBody)
          // MATCHED EndSubroutineStmt
       } else return ATfalse;
 
+   // MATCHED InterfaceBody_SS
+
    return ATtrue;
  }
 
  OFP_Traverse FunctionStmt, SpecificationPart1, EndFunctionStmt;
- if (ATmatch(term, "InterfaceBody(<term>,<term>,<term>)", &FunctionStmt.term, &SpecificationPart1.term, &EndFunctionStmt.term)) {
+ if (ATmatch(term, "InterfaceBody_FS(<term>,<term>,<term>)", &FunctionStmt.term, &SpecificationPart1.term, &EndFunctionStmt.term)) {
 
       if (ofp_traverse_FunctionStmt(FunctionStmt.term, &FunctionStmt)) {
          // MATCHED FunctionStmt
@@ -3039,6 +3041,8 @@ ATbool ofp_traverse_InterfaceBody(ATerm term, pOFP_Traverse InterfaceBody)
       if (ofp_traverse_EndFunctionStmt(EndFunctionStmt.term, &EndFunctionStmt)) {
          // MATCHED EndFunctionStmt
       } else return ATfalse;
+
+   // MATCHED InterfaceBody_FS
 
    return ATtrue;
  }
@@ -3053,7 +3057,7 @@ ATbool ofp_traverse_ProcedureStmt(ATerm term, pOFP_Traverse ProcedureStmt)
 #endif
 
  OFP_Traverse Label, ProcedureNameList, EOS;
- if (ATmatch(term, "ProcedureStmt(<term>,<term>,<term>)", &Label.term, &ProcedureNameList.term, &EOS.term)) {
+ if (ATmatch(term, "ProcedureStmt_P(<term>,<term>,<term>)", &Label.term, &ProcedureNameList.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
@@ -3069,11 +3073,13 @@ ATbool ofp_traverse_ProcedureStmt(ATerm term, pOFP_Traverse ProcedureStmt)
          // MATCHED EOS
       } else return ATfalse;
 
+   // MATCHED ProcedureStmt_P
+
    return ATtrue;
  }
 
  OFP_Traverse Label1, ProcedureNameList1, EOS1;
- if (ATmatch(term, "ProcedureStmt_MODULE(<term>,<term>,<term>)", &Label1.term, &ProcedureNameList1.term, &EOS1.term)) {
+ if (ATmatch(term, "ProcedureStmt_MP(<term>,<term>,<term>)", &Label1.term, &ProcedureNameList1.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -3089,7 +3095,7 @@ ATbool ofp_traverse_ProcedureStmt(ATerm term, pOFP_Traverse ProcedureStmt)
          // MATCHED EOS
       } else return ATfalse;
 
-   // MATCHED ProcedureStmt_MODULE
+   // MATCHED ProcedureStmt_MP
 
    return ATtrue;
  }
@@ -3128,36 +3134,44 @@ ATbool ofp_traverse_GenericSpec(ATerm term, pOFP_Traverse GenericSpec)
 #endif
 
  OFP_Traverse DefinedIoGenericSpec;
- if (ATmatch(term, "GenericSpec(<term>)", &DefinedIoGenericSpec.term)) {
+ if (ATmatch(term, "GenericSpec_DIGS(<term>)", &DefinedIoGenericSpec.term)) {
 
       if (ofp_traverse_DefinedIoGenericSpec(DefinedIoGenericSpec.term, &DefinedIoGenericSpec)) {
          // MATCHED DefinedIoGenericSpec
       } else return ATfalse;
 
+   // MATCHED GenericSpec_DIGS
+
    return ATtrue;
  }
 
- if (ATmatch(term, "GenericSpec")) {
+ if (ATmatch(term, "GenericSpec_AS")) {
+
+   // MATCHED GenericSpec_AS
 
    return ATtrue;
  }
 
  OFP_Traverse DefinedOperator;
- if (ATmatch(term, "GenericSpec(<term>)", &DefinedOperator.term)) {
+ if (ATmatch(term, "GenericSpec_OP(<term>)", &DefinedOperator.term)) {
 
       if (ofp_traverse_DefinedOperator(DefinedOperator.term, &DefinedOperator)) {
          // MATCHED DefinedOperator
       } else return ATfalse;
 
+   // MATCHED GenericSpec_OP
+
    return ATtrue;
  }
 
  OFP_Traverse GenericName;
- if (ATmatch(term, "GenericSpec(<term>)", &GenericName.term)) {
+ if (ATmatch(term, "GenericSpec_GN(<term>)", &GenericName.term)) {
 
       if (ofp_traverse_GenericName(GenericName.term, &GenericName)) {
          // MATCHED GenericName
       } else return ATfalse;
+
+   // MATCHED GenericSpec_GN
 
    return ATtrue;
  }

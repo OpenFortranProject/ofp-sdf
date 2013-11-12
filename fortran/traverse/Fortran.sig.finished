@@ -996,14 +996,14 @@ Module(
             )
 
           , OpDecl(
-              "InterfaceBody"
+              "InterfaceBody_SS"
             , FunType(
                 [ConstType(SortNoArgs("SubroutineStmt")), ConstType(SortNoArgs("SpecificationPart")), ConstType(SortNoArgs("EndSubroutineStmt"))]
               , ConstType(SortNoArgs("InterfaceBody"))
               )
             )
           , OpDecl(
-              "InterfaceBody"
+              "InterfaceBody_FS"
             , FunType(
                 [ConstType(SortNoArgs("FunctionStmt")), ConstType(SortNoArgs("SpecificationPart")), ConstType(SortNoArgs("EndFunctionStmt"))]
               , ConstType(SortNoArgs("InterfaceBody"))
@@ -1011,7 +1011,7 @@ Module(
             )
 
           , OpDecl(
-              "ProcedureStmt"
+              "ProcedureStmt_P"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("ProcedureNameList"))
@@ -1021,7 +1021,7 @@ Module(
               )
             )
           , OpDecl(
-              "ProcedureStmt_MODULE"
+              "ProcedureStmt_MP"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("ProcedureNameList"))
@@ -1039,16 +1039,16 @@ Module(
             )
 
           , OpDecl(
-              "GenericSpec"
+              "GenericSpec_DIGS"
             , FunType([ConstType(SortNoArgs("DefinedIoGenericSpec"))], ConstType(SortNoArgs("GenericSpec")))
             )
-          , OpDecl("GenericSpec", ConstType(SortNoArgs("GenericSpec")))
+          , OpDecl("GenericSpec_AS", ConstType(SortNoArgs("GenericSpec")))
           , OpDecl(
-              "GenericSpec"
+              "GenericSpec_OP"
             , FunType([ConstType(SortNoArgs("DefinedOperator"))], ConstType(SortNoArgs("GenericSpec")))
             )
           , OpDecl(
-              "GenericSpec"
+              "GenericSpec_GN"
             , FunType([ConstType(SortNoArgs("GenericName"))], ConstType(SortNoArgs("GenericSpec")))
             )
 
