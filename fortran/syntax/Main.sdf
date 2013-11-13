@@ -2258,8 +2258,8 @@ context-free syntax
 
 %%R805
 %%TODO-F08 is this ambiguous?
-  Expr                                                  -> Selector           {cons("Selector_Expr")}
-  Variable                                              -> Selector           {cons("Selector_Var")}
+  Expr                                                  -> Selector           {cons("Selector_E")}
+  Variable                                              -> Selector           {cons("Selector_V")}
 
 %%R806
   Label? 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("EndAssociateStmt")}
@@ -2431,10 +2431,10 @@ context-free syntax
   'DEFAULT'                                             -> CaseSelector   {cons("CaseSelector_DEFAULT")}
 
 %%R844
-      CaseValue                                         -> CaseValueRange     {cons("CaseValueRange")}
-      CaseValue ':'                                     -> CaseValueRange     {cons("CaseValueRange")}
-  ':' CaseValue                                         -> CaseValueRange     {cons("CaseValueRange")}
-      CaseValue ':' CaseValue                           -> CaseValueRange     {cons("CaseValueRange")}
+      CaseValue                                         -> CaseValueRange     {cons("CaseValueRange_CV")}
+      CaseValue ':'                                     -> CaseValueRange     {cons("CaseValueRange_CV")}
+  ':' CaseValue                                         -> CaseValueRange     {cons("CaseValueRange_CV")}
+      CaseValue ':' CaseValue                           -> CaseValueRange     {cons("CaseValueRange_CVCV")}
   {CaseValueRange ','}+                                 -> CaseValueRangeList {cons("CaseValueRangeList")}
 
 %%R845
@@ -2455,7 +2455,7 @@ context-free syntax
 %%848
   'TYPE'  'IS' '(' TypeSpec        ')' SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_TYPE")}
   'CLASS' 'IS' '(' DerivedTypeSpec ')' SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS")}
-  'CLASS' 'DEFAULT'                    SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS_DEFAULT")}
+  'CLASS' 'DEFAULT'                    SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS_DEF")}
 
 %%R849
   'END' 'SELECT' SelectConstructName?               EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
@@ -2503,8 +2503,8 @@ context-free syntax
 %%        Scon substituted for scalar-default-char-constant-expr
 %%        Icon substituted for scalar-int-constant-expr
 %%
-  Scon                                                  -> StopCode             {cons("StopCode_SDCCE")}
-  Icon                                                  -> StopCode             {cons("StopCode_SICE")}
+  Scon                                                  -> StopCode             {cons("StopCode_SD")}
+  Icon                                                  -> StopCode             {cons("StopCode_SI")}
 
 
 %% 8.5 Image execution control
@@ -2536,7 +2536,7 @@ context-free syntax
                  (',' LockStatList )? ')'           EOS -> LockStmt             {cons("LockStmt")}
 
 %%R864
-  'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("LockStat_ACQUIRED_LOCK")}
+  'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("LockStat_LV")}
   SyncStat                                              -> LockStat             {cons("LockStat_SS")}
   {LockStat ','}+                                       -> LockStatList         {cons("LockStatList")}
 
