@@ -2511,8 +2511,8 @@ context-free syntax
 %%
 
 %%R858
-  Label? 'SYNC' 'ALL'
-         ( '(' SyncStatList? ')' )?                 EOS -> SyncAllStmt          {cons("SyncAllStmt")}
+  Label? 'SYNC' 'ALL' '(' SyncStatList? ')'         EOS -> SyncAllStmt          {cons("SyncAllStmt_SSL")}
+  Label? 'SYNC' 'ALL'                               EOS -> SyncAllStmt          {cons("SyncAllStmt")}
 
 %%R859
   'STAT'   '=' StatVariable                             -> SyncStat             {cons("SyncStat_STAT")}
@@ -2528,8 +2528,8 @@ context-free syntax
   '*'                                                   -> ImageSet             {cons("ImageSet_STAR")}
 
 %%R862
-  Label? 'SYNC' 'MEMORY'
-         ( '(' SyncStatList? ')' )?                 EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
+  Label? 'SYNC' 'MEMORY' '(' SyncStatList? ')'      EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt_SSL")}
+  Label? 'SYNC' 'MEMORY'                            EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
 
 %%R863
   Label? 'LOCK' '(' LockVariable
@@ -2552,7 +2552,7 @@ context-free syntax
 
 %% Deleted Statements
 %%
-  Label? 'PAUSE' StopCode?                          EOS -> StopStmt             {cons("PauseStmt")}
+  Label? 'PAUSE' StopCode?                          EOS -> PauseStmt            {cons("PauseStmt")}
 
 
 %%%%%%%%%%
@@ -3116,7 +3116,7 @@ context-free syntax
   NonlabelDoStmt                         -> ActionStmt  {cons("ActionStmt_NDS")}
   EndDoStmt                              -> ActionStmt  {cons("ActionStmt_EDS")}
 %% Deleted features
-  PauseStmt                              -> PauseStmt   {cons("ActionStmt_PS2")}
+  PauseStmt                              -> ActionStmt  {cons("ActionStmt_PS2")}
 
 %%215
   Name                                 -> Keyword     {cons("Keyword")}
