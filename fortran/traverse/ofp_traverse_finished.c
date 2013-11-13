@@ -2419,6 +2419,1302 @@ ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry)
  return ATfalse;
 }
 
+ATbool ofp_traverse_Block(ATerm term, pOFP_Traverse Block)
+{
+#ifdef DEBUG_PRINT
+   printf("Block: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ExecutionPartConstruct;
+ if (ATmatch(term, "Block(<term>)", &ExecutionPartConstruct.term)) {
+
+   ATermList ExecutionPartConstruct_tail = (ATermList) ATmake("<term>", ExecutionPartConstruct.term);
+   while (! ATisEmpty(ExecutionPartConstruct_tail)) {
+      ExecutionPartConstruct.term = ATgetFirst(ExecutionPartConstruct_tail);
+      ExecutionPartConstruct_tail = ATgetNext (ExecutionPartConstruct_tail);
+      if (ofp_traverse_ExecutionPartConstruct(ExecutionPartConstruct.term, &ExecutionPartConstruct)) {
+         // MATCHED ExecutionPartConstruct
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AssociateConstruct(ATerm term, pOFP_Traverse AssociateConstruct)
+{
+#ifdef DEBUG_PRINT
+   printf("AssociateConstruct: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AssociateStmt, Block, EndAssociateStmt;
+ if (ATmatch(term, "AssociateConstruct(<term>,<term>,<term>)", &AssociateStmt.term, &Block.term, &EndAssociateStmt.term)) {
+
+      if (ofp_traverse_AssociateStmt(AssociateStmt.term, &AssociateStmt)) {
+         // MATCHED AssociateStmt
+      } else return ATfalse;
+
+      if (ofp_traverse_Block(Block.term, &Block)) {
+         // MATCHED Block
+      } else return ATfalse;
+
+      if (ofp_traverse_EndAssociateStmt(EndAssociateStmt.term, &EndAssociateStmt)) {
+         // MATCHED EndAssociateStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AssociateStmt(ATerm term, pOFP_Traverse AssociateStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("AssociateStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, AssociateConstructName, AssociationList, EOS;
+ if (ATmatch(term, "AssociateStmt(<term>,<term>,<term>,<term>)", &Label.term, &AssociateConstructName.term, &AssociationList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(AssociateConstructName.term, "Some(<term>)", &AssociateConstructName.term)) {
+   if (ATmatch(AssociateConstructName.term, "(<term>)", &AssociateConstructName.term)) {
+      if (ofp_traverse_AssociateConstructName(AssociateConstructName.term, &AssociateConstructName)) {
+         // MATCHED AssociateConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_AssociationList(AssociationList.term, &AssociationList)) {
+         // MATCHED AssociationList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Association(ATerm term, pOFP_Traverse Association)
+{
+#ifdef DEBUG_PRINT
+   printf("Association: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AssociateName, Selector;
+ if (ATmatch(term, "Association(<term>,<term>)", &AssociateName.term, &Selector.term)) {
+
+      if (ofp_traverse_AssociateName(AssociateName.term, &AssociateName)) {
+         // MATCHED AssociateName
+      } else return ATfalse;
+
+      if (ofp_traverse_Selector(Selector.term, &Selector)) {
+         // MATCHED Selector
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AssociationList(ATerm term, pOFP_Traverse AssociationList)
+{
+#ifdef DEBUG_PRINT
+   printf("AssociationList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Association;
+ if (ATmatch(term, "AssociationList(<term>)", &Association.term)) {
+
+   ATermList Association_tail = (ATermList) ATmake("<term>", Association.term);
+   while (! ATisEmpty(Association_tail)) {
+      Association.term = ATgetFirst(Association_tail);
+      Association_tail = ATgetNext (Association_tail);
+      if (ofp_traverse_Association(Association.term, &Association)) {
+         // MATCHED Association
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Selector(ATerm term, pOFP_Traverse Selector)
+{
+#ifdef DEBUG_PRINT
+   printf("Selector: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "Selector_V(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   // MATCHED Selector_V
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "Selector_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED Selector_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndAssociateStmt(ATerm term, pOFP_Traverse EndAssociateStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndAssociateStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, AssociateConstructName, EOS;
+ if (ATmatch(term, "EndAssociateStmt(<term>,<term>,<term>)", &Label.term, &AssociateConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(AssociateConstructName.term, "Some(<term>)", &AssociateConstructName.term)) {
+      if (ofp_traverse_AssociateConstructName(AssociateConstructName.term, &AssociateConstructName)) {
+         // MATCHED AssociateConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BlockConstruct(ATerm term, pOFP_Traverse BlockConstruct)
+{
+#ifdef DEBUG_PRINT
+   printf("BlockConstruct: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse BlockStmt, SpecificationPart, Block, EndBlockStmt;
+ if (ATmatch(term, "BlockConstruct(<term>,<term>,<term>,<term>)", &BlockStmt.term, &SpecificationPart.term, &Block.term, &EndBlockStmt.term)) {
+
+      if (ofp_traverse_BlockStmt(BlockStmt.term, &BlockStmt)) {
+         // MATCHED BlockStmt
+      } else return ATfalse;
+
+      if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
+         // MATCHED SpecificationPart
+      } else return ATfalse;
+
+      if (ofp_traverse_Block(Block.term, &Block)) {
+         // MATCHED Block
+      } else return ATfalse;
+
+      if (ofp_traverse_EndBlockStmt(EndBlockStmt.term, &EndBlockStmt)) {
+         // MATCHED EndBlockStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BlockStmt(ATerm term, pOFP_Traverse BlockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("BlockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, BlockConstructName, EOS;
+ if (ATmatch(term, "BlockStmt(<term>,<term>,<term>)", &Label.term, &BlockConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(BlockConstructName.term, "Some(<term>)", &BlockConstructName.term)) {
+   if (ATmatch(BlockConstructName.term, "(<term>)", &BlockConstructName.term)) {
+      if (ofp_traverse_BlockConstructName(BlockConstructName.term, &BlockConstructName)) {
+         // MATCHED BlockConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndBlockStmt(ATerm term, pOFP_Traverse EndBlockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndBlockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, BlockConstructName, EOS;
+ if (ATmatch(term, "EndBlockStmt(<term>,<term>,<term>)", &Label.term, &BlockConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(BlockConstructName.term, "Some(<term>)", &BlockConstructName.term)) {
+      if (ofp_traverse_BlockConstructName(BlockConstructName.term, &BlockConstructName)) {
+         // MATCHED BlockConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CriticalConstruct(ATerm term, pOFP_Traverse CriticalConstruct)
+{
+#ifdef DEBUG_PRINT
+   printf("CriticalConstruct: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse CriticalStmt, Block, EndCriticalStmt;
+ if (ATmatch(term, "CriticalConstruct(<term>,<term>,<term>)", &CriticalStmt.term, &Block.term, &EndCriticalStmt.term)) {
+
+      if (ofp_traverse_CriticalStmt(CriticalStmt.term, &CriticalStmt)) {
+         // MATCHED CriticalStmt
+      } else return ATfalse;
+
+      if (ofp_traverse_Block(Block.term, &Block)) {
+         // MATCHED Block
+      } else return ATfalse;
+
+      if (ofp_traverse_EndCriticalStmt(EndCriticalStmt.term, &EndCriticalStmt)) {
+         // MATCHED EndCriticalStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CriticalStmt(ATerm term, pOFP_Traverse CriticalStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("CriticalStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CriticalConstructName, EOS;
+ if (ATmatch(term, "CriticalStmt(<term>,<term>,<term>)", &Label.term, &CriticalConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(CriticalConstructName.term, "Some(<term>)", &CriticalConstructName.term)) {
+   if (ATmatch(CriticalConstructName.term, "(<term>)", &CriticalConstructName.term)) {
+      if (ofp_traverse_CriticalConstructName(CriticalConstructName.term, &CriticalConstructName)) {
+         // MATCHED CriticalConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndCriticalStmt(ATerm term, pOFP_Traverse EndCriticalStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndCriticalStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CriticalConstructName, EOS;
+ if (ATmatch(term, "EndCriticalStmt(<term>,<term>,<term>)", &Label.term, &CriticalConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(CriticalConstructName.term, "Some(<term>)", &CriticalConstructName.term)) {
+      if (ofp_traverse_CriticalConstructName(CriticalConstructName.term, &CriticalConstructName)) {
+         // MATCHED CriticalConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LabelDoStmt(ATerm term, pOFP_Traverse LabelDoStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("LabelDoStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, DoConstructName, LblRef, LoopControl, EOS;
+ if (ATmatch(term, "LabelDoStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &LblRef.term, &LoopControl.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
+   if (ATmatch(DoConstructName.term, "(<term>)", &DoConstructName.term)) {
+      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
+         // MATCHED DoConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+   if (ATmatch(LoopControl.term, "Some(<term>)", &LoopControl.term)) {
+      if (ofp_traverse_LoopControl(LoopControl.term, &LoopControl)) {
+         // MATCHED LoopControl
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_NonlabelDoStmt(ATerm term, pOFP_Traverse NonlabelDoStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("NonlabelDoStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, DoConstructName, LoopControl, EOS;
+ if (ATmatch(term, "NonlabelDoStmt(<term>,<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &LoopControl.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
+   if (ATmatch(DoConstructName.term, "(<term>)", &DoConstructName.term)) {
+      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
+         // MATCHED DoConstructName
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(LoopControl.term, "Some(<term>)", &LoopControl.term)) {
+      if (ofp_traverse_LoopControl(LoopControl.term, &LoopControl)) {
+         // MATCHED LoopControl
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LoopControl(ATerm term, pOFP_Traverse LoopControl)
+{
+#ifdef DEBUG_PRINT
+   printf("LoopControl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ForallHeader;
+ if (ATmatch(term, "LoopControl_CONCURRENT(<term>)", &ForallHeader.term)) {
+
+      if (ofp_traverse_ForallHeader(ForallHeader.term, &ForallHeader)) {
+         // MATCHED ForallHeader
+      } else return ATfalse;
+
+   // MATCHED LoopControl_CONCURRENT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "LoopControl_WHILE(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED LoopControl_WHILE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DoVariable, Expr1, Expr2, Expr3;
+ if (ATmatch(term, "LoopControl_DV(<term>,<term>,<term>,<term>)", &DoVariable.term, &Expr1.term, &Expr2.term, &Expr3.term)) {
+
+      if (ofp_traverse_DoVariable(DoVariable.term, &DoVariable)) {
+         // MATCHED DoVariable
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr2.term, &Expr2)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   if (ATmatch(Expr3.term, "Some(<term>)", &Expr3.term)) {
+   if (ATmatch(Expr3.term, "(<term>)", &Expr3.term)) {
+      if (ofp_traverse_Expr(Expr3.term, &Expr3)) {
+         // MATCHED Expr
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED LoopControl_DV
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DoVariable(ATerm term, pOFP_Traverse DoVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("DoVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ScalarIntVariableName;
+ if (ATmatch(term, "DoVariable(<term>)", &ScalarIntVariableName.term)) {
+
+      if (ofp_traverse_ScalarIntVariableName(ScalarIntVariableName.term, &ScalarIntVariableName)) {
+         // MATCHED ScalarIntVariableName
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndDoStmt(ATerm term, pOFP_Traverse EndDoStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndDoStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, DoConstructName, EOS;
+ if (ATmatch(term, "EndDoStmt(<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
+      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
+         // MATCHED DoConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CycleStmt(ATerm term, pOFP_Traverse CycleStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("CycleStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, DoConstructName, EOS;
+ if (ATmatch(term, "CycleStmt(<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
+      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
+         // MATCHED DoConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IfThenStmt(ATerm term, pOFP_Traverse IfThenStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("IfThenStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, IfConstructName, LogicalExpr, EOS;
+ if (ATmatch(term, "IfThenStmt(<term>,<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &LogicalExpr.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
+   if (ATmatch(IfConstructName.term, "(<term>)", &IfConstructName.term)) {
+      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
+         // MATCHED IfConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_LogicalExpr(LogicalExpr.term, &LogicalExpr)) {
+         // MATCHED LogicalExpr
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ElseIfStmt(ATerm term, pOFP_Traverse ElseIfStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ElseIfStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LogicalExpr, IfConstructName, EOS;
+ if (ATmatch(term, "ElseIfStmt(<term>,<term>,<term>,<term>)", &Label.term, &LogicalExpr.term, &IfConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LogicalExpr(LogicalExpr.term, &LogicalExpr)) {
+         // MATCHED LogicalExpr
+      } else return ATfalse;
+
+   if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
+      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
+         // MATCHED IfConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ElseStmt(ATerm term, pOFP_Traverse ElseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ElseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, IfConstructName, EOS;
+ if (ATmatch(term, "ElseStmt(<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
+      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
+         // MATCHED IfConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndIfStmt(ATerm term, pOFP_Traverse EndIfStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndIfStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, IfConstructName, EOS;
+ if (ATmatch(term, "EndIfStmt(<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
+      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
+         // MATCHED IfConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IfStmt(ATerm term, pOFP_Traverse IfStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("IfStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LogicalExpr, ActionStmt;
+ if (ATmatch(term, "IfStmt(<term>,<term>,<term>)", &Label.term, &LogicalExpr.term, &ActionStmt.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LogicalExpr(LogicalExpr.term, &LogicalExpr)) {
+         // MATCHED LogicalExpr
+      } else return ATfalse;
+
+      if (ofp_traverse_ActionStmt(ActionStmt.term, &ActionStmt)) {
+         // MATCHED ActionStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SelectCaseStmt(ATerm term, pOFP_Traverse SelectCaseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SelectCaseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CaseConstructName, CaseExpr, EOS;
+ if (ATmatch(term, "SelectCaseStmt(<term>,<term>,<term>,<term>)", &Label.term, &CaseConstructName.term, &CaseExpr.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
+   if (ATmatch(CaseConstructName.term, "(<term>)", &CaseConstructName.term)) {
+      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED CaseConstructName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_CaseExpr(CaseExpr.term, &CaseExpr)) {
+         // MATCHED CaseExpr
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseStmt(ATerm term, pOFP_Traverse CaseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CaseSelector, CaseConstructName, EOS;
+ if (ATmatch(term, "CaseStmt(<term>,<term>,<term>,<term>)", &Label.term, &CaseSelector.term, &CaseConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_CaseSelector(CaseSelector.term, &CaseSelector)) {
+         // MATCHED CaseSelector
+      } else return ATfalse;
+
+   if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
+      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED CaseConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndSelectStmt(ATerm term, pOFP_Traverse EndSelectStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndSelectStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, CaseConstructName, EOS;
+ if (ATmatch(term, "EndSelectStmt(<term>,<term>,<term>)", &Label.term, &CaseConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
+      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED CaseConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseExpr(ATerm term, pOFP_Traverse CaseExpr)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseExpr: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "CaseExpr(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseSelector(ATerm term, pOFP_Traverse CaseSelector)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseSelector: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "CaseSelector_DEFAULT")) {
+
+   // MATCHED CaseSelector_DEFAULT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CaseValueRangeList;
+ if (ATmatch(term, "CaseSelector_CVRL(<term>)", &CaseValueRangeList.term)) {
+
+      if (ofp_traverse_CaseValueRangeList(CaseValueRangeList.term, &CaseValueRangeList)) {
+         // MATCHED CaseValueRangeList
+      } else return ATfalse;
+
+   // MATCHED CaseSelector_CVRL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseValueRange(ATerm term, pOFP_Traverse CaseValueRange)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseValueRange: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse CaseValue, CaseValue1;
+ if (ATmatch(term, "CaseValueRange_CVCV(<term>,<term>)", &CaseValue.term, &CaseValue1.term)) {
+
+      if (ofp_traverse_CaseValue(CaseValue.term, &CaseValue)) {
+         // MATCHED CaseValue
+      } else return ATfalse;
+
+      if (ofp_traverse_CaseValue(CaseValue1.term, &CaseValue1)) {
+         // MATCHED CaseValue
+      } else return ATfalse;
+
+   // MATCHED CaseValueRange_CVCV
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CaseValue2;
+ if (ATmatch(term, "CaseValueRange_CV(<term>)", &CaseValue2.term)) {
+
+      if (ofp_traverse_CaseValue(CaseValue2.term, &CaseValue2)) {
+         // MATCHED CaseValue
+      } else return ATfalse;
+
+   // MATCHED CaseValueRange_CV
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseValueRangeList(ATerm term, pOFP_Traverse CaseValueRangeList)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseValueRangeList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse CaseValueRange;
+ if (ATmatch(term, "CaseValueRangeList(<term>)", &CaseValueRange.term)) {
+
+   ATermList CaseValueRange_tail = (ATermList) ATmake("<term>", CaseValueRange.term);
+   while (! ATisEmpty(CaseValueRange_tail)) {
+      CaseValueRange.term = ATgetFirst(CaseValueRange_tail);
+      CaseValueRange_tail = ATgetNext (CaseValueRange_tail);
+      if (ofp_traverse_CaseValueRange(CaseValueRange.term, &CaseValueRange)) {
+         // MATCHED CaseValueRange
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CaseValue(ATerm term, pOFP_Traverse CaseValue)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseValue: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ConstantExpr;
+ if (ATmatch(term, "CaseValue(<term>)", &ConstantExpr.term)) {
+
+      if (ofp_traverse_ConstantExpr(ConstantExpr.term, &ConstantExpr)) {
+         // MATCHED ConstantExpr
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SelectTypeStmt(ATerm term, pOFP_Traverse SelectTypeStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SelectTypeStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SelectConstructName, AssociateName, Selector, EOS;
+ if (ATmatch(term, "SelectTypeStmt(<term>,<term>,<term>,<term>)", &SelectConstructName.term, &AssociateName.term, &Selector.term, &EOS.term)) {
+
+   if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
+   if (ATmatch(SelectConstructName.term, "(<term>)", &SelectConstructName.term)) {
+      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED SelectConstructName
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(AssociateName.term, "Some(<term>)", &AssociateName.term)) {
+   if (ATmatch(AssociateName.term, "(<term>)", &AssociateName.term)) {
+      if (ofp_traverse_AssociateName(AssociateName.term, &AssociateName)) {
+         // MATCHED AssociateName
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_Selector(Selector.term, &Selector)) {
+         // MATCHED Selector
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeGuardStmt(ATerm term, pOFP_Traverse TypeGuardStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeGuardStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SelectConstructName, EOS;
+ if (ATmatch(term, "TypeGuardStmt_CLASS_DEF(<term>,<term>)", &SelectConstructName.term, &EOS.term)) {
+
+   if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
+      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED SelectConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeGuardStmt_CLASS_DEF
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DerivedTypeSpec, SelectConstructName1, EOS1;
+ if (ATmatch(term, "TypeGuardStmt_CLASS(<term>,<term>,<term>)", &DerivedTypeSpec.term, &SelectConstructName1.term, &EOS1.term)) {
+
+      if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec.term, &DerivedTypeSpec)) {
+         // MATCHED DerivedTypeSpec
+      } else return ATfalse;
+
+   if (ATmatch(SelectConstructName1.term, "Some(<term>)", &SelectConstructName1.term)) {
+      if (ofp_traverse_SelectConstructName(SelectConstructName1.term, &SelectConstructName1)) {
+         // MATCHED SelectConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeGuardStmt_CLASS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeSpec, SelectConstructName2, EOS2;
+ if (ATmatch(term, "TypeGuardStmt_TYPE(<term>,<term>,<term>)", &TypeSpec.term, &SelectConstructName2.term, &EOS2.term)) {
+
+      if (ofp_traverse_TypeSpec(TypeSpec.term, &TypeSpec)) {
+         // MATCHED TypeSpec
+      } else return ATfalse;
+
+   if (ATmatch(SelectConstructName2.term, "Some(<term>)", &SelectConstructName2.term)) {
+      if (ofp_traverse_SelectConstructName(SelectConstructName2.term, &SelectConstructName2)) {
+         // MATCHED SelectConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS2.term, &EOS2)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeGuardStmt_TYPE
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndSelectTypeStmt(ATerm term, pOFP_Traverse EndSelectTypeStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndSelectTypeStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SelectConstructName, EOS;
+ if (ATmatch(term, "EndSelectTypeStmt(<term>,<term>)", &SelectConstructName.term, &EOS.term)) {
+
+   if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
+      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED SelectConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ExitStmt(ATerm term, pOFP_Traverse ExitStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ExitStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, ConstructName, EOS;
+ if (ATmatch(term, "ExitStmt(<term>,<term>,<term>)", &Label.term, &ConstructName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(ConstructName.term, "Some(<term>)", &ConstructName.term)) {
+      if (ofp_traverse_ConstructName(ConstructName.term, &ConstructName)) {
+         // MATCHED ConstructName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_GotoStmt(ATerm term, pOFP_Traverse GotoStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("GotoStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LblRef, EOS;
+ if (ATmatch(term, "GotoStmt(<term>,<term>,<term>)", &Label.term, &LblRef.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComputedGotoStmt(ATerm term, pOFP_Traverse ComputedGotoStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ComputedGotoStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LabelList, Expr, EOS;
+ if (ATmatch(term, "ComputedGotoStmt(<term>,<term>,<term>,<term>)", &Label.term, &LabelList.term, &Expr.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LabelList(LabelList.term, &LabelList)) {
+         // MATCHED LabelList
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ArithmeticIfStmt(ATerm term, pOFP_Traverse ArithmeticIfStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ArithmeticIfStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, Expr, LblRef, LblRef1, LblRef2, EOS;
+ if (ATmatch(term, "ArithmeticIfStmt(<term>,<term>,<term>,<term>,<term>,<term>)", &Label.term, &Expr.term, &LblRef.term, &LblRef1.term, &LblRef2.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+      if (ofp_traverse_LblRef(LblRef1.term, &LblRef1)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+      if (ofp_traverse_LblRef(LblRef2.term, &LblRef2)) {
+         // MATCHED LblRef
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ContinueStmt(ATerm term, pOFP_Traverse ContinueStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ContinueStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "ContinueStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit)
 {
 #ifdef DEBUG_PRINT
@@ -7280,6 +8576,44 @@ ATbool ofp_traverse_ArgName(ATerm term, pOFP_Traverse ArgName)
  return ATfalse;
 }
 
+ATbool ofp_traverse_AssociateConstructName(ATerm term, pOFP_Traverse AssociateConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("AssociateConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "AssociateConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AssociateName(ATerm term, pOFP_Traverse AssociateName)
+{
+#ifdef DEBUG_PRINT
+   printf("AssociateName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "AssociateName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_BindingName(ATerm term, pOFP_Traverse BindingName)
 {
 #ifdef DEBUG_PRINT
@@ -7288,6 +8622,25 @@ ATbool ofp_traverse_BindingName(ATerm term, pOFP_Traverse BindingName)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "BindingName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BlockConstructName(ATerm term, pOFP_Traverse BlockConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("BlockConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "BlockConstructName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
@@ -7318,6 +8671,25 @@ ATbool ofp_traverse_BlockDataName(ATerm term, pOFP_Traverse BlockDataName)
  return ATfalse;
 }
 
+ATbool ofp_traverse_CaseConstructName(ATerm term, pOFP_Traverse CaseConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("CaseConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "CaseConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_ComponentName(ATerm term, pOFP_Traverse ComponentName)
 {
 #ifdef DEBUG_PRINT
@@ -7326,6 +8698,82 @@ ATbool ofp_traverse_ComponentName(ATerm term, pOFP_Traverse ComponentName)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "ComponentName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ConstructName(ATerm term, pOFP_Traverse ConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("ConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "ConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CriticalConstructName(ATerm term, pOFP_Traverse CriticalConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("CriticalConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "CriticalConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DoConstructName(ATerm term, pOFP_Traverse DoConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("DoConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "DoConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IfConstructName(ATerm term, pOFP_Traverse IfConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("IfConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "IfConstructName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
@@ -7440,25 +8888,6 @@ ATbool ofp_traverse_ImportName(ATerm term, pOFP_Traverse ImportName)
 
  OFP_Traverse Ident;
  if (ATmatch(term, "ImportName(<term>)", &Ident.term)) {
-
-      if (ofp_traverse_Ident(Ident.term, &Ident)) {
-         // MATCHED Ident
-      } else return ATfalse;
-
-   return ATtrue;
- }
-
- return ATfalse;
-}
-
-ATbool ofp_traverse_InterfaceName(ATerm term, pOFP_Traverse InterfaceName)
-{
-#ifdef DEBUG_PRINT
-   printf("InterfaceName: %s\n", ATwriteToString(term));
-#endif
-
- OFP_Traverse Ident;
- if (ATmatch(term, "InterfaceName(<term>)", &Ident.term)) {
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
@@ -7736,6 +9165,44 @@ ATbool ofp_traverse_ScalarIntConstantName(ATerm term, pOFP_Traverse ScalarIntCon
  return ATfalse;
 }
 
+ATbool ofp_traverse_ScalarIntVariableName(ATerm term, pOFP_Traverse ScalarIntVariableName)
+{
+#ifdef DEBUG_PRINT
+   printf("ScalarIntVariableName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "ScalarIntVariableName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SelectConstructName(ATerm term, pOFP_Traverse SelectConstructName)
+{
+#ifdef DEBUG_PRINT
+   printf("SelectConstructName: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Ident;
+ if (ATmatch(term, "SelectConstructName(<term>)", &Ident.term)) {
+
+      if (ofp_traverse_Ident(Ident.term, &Ident)) {
+         // MATCHED Ident
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_SubmoduleName(ATerm term, pOFP_Traverse SubmoduleName)
 {
 #ifdef DEBUG_PRINT
@@ -7870,6 +9337,30 @@ ATbool ofp_traverse_DummyArgNameList(ATerm term, pOFP_Traverse DummyArgNameList)
       DummyArgName_tail = ATgetNext (DummyArgName_tail);
       if (ofp_traverse_DummyArgName(DummyArgName.term, &DummyArgName)) {
          // MATCHED DummyArgName
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LabelList(ATerm term, pOFP_Traverse LabelList)
+{
+#ifdef DEBUG_PRINT
+   printf("LabelList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse LblRef;
+ if (ATmatch(term, "LabelList(<term>)", &LblRef.term)) {
+
+   ATermList LblRef_tail = (ATermList) ATmake("<term>", LblRef.term);
+   while (! ATisEmpty(LblRef_tail)) {
+      LblRef.term = ATgetFirst(LblRef_tail);
+      LblRef_tail = ATgetNext (LblRef_tail);
+      if (ofp_traverse_LblRef(LblRef.term, &LblRef)) {
+         // MATCHED LblRef
       } else return ATfalse;
    }
 
