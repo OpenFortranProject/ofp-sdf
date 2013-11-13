@@ -1157,11 +1157,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse UnlockStmt;
  if (ATmatch(term, "ActionStmt_US(<term>)", &UnlockStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_UnlockStmt(UnlockStmt.term, &UnlockStmt)) {
          // MATCHED UnlockStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_US
 
@@ -1171,11 +1169,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncMemoryStmt;
  if (ATmatch(term, "ActionStmt_SMS(<term>)", &SyncMemoryStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SyncMemoryStmt(SyncMemoryStmt.term, &SyncMemoryStmt)) {
          // MATCHED SyncMemoryStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_SMS
 
@@ -1185,11 +1181,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncImagesStmt;
  if (ATmatch(term, "ActionStmt_SIS(<term>)", &SyncImagesStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SyncImagesStmt(SyncImagesStmt.term, &SyncImagesStmt)) {
          // MATCHED SyncImagesStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_SIS
 
@@ -1199,11 +1193,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse SyncAllStmt;
  if (ATmatch(term, "ActionStmt_SAS(<term>)", &SyncAllStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_SyncAllStmt(SyncAllStmt.term, &SyncAllStmt)) {
          // MATCHED SyncAllStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_SAS
 
@@ -1213,11 +1205,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse StopStmt;
  if (ATmatch(term, "ActionStmt_SS(<term>)", &StopStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_StopStmt(StopStmt.term, &StopStmt)) {
          // MATCHED StopStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_SS
 
@@ -1321,11 +1311,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse LockStmt;
  if (ATmatch(term, "ActionStmt_LS(<term>)", &LockStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_LockStmt(LockStmt.term, &LockStmt)) {
          // MATCHED LockStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_LS
 
@@ -1411,11 +1399,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  OFP_Traverse ErrorStopStmt;
  if (ATmatch(term, "ActionStmt_ESS2(<term>)", &ErrorStopStmt.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ErrorStopStmt(ErrorStopStmt.term, &ErrorStopStmt)) {
          // MATCHED ErrorStopStmt
       } else return ATfalse;
-#endif
 
    // MATCHED ActionStmt_ESS2
 
@@ -1580,6 +1566,18 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 #endif
 
    // MATCHED ActionStmt_AS1
+
+   return ATtrue;
+ }
+
+ OFP_Traverse PauseStmt;
+ if (ATmatch(term, "ActionStmt_PS2(<term>)", &PauseStmt.term)) {
+
+      if (ofp_traverse_PauseStmt(PauseStmt.term, &PauseStmt)) {
+         // MATCHED PauseStmt
+      } else return ATfalse;
+
+   // MATCHED ActionStmt_PS2
 
    return ATtrue;
  }
@@ -3395,6 +3393,41 @@ ATbool ofp_traverse_EndDoStmt(ATerm term, pOFP_Traverse EndDoStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R823 nonblock-do-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R824 action-term-do-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R825 do-body
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R826 do-term-action-stmt
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R827 outer-shared-do-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R828 shared-term-do-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R829 inner-shared-do-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R830 do-term-shared-stmt
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R831 cycle-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CycleStmt(ATerm term, pOFP_Traverse CycleStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3426,6 +3459,13 @@ ATbool ofp_traverse_CycleStmt(ATerm term, pOFP_Traverse CycleStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R832 TODO: if-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R833 if-then-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IfThenStmt(ATerm term, pOFP_Traverse IfThenStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3465,6 +3505,9 @@ ATbool ofp_traverse_IfThenStmt(ATerm term, pOFP_Traverse IfThenStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R834 else-if-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ElseIfStmt(ATerm term, pOFP_Traverse ElseIfStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3502,6 +3545,9 @@ ATbool ofp_traverse_ElseIfStmt(ATerm term, pOFP_Traverse ElseIfStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R835 else-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ElseStmt(ATerm term, pOFP_Traverse ElseStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3533,6 +3579,9 @@ ATbool ofp_traverse_ElseStmt(ATerm term, pOFP_Traverse ElseStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R836 end-if-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndIfStmt(ATerm term, pOFP_Traverse EndIfStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3564,6 +3613,9 @@ ATbool ofp_traverse_EndIfStmt(ATerm term, pOFP_Traverse EndIfStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R837 if-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IfStmt(ATerm term, pOFP_Traverse IfStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3595,6 +3647,13 @@ ATbool ofp_traverse_IfStmt(ATerm term, pOFP_Traverse IfStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R838 TODO: case-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R839 select-case-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SelectCaseStmt(ATerm term, pOFP_Traverse SelectCaseStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3632,6 +3691,9 @@ ATbool ofp_traverse_SelectCaseStmt(ATerm term, pOFP_Traverse SelectCaseStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R840 case-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CaseStmt(ATerm term, pOFP_Traverse CaseStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3667,6 +3729,9 @@ ATbool ofp_traverse_CaseStmt(ATerm term, pOFP_Traverse CaseStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R841 end-select-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndSelectStmt(ATerm term, pOFP_Traverse EndSelectStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3698,6 +3763,9 @@ ATbool ofp_traverse_EndSelectStmt(ATerm term, pOFP_Traverse EndSelectStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R842 case-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CaseExpr(ATerm term, pOFP_Traverse CaseExpr)
 {
 #ifdef DEBUG_PRINT
@@ -3717,6 +3785,9 @@ ATbool ofp_traverse_CaseExpr(ATerm term, pOFP_Traverse CaseExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R843 case-selector
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CaseSelector(ATerm term, pOFP_Traverse CaseSelector)
 {
 #ifdef DEBUG_PRINT
@@ -3745,6 +3816,9 @@ ATbool ofp_traverse_CaseSelector(ATerm term, pOFP_Traverse CaseSelector)
  return ATfalse;
 }
 
+//========================================================================================
+// R844 case-value-range
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CaseValueRange(ATerm term, pOFP_Traverse CaseValueRange)
 {
 #ifdef DEBUG_PRINT
@@ -3806,6 +3880,9 @@ ATbool ofp_traverse_CaseValueRangeList(ATerm term, pOFP_Traverse CaseValueRangeL
  return ATfalse;
 }
 
+//========================================================================================
+// R845 case-value
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CaseValue(ATerm term, pOFP_Traverse CaseValue)
 {
 #ifdef DEBUG_PRINT
@@ -3827,6 +3904,13 @@ ATbool ofp_traverse_CaseValue(ATerm term, pOFP_Traverse CaseValue)
  return ATfalse;
 }
 
+//========================================================================================
+// R846 TODO: select-type-construct
+//----------------------------------------------------------------------------------------
+
+//========================================================================================
+// R847 select-type-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SelectTypeStmt(ATerm term, pOFP_Traverse SelectTypeStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3866,6 +3950,9 @@ ATbool ofp_traverse_SelectTypeStmt(ATerm term, pOFP_Traverse SelectTypeStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R848 type-guard-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_TypeGuardStmt(ATerm term, pOFP_Traverse TypeGuardStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3941,6 +4028,9 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, pOFP_Traverse TypeGuardStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R849 end-select-type-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndSelectTypeStmt(ATerm term, pOFP_Traverse EndSelectTypeStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3966,6 +4056,9 @@ ATbool ofp_traverse_EndSelectTypeStmt(ATerm term, pOFP_Traverse EndSelectTypeStm
  return ATfalse;
 }
 
+//========================================================================================
+// R850 exit-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExitStmt(ATerm term, pOFP_Traverse ExitStmt)
 {
 #ifdef DEBUG_PRINT
@@ -3997,6 +4090,9 @@ ATbool ofp_traverse_ExitStmt(ATerm term, pOFP_Traverse ExitStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R851 goto-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_GotoStmt(ATerm term, pOFP_Traverse GotoStmt)
 {
 #ifdef DEBUG_PRINT
@@ -4028,6 +4124,9 @@ ATbool ofp_traverse_GotoStmt(ATerm term, pOFP_Traverse GotoStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R852 computed-goto-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ComputedGotoStmt(ATerm term, pOFP_Traverse ComputedGotoStmt)
 {
 #ifdef DEBUG_PRINT
@@ -4061,6 +4160,9 @@ ATbool ofp_traverse_ComputedGotoStmt(ATerm term, pOFP_Traverse ComputedGotoStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R853 arithmetic-if-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ArithmeticIfStmt(ATerm term, pOFP_Traverse ArithmeticIfStmt)
 {
 #ifdef DEBUG_PRINT
@@ -4108,6 +4210,9 @@ ATbool ofp_traverse_ArithmeticIfStmt(ATerm term, pOFP_Traverse ArithmeticIfStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R854 continue-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ContinueStmt(ATerm term, pOFP_Traverse ContinueStmt)
 {
 #ifdef DEBUG_PRINT
@@ -4120,6 +4225,547 @@ ATbool ofp_traverse_ContinueStmt(ATerm term, pOFP_Traverse ContinueStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R855 stop-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_StopStmt(ATerm term, pOFP_Traverse StopStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("StopStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "StopStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R856 error-stop-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_ErrorStopStmt(ATerm term, pOFP_Traverse ErrorStopStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ErrorStopStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "ErrorStopStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R857 stop-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_StopCode(ATerm term, pOFP_Traverse StopCode)
+{
+#ifdef DEBUG_PRINT
+   printf("StopCode: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Icon;
+ if (ATmatch(term, "StopCode_SI(<term>)", &Icon.term)) {
+
+      if (ofp_traverse_Icon(Icon.term, &Icon)) {
+         // MATCHED Icon
+      } else return ATfalse;
+
+   // MATCHED StopCode_SI
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Scon;
+ if (ATmatch(term, "StopCode_SD(<term>)", &Scon.term)) {
+
+      if (ofp_traverse_Scon(Scon.term, &Scon)) {
+         // MATCHED Scon
+      } else return ATfalse;
+
+   // MATCHED StopCode_SD
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R858 sync-all-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SyncAllStmt(ATerm term, pOFP_Traverse SyncAllStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncAllStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "SyncAllStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, SyncStatList, EOS1;
+ if (ATmatch(term, "SyncAllStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED SyncAllStmt_SSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R859 sync-stat
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SyncStat(ATerm term, pOFP_Traverse SyncStat)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncStat: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ErrmsgVariable;
+ if (ATmatch(term, "SyncStat_ERRMSG(<term>)", &ErrmsgVariable.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_ErrmsgVariable(ErrmsgVariable.term, &ErrmsgVariable)) {
+         // MATCHED ErrmsgVariable
+      } else return ATfalse;
+#endif
+
+   // MATCHED SyncStat_ERRMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse StatVariable;
+ if (ATmatch(term, "SyncStat_STAT(<term>)", &StatVariable.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_StatVariable(StatVariable.term, &StatVariable)) {
+         // MATCHED StatVariable
+      } else return ATfalse;
+#endif
+
+   // MATCHED SyncStat_STAT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncStatList(ATerm term, pOFP_Traverse SyncStatList)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncStatList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SyncStat;
+ if (ATmatch(term, "SyncStatList(<term>)", &SyncStat.term)) {
+
+   ATermList SyncStat_tail = (ATermList) ATmake("<term>", SyncStat.term);
+   while (! ATisEmpty(SyncStat_tail)) {
+      SyncStat.term = ATgetFirst(SyncStat_tail);
+      SyncStat_tail = ATgetNext (SyncStat_tail);
+      if (ofp_traverse_SyncStat(SyncStat.term, &SyncStat)) {
+         // MATCHED SyncStat
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R860 sync-images-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SyncImagesStmt(ATerm term, pOFP_Traverse SyncImagesStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncImagesStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, ImageSet, SyncStatList, EOS;
+ if (ATmatch(term, "SyncImagesStmt(<term>,<term>,<term>,<term>)", &Label.term, &ImageSet.term, &SyncStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_ImageSet(ImageSet.term, &ImageSet)) {
+         // MATCHED ImageSet
+      } else return ATfalse;
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+   if (ATmatch(SyncStatList.term, "(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R861 image-set
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_ImageSet(ATerm term, pOFP_Traverse ImageSet)
+{
+#ifdef DEBUG_PRINT
+   printf("ImageSet: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "ImageSet_STAR")) {
+
+   // MATCHED ImageSet_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "ImageSet_IE(<term>)", &IntExpr.term)) {
+
+#ifdef NOT_YET
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+#endif
+
+   // MATCHED ImageSet_IE
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R862 sync-memory-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SyncMemoryStmt(ATerm term, pOFP_Traverse SyncMemoryStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncMemoryStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "SyncMemoryStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, SyncStatList, EOS1;
+ if (ATmatch(term, "SyncMemoryStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED SyncMemoryStmt_SSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R863 lock-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_LockStmt(ATerm term, pOFP_Traverse LockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LockVariable, LockStatList, EOS;
+ if (ATmatch(term, "LockStmt(<term>,<term>,<term>,<term>)", &Label.term, &LockVariable.term, &LockStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LockVariable(LockVariable.term, &LockVariable)) {
+         // MATCHED LockVariable
+      } else return ATfalse;
+
+   if (ATmatch(LockStatList.term, "Some(<term>)", &LockStatList.term)) {
+   if (ATmatch(LockStatList.term, "(<term>)", &LockStatList.term)) {
+      if (ofp_traverse_LockStatList(LockStatList.term, &LockStatList)) {
+         // MATCHED LockStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R864 lock-stat
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_LockStat(ATerm term, pOFP_Traverse LockStat)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStat: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SyncStat;
+ if (ATmatch(term, "LockStat_SS(<term>)", &SyncStat.term)) {
+
+      if (ofp_traverse_SyncStat(SyncStat.term, &SyncStat)) {
+         // MATCHED SyncStat
+      } else return ATfalse;
+
+   // MATCHED LockStat_SS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable;
+ if (ATmatch(term, "LockStat_LV(<term>)", &LogicalVariable.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable.term, &LogicalVariable)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED LockStat_LV
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LockStatList(ATerm term, pOFP_Traverse LockStatList)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStatList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse LockStat;
+ if (ATmatch(term, "LockStatList(<term>)", &LockStat.term)) {
+
+   ATermList LockStat_tail = (ATermList) ATmake("<term>", LockStat.term);
+   while (! ATisEmpty(LockStat_tail)) {
+      LockStat.term = ATgetFirst(LockStat_tail);
+      LockStat_tail = ATgetNext (LockStat_tail);
+      if (ofp_traverse_LockStat(LockStat.term, &LockStat)) {
+         // MATCHED LockStat
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R865 unlock-stat
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_UnlockStmt(ATerm term, pOFP_Traverse UnlockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("UnlockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LockVariable, SyncStatList, EOS;
+ if (ATmatch(term, "UnlockStmt(<term>,<term>,<term>,<term>)", &Label.term, &LockVariable.term, &SyncStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LockVariable(LockVariable.term, &LockVariable)) {
+         // MATCHED LockVariable
+      } else return ATfalse;
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+   if (ATmatch(SyncStatList.term, "(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// R866 lock-variable
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_LockVariable(ATerm term, pOFP_Traverse LockVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("LockVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "LockVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+//========================================================================================
+// OBSOLETE: pause-stmt
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_PauseStmt(ATerm term, pOFP_Traverse PauseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("PauseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "PauseStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
       } else return ATfalse;
    }
 

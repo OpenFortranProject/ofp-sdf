@@ -1413,6 +1413,18 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
    return ATtrue;
  }
 
+ OFP_Traverse PauseStmt;
+ if (ATmatch(term, "ActionStmt_PS2(<term>)", &PauseStmt.term)) {
+
+      if (ofp_traverse_PauseStmt(PauseStmt.term, &PauseStmt)) {
+         // MATCHED PauseStmt
+      } else return ATfalse;
+
+   // MATCHED ActionStmt_PS2
+
+   return ATtrue;
+ }
+
  return ATfalse;
 }
 
@@ -3702,6 +3714,502 @@ ATbool ofp_traverse_ContinueStmt(ATerm term, pOFP_Traverse ContinueStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_StopStmt(ATerm term, pOFP_Traverse StopStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("StopStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "StopStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ErrorStopStmt(ATerm term, pOFP_Traverse ErrorStopStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ErrorStopStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "ErrorStopStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_StopCode(ATerm term, pOFP_Traverse StopCode)
+{
+#ifdef DEBUG_PRINT
+   printf("StopCode: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Icon;
+ if (ATmatch(term, "StopCode_SI(<term>)", &Icon.term)) {
+
+      if (ofp_traverse_Icon(Icon.term, &Icon)) {
+         // MATCHED Icon
+      } else return ATfalse;
+
+   // MATCHED StopCode_SI
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Scon;
+ if (ATmatch(term, "StopCode_SD(<term>)", &Scon.term)) {
+
+      if (ofp_traverse_Scon(Scon.term, &Scon)) {
+         // MATCHED Scon
+      } else return ATfalse;
+
+   // MATCHED StopCode_SD
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncAllStmt(ATerm term, pOFP_Traverse SyncAllStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncAllStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "SyncAllStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, SyncStatList, EOS1;
+ if (ATmatch(term, "SyncAllStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED SyncAllStmt_SSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncStat(ATerm term, pOFP_Traverse SyncStat)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncStat: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ErrmsgVariable;
+ if (ATmatch(term, "SyncStat_ERRMSG(<term>)", &ErrmsgVariable.term)) {
+
+      if (ofp_traverse_ErrmsgVariable(ErrmsgVariable.term, &ErrmsgVariable)) {
+         // MATCHED ErrmsgVariable
+      } else return ATfalse;
+
+   // MATCHED SyncStat_ERRMSG
+
+   return ATtrue;
+ }
+
+ OFP_Traverse StatVariable;
+ if (ATmatch(term, "SyncStat_STAT(<term>)", &StatVariable.term)) {
+
+      if (ofp_traverse_StatVariable(StatVariable.term, &StatVariable)) {
+         // MATCHED StatVariable
+      } else return ATfalse;
+
+   // MATCHED SyncStat_STAT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncStatList(ATerm term, pOFP_Traverse SyncStatList)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncStatList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SyncStat;
+ if (ATmatch(term, "SyncStatList(<term>)", &SyncStat.term)) {
+
+   ATermList SyncStat_tail = (ATermList) ATmake("<term>", SyncStat.term);
+   while (! ATisEmpty(SyncStat_tail)) {
+      SyncStat.term = ATgetFirst(SyncStat_tail);
+      SyncStat_tail = ATgetNext (SyncStat_tail);
+      if (ofp_traverse_SyncStat(SyncStat.term, &SyncStat)) {
+         // MATCHED SyncStat
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncImagesStmt(ATerm term, pOFP_Traverse SyncImagesStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncImagesStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, ImageSet, SyncStatList, EOS;
+ if (ATmatch(term, "SyncImagesStmt(<term>,<term>,<term>,<term>)", &Label.term, &ImageSet.term, &SyncStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_ImageSet(ImageSet.term, &ImageSet)) {
+         // MATCHED ImageSet
+      } else return ATfalse;
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+   if (ATmatch(SyncStatList.term, "(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ImageSet(ATerm term, pOFP_Traverse ImageSet)
+{
+#ifdef DEBUG_PRINT
+   printf("ImageSet: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "ImageSet_STAR")) {
+
+   // MATCHED ImageSet_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntExpr;
+ if (ATmatch(term, "ImageSet_IE(<term>)", &IntExpr.term)) {
+
+      if (ofp_traverse_IntExpr(IntExpr.term, &IntExpr)) {
+         // MATCHED IntExpr
+      } else return ATfalse;
+
+   // MATCHED ImageSet_IE
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SyncMemoryStmt(ATerm term, pOFP_Traverse SyncMemoryStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SyncMemoryStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "SyncMemoryStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, SyncStatList, EOS1;
+ if (ATmatch(term, "SyncMemoryStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED SyncMemoryStmt_SSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LockStmt(ATerm term, pOFP_Traverse LockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LockVariable, LockStatList, EOS;
+ if (ATmatch(term, "LockStmt(<term>,<term>,<term>,<term>)", &Label.term, &LockVariable.term, &LockStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LockVariable(LockVariable.term, &LockVariable)) {
+         // MATCHED LockVariable
+      } else return ATfalse;
+
+   if (ATmatch(LockStatList.term, "Some(<term>)", &LockStatList.term)) {
+   if (ATmatch(LockStatList.term, "(<term>)", &LockStatList.term)) {
+      if (ofp_traverse_LockStatList(LockStatList.term, &LockStatList)) {
+         // MATCHED LockStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LockStat(ATerm term, pOFP_Traverse LockStat)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStat: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SyncStat;
+ if (ATmatch(term, "LockStat_SS(<term>)", &SyncStat.term)) {
+
+      if (ofp_traverse_SyncStat(SyncStat.term, &SyncStat)) {
+         // MATCHED SyncStat
+      } else return ATfalse;
+
+   // MATCHED LockStat_SS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse LogicalVariable;
+ if (ATmatch(term, "LockStat_LV(<term>)", &LogicalVariable.term)) {
+
+      if (ofp_traverse_LogicalVariable(LogicalVariable.term, &LogicalVariable)) {
+         // MATCHED LogicalVariable
+      } else return ATfalse;
+
+   // MATCHED LockStat_LV
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LockStatList(ATerm term, pOFP_Traverse LockStatList)
+{
+#ifdef DEBUG_PRINT
+   printf("LockStatList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse LockStat;
+ if (ATmatch(term, "LockStatList(<term>)", &LockStat.term)) {
+
+   ATermList LockStat_tail = (ATermList) ATmake("<term>", LockStat.term);
+   while (! ATisEmpty(LockStat_tail)) {
+      LockStat.term = ATgetFirst(LockStat_tail);
+      LockStat_tail = ATgetNext (LockStat_tail);
+      if (ofp_traverse_LockStat(LockStat.term, &LockStat)) {
+         // MATCHED LockStat
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_UnlockStmt(ATerm term, pOFP_Traverse UnlockStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("UnlockStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, LockVariable, SyncStatList, EOS;
+ if (ATmatch(term, "UnlockStmt(<term>,<term>,<term>,<term>)", &Label.term, &LockVariable.term, &SyncStatList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_LockVariable(LockVariable.term, &LockVariable)) {
+         // MATCHED LockVariable
+      } else return ATfalse;
+
+   if (ATmatch(SyncStatList.term, "Some(<term>)", &SyncStatList.term)) {
+   if (ATmatch(SyncStatList.term, "(<term>)", &SyncStatList.term)) {
+      if (ofp_traverse_SyncStatList(SyncStatList.term, &SyncStatList)) {
+         // MATCHED SyncStatList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LockVariable(ATerm term, pOFP_Traverse LockVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("LockVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Variable;
+ if (ATmatch(term, "LockVariable(<term>)", &Variable.term)) {
+
+      if (ofp_traverse_Variable(Variable.term, &Variable)) {
+         // MATCHED Variable
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PauseStmt(ATerm term, pOFP_Traverse PauseStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("PauseStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, StopCode, EOS;
+ if (ATmatch(term, "PauseStmt(<term>,<term>,<term>)", &Label.term, &StopCode.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(StopCode.term, "Some(<term>)", &StopCode.term)) {
+      if (ofp_traverse_StopCode(StopCode.term, &StopCode)) {
+         // MATCHED StopCode
       } else return ATfalse;
    }
 

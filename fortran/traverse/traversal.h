@@ -307,6 +307,47 @@ ATbool ofp_traverse_ArithmeticIfStmt(ATerm term, pOFP_Traverse ArithmeticIfStmt)
 /* R854 */
 ATbool ofp_traverse_ContinueStmt(ATerm term, pOFP_Traverse ContinueStmt);
 
+/* R855 */
+ATbool ofp_traverse_StopStmt(ATerm term, pOFP_Traverse StopStmt);
+
+/* R856 */
+ATbool ofp_traverse_ErrorStopStmt(ATerm term, pOFP_Traverse ErrorStopStmt);
+
+/* R857 */
+ATbool ofp_traverse_StopCode(ATerm term, pOFP_Traverse StopCode);
+
+/* R858 */
+ATbool ofp_traverse_SyncAllStmt(ATerm term, pOFP_Traverse SyncAllStmt);
+
+/* R859 */
+ATbool ofp_traverse_SyncStat(ATerm term, pOFP_Traverse SyncStat);
+ATbool ofp_traverse_SyncStatList(ATerm term, pOFP_Traverse SyncStatList);
+
+/* R860 */
+ATbool ofp_traverse_SyncImagesStmt(ATerm term, pOFP_Traverse SyncImagesStmt);
+
+/* R861 */
+ATbool ofp_traverse_ImageSet(ATerm term, pOFP_Traverse ImageSet);
+
+/* R862 */
+ATbool ofp_traverse_SyncMemoryStmt(ATerm term, pOFP_Traverse SyncMemoryStmt);
+
+/* R863 */
+ATbool ofp_traverse_LockStmt(ATerm term, pOFP_Traverse LockStmt);
+
+/* R864 */
+ATbool ofp_traverse_LockStat(ATerm term, pOFP_Traverse LockStat);
+ATbool ofp_traverse_LockStatList(ATerm term, pOFP_Traverse LockStatList);
+
+/* R865 */
+ATbool ofp_traverse_UnlockStmt(ATerm term, pOFP_Traverse UnlockStmt);
+
+/* R866 */
+ATbool ofp_traverse_LockVariable(ATerm term, pOFP_Traverse LockVariable);
+
+/* Obsolete feature */
+ATbool ofp_traverse_PauseStmt(ATerm term, pOFP_Traverse PauseStmt);
+
 /* R901 */
 ATbool ofp_traverse_IoUnit(ATerm term, pOFP_Traverse IoUnit);
 

@@ -450,6 +450,10 @@ Module(
               "ActionStmt_AS1"
             , FunType([ConstType(SortNoArgs("AllocateStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
+          , OpDecl(
+              "ActionStmt_PS2"
+            , FunType([ConstType(SortNoArgs("PauseStmt"))], ConstType(SortNoArgs("ActionStmt")))
+            )
 
           , OpDecl(
               "Keyword"
@@ -1251,6 +1255,176 @@ Module(
               )
             )
 
+          , Comment("8.4 Stop and Error Stop statements")
+          , Comment("----------------------------------")
+
+          , OpDecl(
+              "StopStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("StopCode")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("StopStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ErrorStopStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("StopCode")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ErrorStopStmt"))
+              )
+            )
+
+          , OpDecl(
+              "StopCode_SI"
+            , FunType([ConstType(SortNoArgs("Icon"))], ConstType(SortNoArgs("StopCode")))
+            )
+          , OpDecl(
+              "StopCode_SD"
+            , FunType([ConstType(SortNoArgs("Scon"))], ConstType(SortNoArgs("StopCode")))
+            )
+
+          , Comment("8.5 Image execution control")
+          , Comment("---------------------------")
+
+          , OpDecl(
+              "SyncAllStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("SyncAllStmt"))
+              )
+            )
+          , OpDecl(
+              "SyncAllStmt_SSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("SyncStatList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SyncAllStmt"))
+              )
+            )
+
+          , OpDecl(
+              "SyncStat_ERRMSG"
+            , FunType([ConstType(SortNoArgs("ErrmsgVariable"))], ConstType(SortNoArgs("SyncStat")))
+            )
+          , OpDecl(
+              "SyncStat_STAT"
+            , FunType([ConstType(SortNoArgs("StatVariable"))], ConstType(SortNoArgs("SyncStat")))
+            )
+
+          , OpDecl(
+              "SyncStatList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("SyncStat")]))]
+              , ConstType(SortNoArgs("SyncStatList"))
+              )
+            )
+
+          , OpDecl(
+              "SyncImagesStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("ImageSet"))
+                , ConstType(Sort("Option", [SortNoArgs("SyncStatList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SyncImagesStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("SyncStatList"))], ConstType(SortNoArgs("SyncStatList0")))
+            )
+
+          , OpDecl("ImageSet_STAR", ConstType(SortNoArgs("ImageSet")))
+          , OpDecl(
+              "ImageSet_IE"
+            , FunType([ConstType(SortNoArgs("IntExpr"))], ConstType(SortNoArgs("ImageSet")))
+            )
+
+          , OpDecl(
+              "SyncMemoryStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("SyncMemoryStmt"))
+              )
+            )
+          , OpDecl(
+              "SyncMemoryStmt_SSL"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("SyncStatList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("SyncMemoryStmt"))
+              )
+            )
+
+          , OpDecl(
+              "LockStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("LockVariable"))
+                , ConstType(Sort("Option", [SortNoArgs("LockStatList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("LockStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("LockStatList"))], ConstType(SortNoArgs("LockStatList0")))
+            )
+
+          , OpDecl(
+              "LockStat_SS"
+            , FunType([ConstType(SortNoArgs("SyncStat"))], ConstType(SortNoArgs("LockStat")))
+            )
+          , OpDecl(
+              "LockStat_LV"
+            , FunType([ConstType(SortNoArgs("LogicalVariable"))], ConstType(SortNoArgs("LockStat")))
+            )
+
+          , OpDecl(
+              "LockStatList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("LockStat")]))]
+              , ConstType(SortNoArgs("LockStatList"))
+              )
+            )
+
+          , OpDecl(
+              "UnlockStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("LockVariable"))
+                , ConstType(Sort("Option", [SortNoArgs("SyncStatList0")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("UnlockStmt"))
+              )
+            )
+
+          , OpDecl(
+              "LockVariable"
+            , FunType([ConstType(SortNoArgs("Variable"))], ConstType(SortNoArgs("LockVariable")))
+            )
+
+          , OpDecl(
+              "PauseStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("StopCode")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("PauseStmt"))
+              )
+            )
 
           , Comment("Section/Clause 9 Input/output statements")
           , Comment("-----------------------------------------------------------------------------------------")
