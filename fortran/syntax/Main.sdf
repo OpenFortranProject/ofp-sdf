@@ -531,7 +531,7 @@ sorts
 
   IoUnit                              %% R901
   FileUnitNumber                      %% R902
-  InternalFileVariable                %% R903
+  InternalFileVariable                %% R903    NOTE: unused
   OpenStmt                            %% R904
   ConnectSpec                         %% R905
   FileNameExpr                        %% R906
@@ -1620,11 +1620,11 @@ context-free syntax
 %%      constant substituted for scalar-constant
 %%      structure-component substituted for scalar-structure-component
 %%
-  ScalarVariableName                   -> ParentString     {cons("ParentString")}
-  ArrayElement                         -> ParentString     {cons("ParentString")}
-  CoindexedNamedObject                 -> ParentString     {cons("ParentString")}
-  StructureComponent                   -> ParentString     {cons("ParentString")}
-  Constant                             -> ParentString     {cons("ParentString")}
+  ScalarVariableName                   -> ParentString     {cons("ParentString_SVN")}
+  ArrayElement                         -> ParentString     {cons("ParentString_AE")}
+  CoindexedNamedObject                 -> ParentString     {cons("ParentString_CNO")}
+  StructureComponent                   -> ParentString     {cons("ParentString_SC")}
+  Constant                             -> ParentString     {cons("ParentString_C")}
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -1643,7 +1643,7 @@ context-free syntax
 %%REMOVE  DataRef  ArraySelector                                        -> DataRef   {cons("DataRef")}
 
 %%R611
-  PartRef ('%' PartRef)*                                 -> DataRef   {cons("DataRef")}
+  {PartRef '%'}+                                         -> DataRef   {cons("DataRef")}
 
 %%R612 part-ref
 %%REMOVE PartName                                  ImageSelector?     -> PartRef   {cons("PartRef")}
@@ -2691,13 +2691,13 @@ context-free syntax
   '*'                                             -> Format         {cons("Format_STAR")}
 
 %%R916
-  Variable                                        -> InputItem      {cons("InputItem")}
-  IoImpliedDo                                     -> InputItem      {cons("InputItem")}
+  Variable                                        -> InputItem      {cons("InputItem_V")}
+  IoImpliedDo                                     -> InputItem      {cons("InputItem_IID")}
   {InputItem ','}+                                -> InputItemList  {cons("InputItemList")}
 
 %%R917
-  Expr                                            -> OutputItem     {cons("OutputItem")}
-  IoImpliedDo                                     -> OutputItem     {cons("OutputItem")}
+  Expr                                            -> OutputItem     {cons("OutputItem_E")}
+  IoImpliedDo                                     -> OutputItem     {cons("OutputItem_IID")}
   {OutputItem ','}+                               -> OutputItemList {cons("OutputItemList")}
 
 %%R918
@@ -2706,8 +2706,8 @@ context-free syntax
   ')'                                             -> IoImpliedDo    {cons("IoImpliedDo")}
 
 %%R919
-  InputItem                                       -> IoImpliedDoObject     {cons("IoImpliedDoObject")}
-  OutputItem                                      -> IoImpliedDoObject     {cons("IoImpliedDoObject")}
+  InputItem                                       -> IoImpliedDoObject     {cons("IoImpliedDoObject_II")}
+  OutputItem                                      -> IoImpliedDoObject     {cons("IoImpliedDoObject_OI")}
   {IoImpliedDoObject ','}+                        -> IoImpliedDoObjectList {cons("IoImpliedDoObjectList")}
 
 %%R920
@@ -2786,7 +2786,7 @@ context-free syntax
 %%
   Label? 'INQUIRE' '(' InquireSpecList ')'          EOS -> InquireStmt {cons("InquireStmt_ISL")}
   Label? 'INQUIRE' '(' 'IOLENGTH' '=' IntVariable ')' OutputItemList
-                                                    EOS -> InquireStmt {cons("InquireStmt_IOLENGTH")}
+                                                    EOS -> InquireStmt {cons("InquireStmt_IV")}
 
 %%R931
 %%           default-char-expr substituted for scalar-default-char-expr
