@@ -38,6 +38,9 @@ sorts
   OtherSpecificationStmt              %% R212
   ExecutableConstruct                 %% R213
   ActionStmt                          %% R214
+
+%% 2.5 Fundamental concepts
+
   Keyword                             %% R215
 
 %% 3.2 Low-level syntax
@@ -120,6 +123,8 @@ sorts
   BindingAttrList ComponentAttrSpecList ComponentDeclList
   ProcComponentAttrSpecList TypeAttrSpecList TypeBoundProcDeclList
   TypeParamDeclList TypeParamSpecList
+
+  OptTypeAttrSpecList OptTypeParamNameList
 
 %% 4.6 Enumerations and enumerators
 
@@ -747,12 +752,12 @@ context-free syntax
   NamedConstant                         -> Constant         {reject} %% can't tell name is constant
 
 %%R305
-  IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
-  RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
-  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
-  LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
-  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
-  BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
+  IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_ILC")}
+  RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_RLC")}
+  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_CLC")}
+  LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_LLC")}
+  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_CLC")}
+  BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_BLC")}
 
 %%R306
   Name                                  -> NamedConstant    {cons("NamedConstant")}
@@ -777,7 +782,7 @@ context-free syntax
 %%R401
 %%       expr substituted for scalar-int-expr
 %%
-  Expr                                  -> TypeParamValue       {cons("TypeParamValue_Expr")}
+  Expr                                  -> TypeParamValue       {cons("TypeParamValue_E")}
   '*'                                   -> TypeParamValue       {cons("TypeParamValue_STAR")}
   ':'                                   -> TypeParamValue       {cons("TypeParamValue_COLON")}
 
@@ -786,37 +791,37 @@ context-free syntax
 %%
 
 %%R402
-  IntrinsicTypeSpec                       -> TypeSpec             {cons("TypeSpec")}
-  DerivedTypeSpec                         -> TypeSpec             {cons("TypeSpec")}
+  IntrinsicTypeSpec                       -> TypeSpec             {cons("TypeSpec_ITS")}
+  DerivedTypeSpec                         -> TypeSpec             {cons("TypeSpec_DTS")}
 
 %%R403
-  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec")}
-  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_TYPE")}
-  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_TYPE")}
-  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_CLASS")}
-  'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_CLASS")}
+  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_ITS")}
+  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_ITS")}
+  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_DTS")}
+  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_C_DTS")}
+  'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_C_STAR")}
 %%TR29113
-  'TYPE'  '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_TYPE")}
+  'TYPE'  '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_STAR")}
 
 
 %% 4.4 Intrinsic types
 %%
 
 %%R404
-  'INTEGER'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_INTEGER")}
+  'INTEGER'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_INT")}
   'REAL'      KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_REAL")}
-  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DOUBLE_PRECISION")}
-  'COMPLEX'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_COMPLEX")}
-  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_CHARACTER")}
+  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DBL_PREC")}
+  'COMPLEX'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_CMPLX")}
+  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_CHAR")}
   'LOGICAL'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_LOGICAL")}
-  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DOUBLE_COMPLEX")}
+  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DBL_CMPLX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
 %%       NONSTANDARD: e.g., integer*8 complex*8 complex*16
 %%
-  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("KindSelector_KIND")}
-  '('            Expr ')'               -> KindSelector  {cons("KindSelector_KIND")}
+  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("KindSelector_E")}
+  '('            Expr ')'               -> KindSelector  {cons("KindSelector_E")}
   '*' Icon                              -> KindSelector  {cons("KindSelector_STAR")}
 
 %%406
@@ -826,8 +831,8 @@ context-free syntax
   DigitString ('_' KindParam)?          -> IntLiteralConstant  {cons("IntLiteralConstant")}
 
 %%R408
-  DigitString                           -> KindParam          {cons("KindParam")}
-  ScalarIntConstantName                 -> KindParam          {cons("KindParam")}
+  DigitString                           -> KindParam          {cons("KindParam_DS")}
+  ScalarIntConstantName                 -> KindParam          {cons("KindParam_SICN")}
 
 %%R409
   Sign? DigitString                     -> SignedDigitString  {cons("SignedDigitString")}
@@ -855,14 +860,14 @@ context-free syntax
   '(' RealPart ',' ImagPart ')'         -> ComplexLiteralConstant  {cons("ComplexLiteralConstant")}
 
 %%418
-  SignedIntLiteralConstant              -> RealPart                {cons("RealPart")}
-  SignedRealLiteralConstant             -> RealPart                {cons("RealPart")}
-  NamedConstant                         -> RealPart                {cons("RealPart")}
+  SignedIntLiteralConstant              -> RealPart                {cons("RealPart_SILC")}
+  SignedRealLiteralConstant             -> RealPart                {cons("RealPart_SRLC")}
+  NamedConstant                         -> RealPart                {cons("RealPart_NC")}
 
 %%419
-  SignedIntLiteralConstant              -> ImagPart                {cons("ImagPart")}
-  SignedRealLiteralConstant             -> ImagPart                {cons("ImagPart")}
-  NamedConstant                         -> ImagPart                {cons("ImagPart")}
+  SignedIntLiteralConstant              -> ImagPart                {cons("ImagPart_SILC")}
+  SignedRealLiteralConstant             -> ImagPart                {cons("ImagPart_SRLC")}
+  NamedConstant                         -> ImagPart                {cons("ImagPart_NC")}
 
 %%R420
 %%       expr substituted for scalar-int-constant-expr
@@ -881,8 +886,8 @@ context-free syntax
   '*' CharLength                                               -> LengthSelector  {cons("LengthSelector_STAR")}
 
 %%R422
-  '(' TypeParamValue ')'                                       -> CharLength      {cons("CharLength")}
-  Icon                                                         -> CharLength      {cons("CharLength")}
+  '(' TypeParamValue ')'                                       -> CharLength      {cons("CharLength_TPV")}
+  Icon                                                         -> CharLength      {cons("CharLength_I")}
 
 %%R423
   (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("CharLiteralConstant")}
@@ -904,10 +909,12 @@ context-free syntax
   EndTypeStmt                           -> DerivedTypeDef          {cons("DerivedTypeDef")}
 
 %%R426
-  Label? 'TYPE'
-             ( (',' TypeAttrSpecList)? '::' )? TypeName
-             ( '('  TypeParamNameList ')'   )?             EOS -> DerivedTypeStmt  {cons("DerivedTypeStmt")}
-  {TypeParamName ','}+                                         -> TypeParamNameList{cons("TypeParamNameList")}
+  Label? 'TYPE'    OptTypeAttrSpecList? 
+         TypeName  OptTypeParamNameList?                   EOS -> DerivedTypeStmt  {cons("DerivedTypeStmt")}
+
+  (',' TypeAttrSpecList   )?     '::'                          -> OptTypeAttrSpecList  {cons("OptTASL")}
+  '('  TypeParamNameList ')'                                   -> OptTypeParamNameList {cons("OptTPNL")}
+  {    TypeParamName ','  }+                                   -> TypeParamNameList    {cons("TypeParamNameList")}
 
   'INTEGER'                                                    -> TypeName  {reject}
   'REAL'                                                       -> TypeName  {reject}
@@ -925,8 +932,8 @@ context-free syntax
   {TypeAttrSpec ','}+                                          -> TypeAttrSpecList {cons("TypeAttrSpecList")}
 
 %%R428
-  PrivateComponentsStmt                                        -> PrivateOrSequence  {cons("PrivateOrSequence")}
-  SequenceStmt                                                 -> PrivateOrSequence  {cons("PrivateOrSequence")}
+  PrivateComponentsStmt                                        -> PrivateOrSequence  {cons("PrivateOrSequence_PCS")}
+  SequenceStmt                                                 -> PrivateOrSequence  {cons("PrivateOrSequence_SS")}
 
 %%R429
   Label? 'END' 'TYPE' TypeName?                            EOS -> EndTypeStmt      {cons("EndTypeStmt")}
@@ -945,20 +952,23 @@ context-free syntax
   {TypeParamDecl ','}+                                         -> TypeParamDeclList{cons("TypeParamDeclList")}
 
 %%R433
-  'KIND'                                -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_KIND")}
-  'LEN'                                 -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_LEN")}
+  'KIND'                                    -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_KIND")}
+  'LEN'                                     -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_LEN")}
 
 %%R434
-  ComponentDefStmt*                     -> ComponentPart      {cons("ComponentPart")}
+  ComponentDefStmt*                         -> ComponentPart      {cons("ComponentPart")}
 
 %%R435
-  DataComponentDefStmt                  -> ComponentDefStmt   {cons("ComponentDefStmt")}
-  ProcComponentDefStmt                  -> ComponentDefStmt   {cons("ComponentDefStmt")}
+  DataComponentDefStmt                      -> ComponentDefStmt   {cons("ComponentDefStmt_DCDS")}
+  ProcComponentDefStmt                      -> ComponentDefStmt   {cons("ComponentDefStmt_PCDS")}
 
 %%R436
   Label? DeclarationTypeSpec
-           ( (',' ComponentAttrSpecList )? '::' )?
-                  ComponentDeclList    EOS  -> DataComponentDefStmt  {cons("DataComponentDefStmt")}
+           OptComponentAttrSpecList?
+                  ComponentDeclList    EOS  -> DataComponentDefStmt     {cons("DataComponentDefStmt")}
+
+  (',' ComponentAttrSpecList )? '::'        -> OptComponentAttrSpecList {cons("OptCASL")}
+
 
 %%R437
   AccessSpec                                -> ComponentAttrSpec     {cons("ComponentAttrSpec_AS")}
@@ -976,8 +986,8 @@ context-free syntax
   {ComponentDecl ','}+                                        -> ComponentDeclList {cons("ComponentDeclList")}
 
 %%R439
-  ExplicitShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec")}
-  DeferredShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec")}
+  ExplicitShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec_ESSL")}
+  DeferredShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec_DSSL")}
 
 %%R440
   Label? 'PROCEDURE'
@@ -993,9 +1003,9 @@ context-free syntax
   {ProcComponentAttrSpec ','}+                -> ProcComponentAttrSpecList {cons("ProcComponentAttrSpecList")}
 
 %%R442
-  '=' Expr                                    -> ComponentInitialization   {cons("ComponentInitialization")}
-  '=>' NullInit                               -> ComponentInitialization   {cons("ComponentInitialization")}
-  '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentInitialization")}
+  '=' Expr                                    -> ComponentInitialization   {cons("ComponentInitialization_E")}
+  '=>' NullInit                               -> ComponentInitialization   {cons("ComponentInitialization_NI")}
+  '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentInitialization_IDT")}
 
 %%R443
 %%ABIGUITY Replace designator by variable?
@@ -1013,20 +1023,19 @@ context-free syntax
   Label? 'PRIVATE'                             EOS -> BindingPrivateStmt     {cons("BindingPrivateStmt")}
 
 %%R447
-  TypeBoundProcedureStmt                           -> TypeBoundProcBinding   {cons("TypeBoundProcBinding")}
-  TypeBoundGenericStmt                             -> TypeBoundProcBinding   {cons("TypeBoundProcBinding")}
-  FinalProcedureStmt                               -> TypeBoundProcBinding   {cons("TypeBoundProcBinding")}
+  TypeBoundProcedureStmt                           -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_TBPS")}
+  TypeBoundGenericStmt                             -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_TBGS")}
+  FinalProcedureStmt                               -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_FPS")}
 
 %%R448
+  Label? 'PROCEDURE' TypeBoundProcDeclList     EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_1")}
   Label? 'PROCEDURE'
-              (( ',' BindingAttrList )? '::')?
-                     TypeBoundProcDeclList
-                                               EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt")}
+               ( ',' BindingAttrList )? '::'
+                     TypeBoundProcDeclList     EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_2")}
   Label? 'PROCEDURE'
               '(' InterfaceName ')'
                  ',' BindingAttrList    '::'
-                     BindingNameList
-                                               EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt")}
+                     BindingNameList           EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_3")}
 
   {BindingAttr ','}+                               -> BindingAttrList         {cons("BindingAttrList")}
   {BindingName ','}+                               -> BindingNameList         {cons("BindingNameList")}
@@ -1064,9 +1073,9 @@ context-free syntax
   ( Keyword '=' )? ComponentDataSource             -> ComponentSpec           {cons("ComponentSpec")}
 
 %%R457
-  Expr                                             -> ComponentDataSource     {cons("ComponentDataSource")}  
-  DataTarget                                       -> ComponentDataSource     {cons("ComponentDataSource")}  
-  ProcTarget                                       -> ComponentDataSource     {cons("ComponentDataSource")}  
+  Expr                                             -> ComponentDataSource     {cons("ComponentDataSource_E")}  
+  DataTarget                                       -> ComponentDataSource     {cons("ComponentDataSource_DT")}  
+  ProcTarget                                       -> ComponentDataSource     {cons("ComponentDataSource_PT")}  
 
 
 %% 4.6 Enumerations and enumerators
@@ -1097,9 +1106,9 @@ context-free syntax
 %%
 
 %%R463
-  BinaryConstant                                   -> BozLiteralConstant      {cons("BozLiteralConstant")}
-  OctalConstant                                    -> BozLiteralConstant      {cons("BozLiteralConstant")}
-  HexConstant                                      -> BozLiteralConstant      {cons("BozLiteralConstant")}
+  BinaryConstant                                   -> BozLiteralConstant      {cons("BozLiteralConstant_BC")}
+  OctalConstant                                    -> BozLiteralConstant      {cons("BozLiteralConstant_OC")}
+  HexConstant                                      -> BozLiteralConstant      {cons("BozLiteralConstant_HC")}
 
 %%R464
 %% BinaryConstant - lex
@@ -1122,8 +1131,8 @@ context-free syntax
   '['  AcSpec  ']'                                 -> ArrayConstructor     {cons("ArrayConstructor")}
 
 %%R469
-   TypeSpec '::'                                   -> AcSpec               {cons("AcSpec")}
-  (TypeSpec '::')? AcValueList                     -> AcSpec               {cons("AcSpec")}
+   TypeSpec '::'                                   -> AcSpec               {cons("AcSpec_TS")}
+  (TypeSpec '::')? AcValueList                     -> AcSpec               {cons("AcSpec_AVL")}
   {AcValue ','}+                                   -> AcValueList          {cons("AcValueList")}
 
 %%R470
@@ -1133,8 +1142,8 @@ context-free syntax
 %% Rbracket - lex
 
 %%R472
-  Expr                                             -> AcValue              {cons("AcValue")}
-  AcImpliedDo                                      -> AcValue              {cons("AcValue")}
+  Expr                                             -> AcValue              {cons("AcValue_E")}
+  AcImpliedDo                                      -> AcValue              {cons("AcValue_AID")}
    
 %%R473
   '(' AcValueList ',' AcImpliedDoControl ')'       -> AcImpliedDo          {cons("AcImpliedDo")}
