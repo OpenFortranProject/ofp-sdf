@@ -15,51 +15,6 @@ ATbool ofp_traverse_init()
  * Section/Clause 4: Types
  */
 
-//========================================================================================
-// R405 kind-selector
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
-{
-#ifdef DEBUG_PRINT
-   printf("KindSelector: %s\n", ATwriteToString(term));
-#endif
-
-   if (ATmatch(term, "KindSelector_KIND")) {
-      // TODO KindSelector_KIND
-      return ATtrue;
-   }
-   else if (ATmatch(term, "KindSelector_STAR")) {
-      // TODO KindSelector_STAR
-      return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-//========================================================================================
-// R407 int-literal-constant
-//----------------------------------------------------------------------------------------
-ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConstant)
-{
-#ifdef DEBUG_PRINT
-   printf("IntLiteralConstant: %s\n", ATwriteToString(term));
-#endif
-
-   OFP_Traverse DigitString, KindParam;
-   if (ATmatch(term, "IntLiteralConstant(<term>,<term>)", &DigitString.term, &KindParam.term)) {
-      int i;
-      if (ATmatch(term, "<int>", &i)) {
-         // MATCHED integer constant
-      } else return ATfalse;
-      
-      // TODO KindParam
-
-      return ATtrue;
-   }
-
-   return ATtrue;
-}
-
 
 /**
  * Section/Clause 5: Attribute declarations and specifications
