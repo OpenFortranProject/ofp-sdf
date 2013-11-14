@@ -4,7 +4,14 @@ Module(
       [ Constructors(
           [
 
-            OpDecl(
+            Comment("Section/Clause 2 Fortran concepts")
+          , Comment("-----------------------------------------------------------------------------------------")
+
+
+          , Comment("2.1 High level syntax")
+          , Comment("---------------------")
+
+          , OpDecl(
               "Program"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("StartCommentBlock")]))
@@ -455,10 +462,21 @@ Module(
             , FunType([ConstType(SortNoArgs("PauseStmt"))], ConstType(SortNoArgs("ActionStmt")))
             )
 
+          , Comment("2.5 Fundamental concepts")
+          , Comment("------------------------")
+
           , OpDecl(
               "Keyword"
             , FunType([ConstType(SortNoArgs("Name"))], ConstType(SortNoArgs("Keyword")))
             )
+
+
+          , Comment("Section/Clause 3 Lexical tokens and source form")
+          , Comment("-----------------------------------------------------------------------------------------")
+
+
+          , Comment("3.2 Low-level syntax")
+          , Comment("--------------------")
 
           , OpDecl(
               "Constant_AMB"
@@ -466,27 +484,27 @@ Module(
             )
 
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_BLC"
             , FunType([ConstType(SortNoArgs("BozLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_CLC"
             , FunType([ConstType(SortNoArgs("CharLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_LLC"
             , FunType([ConstType(SortNoArgs("LogicalLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_CLC"
             , FunType([ConstType(SortNoArgs("ComplexLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_RLC"
             , FunType([ConstType(SortNoArgs("RealLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
           , OpDecl(
-              "LiteralConstant"
+              "LiteralConstant_ILC"
             , FunType([ConstType(SortNoArgs("IntLiteralConstant"))], ConstType(SortNoArgs("LiteralConstant")))
             )
 
@@ -494,12 +512,56 @@ Module(
               "NamedConstant"
             , FunType([ConstType(SortNoArgs("Name"))], ConstType(SortNoArgs("NamedConstant")))
             )
+
+
+          , Comment("Section/Clause 4 Types")
+          , Comment("-----------------------------------------------------------------------------------------")
+
+          , Comment("4.2 Type parameters")
+          , Comment("-------------------")
+
+          , OpDecl("TypeParamValue_COLON", ConstType(SortNoArgs("TypeParamValue")))
+          , OpDecl("TypeParamValue_STAR", ConstType(SortNoArgs("TypeParamValue")))
           , OpDecl(
-              "DeclarationTypeSpec"
-            , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+              "TypeParamValue_E"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("TypeParamValue")))
             )
 
-          , OpDecl("IntrinsicTypeSpec_DOUBLE_COMPLEX", ConstType(SortNoArgs("IntrinsicTypeSpec")))
+          , Comment("4.3 Relationship of types and values to objects")
+          , Comment("-----------------------------------------------")
+
+          , OpDecl(
+              "TypeSpec_DTS"
+            , FunType([ConstType(SortNoArgs("DerivedTypeSpec"))], ConstType(SortNoArgs("TypeSpec")))
+            )
+          , OpDecl(
+              "TypeSpec_ITS"
+            , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("TypeSpec")))
+            )
+
+          , OpDecl("DeclarationTypeSpec_T_STAR", ConstType(SortNoArgs("DeclarationTypeSpec")))
+          , OpDecl("DeclarationTypeSpec_C_STAR", ConstType(SortNoArgs("DeclarationTypeSpec")))
+          , OpDecl(
+              "DeclarationTypeSpec_C_DTS"
+            , FunType([ConstType(SortNoArgs("DerivedTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+            )
+          , OpDecl(
+              "DeclarationTypeSpec_T_DTS"
+            , FunType([ConstType(SortNoArgs("DerivedTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+            )
+          , OpDecl(
+              "DeclarationTypeSpec_T_ITS"
+            , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+            )
+          , OpDecl(
+              "DeclarationTypeSpec_ITS"
+            , FunType([ConstType(SortNoArgs("IntrinsicTypeSpec"))], ConstType(SortNoArgs("DeclarationTypeSpec")))
+            )
+ 
+          , Comment("4.4 Intrinsic types")
+          , Comment("-------------------")
+
+          , OpDecl("IntrinsicTypeSpec_DBL_CMPLX", ConstType(SortNoArgs("IntrinsicTypeSpec")))
           , OpDecl(
               "IntrinsicTypeSpec_LOGICAL"
             , FunType(
@@ -508,20 +570,21 @@ Module(
               )
             )
           , OpDecl(
-              "IntrinsicTypeSpec_CHARACTER"
+              "IntrinsicTypeSpec_CHAR"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("CharSelector")]))]
               , ConstType(SortNoArgs("IntrinsicTypeSpec"))
               )
             )
           , OpDecl(
-              "IntrinsicTypeSpec_COMPLEX"
+              "IntrinsicTypeSpec_CMPLX"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
               , ConstType(SortNoArgs("IntrinsicTypeSpec"))
               )
             )
-          , OpDecl("IntrinsicTypeSpec_DOUBLE_PRECISION", ConstType(SortNoArgs("IntrinsicTypeSpec")))
+          , OpDecl("IntrinsicTypeSpec_DBL_PREC", ConstType(SortNoArgs("IntrinsicTypeSpec")))
+
           , OpDecl(
               "IntrinsicTypeSpec_REAL"
             , FunType(
@@ -530,11 +593,105 @@ Module(
               )
             )
           , OpDecl(
-              "IntrinsicTypeSpec_INTEGER"
+              "IntrinsicTypeSpec_INT"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("KindSelector")]))]
               , ConstType(SortNoArgs("IntrinsicTypeSpec"))
               )
+            )
+
+          , OpDecl(
+              "KindSelector_STAR"
+            , FunType([ConstType(SortNoArgs("Icon"))], ConstType(SortNoArgs("KindSelector")))
+            )
+          , OpDecl(
+              "KindSelector_E"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("KindSelector")))
+            )
+
+          , OpDecl(
+              "SignedIntLiteralConstant"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Sign")])), ConstType(SortNoArgs("IntLiteralConstant"))]
+              , ConstType(SortNoArgs("SignedIntLiteralConstant"))
+              )
+            )
+
+          , OpDecl(
+              "IntLiteralConstant"
+            , FunType(
+                [ConstType(SortNoArgs("DigitString")), ConstType(Sort("Option", [SortNoArgs("KindParam0")]))]
+              , ConstType(SortNoArgs("IntLiteralConstant"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("KindParam"))], ConstType(SortNoArgs("KindParam0")))
+            )
+
+          , OpDecl(
+              "KindParam_SICN"
+            , FunType([ConstType(SortNoArgs("ScalarIntConstantName"))], ConstType(SortNoArgs("KindParam")))
+            )
+          , OpDecl(
+              "KindParam_DS"
+            , FunType([ConstType(SortNoArgs("DigitString"))], ConstType(SortNoArgs("KindParam")))
+            )
+
+          , OpDecl(
+              "DigitString"
+            , FunType([ConstType(SortNoArgs("Icon"))], ConstType(SortNoArgs("DigitString")))
+            )
+
+          , OpDecl("Sign_MINUS", ConstType(SortNoArgs("Sign")))
+          , OpDecl("Sign_PLUS", ConstType(SortNoArgs("Sign")))
+
+          , OpDecl(
+              "SignedRealLiteralConstant"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Sign")])), ConstType(SortNoArgs("RealLiteralConstant"))]
+              , ConstType(SortNoArgs("SignedRealLiteralConstant"))
+              )
+            )
+          , OpDecl(
+              "RealLiteralConstant"
+            , FunType(
+                [ConstType(SortNoArgs("Rcon")), ConstType(Sort("Option", [SortNoArgs("KindParam0")]))]
+              , ConstType(SortNoArgs("RealLiteralConstant"))
+              )
+            )
+
+          , OpDecl(
+              "ComplexLiteralConstant"
+            , FunType(
+                [ConstType(SortNoArgs("RealPart")), ConstType(SortNoArgs("ImagPart"))]
+              , ConstType(SortNoArgs("ComplexLiteralConstant"))
+              )
+            )
+
+          , OpDecl(
+              "RealPart_NC"
+            , FunType([ConstType(SortNoArgs("NamedConstant"))], ConstType(SortNoArgs("RealPart")))
+            )
+          , OpDecl(
+              "RealPart_SRLC"
+            , FunType([ConstType(SortNoArgs("SignedRealLiteralConstant"))], ConstType(SortNoArgs("RealPart")))
+            )
+          , OpDecl(
+              "RealPart_SILC"
+            , FunType([ConstType(SortNoArgs("SignedIntLiteralConstant"))], ConstType(SortNoArgs("RealPart")))
+            )
+
+          , OpDecl(
+              "ImagPart_NC"
+            , FunType([ConstType(SortNoArgs("NamedConstant"))], ConstType(SortNoArgs("ImagPart")))
+            )
+          , OpDecl(
+              "ImagPart_SRLC"
+            , FunType([ConstType(SortNoArgs("SignedRealLiteralConstant"))], ConstType(SortNoArgs("ImagPart")))
+            )
+          , OpDecl(
+              "ImagPart_SILC"
+            , FunType([ConstType(SortNoArgs("SignedIntLiteralConstant"))], ConstType(SortNoArgs("ImagPart")))
             )
 
           , OpDecl(
@@ -570,13 +727,698 @@ Module(
             )
 
           , OpDecl(
-              "AcValue"
+              "CharLength_I"
+            , FunType([ConstType(SortNoArgs("Icon"))], ConstType(SortNoArgs("CharLength")))
+            )
+          , OpDecl(
+              "CharLength_TPV"
+            , FunType([ConstType(SortNoArgs("TypeParamValue"))], ConstType(SortNoArgs("CharLength")))
+            )
+
+          , OpDecl(
+              "CharLiteralConstant"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindParam1")])), ConstType(SortNoArgs("Scon"))]
+              , ConstType(SortNoArgs("CharLiteralConstant"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("KindParam"))], ConstType(SortNoArgs("KindParam1")))
+            )
+
+          , OpDecl(
+              "LogicalLiteralConstant_FALSE"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindParam0")]))]
+              , ConstType(SortNoArgs("LogicalLiteralConstant"))
+              )
+            )
+          , OpDecl(
+              "LogicalLiteralConstant_TRUE"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("KindParam0")]))]
+              , ConstType(SortNoArgs("LogicalLiteralConstant"))
+              )
+            )
+
+          , Comment("4.5 Derived types")
+          , Comment("-----------------")
+
+          , OpDecl(
+              "DerivedTypeDef"
+            , FunType(
+                [ ConstType(SortNoArgs("DerivedTypeStmt"))
+                , ConstType(Sort("List", [SortNoArgs("TypeParamDefStmt")]))
+                , ConstType(Sort("List", [SortNoArgs("PrivateOrSequence")]))
+                , ConstType(Sort("Option", [SortNoArgs("ComponentPart")]))
+                , ConstType(Sort("Option", [SortNoArgs("TypeBoundProcedurePart")]))
+                , ConstType(SortNoArgs("EndTypeStmt"))
+                ]
+              , ConstType(SortNoArgs("DerivedTypeDef"))
+              )
+            )
+
+          , OpDecl(
+              "DerivedTypeStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("OptTypeAttrSpecList")]))
+                , ConstType(SortNoArgs("TypeName"))
+                , ConstType(Sort("Option", [SortNoArgs("OptTypeParamNameList")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("DerivedTypeStmt"))
+              )
+            )
+          , OpDecl(
+              "OptTASL"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("TypeAttrSpecList0")]))]
+              , ConstType(SortNoArgs("OptTypeAttrSpecList"))
+              )
+            )
+          , OpDecl(
+              "OptTPNL"
+            , FunType([ConstType(SortNoArgs("TypeParamNameList"))], ConstType(SortNoArgs("OptTypeParamNameList")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("TypeAttrSpecList"))], ConstType(SortNoArgs("TypeAttrSpecList0")))
+            )
+
+          , OpDecl(
+              "TypeAttrSpec_EXTENDS"
+            , FunType([ConstType(SortNoArgs("ParentTypeName"))], ConstType(SortNoArgs("TypeAttrSpec")))
+            )
+          , OpDecl("TypeAttrSpec_BIND", ConstType(SortNoArgs("TypeAttrSpec")))
+          , OpDecl(
+              "TypeAttrSpec_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("TypeAttrSpec")))
+            )
+          , OpDecl("TypeAttrSpec_ABSTRACT", ConstType(SortNoArgs("TypeAttrSpec")))
+
+          , OpDecl(
+              "TypeAttrSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("TypeAttrSpec")]))]
+              , ConstType(SortNoArgs("TypeAttrSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "TypeParamNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("TypeParamName")]))]
+              , ConstType(SortNoArgs("TypeParamNameList"))
+              )
+            )
+
+          , OpDecl(
+              "PrivateOrSequence_SS"
+            , FunType([ConstType(SortNoArgs("SequenceStmt"))], ConstType(SortNoArgs("PrivateOrSequence")))
+            )
+          , OpDecl(
+              "PrivateOrSequence_PCS"
+            , FunType([ConstType(SortNoArgs("PrivateComponentsStmt"))], ConstType(SortNoArgs("PrivateOrSequence")))
+            )
+
+          , OpDecl(
+              "EndTypeStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("TypeName")]))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EndTypeStmt"))
+              )
+            )
+
+          , OpDecl(
+              "SequenceStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("SequenceStmt"))
+              )
+            )
+
+          , OpDecl(
+              "TypeParamDefStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("KindSelector")]))
+                , ConstType(SortNoArgs("TypeParamAttrSpec"))
+                , ConstType(SortNoArgs("TypeParamDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeParamDefStmt"))
+              )
+            )
+
+          , OpDecl(
+              "TypeParamDecl"
+            , FunType(
+                [ConstType(SortNoArgs("TypeParamName")), ConstType(Sort("Option", [SortNoArgs("Expr1")]))]
+              , ConstType(SortNoArgs("TypeParamDecl"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("Expr1")))
+            )
+
+          , OpDecl(
+              "TypeParamDeclList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("TypeParamDecl")]))]
+              , ConstType(SortNoArgs("TypeParamDeclList"))
+              )
+            )
+
+          , OpDecl("TypeParamAttrSpec_LEN", ConstType(SortNoArgs("TypeParamAttrSpec")))
+          , OpDecl("TypeParamAttrSpec_KIND", ConstType(SortNoArgs("TypeParamAttrSpec")))
+
+          , OpDecl(
+              "ComponentPart"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ComponentDefStmt")]))]
+              , ConstType(SortNoArgs("ComponentPart"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentDefStmt_PCDS"
+            , FunType([ConstType(SortNoArgs("ProcComponentDefStmt"))], ConstType(SortNoArgs("ComponentDefStmt")))
+            )
+          , OpDecl(
+              "ComponentDefStmt_DCDS"
+            , FunType([ConstType(SortNoArgs("DataComponentDefStmt"))], ConstType(SortNoArgs("ComponentDefStmt")))
+            )
+            
+          , OpDecl(
+              "DataComponentDefStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("DeclarationTypeSpec"))
+                , ConstType(Sort("Option", [SortNoArgs("OptComponentAttrSpecList")]))
+                , ConstType(SortNoArgs("ComponentDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("DataComponentDefStmt"))
+              )
+            )
+          , OpDecl(
+              "OptCASL"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ComponentAttrSpecList0")]))]
+              , ConstType(SortNoArgs("OptComponentAttrSpecList"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ComponentAttrSpecList"))], ConstType(SortNoArgs("ComponentAttrSpecList0")))
+            )
+
+          , OpDecl("ComponentAttrSpec_POINTER", ConstType(SortNoArgs("ComponentAttrSpec")))
+          , OpDecl(
+              "ComponentAttrSpec_DIMENSION"
+            , FunType([ConstType(SortNoArgs("ComponentArraySpec"))], ConstType(SortNoArgs("ComponentAttrSpec")))
+            )
+          , OpDecl("ComponentAttrSpec_CONTIGUOUS", ConstType(SortNoArgs("ComponentAttrSpec")))
+          , OpDecl(
+              "ComponentAttrSpec_CODIMENSION"
+            , FunType([ConstType(SortNoArgs("CoarraySpec"))], ConstType(SortNoArgs("ComponentAttrSpec")))
+            )
+          , OpDecl("ComponentAttrSpec_ALLOCATABLE", ConstType(SortNoArgs("ComponentAttrSpec")))
+          , OpDecl(
+              "ComponentAttrSpec_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("ComponentAttrSpec")))
+            )
+
+          , OpDecl(
+              "ComponentAttrSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ComponentAttrSpec")]))]
+              , ConstType(SortNoArgs("ComponentAttrSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentDecl"
+            , FunType(
+                [ ConstType(SortNoArgs("ComponentName"))
+                , ConstType(Sort("Option", [SortNoArgs("ComponentArraySpec0")]))
+                , ConstType(Sort("Option", [SortNoArgs("CoarraySpec0")]))
+                , ConstType(Sort("Option", [SortNoArgs("CharLength0")]))
+                , ConstType(Sort("Option", [SortNoArgs("ComponentInitialization")]))
+                ]
+              , ConstType(SortNoArgs("ComponentDecl"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ComponentArraySpec"))], ConstType(SortNoArgs("ComponentArraySpec0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("CoarraySpec"))], ConstType(SortNoArgs("CoarraySpec0")))
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("CharLength"))], ConstType(SortNoArgs("CharLength0")))
+            )
+
+          , OpDecl(
+              "ComponentDeclList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ComponentDecl")]))]
+              , ConstType(SortNoArgs("ComponentDeclList"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentArraySpec_DSSL"
+            , FunType([ConstType(SortNoArgs("DeferredShapeSpecList"))], ConstType(SortNoArgs("ComponentArraySpec")))
+            )
+          , OpDecl(
+              "ComponentArraySpec_ESSL"
+            , FunType([ConstType(SortNoArgs("ExplicitShapeSpecList"))], ConstType(SortNoArgs("ComponentArraySpec")))
+            )
+
+          , OpDecl(
+              "ProcComponentDefStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("ProcInterface")]))
+                , ConstType(SortNoArgs("ProcComponentAttrSpecList"))
+                , ConstType(SortNoArgs("ProcDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("ProcComponentDefStmt"))
+              )
+            )
+
+          , OpDecl(
+              "ProcComponentAttrSpec_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("ProcComponentAttrSpec")))
+            )
+          , OpDecl("ProcComponentAttrSpec_NOPASS", ConstType(SortNoArgs("ProcComponentAttrSpec")))
+          , OpDecl("ProcComponentAttrSpec_PASS", ConstType(SortNoArgs("ProcComponentAttrSpec")))
+          , OpDecl("ProcComponentAttrSpec_POINTER", ConstType(SortNoArgs("ProcComponentAttrSpec")))
+
+          , OpDecl(
+              "ProcComponentAttrSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("ProcComponentAttrSpec")]))]
+              , ConstType(SortNoArgs("ProcComponentAttrSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentInitialization_IDT"
+            , FunType([ConstType(SortNoArgs("InitialDataTarget"))], ConstType(SortNoArgs("ComponentInitialization")))
+            )
+          , OpDecl(
+              "ComponentInitialization_NI"
+            , FunType([ConstType(SortNoArgs("NullInit"))], ConstType(SortNoArgs("ComponentInitialization")))
+            )
+          , OpDecl(
+              "ComponentInitialization_E"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("ComponentInitialization")))
+            )
+
+          , OpDecl(
+              "InitialDataTarget"
+            , FunType([ConstType(SortNoArgs("Designator"))], ConstType(SortNoArgs("InitialDataTarget")))
+            )
+
+          , OpDecl(
+              "PrivateComponentsStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("PrivateComponentsStmt"))
+              )
+            )
+
+          , OpDecl(
+              "TypeBoundProcedurePart"
+            , FunType(
+                [ ConstType(SortNoArgs("ContainsStmt"))
+                , ConstType(Sort("Option", [SortNoArgs("BindingPrivateStmt")]))
+                , ConstType(Sort("List", [SortNoArgs("TypeBoundProcBinding")]))
+                ]
+              , ConstType(SortNoArgs("TypeBoundProcedurePart"))
+              )
+            )
+
+          , OpDecl(
+              "BindingPrivateStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("BindingPrivateStmt"))
+              )
+            )
+
+          , OpDecl(
+              "TypeBoundProcBinding_FPS"
+            , FunType([ConstType(SortNoArgs("FinalProcedureStmt"))], ConstType(SortNoArgs("TypeBoundProcBinding")))
+            )
+          , OpDecl(
+              "TypeBoundProcBinding_TBGS"
+            , FunType([ConstType(SortNoArgs("TypeBoundGenericStmt"))], ConstType(SortNoArgs("TypeBoundProcBinding")))
+            )
+          , OpDecl(
+              "TypeBoundProcBinding_TBPS"
+            , FunType([ConstType(SortNoArgs("TypeBoundProcedureStmt"))], ConstType(SortNoArgs("TypeBoundProcBinding")))
+            )
+
+          , OpDecl(
+              "TypeBoundProcedureStmt_3"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("InterfaceName"))
+                , ConstType(SortNoArgs("BindingAttrList"))
+                , ConstType(SortNoArgs("BindingNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeBoundProcedureStmt"))
+              )
+            )
+          , OpDecl(
+              "TypeBoundProcedureStmt_2"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("BindingAttrList0")]))
+                , ConstType(SortNoArgs("TypeBoundProcDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeBoundProcedureStmt"))
+              )
+            )
+          , OpDecl(
+              "TypeBoundProcedureStmt_1"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("TypeBoundProcDeclList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeBoundProcedureStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("BindingAttrList"))], ConstType(SortNoArgs("BindingAttrList0")))
+            )
+
+          , OpDecl(
+              "BindingNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("BindingName")]))]
+              , ConstType(SortNoArgs("BindingNameList"))
+              )
+            )
+
+          , OpDecl(
+              "BindingAttrList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("BindingAttr")]))]
+              , ConstType(SortNoArgs("BindingAttrList"))
+              )
+            )
+
+          , OpDecl(
+              "TypeBoundProcDecl"
+            , FunType(
+                [ConstType(SortNoArgs("BindingName")), ConstType(Sort("Option", [SortNoArgs("ProcedureName0")]))]
+              , ConstType(SortNoArgs("TypeBoundProcDecl"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ProcedureName"))], ConstType(SortNoArgs("ProcedureName0")))
+            )
+
+          , OpDecl(
+              "TypeBoundProcDeclList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("TypeBoundProcDecl")]))]
+              , ConstType(SortNoArgs("TypeBoundProcDeclList"))
+              )
+            )
+
+          , OpDecl(
+              "TypeBoundGenericStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(Sort("Option", [SortNoArgs("AccessSpec0")]))
+                , ConstType(SortNoArgs("GenericSpec"))
+                , ConstType(SortNoArgs("BindingNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("TypeBoundGenericStmt"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("AccessSpec0")))
+            )
+
+          , OpDecl(
+              "BindingAttr_AS"
+            , FunType([ConstType(SortNoArgs("AccessSpec"))], ConstType(SortNoArgs("BindingAttr")))
+            )
+          , OpDecl("BindingAttr_DEFERRED", ConstType(SortNoArgs("BindingAttr")))
+          , OpDecl("BindingAttr_NON_OVERRIDABLE", ConstType(SortNoArgs("BindingAttr")))
+          , OpDecl("BindingAttr_NOPASS", ConstType(SortNoArgs("BindingAttr")))
+          , OpDecl(
+              "BindingAttr_PASS"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("ArgName0")]))]
+              , ConstType(SortNoArgs("BindingAttr"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("ArgName"))], ConstType(SortNoArgs("ArgName0")))
+            )
+
+          , OpDecl(
+              "FinalProcedureStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("FinalSubroutineNameList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("FinalProcedureStmt"))
+              )
+            )
+
+          , OpDecl(
+              "FinalSubroutineNameList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("FinalSubroutineName")]))]
+              , ConstType(SortNoArgs("FinalSubroutineNameList"))
+              )
+            )
+
+          , OpDecl(
+              "DerivedTypeSpec"
+            , FunType(
+                [ConstType(SortNoArgs("TypeName")), ConstType(Sort("Option", [SortNoArgs("TypeParamSpecList0")]))]
+              , ConstType(SortNoArgs("DerivedTypeSpec"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("TypeParamSpecList"))], ConstType(SortNoArgs("TypeParamSpecList0")))
+            )
+
+          , OpDecl(
+              "TypeParamSpec"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Keyword0")])), ConstType(SortNoArgs("TypeParamValue"))]
+              , ConstType(SortNoArgs("TypeParamSpec"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Keyword"))], ConstType(SortNoArgs("Keyword0")))
+            )
+
+          , OpDecl(
+              "TypeParamSpecList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("TypeParamSpec")]))]
+              , ConstType(SortNoArgs("TypeParamSpecList"))
+              )
+            )
+
+          , OpDecl(
+              "StructureConstructor"
+            , FunType(
+                [ConstType(SortNoArgs("DerivedTypeSpec")), ConstType(Sort("List", [SortNoArgs("ComponentSpec")]))]
+              , ConstType(SortNoArgs("StructureConstructor"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentSpec"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Keyword0")])), ConstType(SortNoArgs("ComponentDataSource"))]
+              , ConstType(SortNoArgs("ComponentSpec"))
+              )
+            )
+
+          , OpDecl(
+              "ComponentDataSource_PT"
+            , FunType([ConstType(SortNoArgs("ProcTarget"))], ConstType(SortNoArgs("ComponentDataSource")))
+            )
+          , OpDecl(
+              "ComponentDataSource_DT"
+            , FunType([ConstType(SortNoArgs("DataTarget"))], ConstType(SortNoArgs("ComponentDataSource")))
+            )
+          , OpDecl(
+              "ComponentDataSource_E"
+            , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("ComponentDataSource")))
+            )
+
+          , Comment("4.6 Enumerations and enumerators")
+          , Comment("--------------------------------")
+
+          , OpDecl(
+              "EnumDef"
+            , FunType(
+                [ ConstType(SortNoArgs("EnumDefStmt"))
+                , ConstType(Sort("List", [SortNoArgs("EnumeratorDefStmt")]))
+                , ConstType(SortNoArgs("EndEnumStmt"))
+                ]
+              , ConstType(SortNoArgs("EnumDef"))
+              )
+            )
+
+          , OpDecl(
+              "EnumDefStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("EnumDefStmt"))
+              )
+            )
+
+          , OpDecl(
+              "EnumeratorDefStmt"
+            , FunType(
+                [ ConstType(Sort("Option", [SortNoArgs("Label")]))
+                , ConstType(SortNoArgs("EnumeratorList"))
+                , ConstType(SortNoArgs("EOS"))
+                ]
+              , ConstType(SortNoArgs("EnumeratorDefStmt"))
+              )
+            )
+
+         , OpDecl(
+              "Enumerator"
+            , FunType(
+                [ConstType(SortNoArgs("NamedConstant")), ConstType(Sort("Option", [SortNoArgs("IntConstantExpr0")]))]
+              , ConstType(SortNoArgs("Enumerator"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("IntConstantExpr"))], ConstType(SortNoArgs("IntConstantExpr0")))
+            )
+
+          , OpDecl(
+              "EnumeratorList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("Enumerator")]))]
+              , ConstType(SortNoArgs("EnumeratorList"))
+              )
+            )
+  
+          , OpDecl(
+              "EndEnumStmt"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
+              , ConstType(SortNoArgs("EndEnumStmt"))
+              )
+            )
+
+          , Comment("4.7 Binary, octal, and hexadecimal literal constants")
+          , Comment("----------------------------------------------------")
+
+          , OpDecl(
+              "BozLiteralConstant_HC"
+            , FunType([ConstType(SortNoArgs("HexConstant"))], ConstType(SortNoArgs("BozLiteralConstant")))
+            )
+          , OpDecl(
+              "BozLiteralConstant_OC"
+            , FunType([ConstType(SortNoArgs("OctalConstant"))], ConstType(SortNoArgs("BozLiteralConstant")))
+            )
+          , OpDecl(
+              "BozLiteralConstant_BC"
+            , FunType([ConstType(SortNoArgs("BinaryConstant"))], ConstType(SortNoArgs("BozLiteralConstant")))
+            )
+
+          , Comment("4.8 Construction of array values")
+          , Comment("--------------------------------")
+
+          , OpDecl(
+              "ArrayConstructor"
+            , FunType([ConstType(SortNoArgs("AcSpec"))], ConstType(SortNoArgs("ArrayConstructor")))
+            )
+
+          , OpDecl(
+              "AcSpec_AVL"
+            , FunType(
+                [ConstType(Sort("Option", [SortNoArgs("TypeSpec0")])), ConstType(SortNoArgs("AcValueList"))]
+              , ConstType(SortNoArgs("AcSpec"))
+              )
+            )
+          , OpDecl(
+              "AcSpec_TS"
+            , FunType([ConstType(SortNoArgs("TypeSpec"))], ConstType(SortNoArgs("AcSpec")))
+            )
+
+          , OpDecl(
+              "AcValue_AID"
             , FunType([ConstType(SortNoArgs("AcImpliedDo"))], ConstType(SortNoArgs("AcValue")))
             )
           , OpDecl(
-              "AcValue"
+              "AcValue_E"
             , FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("AcValue")))
             )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("TypeSpec"))], ConstType(SortNoArgs("TypeSpec0")))
+            )
+
+          , OpDecl(
+              "AcValueList"
+            , FunType(
+                [ConstType(Sort("List", [SortNoArgs("AcValue")]))]
+              , ConstType(SortNoArgs("AcValueList"))
+              )
+            )
+  
+          , OpDecl(
+              "AcImpliedDo"
+            , FunType(
+                [ConstType(SortNoArgs("AcValueList")), ConstType(SortNoArgs("AcImpliedDoControl"))]
+              , ConstType(SortNoArgs("AcImpliedDo"))
+              )
+            )
+
+          , OpDecl(
+              "AcImpliedDoControl"
+            , FunType(
+                [ ConstType(SortNoArgs("AcDoVariable"))
+                , ConstType(SortNoArgs("Expr"))
+                , ConstType(SortNoArgs("Expr"))
+                , ConstType(Sort("Option", [SortNoArgs("Expr0")]))
+                ]
+              , ConstType(SortNoArgs("AcImpliedDoControl"))
+              )
+            )
+          , OpDeclInj(
+              FunType([ConstType(SortNoArgs("Expr"))], ConstType(SortNoArgs("Expr0")))
+            )
+
+          , OpDecl(
+              "AcDoVariable"
+            , FunType([ConstType(SortNoArgs("DoVariable"))], ConstType(SortNoArgs("AcDoVariable")))
+            )
+
+
+          , Comment("Section/Clause 5 Attribute declarations and specifications")
+          , Comment("-----------------------------------------------------------------------------------------")
+
+          , Comment("5.2 Type declarations statements")
+          , Comment("--------------------------------")
 
           , OpDeclInj(
               FunType([ConstType(SortNoArgs("AttrSpecList"))], ConstType(SortNoArgs("AttrSpecList0")))
@@ -637,12 +1479,6 @@ Module(
           , OpDeclInj(
               FunType([ConstType(SortNoArgs("ArraySpec"))], ConstType(SortNoArgs("ArraySpec0")))
             )
-          , OpDeclInj(
-              FunType([ConstType(SortNoArgs("CoarraySpec"))], ConstType(SortNoArgs("CoarraySpec0")))
-            )
-          , OpDeclInj(
-              FunType([ConstType(SortNoArgs("CharLength"))], ConstType(SortNoArgs("CharLength0")))
-            )
           , OpDecl(
               "EntityDecl"
             , FunType(
@@ -655,8 +1491,6 @@ Module(
               , ConstType(SortNoArgs("EntityDecl"))
               )
             )
-
-
 
           , OpDecl(
               "Designator_AMB"

@@ -1475,61 +1475,73 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, pOFP_Traverse LiteralConstant)
 #endif
 
  OFP_Traverse BozLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &BozLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_BLC(<term>)", &BozLiteralConstant.term)) {
 
       if (ofp_traverse_BozLiteralConstant(BozLiteralConstant.term, &BozLiteralConstant)) {
          // MATCHED BozLiteralConstant
       } else return ATfalse;
 
+   // MATCHED LiteralConstant_BLC
+
    return ATtrue;
  }
 
  OFP_Traverse CharLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &CharLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_CLC(<term>)", &CharLiteralConstant.term)) {
 
       if (ofp_traverse_CharLiteralConstant(CharLiteralConstant.term, &CharLiteralConstant)) {
          // MATCHED CharLiteralConstant
       } else return ATfalse;
 
+   // MATCHED LiteralConstant_CLC
+
    return ATtrue;
  }
 
  OFP_Traverse LogicalLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &LogicalLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_LLC(<term>)", &LogicalLiteralConstant.term)) {
 
       if (ofp_traverse_LogicalLiteralConstant(LogicalLiteralConstant.term, &LogicalLiteralConstant)) {
          // MATCHED LogicalLiteralConstant
       } else return ATfalse;
 
+   // MATCHED LiteralConstant_LLC
+
    return ATtrue;
  }
 
  OFP_Traverse ComplexLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &ComplexLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_CLC(<term>)", &ComplexLiteralConstant.term)) {
 
       if (ofp_traverse_ComplexLiteralConstant(ComplexLiteralConstant.term, &ComplexLiteralConstant)) {
          // MATCHED ComplexLiteralConstant
       } else return ATfalse;
 
+   // MATCHED LiteralConstant_CLC
+
    return ATtrue;
  }
 
  OFP_Traverse RealLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &RealLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_RLC(<term>)", &RealLiteralConstant.term)) {
 
       if (ofp_traverse_RealLiteralConstant(RealLiteralConstant.term, &RealLiteralConstant)) {
          // MATCHED RealLiteralConstant
       } else return ATfalse;
 
+   // MATCHED LiteralConstant_RLC
+
    return ATtrue;
  }
 
  OFP_Traverse IntLiteralConstant;
- if (ATmatch(term, "LiteralConstant(<term>)", &IntLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_ILC(<term>)", &IntLiteralConstant.term)) {
 
       if (ofp_traverse_IntLiteralConstant(IntLiteralConstant.term, &IntLiteralConstant)) {
          // MATCHED IntLiteralConstant
       } else return ATfalse;
+
+   // MATCHED LiteralConstant_ILC
 
    return ATtrue;
  }
@@ -1556,18 +1568,138 @@ ATbool ofp_traverse_NamedConstant(ATerm term, pOFP_Traverse NamedConstant)
  return ATfalse;
 }
 
+ATbool ofp_traverse_TypeParamValue(ATerm term, pOFP_Traverse TypeParamValue)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamValue: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "TypeParamValue_COLON")) {
+
+   // MATCHED TypeParamValue_COLON
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "TypeParamValue_STAR")) {
+
+   // MATCHED TypeParamValue_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "TypeParamValue_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED TypeParamValue_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeSpec(ATerm term, pOFP_Traverse TypeSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DerivedTypeSpec;
+ if (ATmatch(term, "TypeSpec_DTS(<term>)", &DerivedTypeSpec.term)) {
+
+      if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec.term, &DerivedTypeSpec)) {
+         // MATCHED DerivedTypeSpec
+      } else return ATfalse;
+
+   // MATCHED TypeSpec_DTS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntrinsicTypeSpec;
+ if (ATmatch(term, "TypeSpec_ITS(<term>)", &IntrinsicTypeSpec.term)) {
+
+      if (ofp_traverse_IntrinsicTypeSpec(IntrinsicTypeSpec.term, &IntrinsicTypeSpec)) {
+         // MATCHED IntrinsicTypeSpec
+      } else return ATfalse;
+
+   // MATCHED TypeSpec_ITS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec)
 {
 #ifdef DEBUG_PRINT
    printf("DeclarationTypeSpec: %s\n", ATwriteToString(term));
 #endif
 
+ if (ATmatch(term, "DeclarationTypeSpec_T_STAR")) {
+
+   // MATCHED DeclarationTypeSpec_T_STAR
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "DeclarationTypeSpec_C_STAR")) {
+
+   // MATCHED DeclarationTypeSpec_C_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DerivedTypeSpec;
+ if (ATmatch(term, "DeclarationTypeSpec_C_DTS(<term>)", &DerivedTypeSpec.term)) {
+
+      if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec.term, &DerivedTypeSpec)) {
+         // MATCHED DerivedTypeSpec
+      } else return ATfalse;
+
+   // MATCHED DeclarationTypeSpec_C_DTS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DerivedTypeSpec1;
+ if (ATmatch(term, "DeclarationTypeSpec_T_DTS(<term>)", &DerivedTypeSpec1.term)) {
+
+      if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec1.term, &DerivedTypeSpec1)) {
+         // MATCHED DerivedTypeSpec
+      } else return ATfalse;
+
+   // MATCHED DeclarationTypeSpec_T_DTS
+
+   return ATtrue;
+ }
+
  OFP_Traverse IntrinsicTypeSpec;
- if (ATmatch(term, "DeclarationTypeSpec(<term>)", &IntrinsicTypeSpec.term)) {
+ if (ATmatch(term, "DeclarationTypeSpec_T_ITS(<term>)", &IntrinsicTypeSpec.term)) {
 
       if (ofp_traverse_IntrinsicTypeSpec(IntrinsicTypeSpec.term, &IntrinsicTypeSpec)) {
          // MATCHED IntrinsicTypeSpec
       } else return ATfalse;
+
+   // MATCHED DeclarationTypeSpec_T_ITS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse IntrinsicTypeSpec1;
+ if (ATmatch(term, "DeclarationTypeSpec_ITS(<term>)", &IntrinsicTypeSpec1.term)) {
+
+      if (ofp_traverse_IntrinsicTypeSpec(IntrinsicTypeSpec1.term, &IntrinsicTypeSpec1)) {
+         // MATCHED IntrinsicTypeSpec
+      } else return ATfalse;
+
+   // MATCHED DeclarationTypeSpec_ITS
 
    return ATtrue;
  }
@@ -1581,9 +1713,9 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
    printf("IntrinsicTypeSpec: %s\n", ATwriteToString(term));
 #endif
 
- if (ATmatch(term, "IntrinsicTypeSpec_DOUBLE_COMPLEX")) {
+ if (ATmatch(term, "IntrinsicTypeSpec_DBL_CMPLX")) {
 
-   // MATCHED IntrinsicTypeSpec_DOUBLE_COMPLEX
+   // MATCHED IntrinsicTypeSpec_DBL_CMPLX
 
    return ATtrue;
  }
@@ -1603,7 +1735,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
  }
 
  OFP_Traverse CharSelector;
- if (ATmatch(term, "IntrinsicTypeSpec_CHARACTER(<term>)", &CharSelector.term)) {
+ if (ATmatch(term, "IntrinsicTypeSpec_CHAR(<term>)", &CharSelector.term)) {
 
    if (ATmatch(CharSelector.term, "Some(<term>)", &CharSelector.term)) {
       if (ofp_traverse_CharSelector(CharSelector.term, &CharSelector)) {
@@ -1611,13 +1743,13 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
       } else return ATfalse;
    }
 
-   // MATCHED IntrinsicTypeSpec_CHARACTER
+   // MATCHED IntrinsicTypeSpec_CHAR
 
    return ATtrue;
  }
 
  OFP_Traverse KindSelector1;
- if (ATmatch(term, "IntrinsicTypeSpec_COMPLEX(<term>)", &KindSelector1.term)) {
+ if (ATmatch(term, "IntrinsicTypeSpec_CMPLX(<term>)", &KindSelector1.term)) {
 
    if (ATmatch(KindSelector1.term, "Some(<term>)", &KindSelector1.term)) {
       if (ofp_traverse_KindSelector(KindSelector1.term, &KindSelector1)) {
@@ -1625,14 +1757,14 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
       } else return ATfalse;
    }
 
-   // MATCHED IntrinsicTypeSpec_COMPLEX
+   // MATCHED IntrinsicTypeSpec_CMPLX
 
    return ATtrue;
  }
 
- if (ATmatch(term, "IntrinsicTypeSpec_DOUBLE_PRECISION")) {
+ if (ATmatch(term, "IntrinsicTypeSpec_DBL_PREC")) {
 
-   // MATCHED IntrinsicTypeSpec_DOUBLE_PRECISION
+   // MATCHED IntrinsicTypeSpec_DBL_PREC
 
    return ATtrue;
  }
@@ -1652,7 +1784,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
  }
 
  OFP_Traverse KindSelector3;
- if (ATmatch(term, "IntrinsicTypeSpec_INTEGER(<term>)", &KindSelector3.term)) {
+ if (ATmatch(term, "IntrinsicTypeSpec_INT(<term>)", &KindSelector3.term)) {
 
    if (ATmatch(KindSelector3.term, "Some(<term>)", &KindSelector3.term)) {
       if (ofp_traverse_KindSelector(KindSelector3.term, &KindSelector3)) {
@@ -1660,7 +1792,332 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpe
       } else return ATfalse;
    }
 
-   // MATCHED IntrinsicTypeSpec_INTEGER
+   // MATCHED IntrinsicTypeSpec_INT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
+{
+#ifdef DEBUG_PRINT
+   printf("KindSelector: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Icon;
+ if (ATmatch(term, "KindSelector_STAR(<term>)", &Icon.term)) {
+
+      if (ofp_traverse_Icon(Icon.term, &Icon)) {
+         // MATCHED Icon
+      } else return ATfalse;
+
+   // MATCHED KindSelector_STAR
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "KindSelector_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED KindSelector_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SignedIntLiteralConstant(ATerm term, pOFP_Traverse SignedIntLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("SignedIntLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Sign, IntLiteralConstant;
+ if (ATmatch(term, "SignedIntLiteralConstant(<term>,<term>)", &Sign.term, &IntLiteralConstant.term)) {
+
+   if (ATmatch(Sign.term, "Some(<term>)", &Sign.term)) {
+      if (ofp_traverse_Sign(Sign.term, &Sign)) {
+         // MATCHED Sign
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_IntLiteralConstant(IntLiteralConstant.term, &IntLiteralConstant)) {
+         // MATCHED IntLiteralConstant
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("IntLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DigitString, KindParam;
+ if (ATmatch(term, "IntLiteralConstant(<term>,<term>)", &DigitString.term, &KindParam.term)) {
+
+      if (ofp_traverse_DigitString(DigitString.term, &DigitString)) {
+         // MATCHED DigitString
+      } else return ATfalse;
+
+   if (ATmatch(KindParam.term, "Some(<term>)", &KindParam.term)) {
+   if (ATmatch(KindParam.term, "(<term>)", &KindParam.term)) {
+      if (ofp_traverse_KindParam(KindParam.term, &KindParam)) {
+         // MATCHED KindParam
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_KindParam(ATerm term, pOFP_Traverse KindParam)
+{
+#ifdef DEBUG_PRINT
+   printf("KindParam: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ScalarIntConstantName;
+ if (ATmatch(term, "KindParam_SICN(<term>)", &ScalarIntConstantName.term)) {
+
+      if (ofp_traverse_ScalarIntConstantName(ScalarIntConstantName.term, &ScalarIntConstantName)) {
+         // MATCHED ScalarIntConstantName
+      } else return ATfalse;
+
+   // MATCHED KindParam_SICN
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DigitString;
+ if (ATmatch(term, "KindParam_DS(<term>)", &DigitString.term)) {
+
+      if (ofp_traverse_DigitString(DigitString.term, &DigitString)) {
+         // MATCHED DigitString
+      } else return ATfalse;
+
+   // MATCHED KindParam_DS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DigitString(ATerm term, pOFP_Traverse DigitString)
+{
+#ifdef DEBUG_PRINT
+   printf("DigitString: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Icon;
+ if (ATmatch(term, "DigitString(<term>)", &Icon.term)) {
+
+      if (ofp_traverse_Icon(Icon.term, &Icon)) {
+         // MATCHED Icon
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Sign(ATerm term, pOFP_Traverse Sign)
+{
+#ifdef DEBUG_PRINT
+   printf("Sign: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "Sign_MINUS")) {
+
+   // MATCHED Sign_MINUS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "Sign_PLUS")) {
+
+   // MATCHED Sign_PLUS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SignedRealLiteralConstant(ATerm term, pOFP_Traverse SignedRealLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("SignedRealLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Sign, RealLiteralConstant;
+ if (ATmatch(term, "SignedRealLiteralConstant(<term>,<term>)", &Sign.term, &RealLiteralConstant.term)) {
+
+   if (ATmatch(Sign.term, "Some(<term>)", &Sign.term)) {
+      if (ofp_traverse_Sign(Sign.term, &Sign)) {
+         // MATCHED Sign
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_RealLiteralConstant(RealLiteralConstant.term, &RealLiteralConstant)) {
+         // MATCHED RealLiteralConstant
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_RealLiteralConstant(ATerm term, pOFP_Traverse RealLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("RealLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Rcon, KindParam;
+ if (ATmatch(term, "RealLiteralConstant(<term>,<term>)", &Rcon.term, &KindParam.term)) {
+
+      if (ofp_traverse_Rcon(Rcon.term, &Rcon)) {
+         // MATCHED Rcon
+      } else return ATfalse;
+
+   if (ATmatch(KindParam.term, "Some(<term>)", &KindParam.term)) {
+   if (ATmatch(KindParam.term, "(<term>)", &KindParam.term)) {
+      if (ofp_traverse_KindParam(KindParam.term, &KindParam)) {
+         // MATCHED KindParam
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComplexLiteralConstant(ATerm term, pOFP_Traverse ComplexLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("ComplexLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse RealPart, ImagPart;
+ if (ATmatch(term, "ComplexLiteralConstant(<term>,<term>)", &RealPart.term, &ImagPart.term)) {
+
+      if (ofp_traverse_RealPart(RealPart.term, &RealPart)) {
+         // MATCHED RealPart
+      } else return ATfalse;
+
+      if (ofp_traverse_ImagPart(ImagPart.term, &ImagPart)) {
+         // MATCHED ImagPart
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_RealPart(ATerm term, pOFP_Traverse RealPart)
+{
+#ifdef DEBUG_PRINT
+   printf("RealPart: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse NamedConstant;
+ if (ATmatch(term, "RealPart_NC(<term>)", &NamedConstant.term)) {
+
+      if (ofp_traverse_NamedConstant(NamedConstant.term, &NamedConstant)) {
+         // MATCHED NamedConstant
+      } else return ATfalse;
+
+   // MATCHED RealPart_NC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse SignedRealLiteralConstant;
+ if (ATmatch(term, "RealPart_SRLC(<term>)", &SignedRealLiteralConstant.term)) {
+
+      if (ofp_traverse_SignedRealLiteralConstant(SignedRealLiteralConstant.term, &SignedRealLiteralConstant)) {
+         // MATCHED SignedRealLiteralConstant
+      } else return ATfalse;
+
+   // MATCHED RealPart_SRLC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse SignedIntLiteralConstant;
+ if (ATmatch(term, "RealPart_SILC(<term>)", &SignedIntLiteralConstant.term)) {
+
+      if (ofp_traverse_SignedIntLiteralConstant(SignedIntLiteralConstant.term, &SignedIntLiteralConstant)) {
+         // MATCHED SignedIntLiteralConstant
+      } else return ATfalse;
+
+   // MATCHED RealPart_SILC
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ImagPart(ATerm term, pOFP_Traverse ImagPart)
+{
+#ifdef DEBUG_PRINT
+   printf("ImagPart: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse NamedConstant;
+ if (ATmatch(term, "ImagPart_NC(<term>)", &NamedConstant.term)) {
+
+      if (ofp_traverse_NamedConstant(NamedConstant.term, &NamedConstant)) {
+         // MATCHED NamedConstant
+      } else return ATfalse;
+
+   // MATCHED ImagPart_NC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse SignedRealLiteralConstant;
+ if (ATmatch(term, "ImagPart_SRLC(<term>)", &SignedRealLiteralConstant.term)) {
+
+      if (ofp_traverse_SignedRealLiteralConstant(SignedRealLiteralConstant.term, &SignedRealLiteralConstant)) {
+         // MATCHED SignedRealLiteralConstant
+      } else return ATfalse;
+
+   // MATCHED ImagPart_SRLC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse SignedIntLiteralConstant;
+ if (ATmatch(term, "ImagPart_SILC(<term>)", &SignedIntLiteralConstant.term)) {
+
+      if (ofp_traverse_SignedIntLiteralConstant(SignedIntLiteralConstant.term, &SignedIntLiteralConstant)) {
+         // MATCHED SignedIntLiteralConstant
+      } else return ATfalse;
+
+   // MATCHED ImagPart_SILC
 
    return ATtrue;
  }
@@ -1766,6 +2223,1946 @@ ATbool ofp_traverse_LengthSelector(ATerm term, pOFP_Traverse LengthSelector)
  return ATfalse;
 }
 
+ATbool ofp_traverse_CharLength(ATerm term, pOFP_Traverse CharLength)
+{
+#ifdef DEBUG_PRINT
+   printf("CharLength: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Icon;
+ if (ATmatch(term, "CharLength_I(<term>)", &Icon.term)) {
+
+      if (ofp_traverse_Icon(Icon.term, &Icon)) {
+         // MATCHED Icon
+      } else return ATfalse;
+
+   // MATCHED CharLength_I
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeParamValue;
+ if (ATmatch(term, "CharLength_TPV(<term>)", &TypeParamValue.term)) {
+
+      if (ofp_traverse_TypeParamValue(TypeParamValue.term, &TypeParamValue)) {
+         // MATCHED TypeParamValue
+      } else return ATfalse;
+
+   // MATCHED CharLength_TPV
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_CharLiteralConstant(ATerm term, pOFP_Traverse CharLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("CharLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse KindParam, Scon;
+ if (ATmatch(term, "CharLiteralConstant(<term>,<term>)", &KindParam.term, &Scon.term)) {
+
+   if (ATmatch(KindParam.term, "Some(<term>)", &KindParam.term)) {
+   if (ATmatch(KindParam.term, "(<term>)", &KindParam.term)) {
+      if (ofp_traverse_KindParam(KindParam.term, &KindParam)) {
+         // MATCHED KindParam
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_Scon(Scon.term, &Scon)) {
+         // MATCHED Scon
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_LogicalLiteralConstant(ATerm term, pOFP_Traverse LogicalLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("LogicalLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse KindParam;
+ if (ATmatch(term, "LogicalLiteralConstant_FALSE(<term>)", &KindParam.term)) {
+
+   if (ATmatch(KindParam.term, "Some(<term>)", &KindParam.term)) {
+   if (ATmatch(KindParam.term, "(<term>)", &KindParam.term)) {
+      if (ofp_traverse_KindParam(KindParam.term, &KindParam)) {
+         // MATCHED KindParam
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED LogicalLiteralConstant_FALSE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse KindParam1;
+ if (ATmatch(term, "LogicalLiteralConstant_TRUE(<term>)", &KindParam1.term)) {
+
+   if (ATmatch(KindParam1.term, "Some(<term>)", &KindParam1.term)) {
+   if (ATmatch(KindParam1.term, "(<term>)", &KindParam1.term)) {
+      if (ofp_traverse_KindParam(KindParam1.term, &KindParam1)) {
+         // MATCHED KindParam
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED LogicalLiteralConstant_TRUE
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DerivedTypeDef(ATerm term, pOFP_Traverse DerivedTypeDef)
+{
+#ifdef DEBUG_PRINT
+   printf("DerivedTypeDef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DerivedTypeStmt, TypeParamDefStmt, PrivateOrSequence, ComponentPart, TypeBoundProcedurePart, EndTypeStmt;
+ if (ATmatch(term, "DerivedTypeDef(<term>,<term>,<term>,<term>,<term>,<term>)", &DerivedTypeStmt.term, &TypeParamDefStmt.term, &PrivateOrSequence.term, &ComponentPart.term, &TypeBoundProcedurePart.term, &EndTypeStmt.term)) {
+
+      if (ofp_traverse_DerivedTypeStmt(DerivedTypeStmt.term, &DerivedTypeStmt)) {
+         // MATCHED DerivedTypeStmt
+      } else return ATfalse;
+
+   ATermList TypeParamDefStmt_tail = (ATermList) ATmake("<term>", TypeParamDefStmt.term);
+   while (! ATisEmpty(TypeParamDefStmt_tail)) {
+      TypeParamDefStmt.term = ATgetFirst(TypeParamDefStmt_tail);
+      TypeParamDefStmt_tail = ATgetNext (TypeParamDefStmt_tail);
+      if (ofp_traverse_TypeParamDefStmt(TypeParamDefStmt.term, &TypeParamDefStmt)) {
+         // MATCHED TypeParamDefStmt
+      } else return ATfalse;
+   }
+
+   ATermList PrivateOrSequence_tail = (ATermList) ATmake("<term>", PrivateOrSequence.term);
+   while (! ATisEmpty(PrivateOrSequence_tail)) {
+      PrivateOrSequence.term = ATgetFirst(PrivateOrSequence_tail);
+      PrivateOrSequence_tail = ATgetNext (PrivateOrSequence_tail);
+      if (ofp_traverse_PrivateOrSequence(PrivateOrSequence.term, &PrivateOrSequence)) {
+         // MATCHED PrivateOrSequence
+      } else return ATfalse;
+   }
+
+   if (ATmatch(ComponentPart.term, "Some(<term>)", &ComponentPart.term)) {
+      if (ofp_traverse_ComponentPart(ComponentPart.term, &ComponentPart)) {
+         // MATCHED ComponentPart
+      } else return ATfalse;
+   }
+
+   if (ATmatch(TypeBoundProcedurePart.term, "Some(<term>)", &TypeBoundProcedurePart.term)) {
+      if (ofp_traverse_TypeBoundProcedurePart(TypeBoundProcedurePart.term, &TypeBoundProcedurePart)) {
+         // MATCHED TypeBoundProcedurePart
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EndTypeStmt(EndTypeStmt.term, &EndTypeStmt)) {
+         // MATCHED EndTypeStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DerivedTypeStmt(ATerm term, pOFP_Traverse DerivedTypeStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("DerivedTypeStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, OptTypeAttrSpecList, TypeName, OptTypeParamNameList, EOS;
+ if (ATmatch(term, "DerivedTypeStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &OptTypeAttrSpecList.term, &TypeName.term, &OptTypeParamNameList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(OptTypeAttrSpecList.term, "Some(<term>)", &OptTypeAttrSpecList.term)) {
+      if (ofp_traverse_OptTypeAttrSpecList(OptTypeAttrSpecList.term, &OptTypeAttrSpecList)) {
+         // MATCHED OptTypeAttrSpecList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
+         // MATCHED TypeName
+      } else return ATfalse;
+
+   if (ATmatch(OptTypeParamNameList.term, "Some(<term>)", &OptTypeParamNameList.term)) {
+      if (ofp_traverse_OptTypeParamNameList(OptTypeParamNameList.term, &OptTypeParamNameList)) {
+         // MATCHED OptTypeParamNameList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_OptTypeAttrSpecList(ATerm term, pOFP_Traverse OptTypeAttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("OptTypeAttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeAttrSpecList;
+ if (ATmatch(term, "OptTASL(<term>)", &TypeAttrSpecList.term)) {
+
+   if (ATmatch(TypeAttrSpecList.term, "Some(<term>)", &TypeAttrSpecList.term)) {
+   if (ATmatch(TypeAttrSpecList.term, "(<term>)", &TypeAttrSpecList.term)) {
+      if (ofp_traverse_TypeAttrSpecList(TypeAttrSpecList.term, &TypeAttrSpecList)) {
+         // MATCHED TypeAttrSpecList
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED OptTASL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_OptTypeParamNameList(ATerm term, pOFP_Traverse OptTypeParamNameList)
+{
+#ifdef DEBUG_PRINT
+   printf("OptTypeParamNameList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeParamNameList;
+ if (ATmatch(term, "OptTPNL(<term>)", &TypeParamNameList.term)) {
+
+      if (ofp_traverse_TypeParamNameList(TypeParamNameList.term, &TypeParamNameList)) {
+         // MATCHED TypeParamNameList
+      } else return ATfalse;
+
+   // MATCHED OptTPNL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeAttrSpec(ATerm term, pOFP_Traverse TypeAttrSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeAttrSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ParentTypeName;
+ if (ATmatch(term, "TypeAttrSpec_EXTENDS(<term>)", &ParentTypeName.term)) {
+
+      if (ofp_traverse_ParentTypeName(ParentTypeName.term, &ParentTypeName)) {
+         // MATCHED ParentTypeName
+      } else return ATfalse;
+
+   // MATCHED TypeAttrSpec_EXTENDS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "TypeAttrSpec_BIND")) {
+
+   // MATCHED TypeAttrSpec_BIND
+
+   return ATtrue;
+ }
+
+ OFP_Traverse AccessSpec;
+ if (ATmatch(term, "TypeAttrSpec_AS(<term>)", &AccessSpec.term)) {
+
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+      } else return ATfalse;
+
+   // MATCHED TypeAttrSpec_AS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "TypeAttrSpec_ABSTRACT")) {
+
+   // MATCHED TypeAttrSpec_ABSTRACT
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeAttrSpecList(ATerm term, pOFP_Traverse TypeAttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeAttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeAttrSpec;
+ if (ATmatch(term, "TypeAttrSpecList(<term>)", &TypeAttrSpec.term)) {
+
+   ATermList TypeAttrSpec_tail = (ATermList) ATmake("<term>", TypeAttrSpec.term);
+   while (! ATisEmpty(TypeAttrSpec_tail)) {
+      TypeAttrSpec.term = ATgetFirst(TypeAttrSpec_tail);
+      TypeAttrSpec_tail = ATgetNext (TypeAttrSpec_tail);
+      if (ofp_traverse_TypeAttrSpec(TypeAttrSpec.term, &TypeAttrSpec)) {
+         // MATCHED TypeAttrSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamNameList(ATerm term, pOFP_Traverse TypeParamNameList)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamNameList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeParamName;
+ if (ATmatch(term, "TypeParamNameList(<term>)", &TypeParamName.term)) {
+
+   ATermList TypeParamName_tail = (ATermList) ATmake("<term>", TypeParamName.term);
+   while (! ATisEmpty(TypeParamName_tail)) {
+      TypeParamName.term = ATgetFirst(TypeParamName_tail);
+      TypeParamName_tail = ATgetNext (TypeParamName_tail);
+      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
+         // MATCHED TypeParamName
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PrivateOrSequence(ATerm term, pOFP_Traverse PrivateOrSequence)
+{
+#ifdef DEBUG_PRINT
+   printf("PrivateOrSequence: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse SequenceStmt;
+ if (ATmatch(term, "PrivateOrSequence_SS(<term>)", &SequenceStmt.term)) {
+
+      if (ofp_traverse_SequenceStmt(SequenceStmt.term, &SequenceStmt)) {
+         // MATCHED SequenceStmt
+      } else return ATfalse;
+
+   // MATCHED PrivateOrSequence_SS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse PrivateComponentsStmt;
+ if (ATmatch(term, "PrivateOrSequence_PCS(<term>)", &PrivateComponentsStmt.term)) {
+
+      if (ofp_traverse_PrivateComponentsStmt(PrivateComponentsStmt.term, &PrivateComponentsStmt)) {
+         // MATCHED PrivateComponentsStmt
+      } else return ATfalse;
+
+   // MATCHED PrivateOrSequence_PCS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndTypeStmt(ATerm term, pOFP_Traverse EndTypeStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndTypeStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, TypeName, EOS;
+ if (ATmatch(term, "EndTypeStmt(<term>,<term>,<term>)", &Label.term, &TypeName.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(TypeName.term, "Some(<term>)", &TypeName.term)) {
+      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
+         // MATCHED TypeName
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_SequenceStmt(ATerm term, pOFP_Traverse SequenceStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("SequenceStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "SequenceStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamDefStmt(ATerm term, pOFP_Traverse TypeParamDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, KindSelector, TypeParamAttrSpec, TypeParamDeclList, EOS;
+ if (ATmatch(term, "TypeParamDefStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &KindSelector.term, &TypeParamAttrSpec.term, &TypeParamDeclList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(KindSelector.term, "Some(<term>)", &KindSelector.term)) {
+      if (ofp_traverse_KindSelector(KindSelector.term, &KindSelector)) {
+         // MATCHED KindSelector
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_TypeParamAttrSpec(TypeParamAttrSpec.term, &TypeParamAttrSpec)) {
+         // MATCHED TypeParamAttrSpec
+      } else return ATfalse;
+
+      if (ofp_traverse_TypeParamDeclList(TypeParamDeclList.term, &TypeParamDeclList)) {
+         // MATCHED TypeParamDeclList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamDecl(ATerm term, pOFP_Traverse TypeParamDecl)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamDecl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeParamName, Expr;
+ if (ATmatch(term, "TypeParamDecl(<term>,<term>)", &TypeParamName.term, &Expr.term)) {
+
+      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
+         // MATCHED TypeParamName
+      } else return ATfalse;
+
+   if (ATmatch(Expr.term, "Some(<term>)", &Expr.term)) {
+   if (ATmatch(Expr.term, "(<term>)", &Expr.term)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamDeclList(ATerm term, pOFP_Traverse TypeParamDeclList)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamDeclList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeParamDecl;
+ if (ATmatch(term, "TypeParamDeclList(<term>)", &TypeParamDecl.term)) {
+
+   ATermList TypeParamDecl_tail = (ATermList) ATmake("<term>", TypeParamDecl.term);
+   while (! ATisEmpty(TypeParamDecl_tail)) {
+      TypeParamDecl.term = ATgetFirst(TypeParamDecl_tail);
+      TypeParamDecl_tail = ATgetNext (TypeParamDecl_tail);
+      if (ofp_traverse_TypeParamDecl(TypeParamDecl.term, &TypeParamDecl)) {
+         // MATCHED TypeParamDecl
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamAttrSpec(ATerm term, pOFP_Traverse TypeParamAttrSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamAttrSpec: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "TypeParamAttrSpec_LEN")) {
+
+   // MATCHED TypeParamAttrSpec_LEN
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "TypeParamAttrSpec_KIND")) {
+
+   // MATCHED TypeParamAttrSpec_KIND
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentPart(ATerm term, pOFP_Traverse ComponentPart)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentPart: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ComponentDefStmt;
+ if (ATmatch(term, "ComponentPart(<term>)", &ComponentDefStmt.term)) {
+
+   ATermList ComponentDefStmt_tail = (ATermList) ATmake("<term>", ComponentDefStmt.term);
+   while (! ATisEmpty(ComponentDefStmt_tail)) {
+      ComponentDefStmt.term = ATgetFirst(ComponentDefStmt_tail);
+      ComponentDefStmt_tail = ATgetNext (ComponentDefStmt_tail);
+      if (ofp_traverse_ComponentDefStmt(ComponentDefStmt.term, &ComponentDefStmt)) {
+         // MATCHED ComponentDefStmt
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentDefStmt(ATerm term, pOFP_Traverse ComponentDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ProcComponentDefStmt;
+ if (ATmatch(term, "ComponentDefStmt_PCDS(<term>)", &ProcComponentDefStmt.term)) {
+
+      if (ofp_traverse_ProcComponentDefStmt(ProcComponentDefStmt.term, &ProcComponentDefStmt)) {
+         // MATCHED ProcComponentDefStmt
+      } else return ATfalse;
+
+   // MATCHED ComponentDefStmt_PCDS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DataComponentDefStmt;
+ if (ATmatch(term, "ComponentDefStmt_DCDS(<term>)", &DataComponentDefStmt.term)) {
+
+      if (ofp_traverse_DataComponentDefStmt(DataComponentDefStmt.term, &DataComponentDefStmt)) {
+         // MATCHED DataComponentDefStmt
+      } else return ATfalse;
+
+   // MATCHED ComponentDefStmt_DCDS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DataComponentDefStmt(ATerm term, pOFP_Traverse DataComponentDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("DataComponentDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, DeclarationTypeSpec, OptComponentAttrSpecList, ComponentDeclList, EOS;
+ if (ATmatch(term, "DataComponentDefStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &DeclarationTypeSpec.term, &OptComponentAttrSpecList.term, &ComponentDeclList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_DeclarationTypeSpec(DeclarationTypeSpec.term, &DeclarationTypeSpec)) {
+         // MATCHED DeclarationTypeSpec
+      } else return ATfalse;
+
+   if (ATmatch(OptComponentAttrSpecList.term, "Some(<term>)", &OptComponentAttrSpecList.term)) {
+      if (ofp_traverse_OptComponentAttrSpecList(OptComponentAttrSpecList.term, &OptComponentAttrSpecList)) {
+         // MATCHED OptComponentAttrSpecList
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_ComponentDeclList(ComponentDeclList.term, &ComponentDeclList)) {
+         // MATCHED ComponentDeclList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_OptComponentAttrSpecList(ATerm term, pOFP_Traverse OptComponentAttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("OptComponentAttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ComponentAttrSpecList;
+ if (ATmatch(term, "OptCASL(<term>)", &ComponentAttrSpecList.term)) {
+
+   if (ATmatch(ComponentAttrSpecList.term, "Some(<term>)", &ComponentAttrSpecList.term)) {
+   if (ATmatch(ComponentAttrSpecList.term, "(<term>)", &ComponentAttrSpecList.term)) {
+      if (ofp_traverse_ComponentAttrSpecList(ComponentAttrSpecList.term, &ComponentAttrSpecList)) {
+         // MATCHED ComponentAttrSpecList
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED OptCASL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentAttrSpec(ATerm term, pOFP_Traverse ComponentAttrSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentAttrSpec: %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "ComponentAttrSpec_POINTER")) {
+
+   // MATCHED ComponentAttrSpec_POINTER
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ComponentArraySpec;
+ if (ATmatch(term, "ComponentAttrSpec_DIMENSION(<term>)", &ComponentArraySpec.term)) {
+
+      if (ofp_traverse_ComponentArraySpec(ComponentArraySpec.term, &ComponentArraySpec)) {
+         // MATCHED ComponentArraySpec
+      } else return ATfalse;
+
+   // MATCHED ComponentAttrSpec_DIMENSION
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "ComponentAttrSpec_CONTIGUOUS")) {
+
+   // MATCHED ComponentAttrSpec_CONTIGUOUS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse CoarraySpec;
+ if (ATmatch(term, "ComponentAttrSpec_CODIMENSION(<term>)", &CoarraySpec.term)) {
+
+      if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
+         // MATCHED CoarraySpec
+      } else return ATfalse;
+
+   // MATCHED ComponentAttrSpec_CODIMENSION
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "ComponentAttrSpec_ALLOCATABLE")) {
+
+   // MATCHED ComponentAttrSpec_ALLOCATABLE
+
+   return ATtrue;
+ }
+
+ OFP_Traverse AccessSpec;
+ if (ATmatch(term, "ComponentAttrSpec_AS(<term>)", &AccessSpec.term)) {
+
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+      } else return ATfalse;
+
+   // MATCHED ComponentAttrSpec_AS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentAttrSpecList(ATerm term, pOFP_Traverse ComponentAttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentAttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ComponentAttrSpec;
+ if (ATmatch(term, "ComponentAttrSpecList(<term>)", &ComponentAttrSpec.term)) {
+
+   ATermList ComponentAttrSpec_tail = (ATermList) ATmake("<term>", ComponentAttrSpec.term);
+   while (! ATisEmpty(ComponentAttrSpec_tail)) {
+      ComponentAttrSpec.term = ATgetFirst(ComponentAttrSpec_tail);
+      ComponentAttrSpec_tail = ATgetNext (ComponentAttrSpec_tail);
+      if (ofp_traverse_ComponentAttrSpec(ComponentAttrSpec.term, &ComponentAttrSpec)) {
+         // MATCHED ComponentAttrSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentDecl(ATerm term, pOFP_Traverse ComponentDecl)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentDecl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ComponentName, ComponentArraySpec, CoarraySpec, CharLength, ComponentInitialization;
+ if (ATmatch(term, "ComponentDecl(<term>,<term>,<term>,<term>,<term>)", &ComponentName.term, &ComponentArraySpec.term, &CoarraySpec.term, &CharLength.term, &ComponentInitialization.term)) {
+
+      if (ofp_traverse_ComponentName(ComponentName.term, &ComponentName)) {
+         // MATCHED ComponentName
+      } else return ATfalse;
+
+   if (ATmatch(ComponentArraySpec.term, "Some(<term>)", &ComponentArraySpec.term)) {
+   if (ATmatch(ComponentArraySpec.term, "(<term>)", &ComponentArraySpec.term)) {
+      if (ofp_traverse_ComponentArraySpec(ComponentArraySpec.term, &ComponentArraySpec)) {
+         // MATCHED ComponentArraySpec
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(CoarraySpec.term, "Some(<term>)", &CoarraySpec.term)) {
+   if (ATmatch(CoarraySpec.term, "(<term>)", &CoarraySpec.term)) {
+      if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
+         // MATCHED CoarraySpec
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(CharLength.term, "Some(<term>)", &CharLength.term)) {
+   if (ATmatch(CharLength.term, "(<term>)", &CharLength.term)) {
+      if (ofp_traverse_CharLength(CharLength.term, &CharLength)) {
+         // MATCHED CharLength
+      } else return ATfalse;
+   }
+   }
+
+   if (ATmatch(ComponentInitialization.term, "Some(<term>)", &ComponentInitialization.term)) {
+      if (ofp_traverse_ComponentInitialization(ComponentInitialization.term, &ComponentInitialization)) {
+         // MATCHED ComponentInitialization
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentDeclList(ATerm term, pOFP_Traverse ComponentDeclList)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentDeclList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ComponentDecl;
+ if (ATmatch(term, "ComponentDeclList(<term>)", &ComponentDecl.term)) {
+
+   ATermList ComponentDecl_tail = (ATermList) ATmake("<term>", ComponentDecl.term);
+   while (! ATisEmpty(ComponentDecl_tail)) {
+      ComponentDecl.term = ATgetFirst(ComponentDecl_tail);
+      ComponentDecl_tail = ATgetNext (ComponentDecl_tail);
+      if (ofp_traverse_ComponentDecl(ComponentDecl.term, &ComponentDecl)) {
+         // MATCHED ComponentDecl
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentArraySpec(ATerm term, pOFP_Traverse ComponentArraySpec)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentArraySpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DeferredShapeSpecList;
+ if (ATmatch(term, "ComponentArraySpec_DSSL(<term>)", &DeferredShapeSpecList.term)) {
+
+      if (ofp_traverse_DeferredShapeSpecList(DeferredShapeSpecList.term, &DeferredShapeSpecList)) {
+         // MATCHED DeferredShapeSpecList
+      } else return ATfalse;
+
+   // MATCHED ComponentArraySpec_DSSL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ExplicitShapeSpecList;
+ if (ATmatch(term, "ComponentArraySpec_ESSL(<term>)", &ExplicitShapeSpecList.term)) {
+
+      if (ofp_traverse_ExplicitShapeSpecList(ExplicitShapeSpecList.term, &ExplicitShapeSpecList)) {
+         // MATCHED ExplicitShapeSpecList
+      } else return ATfalse;
+
+   // MATCHED ComponentArraySpec_ESSL
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ProcComponentDefStmt(ATerm term, pOFP_Traverse ProcComponentDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("ProcComponentDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, ProcInterface, ProcComponentAttrSpecList, ProcDeclList, EOS;
+ if (ATmatch(term, "ProcComponentDefStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &ProcInterface.term, &ProcComponentAttrSpecList.term, &ProcDeclList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(ProcInterface.term, "Some(<term>)", &ProcInterface.term)) {
+      if (ofp_traverse_ProcInterface(ProcInterface.term, &ProcInterface)) {
+         // MATCHED ProcInterface
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_ProcComponentAttrSpecList(ProcComponentAttrSpecList.term, &ProcComponentAttrSpecList)) {
+         // MATCHED ProcComponentAttrSpecList
+      } else return ATfalse;
+
+      if (ofp_traverse_ProcDeclList(ProcDeclList.term, &ProcDeclList)) {
+         // MATCHED ProcDeclList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ProcComponentAttrSpec(ATerm term, pOFP_Traverse ProcComponentAttrSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("ProcComponentAttrSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AccessSpec;
+ if (ATmatch(term, "ProcComponentAttrSpec_AS(<term>)", &AccessSpec.term)) {
+
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+      } else return ATfalse;
+
+   // MATCHED ProcComponentAttrSpec_AS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "ProcComponentAttrSpec_NOPASS")) {
+
+   // MATCHED ProcComponentAttrSpec_NOPASS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "ProcComponentAttrSpec_PASS")) {
+
+   // MATCHED ProcComponentAttrSpec_PASS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "ProcComponentAttrSpec_POINTER")) {
+
+   // MATCHED ProcComponentAttrSpec_POINTER
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ProcComponentAttrSpecList(ATerm term, pOFP_Traverse ProcComponentAttrSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("ProcComponentAttrSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ProcComponentAttrSpec;
+ if (ATmatch(term, "ProcComponentAttrSpecList(<term>)", &ProcComponentAttrSpec.term)) {
+
+   ATermList ProcComponentAttrSpec_tail = (ATermList) ATmake("<term>", ProcComponentAttrSpec.term);
+   while (! ATisEmpty(ProcComponentAttrSpec_tail)) {
+      ProcComponentAttrSpec.term = ATgetFirst(ProcComponentAttrSpec_tail);
+      ProcComponentAttrSpec_tail = ATgetNext (ProcComponentAttrSpec_tail);
+      if (ofp_traverse_ProcComponentAttrSpec(ProcComponentAttrSpec.term, &ProcComponentAttrSpec)) {
+         // MATCHED ProcComponentAttrSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentInitialization(ATerm term, pOFP_Traverse ComponentInitialization)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentInitialization: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse InitialDataTarget;
+ if (ATmatch(term, "ComponentInitialization_IDT(<term>)", &InitialDataTarget.term)) {
+
+      if (ofp_traverse_InitialDataTarget(InitialDataTarget.term, &InitialDataTarget)) {
+         // MATCHED InitialDataTarget
+      } else return ATfalse;
+
+   // MATCHED ComponentInitialization_IDT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse NullInit;
+ if (ATmatch(term, "ComponentInitialization_NI(<term>)", &NullInit.term)) {
+
+      if (ofp_traverse_NullInit(NullInit.term, &NullInit)) {
+         // MATCHED NullInit
+      } else return ATfalse;
+
+   // MATCHED ComponentInitialization_NI
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "ComponentInitialization_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED ComponentInitialization_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_InitialDataTarget(ATerm term, pOFP_Traverse InitialDataTarget)
+{
+#ifdef DEBUG_PRINT
+   printf("InitialDataTarget: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Designator;
+ if (ATmatch(term, "InitialDataTarget(<term>)", &Designator.term)) {
+
+      if (ofp_traverse_Designator(Designator.term, &Designator)) {
+         // MATCHED Designator
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_PrivateComponentsStmt(ATerm term, pOFP_Traverse PrivateComponentsStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("PrivateComponentsStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "PrivateComponentsStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundProcedurePart(ATerm term, pOFP_Traverse TypeBoundProcedurePart)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundProcedurePart: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ContainsStmt, BindingPrivateStmt, TypeBoundProcBinding;
+ if (ATmatch(term, "TypeBoundProcedurePart(<term>,<term>,<term>)", &ContainsStmt.term, &BindingPrivateStmt.term, &TypeBoundProcBinding.term)) {
+
+      if (ofp_traverse_ContainsStmt(ContainsStmt.term, &ContainsStmt)) {
+         // MATCHED ContainsStmt
+      } else return ATfalse;
+
+   if (ATmatch(BindingPrivateStmt.term, "Some(<term>)", &BindingPrivateStmt.term)) {
+      if (ofp_traverse_BindingPrivateStmt(BindingPrivateStmt.term, &BindingPrivateStmt)) {
+         // MATCHED BindingPrivateStmt
+      } else return ATfalse;
+   }
+
+   ATermList TypeBoundProcBinding_tail = (ATermList) ATmake("<term>", TypeBoundProcBinding.term);
+   while (! ATisEmpty(TypeBoundProcBinding_tail)) {
+      TypeBoundProcBinding.term = ATgetFirst(TypeBoundProcBinding_tail);
+      TypeBoundProcBinding_tail = ATgetNext (TypeBoundProcBinding_tail);
+      if (ofp_traverse_TypeBoundProcBinding(TypeBoundProcBinding.term, &TypeBoundProcBinding)) {
+         // MATCHED TypeBoundProcBinding
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BindingPrivateStmt(ATerm term, pOFP_Traverse BindingPrivateStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("BindingPrivateStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "BindingPrivateStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundProcBinding(ATerm term, pOFP_Traverse TypeBoundProcBinding)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundProcBinding: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse FinalProcedureStmt;
+ if (ATmatch(term, "TypeBoundProcBinding_FPS(<term>)", &FinalProcedureStmt.term)) {
+
+      if (ofp_traverse_FinalProcedureStmt(FinalProcedureStmt.term, &FinalProcedureStmt)) {
+         // MATCHED FinalProcedureStmt
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcBinding_FPS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeBoundGenericStmt;
+ if (ATmatch(term, "TypeBoundProcBinding_TBGS(<term>)", &TypeBoundGenericStmt.term)) {
+
+      if (ofp_traverse_TypeBoundGenericStmt(TypeBoundGenericStmt.term, &TypeBoundGenericStmt)) {
+         // MATCHED TypeBoundGenericStmt
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcBinding_TBGS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeBoundProcedureStmt;
+ if (ATmatch(term, "TypeBoundProcBinding_TBPS(<term>)", &TypeBoundProcedureStmt.term)) {
+
+      if (ofp_traverse_TypeBoundProcedureStmt(TypeBoundProcedureStmt.term, &TypeBoundProcedureStmt)) {
+         // MATCHED TypeBoundProcedureStmt
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcBinding_TBPS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundProcedureStmt(ATerm term, pOFP_Traverse TypeBoundProcedureStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundProcedureStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, InterfaceName, BindingAttrList, BindingNameList, EOS;
+ if (ATmatch(term, "TypeBoundProcedureStmt_3(<term>,<term>,<term>,<term>,<term>)", &Label.term, &InterfaceName.term, &BindingAttrList.term, &BindingNameList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_InterfaceName(InterfaceName.term, &InterfaceName)) {
+         // MATCHED InterfaceName
+      } else return ATfalse;
+
+      if (ofp_traverse_BindingAttrList(BindingAttrList.term, &BindingAttrList)) {
+         // MATCHED BindingAttrList
+      } else return ATfalse;
+
+      if (ofp_traverse_BindingNameList(BindingNameList.term, &BindingNameList)) {
+         // MATCHED BindingNameList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcedureStmt_3
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label1, BindingAttrList1, TypeBoundProcDeclList, EOS1;
+ if (ATmatch(term, "TypeBoundProcedureStmt_2(<term>,<term>,<term>,<term>)", &Label1.term, &BindingAttrList1.term, &TypeBoundProcDeclList.term, &EOS1.term)) {
+
+   if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
+      if (ofp_traverse_Label(Label1.term, &Label1)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(BindingAttrList1.term, "Some(<term>)", &BindingAttrList1.term)) {
+   if (ATmatch(BindingAttrList1.term, "(<term>)", &BindingAttrList1.term)) {
+      if (ofp_traverse_BindingAttrList(BindingAttrList1.term, &BindingAttrList1)) {
+         // MATCHED BindingAttrList
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_TypeBoundProcDeclList(TypeBoundProcDeclList.term, &TypeBoundProcDeclList)) {
+         // MATCHED TypeBoundProcDeclList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS1.term, &EOS1)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcedureStmt_2
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Label2, TypeBoundProcDeclList1, EOS2;
+ if (ATmatch(term, "TypeBoundProcedureStmt_1(<term>,<term>,<term>)", &Label2.term, &TypeBoundProcDeclList1.term, &EOS2.term)) {
+
+   if (ATmatch(Label2.term, "Some(<term>)", &Label2.term)) {
+      if (ofp_traverse_Label(Label2.term, &Label2)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_TypeBoundProcDeclList(TypeBoundProcDeclList1.term, &TypeBoundProcDeclList1)) {
+         // MATCHED TypeBoundProcDeclList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS2.term, &EOS2)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   // MATCHED TypeBoundProcedureStmt_1
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BindingNameList(ATerm term, pOFP_Traverse BindingNameList)
+{
+#ifdef DEBUG_PRINT
+   printf("BindingNameList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse BindingName;
+ if (ATmatch(term, "BindingNameList(<term>)", &BindingName.term)) {
+
+   ATermList BindingName_tail = (ATermList) ATmake("<term>", BindingName.term);
+   while (! ATisEmpty(BindingName_tail)) {
+      BindingName.term = ATgetFirst(BindingName_tail);
+      BindingName_tail = ATgetNext (BindingName_tail);
+      if (ofp_traverse_BindingName(BindingName.term, &BindingName)) {
+         // MATCHED BindingName
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BindingAttrList(ATerm term, pOFP_Traverse BindingAttrList)
+{
+#ifdef DEBUG_PRINT
+   printf("BindingAttrList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse BindingAttr;
+ if (ATmatch(term, "BindingAttrList(<term>)", &BindingAttr.term)) {
+
+   ATermList BindingAttr_tail = (ATermList) ATmake("<term>", BindingAttr.term);
+   while (! ATisEmpty(BindingAttr_tail)) {
+      BindingAttr.term = ATgetFirst(BindingAttr_tail);
+      BindingAttr_tail = ATgetNext (BindingAttr_tail);
+      if (ofp_traverse_BindingAttr(BindingAttr.term, &BindingAttr)) {
+         // MATCHED BindingAttr
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundProcDecl(ATerm term, pOFP_Traverse TypeBoundProcDecl)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundProcDecl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse BindingName, ProcedureName;
+ if (ATmatch(term, "TypeBoundProcDecl(<term>,<term>)", &BindingName.term, &ProcedureName.term)) {
+
+      if (ofp_traverse_BindingName(BindingName.term, &BindingName)) {
+         // MATCHED BindingName
+      } else return ATfalse;
+
+   if (ATmatch(ProcedureName.term, "Some(<term>)", &ProcedureName.term)) {
+   if (ATmatch(ProcedureName.term, "(<term>)", &ProcedureName.term)) {
+      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
+         // MATCHED ProcedureName
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundProcDeclList(ATerm term, pOFP_Traverse TypeBoundProcDeclList)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundProcDeclList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeBoundProcDecl;
+ if (ATmatch(term, "TypeBoundProcDeclList(<term>)", &TypeBoundProcDecl.term)) {
+
+   ATermList TypeBoundProcDecl_tail = (ATermList) ATmake("<term>", TypeBoundProcDecl.term);
+   while (! ATisEmpty(TypeBoundProcDecl_tail)) {
+      TypeBoundProcDecl.term = ATgetFirst(TypeBoundProcDecl_tail);
+      TypeBoundProcDecl_tail = ATgetNext (TypeBoundProcDecl_tail);
+      if (ofp_traverse_TypeBoundProcDecl(TypeBoundProcDecl.term, &TypeBoundProcDecl)) {
+         // MATCHED TypeBoundProcDecl
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeBoundGenericStmt(ATerm term, pOFP_Traverse TypeBoundGenericStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeBoundGenericStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, AccessSpec, GenericSpec, BindingNameList, EOS;
+ if (ATmatch(term, "TypeBoundGenericStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &AccessSpec.term, &GenericSpec.term, &BindingNameList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+   if (ATmatch(AccessSpec.term, "Some(<term>)", &AccessSpec.term)) {
+   if (ATmatch(AccessSpec.term, "(<term>)", &AccessSpec.term)) {
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_GenericSpec(GenericSpec.term, &GenericSpec)) {
+         // MATCHED GenericSpec
+      } else return ATfalse;
+
+      if (ofp_traverse_BindingNameList(BindingNameList.term, &BindingNameList)) {
+         // MATCHED BindingNameList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BindingAttr(ATerm term, pOFP_Traverse BindingAttr)
+{
+#ifdef DEBUG_PRINT
+   printf("BindingAttr: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AccessSpec;
+ if (ATmatch(term, "BindingAttr_AS(<term>)", &AccessSpec.term)) {
+
+      if (ofp_traverse_AccessSpec(AccessSpec.term, &AccessSpec)) {
+         // MATCHED AccessSpec
+      } else return ATfalse;
+
+   // MATCHED BindingAttr_AS
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "BindingAttr_DEFERRED")) {
+
+   // MATCHED BindingAttr_DEFERRED
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "BindingAttr_NON_OVERRIDABLE")) {
+
+   // MATCHED BindingAttr_NON_OVERRIDABLE
+
+   return ATtrue;
+ }
+
+ if (ATmatch(term, "BindingAttr_NOPASS")) {
+
+   // MATCHED BindingAttr_NOPASS
+
+   return ATtrue;
+ }
+
+ OFP_Traverse ArgName;
+ if (ATmatch(term, "BindingAttr_PASS(<term>)", &ArgName.term)) {
+
+   if (ATmatch(ArgName.term, "Some(<term>)", &ArgName.term)) {
+   if (ATmatch(ArgName.term, "(<term>)", &ArgName.term)) {
+      if (ofp_traverse_ArgName(ArgName.term, &ArgName)) {
+         // MATCHED ArgName
+      } else return ATfalse;
+   }
+   }
+
+   // MATCHED BindingAttr_PASS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FinalProcedureStmt(ATerm term, pOFP_Traverse FinalProcedureStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("FinalProcedureStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, FinalSubroutineNameList, EOS;
+ if (ATmatch(term, "FinalProcedureStmt(<term>,<term>,<term>)", &Label.term, &FinalSubroutineNameList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_FinalSubroutineNameList(FinalSubroutineNameList.term, &FinalSubroutineNameList)) {
+         // MATCHED FinalSubroutineNameList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_FinalSubroutineNameList(ATerm term, pOFP_Traverse FinalSubroutineNameList)
+{
+#ifdef DEBUG_PRINT
+   printf("FinalSubroutineNameList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse FinalSubroutineName;
+ if (ATmatch(term, "FinalSubroutineNameList(<term>)", &FinalSubroutineName.term)) {
+
+   ATermList FinalSubroutineName_tail = (ATermList) ATmake("<term>", FinalSubroutineName.term);
+   while (! ATisEmpty(FinalSubroutineName_tail)) {
+      FinalSubroutineName.term = ATgetFirst(FinalSubroutineName_tail);
+      FinalSubroutineName_tail = ATgetNext (FinalSubroutineName_tail);
+      if (ofp_traverse_FinalSubroutineName(FinalSubroutineName.term, &FinalSubroutineName)) {
+         // MATCHED FinalSubroutineName
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_DerivedTypeSpec(ATerm term, pOFP_Traverse DerivedTypeSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("DerivedTypeSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeName, TypeParamSpecList;
+ if (ATmatch(term, "DerivedTypeSpec(<term>,<term>)", &TypeName.term, &TypeParamSpecList.term)) {
+
+      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
+         // MATCHED TypeName
+      } else return ATfalse;
+
+   if (ATmatch(TypeParamSpecList.term, "Some(<term>)", &TypeParamSpecList.term)) {
+   if (ATmatch(TypeParamSpecList.term, "(<term>)", &TypeParamSpecList.term)) {
+      if (ofp_traverse_TypeParamSpecList(TypeParamSpecList.term, &TypeParamSpecList)) {
+         // MATCHED TypeParamSpecList
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamSpec(ATerm term, pOFP_Traverse TypeParamSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Keyword, TypeParamValue;
+ if (ATmatch(term, "TypeParamSpec(<term>,<term>)", &Keyword.term, &TypeParamValue.term)) {
+
+   if (ATmatch(Keyword.term, "Some(<term>)", &Keyword.term)) {
+   if (ATmatch(Keyword.term, "(<term>)", &Keyword.term)) {
+      if (ofp_traverse_Keyword(Keyword.term, &Keyword)) {
+         // MATCHED Keyword
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_TypeParamValue(TypeParamValue.term, &TypeParamValue)) {
+         // MATCHED TypeParamValue
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_TypeParamSpecList(ATerm term, pOFP_Traverse TypeParamSpecList)
+{
+#ifdef DEBUG_PRINT
+   printf("TypeParamSpecList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeParamSpec;
+ if (ATmatch(term, "TypeParamSpecList(<term>)", &TypeParamSpec.term)) {
+
+   ATermList TypeParamSpec_tail = (ATermList) ATmake("<term>", TypeParamSpec.term);
+   while (! ATisEmpty(TypeParamSpec_tail)) {
+      TypeParamSpec.term = ATgetFirst(TypeParamSpec_tail);
+      TypeParamSpec_tail = ATgetNext (TypeParamSpec_tail);
+      if (ofp_traverse_TypeParamSpec(TypeParamSpec.term, &TypeParamSpec)) {
+         // MATCHED TypeParamSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_StructureConstructor(ATerm term, pOFP_Traverse StructureConstructor)
+{
+#ifdef DEBUG_PRINT
+   printf("StructureConstructor: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DerivedTypeSpec, ComponentSpec;
+ if (ATmatch(term, "StructureConstructor(<term>,<term>)", &DerivedTypeSpec.term, &ComponentSpec.term)) {
+
+      if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec.term, &DerivedTypeSpec)) {
+         // MATCHED DerivedTypeSpec
+      } else return ATfalse;
+
+   ATermList ComponentSpec_tail = (ATermList) ATmake("<term>", ComponentSpec.term);
+   while (! ATisEmpty(ComponentSpec_tail)) {
+      ComponentSpec.term = ATgetFirst(ComponentSpec_tail);
+      ComponentSpec_tail = ATgetNext (ComponentSpec_tail);
+      if (ofp_traverse_ComponentSpec(ComponentSpec.term, &ComponentSpec)) {
+         // MATCHED ComponentSpec
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentSpec(ATerm term, pOFP_Traverse ComponentSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Keyword, ComponentDataSource;
+ if (ATmatch(term, "ComponentSpec(<term>,<term>)", &Keyword.term, &ComponentDataSource.term)) {
+
+   if (ATmatch(Keyword.term, "Some(<term>)", &Keyword.term)) {
+   if (ATmatch(Keyword.term, "(<term>)", &Keyword.term)) {
+      if (ofp_traverse_Keyword(Keyword.term, &Keyword)) {
+         // MATCHED Keyword
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_ComponentDataSource(ComponentDataSource.term, &ComponentDataSource)) {
+         // MATCHED ComponentDataSource
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ComponentDataSource(ATerm term, pOFP_Traverse ComponentDataSource)
+{
+#ifdef DEBUG_PRINT
+   printf("ComponentDataSource: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse ProcTarget;
+ if (ATmatch(term, "ComponentDataSource_PT(<term>)", &ProcTarget.term)) {
+
+      if (ofp_traverse_ProcTarget(ProcTarget.term, &ProcTarget)) {
+         // MATCHED ProcTarget
+      } else return ATfalse;
+
+   // MATCHED ComponentDataSource_PT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse DataTarget;
+ if (ATmatch(term, "ComponentDataSource_DT(<term>)", &DataTarget.term)) {
+
+      if (ofp_traverse_DataTarget(DataTarget.term, &DataTarget)) {
+         // MATCHED DataTarget
+      } else return ATfalse;
+
+   // MATCHED ComponentDataSource_DT
+
+   return ATtrue;
+ }
+
+ OFP_Traverse Expr;
+ if (ATmatch(term, "ComponentDataSource_E(<term>)", &Expr.term)) {
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED ComponentDataSource_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EnumDef(ATerm term, pOFP_Traverse EnumDef)
+{
+#ifdef DEBUG_PRINT
+   printf("EnumDef: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse EnumDefStmt, EnumeratorDefStmt, EndEnumStmt;
+ if (ATmatch(term, "EnumDef(<term>,<term>,<term>)", &EnumDefStmt.term, &EnumeratorDefStmt.term, &EndEnumStmt.term)) {
+
+      if (ofp_traverse_EnumDefStmt(EnumDefStmt.term, &EnumDefStmt)) {
+         // MATCHED EnumDefStmt
+      } else return ATfalse;
+
+   ATermList EnumeratorDefStmt_tail = (ATermList) ATmake("<term>", EnumeratorDefStmt.term);
+   while (! ATisEmpty(EnumeratorDefStmt_tail)) {
+      EnumeratorDefStmt.term = ATgetFirst(EnumeratorDefStmt_tail);
+      EnumeratorDefStmt_tail = ATgetNext (EnumeratorDefStmt_tail);
+      if (ofp_traverse_EnumeratorDefStmt(EnumeratorDefStmt.term, &EnumeratorDefStmt)) {
+         // MATCHED EnumeratorDefStmt
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EndEnumStmt(EndEnumStmt.term, &EndEnumStmt)) {
+         // MATCHED EndEnumStmt
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EnumDefStmt(ATerm term, pOFP_Traverse EnumDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EnumDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "EnumDefStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EnumeratorDefStmt(ATerm term, pOFP_Traverse EnumeratorDefStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EnumeratorDefStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EnumeratorList, EOS;
+ if (ATmatch(term, "EnumeratorDefStmt(<term>,<term>,<term>)", &Label.term, &EnumeratorList.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EnumeratorList(EnumeratorList.term, &EnumeratorList)) {
+         // MATCHED EnumeratorList
+      } else return ATfalse;
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_Enumerator(ATerm term, pOFP_Traverse Enumerator)
+{
+#ifdef DEBUG_PRINT
+   printf("Enumerator: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse NamedConstant, IntConstantExpr;
+ if (ATmatch(term, "Enumerator(<term>,<term>)", &NamedConstant.term, &IntConstantExpr.term)) {
+
+      if (ofp_traverse_NamedConstant(NamedConstant.term, &NamedConstant)) {
+         // MATCHED NamedConstant
+      } else return ATfalse;
+
+   if (ATmatch(IntConstantExpr.term, "Some(<term>)", &IntConstantExpr.term)) {
+   if (ATmatch(IntConstantExpr.term, "(<term>)", &IntConstantExpr.term)) {
+      if (ofp_traverse_IntConstantExpr(IntConstantExpr.term, &IntConstantExpr)) {
+         // MATCHED IntConstantExpr
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EnumeratorList(ATerm term, pOFP_Traverse EnumeratorList)
+{
+#ifdef DEBUG_PRINT
+   printf("EnumeratorList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Enumerator;
+ if (ATmatch(term, "EnumeratorList(<term>)", &Enumerator.term)) {
+
+   ATermList Enumerator_tail = (ATermList) ATmake("<term>", Enumerator.term);
+   while (! ATisEmpty(Enumerator_tail)) {
+      Enumerator.term = ATgetFirst(Enumerator_tail);
+      Enumerator_tail = ATgetNext (Enumerator_tail);
+      if (ofp_traverse_Enumerator(Enumerator.term, &Enumerator)) {
+         // MATCHED Enumerator
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_EndEnumStmt(ATerm term, pOFP_Traverse EndEnumStmt)
+{
+#ifdef DEBUG_PRINT
+   printf("EndEnumStmt: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse Label, EOS;
+ if (ATmatch(term, "EndEnumStmt(<term>,<term>)", &Label.term, &EOS.term)) {
+
+   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+      if (ofp_traverse_Label(Label.term, &Label)) {
+         // MATCHED Label
+      } else return ATfalse;
+   }
+
+      if (ofp_traverse_EOS(EOS.term, &EOS)) {
+         // MATCHED EOS
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_BozLiteralConstant(ATerm term, pOFP_Traverse BozLiteralConstant)
+{
+#ifdef DEBUG_PRINT
+   printf("BozLiteralConstant: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse HexConstant;
+ if (ATmatch(term, "BozLiteralConstant_HC(<term>)", &HexConstant.term)) {
+
+      if (ofp_traverse_HexConstant(HexConstant.term, &HexConstant)) {
+         // MATCHED HexConstant
+      } else return ATfalse;
+
+   // MATCHED BozLiteralConstant_HC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse OctalConstant;
+ if (ATmatch(term, "BozLiteralConstant_OC(<term>)", &OctalConstant.term)) {
+
+      if (ofp_traverse_OctalConstant(OctalConstant.term, &OctalConstant)) {
+         // MATCHED OctalConstant
+      } else return ATfalse;
+
+   // MATCHED BozLiteralConstant_OC
+
+   return ATtrue;
+ }
+
+ OFP_Traverse BinaryConstant;
+ if (ATmatch(term, "BozLiteralConstant_BC(<term>)", &BinaryConstant.term)) {
+
+      if (ofp_traverse_BinaryConstant(BinaryConstant.term, &BinaryConstant)) {
+         // MATCHED BinaryConstant
+      } else return ATfalse;
+
+   // MATCHED BozLiteralConstant_BC
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_ArrayConstructor(ATerm term, pOFP_Traverse ArrayConstructor)
+{
+#ifdef DEBUG_PRINT
+   printf("ArrayConstructor: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AcSpec;
+ if (ATmatch(term, "ArrayConstructor(<term>)", &AcSpec.term)) {
+
+      if (ofp_traverse_AcSpec(AcSpec.term, &AcSpec)) {
+         // MATCHED AcSpec
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AcSpec(ATerm term, pOFP_Traverse AcSpec)
+{
+#ifdef DEBUG_PRINT
+   printf("AcSpec: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse TypeSpec, AcValueList;
+ if (ATmatch(term, "AcSpec_AVL(<term>,<term>)", &TypeSpec.term, &AcValueList.term)) {
+
+   if (ATmatch(TypeSpec.term, "Some(<term>)", &TypeSpec.term)) {
+   if (ATmatch(TypeSpec.term, "(<term>)", &TypeSpec.term)) {
+      if (ofp_traverse_TypeSpec(TypeSpec.term, &TypeSpec)) {
+         // MATCHED TypeSpec
+      } else return ATfalse;
+   }
+   }
+
+      if (ofp_traverse_AcValueList(AcValueList.term, &AcValueList)) {
+         // MATCHED AcValueList
+      } else return ATfalse;
+
+   // MATCHED AcSpec_AVL
+
+   return ATtrue;
+ }
+
+ OFP_Traverse TypeSpec1;
+ if (ATmatch(term, "AcSpec_TS(<term>)", &TypeSpec1.term)) {
+
+      if (ofp_traverse_TypeSpec(TypeSpec1.term, &TypeSpec1)) {
+         // MATCHED TypeSpec
+      } else return ATfalse;
+
+   // MATCHED AcSpec_TS
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_AcValue(ATerm term, pOFP_Traverse AcValue)
 {
 #ifdef DEBUG_PRINT
@@ -1773,20 +4170,125 @@ ATbool ofp_traverse_AcValue(ATerm term, pOFP_Traverse AcValue)
 #endif
 
  OFP_Traverse AcImpliedDo;
- if (ATmatch(term, "AcValue(<term>)", &AcImpliedDo.term)) {
+ if (ATmatch(term, "AcValue_AID(<term>)", &AcImpliedDo.term)) {
 
       if (ofp_traverse_AcImpliedDo(AcImpliedDo.term, &AcImpliedDo)) {
          // MATCHED AcImpliedDo
       } else return ATfalse;
 
+   // MATCHED AcValue_AID
+
    return ATtrue;
  }
 
  OFP_Traverse Expr;
- if (ATmatch(term, "AcValue(<term>)", &Expr.term)) {
+ if (ATmatch(term, "AcValue_E(<term>)", &Expr.term)) {
 
       if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+      } else return ATfalse;
+
+   // MATCHED AcValue_E
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AcValueList(ATerm term, pOFP_Traverse AcValueList)
+{
+#ifdef DEBUG_PRINT
+   printf("AcValueList: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AcValue;
+ if (ATmatch(term, "AcValueList(<term>)", &AcValue.term)) {
+
+   ATermList AcValue_tail = (ATermList) ATmake("<term>", AcValue.term);
+   while (! ATisEmpty(AcValue_tail)) {
+      AcValue.term = ATgetFirst(AcValue_tail);
+      AcValue_tail = ATgetNext (AcValue_tail);
+      if (ofp_traverse_AcValue(AcValue.term, &AcValue)) {
+         // MATCHED AcValue
+      } else return ATfalse;
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AcImpliedDo(ATerm term, pOFP_Traverse AcImpliedDo)
+{
+#ifdef DEBUG_PRINT
+   printf("AcImpliedDo: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AcValueList, AcImpliedDoControl;
+ if (ATmatch(term, "AcImpliedDo(<term>,<term>)", &AcValueList.term, &AcImpliedDoControl.term)) {
+
+      if (ofp_traverse_AcValueList(AcValueList.term, &AcValueList)) {
+         // MATCHED AcValueList
+      } else return ATfalse;
+
+      if (ofp_traverse_AcImpliedDoControl(AcImpliedDoControl.term, &AcImpliedDoControl)) {
+         // MATCHED AcImpliedDoControl
+      } else return ATfalse;
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AcImpliedDoControl(ATerm term, pOFP_Traverse AcImpliedDoControl)
+{
+#ifdef DEBUG_PRINT
+   printf("AcImpliedDoControl: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse AcDoVariable, Expr, Expr1, Expr2;
+ if (ATmatch(term, "AcImpliedDoControl(<term>,<term>,<term>,<term>)", &AcDoVariable.term, &Expr.term, &Expr1.term, &Expr2.term)) {
+
+      if (ofp_traverse_AcDoVariable(AcDoVariable.term, &AcDoVariable)) {
+         // MATCHED AcDoVariable
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+      if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
+         // MATCHED Expr
+      } else return ATfalse;
+
+   if (ATmatch(Expr2.term, "Some(<term>)", &Expr2.term)) {
+   if (ATmatch(Expr2.term, "(<term>)", &Expr2.term)) {
+      if (ofp_traverse_Expr(Expr2.term, &Expr2)) {
+         // MATCHED Expr
+      } else return ATfalse;
+   }
+   }
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
+ATbool ofp_traverse_AcDoVariable(ATerm term, pOFP_Traverse AcDoVariable)
+{
+#ifdef DEBUG_PRINT
+   printf("AcDoVariable: %s\n", ATwriteToString(term));
+#endif
+
+ OFP_Traverse DoVariable;
+ if (ATmatch(term, "AcDoVariable(<term>)", &DoVariable.term)) {
+
+      if (ofp_traverse_DoVariable(DoVariable.term, &DoVariable)) {
+         // MATCHED DoVariable
       } else return ATfalse;
 
    return ATtrue;
