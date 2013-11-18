@@ -50,6 +50,7 @@ sorts
   NamedConstant                       %% R306
   IntConstant                         %% R307
   CharConstant                        %% R308
+  LblRef                              %% R312
 
 %% 4.2 Type parameters
 
@@ -124,7 +125,7 @@ sorts
   ProcComponentAttrSpecList TypeAttrSpecList TypeBoundProcDeclList
   TypeParamDeclList TypeParamSpecList
 
-  OptTypeAttrSpecList OptTypeParamNameList
+  OptComponentAttrSpecList OptTypeAttrSpecList OptTypeParamNameList
 
 %% 4.6 Enumerations and enumerators
 
@@ -173,7 +174,7 @@ sorts
   Initialization                      %% R505
   NullInit                            %% R506
 
-  EntityDeclList
+  EntityDeclList OptAttrSpecList
 
 %% 5.3 Attributes
 
@@ -195,6 +196,8 @@ sorts
   AssumedRankSpec                     %% R522a TR 29113
   ImpliedShapeSpec                    %% R522
   IntentSpec                          %% R523
+
+  CoboundsEntry
 
   AssumedShapeSpecList AttrSpecList DeferredCoshapeSpecList
   DeferredShapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
@@ -238,9 +241,11 @@ sorts
   ValueStmt                           %% R558
   VolatileStmt                        %% R559
 
+  ArrayNameSpec ArrayNameSpecList
+
   AccessIdList AllocatableDeclList BindEntityList CodimensionDeclList
   DataIDoObjectList DataStmtObjectList DataStmtSetList DataStmtValueList
-  NamedConstantDefList PointerDeclList SavedEntityList TargetDeclList
+  DummyArgNameList NamedConstantDefList PointerDeclList SavedEntityList TargetDeclList
 
 %% 5.5 Implicit statement
 
@@ -256,7 +261,7 @@ sorts
   NamelistStmt                        %% R563
   NamelistGroupObject                 %% R564
 
-  NamelistGroupObjectList
+  NamelistGroupObjectList NamelistEntry NamelistEntryList
 
 %% 5.7 Storage association of data objects
 
@@ -268,6 +273,8 @@ sorts
 
   CommonBlockObjectList EntityNameList
   EquivalenceObjectList EquivalenceSetList ObjectNameList
+
+  CommonBlockEntry1 CommonBlockEntry
 
 %% Identifier aliases
 
@@ -360,6 +367,7 @@ sorts
   ExtendedIntrinsicOp                 %% R311
 
   Primary                             %% R701
+
   Level1Expr                          %% R702
   DefinedUnaryOp                      %% R703
   MultOperand                         %% R704
@@ -380,6 +388,7 @@ sorts
   AndOp                               %% R719
   OrOp                                %% R720
   EquivOp                             %% R721
+
   Expr                                %% R722
   DefinedBinaryOp                     %% R723
   LogicalExpr                         %% R724
@@ -418,6 +427,8 @@ sorts
   ForallAssignmentStmt                %% R757
   EndForallStmt                       %% R758
   ForallStmt                          %% R759
+
+  ElsewhereClause MaskedElsewhereClause
 
   BoundsRemappingList BoundsSpecList ForallTripletSpecList
 
@@ -483,6 +494,8 @@ sorts
   TypeGuardStmt                       %% R848
   EndSelectTypeStmt                   %% R849
   ExitStmt                            %% R850
+
+  CaseStmtAndBlock ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
 
   AssociationList CaseValueRangeList
 
@@ -704,8 +717,8 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList DummyArgNameList ExternalNameList
-  ImportNameList IntrinsicProcedureNameList ProcAttrSpecList ProcedureNameList
+  ActualArgSpecList DummyArgList ExternalNameList ImportNameList
+  IntrinsicProcedureNameList ProcAttrSpecList ProcedureNameList
 
 %% Identifier aliases
 
@@ -713,7 +726,6 @@ sorts
   GenericName ImportName IntrinsicProcedureName
   ProcedureEntityName ProgramName ResultName
   SubroutineName
-
 
 context-free syntax
 
@@ -1056,7 +1068,8 @@ context-free syntax
   AccessSpec                                       -> BindingAttr             {cons("BindingAttr_AS")}
 
 %%452
-  Label? 'FINAL' '::'? FinalSubroutineNameList EOS -> FinalProcedureStmt      {cons("FinalProcedureStmt")}
+  Label? 'FINAL' '::' FinalSubroutineNameList  EOS -> FinalProcedureStmt      {cons("FinalProcedureStmt")}
+  Label? 'FINAL'      FinalSubroutineNameList  EOS -> FinalProcedureStmt      {cons("FinalProcedureStmt")}
   {FinalSubroutineName ','}+                       -> FinalSubroutineNameList {cons("FinalSubroutineNameList")}
 
 %%R453
@@ -1090,7 +1103,8 @@ context-free syntax
   Label? 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("EnumDefStmt")}
 
 %%R460
-  Label? 'ENUMERATOR' '::'? EnumeratorList     EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
+  Label? 'ENUMERATOR' '::' EnumeratorList      EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
+  Label? 'ENUMERATOR'      EnumeratorList      EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
 
 %%R461
 %%       IntConstantExpr substituted for ScalarIntConstantExpr
@@ -1193,13 +1207,16 @@ context-free syntax
 %%
 
 %%R501
-  Label? DeclarationTypeSpec
-          ((',' AttrSpecList)? '::')? EntityDeclList  EOS -> TypeDeclarationStmt {cons("TypeDeclarationStmt")}
+  Label? DeclarationTypeSpec OptAttrSpecList?
+                             EntityDeclList           EOS -> TypeDeclarationStmt {cons("TypeDeclarationStmt")}
+
+  (',' AttrSpecList)? '::'                                -> OptAttrSpecList     {cons("OptAttrSpecList")}
+
 
 %%R502
    AccessSpec                                             -> AttrSpec     {cons("AttrSpec_AS")}
   'ALLOCATABLE'                                           -> AttrSpec     {cons("AttrSpec_ALLOCATABLE")}
-  'ASYNCHRONOUS'                                          -> AttrSpec     {cons("AttrSpec_ASYNCHRONOUS")}
+  'ASYNCHRONOUS'                                          -> AttrSpec     {cons("AttrSpec_ASYNC")}
   'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("AttrSpec_CODIMENSION")}
   'CONTIGUOUS'                                            -> AttrSpec     {cons("AttrSpec_CONTIGUOUS")}
   'DIMENSION' '(' ArraySpec ')'                           -> AttrSpec     {cons("AttrSpec_DIMENSION")}
@@ -1230,9 +1247,9 @@ context-free syntax
 %%Name - lex
 
 %%R505
-  '='   ConstantExpr                                    -> Initialization  {cons("Initialization")}
-  '=>'  NullInit                                        -> Initialization  {cons("Initialization")}
-  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization")}
+  '='   ConstantExpr                                    -> Initialization  {cons("Initialization_CE")}
+  '=>'  NullInit                                        -> Initialization  {cons("Initialization_NI")}
+  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization_IDT")}
 
 %%R506
   FunctionReference                                     -> NullInit        {cons("NullInit")}
@@ -1251,17 +1268,18 @@ context-free syntax
   'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'    -> LanguageBindingSpec      {cons("LanguageBindingSpec")}
 
 %%R509
-  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec")}
-  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec")}
+  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec_DCSL")}
+  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec_ECS")}
 
 %%R510
   ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshapeSpec")}
   {DeferredCoshapeSpec ','}+           -> DeferredCoshapeSpecList {cons("DeferredCoshapeSpecList")}
 
 %%511
-  ( ( LowerCobound ':' )? UpperCobound ',' )*
-    ( LowerCobound ':' )?
-  '*'                                  -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
+  CoboundsEntry*
+  (LowerCobound ':')?  '*'             -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
+
+  (LowerCobound ':')? UpperCobound ',' -> CoboundsEntry        {cons("CoboundsEntry")}
 
 %%R512
   SpecificationExpr                    -> LowerCobound         {cons("LowerCobound")}
@@ -1273,12 +1291,12 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("DimensionSpec")}
 
 %%R515
-  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec")}
-  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
+  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec_ESSL")}
+  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec_ASSL")}
+  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec_DSSL")}
+  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec_ASS")}
+  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec_ISSL")}
+  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec_ARS")}
 
 %%R516
   (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
@@ -1320,8 +1338,9 @@ context-free syntax
 %%
 
 %%R524
-  Label? AccessSpec '::'? AccessIdList                  EOS -> AccessStmt   {cons("AccessStmt")}
   Label? AccessSpec                                     EOS -> AccessStmt   {cons("AccessStmt")}
+  Label? AccessSpec      AccessIdList                   EOS -> AccessStmt   {cons("AccessStmt_AIL")}
+  Label? AccessSpec '::' AccessIdList                   EOS -> AccessStmt   {cons("AccessStmt_AIL")}
 
 %%R525
 %%UseName           %% ambiguous with generic-spec
@@ -1369,13 +1388,13 @@ context-free syntax
 
 %%R535
   DataStmtObjectList '/' DataStmtValueList '/'              -> DataStmtSet      {cons("DataStmtSet")}
-  DataStmtSet                                               -> DataStmtSetList  {cons("DataStmtSetList")}
-  DataStmtSetList ',' DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList")}
-  DataStmtSetList     DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList")}
+  DataStmtSet                                               -> DataStmtSetList  {cons("DataStmtSetList_1")}
+  DataStmtSetList ',' DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList_2")}
+  DataStmtSetList     DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList_2")}
 
 %%R536
-  Variable                                                  -> DataStmtObject     {cons("DataStmtObject")}
-  DataImpliedDo                                             -> DataStmtObject     {cons("DataStmtObject")}
+  Variable                                                  -> DataStmtObject     {cons("DataStmtObject_V")}
+  DataImpliedDo                                             -> DataStmtObject     {cons("DataStmtObject_DID")}
   {DataStmtObject ','}+                                     -> DataStmtObjectList {cons("DataStmtObjectList")}
 
 %%R537
@@ -1387,9 +1406,9 @@ context-free syntax
   ')'                                                       -> DataImpliedDo    {cons("DataImpliedDo")}
 
 %%R538
-  ArrayElement                                              -> DataIDoObject    {cons("DataIDoObject")}
-  StructureComponent                                        -> DataIDoObject    {cons("DataIDoObject")}
-  DataImpliedDo                                             -> DataIDoObject    {cons("DataIDoObject")}
+  ArrayElement                                              -> DataIDoObject    {cons("DataIDoObject_AE")}
+  StructureComponent                                        -> DataIDoObject    {cons("DataIDoObject_SC")}
+  DataImpliedDo                                             -> DataIDoObject    {cons("DataIDoObject_DID")}
   {DataIDoObject ','}+                                      -> DataIDoObjectList{cons("DataIDoObjectList")}
 
 %%R539
@@ -1403,20 +1422,20 @@ context-free syntax
 %%         Icon substituted for scalar-int-constant
 %%         int-constant-subobject substituted for scalar-int-constant-subobject
 %%
-  Icon                                                      -> DataStmtRepeat   {cons("DataStmtRepeat")}
-  IntConstantSubobject                                      -> DataStmtRepeat   {cons("DataStmtRepeat")}
+  Icon                                                      -> DataStmtRepeat   {cons("DataStmtRepeat_IC")}
+  IntConstantSubobject                                      -> DataStmtRepeat   {cons("DataStmtRepeat_ICS")}
 
 %%R542
 %%       constant substituted for scalar-constant
 %%       constant-subobject substituted for scalar-constant-subobject
 %%
-  Constant                                                  -> DataStmtConstant  {cons("DataStmtConstant")}
-  ConstantSubobject                                         -> DataStmtConstant  {cons("DataStmtConstant")}
-  SignedIntLiteralConstant                                  -> DataStmtConstant  {cons("DataStmtConstant")}
-  SignedRealLiteralConstant                                 -> DataStmtConstant  {cons("DataStmtConstant")}
-  NullInit                                                  -> DataStmtConstant  {cons("DataStmtConstant")}
-  InitialDataTarget                                         -> DataStmtConstant  {cons("DataStmtConstant")}
-  StructureConstructor                                      -> DataStmtConstant  {cons("DataStmtConstant")}
+  Constant                                                  -> DataStmtConstant  {cons("DataStmtConstant_C")}
+  ConstantSubobject                                         -> DataStmtConstant  {cons("DataStmtConstant_CS")}
+  SignedIntLiteralConstant                                  -> DataStmtConstant  {cons("DataStmtConstant_SILC")}
+  SignedRealLiteralConstant                                 -> DataStmtConstant  {cons("DataStmtConstant_SRLC")}
+  NullInit                                                  -> DataStmtConstant  {cons("DataStmtConstant_NI")}
+  InitialDataTarget                                         -> DataStmtConstant  {cons("DataStmtConstant_IDT")}
+  StructureConstructor                                      -> DataStmtConstant  {cons("DataStmtConstant_SC")}
 
 %%R543
   ConstantSubobject                                         -> IntConstantSubobject  {cons("IntConstantSubobject")}
@@ -1425,12 +1444,11 @@ context-free syntax
   Designator                                                -> ConstantSubobject {cons("ConstantSubobject")}
 
 %%R545
-  Label? 'DIMENSION' '::'
-                           ArrayName '(' ArraySpec ')'
-                      (',' ArrayName '(' ArraySpec ')')*   EOS -> DimensionStmt  {cons("DimensionStmt")}
-  Label? 'DIMENSION'
-                           ArrayName '(' ArraySpec ')'
-                      (',' ArrayName '(' ArraySpec ')')*   EOS -> DimensionStmt  {cons("DimensionStmt")}
+  Label? 'DIMENSION' '::' ArrayNameSpecList             EOS -> DimensionStmt     {cons("DimensionStmt")}
+  Label? 'DIMENSION'      ArrayNameSpecList             EOS -> DimensionStmt     {cons("DimensionStmt")}
+
+  ArrayName '(' ArraySpec ')'                               -> ArrayNameSpec     {cons("ArrayNameSpec")}
+  {ArrayNameSpec ','}+                                      -> ArrayNameSpecList {cons("ArrayNameSpecList")}
 
 %%R546
   Label? 'INTENT' '(' IntentSpec ')' '::' DummyArgNameList EOS -> IntentStmt   {cons("IntentStmt")}
@@ -1454,8 +1472,8 @@ context-free syntax
   Label? 'POINTER'      PointerDeclList                    EOS -> PointerStmt     {cons("PointerStmt")}
 
 %%R551
-  ObjectName ( '(' DeferredShapeSpecList ')' )?                -> PointerDecl     {cons("PointerDecl")}
-  ProcEntityName                                               -> PointerDecl     {cons("PointerDecl")}
+  ObjectName ( '(' DeferredShapeSpecList ')' )?                -> PointerDecl     {cons("PointerDecl_ON")}
+  ProcEntityName                                               -> PointerDecl     {cons("PointerDecl_PEN")}
   {PointerDecl ','}+                                           -> PointerDeclList {cons("PointerDeclList")}
 
 %%R552
@@ -1465,7 +1483,8 @@ context-free syntax
   {EntityName ','}+                                            -> EntityNameList  {cons("EntityNameList")}
 
 %%R553
-  Label? 'SAVE' '::'? SavedEntityList                      EOS -> SaveStmt        {cons("SaveStmt")}
+  Label? 'SAVE' '::' SavedEntityList                       EOS -> SaveStmt        {cons("SaveStmt_SEL")}
+  Label? 'SAVE'      SavedEntityList                       EOS -> SaveStmt        {cons("SaveStmt_SEL")}
   Label? 'SAVE'                                            EOS -> SaveStmt        {cons("SaveStmt")}
 
 %%R554
@@ -1499,8 +1518,8 @@ context-free syntax
 %%
 
 %%R560
-  Label? 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("ImplicitStmt")}
-  Label? 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  Label? 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("ImplicitStmt_ISL")}
+  Label? 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("ImplicitStmt_NONE")}
 
 %%R561
   DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec    {cons("ImplicitSpec")}
@@ -1515,11 +1534,13 @@ context-free syntax
 %%
 
 %%R563
-%%TODO - inline NamelistGroup?
-  Label? 'NAMELIST'
-           '/' NamelistGroupName '/' NamelistGroupObjectList
-    ( ','? '/' NamelistGroupName '/' NamelistGroupObjectList )*
-                                                         EOS -> NamelistStmt        {cons("NamelistStmt")}
+  Label? 'NAMELIST' NamelistEntryList              EOS -> NamelistStmt      {cons("NamelistStmt")}
+
+  '/' NamelistGroupName '/' NamelistGroupObjectList    -> NamelistEntry     {cons("NamelistEntry")}
+
+  NamelistEntry                                        -> NamelistEntryList {cons("NamelistEntryList")}
+  NamelistEntryList ',' NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
+  NamelistEntryList     NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
 
 %%R564
   VariableName                                               -> NamelistGroupObject {cons("NamelistGroupObject")}
@@ -1543,10 +1564,14 @@ context-free syntax
   {EquivalenceObject ','}+                                   -> EquivalenceObjectList {cons("EquivalenceObjectList")}
 
 %%R568
-  Label? 'COMMON'
-              ('/' CommonBlockName? '/')? CommonBlockObjectList
-    (','?  '/' CommonBlockName? '/'   CommonBlockObjectList )*
-                                                         EOS -> CommonStmt  {cons("CommonStmt")}
+  Label? 'COMMON' CommonBlockEntry1 CommonBlockEntry*    EOS -> CommonStmt  {cons("CommonStmt")}
+
+   '/' CommonBlockName? '/' CommonBlockObjectList            -> CommonBlockEntry1    {cons("CBE1_CBN")}
+                            CommonBlockObjectList            -> CommonBlockEntry1    {cons("CBE1")}
+
+   ',' '/' CommonBlockName? '/' CommonBlockObjectList        -> CommonBlockEntry     {cons("CBE")}
+       '/' CommonBlockName? '/' CommonBlockObjectList        -> CommonBlockEntry     {cons("CBE")}
+
 %%R569
   VariableName ( '(' ArraySpec ')' )?                        -> CommonBlockObject     {cons("CommonBlockObject")}
   {CommonBlockObject ','}+                                   -> CommonBlockObjectList {cons("CommonBlockObjectList")}
@@ -1579,8 +1604,8 @@ context-free syntax
 
 %%  ObjectName
 %%  CoindexedNamedObject
-  DataRef                              -> Designator   {cons("Designator_AMB")}
-  Substring                            -> Designator   {cons("Designator_AMB")}
+  DataRef                              -> Designator   {cons("Designator_DR_AMB")}
+  Substring                            -> Designator   {cons("Designator_S_AMB")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -1684,8 +1709,8 @@ context-free syntax
   DataRef                                                -> ArrayElement         {cons("ArrayElement")}
 
 %%R618
-  DataRef ('(' SubstringRange ')')?                      -> ArraySection         {cons("ArraySection")}
-  ComplexPartDesignator                                  -> ArraySection         {cons("ArraySection")}
+  DataRef ('(' SubstringRange ')')?                      -> ArraySection         {cons("ArraySection_DR")}
+  ComplexPartDesignator                                  -> ArraySection         {cons("ArraySection_CPD")}
 
 %%R619
 %%      int-expr substituted for scalar-int-expr
@@ -1693,8 +1718,8 @@ context-free syntax
   IntExpr                                                -> Subscript            {cons("Subscript")}
 
 %%R620
-  Subscript                                              -> SectionSubscript     {cons("SectionSubscript")}
-  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
+  Subscript                                              -> SectionSubscript     {cons("SectionSubscript_S")}
+  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript_ST")}
 %%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
 
   {SectionSubscript ','}+                                -> SectionSubscriptList {cons("SectionSubscriptList")}
@@ -1794,9 +1819,9 @@ context-free syntax
   Label? 'NULLIFY' '(' PointerObjectList ')'         EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
-  VariableName                                           -> PointerObject        {cons("PointerObject")}
-  StructureComponent                                     -> PointerObject        {cons("PointerObject")}
-  ProcPointerName                                        -> PointerObject        {cons("PointerObject")}
+  VariableName                                           -> PointerObject        {cons("PointerObject_VN")}
+  StructureComponent                                     -> PointerObject        {cons("PointerObject_SC")}
+  ProcPointerName                                        -> PointerObject        {cons("PointerObject_PPN")}
   {PointerObject ','}+                                   -> PointerObjectList    {cons("PointerObjectList")}
 
 %%R640
@@ -1807,8 +1832,8 @@ context-free syntax
             ')'                                      EOS -> DeallocateStmt       {cons("DeallocateStmt")}
 
 %%641
-  'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("DeallocOpt")}
-  'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("DeallocOpt")}
+  'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("DeallocOpt_STAT")}
+  'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("DeallocOpt_ERR")}
   {DeallocOpt ','}+                                      -> DeallocOptList       {cons("DeallocOptList")}
 
 
@@ -1825,34 +1850,34 @@ context-free syntax
   Ident   -> ProcedureComponentName    {cons("ProcedureComponentName")}
 
 %%R309
-  PowerOp                       -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  MultOp                        -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  AddOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  ConcatOp                      -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  RelOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  NotOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  AndOp                         -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  OrOp                          -> IntrinsicOperator     {cons("IntrinsicOperator")}
-  EquivOp                       -> IntrinsicOperator     {cons("IntrinsicOperator")}
+  PowerOp                       -> IntrinsicOperator     {cons("IntrinsicOperator_PO")}
+  MultOp                        -> IntrinsicOperator     {cons("IntrinsicOperator_MO")}
+  AddOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_AO1")}
+  ConcatOp                      -> IntrinsicOperator     {cons("IntrinsicOperator_CO")}
+  RelOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_RO")}
+  NotOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_NO")}
+  AndOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_AO2")}
+  OrOp                          -> IntrinsicOperator     {cons("IntrinsicOperator_OO")}
+  EquivOp                       -> IntrinsicOperator     {cons("IntrinsicOperator_EO")}
 
 %%R310
-  DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator")}
-  DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator")}
-  ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator")}
+  DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator_DUO")}
+  DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator_DBO")}
+  ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator_EIO")}
 
 %%R311
   IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("ExtendedIntrinsicOp")}
 
 %%R701
 %%TODO-AMB
-  Constant                      -> Primary          {cons("Primary_AMB")}
-  Designator                    -> Primary          {cons("Primary_AMB")}
-  ArrayConstructor              -> Primary          {cons("Primary_AMB")}
-  StructureConstructor          -> Primary          {cons("Primary_AMB")}
-  FunctionReference             -> Primary          {cons("Primary_AMB")}
-  TypeParamInquiry              -> Primary          {cons("Primary_AMB")}
+  Constant                      -> Primary          {cons("Primary_C_AMB")}
+  Designator                    -> Primary          {cons("Primary_D_AMB")}
+  ArrayConstructor              -> Primary          {cons("Primary_AC_AMB")}
+  StructureConstructor          -> Primary          {cons("Primary_SC_AMB")}
+  FunctionReference             -> Primary          {cons("Primary_FR_AMB")}
+  TypeParamInquiry              -> Primary          {cons("Primary_TPI_AMB")}
 %%TypeParamName                 -> Primary          {reject}                %% > Designator
-  '(' Expr ')'                  -> Primary          {cons("Primary_AMB")}
+  '(' Expr ')'                  -> Primary          {cons("Primary_E_AMB")}
 
 %%TODO-DELETE   Scon                          -> Primary          {cons("PrimaryScon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("ConstExpr")}
@@ -1988,10 +2013,10 @@ Primary                                    -> Expr            {cons("Expr")}
 
 %%R733
   Label? DataPointerObject ( '(' BoundsSpecList ')' )?
-                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_DPO1")}
   Label? DataPointerObject   '(' BoundsRemappingList ')'
-                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
-  Label? ProcPointerObject '=>' ProcTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_DPO2")}
+  Label? ProcPointerObject '=>' ProcTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_PPO")}
 
 %%TODO-DELETE these
 %%TODO   LblDef Name '%' Name '=>' DataTarget EOS                               -> PointerAssignmentStmt
@@ -2004,8 +2029,8 @@ Primary                                    -> Expr            {cons("Expr")}
 %%R734
 %%          variable substituted for scalar-variable
 %%
-  VariableName                                           -> DataPointerObject  {cons("DataPointerObject")}
-  Variable '%' DataPointerComponentName                  -> DataPointerObject  {cons("DataPointerObject")}
+  VariableName                                           -> DataPointerObject  {cons("DataPointerObject_VN")}
+  Variable '%' DataPointerComponentName                  -> DataPointerObject  {cons("DataPointerObject_V")}
 
 %%R735
   LowerBoundExpr ':'                                     -> BoundsSpec         {cons("BoundsSpec")}
@@ -2021,8 +2046,8 @@ Primary                                    -> Expr            {cons("Expr")}
   Expr                                                 -> DataTarget        {cons("DataTarget")}
 
 %%R738
-  ProcPointerName                                      -> ProcPointerObject {cons("ProcPointerObject")}
-  ProcComponentRef                                     -> ProcPointerObject {cons("ProcPointerObject")}
+  ProcPointerName                                      -> ProcPointerObject {cons("ProcPointerObject_PPN")}
+  ProcComponentRef                                     -> ProcPointerObject {cons("ProcPointerObject_PCR")}
 
 %%R739
 %%          variable substituted for scalar-variable
@@ -2030,9 +2055,9 @@ Primary                                    -> Expr            {cons("Expr")}
   Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("ProcComponentRef")}
 
 %%R740
-  Expr                                                 -> ProcTarget        {cons("ProcTarget")}
-  ProcedureName                                        -> ProcTarget        {cons("ProcTarget")}
-  ProcComponentRef                                     -> ProcTarget        {cons("ProcTarget")}
+  Expr                                                 -> ProcTarget        {cons("ProcTarget_E")}
+  ProcedureName                                        -> ProcTarget        {cons("ProcTarget_PN")}
+  ProcComponentRef                                     -> ProcTarget        {cons("ProcTarget_PCR")}
 
 %%R741
   Label? 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("WhereStmt")}
@@ -2051,11 +2076,14 @@ Primary                                    -> Expr            {cons("Expr")}
 %%TODO-DELETE  EndWhereStmt                                  -> WhereConstruct  {cons("WhereConstruct")}
 
 %%R742
-  WhereConstructStmt
-    (                    WhereBodyConstruct*)
-    (MaskedElsewhereStmt WhereBodyConstruct*)*
-    (ElsewhereStmt       WhereBodyConstruct*)? 
-  EndWhereStmt                                  -> WhereConstruct  {cons("WhereConstruct")}
+  WhereConstructStmt  WhereBodyConstruct*
+    MaskedElsewhereClause*
+    ElsewhereClause?
+  EndWhereStmt                                  -> WhereConstruct         {cons("WhereConstruct")}
+
+  MaskedElsewhereStmt WhereBodyConstruct*       -> MaskedElsewhereClause  {cons("MaskedElsewhereClause")}
+  ElsewhereStmt       WhereBodyConstruct*       -> ElsewhereClause        {cons("ElsewhereClause")}
+
 
 %%R743
 %%       Ident substituted for where-construct-name
@@ -2063,9 +2091,9 @@ Primary                                    -> Expr            {cons("Expr")}
   Label? (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("WhereConstructStmt")}
 
 %%R744
-  WhereAssignmentStmt                              -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
-  WhereStmt                                        -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
-  WhereConstruct                                   -> WhereBodyConstruct  {cons("WhereBodyConstruct")}
+  WhereAssignmentStmt                              -> WhereBodyConstruct  {cons("WhereBodyConstruct_WAS")}
+  WhereStmt                                        -> WhereBodyConstruct  {cons("WhereBodyConstruct_WS")}
+  WhereConstruct                                   -> WhereBodyConstruct  {cons("WhereBodyConstruct_WC")}
 
 %%R745
 %%TODO-F08 - make it so label can't be part of assignment-stmt
@@ -2123,15 +2151,15 @@ Primary                                    -> Expr            {cons("Expr")}
   IntExpr                                          -> ForallStep           {cons("ForallStep")}
 
 %%756
-  ForallAssignmentStmt                             -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
-  WhereStmt                                        -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
-  WhereConstruct                                   -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
-  ForallConstruct                                  -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
-  ForallStmt                                       -> ForallBodyConstruct  {cons("ForallBodyConstruct")}
+  ForallAssignmentStmt                             -> ForallBodyConstruct  {cons("ForallBodyConstruct_FAS")}
+  WhereStmt                                        -> ForallBodyConstruct  {cons("ForallBodyConstruct_WS")}
+  WhereConstruct                                   -> ForallBodyConstruct  {cons("ForallBodyConstruct_WC")}
+  ForallConstruct                                  -> ForallBodyConstruct  {cons("ForallBodyConstruct_FC")}
+  ForallStmt                                       -> ForallBodyConstruct  {cons("ForallBodyConstruct_FS")}
 
 %%757
-  AssignmentStmt                                   -> ForallAssignmentStmt {cons("ForallAssignmentStmt")}
-  PointerAssignmentStmt                            -> ForallAssignmentStmt {cons("ForallAssignmentStmt")}
+  AssignmentStmt                                   -> ForallAssignmentStmt {cons("ForallAssignmentStmt_AS")}
+  PointerAssignmentStmt                            -> ForallAssignmentStmt {cons("ForallAssignmentStmt_PAS")}
 
 %%758
   Label? 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("EndForallStmt")}
@@ -2334,9 +2362,12 @@ context-free syntax
 %%        expr substituted for scalar-int-expr
 %%        expr substituted for scalar-logical-expr
 %%
-  ','? DoVariable '=' Expr ',' Expr (',' Expr)?         -> LoopControl    {cons("LoopControl_DV")}
-  ','? 'WHILE' '(' Expr ')'                             -> LoopControl    {cons("LoopControl_WHILE")}
-  ','? 'CONCURRENT' ForallHeader                        -> LoopControl    {cons("LoopControl_CONCURRENT")}
+      DoVariable '=' Expr ',' Expr (',' Expr)?          -> LoopControl    {cons("LoopControl_DV")}
+  ',' DoVariable '=' Expr ',' Expr (',' Expr)?          -> LoopControl    {cons("LoopControl_DV")}
+      'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopControl_WHILE")}
+  ',' 'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopControl_WHILE")}
+      'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopControl_CONCURRENT")}
+  ',' 'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopControl_CONCURRENT")}
 
 %%R819
   ScalarIntVariableName                                 -> DoVariable     {cons("DoVariable")}
@@ -2387,10 +2418,13 @@ context-free syntax
   Label? 'CYCLE' DoConstructName?                   EOS -> CycleStmt      {cons("CycleStmt")}
 
 %%R832
-   IfThenStmt Block
-  (ElseIfStmt Block)* 
-  (ElseStmt   Block)? 
-   EndIfStmt                                            -> IfConstruct    {cons("IfConstruct")}
+  IfThenStmt Block
+  ElseIfStmtAndBlock* 
+  ElseStmtAndBlock?
+  EndIfStmt                                             -> IfConstruct         {cons("IfConstruct")}
+
+  ElseIfStmt Block                                      -> ElseIfStmtAndBlock  {cons("ElseIfStmt_Block")}
+  ElseStmt   Block                                      -> ElseStmtAndBlock    {cons("ElseStmt_Block")}
 
 %%R833
 %%       logical-expr substituted for scalar-logical-expr
@@ -2417,8 +2451,10 @@ context-free syntax
 
 %%R838
   SelectCaseStmt
-    ( CaseStmt Block )*
-  EndSelectStmt                                         -> CaseConstruct  {cons("CaseConstruct")}
+    CaseStmtAndBlock*
+  EndSelectStmt                                         -> CaseConstruct     {cons("CaseConstruct")}
+
+  CaseStmt Block                                        -> CaseStmtAndBlock  {cons("CaseStmt_Block")}
 
 %%R839
   Label? ( CaseConstructName ':' )?
@@ -2453,8 +2489,11 @@ context-free syntax
 
 %%R846
   SelectTypeStmt
-    (TypeGuardStmt Block)*
-  EndSelectTypeStmt                                     -> SelectTypeConstruct  {cons("SelectTypeConstruct")}
+    TypeGuardStmtAndBlock*
+  EndSelectTypeStmt                                     -> SelectTypeConstruct    {cons("SelectTypeConstruct")}
+
+  TypeGuardStmt Block                                   -> TypeGuardStmtAndBlock  {cons("TypeGuardStmt_Block")}
+
 
 %%R847
   ( SelectConstructName ':')?
@@ -2482,7 +2521,8 @@ context-free syntax
 %%R852
 %%       expr substituted for scalar-int-expr
 %%
-  Label? 'GO' 'TO' '(' LabelList ')' ','? Expr      EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
+  Label? 'GO' 'TO' '(' LabelList ')'     Expr       EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
+  Label? 'GO' 'TO' '(' LabelList ')' ',' Expr       EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
 
   {LblRef ','}+                                         -> LabelList        {cons("LabelList")}
 
@@ -2603,7 +2643,7 @@ context-free syntax
   'UNIT'         '='  FileUnitNumber             -> ConnectSpec   {cons("ConnectSpec_UNIT")}
   'ACCESS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ACCESS")}
   'ACTION'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ACTION")}
-  'ASYNCHRONOUS' '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ASYNCHRONOUS")}
+  'ASYNCHRONOUS' '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ASYNC")}
   'BLANK'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_BLANK")}
   'DECIMAL'      '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_DECIMAL")}
   'DELIM'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_DELIM")}
@@ -2672,7 +2712,7 @@ context-free syntax
                       NamelistGroupName           -> IoControlSpec  {cons("IoControlSpec_NML")}
   'NML'          '='  NamelistGroupName           -> IoControlSpec  {cons("IoControlSpec_NML")}
   'ADVANCE'      '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ADVANCE")}
-  'ASYNCHRONOUS' '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ASYNCHRONOUS")}
+  'ASYNCHRONOUS' '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ASYNC")}
   'BLANK'        '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_BLANK")}
   'DECIMAL'      '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_DECIMAL")}
   'DELIM'        '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_DELIM")}
@@ -2807,7 +2847,7 @@ context-free syntax
   'FILE'         '='  FileNameExpr                     -> InquireSpec  {cons("InquireSpec_FILE")}  
   'ACCESS'       '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_ACCESS")}  
   'ACTION'       '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_ACTION")}  
-  'ASYNCHRONOUS' '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_ASYNCHRONOUS")}  
+  'ASYNCHRONOUS' '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_ASYNC")}  
   'BLANK'        '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_BLANK")}  
   'DECIMAL'      '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_DECIMAL")}  
   'DELIM'        '='  DefaultCharExpr                  -> InquireSpec  {cons("InquireSpec_DELIM")}  
@@ -2856,44 +2896,51 @@ context-free syntax
   Label 'FORMAT' FormatSpecification            EOS -> FormatStmt           {cons("FormatStmt")}
 
 %%R1002
-  '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("FormatSpecification_alt1")}
-  '(' ( FormatItems ',')? UnlimitedFormatItem ')'   -> FormatSpecification  {cons("FormatSpecification_alt2")}
+  '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("FormatSpecification")}
+  '(' ( FormatItems ',')? UnlimitedFormatItem ')'   -> FormatSpecification  {cons("FormatSpecification_UFI")}
 
 
 %% 10.3 Form of a format item list
 %%
 
 %%R1003
-  FormatItem (','? FormatItem)*                     -> FormatItems          {cons("FormatItems")}
+  FormatItem                                        -> FormatItems          {cons("FormatItems")}
+  FormatItems ',' FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
+  FormatItems     FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
 
 %%R1004
-  REditDesc? DataEditDesc                           -> FormatItem           {cons("FormatItem_alt1")}
-  ControlEditDesc                                   -> FormatItem           {cons("FormatItem_alt2")}
-  CharStringEditDesc                                -> FormatItem           {cons("FormatItem_alt3")}
-  REditDesc? '(' FormatItems ')'                    -> FormatItem           {cons("FormatItem_alt4")}
+%% Icon substituted for int-literal-constant
+%% Scon substituted for char-literal-constant
+  Icon? DataEditDesc                                -> FormatItem           {cons("FormatItem_RED")}
+  ControlEditDesc                                   -> FormatItem           {cons("FormatItem_CED")}
+  Scon                                              -> FormatItem           {cons("FormatItem_CSED")}
+  Icon? '(' FormatItems ')'                         -> FormatItem           {cons("FormatItem_FIs")}
 
 %%R1005
   '*' '(' FormatItems ')'                           -> UnlimitedFormatItem  {cons("UnlimitedFormatItem")}
 
 %%R1006
+%% Icon substituted for int-literal-constant
   Icon                                              -> REditDesc            {cons("R")}
 
 %%R1007
+%% Icon substituted for int-literal-constant
 %% Scon substituted for char-literal-constant
 %%
-  'I'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("DataEditDesc_I")}
-  'B'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("DataEditDesc_B")}
-  'O'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("DataEditDesc_O")}
-  'Z'  WEditDesc ('.' MEditDesc)?                   -> DataEditDesc       {cons("DataEditDesc_Z")}
-  'F'  WEditDesc  '.' DEditDesc                     -> DataEditDesc       {cons("DataEditDesc_F")}
-  'E'  WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("DataEditDesc_E")}
-  'EN' WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("DataEditDesc_EN")}
-  'ES' WEditDesc  '.' DEditDesc ('E' EEditDesc)?    -> DataEditDesc       {cons("DataEditDesc_ES")}
-  'G'  WEditDesc ('.' DEditDesc ('E' EEditDesc)?)?  -> DataEditDesc       {cons("DataEditDesc_G")}
-  'L'  WEditDesc                                    -> DataEditDesc       {cons("DataEditDesc_L")}
-  'A'  WEditDesc?                                   -> DataEditDesc       {cons("DataEditDesc_A")}
-  'D'  WEditDesc  '.' DEditDesc                     -> DataEditDesc       {cons("DataEditDesc_D")}
-  'DT' Scon? ( '('    VEditDescList ')' )?          -> DataEditDesc       {cons("DataEditDesc_DT")}
+  'I'  Icon ('.' Icon)?                 -> DataEditDesc         {cons("DataEditDesc_I")}
+  'B'  Icon ('.' Icon)?                 -> DataEditDesc         {cons("DataEditDesc_B")}
+  'O'  Icon ('.' Icon)?                 -> DataEditDesc         {cons("DataEditDesc_O")}
+  'Z'  Icon ('.' Icon)?                 -> DataEditDesc         {cons("DataEditDesc_Z")}
+  'F'  Icon  '.' Icon                   -> DataEditDesc         {cons("DataEditDesc_F")}
+  'E'  Icon  '.' Icon ('E' Icon)?       -> DataEditDesc         {cons("DataEditDesc_E")}
+  'EN' Icon  '.' Icon ('E' Icon)?       -> DataEditDesc         {cons("DataEditDesc_EN")}
+  'ES' Icon  '.' Icon ('E' Icon)?       -> DataEditDesc         {cons("DataEditDesc_ES")}
+  'G'  Icon  '.' Icon ('E' Icon)?       -> DataEditDesc         {cons("DataEditDesc_GE")}
+  'G'  Icon                             -> DataEditDesc         {cons("DataEditDesc_G")}
+  'L'  Icon                             -> DataEditDesc         {cons("DataEditDesc_L")}
+  'A'  Icon?                            -> DataEditDesc         {cons("DataEditDesc_A")}
+  'D'  Icon  '.' Icon                   -> DataEditDesc         {cons("DataEditDesc_D")}
+  'DT' Scon? ( '(' VEditDescList ')' )? -> DataEditDesc         {cons("DataEditDesc_DT")}
 
 %%R1008
   Icon                                  -> WEditDesc            {cons("W")}
@@ -2909,26 +2956,28 @@ context-free syntax
 
 %%R1012
   Icon                                  -> VEditDesc            {cons("V")}
-  {VEditDesc ','}+                      -> VEditDescList        {cons("VList")}
+  {Icon ','}+                           -> VEditDescList        {cons("VEditDescList")}
 
 %%R1013
-  PositionEditDesc                      -> ControlEditDesc      {cons("ControlEditDesc_alt1")}
-  REditDesc? '/'                        -> ControlEditDesc      {cons("ControlEditDesc_alt2")}
-  ':'                                   -> ControlEditDesc      {cons("ControlEditDesc_alt3")}
-  SignEditDesc                          -> ControlEditDesc      {cons("ControlEditDesc_alt4")}
-  KEditDesc 'P'                         -> ControlEditDesc      {cons("ControlEditDesc_alt5")}
-  BlankInterpEditDesc                   -> ControlEditDesc      {cons("ControlEditDesc_alt6")}
-  RoundEditDesc                         -> ControlEditDesc      {cons("ControlEditDesc_alt7")}
-  DecimalEditDesc                       -> ControlEditDesc      {cons("ControlEditDesc_alt8")}
+%% Icon substituted for int-literal-constant
+  PositionEditDesc                      -> ControlEditDesc      {cons("ControlEditDesc_PED")}
+  Icon? '/'                             -> ControlEditDesc      {cons("ControlEditDesc_SLASH")}
+  ':'                                   -> ControlEditDesc      {cons("ControlEditDesc_COLON")}
+  SignEditDesc                          -> ControlEditDesc      {cons("ControlEditDesc_SED")}
+  SignedIntLiteralConstant 'P'          -> ControlEditDesc      {cons("ControlEditDesc_P")}
+  BlankInterpEditDesc                   -> ControlEditDesc      {cons("ControlEditDesc_BIED")}
+  RoundEditDesc                         -> ControlEditDesc      {cons("ControlEditDesc_RED")}
+  DecimalEditDesc                       -> ControlEditDesc      {cons("ControlEditDesc_DED")}
 
 %%R1014
   SignedIntLiteralConstant              -> KEditDesc            {cons("K")}
 
 %%R1015
-  'T'  NEditDesc                        -> PositionEditDesc     {cons("PositionEditDesc_T")}
-  'TL' NEditDesc                        -> PositionEditDesc     {cons("PositionEditDesc_TL")}
-  'TR' NEditDesc                        -> PositionEditDesc     {cons("PositionEditDesc_TR")}
-       NEditDesc 'X'                    -> PositionEditDesc     {cons("PositionEditDesc_X")}
+%% Icon substituted for int-literal-constant
+  'T'  Icon                        -> PositionEditDesc     {cons("PositionEditDesc_T")}
+  'TL' Icon                        -> PositionEditDesc     {cons("PositionEditDesc_TL")}
+  'TR' Icon                        -> PositionEditDesc     {cons("PositionEditDesc_TR")}
+       Icon 'X'                    -> PositionEditDesc     {cons("PositionEditDesc_X")}
 
 %%R1016
   Icon                                  -> NEditDesc            {cons("N")}
@@ -3323,8 +3372,10 @@ context-free syntax
 %%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
-  Label? 'MODULE' 'PROCEDURE' '::'? ProcedureNameList  EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
-  Label?          'PROCEDURE' '::'? ProcedureNameList  EOS -> ProcedureStmt     {cons("ProcedureStmt_P")}
+  Label? 'MODULE' 'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
+  Label? 'MODULE' 'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
+  Label?          'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_P")}
+  Label?          'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_P")}
 
   {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNameList")}
 
@@ -3341,13 +3392,15 @@ context-free syntax
   'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WU")}
 
 %%R1209
-  Label? 'IMPORT' '::'? ImportNameList            EOS -> ImportStmt       {cons("ImportStmt_INL")}
+  Label? 'IMPORT' '::' ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
+  Label? 'IMPORT'      ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
   Label? 'IMPORT'                                 EOS -> ImportStmt       {cons("ImportStmt")}
 
   {ImportName ','}+                                   -> ImportNameList   {cons("ImportNameList")}
 
 %%R1210
-  Label? 'EXTERNAL' '::'? ExternalNameList        EOS -> ExternalStmt     {cons("ExternalStmt")}
+  Label? 'EXTERNAL' '::' ExternalNameList         EOS -> ExternalStmt     {cons("ExternalStmt")}
+  Label? 'EXTERNAL'      ExternalNameList         EOS -> ExternalStmt     {cons("ExternalStmt")}
 
   {ExternalName ','}+                                 -> ExternalNameList {cons("ExternalNameList")}
 
@@ -3386,7 +3439,8 @@ context-free syntax
   ProcedureName                                       -> InitialProcTarget  {cons("InitialProcTarget")}
 
 %%R1218
-  Label? 'INTRINSIC' '::'? IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  Label? 'INTRINSIC' '::' IntrinsicProcedureNameList   EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  Label? 'INTRINSIC'      IntrinsicProcedureNameList   EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
 
   {IntrinsicProcedureName ','}+                            -> IntrinsicProcedureNameList {cons("IntrinsicProcedureNameList")}
 
@@ -3448,7 +3502,6 @@ context-free syntax
 
 %%R1230
   Ident                                                -> DummyArgName     {cons("DummyArgName")}
-  {DummyArgName ','}+                                  -> DummyArgNameList {cons("DummyArgNameList")}
 
 %%R1231
   ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')?   -> Suffix       {cons("Suffix_PR")}
