@@ -155,4 +155,4 @@ context-free restrictions
 context-free syntax
 
   Label  -> LblDef                        {cons("Label")}
-  Label  -> LblRef                        {cons("Label")}
+  Label  -> LblRef                        {cons("LblRef")}
