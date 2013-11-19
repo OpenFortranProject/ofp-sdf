@@ -53,10 +53,10 @@ ATbool ofp_traverse_init()
    gSymTable   = ATtableCreate(200, 50);
    gAliasTable = ATtableCreate(200, 50);
 
-   fpc = fopen("ofp_traverse_simple.c", "w");    assert(fpc != NULL);
-   fph = fopen("ofp_traverse_simple.h", "w");    assert(fph != NULL);
+   fpc = fopen("ofp_traverse.c", "w");    assert(fpc != NULL);
+   fph = fopen("ofp_traverse.h", "w");    assert(fph != NULL);
    fprintf(fpc, "#include \"traversal.h\"\n");
-   fprintf(fpc, "#include \"ofp_traverse_simple.h\"\n\n");
+   fprintf(fpc, "#include \"ofp_traverse.h\"\n\n");
 
    return ATtrue;
 }
