@@ -150,6 +150,21 @@ ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label)
    return ATtrue;
 }
 
+ATbool ofp_traverse_LblRef(ATerm term, pOFP_Traverse LblRef)
+{
+#ifdef DEBUG_PRINT
+   printf("LblRef: %s\n", ATwriteToString(term));
+#endif
+
+   char * LblRef_val;
+   if (ATmatch(term, "<str>", &LblRef_val)) {
+      // MATCHED LblRef
+      return ATtrue;
+   } else return ATfalse;
+
+   return ATtrue;
+}
+
 ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBlock)
 {
 #ifdef DEBUG_PRINT
