@@ -39,30 +39,29 @@ ATbool ofp_traverse_finalize()
 
 void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth);
 
-char * ofp_getArgNameStr(ATerm arg, char ** name)
+static char * ofp_getArgNameStr(ATerm arg, char ** name)
 {
    ATerm kind;
    assert(ATmatch(arg, "[<term>,<str>]", &kind, name));
    return *name;
 }
 
-#ifdef OBSOLETE
-ATerm ofp_getArgName(ATerm arg)
+static ATerm ofp_getArgName(ATerm term)
 {
    ATerm kind, name;
-   assert(ATmatch(arg, "[<term>,<term>]", &kind, &name));
+
+   assert(ATmatch(term, "[<term>,<term>]", &kind, &name));
    return name;
 }
-#endif
 
-ATerm ofp_getArgKind(ATerm arg)
+static ATerm ofp_getArgKind(ATerm arg)
 {
    ATerm kind, name;
    assert(ATmatch(arg, "[<term>,<term>]", &kind, &name));
    return kind;
 }
 
-ATbool ofp_isArgListKind(ATerm list)
+static ATbool ofp_isArgListKind(ATerm list)
 {
    ATerm kind, name;
    assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
@@ -72,7 +71,7 @@ ATbool ofp_isArgListKind(ATerm list)
    return ATfalse;
 }
 
-ATbool ofp_isArgOrKind(ATerm list)
+static ATbool ofp_isArgOrKind(ATerm list)
 {
    ATerm kind, name;
    assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
@@ -82,7 +81,7 @@ ATbool ofp_isArgOrKind(ATerm list)
    return ATfalse;
 }
 
-ATbool ofp_isArgOptionKind(ATerm list)
+static ATbool ofp_isArgOptionKind(ATerm list)
 {
    ATerm kind, name;
    assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
@@ -92,7 +91,7 @@ ATbool ofp_isArgOptionKind(ATerm list)
    return ATfalse;
 }
 
-ATbool ofp_isArgOptionOptionKind(ATerm list)
+static ATbool ofp_isArgOptionOptionKind(ATerm list)
 {
    ATerm kind, name;
    assert(ATmatch(list, "[<term>,<term>]", &kind, &name));
@@ -102,17 +101,9 @@ ATbool ofp_isArgOptionOptionKind(ATerm list)
    return ATfalse;
 }
 
-ATbool ofp_isOptionOrKind(ATerm kind)
+static ATbool ofp_isOptionOrKind(ATerm kind)
 {
    if (ATmatch(kind, "\"Option\"") || ATmatch(kind, "\"Or\"")) {
-      return ATtrue;
-   }
-   return ATfalse;
-}
-
-ATbool ofp_isOldStringType(ATerm term)
-{
-   if (ATmatch(term, "[\"String\"]")) {
       return ATtrue;
    }
    return ATfalse;
@@ -121,7 +112,7 @@ ATbool ofp_isOldStringType(ATerm term)
 /**
  * Return a list of types associated with this name or None
  */
-ATerm ofp_getTypeList(ATerm name, ATbool * isOptType)
+static ATerm ofp_getTypeList(ATerm name, ATbool * isOptType)
 {
    int i;
 
@@ -146,7 +137,7 @@ ATerm ofp_getTypeList(ATerm name, ATbool * isOptType)
    return ATmake("None");
 }
 
-ATbool ofp_isTypeNameList(ATerm type)
+static ATbool ofp_isTypeNameList(ATerm type)
 {
    if (! ATmatch(type, "None")) {
       ATermList nameList = (ATermList) type;
@@ -157,7 +148,7 @@ ATbool ofp_isTypeNameList(ATerm type)
    return ATfalse;
 }
 
-ATerm ofp_getArgType(ATerm term, ATbool * isOptType)
+static ATerm ofp_getArgType(ATerm term, ATbool * isOptType)
 {
    int i;
    ATerm kind, name;
@@ -191,7 +182,7 @@ ATerm ofp_getArgType(ATerm term, ATbool * isOptType)
    return ATmake("None");
 }
 
-enum DataType ofp_getArgDataType(ATerm term)
+static enum DataType ofp_getArgDataType(ATerm term)
 {
    ATbool isOptType;
    ATerm type = ofp_getArgType(term, &isOptType);
@@ -323,24 +314,6 @@ void ofp_build_term_traversal(ATerm arg, char * src_suffix, int depth)
                    else                            printf("}\n");
 }
 
-#ifdef EXPIRED
-void ofp_build_list_traversal(ATerm arg, char * src_suffix, int depth)
-{
-   char * arg_name = ofp_getArgNameStr(arg, &arg_name);
-   ATerm kind = ofp_getArgKind(arg);
-
-   indent(depth);  printf("OFP_Traverse %s;\n", arg_name);
-   indent(depth);  printf("ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s%s.term);\n", arg_name, arg_name, src_suffix);
-   indent(depth);  printf("while (! ATisEmpty(%s_tail)) {\n", arg_name);
-   indent(depth);  printf("   %s.term = ATgetFirst(%s_tail);\n", arg_name, arg_name);
-   indent(depth);  printf("   %s_tail = ATgetNext(%s_tail);\n", arg_name, arg_name);
-
-   ofp_build_term_traversal(arg, "", depth+1);
-
-   indent(depth);  printf("}\n");
-}
-#endif
-
 void ofp_build_or_traversal(ATerm arg, char * src_suffix, int depth)
 {
    int i;
@@ -366,6 +339,7 @@ void ofp_build_or_traversal(ATerm arg, char * src_suffix, int depth)
 
 void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth)
 {
+#ifdef OBSOLETE
    ATbool isOptType;
    char * arg_name = ofp_getArgNameStr(arg, &arg_name);
 
@@ -393,6 +367,7 @@ void ofp_build_node_traversal(ATerm arg, char * src_suffix, int depth)
    default:
       ofp_build_old_node_traversal(ofp_getArgName(arg), arg, kind);
    }
+#endif
 }
 
 ATbool ofp_traverse_FunType_arg(ATerm term, pOFP_Traverse FunType_arg)
