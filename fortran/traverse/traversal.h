@@ -87,6 +87,10 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, pOFP_Traverse LiteralConstant);
 /* R306 */
 ATbool ofp_traverse_NamedConstant(ATerm term, pOFP_Traverse NamedConstant);
 
+/* R312 */
+ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label);
+ATbool ofp_traverse_LblRef(ATerm term, pOFP_Traverse LblRef);
+
 /**                                                                                             
  * Section/Clause 4: Types                                                                      
  */
@@ -314,8 +318,112 @@ ATbool ofp_traverse_AcDoVariable(ATerm term, pOFP_Traverse AcDoVariable);
 /* R501 */
 ATbool ofp_traverse_TypeDeclarationStmt(ATerm term, pOFP_Traverse TypeDeclarationStmt);
 
+/* R502 */
+ATbool ofp_traverse_AttrSpec(ATerm term, pOFP_Traverse AttrSpec);
+ATbool ofp_traverse_AttrSpecList(ATerm term, pOFP_Traverse AttrSpecList);
+ATbool ofp_traverse_OptAttrSpecList(ATerm term, pOFP_Traverse OptAttrSpecList);
+
 /* R503 */
 ATbool ofp_traverse_EntityDecl(ATerm term, pOFP_Traverse EntityDecl);
+ATbool ofp_traverse_EntityDeclList(ATerm term, pOFP_Traverse EntityDeclList);
+ATbool ofp_traverse_Initialization(ATerm term, pOFP_Traverse Initialization);
+ATbool ofp_traverse_NullInit(ATerm term, pOFP_Traverse NullInit);
+ATbool ofp_traverse_AccessSpec(ATerm term, pOFP_Traverse AccessSpec);
+ATbool ofp_traverse_LanguageBindingSpec(ATerm term, pOFP_Traverse LanguageBindingSpec);
+ATbool ofp_traverse_CoarraySpec(ATerm term, pOFP_Traverse CoarraySpec);
+ATbool ofp_traverse_DeferredCoshapeSpec(ATerm term, pOFP_Traverse DeferredCoshapeSpec);
+ATbool ofp_traverse_DeferredCoshapeSpecList(ATerm term, pOFP_Traverse DeferredCoshapeSpecList);
+ATbool ofp_traverse_ExplicitCoshapeSpec(ATerm term, pOFP_Traverse ExplicitCoshapeSpec);
+ATbool ofp_traverse_CoboundsEntry(ATerm term, pOFP_Traverse CoboundsEntry);
+ATbool ofp_traverse_LowerCobound(ATerm term, pOFP_Traverse LowerCobound);
+ATbool ofp_traverse_UpperCobound(ATerm term, pOFP_Traverse UpperCobound);
+ATbool ofp_traverse_ArraySpec(ATerm term, pOFP_Traverse ArraySpec);
+ATbool ofp_traverse_ExplicitShapeSpec(ATerm term, pOFP_Traverse ExplicitShapeSpec);
+ATbool ofp_traverse_ExplicitShapeSpecList(ATerm term, pOFP_Traverse ExplicitShapeSpecList);
+ATbool ofp_traverse_LowerBound(ATerm term, pOFP_Traverse LowerBound);
+ATbool ofp_traverse_UpperBound(ATerm term, pOFP_Traverse UpperBound);
+ATbool ofp_traverse_AssumedShapeSpec(ATerm term, pOFP_Traverse AssumedShapeSpec);
+ATbool ofp_traverse_AssumedShapeSpecList(ATerm term, pOFP_Traverse AssumedShapeSpecList);
+ATbool ofp_traverse_DeferredShapeSpec(ATerm term, pOFP_Traverse DeferredShapeSpec);
+ATbool ofp_traverse_DeferredShapeSpecList(ATerm term, pOFP_Traverse DeferredShapeSpecList);
+ATbool ofp_traverse_AssumedSizeSpec(ATerm term, pOFP_Traverse AssumedSizeSpec);
+ATbool ofp_traverse_AssumedRankSpec(ATerm term, pOFP_Traverse AssumedRankSpec);
+ATbool ofp_traverse_ImpliedShapeSpec(ATerm term, pOFP_Traverse ImpliedShapeSpec);
+ATbool ofp_traverse_ImpliedShapeSpecList(ATerm term, pOFP_Traverse ImpliedShapeSpecList);
+ATbool ofp_traverse_IntentSpec(ATerm term, pOFP_Traverse IntentSpec);
+ATbool ofp_traverse_AccessStmt(ATerm term, pOFP_Traverse AccessStmt);
+ATbool ofp_traverse_AccessId(ATerm term, pOFP_Traverse AccessId);
+ATbool ofp_traverse_AccessIdList(ATerm term, pOFP_Traverse AccessIdList);
+ATbool ofp_traverse_AllocatableStmt(ATerm term, pOFP_Traverse AllocatableStmt);
+ATbool ofp_traverse_AllocatableDecl(ATerm term, pOFP_Traverse AllocatableDecl);
+ATbool ofp_traverse_AllocatableDeclList(ATerm term, pOFP_Traverse AllocatableDeclList);
+ATbool ofp_traverse_AsynchronousStmt(ATerm term, pOFP_Traverse AsynchronousStmt);
+ATbool ofp_traverse_BindStmt(ATerm term, pOFP_Traverse BindStmt);
+ATbool ofp_traverse_BindEntity(ATerm term, pOFP_Traverse BindEntity);
+ATbool ofp_traverse_BindEntityList(ATerm term, pOFP_Traverse BindEntityList);
+ATbool ofp_traverse_CodimensionStmt(ATerm term, pOFP_Traverse CodimensionStmt);
+ATbool ofp_traverse_CodimensionDecl(ATerm term, pOFP_Traverse CodimensionDecl);
+ATbool ofp_traverse_CodimensionDeclList(ATerm term, pOFP_Traverse CodimensionDeclList);
+ATbool ofp_traverse_ContiguousStmt(ATerm term, pOFP_Traverse ContiguousStmt);
+ATbool ofp_traverse_ObjectNameList(ATerm term, pOFP_Traverse ObjectNameList);
+ATbool ofp_traverse_DataStmt(ATerm term, pOFP_Traverse DataStmt);
+ATbool ofp_traverse_DataStmtSet(ATerm term, pOFP_Traverse DataStmtSet);
+ATbool ofp_traverse_DataStmtSetList(ATerm term, pOFP_Traverse DataStmtSetList);
+ATbool ofp_traverse_DataStmtObject(ATerm term, pOFP_Traverse DataStmtObject);
+ATbool ofp_traverse_DataStmtObjectList(ATerm term, pOFP_Traverse DataStmtObjectList);
+ATbool ofp_traverse_DataImpliedDo(ATerm term, pOFP_Traverse DataImpliedDo);
+ATbool ofp_traverse_DataIDoObject(ATerm term, pOFP_Traverse DataIDoObject);
+ATbool ofp_traverse_DataIDoObjectList(ATerm term, pOFP_Traverse DataIDoObjectList);
+ATbool ofp_traverse_DataIDoVariable(ATerm term, pOFP_Traverse DataIDoVariable);
+ATbool ofp_traverse_DataStmtValue(ATerm term, pOFP_Traverse DataStmtValue);
+ATbool ofp_traverse_DataStmtValueList(ATerm term, pOFP_Traverse DataStmtValueList);
+ATbool ofp_traverse_DataStmtRepeat(ATerm term, pOFP_Traverse DataStmtRepeat);
+ATbool ofp_traverse_DataStmtConstant(ATerm term, pOFP_Traverse DataStmtConstant);
+ATbool ofp_traverse_IntConstantSubobject(ATerm term, pOFP_Traverse IntConstantSubobject);
+ATbool ofp_traverse_ConstantSubobject(ATerm term, pOFP_Traverse ConstantSubobject);
+ATbool ofp_traverse_DimensionStmt(ATerm term, pOFP_Traverse DimensionStmt);
+ATbool ofp_traverse_ArrayNameSpec(ATerm term, pOFP_Traverse ArrayNameSpec);
+ATbool ofp_traverse_ArrayNameSpecList(ATerm term, pOFP_Traverse ArrayNameSpecList);
+ATbool ofp_traverse_IntentStmt(ATerm term, pOFP_Traverse IntentStmt);
+ATbool ofp_traverse_DummyArgNameList(ATerm term, pOFP_Traverse DummyArgNameList);
+ATbool ofp_traverse_OptionalStmt(ATerm term, pOFP_Traverse OptionalStmt);
+ATbool ofp_traverse_ParameterStmt(ATerm term, pOFP_Traverse ParameterStmt);
+ATbool ofp_traverse_NamedConstantDef(ATerm term, pOFP_Traverse NamedConstantDef);
+ATbool ofp_traverse_NamedConstantDefList(ATerm term, pOFP_Traverse NamedConstantDefList);
+ATbool ofp_traverse_PointerStmt(ATerm term, pOFP_Traverse PointerStmt);
+ATbool ofp_traverse_PointerDecl(ATerm term, pOFP_Traverse PointerDecl);
+ATbool ofp_traverse_PointerDeclList(ATerm term, pOFP_Traverse PointerDeclList);
+ATbool ofp_traverse_ProtectedStmt(ATerm term, pOFP_Traverse ProtectedStmt);
+ATbool ofp_traverse_EntityNameList(ATerm term, pOFP_Traverse EntityNameList);
+ATbool ofp_traverse_SaveStmt(ATerm term, pOFP_Traverse SaveStmt);
+ATbool ofp_traverse_SavedEntity(ATerm term, pOFP_Traverse SavedEntity);
+ATbool ofp_traverse_SavedEntityList(ATerm term, pOFP_Traverse SavedEntityList);
+ATbool ofp_traverse_ProcPointerName(ATerm term, pOFP_Traverse ProcPointerName);
+ATbool ofp_traverse_TargetStmt(ATerm term, pOFP_Traverse TargetStmt);
+ATbool ofp_traverse_TargetDecl(ATerm term, pOFP_Traverse TargetDecl);
+ATbool ofp_traverse_TargetDeclList(ATerm term, pOFP_Traverse TargetDeclList);
+ATbool ofp_traverse_ValueStmt(ATerm term, pOFP_Traverse ValueStmt);
+ATbool ofp_traverse_VolatileStmt(ATerm term, pOFP_Traverse VolatileStmt);
+ATbool ofp_traverse_ImplicitStmt(ATerm term, pOFP_Traverse ImplicitStmt);
+ATbool ofp_traverse_ImplicitSpec(ATerm term, pOFP_Traverse ImplicitSpec);
+ATbool ofp_traverse_ImplicitSpecList(ATerm term, pOFP_Traverse ImplicitSpecList);
+ATbool ofp_traverse_LetterSpec(ATerm term, pOFP_Traverse LetterSpec);
+ATbool ofp_traverse_LetterSpecList(ATerm term, pOFP_Traverse LetterSpecList);
+ATbool ofp_traverse_NamelistStmt(ATerm term, pOFP_Traverse NamelistStmt);
+ATbool ofp_traverse_NamelistEntry(ATerm term, pOFP_Traverse NamelistEntry);
+ATbool ofp_traverse_NamelistEntryList(ATerm term, pOFP_Traverse NamelistEntryList);
+ATbool ofp_traverse_NamelistGroupObject(ATerm term, pOFP_Traverse NamelistGroupObject);
+ATbool ofp_traverse_NamelistGroupObjectList(ATerm term, pOFP_Traverse NamelistGroupObjectList);
+ATbool ofp_traverse_EquivalenceStmt(ATerm term, pOFP_Traverse EquivalenceStmt);
+ATbool ofp_traverse_EquivalenceSet(ATerm term, pOFP_Traverse EquivalenceSet);
+ATbool ofp_traverse_EquivalenceSetList(ATerm term, pOFP_Traverse EquivalenceSetList);
+ATbool ofp_traverse_EquivalenceObject(ATerm term, pOFP_Traverse EquivalenceObject);
+ATbool ofp_traverse_EquivalenceObjectList(ATerm term, pOFP_Traverse EquivalenceObjectList);
+ATbool ofp_traverse_CommonStmt(ATerm term, pOFP_Traverse CommonStmt);
+ATbool ofp_traverse_CommonBlockEntry1(ATerm term, pOFP_Traverse CommonBlockEntry1);
+ATbool ofp_traverse_CommonBlockEntry(ATerm term, pOFP_Traverse CommonBlockEntry);
+ATbool ofp_traverse_CommonBlockObject(ATerm term, pOFP_Traverse CommonBlockObject);
+ATbool ofp_traverse_CommonBlockObjectList(ATerm term, pOFP_Traverse CommonBlockObjectList);
 
 /* R601 */
 ATbool ofp_traverse_Designator(ATerm term, pOFP_Traverse Designator);
@@ -364,12 +472,93 @@ ATbool ofp_traverse_CoindexedNamedObject(ATerm term, pOFP_Traverse CoindexedName
 /* R616 */
 ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry);
 
+ATbool ofp_traverse_ArrayElement(ATerm term, pOFP_Traverse ArrayElement);
+ATbool ofp_traverse_Subscript(ATerm term, pOFP_Traverse Subscript);
+ATbool ofp_traverse_SectionSubscript(ATerm term, pOFP_Traverse SectionSubscript);
+ATbool ofp_traverse_SectionSubscriptList(ATerm term, pOFP_Traverse SectionSubscriptList);
+ATbool ofp_traverse_SubscriptTriplet(ATerm term, pOFP_Traverse SubscriptTriplet);
+ATbool ofp_traverse_Stride(ATerm term, pOFP_Traverse Stride);
+ATbool ofp_traverse_ImageSelector(ATerm term, pOFP_Traverse ImageSelector);
+ATbool ofp_traverse_Cosubscript(ATerm term, pOFP_Traverse Cosubscript);
+ATbool ofp_traverse_CosubscriptList(ATerm term, pOFP_Traverse CosubscriptList);
+ATbool ofp_traverse_AllocateStmt(ATerm term, pOFP_Traverse AllocateStmt);
+ATbool ofp_traverse_AllocOpt(ATerm term, pOFP_Traverse AllocOpt);
+ATbool ofp_traverse_AllocOptList(ATerm term, pOFP_Traverse AllocOptList);
+ATbool ofp_traverse_StatVariable(ATerm term, pOFP_Traverse StatVariable);
+ATbool ofp_traverse_ErrmsgVariable(ATerm term, pOFP_Traverse ErrmsgVariable);
+ATbool ofp_traverse_Allocation(ATerm term, pOFP_Traverse Allocation);
+ATbool ofp_traverse_AllocationList(ATerm term, pOFP_Traverse AllocationList);
+ATbool ofp_traverse_AllocateObject(ATerm term, pOFP_Traverse AllocateObject);
+ATbool ofp_traverse_AllocateObjectList(ATerm term, pOFP_Traverse AllocateObjectList);
+ATbool ofp_traverse_AllocateShapeSpec(ATerm term, pOFP_Traverse AllocateShapeSpec);
+ATbool ofp_traverse_AllocateShapeSpecList(ATerm term, pOFP_Traverse AllocateShapeSpecList);
+ATbool ofp_traverse_LowerBoundExpr(ATerm term, pOFP_Traverse LowerBoundExpr);
+ATbool ofp_traverse_UpperBoundExpr(ATerm term, pOFP_Traverse UpperBoundExpr);
+ATbool ofp_traverse_AllocateCoarraySpec(ATerm term, pOFP_Traverse AllocateCoarraySpec);
+ATbool ofp_traverse_AllocateCoshapeSpec(ATerm term, pOFP_Traverse AllocateCoshapeSpec);
+ATbool ofp_traverse_AllocateCoshapeSpecList(ATerm term, pOFP_Traverse AllocateCoshapeSpecList);
+ATbool ofp_traverse_NullifyStmt(ATerm term, pOFP_Traverse NullifyStmt);
+ATbool ofp_traverse_PointerObject(ATerm term, pOFP_Traverse PointerObject);
+ATbool ofp_traverse_PointerObjectList(ATerm term, pOFP_Traverse PointerObjectList);
+ATbool ofp_traverse_DeallocateStmt(ATerm term, pOFP_Traverse DeallocateStmt);
+ATbool ofp_traverse_DeallocOpt(ATerm term, pOFP_Traverse DeallocOpt);
+ATbool ofp_traverse_DeallocOptList(ATerm term, pOFP_Traverse DeallocOptList);
+
+ATbool ofp_traverse_IntrinsicOperator(ATerm term, pOFP_Traverse IntrinsicOperator);
+ATbool ofp_traverse_DefinedOperator(ATerm term, pOFP_Traverse DefinedOperator);
+ATbool ofp_traverse_ExtendedIntrinsicOp(ATerm term, pOFP_Traverse ExtendedIntrinsicOp);
+ATbool ofp_traverse_Primary(ATerm term, pOFP_Traverse Primary);
+ATbool ofp_traverse_DefinedUnaryOp(ATerm term, pOFP_Traverse DefinedUnaryOp);
 
 /* R722 */
 ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr);
 
+ATbool ofp_traverse_DefinedBinaryOp(ATerm term, pOFP_Traverse DefinedBinaryOp);
+ATbool ofp_traverse_LogicalExpr(ATerm term, pOFP_Traverse LogicalExpr);
+ATbool ofp_traverse_DefaultCharExpr(ATerm term, pOFP_Traverse DefaultCharExpr);
+ATbool ofp_traverse_IntExpr(ATerm term, pOFP_Traverse IntExpr);
+ATbool ofp_traverse_SpecificationExpr(ATerm term, pOFP_Traverse SpecificationExpr);
+ATbool ofp_traverse_ConstantExpr(ATerm term, pOFP_Traverse ConstantExpr);
+ATbool ofp_traverse_IntConstantExpr(ATerm term, pOFP_Traverse IntConstantExpr);
+
 /* R732 */
 ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt);
+
+ATbool ofp_traverse_PointerAssignmentStmt(ATerm term, pOFP_Traverse PointerAssignmentStmt);
+ATbool ofp_traverse_DataPointerObject(ATerm term, pOFP_Traverse DataPointerObject);
+ATbool ofp_traverse_BoundsSpec(ATerm term, pOFP_Traverse BoundsSpec);
+ATbool ofp_traverse_BoundsSpecList(ATerm term, pOFP_Traverse BoundsSpecList);
+ATbool ofp_traverse_BoundsRemapping(ATerm term, pOFP_Traverse BoundsRemapping);
+ATbool ofp_traverse_BoundsRemappingList(ATerm term, pOFP_Traverse BoundsRemappingList);
+ATbool ofp_traverse_DataTarget(ATerm term, pOFP_Traverse DataTarget);
+ATbool ofp_traverse_ProcPointerObject(ATerm term, pOFP_Traverse ProcPointerObject);
+ATbool ofp_traverse_ProcComponentRef(ATerm term, pOFP_Traverse ProcComponentRef);
+ATbool ofp_traverse_ProcTarget(ATerm term, pOFP_Traverse ProcTarget);
+ATbool ofp_traverse_WhereStmt(ATerm term, pOFP_Traverse WhereStmt);
+
+/* R742 */
+ATbool ofp_traverse_WhereConstruct(ATerm term, pOFP_Traverse WhereConstruct);
+ATbool ofp_traverse_MaskedElsewhereClause(ATerm term, pOFP_Traverse MaskedElsewhereClause);
+ATbool ofp_traverse_ElsewhereClause(ATerm term, pOFP_Traverse ElsewhereClause);
+
+ATbool ofp_traverse_WhereConstructStmt(ATerm term, pOFP_Traverse WhereConstructStmt);
+ATbool ofp_traverse_WhereBodyConstruct(ATerm term, pOFP_Traverse WhereBodyConstruct);
+ATbool ofp_traverse_WhereAssignmentStmt(ATerm term, pOFP_Traverse WhereAssignmentStmt);
+ATbool ofp_traverse_MaskExpr(ATerm term, pOFP_Traverse MaskExpr);
+ATbool ofp_traverse_MaskedElsewhereStmt(ATerm term, pOFP_Traverse MaskedElsewhereStmt);
+ATbool ofp_traverse_ElsewhereStmt(ATerm term, pOFP_Traverse ElsewhereStmt);
+ATbool ofp_traverse_EndWhereStmt(ATerm term, pOFP_Traverse EndWhereStmt);
+ATbool ofp_traverse_ForallConstruct(ATerm term, pOFP_Traverse ForallConstruct);
+ATbool ofp_traverse_ForallConstructStmt(ATerm term, pOFP_Traverse ForallConstructStmt);
+ATbool ofp_traverse_ForallHeader(ATerm term, pOFP_Traverse ForallHeader);
+ATbool ofp_traverse_ForallTripletSpec(ATerm term, pOFP_Traverse ForallTripletSpec);
+ATbool ofp_traverse_ForallTripletSpecList(ATerm term, pOFP_Traverse ForallTripletSpecList);
+ATbool ofp_traverse_ForallLimit(ATerm term, pOFP_Traverse ForallLimit);
+ATbool ofp_traverse_ForallStep(ATerm term, pOFP_Traverse ForallStep);
+ATbool ofp_traverse_ForallBodyConstruct(ATerm term, pOFP_Traverse ForallBodyConstruct);
+ATbool ofp_traverse_ForallAssignmentStmt(ATerm term, pOFP_Traverse ForallAssignmentStmt);
+ATbool ofp_traverse_EndForallStmt(ATerm term, pOFP_Traverse EndForallStmt);
+ATbool ofp_traverse_ForallStmt(ATerm term, pOFP_Traverse ForallStmt);
 
 /* R801 */
 ATbool ofp_traverse_Block(ATerm term, pOFP_Traverse Block);
@@ -442,7 +631,10 @@ ATbool ofp_traverse_EndDoStmt(ATerm term, pOFP_Traverse EndDoStmt);
 /* R831 */
 ATbool ofp_traverse_CycleStmt(ATerm term, pOFP_Traverse CycleStmt);
 
-/* R832 TODO: IfConstruct */
+/* R832 */
+ATbool ofp_traverse_IfConstruct(ATerm term, pOFP_Traverse IfConstruct);
+ATbool ofp_traverse_ElseIfStmtAndBlock(ATerm term, pOFP_Traverse ElseIfStmtAndBlock);
+ATbool ofp_traverse_ElseStmtAndBlock(ATerm term, pOFP_Traverse ElseStmtAndBlock);
 
 /* R833 */
 ATbool ofp_traverse_IfThenStmt(ATerm term, pOFP_Traverse IfThenStmt);
@@ -459,7 +651,9 @@ ATbool ofp_traverse_EndIfStmt(ATerm term, pOFP_Traverse EndIfStmt);
 /* R837 */
 ATbool ofp_traverse_IfStmt(ATerm term, pOFP_Traverse IfStmt);
 
-/* R838 TODO: CaseConstruct */
+/* R838 */
+ATbool ofp_traverse_CaseConstruct(ATerm term, pOFP_Traverse CaseConstruct);
+ATbool ofp_traverse_CaseStmtAndBlock(ATerm term, pOFP_Traverse CaseStmtAndBlock);
 
 /* R839 */
 ATbool ofp_traverse_SelectCaseStmt(ATerm term, pOFP_Traverse SelectCaseStmt);
@@ -483,7 +677,9 @@ ATbool ofp_traverse_CaseValueRangeList(ATerm term, pOFP_Traverse CaseValueRangeL
 /* R845 */
 ATbool ofp_traverse_CaseValue(ATerm term, pOFP_Traverse CaseValue);
 
-/* R846 TODO: SelectTypeConstruct */
+/* R846 */
+ATbool ofp_traverse_SelectTypeConstruct(ATerm term, pOFP_Traverse SelectTypeConstruct);
+ATbool ofp_traverse_TypeGuardStmtAndBlock(ATerm term, pOFP_Traverse TypeGuardStmtAndBlock);
 
 /* R847 */
 ATbool ofp_traverse_SelectTypeStmt(ATerm term, pOFP_Traverse SelectTypeStmt);
@@ -646,6 +842,29 @@ ATbool ofp_traverse_InquireStmt(ATerm term, pOFP_Traverse InquireStmt);
 /* R931 */
 ATbool ofp_traverse_InquireSpec(ATerm term, pOFP_Traverse InquireSpec);
 ATbool ofp_traverse_InquireSpecList(ATerm term, pOFP_Traverse InquireSpecList);
+
+ATbool ofp_traverse_FormatStmt(ATerm term, pOFP_Traverse FormatStmt);
+ATbool ofp_traverse_FormatSpecification(ATerm term, pOFP_Traverse FormatSpecification);
+ATbool ofp_traverse_FormatItems(ATerm term, pOFP_Traverse FormatItems);
+ATbool ofp_traverse_FormatItem(ATerm term, pOFP_Traverse FormatItem);
+ATbool ofp_traverse_UnlimitedFormatItem(ATerm term, pOFP_Traverse UnlimitedFormatItem);
+ATbool ofp_traverse_REditDesc(ATerm term, pOFP_Traverse REditDesc);
+ATbool ofp_traverse_DataEditDesc(ATerm term, pOFP_Traverse DataEditDesc);
+ATbool ofp_traverse_WEditDesc(ATerm term, pOFP_Traverse WEditDesc);
+ATbool ofp_traverse_MEditDesc(ATerm term, pOFP_Traverse MEditDesc);
+ATbool ofp_traverse_DEditDesc(ATerm term, pOFP_Traverse DEditDesc);
+ATbool ofp_traverse_EEditDesc(ATerm term, pOFP_Traverse EEditDesc);
+ATbool ofp_traverse_VEditDesc(ATerm term, pOFP_Traverse VEditDesc);
+ATbool ofp_traverse_VEditDescList(ATerm term, pOFP_Traverse VEditDescList);
+ATbool ofp_traverse_ControlEditDesc(ATerm term, pOFP_Traverse ControlEditDesc);
+ATbool ofp_traverse_KEditDesc(ATerm term, pOFP_Traverse KEditDesc);
+ATbool ofp_traverse_PositionEditDesc(ATerm term, pOFP_Traverse PositionEditDesc);
+ATbool ofp_traverse_NEditDesc(ATerm term, pOFP_Traverse NEditDesc);
+ATbool ofp_traverse_SignEditDesc(ATerm term, pOFP_Traverse SignEditDesc);
+ATbool ofp_traverse_BlankInterpEditDesc(ATerm term, pOFP_Traverse BlankInterpEditDesc);
+ATbool ofp_traverse_RoundEditDesc(ATerm term, pOFP_Traverse RoundEditDesc);
+ATbool ofp_traverse_DecimalEditDesc(ATerm term, pOFP_Traverse DecimalEditDesc);
+ATbool ofp_traverse_CharStringEditDesc(ATerm term, pOFP_Traverse CharStringEditDesc);
 
 /* R1101 */
 ATbool ofp_traverse_MainProgram(ATerm term, pOFP_Traverse MainProgram);
@@ -857,23 +1076,30 @@ ATbool ofp_traverse_StmtFunctionStmt(ATerm term, pOFP_Traverse StmtFunctionStmt)
 
 ATbool ofp_traverse_AncestorModuleName(ATerm term, pOFP_Traverse AncestorModuleName);
 ATbool ofp_traverse_ArgName(ATerm term, pOFP_Traverse ArgName);
+ATbool ofp_traverse_ArrayName(ATerm term, pOFP_Traverse ArrayName);
 ATbool ofp_traverse_AssociateConstructName(ATerm term, pOFP_Traverse AssociateConstructName);
 ATbool ofp_traverse_AssociateName(ATerm term, pOFP_Traverse AssociateName);
 ATbool ofp_traverse_BindingName(ATerm term, pOFP_Traverse BindingName);
 ATbool ofp_traverse_BlockConstructName(ATerm term, pOFP_Traverse BlockConstructName);
 ATbool ofp_traverse_BlockDataName(ATerm term, pOFP_Traverse BlockDataName);
 ATbool ofp_traverse_CaseConstructName(ATerm term, pOFP_Traverse CaseConstructName);
+ATbool ofp_traverse_CoarrayName(ATerm term, pOFP_Traverse CoarrayName);
+ATbool ofp_traverse_CommonBlockName(ATerm term, pOFP_Traverse CommonBlockName);
 ATbool ofp_traverse_ComponentName(ATerm term, pOFP_Traverse ComponentName);
 ATbool ofp_traverse_ConstructName(ATerm term, pOFP_Traverse ConstructName);
 ATbool ofp_traverse_CriticalConstructName(ATerm term, pOFP_Traverse CriticalConstructName);
+ATbool ofp_traverse_DataPointerComponentName(ATerm term, pOFP_Traverse DataPointerComponentName);
 ATbool ofp_traverse_DoConstructName(ATerm term, pOFP_Traverse DoConstructName);
 ATbool ofp_traverse_IfConstructName(ATerm term, pOFP_Traverse IfConstructName);
+ATbool ofp_traverse_EntityName(ATerm term, pOFP_Traverse EntityName);
 ATbool ofp_traverse_EntryName(ATerm term, pOFP_Traverse EntryName);
 ATbool ofp_traverse_ExternalName(ATerm term, pOFP_Traverse ExternalName);
 ATbool ofp_traverse_FinalSubroutineName(ATerm term, pOFP_Traverse FinalSubroutineName);
+ATbool ofp_traverse_ForallConstructName(ATerm term, pOFP_Traverse ForallConstructName);
 ATbool ofp_traverse_FunctionName(ATerm term, pOFP_Traverse FunctionName);
 ATbool ofp_traverse_GenericName(ATerm term, pOFP_Traverse GenericName);
 ATbool ofp_traverse_ImportName(ATerm term, pOFP_Traverse ImportName);
+ATbool ofp_traverse_IndexName(ATerm term, pOFP_Traverse IndexName);
 ATbool ofp_traverse_InterfaceName(ATerm term, pOFP_Traverse InterfaceName);
 ATbool ofp_traverse_IntrinsicProcedureName(ATerm term, pOFP_Traverse IntrinsicProcedureName);
 ATbool ofp_traverse_LocalName(ATerm term, pOFP_Traverse LocalName);
@@ -884,12 +1110,15 @@ ATbool ofp_traverse_ObjectName(ATerm term, pOFP_Traverse ObjectName);
 ATbool ofp_traverse_ParentSubmoduleName(ATerm term, pOFP_Traverse ParentSubmoduleName);
 ATbool ofp_traverse_ParentTypeName(ATerm term, pOFP_Traverse ParentTypeName);
 ATbool ofp_traverse_PartName(ATerm term, pOFP_Traverse PartName);
+ATbool ofp_traverse_ProcedureComponentName(ATerm term, pOFP_Traverse ProcedureComponentName);
 ATbool ofp_traverse_ProcedureEntityName(ATerm term, pOFP_Traverse ProcedureEntityName);
 ATbool ofp_traverse_ProcedureName(ATerm term, pOFP_Traverse ProcedureName);
+ATbool ofp_traverse_ProcEntityName(ATerm term, pOFP_Traverse ProcEntityName);
 ATbool ofp_traverse_ProgramName(ATerm term, pOFP_Traverse ProgramName);
 ATbool ofp_traverse_ResultName(ATerm term, pOFP_Traverse ResultName);
 ATbool ofp_traverse_ScalarIntConstantName(ATerm term, pOFP_Traverse ScalarIntConstantName);
 ATbool ofp_traverse_ScalarIntVariableName(ATerm term, pOFP_Traverse ScalarIntVariableName);
+ATbool ofp_traverse_ScalarVariableName(ATerm term, pOFP_Traverse ScalarVariableName);
 ATbool ofp_traverse_SelectConstructName(ATerm term, pOFP_Traverse SelectConstructName);
 ATbool ofp_traverse_SubmoduleName(ATerm term, pOFP_Traverse SubmoduleName);
 ATbool ofp_traverse_SubroutineName(ATerm term, pOFP_Traverse SubroutineName);
