@@ -73,37 +73,6 @@ ATbool ofp_traverse_finalize()
 }
 
 /**
- * Traverse a production: Prod("constructor name", [sub-productions])
- *   - the symbol name must match the constructor name
- */
-ATbool ofp_traverse_Prod_name_common(ATerm term, pOFP_Traverse Prod, ATerm symbol)
-{
-#ifdef DEBUG_PRINT
-   printf("Prod(name match): %s\n", ATwriteToString(term));
-#endif
-
-   ATerm constructor;
-   ATermList symbols;
-   if (ATmatch(term, "Prod(<term>,<term>)", &constructor, &symbols)) {
-
-      if (! ATisEqual(constructor, symbol)) {
-         return ATfalse;
-      }
-      if (ATisEmpty(symbols)) {
-         printf("WARNING: Prod (name match): has empty sub-production list%s\n", ATwriteToString(term));
-         return ATfalse;
-      }
-
-      printf("         Prod(name match): %s", ATwriteToString(constructor));
-      printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
-
-      return ofp_build_traversal_nonterminals_common(symbol, constructor, symbols);
-   }
-
-   return ATfalse;
-}
-
-/**
  * Traverse a production: Prod("constructor name", [args])
  */
 ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
@@ -128,72 +97,6 @@ ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
       ofp_build_match_end(symbol, constructor);
 
       return ATtrue;
-   }
-
-   return ATfalse;
-}
-
-/**
- * Traverse a production: Prod("constructor name", [sub-productions])
- *   - the symbol name must not match the constructor name
- */
-ATbool ofp_traverse_Prod_name(ATerm term, pOFP_Traverse Prod, ATerm symbol)
-{
-#ifdef DEBUG_PRINT
-   printf("Prod(no name match): %s\n", ATwriteToString(term));
-#endif
-
-   ATerm constructor;
-   ATermList symbols;
-   if (ATmatch(term, "Prod(<term>,<term>)", &constructor, &symbols)) {
-
-      if (ATisEqual(constructor, symbol)) {
-         return ATfalse;
-      }
-      if (ATisEmpty(symbols)) {
-         // a terminal production
-         return ATfalse;
-      }
-
-      printf("         Prod(no name match): %s", ATwriteToString(constructor));
-      printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
-
-      return ofp_build_traversal_nonterminals(constructor, symbols);
-   }
-
-   return ATfalse;
-}
-
-/**
- * Traverse a production: Prod("constructor name", [sub-productions])
- *   - the production must be a terminal (empty sub-production list)
- */
-ATbool ofp_traverse_Prod_terminal(ATerm term, pOFP_Traverse Prod, ATerm symbol)
-{
-#ifdef DEBUG_PRINT
-   printf("Prod(terminal): %s\n", ATwriteToString(term));
-#endif
-
-   ATerm constructor;
-   ATermList symbols;
-   if (ATmatch(term, "Prod(<term>,<term>)", &constructor, &symbols)) {
-
-      if (! ATisEmpty(symbols)) {
-         return ATfalse;
-      }
-      if (ATisEqual(constructor, symbol)) {
-         printf("WARNING: Prod(terminal): symbol constructor name match%s\n", ATwriteToString(term));
-         return ATfalse;
-      }
-
-      printf("         Prod(terminal): %s", ATwriteToString(constructor));
-      printf("\t\t%s\n", ATwriteToString((ATerm)symbols));
-
-      // terminal symbol
-      if (ofp_build_match_terminal(constructor)) {
-         // MATCHED terminal
-         return ATtrue;
-      }
    }
 
    return ATfalse;
@@ -246,28 +149,6 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
          }
       }
 
-#ifdef OBSOLETE_YEAH
-      Prod_tail = (ATermList) ATmake("<term>", productions);
-      while (! ATisEmpty(Prod_tail)) {
-         Prod.term = ATgetFirst(Prod_tail);
-         Prod_tail = ATgetNext (Prod_tail);
-         if (ofp_traverse_Prod_name(Prod.term, &Prod, Symbol->term)) {
-            printf("============== PROD_NAME: matched %s\n", ATwriteToString(Prod.term));
-            // MATCHED Prod with constructor name not sharing common symbol name
-         }
-      }
-
-      Prod_tail = (ATermList) ATmake("<term>", productions);
-      while (! ATisEmpty(Prod_tail)) {
-         Prod.term = ATgetFirst(Prod_tail);
-         Prod_tail = ATgetNext (Prod_tail);
-         if (ofp_traverse_Prod_terminal(Prod.term, &Prod, Symbol->term)) {
-            printf("============== matched %s\n", ATwriteToString(Prod.term));
-            // MATCHED Prod terminal
-         }
-      }
-#endif
-
       // one of the productions must match, otherwise return ATfalse
       ofp_build_traversal_func_end(Symbol->term, ATfalse);
    }
@@ -295,8 +176,6 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
       ofp_build_alias_table(gAliasTable, OpDecl_list.term);
 
-      //gAliasTable = ofp_build_alias_table(OpDecl_list.term);
-
       OFP_Traverse Symbol;
       ATermList    Symbols_tail;
       Symbols_tail = ATgetNext (gProdTable);
@@ -311,7 +190,6 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
       ATermList alist = ATtableValues(gAliasTable);
       printf("\n...... aTable: %s\n\n\n", ATwriteToString((ATerm)alist));
-      //printf("%s\n", ATwriteToString((ATerm)gProdTable));
 
       return ATtrue;
    }
