@@ -419,9 +419,9 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, pOFP_Traverse DeclarationCo
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R208 execution-part
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart)
 {
 #ifdef DEBUG_PRINT
@@ -446,9 +446,9 @@ ATbool ofp_traverse_ExecutionPart(ATerm term, pOFP_Traverse ExecutionPart)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R209 execution-part-construct
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPartConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -506,9 +506,9 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, pOFP_Traverse ExecutionPa
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R210 internal-subprogram-part
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSubprogramPart)
 {
 #ifdef DEBUG_PRINT
@@ -537,9 +537,9 @@ ATbool ofp_traverse_InternalSubprogramPart(ATerm term, pOFP_Traverse InternalSub
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R211 internal-subprogram
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_InternalSubprogram(ATerm term, pOFP_Traverse InternalSubprogram)
 {
 #ifdef DEBUG_PRINT
@@ -569,9 +569,9 @@ ATbool ofp_traverse_InternalSubprogram(ATerm term, pOFP_Traverse InternalSubprog
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R212 other-specification-stmt
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecificationStmt)
 {
 #ifdef DEBUG_PRINT
@@ -833,9 +833,9 @@ ATbool ofp_traverse_OtherSpecificationStmt(ATerm term, pOFP_Traverse OtherSpecif
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R213 executable-construct
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -953,9 +953,9 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, pOFP_Traverse ExecutableCons
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R214 action-stmt
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
 {
 #ifdef DEBUG_PRINT
@@ -1469,9 +1469,9 @@ ATbool ofp_traverse_ActionStmt(ATerm term, pOFP_Traverse ActionStmt)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R215 keyword
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Keyword(ATerm term, pOFP_Traverse Keyword)
 {
 #ifdef DEBUG_PRINT
@@ -1496,9 +1496,9 @@ ATbool ofp_traverse_Keyword(ATerm term, pOFP_Traverse Keyword)
  * Section/Clause 3: Lexical tokens and source form
  */
 
-//========================================================================================      
+//========================================================================================
 // R304 constant
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Constant(ATerm term, pOFP_Traverse Constant)
 {
 #ifdef DEBUG_PRINT
@@ -1520,9 +1520,9 @@ ATbool ofp_traverse_Constant(ATerm term, pOFP_Traverse Constant)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R305 literal-constant
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LiteralConstant(ATerm term, pOFP_Traverse LiteralConstant)
 {
 #ifdef DEBUG_PRINT
@@ -1604,9 +1604,9 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, pOFP_Traverse LiteralConstant)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R306 named-constant
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NamedConstant(ATerm term, pOFP_Traverse NamedConstant)
 {
 #ifdef DEBUG_PRINT
@@ -1631,9 +1631,9 @@ ATbool ofp_traverse_NamedConstant(ATerm term, pOFP_Traverse NamedConstant)
  * Section/Clause 4: Types                                                                      
  */
 
-//========================================================================================      
+//========================================================================================
 // R401 type-param-value
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_TypeParamValue(ATerm term, pOFP_Traverse TypeParamValue)
 {
 #ifdef DEBUG_PRINT
@@ -1669,9 +1669,9 @@ ATbool ofp_traverse_TypeParamValue(ATerm term, pOFP_Traverse TypeParamValue)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R402 type-spec
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_TypeSpec(ATerm term, pOFP_Traverse TypeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -1705,9 +1705,9 @@ ATbool ofp_traverse_TypeSpec(ATerm term, pOFP_Traverse TypeSpec)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R403 declaration-type-spec                                                                   
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTypeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -1779,9 +1779,9 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, pOFP_Traverse DeclarationTyp
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R404 intrinsic-type-spec
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, pOFP_Traverse IntrinsicTypeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -1911,9 +1911,9 @@ ATbool ofp_traverse_KindSelector(ATerm term, pOFP_Traverse KindSelector)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R406 signed-int-literal-constant
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SignedIntLiteralConstant(ATerm term, pOFP_Traverse SignedIntLiteralConstant)
 {
 #ifdef DEBUG_PRINT
@@ -1969,9 +1969,9 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, pOFP_Traverse IntLiteralConst
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R408 kind-param
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_KindParam(ATerm term, pOFP_Traverse KindParam)
 {
 #ifdef DEBUG_PRINT
@@ -2005,9 +2005,9 @@ ATbool ofp_traverse_KindParam(ATerm term, pOFP_Traverse KindParam)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R410 digit-string
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DigitString(ATerm term, pOFP_Traverse DigitString)
 {
 #ifdef DEBUG_PRINT
@@ -2027,9 +2027,9 @@ ATbool ofp_traverse_DigitString(ATerm term, pOFP_Traverse DigitString)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R411 sign
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Sign(ATerm term, pOFP_Traverse Sign)
 {
 #ifdef DEBUG_PRINT
@@ -2053,9 +2053,9 @@ ATbool ofp_traverse_Sign(ATerm term, pOFP_Traverse Sign)
  return ATfalse;
 }
 
-//========================================================================================      
+//========================================================================================
 // R412 signed-real-literal-constant
-//----------------------------------------------------------------------------------------      
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SignedRealLiteralConstant(ATerm term, pOFP_Traverse SignedRealLiteralConstant)
 {
 #ifdef DEBUG_PRINT
@@ -4958,6 +4958,9 @@ ATbool ofp_traverse_NullInit(ATerm term, pOFP_Traverse NullInit)
  return ATfalse;
 }
 
+//========================================================================================
+// R507 access-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AccessSpec(ATerm term, pOFP_Traverse AccessSpec)
 {
 #ifdef DEBUG_PRINT
@@ -4981,6 +4984,9 @@ ATbool ofp_traverse_AccessSpec(ATerm term, pOFP_Traverse AccessSpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R508 language-binding-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LanguageBindingSpec(ATerm term, pOFP_Traverse LanguageBindingSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5004,6 +5010,9 @@ ATbool ofp_traverse_LanguageBindingSpec(ATerm term, pOFP_Traverse LanguageBindin
  return ATfalse;
 }
 
+//========================================================================================
+// R509 coarray-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CoarraySpec(ATerm term, pOFP_Traverse CoarraySpec)
 {
 #ifdef DEBUG_PRINT
@@ -5037,6 +5046,9 @@ ATbool ofp_traverse_CoarraySpec(ATerm term, pOFP_Traverse CoarraySpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R510 deferred-coshape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DeferredCoshapeSpec(ATerm term, pOFP_Traverse DeferredCoshapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5075,6 +5087,9 @@ ATbool ofp_traverse_DeferredCoshapeSpecList(ATerm term, pOFP_Traverse DeferredCo
  return ATfalse;
 }
 
+//========================================================================================
+// R511 explicit-coshape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExplicitCoshapeSpec(ATerm term, pOFP_Traverse ExplicitCoshapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5134,6 +5149,9 @@ ATbool ofp_traverse_CoboundsEntry(ATerm term, pOFP_Traverse CoboundsEntry)
  return ATfalse;
 }
 
+//========================================================================================
+// R512 lower-cobound
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LowerCobound(ATerm term, pOFP_Traverse LowerCobound)
 {
 #ifdef DEBUG_PRINT
@@ -5153,6 +5171,9 @@ ATbool ofp_traverse_LowerCobound(ATerm term, pOFP_Traverse LowerCobound)
  return ATfalse;
 }
 
+//========================================================================================
+// R513 upper-cobound
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_UpperCobound(ATerm term, pOFP_Traverse UpperCobound)
 {
 #ifdef DEBUG_PRINT
@@ -5172,6 +5193,9 @@ ATbool ofp_traverse_UpperCobound(ATerm term, pOFP_Traverse UpperCobound)
  return ATfalse;
 }
 
+//========================================================================================
+// R515 array-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ArraySpec(ATerm term, pOFP_Traverse ArraySpec)
 {
 #ifdef DEBUG_PRINT
@@ -5253,6 +5277,9 @@ ATbool ofp_traverse_ArraySpec(ATerm term, pOFP_Traverse ArraySpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R516 explicit-shape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExplicitShapeSpec(ATerm term, pOFP_Traverse ExplicitShapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5304,6 +5331,9 @@ ATbool ofp_traverse_ExplicitShapeSpecList(ATerm term, pOFP_Traverse ExplicitShap
  return ATfalse;
 }
 
+//========================================================================================
+// R517 lower-bound
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LowerBound(ATerm term, pOFP_Traverse LowerBound)
 {
 #ifdef DEBUG_PRINT
@@ -5323,6 +5353,9 @@ ATbool ofp_traverse_LowerBound(ATerm term, pOFP_Traverse LowerBound)
  return ATfalse;
 }
 
+//========================================================================================
+// R518 lower-bound
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_UpperBound(ATerm term, pOFP_Traverse UpperBound)
 {
 #ifdef DEBUG_PRINT
@@ -5342,6 +5375,9 @@ ATbool ofp_traverse_UpperBound(ATerm term, pOFP_Traverse UpperBound)
  return ATfalse;
 }
 
+//========================================================================================
+// R519 assumed-shape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AssumedShapeSpec(ATerm term, pOFP_Traverse AssumedShapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5387,6 +5423,9 @@ ATbool ofp_traverse_AssumedShapeSpecList(ATerm term, pOFP_Traverse AssumedShapeS
  return ATfalse;
 }
 
+//========================================================================================
+// R520 deferred-shape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DeferredShapeSpec(ATerm term, pOFP_Traverse DeferredShapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5425,6 +5464,9 @@ ATbool ofp_traverse_DeferredShapeSpecList(ATerm term, pOFP_Traverse DeferredShap
  return ATfalse;
 }
 
+//========================================================================================
+// R521 assumed-size-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AssumedSizeSpec(ATerm term, pOFP_Traverse AssumedSizeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5457,6 +5499,9 @@ ATbool ofp_traverse_AssumedSizeSpec(ATerm term, pOFP_Traverse AssumedSizeSpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R522a assumed-rank-spec (TR 29113)
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AssumedRankSpec(ATerm term, pOFP_Traverse AssumedRankSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5471,6 +5516,9 @@ ATbool ofp_traverse_AssumedRankSpec(ATerm term, pOFP_Traverse AssumedRankSpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R522 implied-shape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ImpliedShapeSpec(ATerm term, pOFP_Traverse ImpliedShapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5518,6 +5566,9 @@ ATbool ofp_traverse_ImpliedShapeSpecList(ATerm term, pOFP_Traverse ImpliedShapeS
  return ATfalse;
 }
 
+//========================================================================================
+// R523 intent-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntentSpec(ATerm term, pOFP_Traverse IntentSpec)
 {
 #ifdef DEBUG_PRINT
@@ -5548,6 +5599,9 @@ ATbool ofp_traverse_IntentSpec(ATerm term, pOFP_Traverse IntentSpec)
  return ATfalse;
 }
 
+//========================================================================================
+// R524 access-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AccessStmt(ATerm term, pOFP_Traverse AccessStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5603,6 +5657,9 @@ ATbool ofp_traverse_AccessStmt(ATerm term, pOFP_Traverse AccessStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R525 access-id
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AccessId(ATerm term, pOFP_Traverse AccessId)
 {
 #ifdef DEBUG_PRINT
@@ -5646,6 +5703,9 @@ ATbool ofp_traverse_AccessIdList(ATerm term, pOFP_Traverse AccessIdList)
  return ATfalse;
 }
 
+//========================================================================================
+// R526 allocatable-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocatableStmt(ATerm term, pOFP_Traverse AllocatableStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5675,6 +5735,9 @@ ATbool ofp_traverse_AllocatableStmt(ATerm term, pOFP_Traverse AllocatableStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R527 allocatable-decl
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocatableDecl(ATerm term, pOFP_Traverse AllocatableDecl)
 {
 #ifdef DEBUG_PRINT
@@ -5734,6 +5797,9 @@ ATbool ofp_traverse_AllocatableDeclList(ATerm term, pOFP_Traverse AllocatableDec
  return ATfalse;
 }
 
+//========================================================================================
+// R528 asynchronous-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AsynchronousStmt(ATerm term, pOFP_Traverse AsynchronousStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5763,6 +5829,9 @@ ATbool ofp_traverse_AsynchronousStmt(ATerm term, pOFP_Traverse AsynchronousStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R529 bind-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BindStmt(ATerm term, pOFP_Traverse BindStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5796,6 +5865,9 @@ ATbool ofp_traverse_BindStmt(ATerm term, pOFP_Traverse BindStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R530 bind-entity
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BindEntity(ATerm term, pOFP_Traverse BindEntity)
 {
 #ifdef DEBUG_PRINT
@@ -5853,6 +5925,9 @@ ATbool ofp_traverse_BindEntityList(ATerm term, pOFP_Traverse BindEntityList)
  return ATfalse;
 }
 
+//========================================================================================
+// R531 codimension-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CodimensionStmt(ATerm term, pOFP_Traverse CodimensionStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5882,6 +5957,9 @@ ATbool ofp_traverse_CodimensionStmt(ATerm term, pOFP_Traverse CodimensionStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R532 codimension-decl
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CodimensionDecl(ATerm term, pOFP_Traverse CodimensionDecl)
 {
 #ifdef DEBUG_PRINT
@@ -5929,6 +6007,9 @@ ATbool ofp_traverse_CodimensionDeclList(ATerm term, pOFP_Traverse CodimensionDec
  return ATfalse;
 }
 
+//========================================================================================
+// R533 contiguous-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ContiguousStmt(ATerm term, pOFP_Traverse ContiguousStmt)
 {
 #ifdef DEBUG_PRINT
@@ -5982,6 +6063,9 @@ ATbool ofp_traverse_ObjectNameList(ATerm term, pOFP_Traverse ObjectNameList)
  return ATfalse;
 }
 
+//========================================================================================
+// R534 data-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmt(ATerm term, pOFP_Traverse DataStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6011,6 +6095,9 @@ ATbool ofp_traverse_DataStmt(ATerm term, pOFP_Traverse DataStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R535 data-stmt-set
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmtSet(ATerm term, pOFP_Traverse DataStmtSet)
 {
 #ifdef DEBUG_PRINT
@@ -6071,6 +6158,9 @@ ATbool ofp_traverse_DataStmtSetList(ATerm term, pOFP_Traverse DataStmtSetList)
  return ATfalse;
 }
 
+//========================================================================================
+// R536 data-stmt-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmtObject(ATerm term, pOFP_Traverse DataStmtObject)
 {
 #ifdef DEBUG_PRINT
@@ -6128,6 +6218,9 @@ ATbool ofp_traverse_DataStmtObjectList(ATerm term, pOFP_Traverse DataStmtObjectL
  return ATfalse;
 }
 
+//========================================================================================
+// R537 data-implied-do
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataImpliedDo(ATerm term, pOFP_Traverse DataImpliedDo)
 {
 #ifdef DEBUG_PRINT
@@ -6167,6 +6260,9 @@ ATbool ofp_traverse_DataImpliedDo(ATerm term, pOFP_Traverse DataImpliedDo)
  return ATfalse;
 }
 
+//========================================================================================
+// R538 data-i-do-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataIDoObject(ATerm term, pOFP_Traverse DataIDoObject)
 {
 #ifdef DEBUG_PRINT
@@ -6236,6 +6332,9 @@ ATbool ofp_traverse_DataIDoObjectList(ATerm term, pOFP_Traverse DataIDoObjectLis
  return ATfalse;
 }
 
+//========================================================================================
+// R539 data-i-do-variable
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataIDoVariable(ATerm term, pOFP_Traverse DataIDoVariable)
 {
 #ifdef DEBUG_PRINT
@@ -6255,6 +6354,9 @@ ATbool ofp_traverse_DataIDoVariable(ATerm term, pOFP_Traverse DataIDoVariable)
  return ATfalse;
 }
 
+//========================================================================================
+// R540 data-stmt-value
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmtValue(ATerm term, pOFP_Traverse DataStmtValue)
 {
 #ifdef DEBUG_PRINT
@@ -6306,6 +6408,9 @@ ATbool ofp_traverse_DataStmtValueList(ATerm term, pOFP_Traverse DataStmtValueLis
  return ATfalse;
 }
 
+//========================================================================================
+// R541 data-stmt-repeat
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmtRepeat(ATerm term, pOFP_Traverse DataStmtRepeat)
 {
 #ifdef DEBUG_PRINT
@@ -6339,6 +6444,9 @@ ATbool ofp_traverse_DataStmtRepeat(ATerm term, pOFP_Traverse DataStmtRepeat)
  return ATfalse;
 }
 
+//========================================================================================
+// R542 data-stmt-constant
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataStmtConstant(ATerm term, pOFP_Traverse DataStmtConstant)
 {
 #ifdef DEBUG_PRINT
@@ -6432,6 +6540,9 @@ ATbool ofp_traverse_DataStmtConstant(ATerm term, pOFP_Traverse DataStmtConstant)
  return ATfalse;
 }
 
+//========================================================================================
+// R543 int-constant-subobject
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntConstantSubobject(ATerm term, pOFP_Traverse IntConstantSubobject)
 {
 #ifdef DEBUG_PRINT
@@ -6451,6 +6562,9 @@ ATbool ofp_traverse_IntConstantSubobject(ATerm term, pOFP_Traverse IntConstantSu
  return ATfalse;
 }
 
+//========================================================================================
+// R544 constant-subobject
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ConstantSubobject(ATerm term, pOFP_Traverse ConstantSubobject)
 {
 #ifdef DEBUG_PRINT
@@ -6470,6 +6584,9 @@ ATbool ofp_traverse_ConstantSubobject(ATerm term, pOFP_Traverse ConstantSubobjec
  return ATfalse;
 }
 
+//========================================================================================
+// R545 dimension-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DimensionStmt(ATerm term, pOFP_Traverse DimensionStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6546,6 +6663,9 @@ ATbool ofp_traverse_ArrayNameSpecList(ATerm term, pOFP_Traverse ArrayNameSpecLis
  return ATfalse;
 }
 
+//========================================================================================
+// R546 intent-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntentStmt(ATerm term, pOFP_Traverse IntentStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6603,6 +6723,9 @@ ATbool ofp_traverse_DummyArgNameList(ATerm term, pOFP_Traverse DummyArgNameList)
  return ATfalse;
 }
 
+//========================================================================================
+// R547 optional-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_OptionalStmt(ATerm term, pOFP_Traverse OptionalStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6632,6 +6755,9 @@ ATbool ofp_traverse_OptionalStmt(ATerm term, pOFP_Traverse OptionalStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R548 parameter-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ParameterStmt(ATerm term, pOFP_Traverse ParameterStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6661,6 +6787,9 @@ ATbool ofp_traverse_ParameterStmt(ATerm term, pOFP_Traverse ParameterStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R549 named-constant-def
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NamedConstantDef(ATerm term, pOFP_Traverse NamedConstantDef)
 {
 #ifdef DEBUG_PRINT
@@ -6708,6 +6837,9 @@ ATbool ofp_traverse_NamedConstantDefList(ATerm term, pOFP_Traverse NamedConstant
  return ATfalse;
 }
 
+//========================================================================================
+// R550 pointer-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PointerStmt(ATerm term, pOFP_Traverse PointerStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6737,6 +6869,9 @@ ATbool ofp_traverse_PointerStmt(ATerm term, pOFP_Traverse PointerStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R551 pointer-decl
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PointerDecl(ATerm term, pOFP_Traverse PointerDecl)
 {
 #ifdef DEBUG_PRINT
@@ -6802,6 +6937,9 @@ ATbool ofp_traverse_PointerDeclList(ATerm term, pOFP_Traverse PointerDeclList)
  return ATfalse;
 }
 
+//========================================================================================
+// R552 protected-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ProtectedStmt(ATerm term, pOFP_Traverse ProtectedStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6855,6 +6993,9 @@ ATbool ofp_traverse_EntityNameList(ATerm term, pOFP_Traverse EntityNameList)
  return ATfalse;
 }
 
+//========================================================================================
+// R553 save-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SaveStmt(ATerm term, pOFP_Traverse SaveStmt)
 {
 #ifdef DEBUG_PRINT
@@ -6902,6 +7043,9 @@ ATbool ofp_traverse_SaveStmt(ATerm term, pOFP_Traverse SaveStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R554 saved-entity
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SavedEntity(ATerm term, pOFP_Traverse SavedEntity)
 {
 #ifdef DEBUG_PRINT
@@ -6955,6 +7099,9 @@ ATbool ofp_traverse_SavedEntityList(ATerm term, pOFP_Traverse SavedEntityList)
  return ATfalse;
 }
 
+//========================================================================================
+// R555 proc-pointer-name
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ProcPointerName(ATerm term, pOFP_Traverse ProcPointerName)
 {
 #ifdef DEBUG_PRINT
@@ -6974,6 +7121,9 @@ ATbool ofp_traverse_ProcPointerName(ATerm term, pOFP_Traverse ProcPointerName)
  return ATfalse;
 }
 
+//========================================================================================
+// R556 target-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_TargetStmt(ATerm term, pOFP_Traverse TargetStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7003,6 +7153,9 @@ ATbool ofp_traverse_TargetStmt(ATerm term, pOFP_Traverse TargetStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R557 target-decl
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_TargetDecl(ATerm term, pOFP_Traverse TargetDecl)
 {
 #ifdef DEBUG_PRINT
@@ -7062,6 +7215,9 @@ ATbool ofp_traverse_TargetDeclList(ATerm term, pOFP_Traverse TargetDeclList)
  return ATfalse;
 }
 
+//========================================================================================
+// R558 value-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ValueStmt(ATerm term, pOFP_Traverse ValueStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7091,6 +7247,9 @@ ATbool ofp_traverse_ValueStmt(ATerm term, pOFP_Traverse ValueStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R559 volatile-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_VolatileStmt(ATerm term, pOFP_Traverse VolatileStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7120,6 +7279,9 @@ ATbool ofp_traverse_VolatileStmt(ATerm term, pOFP_Traverse VolatileStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R560 implicit-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ImplicitStmt(ATerm term, pOFP_Traverse ImplicitStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7169,6 +7331,9 @@ ATbool ofp_traverse_ImplicitStmt(ATerm term, pOFP_Traverse ImplicitStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R561 implicit-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ImplicitSpec(ATerm term, pOFP_Traverse ImplicitSpec)
 {
 #ifdef DEBUG_PRINT
@@ -7216,6 +7381,9 @@ ATbool ofp_traverse_ImplicitSpecList(ATerm term, pOFP_Traverse ImplicitSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R562 letter-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LetterSpec(ATerm term, pOFP_Traverse LetterSpec)
 {
 #ifdef DEBUG_PRINT
@@ -7267,6 +7435,9 @@ ATbool ofp_traverse_LetterSpecList(ATerm term, pOFP_Traverse LetterSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R563 namelist-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NamelistStmt(ATerm term, pOFP_Traverse NamelistStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7354,6 +7525,9 @@ ATbool ofp_traverse_NamelistEntryList(ATerm term, pOFP_Traverse NamelistEntryLis
  return ATfalse;
 }
 
+//========================================================================================
+// R564 namelist-group-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NamelistGroupObject(ATerm term, pOFP_Traverse NamelistGroupObject)
 {
 #ifdef DEBUG_PRINT
@@ -7397,6 +7571,9 @@ ATbool ofp_traverse_NamelistGroupObjectList(ATerm term, pOFP_Traverse NamelistGr
  return ATfalse;
 }
 
+//========================================================================================
+// R565 equivalence-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EquivalenceStmt(ATerm term, pOFP_Traverse EquivalenceStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7426,6 +7603,9 @@ ATbool ofp_traverse_EquivalenceStmt(ATerm term, pOFP_Traverse EquivalenceStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R566 equivalence-set
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EquivalenceSet(ATerm term, pOFP_Traverse EquivalenceSet)
 {
 #ifdef DEBUG_PRINT
@@ -7473,6 +7653,9 @@ ATbool ofp_traverse_EquivalenceSetList(ATerm term, pOFP_Traverse EquivalenceSetL
  return ATfalse;
 }
 
+//========================================================================================
+// R567 equivalence-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EquivalenceObject(ATerm term, pOFP_Traverse EquivalenceObject)
 {
 #ifdef DEBUG_PRINT
@@ -7516,6 +7699,9 @@ ATbool ofp_traverse_EquivalenceObjectList(ATerm term, pOFP_Traverse EquivalenceO
  return ATfalse;
 }
 
+//========================================================================================
+// R568 common-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CommonStmt(ATerm term, pOFP_Traverse CommonStmt)
 {
 #ifdef DEBUG_PRINT
@@ -7620,6 +7806,9 @@ ATbool ofp_traverse_CommonBlockEntry(ATerm term, pOFP_Traverse CommonBlockEntry)
  return ATfalse;
 }
 
+//========================================================================================
+// R569 common-block-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CommonBlockObject(ATerm term, pOFP_Traverse CommonBlockObject)
 {
 #ifdef DEBUG_PRINT
@@ -8100,6 +8289,9 @@ ATbool ofp_traverse_TypeParamInquiry(ATerm term, pOFP_Traverse TypeParamInquiry)
  return ATfalse;
 }
 
+//========================================================================================
+// R617 array-element
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ArrayElement(ATerm term, pOFP_Traverse ArrayElement)
 {
 #ifdef DEBUG_PRINT
@@ -8119,6 +8311,9 @@ ATbool ofp_traverse_ArrayElement(ATerm term, pOFP_Traverse ArrayElement)
  return ATfalse;
 }
 
+//========================================================================================
+// R619 subscript
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Subscript(ATerm term, pOFP_Traverse Subscript)
 {
 #ifdef DEBUG_PRINT
@@ -8138,6 +8333,9 @@ ATbool ofp_traverse_Subscript(ATerm term, pOFP_Traverse Subscript)
  return ATfalse;
 }
 
+//========================================================================================
+// R620 section-subscript
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SectionSubscript(ATerm term, pOFP_Traverse SectionSubscript)
 {
 #ifdef DEBUG_PRINT
@@ -8195,6 +8393,9 @@ ATbool ofp_traverse_SectionSubscriptList(ATerm term, pOFP_Traverse SectionSubscr
  return ATfalse;
 }
 
+//========================================================================================
+// R621 subscript-triplet
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SubscriptTriplet(ATerm term, pOFP_Traverse SubscriptTriplet)
 {
 #ifdef DEBUG_PRINT
@@ -8230,6 +8431,9 @@ ATbool ofp_traverse_SubscriptTriplet(ATerm term, pOFP_Traverse SubscriptTriplet)
  return ATfalse;
 }
 
+//========================================================================================
+// R622 stride
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Stride(ATerm term, pOFP_Traverse Stride)
 {
 #ifdef DEBUG_PRINT
@@ -8249,6 +8453,9 @@ ATbool ofp_traverse_Stride(ATerm term, pOFP_Traverse Stride)
  return ATfalse;
 }
 
+//========================================================================================
+// R624 image-selector
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ImageSelector(ATerm term, pOFP_Traverse ImageSelector)
 {
 #ifdef DEBUG_PRINT
@@ -8268,6 +8475,9 @@ ATbool ofp_traverse_ImageSelector(ATerm term, pOFP_Traverse ImageSelector)
  return ATfalse;
 }
 
+//========================================================================================
+// R625 cosubscript
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Cosubscript(ATerm term, pOFP_Traverse Cosubscript)
 {
 #ifdef DEBUG_PRINT
@@ -8311,6 +8521,9 @@ ATbool ofp_traverse_CosubscriptList(ATerm term, pOFP_Traverse CosubscriptList)
  return ATfalse;
 }
 
+//========================================================================================
+// R626 allocate-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocateStmt(ATerm term, pOFP_Traverse AllocateStmt)
 {
 #ifdef DEBUG_PRINT
@@ -8356,6 +8569,9 @@ ATbool ofp_traverse_AllocateStmt(ATerm term, pOFP_Traverse AllocateStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R627 alloc-opt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocOpt(ATerm term, pOFP_Traverse AllocOpt)
 {
 #ifdef DEBUG_PRINT
@@ -8437,6 +8653,9 @@ ATbool ofp_traverse_AllocOptList(ATerm term, pOFP_Traverse AllocOptList)
  return ATfalse;
 }
 
+//========================================================================================
+// R628 stat-variable
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_StatVariable(ATerm term, pOFP_Traverse StatVariable)
 {
 #ifdef DEBUG_PRINT
@@ -8456,6 +8675,9 @@ ATbool ofp_traverse_StatVariable(ATerm term, pOFP_Traverse StatVariable)
  return ATfalse;
 }
 
+//========================================================================================
+// R629 errmsg-variable
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ErrmsgVariable(ATerm term, pOFP_Traverse ErrmsgVariable)
 {
 #ifdef DEBUG_PRINT
@@ -8475,6 +8697,9 @@ ATbool ofp_traverse_ErrmsgVariable(ATerm term, pOFP_Traverse ErrmsgVariable)
  return ATfalse;
 }
 
+//========================================================================================
+// R631 allocation
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Allocation(ATerm term, pOFP_Traverse Allocation)
 {
 #ifdef DEBUG_PRINT
@@ -8534,6 +8759,9 @@ ATbool ofp_traverse_AllocationList(ATerm term, pOFP_Traverse AllocationList)
  return ATfalse;
 }
 
+//========================================================================================
+// R632 allocate-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocateObject(ATerm term, pOFP_Traverse AllocateObject)
 {
 #ifdef DEBUG_PRINT
@@ -8579,6 +8807,9 @@ ATbool ofp_traverse_AllocateObjectList(ATerm term, pOFP_Traverse AllocateObjectL
  return ATfalse;
 }
 
+//========================================================================================
+// R633 allocate-shape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocateShapeSpec(ATerm term, pOFP_Traverse AllocateShapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -8630,6 +8861,9 @@ ATbool ofp_traverse_AllocateShapeSpecList(ATerm term, pOFP_Traverse AllocateShap
  return ATfalse;
 }
 
+//========================================================================================
+// R634 lower-bound-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LowerBoundExpr(ATerm term, pOFP_Traverse LowerBoundExpr)
 {
 #ifdef DEBUG_PRINT
@@ -8649,6 +8883,9 @@ ATbool ofp_traverse_LowerBoundExpr(ATerm term, pOFP_Traverse LowerBoundExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R635 upper-bound-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_UpperBoundExpr(ATerm term, pOFP_Traverse UpperBoundExpr)
 {
 #ifdef DEBUG_PRINT
@@ -8668,6 +8905,9 @@ ATbool ofp_traverse_UpperBoundExpr(ATerm term, pOFP_Traverse UpperBoundExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R636 allocate-coarray-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocateCoarraySpec(ATerm term, pOFP_Traverse AllocateCoarraySpec)
 {
 #ifdef DEBUG_PRINT
@@ -8699,6 +8939,9 @@ ATbool ofp_traverse_AllocateCoarraySpec(ATerm term, pOFP_Traverse AllocateCoarra
  return ATfalse;
 }
 
+//========================================================================================
+// R637 allocate-coshape-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AllocateCoshapeSpec(ATerm term, pOFP_Traverse AllocateCoshapeSpec)
 {
 #ifdef DEBUG_PRINT
@@ -8750,6 +8993,9 @@ ATbool ofp_traverse_AllocateCoshapeSpecList(ATerm term, pOFP_Traverse AllocateCo
  return ATfalse;
 }
 
+//========================================================================================
+// R638 nullify-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NullifyStmt(ATerm term, pOFP_Traverse NullifyStmt)
 {
 #ifdef DEBUG_PRINT
@@ -8779,6 +9025,9 @@ ATbool ofp_traverse_NullifyStmt(ATerm term, pOFP_Traverse NullifyStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R639 pointer-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PointerObject(ATerm term, pOFP_Traverse PointerObject)
 {
 #ifdef DEBUG_PRINT
@@ -8848,6 +9097,9 @@ ATbool ofp_traverse_PointerObjectList(ATerm term, pOFP_Traverse PointerObjectLis
  return ATfalse;
 }
 
+//========================================================================================
+// R640 deallocate-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DeallocateStmt(ATerm term, pOFP_Traverse DeallocateStmt)
 {
 #ifdef DEBUG_PRINT
@@ -8885,6 +9137,9 @@ ATbool ofp_traverse_DeallocateStmt(ATerm term, pOFP_Traverse DeallocateStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R641 deallocate-opt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DeallocOpt(ATerm term, pOFP_Traverse DeallocOpt)
 {
 #ifdef DEBUG_PRINT
@@ -8942,6 +9197,9 @@ ATbool ofp_traverse_DeallocOptList(ATerm term, pOFP_Traverse DeallocOptList)
  return ATfalse;
 }
 
+//========================================================================================
+// R309 intrinsic-operator
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntrinsicOperator(ATerm term, pOFP_Traverse IntrinsicOperator)
 {
 #ifdef DEBUG_PRINT
@@ -9077,6 +9335,9 @@ ATbool ofp_traverse_IntrinsicOperator(ATerm term, pOFP_Traverse IntrinsicOperato
  return ATfalse;
 }
 
+//========================================================================================
+// R310 defined-operator
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DefinedOperator(ATerm term, pOFP_Traverse DefinedOperator)
 {
 #ifdef DEBUG_PRINT
@@ -9122,6 +9383,9 @@ ATbool ofp_traverse_DefinedOperator(ATerm term, pOFP_Traverse DefinedOperator)
  return ATfalse;
 }
 
+//========================================================================================
+// R311 extended-intrinsic-op
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ExtendedIntrinsicOp(ATerm term, pOFP_Traverse ExtendedIntrinsicOp)
 {
 #ifdef DEBUG_PRINT
@@ -9141,6 +9405,9 @@ ATbool ofp_traverse_ExtendedIntrinsicOp(ATerm term, pOFP_Traverse ExtendedIntrin
  return ATfalse;
 }
 
+//========================================================================================
+// R701 primary
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Primary(ATerm term, pOFP_Traverse Primary)
 {
 #ifdef DEBUG_PRINT
@@ -9234,6 +9501,9 @@ ATbool ofp_traverse_Primary(ATerm term, pOFP_Traverse Primary)
  return ATfalse;
 }
 
+//========================================================================================
+// R703 defined-unary-op
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DefinedUnaryOp(ATerm term, pOFP_Traverse DefinedUnaryOp)
 {
 #ifdef DEBUG_PRINT
@@ -9253,6 +9523,9 @@ ATbool ofp_traverse_DefinedUnaryOp(ATerm term, pOFP_Traverse DefinedUnaryOp)
  return ATfalse;
 }
 
+//========================================================================================
+// R722 expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr)
 {
 #ifdef DEBUG_PRINT
@@ -9600,6 +9873,9 @@ ATbool ofp_traverse_Expr(ATerm term, pOFP_Traverse Expr)
  return ATfalse;
 }
 
+//========================================================================================
+// R723 defined-binary-op
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DefinedBinaryOp(ATerm term, pOFP_Traverse DefinedBinaryOp)
 {
 #ifdef DEBUG_PRINT
@@ -9619,6 +9895,9 @@ ATbool ofp_traverse_DefinedBinaryOp(ATerm term, pOFP_Traverse DefinedBinaryOp)
  return ATfalse;
 }
 
+//========================================================================================
+// R724 logical-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_LogicalExpr(ATerm term, pOFP_Traverse LogicalExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9638,6 +9917,9 @@ ATbool ofp_traverse_LogicalExpr(ATerm term, pOFP_Traverse LogicalExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R725 default-char-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DefaultCharExpr(ATerm term, pOFP_Traverse DefaultCharExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9657,6 +9939,9 @@ ATbool ofp_traverse_DefaultCharExpr(ATerm term, pOFP_Traverse DefaultCharExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R726 int-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntExpr(ATerm term, pOFP_Traverse IntExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9676,6 +9961,9 @@ ATbool ofp_traverse_IntExpr(ATerm term, pOFP_Traverse IntExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R728 specification-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SpecificationExpr(ATerm term, pOFP_Traverse SpecificationExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9695,6 +9983,9 @@ ATbool ofp_traverse_SpecificationExpr(ATerm term, pOFP_Traverse SpecificationExp
  return ATfalse;
 }
 
+//========================================================================================
+// R729 constant-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ConstantExpr(ATerm term, pOFP_Traverse ConstantExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9714,6 +10005,9 @@ ATbool ofp_traverse_ConstantExpr(ATerm term, pOFP_Traverse ConstantExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R731 int-constant-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_IntConstantExpr(ATerm term, pOFP_Traverse IntConstantExpr)
 {
 #ifdef DEBUG_PRINT
@@ -9733,6 +10027,9 @@ ATbool ofp_traverse_IntConstantExpr(ATerm term, pOFP_Traverse IntConstantExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R732 assignment-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt)
 {
 #ifdef DEBUG_PRINT
@@ -9766,6 +10063,9 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, pOFP_Traverse AssignmentStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R733 pointer-assignment-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PointerAssignmentStmt(ATerm term, pOFP_Traverse PointerAssignmentStmt)
 {
 #ifdef DEBUG_PRINT
@@ -9865,6 +10165,9 @@ ATbool ofp_traverse_PointerAssignmentStmt(ATerm term, pOFP_Traverse PointerAssig
  return ATfalse;
 }
 
+//========================================================================================
+// R734 data-pointer-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataPointerObject(ATerm term, pOFP_Traverse DataPointerObject)
 {
 #ifdef DEBUG_PRINT
@@ -9902,6 +10205,9 @@ ATbool ofp_traverse_DataPointerObject(ATerm term, pOFP_Traverse DataPointerObjec
  return ATfalse;
 }
 
+//========================================================================================
+// R735 bounds-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BoundsSpec(ATerm term, pOFP_Traverse BoundsSpec)
 {
 #ifdef DEBUG_PRINT
@@ -9945,6 +10251,9 @@ ATbool ofp_traverse_BoundsSpecList(ATerm term, pOFP_Traverse BoundsSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R736 bounds-remapping
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BoundsRemapping(ATerm term, pOFP_Traverse BoundsRemapping)
 {
 #ifdef DEBUG_PRINT
@@ -9992,6 +10301,9 @@ ATbool ofp_traverse_BoundsRemappingList(ATerm term, pOFP_Traverse BoundsRemappin
  return ATfalse;
 }
 
+//========================================================================================
+// R737 data-target
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataTarget(ATerm term, pOFP_Traverse DataTarget)
 {
 #ifdef DEBUG_PRINT
@@ -10011,6 +10323,9 @@ ATbool ofp_traverse_DataTarget(ATerm term, pOFP_Traverse DataTarget)
  return ATfalse;
 }
 
+//========================================================================================
+// R738 proc-pointer-object
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ProcPointerObject(ATerm term, pOFP_Traverse ProcPointerObject)
 {
 #ifdef DEBUG_PRINT
@@ -10044,6 +10359,9 @@ ATbool ofp_traverse_ProcPointerObject(ATerm term, pOFP_Traverse ProcPointerObjec
  return ATfalse;
 }
 
+//========================================================================================
+// R739 proc-component-ref
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ProcComponentRef(ATerm term, pOFP_Traverse ProcComponentRef)
 {
 #ifdef DEBUG_PRINT
@@ -10067,6 +10385,9 @@ ATbool ofp_traverse_ProcComponentRef(ATerm term, pOFP_Traverse ProcComponentRef)
  return ATfalse;
 }
 
+//========================================================================================
+// R740 proc-target
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ProcTarget(ATerm term, pOFP_Traverse ProcTarget)
 {
 #ifdef DEBUG_PRINT
@@ -10112,6 +10433,9 @@ ATbool ofp_traverse_ProcTarget(ATerm term, pOFP_Traverse ProcTarget)
  return ATfalse;
 }
 
+//========================================================================================
+// R741 where-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WhereStmt(ATerm term, pOFP_Traverse WhereStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10141,6 +10465,9 @@ ATbool ofp_traverse_WhereStmt(ATerm term, pOFP_Traverse WhereStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R742 where-construct
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WhereConstruct(ATerm term, pOFP_Traverse WhereConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -10244,6 +10571,9 @@ ATbool ofp_traverse_ElsewhereClause(ATerm term, pOFP_Traverse ElsewhereClause)
  return ATfalse;
 }
 
+//========================================================================================
+// R743 where-construct-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WhereConstructStmt(ATerm term, pOFP_Traverse WhereConstructStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10281,6 +10611,9 @@ ATbool ofp_traverse_WhereConstructStmt(ATerm term, pOFP_Traverse WhereConstructS
  return ATfalse;
 }
 
+//========================================================================================
+// R744 where-body-construct
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WhereBodyConstruct(ATerm term, pOFP_Traverse WhereBodyConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -10326,6 +10659,9 @@ ATbool ofp_traverse_WhereBodyConstruct(ATerm term, pOFP_Traverse WhereBodyConstr
  return ATfalse;
 }
 
+//========================================================================================
+// R745 where-assignment-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WhereAssignmentStmt(ATerm term, pOFP_Traverse WhereAssignmentStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10345,6 +10681,9 @@ ATbool ofp_traverse_WhereAssignmentStmt(ATerm term, pOFP_Traverse WhereAssignmen
  return ATfalse;
 }
 
+//========================================================================================
+// R746 mask-expr
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_MaskExpr(ATerm term, pOFP_Traverse MaskExpr)
 {
 #ifdef DEBUG_PRINT
@@ -10364,6 +10703,9 @@ ATbool ofp_traverse_MaskExpr(ATerm term, pOFP_Traverse MaskExpr)
  return ATfalse;
 }
 
+//========================================================================================
+// R747 masked-elsewhere-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_MaskedElsewhereStmt(ATerm term, pOFP_Traverse MaskedElsewhereStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10399,6 +10741,9 @@ ATbool ofp_traverse_MaskedElsewhereStmt(ATerm term, pOFP_Traverse MaskedElsewher
  return ATfalse;
 }
 
+//========================================================================================
+// R748 elsewhere-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ElsewhereStmt(ATerm term, pOFP_Traverse ElsewhereStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10430,6 +10775,9 @@ ATbool ofp_traverse_ElsewhereStmt(ATerm term, pOFP_Traverse ElsewhereStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R749 endwhere-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndWhereStmt(ATerm term, pOFP_Traverse EndWhereStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10461,6 +10809,9 @@ ATbool ofp_traverse_EndWhereStmt(ATerm term, pOFP_Traverse EndWhereStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R750 forall-construct
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallConstruct(ATerm term, pOFP_Traverse ForallConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -10493,6 +10844,9 @@ ATbool ofp_traverse_ForallConstruct(ATerm term, pOFP_Traverse ForallConstruct)
  return ATfalse;
 }
 
+//========================================================================================
+// R751 forall-construct-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallConstructStmt(ATerm term, pOFP_Traverse ForallConstructStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10530,6 +10884,9 @@ ATbool ofp_traverse_ForallConstructStmt(ATerm term, pOFP_Traverse ForallConstruc
  return ATfalse;
 }
 
+//========================================================================================
+// R752 forall-header
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallHeader(ATerm term, pOFP_Traverse ForallHeader)
 {
 #ifdef DEBUG_PRINT
@@ -10565,6 +10922,9 @@ ATbool ofp_traverse_ForallHeader(ATerm term, pOFP_Traverse ForallHeader)
  return ATfalse;
 }
 
+//========================================================================================
+// R753 forall-triplet-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallTripletSpec(ATerm term, pOFP_Traverse ForallTripletSpec)
 {
 #ifdef DEBUG_PRINT
@@ -10624,6 +10984,9 @@ ATbool ofp_traverse_ForallTripletSpecList(ATerm term, pOFP_Traverse ForallTriple
  return ATfalse;
 }
 
+//========================================================================================
+// R754 forall-limit
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallLimit(ATerm term, pOFP_Traverse ForallLimit)
 {
 #ifdef DEBUG_PRINT
@@ -10643,6 +11006,9 @@ ATbool ofp_traverse_ForallLimit(ATerm term, pOFP_Traverse ForallLimit)
  return ATfalse;
 }
 
+//========================================================================================
+// R755 forall-step
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallStep(ATerm term, pOFP_Traverse ForallStep)
 {
 #ifdef DEBUG_PRINT
@@ -10662,6 +11028,9 @@ ATbool ofp_traverse_ForallStep(ATerm term, pOFP_Traverse ForallStep)
  return ATfalse;
 }
 
+//========================================================================================
+// R756 forall-body-construct
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallBodyConstruct(ATerm term, pOFP_Traverse ForallBodyConstruct)
 {
 #ifdef DEBUG_PRINT
@@ -10731,6 +11100,9 @@ ATbool ofp_traverse_ForallBodyConstruct(ATerm term, pOFP_Traverse ForallBodyCons
  return ATfalse;
 }
 
+//========================================================================================
+// R757 forall-assignment-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallAssignmentStmt(ATerm term, pOFP_Traverse ForallAssignmentStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10764,6 +11136,9 @@ ATbool ofp_traverse_ForallAssignmentStmt(ATerm term, pOFP_Traverse ForallAssignm
  return ATfalse;
 }
 
+//========================================================================================
+// R758 end-forall-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndForallStmt(ATerm term, pOFP_Traverse EndForallStmt)
 {
 #ifdef DEBUG_PRINT
@@ -10795,6 +11170,9 @@ ATbool ofp_traverse_EndForallStmt(ATerm term, pOFP_Traverse EndForallStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R759 forall-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ForallStmt(ATerm term, pOFP_Traverse ForallStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14320,6 +14698,9 @@ ATbool ofp_traverse_IoImpliedDoControl(ATerm term, pOFP_Traverse IoImpliedDoCont
  return ATfalse;
 }
 
+//========================================================================================
+// R922 wait-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WaitStmt(ATerm term, pOFP_Traverse WaitStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14349,6 +14730,9 @@ ATbool ofp_traverse_WaitStmt(ATerm term, pOFP_Traverse WaitStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R923 wait-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WaitSpec(ATerm term, pOFP_Traverse WaitSpec)
 {
 #ifdef DEBUG_PRINT
@@ -14466,6 +14850,9 @@ ATbool ofp_traverse_WaitSpecList(ATerm term, pOFP_Traverse WaitSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R924 backspace-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BackspaceStmt(ATerm term, pOFP_Traverse BackspaceStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14519,6 +14906,9 @@ ATbool ofp_traverse_BackspaceStmt(ATerm term, pOFP_Traverse BackspaceStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R925 endfile-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EndfileStmt(ATerm term, pOFP_Traverse EndfileStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14572,6 +14962,9 @@ ATbool ofp_traverse_EndfileStmt(ATerm term, pOFP_Traverse EndfileStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R926 endfile-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_RewindStmt(ATerm term, pOFP_Traverse RewindStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14625,6 +15018,9 @@ ATbool ofp_traverse_RewindStmt(ATerm term, pOFP_Traverse RewindStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R927 position-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PositionSpec(ATerm term, pOFP_Traverse PositionSpec)
 {
 #ifdef DEBUG_PRINT
@@ -14706,6 +15102,9 @@ ATbool ofp_traverse_PositionSpecList(ATerm term, pOFP_Traverse PositionSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R928 flush-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FlushStmt(ATerm term, pOFP_Traverse FlushStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14759,6 +15158,9 @@ ATbool ofp_traverse_FlushStmt(ATerm term, pOFP_Traverse FlushStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R929 flush-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FlushSpec(ATerm term, pOFP_Traverse FlushSpec)
 {
 #ifdef DEBUG_PRINT
@@ -14840,6 +15242,9 @@ ATbool ofp_traverse_FlushSpecList(ATerm term, pOFP_Traverse FlushSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R930 inquire-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_InquireStmt(ATerm term, pOFP_Traverse InquireStmt)
 {
 #ifdef DEBUG_PRINT
@@ -14897,6 +15302,9 @@ ATbool ofp_traverse_InquireStmt(ATerm term, pOFP_Traverse InquireStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R931 inquire-spec
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_InquireSpec(ATerm term, pOFP_Traverse InquireSpec)
 {
 #ifdef DEBUG_PRINT
@@ -15362,6 +15770,9 @@ ATbool ofp_traverse_InquireSpecList(ATerm term, pOFP_Traverse InquireSpecList)
  return ATfalse;
 }
 
+//========================================================================================
+// R1001 format-stmt
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FormatStmt(ATerm term, pOFP_Traverse FormatStmt)
 {
 #ifdef DEBUG_PRINT
@@ -15407,6 +15818,9 @@ ATbool ofp_traverse_FormatStmt(ATerm term, pOFP_Traverse FormatStmt)
  return ATfalse;
 }
 
+//========================================================================================
+// R1002 format-specification
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FormatSpecification(ATerm term, pOFP_Traverse FormatSpecification)
 {
 #ifdef DEBUG_PRINT
@@ -15448,6 +15862,9 @@ ATbool ofp_traverse_FormatSpecification(ATerm term, pOFP_Traverse FormatSpecific
  return ATfalse;
 }
 
+//========================================================================================
+// R1003 format-items
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FormatItems(ATerm term, pOFP_Traverse FormatItems)
 {
 #ifdef DEBUG_PRINT
@@ -15483,6 +15900,9 @@ ATbool ofp_traverse_FormatItems(ATerm term, pOFP_Traverse FormatItems)
  return ATfalse;
 }
 
+//========================================================================================
+// R1004 format-item
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_FormatItem(ATerm term, pOFP_Traverse FormatItem)
 {
 #ifdef DEBUG_PRINT
@@ -15552,6 +15972,9 @@ ATbool ofp_traverse_FormatItem(ATerm term, pOFP_Traverse FormatItem)
  return ATfalse;
 }
 
+//========================================================================================
+// R1005 unlimited-format-item
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_UnlimitedFormatItem(ATerm term, pOFP_Traverse UnlimitedFormatItem)
 {
 #ifdef DEBUG_PRINT
@@ -15571,6 +15994,9 @@ ATbool ofp_traverse_UnlimitedFormatItem(ATerm term, pOFP_Traverse UnlimitedForma
  return ATfalse;
 }
 
+//========================================================================================
+// R1006 r
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_REditDesc(ATerm term, pOFP_Traverse REditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15590,6 +16016,9 @@ ATbool ofp_traverse_REditDesc(ATerm term, pOFP_Traverse REditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1007 data-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DataEditDesc(ATerm term, pOFP_Traverse DataEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15867,6 +16296,9 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, pOFP_Traverse DataEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1008 w
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_WEditDesc(ATerm term, pOFP_Traverse WEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15886,6 +16318,9 @@ ATbool ofp_traverse_WEditDesc(ATerm term, pOFP_Traverse WEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1009 m
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_MEditDesc(ATerm term, pOFP_Traverse MEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15905,6 +16340,9 @@ ATbool ofp_traverse_MEditDesc(ATerm term, pOFP_Traverse MEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1010 d
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DEditDesc(ATerm term, pOFP_Traverse DEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15924,6 +16362,9 @@ ATbool ofp_traverse_DEditDesc(ATerm term, pOFP_Traverse DEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1011 e
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_EEditDesc(ATerm term, pOFP_Traverse EEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15943,6 +16384,9 @@ ATbool ofp_traverse_EEditDesc(ATerm term, pOFP_Traverse EEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1012 v
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_VEditDesc(ATerm term, pOFP_Traverse VEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -15986,6 +16430,9 @@ ATbool ofp_traverse_VEditDescList(ATerm term, pOFP_Traverse VEditDescList)
  return ATfalse;
 }
 
+//========================================================================================
+// R1013 control-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_ControlEditDesc(ATerm term, pOFP_Traverse ControlEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16088,6 +16535,9 @@ ATbool ofp_traverse_ControlEditDesc(ATerm term, pOFP_Traverse ControlEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1014 k
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_KEditDesc(ATerm term, pOFP_Traverse KEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16107,6 +16557,9 @@ ATbool ofp_traverse_KEditDesc(ATerm term, pOFP_Traverse KEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1015 position-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PositionEditDesc(ATerm term, pOFP_Traverse PositionEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16164,6 +16617,9 @@ ATbool ofp_traverse_PositionEditDesc(ATerm term, pOFP_Traverse PositionEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1016 n
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_NEditDesc(ATerm term, pOFP_Traverse NEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16183,6 +16639,9 @@ ATbool ofp_traverse_NEditDesc(ATerm term, pOFP_Traverse NEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1017 sign-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_SignEditDesc(ATerm term, pOFP_Traverse SignEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16213,6 +16672,9 @@ ATbool ofp_traverse_SignEditDesc(ATerm term, pOFP_Traverse SignEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1018 blank-interp-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_BlankInterpEditDesc(ATerm term, pOFP_Traverse BlankInterpEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16236,6 +16698,9 @@ ATbool ofp_traverse_BlankInterpEditDesc(ATerm term, pOFP_Traverse BlankInterpEdi
  return ATfalse;
 }
 
+//========================================================================================
+// R1019 round-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_RoundEditDesc(ATerm term, pOFP_Traverse RoundEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16287,6 +16752,9 @@ ATbool ofp_traverse_RoundEditDesc(ATerm term, pOFP_Traverse RoundEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1020 decimal-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_DecimalEditDesc(ATerm term, pOFP_Traverse DecimalEditDesc)
 {
 #ifdef DEBUG_PRINT
@@ -16310,6 +16778,9 @@ ATbool ofp_traverse_DecimalEditDesc(ATerm term, pOFP_Traverse DecimalEditDesc)
  return ATfalse;
 }
 
+//========================================================================================
+// R1021 char-string-edit-desc
+//----------------------------------------------------------------------------------------
 ATbool ofp_traverse_CharStringEditDesc(ATerm term, pOFP_Traverse CharStringEditDesc)
 {
 #ifdef DEBUG_PRINT
