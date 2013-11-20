@@ -1,4 +1,5 @@
 #include "traversal.h"
+#include <string.h>
 
 #define DEBUG_PRINT
 
@@ -10,6 +11,11 @@ ATbool ofp_traverse_init()
    return ATtrue;
 }
 
+static char * ofp_strdup(char * str)
+{
+   return strdup(str);
+}
+
 ATbool ofp_traverse_Dop(ATerm term, pOFP_Traverse Dop)
 {
 #ifdef DEBUG_PRINT
@@ -19,6 +25,7 @@ ATbool ofp_traverse_Dop(ATerm term, pOFP_Traverse Dop)
    char * Dop_val;
    if (ATmatch(term, "<str>", &Dop_val)) {
       // MATCHED Dop
+      Dop->post = ofp_strdup(Dop_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -34,6 +41,7 @@ ATbool ofp_traverse_HexConstant(ATerm term, pOFP_Traverse HexConstant)
    char * HexConstant_val;
    if (ATmatch(term, "<str>", &HexConstant_val)) {
       // MATCHED HexConstant
+      HexConstant->post = ofp_strdup(HexConstant_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -49,6 +57,7 @@ ATbool ofp_traverse_OctalConstant(ATerm term, pOFP_Traverse OctalConstant)
    char * OctalConstant_val;
    if (ATmatch(term, "<str>", &OctalConstant_val)) {
       // MATCHED OctalConstant
+      OctalConstant->post = ofp_strdup(OctalConstant_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -64,6 +73,7 @@ ATbool ofp_traverse_BinaryConstant(ATerm term, pOFP_Traverse BinaryConstant)
    char * BinaryConstant_val;
    if (ATmatch(term, "<str>", &BinaryConstant_val)) {
       // MATCHED BinaryConstant
+      BinaryConstant->post = ofp_strdup(BinaryConstant_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -79,6 +89,7 @@ ATbool ofp_traverse_Rcon(ATerm term, pOFP_Traverse Rcon)
    char * Rcon_val;
    if (ATmatch(term, "<str>", &Rcon_val)) {
       // MATCHED Rcon
+      Rcon->post = ofp_strdup(Rcon_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -94,6 +105,7 @@ ATbool ofp_traverse_Scon(ATerm term, pOFP_Traverse Scon)
    char * Scon_val;
    if (ATmatch(term, "<str>", &Scon_val)) {
       // MATCHED Scon
+      Scon->post = ofp_strdup(Scon_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -109,6 +121,7 @@ ATbool ofp_traverse_Icon(ATerm term, pOFP_Traverse Icon)
    char * Icon_val;
    if (ATmatch(term, "<str>", &Icon_val)) {
       // MATCHED Icon
+      Icon->post = ofp_strdup(Icon_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -124,6 +137,7 @@ ATbool ofp_traverse_Ident(ATerm term, pOFP_Traverse Ident)
    char * Ident_val;
    if (ATmatch(term, "<str>", &Ident_val)) {
       // MATCHED Ident
+      Ident->post = ofp_strdup(Ident_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -139,6 +153,7 @@ ATbool ofp_traverse_Letter(ATerm term, pOFP_Traverse Letter)
    char * Letter_val;
    if (ATmatch(term, "<str>", &Letter_val)) {
       // MATCHED Letter
+      Letter->post = ofp_strdup(Letter_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -154,6 +169,7 @@ ATbool ofp_traverse_Label(ATerm term, pOFP_Traverse Label)
    char * Label_val;
    if (ATmatch(term, "<str>", &Label_val)) {
       // MATCHED Label
+      Label->post = ofp_strdup(Label_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -169,6 +185,7 @@ ATbool ofp_traverse_LblRef(ATerm term, pOFP_Traverse LblRef)
    char * LblRef_val;
    if (ATmatch(term, "<str>", &LblRef_val)) {
       // MATCHED LblRef
+      LblRef->post = ofp_strdup(LblRef_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -184,6 +201,7 @@ ATbool ofp_traverse_StartCommentBlock(ATerm term, pOFP_Traverse StartCommentBloc
    char * StartCommentBlock_val;
    if (ATmatch(term, "<str>", &StartCommentBlock_val)) {
       // MATCHED StartCommentBlock
+      StartCommentBlock->post = ofp_strdup(StartCommentBlock_val);
       return ATtrue;
    } else return ATfalse;
 
@@ -199,6 +217,7 @@ ATbool ofp_traverse_EOS(ATerm term, pOFP_Traverse EOS)
    char * EOS_val;
    if (ATmatch(term, "<str>", &EOS_val)) {
       // MATCHED EOS
+      EOS->post = ofp_strdup(EOS_val);
       return ATtrue;
    } else return ATfalse;
 
