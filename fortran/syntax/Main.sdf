@@ -766,9 +766,9 @@ context-free syntax
 %%R305
   IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_ILC")}
   RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_RLC")}
-  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_CLC")}
+  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_CXLC")}
   LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_LLC")}
-  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_CLC")}
+  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_CRLC")}
   BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_BLC")}
 
 %%R306
