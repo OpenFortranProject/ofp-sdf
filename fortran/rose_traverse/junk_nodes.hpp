@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-class SgLocatedNode;
-
 namespace OFP {
 
 class ProgramStmt;
@@ -538,6 +536,7 @@ class TypeDeclarationStmt : public Statement
    
 };
 
+#ifdef OBSOLETE
 class DeclarationTypeSpec : public Node
 {
  public:
@@ -555,6 +554,7 @@ class DeclarationTypeSpec : public Node
  private:
    
 };
+#endif
 
 class IntrinsicTypeSpec : public Node
 {
