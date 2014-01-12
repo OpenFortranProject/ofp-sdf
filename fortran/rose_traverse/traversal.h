@@ -6,8 +6,9 @@
 #include <aterm2.h>
 
 //#include "OFPNodes.h"
-//#include "ofp_traverse.hpp"
+#include "ofp_traverse.hpp"
 
+#ifdef OBSOLETE
 namespace OFP {
 
    class EOS;
@@ -582,6 +583,7 @@ namespace OFP {
    class Letter;
    class StartCommentBlock;
 }
+#endif
 
 enum DataType
 {
