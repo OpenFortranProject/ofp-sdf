@@ -12,7 +12,7 @@ namespace OFP {
 void printLowerCase(FILE * fp, const char * str)
 {
    int c;
-   while (c = *str++) {
+   while ( (c = *str++) ) {
       fprintf(fp, "%c", tolower(c));
    }
 }
@@ -112,6 +112,8 @@ ATbool ofp_isPrimitiveType(ATerm term)
       case STRING:
       case IDENT:
          return ATtrue;
+      default:
+         return ATfalse;
    }
    return ATfalse;
 }
@@ -515,7 +517,7 @@ ATbool ofp_build_class_cons(FILE * fp, ATerm name, ATermList vars)
    }
 
    fprintf(fp, "    %s()\n", nameStr);
-   fprintf(fp, "      {\n", nameStr);
+   fprintf(fp, "      {\n");
 
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
@@ -524,7 +526,7 @@ ATbool ofp_build_class_cons(FILE * fp, ATerm name, ATermList vars)
       fprintf(fp, "         p%s = NULL;\n", ofp_getChars(name));
    }
 
-   fprintf(fp, "      }\n", nameStr);
+   fprintf(fp, "      }\n");
 
    return ATtrue;
 }
