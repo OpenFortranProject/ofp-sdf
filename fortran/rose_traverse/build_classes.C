@@ -148,7 +148,7 @@ ATbool ofp_build_traversal_class_def(FILE * fp, ATerm term)
          ATerm constructor;
          ATermList symbols;
          if (ATmatch(prod, "Prod(<term>,<term>)", &constructor, &symbols)) {
-            ATermList args = ofp_getArgListUnique(gAliasTable, gSymTable, (ATermList)symbols);
+            ATermList args = ofp_getArgList(gAliasTable, gSymTable, (ATermList)symbols);
 
             cons_args = ATconcat(cons_args, args);
             cons_names = ATappend(cons_names, constructor);
