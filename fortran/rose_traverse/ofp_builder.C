@@ -208,13 +208,12 @@ ATermList ofp_getArgList(ATermTable aliasTable, ATermTable symTable, ATermList a
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getUltimateSymbol(aliasTable, ofp_getProdArgName(head));
       ATerm type = ofp_getProdArgType(head);
-
       ATerm uniqueName = ofp_getUniqueSymbol(symTable, name);
 
-      if (ATisEqual(name, uniqueName) == ATfalse) {
-         tail = ATgetNext(tail);
+      if (ATisEqual(name, uniqueName)) {
          args = ATappend(args, ATmake("Arg(<term>,<term>)", name, type));
       }
+      tail = ATgetNext(tail);
    }
 
    return args;
