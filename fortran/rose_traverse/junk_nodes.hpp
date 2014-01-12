@@ -7,6 +7,16 @@
 
 namespace OFP {
 
+  class EquivOp;
+  class OrOp;
+  class AndOp;
+  class NotOp;
+  class RelOp;
+  class ConcatOp;
+  class AddOp;
+  class MultOp;
+  class PowerOp;
+
 class ProgramStmt;
 class EndProgramStmt;
 class SpecificationPart;
@@ -273,6 +283,7 @@ class Statement : public Node
    EOS   * pEOS;
 };
 
+#ifdef OBSOLETE
 class Name : public Node
 {
  public:
@@ -292,7 +303,9 @@ class Name : public Node
  private:
    Ident * pIdent;
 };
+#endif
 
+#ifdef NEEDS_THOUGHT
 class Variable : public Node
 {
  public:
@@ -312,7 +325,9 @@ class Variable : public Node
  private:
    std::string * pValue;
 };
+#endif
 
+#ifdef OBSOLETE
 class Expr : public Node
 {
  public:
@@ -332,7 +347,9 @@ class Expr : public Node
  private:
    std::string * pExpr;
 };
+#endif
 
+#ifdef OBSOLETE
 class AssignmentStmt : public Statement
 {
  public:
@@ -349,7 +366,9 @@ class AssignmentStmt : public Statement
    Variable* pVariable;
    Expr* pExpr;
 };
+#endif
 
+#ifdef OBSOLETE
 class MainProgram : public Node
 {
  public:
@@ -394,7 +413,9 @@ class MainProgram : public Node
    ExecutionPart* pExecutionPart;
    InternalSubprogramPart* pInternalSubprogramPart;
 };
+#endif
 
+#ifdef OBSOLETE
 class ProgramStmt : public Statement
 {
  public:
@@ -415,7 +436,9 @@ class ProgramStmt : public Statement
  private:
    Name* pProgramName;
 };
+#endif
 
+#ifdef OBSOLETE
 class EndProgramStmt : public Statement
 {
  public:
@@ -436,6 +459,7 @@ class EndProgramStmt : public Statement
  private:
    Name* pProgramName;
 };
+#endif
 
 #ifdef NEEDS_GEN_LIST
 class SpecificationPart : public Node
@@ -515,6 +539,7 @@ class ImplicitPart : public Node
 };
 #endif
 
+#ifdef OBSOLETE
 class TypeDeclarationStmt : public Statement
 {
  public:
@@ -535,6 +560,7 @@ class TypeDeclarationStmt : public Statement
  private:
    
 };
+#endif
 
 #ifdef OBSOLETE
 class DeclarationTypeSpec : public Node
@@ -556,6 +582,7 @@ class DeclarationTypeSpec : public Node
 };
 #endif
 
+#ifdef OBSOLETE
 class IntrinsicTypeSpec : public Node
 {
  public:
@@ -573,7 +600,9 @@ class IntrinsicTypeSpec : public Node
  private:
    
 };
+#endif
 
+#ifdef NEEDS_LIST
 class AttrSpecList : public Node
 {
  public:
@@ -592,7 +621,9 @@ class AttrSpecList : public Node
  private:
    std::vector<AttrSpec*>* pList;
 };
+#endif
 
+#ifdef OBSOLETE
 class OptAttrSpecList : public Node
 {
  public:
@@ -611,7 +642,9 @@ class OptAttrSpecList : public Node
  private:
    Node* pAttrSpecList;
 };
+#endif
 
+#ifdef OBSOLETE
 class EntityDecl : public Node
 {
  public:
@@ -630,7 +663,9 @@ class EntityDecl : public Node
  private:
    Name* pObjectName;
 };
+#endif
 
+#ifdef NEEDS_LIST
 class EntityDeclList : public Node
 {
  public:
@@ -649,7 +684,9 @@ class EntityDeclList : public Node
  private:
    std::vector<EntityDecl*>* pList;
 };
+#endif
 
+#ifdef OBSOLETE
 class AttrSpec : public Node
 {
  public:
@@ -664,7 +701,9 @@ class AttrSpec : public Node
 
  private:
 };
+#endif
 
+#ifdef OBSOLETE
 class ImplicitStmt : public Statement
 {
  public:
@@ -691,6 +730,7 @@ class ImplicitStmt : public Statement
  private:
    OptionType option;
 };
+#endif
 
 } // namespace OFP
 
