@@ -791,6 +791,7 @@ ATbool ofp_build_match_end(FILE * fp, ATerm symbol, ATerm constructor)
    }
    else {
       fprintf(fp, "\n   // MATCHED %s\n", ofp_getChars(constructor));
+      fprintf(fp, "   %s->setOptionType(OFP::%s::%s);\n", ofp_getChars(symbol), ofp_getChars(symbol), ofp_getChars(constructor));
       fprintf(fp, "\n   return ATtrue;\n");
    }
    fprintf(fp, " }\n\n");
