@@ -1,20 +1,18 @@
 ATERM_ROOT = /usr/local/stratego-debug-32
 
-# cc with Apple XCode uses clang which has unwelcome warning messages
-#
-CC  = gcc
-CPC = g++
+CC  = cc
+CPC = c++
 
-# -m32 flag used in antlr3 build (for XCode)
+# -m32 flag used in aterm build
 #
 ARCH = -m32
 
-CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include
+CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include -ferror-limit=5
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
-TRAVERSE_OBJS = traversal.o ofp_traverse_productions.o OFPNodes.o
+TRAVERSE_OBJS = traversal.o ofp_traverse_productions.o OFPNodes.o OFPExpr.o
 
 EXES = build_classes build_includes build_traversals \
        traverse traverse_sig check_cons_name
