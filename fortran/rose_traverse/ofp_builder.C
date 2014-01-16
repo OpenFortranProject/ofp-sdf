@@ -219,6 +219,25 @@ ATermList ofp_getArgList(ATermTable aliasTable, ATermTable symTable, ATermList a
    return args;
 }
 
+ATermList ofp_getArgListNotUnique(ATermTable aliasTable, ATermTable symTable, ATermList alist)
+{
+   ATerm name, type;
+
+   ATermList args = (ATermList) ATmake("[]");
+
+   ATermList tail = (ATermList) ATmake("<term>", alist);
+   while (! ATisEmpty(tail)) {
+      ATerm head = ATgetFirst(tail);
+      ATerm name = ofp_getUltimateSymbol(aliasTable, ofp_getProdArgName(head));
+      ATerm type = ofp_getProdArgType(head);
+
+      tail = ATgetNext(tail);
+      args = ATappend(args, ATmake("Arg(<term>,<term>)", name, type));
+   }
+
+   return args;
+}
+
 ATermList ofp_getArgListUnique(ATermTable aliasTable, ATermTable symTable, ATermList alist)
 {
    ATerm name, type;
@@ -663,6 +682,21 @@ ATbool ofp_build_traversal_class_def(FILE * fp, ATerm name, ATermList cons, ATer
    return ATtrue;
 }
 
+ATbool ofp_build_traversal_class_destructor(FILE * fp, ATerm name, ATermList cons, ATermList vars)
+{
+   char * nameStr;
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
+   fprintf(fp, "OFP::%s::~%s()\n", nameStr, nameStr);
+   fprintf(fp, "   {\n");
+   fprintf(fp, "   }\n\n");
+
+   return ATtrue;
+}
+
 ATbool ofp_build_traversal_func_header(FILE * fp, ATerm name)
 {
    char * nameStr;
@@ -732,9 +766,10 @@ ATbool ofp_build_match_terminal(FILE * fp, ATerm terminal)
    return ATtrue;
 }
 
-ATbool ofp_build_match_args_decl(FILE * fp, ATermList args)
+ATbool ofp_build_match_args_decl(FILE * fp, ATermList args, ATermList uniqueArgs)
 {
-   ATermList tail = (ATermList) ATmake("<term>", args);
+   ATermList tail  = (ATermList) ATmake("<term>", args);
+   ATermList utail = (ATermList) ATmake("<term>", uniqueArgs);
 
    if (ATisEmpty(tail)) {
       /* no args to declare */
@@ -742,16 +777,19 @@ ATbool ofp_build_match_args_decl(FILE * fp, ATermList args)
    }
 
    while (! ATisEmpty(tail)) {
-      ATerm head = ATgetFirst(tail);
-      ATerm name = ofp_getArgName(head);
-      tail = ATgetNext(tail);
-      fprintf(fp, " OFP::%s %s;\n", ofp_getChars(name), ofp_getChars(name));
+      ATerm head  = ATgetFirst(tail);
+      ATerm uhead = ATgetFirst(utail);
+      ATerm name  = ofp_getArgName(head);
+      ATerm uname = ofp_getArgName(uhead);
+      tail  = ATgetNext(tail);
+      utail = ATgetNext(utail);
+      fprintf(fp, " OFP::%s %s;\n", ofp_getChars(name), ofp_getChars(uname));
    }
 
    return ATtrue;
 }
 
-ATbool ofp_build_match_begin(FILE * fp, ATerm symbol, ATerm constructor, ATermList args)
+ATbool ofp_build_match_begin(FILE * fp, ATerm symbol, ATerm constructor, ATermList args, ATermList uniqueArgs)
 {
    int i, len;
    ATerm cons, prod, arglist;
@@ -763,7 +801,7 @@ ATbool ofp_build_match_begin(FILE * fp, ATerm symbol, ATerm constructor, ATermLi
       return ATtrue;
    }
 
-   ofp_build_match_args_decl(fp, args);
+   ofp_build_match_args_decl(fp, args, uniqueArgs);
 
    fprintf(fp, " if (ATmatch(term, \"%s(", ofp_getChars(constructor));
    for (i = 0; i < len; i++) {
