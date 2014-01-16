@@ -46,8 +46,9 @@ char *        ofp_getChars        (ATerm term);
 
 ATerm         ofp_getArgName      (ATerm term);
 ATerm         ofp_getArgType      (ATerm term);
-ATermList     ofp_getArgList      (ATermTable aliasTable, ATermTable symTable, ATermList alist);
-ATermList     ofp_getArgListUnique(ATermTable aliasTable, ATermTable symTable, ATermList alist);
+ATermList     ofp_getArgList         (ATermTable aliasTable, ATermTable symTable, ATermList alist);
+ATermList     ofp_getArgListUnique   (ATermTable aliasTable, ATermTable symTable, ATermList alist);
+ATermList     ofp_getArgListNotUnique(ATermTable aliasTable, ATermTable symTable, ATermList alist);
 
 ATbool        traverse_Module    (ATerm term, pOFP_Traverse Module);
 ATbool        ofp_traverse_Signature (ATerm term, pOFP_Traverse Signature);
@@ -60,7 +61,7 @@ ATermList     ofp_coalesceAliasTable             (ATermList table);
 
 ATbool        ofp_build_match_args_decl          (FILE * fp, ATermList args);
 ATbool        ofp_build_match_terminal           (FILE * fp, ATerm terminal);
-ATbool        ofp_build_match_begin              (FILE * fp, ATerm symbol, ATerm constructor, ATermList args);
+ATbool        ofp_build_match_begin              (FILE * fp, ATerm symbol, ATerm constructor, ATermList args, ATermList uargs);
 ATbool        ofp_build_match_end                (FILE * fp, ATerm symbol, ATerm constructor);
 ATbool        ofp_build_match_sort_option_begin  (FILE * fp, ATerm symbol, ATbool aliased);
 ATbool        ofp_build_match_sort_option_end    (FILE * fp, ATerm symbol);
@@ -69,7 +70,8 @@ ATbool        ofp_build_match_nonterminal_end    (FILE * fp, ATerm constructor, 
 
 ATbool        ofp_build_traversal_class_decls   (FILE * fp, ATermList prodTable);
 ATbool        ofp_build_traversal_class_decl    (FILE * fp, ATerm name);
-ATbool        ofp_build_traversal_class_def     (FILE * fp, ATerm name, ATermList cons, ATermList args);
+ATbool        ofp_build_traversal_class_def        (FILE * fp, ATerm name, ATermList cons, ATermList args);
+ATbool        ofp_build_traversal_class_destructor (FILE * fp, ATerm name, ATermList cons, ATermList args);
 
 ATbool        ofp_build_traversal_func_header   (FILE * fp, ATerm name);
 ATbool        ofp_build_traversal_func_begin    (FILE * fp, ATerm name);
