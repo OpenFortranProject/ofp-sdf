@@ -11,7 +11,8 @@ namespace OFP {
 //
 FILE * fpc;
 FILE * fph;
-FILE * fphpp;
+FILE * fpH;
+FILE * fpC;
 
 /* List for storing productions (prodName, [(consName, [symType]]) */
 ATermList gProdTable;
@@ -67,14 +68,18 @@ ATbool traverse_init()
    gSymTable   = ATtableCreate(200, 50);
    gAliasTable = ATtableCreate(200, 50);
 
-   fpc   = fopen("junk_traverse.c",   "w");    assert(fpc   != NULL);
-   fph   = fopen("junk_traverse.h",   "w");    assert(fph   != NULL);
-   fphpp = fopen("junk_traverse.hpp", "w");    assert(fphpp != NULL);
+   fpc = fopen("junk_traverse.C",   "w");    assert(fpc != NULL);
+   fph = fopen("junk_traverse.h",   "w");    assert(fph != NULL);
+   fpH = fopen("junk_traverse.hpp", "w");    assert(fpH != NULL);
+   fpC = fopen("junk_nodes.C",      "w");    assert(fpC != NULL);
 
    fprintf(fpc, "#include \"traversal.h\"\n");
    fprintf(fpc, "#include \"ofp_traverse.h\"\n\n");
 
-   fprintf(fphpp, "namespace OFP {\n\n");
+   fprintf(fpH, "namespace OFP {\n\n");
+
+   fprintf(fpC, "#include \"OFPNodes.h\"\n");
+   fprintf(fpC, "#include \"junk_traverse.hpp\"\n\n");
 
    return ATtrue;
 }
@@ -84,11 +89,12 @@ ATbool traverse_init()
  */
 ATbool traverse_finalize()
 {
-   fprintf(fphpp, "\n} // namespace OFP\n");
+   fprintf(fpH, "\n} // namespace OFP\n");
 
    fclose(fpc);
    fclose(fph);
-   fclose(fphpp);
+   fclose(fpH);
+   fclose(fpC);
    ATtableDestroy(gSymTable);
    ATtableDestroy(gAliasTable);
    return ATtrue;
@@ -106,15 +112,16 @@ ATbool ofp_traverse_Prod(ATerm term, pOFP_Traverse Prod, ATerm symbol)
    ATerm constructor;
    ATermList symbols;
    if (ATmatch(term, "Prod(<term>,<term>)", &constructor, &symbols)) {
-      ATermList args = ofp_getArgListUnique(gAliasTable, gSymTable, (ATermList)symbols);
+      ATermList       args = ofp_getArgListNotUnique (gAliasTable, gSymTable, (ATermList)symbols);
+      ATermList uniqueArgs = ofp_getArgListUnique    (gAliasTable, gSymTable, (ATermList)symbols);
 
       if (ATisEmpty(symbols)) {
-         ofp_build_match_begin(fpc, symbol, constructor, args);
+         ofp_build_match_begin(fpc, symbol, constructor, args, uniqueArgs);
          ofp_build_match_end(fpc, symbol, constructor);
          return ATfalse;
       }
 
-      ofp_build_match_begin(fpc, symbol, constructor, args);
+      ofp_build_match_begin(fpc, symbol, constructor, args, uniqueArgs);
       ofp_build_traversal_production(fpc, gAliasTable, symbol, constructor, symbols, args);
       ofp_build_match_end(fpc, symbol, constructor);
 
@@ -133,7 +140,6 @@ ATbool ofp_build_traversal_class_def(FILE * fp, ATerm term)
    ATermList cons_names = (ATermList) ATmake("[]");
 
    if (ATmatch(term, "Symbol(<term>,<term>)", &symbol, &productions)) {
-      printf("====================== %s\n", ATwriteToString(symbol));
       
       // Reset symbol table for new scope
       ATtableReset(gSymTable);
@@ -159,7 +165,42 @@ ATbool ofp_build_traversal_class_def(FILE * fp, ATerm term)
 
          }
       }
-      ofp_build_traversal_class_def(fphpp, symbol, cons_names, cons_args);
+      ofp_build_traversal_class_def(fpH, symbol, cons_names, cons_args);
+   }
+
+   return ATtrue;
+}
+
+ATbool ofp_build_traversal_class_destructor(FILE * fp, ATerm term)
+{
+   ATerm symbol;
+   ATermList productions;
+
+   ATermList cons_args  = (ATermList) ATmake("[]");
+   ATermList cons_names = (ATermList) ATmake("[]");
+
+   if (ATmatch(term, "Symbol(<term>,<term>)", &symbol, &productions)) {
+      
+      // Reset symbol table for new scope
+      ATtableReset(gSymTable);
+      ATtablePut(gSymTable, symbol, ATmake("<int>", 0));
+
+      ATerm prod;
+      ATermList prod_tail = (ATermList) ATmake("<term>", productions);
+      while (! ATisEmpty(prod_tail)) {
+         prod = ATgetFirst(prod_tail);
+         prod_tail = ATgetNext (prod_tail);
+
+         ATerm constructor;
+         ATermList symbols;
+         if (ATmatch(prod, "Prod(<term>,<term>)", &constructor, &symbols)) {
+            ATermList args = ofp_getArgList(gAliasTable, gSymTable, (ATermList)symbols);
+
+            cons_args = ATconcat(cons_args, args);
+            cons_names = ATappend(cons_names, constructor);
+         }
+      }
+      ofp_build_traversal_class_destructor(fpC, symbol, cons_names, cons_args);
    }
 
    return ATtrue;
@@ -183,7 +224,8 @@ ATbool ofp_traverse_Symbol(ATerm term, pOFP_Traverse Symbol)
 
    printf("\n...Symbol: %s\n", ATwriteToString(term));
 
-   ofp_build_traversal_class_def(fphpp, term);
+   ofp_build_traversal_class_def(fpH, term);
+   ofp_build_traversal_class_destructor(fpC, term);
 
    ATermList productions;
    if (ATmatch(term, "Symbol(<term>,<term>)", &Symbol->term, &productions)) {
@@ -243,7 +285,7 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
 
       /* Build the simple class declaration file
        */
-      ofp_build_traversal_class_decls(fphpp, gProdTable);
+      ofp_build_traversal_class_decls(fpH, gProdTable);
 
       OFP_Traverse Symbol;
       ATermList    Symbols_tail;
