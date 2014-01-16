@@ -1,11 +1,13 @@
-#ifndef	JUNK_NODES_H
-#define	JUNK_NODES_H
+#ifndef	OFP_NODES_H
+#define	OFP_NODES_H
 
 #include <aterm2.h>
 #include <string>
 #include <vector>
 
 namespace OFP {
+
+  class String;
 
   class EquivOp;
   class OrOp;
@@ -17,21 +19,6 @@ namespace OFP {
   class MultOp;
   class PowerOp;
 
-class ProgramStmt;
-class EndProgramStmt;
-class SpecificationPart;
-class ExecutionPart;
-class InternalSubprogramPart;
-
-class ImplicitPart;
-class ImplicitStmt;
-class DeclarationConstruct;
-class AttrSpec;
-class DeclarationTypeSpec;
-class OptAttrSpecList;
-class EntityDeclList;
-class IntrinsicTypeSpec;
-
 //--------------------------------------------------------------
 // TODO - use unique_ptr when available (after at least gcc 4.4)
 // typedef std::vector<std::unique_ptr<base>> container;
@@ -40,10 +27,19 @@ class IntrinsicTypeSpec;
 class Node
 {
  public:
-   Node() {}
-   virtual ~Node() {}
+   Node() optionType(0) {}
+   virtual ~Node()      {}
+
+   enum OptionType
+     {
+        DEFAULT = 0
+     };
+
+   int  getOptionType()       {return optionType;}
+   void setOptionType(int ot) {optionType = ot;}
 
    ATerm term;
+   int   optionType;
 };
 
 /* Terminals
