@@ -1,6 +1,5 @@
 #include "traversal.h"
-#include "OFPNodes.h"
-#include "UntypedNodes.h"
+#include "OFPExpr.h"
 #include <vector>
 
 #ifdef __cplusplus
@@ -532,8 +531,8 @@ ATbool ofp_traverse_InternalSubprogramPart(ATerm term, OFP::InternalSubprogramPa
    printf("InternalSubprogramPart: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ContainsStm ContainsStmt
-  OFP::InternalSubprogram InternalSubprogram;
+ OFP::ContainsStmt ContainsStmt;
+ OFP::InternalSubprogram InternalSubprogram;
  if (ATmatch(term, "InternalSubprogramPart(<term>,<term>)", &ContainsStmt.term, &InternalSubprogram.term)) {
 
       if (ofp_traverse_ContainsStmt(ContainsStmt.term, &ContainsStmt)) {
@@ -1759,7 +1758,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
    return ATtrue;
  }
 
- OFP::DerivedTypeSpec1 DerivedTypeSpec1;
+ OFP::DerivedTypeSpec DerivedTypeSpec1;
  if (ATmatch(term, "DeclarationTypeSpec_T_DTS(<term>)", &DerivedTypeSpec1.term)) {
 
       if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec1.term, &DerivedTypeSpec1)) {
@@ -1843,7 +1842,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, OFP::IntrinsicTypeSpec* Intrin
    return ATtrue;
  }
 
- OFP::KindSelector1 KindSelector1;
+ OFP::KindSelector KindSelector1;
  if (ATmatch(term, "IntrinsicTypeSpec_CMPLX(<term>)", &KindSelector1.term)) {
 
    if (ATmatch(KindSelector1.term, "Some(<term>)", &KindSelector1.term)) {
@@ -1864,7 +1863,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, OFP::IntrinsicTypeSpec* Intrin
    return ATtrue;
  }
 
- OFP::KindSelector2 KindSelector2;
+ OFP::KindSelector KindSelector2;
  if (ATmatch(term, "IntrinsicTypeSpec_REAL(<term>)", &KindSelector2.term)) {
 
    if (ATmatch(KindSelector2.term, "Some(<term>)", &KindSelector2.term)) {
@@ -1878,7 +1877,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, OFP::IntrinsicTypeSpec* Intrin
    return ATtrue;
  }
 
- OFP::KindSelector3 KindSelector3;
+ OFP::KindSelector KindSelector3;
  if (ATmatch(term, "IntrinsicTypeSpec_INT(<term>)", &KindSelector3.term)) {
 
    if (ATmatch(KindSelector3.term, "Some(<term>)", &KindSelector3.term)) {
@@ -1898,7 +1897,7 @@ ATbool ofp_traverse_IntrinsicTypeSpec(ATerm term, OFP::IntrinsicTypeSpec* Intrin
 //========================================================================================
 // R405 kind-selector
 //----------------------------------------------------------------------------------------
-ATbool ofp_traverse_KindSelector(ATerm term, OFP::KindSelector KindSelector)
+ATbool ofp_traverse_KindSelector(ATerm term, OFP::KindSelector* KindSelector)
 {
 #ifdef DEBUG_PRINT
    printf("KindSelector: %s\n", ATwriteToString(term));
@@ -1909,9 +1908,11 @@ ATbool ofp_traverse_KindSelector(ATerm term, OFP::KindSelector KindSelector)
 
       if (ofp_traverse_Icon(Icon.term, &Icon)) {
          // MATCHED Icon
+         KindSelector->setIcon(Icon.newIcon());
       } else return ATfalse;
 
    // MATCHED KindSelector_STAR
+   KindSelector->setOptionType(OFP::KindSelector::KindSelector_STAR);
 
    return ATtrue;
  }
@@ -1921,9 +1922,11 @@ ATbool ofp_traverse_KindSelector(ATerm term, OFP::KindSelector KindSelector)
 
       if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         KindSelector->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED KindSelector_E
+   KindSelector->setOptionType(OFP::KindSelector::KindSelector_E);
 
    return ATtrue;
  }
@@ -2279,7 +2282,7 @@ ATbool ofp_traverse_CharSelector(ATerm term, OFP::CharSelector* CharSelector)
    return ATtrue;
  }
 
- OFP::Expr1 Expr1;
+ OFP::Expr Expr1;
  OFP::TypeParamValue TypeParamValue;
  if (ATmatch(term, "CharSelector_KIND_LEN(<term>,<term>)", &Expr1.term, &TypeParamValue.term)) {
 
@@ -2296,8 +2299,8 @@ ATbool ofp_traverse_CharSelector(ATerm term, OFP::CharSelector* CharSelector)
    return ATtrue;
  }
 
- OFP::TypeParamValue1 TypeParamValue1;
- OFP::Expr2 Expr2;
+ OFP::TypeParamValue TypeParamValue1;
+ OFP::Expr Expr2;
  if (ATmatch(term, "CharSelector_LEN_KIND(<term>,<term>)", &TypeParamValue1.term, &Expr2.term)) {
 
       if (ofp_traverse_TypeParamValue(TypeParamValue1.term, &TypeParamValue1)) {
@@ -2456,7 +2459,7 @@ ATbool ofp_traverse_LogicalLiteralConstant(ATerm term, OFP::LogicalLiteralConsta
    return ATtrue;
  }
 
- OFP::KindParam1 KindParam1;
+ OFP::KindParam KindParam1;
  if (ATmatch(term, "LogicalLiteralConstant_TRUE(<term>)", &KindParam1.term)) {
 
    if (ATmatch(KindParam1.term, "Some(<term>)", &KindParam1.term)) {
@@ -2633,7 +2636,7 @@ ATbool ofp_traverse_OptTypeParamNameList(ATerm term, OFP::OptTypeParamNameList* 
 //========================================================================================
 // R427 type-attr-spec
 //----------------------------------------------------------------------------------------
-rATbool ofp_traverse_TypeAttrSpec(ATerm term, OFP::TypeAttrSpec* TypeAttrSpec)
+ATbool ofp_traverse_TypeAttrSpec(ATerm term, OFP::TypeAttrSpec* TypeAttrSpec)
 {
 #ifdef DEBUG_PRINT
    printf("TypeAttrSpec: %s\n", ATwriteToString(term));
@@ -3672,10 +3675,10 @@ ATbool ofp_traverse_TypeBoundProcedureStmt(ATerm term, OFP::TypeBoundProcedureSt
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::BindingAttrList1 BindingAttrList1;
+ OFP::Label Label1;
+ OFP::BindingAttrList BindingAttrList1;
  OFP::TypeBoundProcDeclList TypeBoundProcDeclList;
- OFP::EOS1; EOS1;;
+ OFP::EOS EOS1;;
  if (ATmatch(term, "TypeBoundProcedureStmt_2(<term>,<term>,<term>,<term>)", &Label1.term, &BindingAttrList1.term, &TypeBoundProcDeclList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -3705,9 +3708,9 @@ ATbool ofp_traverse_TypeBoundProcedureStmt(ATerm term, OFP::TypeBoundProcedureSt
    return ATtrue;
  }
 
- OFP::Label2 Label2;
- OFP::TypeBoundProcDeclList1 TypeBoundProcDeclList1;
- OFP::EOS2 EOS2;
+ OFP::Label Label2;
+ OFP::TypeBoundProcDeclList TypeBoundProcDeclList1;
+ OFP::EOS EOS2;
  if (ATmatch(term, "TypeBoundProcedureStmt_1(<term>,<term>,<term>)", &Label2.term, &TypeBoundProcDeclList1.term, &EOS2.term)) {
 
    if (ATmatch(Label2.term, "Some(<term>)", &Label2.term)) {
@@ -4483,7 +4486,7 @@ ATbool ofp_traverse_AcSpec(ATerm term, OFP::AcSpec* AcSpec)
    return ATtrue;
  }
 
- OFP::TypeSpec1 TypeSpec1;
+ OFP::TypeSpec TypeSpec1;
  if (ATmatch(term, "AcSpec_TS(<term>)", &TypeSpec1.term)) {
 
       if (ofp_traverse_TypeSpec(TypeSpec1.term, &TypeSpec1)) {
@@ -4596,8 +4599,8 @@ ATbool ofp_traverse_AcImpliedDoControl(ATerm term, OFP::AcImpliedDoControl* AcIm
 
  OFP::AcDoVariable AcDoVariable;
  OFP::Expr Expr;
- OFP::Expr1 Expr1;
- OFP::Expr2 Expr2;
+ OFP::Expr Expr1;
+ OFP::Expr Expr2;
  if (ATmatch(term, "AcImpliedDoControl(<term>,<term>,<term>,<term>)", &AcDoVariable.term, &Expr.term, &Expr1.term, &Expr2.term)) {
 
       if (ofp_traverse_AcDoVariable(AcDoVariable.term, &AcDoVariable)) {
@@ -4934,7 +4937,8 @@ ATbool ofp_traverse_EntityDecl(ATerm term, OFP::EntityDecl* EntityDecl)
 
       if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
          // MATCHED ObjectName
-         EntityDecl->setObjectName(ObjectName.newName());
+         // WTF
+         EntityDecl->setObjectName((OFP::ObjectName*)ObjectName.newName());
       } else return ATfalse;
 
    if (ATmatch(ArraySpec.term, "Some(<term>)", &ArraySpec.term)) {
@@ -4989,83 +4993,6 @@ ATbool ofp_traverse_EntityDeclList(ATerm term, OFP::EntityDeclList* EntityDeclLi
       if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
          // MATCHED EntityDecl
          EntityDeclList->appendEntityDecl(EntityDecl.newEntityDecl());
-      } else return ATfalse;
-   }
-
-   return ATtrue;
- }
-
- return ATfalse;
-}
-
-ATbool ofp_traverse_EntityDecl(ATerm term, OFP::EntityDecl* EntityDecl)
-{
-#ifdef DEBUG_PRINT
-   printf("EntityDecl: %s\n", ATwriteToString(term));
-#endif
-
- OFP::ObjectName ObjectName;
- OFP::ArraySpec ArraySpec;
- OFP::CoarraySpec CoarraySpec;
- OFP::CharLength CharLength;
- OFP::Initialization Initialization;
- if (ATmatch(term, "EntityDecl(<term>,<term>,<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CoarraySpec.term, &CharLength.term, &Initialization.term)) {
-
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
-      } else return ATfalse;
-
-   if (ATmatch(ArraySpec.term, "Some(<term>)", &ArraySpec.term)) {
-   if (ATmatch(ArraySpec.term, "(<term>)", &ArraySpec.term)) {
-      if (ofp_traverse_ArraySpec(ArraySpec.term, &ArraySpec)) {
-         // MATCHED ArraySpec
-      } else return ATfalse;
-   }
-   }
-
-   if (ATmatch(CoarraySpec.term, "Some(<term>)", &CoarraySpec.term)) {
-   if (ATmatch(CoarraySpec.term, "(<term>)", &CoarraySpec.term)) {
-      if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
-         // MATCHED CoarraySpec
-      } else return ATfalse;
-   }
-   }
-
-   if (ATmatch(CharLength.term, "Some(<term>)", &CharLength.term)) {
-   if (ATmatch(CharLength.term, "(<term>)", &CharLength.term)) {
-      if (ofp_traverse_CharLength(CharLength.term, &CharLength)) {
-         // MATCHED CharLength
-      } else return ATfalse;
-   }
-   }
-
-   if (ATmatch(Initialization.term, "Some(<term>)", &Initialization.term)) {
-      if (ofp_traverse_Initialization(Initialization.term, &Initialization)) {
-         // MATCHED Initialization
-      } else return ATfalse;
-   }
-
-   return ATtrue;
- }
-
- return ATfalse;
-}
-
-ATbool ofp_traverse_EntityDeclList(ATerm term, OFP::EntityDeclList* EntityDeclList)
-{
-#ifdef DEBUG_PRINT
-   printf("EntityDeclList: %s\n", ATwriteToString(term));
-#endif
-
- OFP::EntityDecl EntityDecl;
- if (ATmatch(term, "EntityDeclList(<term>)", &EntityDecl.term)) {
-
-   ATermList EntityDecl_tail = (ATermList) ATmake("<term>", EntityDecl.term);
-   while (! ATisEmpty(EntityDecl_tail)) {
-      EntityDecl.term = ATgetFirst(EntityDecl_tail);
-      EntityDecl_tail = ATgetNext (EntityDecl_tail);
-      if (ofp_traverse_EntityDecl(EntityDecl.term, &EntityDecl)) {
-         // MATCHED EntityDecl
       } else return ATfalse;
    }
 
@@ -5828,9 +5755,9 @@ ATbool ofp_traverse_AccessStmt(ATerm term, OFP::AccessStmt* AccessStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::AccessSpec1 AccessSpec1;
- OFP::EOS1 EOS1;
+ OFP::Label Label1;
+ OFP::AccessSpec AccessSpec1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "AccessStmt(<term>,<term>,<term>)", &Label1.term, &AccessSpec1.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -6340,7 +6267,7 @@ ATbool ofp_traverse_DataStmtSetList(ATerm term, OFP::DataStmtSetList* DataStmtSe
    printf("DataStmtSetList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::DataStmtSetList1 DataStmtSetList1;
+ OFP::DataStmtSetList DataStmtSetList1;
  OFP::DataStmtSet DataStmtSet;
  if (ATmatch(term, "DataStmtSetList_2(<term>,<term>)", &DataStmtSetList1.term, &DataStmtSet.term)) {
 
@@ -6357,7 +6284,7 @@ ATbool ofp_traverse_DataStmtSetList(ATerm term, OFP::DataStmtSetList* DataStmtSe
    return ATtrue;
  }
 
- OFP::DataStmtSet1 DataStmtSet1;
+ OFP::DataStmtSet DataStmtSet1;
  if (ATmatch(term, "DataStmtSetList_1(<term>)", &DataStmtSet1.term)) {
 
       if (ofp_traverse_DataStmtSet(DataStmtSet1.term, &DataStmtSet1)) {
@@ -6444,8 +6371,8 @@ ATbool ofp_traverse_DataImpliedDo(ATerm term, OFP::DataImpliedDo* DataImpliedDo)
  OFP::DataIDoObjectList DataIDoObjectList;
  OFP::DataIDoVariable DataIDoVariable;
  OFP::Expr Expr;
- OFP::Expr1 Expr1;
- OFP::Expr2 Expr2;
+ OFP::Expr Expr1;
+ OFP::Expr Expr2;
  if (ATmatch(term, "DataImpliedDo(<term>,<term>,<term>,<term>,<term>)", &DataIDoObjectList.term, &DataIDoVariable.term, &Expr.term, &Expr1.term, &Expr2.term)) {
 
       if (ofp_traverse_DataIDoObjectList(DataIDoObjectList.term, &DataIDoObjectList)) {
@@ -7076,21 +7003,26 @@ ATbool ofp_traverse_PointerStmt(ATerm term, OFP::PointerStmt* PointerStmt)
    printf("PointerStmt: %s\n", ATwriteToString(term));
 #endif
 
- OFP::Label, PointerDeclList, EOS Label, PointerDeclList, EOS;
+ OFP::Label Label;
+ OFP::PointerDeclList PointerDeclList;
+ OFP::EOS EOS;
  if (ATmatch(term, "PointerStmt(<term>,<term>,<term>)", &Label.term, &PointerDeclList.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         PointerStmt->setLabel(Label.newLabel());
       } else return ATfalse;
    }
 
       if (ofp_traverse_PointerDeclList(PointerDeclList.term, &PointerDeclList)) {
          // MATCHED PointerDeclList
+         PointerStmt->setPointerDeclList(PointerDeclList.newPointerDeclList());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         PointerStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
 
    return ATtrue;
@@ -7252,9 +7184,9 @@ ATbool ofp_traverse_SaveStmt(ATerm term, OFP::SaveStmt* SaveStmt)
    return ATtrue;
  }
 
- OFP::Label1;
+ OFP::Label Label1;
  OFP::SavedEntityList SavedEntityList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "SaveStmt_SEL(<term>,<term>,<term>)", &Label1.term, &SavedEntityList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -7549,14 +7481,14 @@ ATbool ofp_traverse_ImplicitStmt(ATerm term, OFP::ImplicitStmt* ImplicitStmt)
       } else return ATfalse;
 
    // MATCHED ImplicitStmt_NONE
-      ImplicitStmt->setOptionType(OFP::ImplicitStmt::NONE);
+   ImplicitStmt->setOptionType(OFP::ImplicitStmt::ImplicitStmt_NONE);
 
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::ImplicitSpecList ImplicitSpecList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "ImplicitStmt_ISL(<term>,<term>,<term>)", &Label1.term, &ImplicitSpecList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -7642,7 +7574,7 @@ ATbool ofp_traverse_LetterSpec(ATerm term, OFP::LetterSpec* LetterSpec)
 #endif
 
  OFP::Letter Letter;
- OFP::Letter1 Letter1;
+ OFP::Letter Letter1;
  if (ATmatch(term, "LetterSpec(<term>,<term>)", &Letter.term, &Letter1.term)) {
 
       if (ofp_traverse_Letter(Letter.term, &Letter)) {
@@ -7761,8 +7693,8 @@ ATbool ofp_traverse_NamelistEntryList(ATerm term, OFP::NamelistEntryList* Nameli
    return ATtrue;
  }
 
- OFP::NamelistEntryList1 NamelistEntryList1;
- OFP::NamelistEntry1 NamelistEntry1;
+ OFP::NamelistEntryList NamelistEntryList1;
+ OFP::NamelistEntry NamelistEntry1;
  if (ATmatch(term, "NamelistEntryList_NEL(<term>,<term>)", &NamelistEntryList1.term, &NamelistEntry1.term)) {
 
       if (ofp_traverse_NamelistEntryList(NamelistEntryList1.term, &NamelistEntryList1)) {
@@ -8021,7 +7953,7 @@ ATbool ofp_traverse_CommonBlockEntry1(ATerm term, OFP::CommonBlockEntry1* Common
  }
 
  OFP::CommonBlockName CommonBlockName;
- OFP::CommonBlockObjectList1 CommonBlockObjectList1;
+ OFP::CommonBlockObjectList CommonBlockObjectList1;
  if (ATmatch(term, "CBE1_CBN(<term>,<term>)", &CommonBlockName.term, &CommonBlockObjectList1.term)) {
 
    if (ATmatch(CommonBlockName.term, "Some(<term>)", &CommonBlockName.term)) {
@@ -8170,18 +8102,12 @@ ATbool ofp_traverse_Variable(ATerm term, OFP::Variable* Variable)
    printf("Variable: %s\n", ATwriteToString(term));
 #endif
 
- char * Variable_val;
- if (ATmatch(term, "Variable(Designator_DR_AMB(DataRef([PartRef(PartName(<str>),None,None)])))", &Variable_val)) {
-    // MATCHED Variable
-    Variable->setValue(Variable_val);
-    return ATtrue;
- }
-
  OFP::Designator Designator;
  if (ATmatch(term, "Variable(<term>)", &Designator.term)) {
 
       if (ofp_traverse_Designator(Designator.term, &Designator)) {
          // MATCHED Designator
+         Variable->setDesignator(Designator.newDesignator());
       } else return ATfalse;
 
    return ATtrue;
@@ -8409,7 +8335,7 @@ ATbool ofp_traverse_SubstringRange(ATerm term, OFP::SubstringRange* SubstringRan
 #endif
 
  OFP::IntExpr IntExpr;
- OFP::IntExpr1 IntExpr1;
+ OFP::IntExpr IntExpr1;
  if (ATmatch(term, "SubstringRange(<term>,<term>)", &IntExpr.term, &IntExpr1.term)) {
 
    if (ATmatch(IntExpr.term, "Some(<term>)", &IntExpr.term)) {
@@ -8680,7 +8606,7 @@ ATbool ofp_traverse_SubscriptTriplet(ATerm term, OFP::SubscriptTriplet* Subscrip
 #endif
 
  OFP::Subscript Subscript;
- OFP::Subscript1 Subscript1;
+ OFP::Subscript Subscript1;
  OFP::Stride Stride;
  if (ATmatch(term, "SubscriptTriplet(<term>,<term>,<term>)", &Subscript.term, &Subscript1.term, &Stride.term)) {
 
@@ -8885,7 +8811,7 @@ ATbool ofp_traverse_AllocOpt(ATerm term, OFP::AllocOpt* AllocOpt)
    return ATtrue;
  }
 
- OFP::Expr1 Expr1;
+ OFP::Expr Expr1;
  if (ATmatch(term, "AllocOpt_MOLD(<term>)", &Expr1.term)) {
 
       if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
@@ -9499,131 +9425,131 @@ ATbool ofp_traverse_IntrinsicOperator(ATerm term, OFP::IntrinsicOperator* Intrin
    printf("IntrinsicOperator: %s\n", ATwriteToString(term));
 #endif
 
+#ifdef NOT_YET
  OFP::EquivOp EquivOp;
  if (ATmatch(term, "IntrinsicOperator_EO(<term>)", &EquivOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_EquivOp(EquivOp.term, &EquivOp)) {
          // MATCHED EquivOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_EO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::OrOp OrOp;
  if (ATmatch(term, "IntrinsicOperator_OO(<term>)", &OrOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_OrOp(OrOp.term, &OrOp)) {
          // MATCHED OrOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_OO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::AndOp AndOp;
  if (ATmatch(term, "IntrinsicOperator_AO2(<term>)", &AndOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_AndOp(AndOp.term, &AndOp)) {
          // MATCHED AndOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_AO2
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::NotOp NotOp;
  if (ATmatch(term, "IntrinsicOperator_NO(<term>)", &NotOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_NotOp(NotOp.term, &NotOp)) {
          // MATCHED NotOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_NO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::RelOp RelOp;
  if (ATmatch(term, "IntrinsicOperator_RO(<term>)", &RelOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_RelOp(RelOp.term, &RelOp)) {
          // MATCHED RelOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_RO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::ConcatOp ConcatOp;
  if (ATmatch(term, "IntrinsicOperator_CO(<term>)", &ConcatOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_ConcatOp(ConcatOp.term, &ConcatOp)) {
          // MATCHED ConcatOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_CO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::AddOp AddOp;
  if (ATmatch(term, "IntrinsicOperator_AO1(<term>)", &AddOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_AddOp(AddOp.term, &AddOp)) {
          // MATCHED AddOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_AO1
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::MultOp MultOp;
  if (ATmatch(term, "IntrinsicOperator_MO(<term>)", &MultOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_MultOp(MultOp.term, &MultOp)) {
          // MATCHED MultOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_MO
 
    return ATtrue;
  }
+#endif
 
+#ifdef NOT_YET
  OFP::PowerOp PowerOp;
  if (ATmatch(term, "IntrinsicOperator_PO(<term>)", &PowerOp.term)) {
 
-#ifdef NOT_YET
       if (ofp_traverse_PowerOp(PowerOp.term, &PowerOp)) {
          // MATCHED PowerOp
       } else return ATfalse;
-#endif
 
    // MATCHED IntrinsicOperator_PO
 
    return ATtrue;
  }
+#endif
 
  return ATfalse;
 }
@@ -9816,6 +9742,7 @@ ATbool ofp_traverse_DefinedUnaryOp(ATerm term, OFP::DefinedUnaryOp* DefinedUnary
  return ATfalse;
 }
 
+#ifdef NO_EXPR
 //========================================================================================
 // R722 expr
 //----------------------------------------------------------------------------------------
@@ -9825,372 +9752,431 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    printf("Expr: %s\n", ATwriteToString(term));
 #endif
 
- char * Expr_val;
- if (ATmatch(term, "Expr(Primary_D_AMB(Designator_DR_AMB(DataRef([PartRef(PartName(<str>),None,None)]))))", &Expr_val)) {
-    // MATCHED Expr
-    Expr->setValue(Expr_val);
-    return ATtrue;
- }
-
- OFP::Expr1 Expr1;
+ OFP::Expr Expr1;
  OFP::DefinedBinaryOp DefinedBinaryOp;
- OFP::Expr2 Expr2;
+ OFP::Expr Expr2;
  if (ATmatch(term, "DefBinExpr(<term>,<term>,<term>)", &Expr1.term, &DefinedBinaryOp.term, &Expr2.term)) {
 
       if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
          // MATCHED Expr
+         Expr->setExpr(Expr1.newExpr());
       } else return ATfalse;
 
       if (ofp_traverse_DefinedBinaryOp(DefinedBinaryOp.term, &DefinedBinaryOp)) {
          // MATCHED DefinedBinaryOp
+         Expr->setDefinedBinaryOp(DefinedBinaryOp.newDefinedBinaryOp());
       } else return ATfalse;
 
       if (ofp_traverse_Expr(Expr2.term, &Expr2)) {
          // MATCHED Expr
+         Expr->setExpr(Expr2.newExpr());
       } else return ATfalse;
 
    // MATCHED DefBinExpr
+   Expr->setOptionType(OFP::Expr::DefBinExpr);
 
    return ATtrue;
  }
 
- OFP::Expr3 Expr3;
- OFP::Expr4 Expr4;
- if (ATmatch(term, "NotEqvExpr(<term>,<term>)", &Expr3.term, &Expr4.term)) {
+ OFP::Expr Expr3;
+ OFP::Expr Expr4;
+ if (ATmatch(term, "NotEqvExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr3.term, &Expr3)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr4.term, &Expr4)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED NotEqvExpr
+   Expr->setOptionType(OFP::Expr::NotEqvExpr);
 
    return ATtrue;
  }
 
- OFP::Expr5 Expr5;
- OFP::Expr6 Expr6;
- if (ATmatch(term, "EqvExpr(<term>,<term>)", &Expr5.term, &Expr6.term)) {
+ OFP::Expr Expr5;
+ OFP::Expr Expr6;
+ if (ATmatch(term, "EqvExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr5.term, &Expr5)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr6.term, &Expr6)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED EqvExpr
+   Expr->setOptionType(OFP::Expr::EqvExpr);
 
    return ATtrue;
  }
 
- OFP::Expr7 Expr7;
- OFP::Expr8 Expr8;
- if (ATmatch(term, "OrExpr(<term>,<term>)", &Expr7.term, &Expr8.term)) {
+ OFP::Expr Expr7;
+ OFP::Expr Expr8;
+ if (ATmatch(term, "OrExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr7.term, &Expr7)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr8.term, &Expr8)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED OrExpr
+   Expr->setOptionType(OFP::Expr::OrExpr);
 
    return ATtrue;
  }
 
- OFP::Expr9 Expr9;
- OFP::Expr10 Expr10;
- if (ATmatch(term, "AndExpr(<term>,<term>)", &Expr9.term, &Expr10.term)) {
+ OFP::Expr Expr9;
+ OFP::Expr Expr10;
+ if (ATmatch(term, "AndExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr9.term, &Expr9)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr10.term, &Expr10)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED AndExpr
+   Expr->setOptionType(OFP::Expr::AndExpr);
 
    return ATtrue;
  }
 
- OFP::Expr11 Expr11;
- if (ATmatch(term, "NotExpr(<term>)", &Expr11.term)) {
+ OFP::Expr Expr11;
+ if (ATmatch(term, "NotExpr(<term>)", &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr11.term, &Expr11)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED NotExpr
+   Expr->setOptionType(OFP::Expr::NotExpr);
 
    return ATtrue;
  }
 
- OFP::Expr12 Expr12;
- OFP::Expr13 Expr13;
- if (ATmatch(term, "GE_Expr(<term>,<term>)", &Expr12.term, &Expr13.term)) {
+ OFP::Expr Expr12;
+ OFP::Expr Expr13;
+ if (ATmatch(term, "GE_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr12.term, &Expr12)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr13.term, &Expr13)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED GE_Expr
+   Expr->setOptionType(OFP::Expr::GE_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr14 Expr14;
- OFP::Expr15 Expr15;
- if (ATmatch(term, "GT_Expr(<term>,<term>)", &Expr14.term, &Expr15.term)) {
+ OFP::Expr Expr14;
+ OFP::Expr Expr15;
+ if (ATmatch(term, "GT_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr14.term, &Expr14)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr15.term, &Expr15)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED GT_Expr
+   Expr->setOptionType(OFP::Expr::GT_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr16 Expr16;
- OFP::Expr17 Expr17;
- if (ATmatch(term, "LE_Expr(<term>,<term>)", &Expr16.term, &Expr17.term)) {
+ OFP::Expr Expr16;
+ OFP::Expr Expr17;
+ if (ATmatch(term, "LE_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr16.term, &Expr16)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr17.term, &Expr17)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED LE_Expr
+   Expr->setOptionType(OFP::Expr::LE_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr18 Expr18;
- OFP::Expr19 Expr19;
- if (ATmatch(term, "LT_Expr(<term>,<term>)", &Expr18.term, &Expr19.term)) {
+ OFP::Expr Expr18;
+ OFP::Expr Expr19;
+ if (ATmatch(term, "LT_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr18.term, &Expr18)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr19.term, &Expr19)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED LT_Expr
+   Expr->setOptionType(OFP::Expr::LT_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr20 Expr20;
- OFP::Expr21 Expr21;
- if (ATmatch(term, "NE_Expr(<term>,<term>)", &Expr20.term, &Expr21.term)) {
+ OFP::Expr Expr20;
+ OFP::Expr Expr21;
+ if (ATmatch(term, "NE_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr20.term, &Expr20)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr21.term, &Expr21)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED NE_Expr
+   Expr->setOptionType(OFP::Expr::NE_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr22 Expr22;
- OFP::Expr23 Expr23;
- if (ATmatch(term, "EQ_Expr(<term>,<term>)", &Expr22.term, &Expr23.term)) {
+ OFP::Expr Expr22;
+ OFP::Expr Expr23;
+ if (ATmatch(term, "EQ_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr22.term, &Expr22)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr23.term, &Expr23)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED EQ_Expr
+   Expr->setOptionType(OFP::Expr::EQ_Expr);
 
    return ATtrue;
  }
 
- OFP::Expr24 Expr24;
- OFP::Expr25 Expr25;
- if (ATmatch(term, "ConcatExpr(<term>,<term>)", &Expr24.term, &Expr25.term)) {
+ OFP::Expr Expr24;
+ OFP::Expr Expr25;
+ if (ATmatch(term, "ConcatExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr24.term, &Expr24)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr25.term, &Expr25)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED ConcatExpr
+   Expr->setOptionType(OFP::Expr::ConcatExpr);
 
    return ATtrue;
  }
 
- OFP::Expr26 Expr26;
- OFP::Expr27 Expr27;
- if (ATmatch(term, "MinusExpr(<term>,<term>)", &Expr26.term, &Expr27.term)) {
+ OFP::Expr Expr26;
+ OFP::Expr Expr27;
+ if (ATmatch(term, "MinusExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr26.term, &Expr26)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr27.term, &Expr27)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED MinusExpr
+   Expr->setOptionType(OFP::Expr::MinusExpr);
 
    return ATtrue;
  }
 
- OFP::Expr28 Expr28;
- OFP::Expr29 Expr29;
- if (ATmatch(term, "PlusExpr(<term>,<term>)", &Expr28.term, &Expr29.term)) {
+ OFP::Expr Expr28;
+ OFP::Expr Expr29;
+ if (ATmatch(term, "PlusExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr28.term, &Expr28)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr29.term, &Expr29)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED PlusExpr
+   Expr->setOptionType(OFP::Expr::PlusExpr);
 
    return ATtrue;
  }
 
- OFP::Expr30 Expr30;
- if (ATmatch(term, "UnaryMinusExpr(<term>)", &Expr30.term)) {
+ OFP::Expr Expr30;
+ if (ATmatch(term, "UnaryMinusExpr(<term>)", &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr30.term, &Expr30)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED UnaryMinusExpr
+   Expr->setOptionType(OFP::Expr::UnaryMinusExpr);
 
    return ATtrue;
  }
 
- OFP::Expr31 Expr31;
- if (ATmatch(term, "UnaryPlusExpr(<term>)", &Expr31.term)) {
+ OFP::Expr Expr31;
+ if (ATmatch(term, "UnaryPlusExpr(<term>)", &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr31.term, &Expr31)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED UnaryPlusExpr
+   Expr->setOptionType(OFP::Expr::UnaryPlusExpr);
 
    return ATtrue;
  }
 
- OFP::Expr32 Expr32;
- OFP::Expr33 Expr33;
- if (ATmatch(term, "DivExpr(<term>,<term>)", &Expr32.term, &Expr33.term)) {
+ OFP::Expr Expr32;
+ OFP::Expr Expr33;
+ if (ATmatch(term, "DivExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr32.term, &Expr32)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr33.term, &Expr33)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED DivExpr
+   Expr->setOptionType(OFP::Expr::DivExpr);
 
    return ATtrue;
  }
 
- OFP::Expr34 Expr34;
- OFP::Expr35 Expr35;
- if (ATmatch(term, "MultExpr(<term>,<term>)", &Expr34.term, &Expr35.term)) {
+ OFP::Expr Expr34;
+ OFP::Expr Expr35;
+ if (ATmatch(term, "MultExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr34.term, &Expr34)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr35.term, &Expr35)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED MultExpr
+   Expr->setOptionType(OFP::Expr::MultExpr);
 
    return ATtrue;
  }
 
- OFP::Expr36 Expr36;
- OFP::Expr37 Expr37;
- if (ATmatch(term, "PowerExpr(<term>,<term>)", &Expr36.term, &Expr37.term)) {
+ OFP::Expr Expr36;
+ OFP::Expr Expr37;
+ if (ATmatch(term, "PowerExpr(<term>,<term>)", &Expr.term, &Expr.term)) {
 
-      if (ofp_traverse_Expr(Expr36.term, &Expr36)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr37.term, &Expr37)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED PowerExpr
+   Expr->setOptionType(OFP::Expr::PowerExpr);
 
    return ATtrue;
  }
 
  OFP::DefinedUnaryOp DefinedUnaryOp;
- OFP::Expr38 Expr38;
- if (ATmatch(term, "DefUnaryExpr(<term>,<term>)", &DefinedUnaryOp.term, &Expr38.term)) {
+ OFP::Expr Expr38;
+ if (ATmatch(term, "DefUnaryExpr(<term>,<term>)", &DefinedUnaryOp.term, &Expr.term)) {
 
       if (ofp_traverse_DefinedUnaryOp(DefinedUnaryOp.term, &DefinedUnaryOp)) {
          // MATCHED DefinedUnaryOp
+         Expr->setDefinedUnaryOp(DefinedUnaryOp.newDefinedUnaryOp());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr38.term, &Expr38)) {
+      if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Expr->setExpr(Expr.newExpr());
       } else return ATfalse;
 
    // MATCHED DefUnaryExpr
+   Expr->setOptionType(OFP::Expr::DefUnaryExpr);
 
    return ATtrue;
  }
 
  OFP::Primary Primary;
- if (ATmatch(term, "Expr(<term>)", &Primary.term)) {
+ if (ATmatch(term, "Expr_0(<term>)", &Primary.term)) {
 
       if (ofp_traverse_Primary(Primary.term, &Primary)) {
          // MATCHED Primary
+         Expr->setPrimary(Primary.newPrimary());
       } else return ATfalse;
+
+   // MATCHED Expr_0
+   Expr->setOptionType(OFP::Expr::Expr_0);
 
    return ATtrue;
  }
 
  return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R723 defined-binary-op
@@ -10431,11 +10417,11 @@ ATbool ofp_traverse_PointerAssignmentStmt(ATerm term, OFP::PointerAssignmentStmt
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::DataPointerObject DataPointerObject;
  OFP::BoundsRemappingList BoundsRemappingList;
  OFP::DataTarget DataTarget;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "PointerAssignmentStmt_DPO2(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &DataPointerObject.term, &BoundsRemappingList.term, &DataTarget.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -10465,11 +10451,11 @@ ATbool ofp_traverse_PointerAssignmentStmt(ATerm term, OFP::PointerAssignmentStmt
    return ATtrue;
  }
 
- OFP::Label2 Label2;
- OFP::DataPointerObject1 DataPointerObject1;
+ OFP::Label Label2;
+ OFP::DataPointerObject DataPointerObject1;
  OFP::BoundsSpecList BoundsSpecList;
- OFP::DataTarget1 DataTarget1;
- OFP::EOS2 EOS2;
+ OFP::DataTarget DataTarget1;
+ OFP::EOS EOS2;
  if (ATmatch(term, "PointerAssignmentStmt_DPO1(<term>,<term>,<term>,<term>,<term>)", &Label2.term, &DataPointerObject1.term, &BoundsSpecList.term, &DataTarget1.term, &EOS2.term)) {
 
    if (ATmatch(Label2.term, "Some(<term>)", &Label2.term)) {
@@ -11302,7 +11288,7 @@ ATbool ofp_traverse_ForallTripletSpec(ATerm term, OFP::ForallTripletSpec* Forall
 
  OFP::IndexName IndexName;
  OFP::ForallLimit ForallLimit;
- OFP::ForallLimit1 ForallLimit1;
+ OFP::ForallLimit ForallLimit1;
  OFP::ForallStep ForallStep;
  if (ATmatch(term, "ForallTripletSpec(<term>,<term>,<term>,<term>)", &IndexName.term, &ForallLimit.term, &ForallLimit1.term, &ForallStep.term)) {
 
@@ -12136,8 +12122,8 @@ ATbool ofp_traverse_LoopControl(ATerm term, OFP::LoopControl* LoopControl)
    printf("LoopControl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ForallHeader; ForallHeader; 
-if (ATmatch(term, "LoopControl_CONCURRENT(<term>)", &ForallHeader.term)) {
+ OFP::ForallHeader ForallHeader; 
+ if (ATmatch(term, "LoopControl_CONCURRENT(<term>)", &ForallHeader.term)) {
 
       if (ofp_traverse_ForallHeader(ForallHeader.term, &ForallHeader)) {
          // MATCHED ForallHeader
@@ -12161,9 +12147,9 @@ if (ATmatch(term, "LoopControl_CONCURRENT(<term>)", &ForallHeader.term)) {
  }
 
  OFP::DoVariable DoVariable;
- OFP::Expr1 Expr1;
- OFP::Expr2 Expr2;
- OFP::Expr3 Expr3;
+ OFP::Expr Expr1;
+ OFP::Expr Expr2;
+ OFP::Expr Expr3;
  if (ATmatch(term, "LoopControl_DV(<term>,<term>,<term>,<term>)", &DoVariable.term, &Expr1.term, &Expr2.term, &Expr3.term)) {
 
       if (ofp_traverse_DoVariable(DoVariable.term, &DoVariable)) {
@@ -12866,7 +12852,7 @@ ATbool ofp_traverse_CaseValueRange(ATerm term, OFP::CaseValueRange* CaseValueRan
 #endif
 
  OFP::CaseValue CaseValue;
- OFP::CaseValue1 CaseValue1;
+ OFP::CaseValue CaseValue1;
  if (ATmatch(term, "CaseValueRange_CVCV(<term>,<term>)", &CaseValue.term, &CaseValue1.term)) {
 
       if (ofp_traverse_CaseValue(CaseValue.term, &CaseValue)) {
@@ -12882,7 +12868,7 @@ ATbool ofp_traverse_CaseValueRange(ATerm term, OFP::CaseValueRange* CaseValueRan
    return ATtrue;
  }
 
- OFP::CaseValue2 CaseValue2;
+ OFP::CaseValue CaseValue2;
  if (ATmatch(term, "CaseValueRange_CV(<term>)", &CaseValue2.term)) {
 
       if (ofp_traverse_CaseValue(CaseValue2.term, &CaseValue2)) {
@@ -13081,8 +13067,8 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
  }
 
  OFP::DerivedTypeSpec DerivedTypeSpec;
- OFP::SelectConstructName1 SelectConstructName1;
- OFP::EOS1 EOS1;
+ OFP::SelectConstructName SelectConstructName1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "TypeGuardStmt_CLASS(<term>,<term>,<term>)", &DerivedTypeSpec.term, &SelectConstructName1.term, &EOS1.term)) {
 
       if (ofp_traverse_DerivedTypeSpec(DerivedTypeSpec.term, &DerivedTypeSpec)) {
@@ -13105,8 +13091,8 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
  }
 
  OFP::TypeSpec TypeSpec;
- OFP::SelectConstructName2 SelectConstructName2;
- OFP::EOS2 EOS2;
+ OFP::SelectConstructName SelectConstructName2;
+ OFP::EOS EOS2;
  if (ATmatch(term, "TypeGuardStmt_TYPE(<term>,<term>,<term>)", &TypeSpec.term, &SelectConstructName2.term, &EOS2.term)) {
 
       if (ofp_traverse_TypeSpec(TypeSpec.term, &TypeSpec)) {
@@ -13281,8 +13267,8 @@ ATbool ofp_traverse_ArithmeticIfStmt(ATerm term, OFP::ArithmeticIfStmt* Arithmet
  OFP::Label Label;
  OFP::Expr Expr;
  OFP::LblRef LblRef;
- OFP::LblRef1 LblRef1;
- OFP::LblRef2 LblRef2;
+ OFP::LblRef LblRef1;
+ OFP::LblRef LblRef2;
  OFP::EOS EOS;
  if (ATmatch(term, "ArithmeticIfStmt(<term>,<term>,<term>,<term>,<term>,<term>)", &Label.term, &Expr.term, &LblRef.term, &LblRef1.term, &LblRef2.term, &EOS.term)) {
 
@@ -13481,9 +13467,9 @@ ATbool ofp_traverse_SyncAllStmt(ATerm term, OFP::SyncAllStmt* SyncAllStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::SyncStatList SyncStatList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "SyncAllStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -13670,9 +13656,9 @@ ATbool ofp_traverse_SyncMemoryStmt(ATerm term, OFP::SyncMemoryStmt* SyncMemorySt
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::SyncStatList SyncStatList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "SyncMemoryStmt_SSL(<term>,<term>,<term>)", &Label1.term, &SyncStatList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -14027,7 +14013,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr1 DefaultCharExpr1;
+ OFP::DefaultCharExpr DefaultCharExpr1;
  if (ATmatch(term, "ConnectSpec_SIGN(<term>)", &DefaultCharExpr1.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
@@ -14039,7 +14025,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr2 DefaultCharExpr2;
+ OFP::DefaultCharExpr DefaultCharExpr2;
  if (ATmatch(term, "ConnectSpec_ROUND(<term>)", &DefaultCharExpr2.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
@@ -14063,7 +14049,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr3 DefaultCharExpr3;
+ OFP::DefaultCharExpr DefaultCharExpr3;
  if (ATmatch(term, "ConnectSpec_POSITION(<term>)", &DefaultCharExpr3.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
@@ -14075,7 +14061,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr4 DefaultCharExpr4;
+ OFP::DefaultCharExpr DefaultCharExpr4;
  if (ATmatch(term, "ConnectSpec_PAD(<term>)", &DefaultCharExpr4.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
@@ -14099,7 +14085,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::IntVariable1 IntVariable1;
+ OFP::IntVariable IntVariable1;
  if (ATmatch(term, "ConnectSpec_IOSTAT(<term>)", &IntVariable1.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
@@ -14123,7 +14109,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr5 DefaultCharExpr5;
+ OFP::DefaultCharExpr DefaultCharExpr5;
  if (ATmatch(term, "ConnectSpec_FORM(<term>)", &DefaultCharExpr5.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
@@ -14159,7 +14145,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr6 DefaultCharExpr6;
+ OFP::DefaultCharExpr DefaultCharExpr6;
  if (ATmatch(term, "ConnectSpec_ENCODING(<term>)", &DefaultCharExpr6.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
@@ -14171,7 +14157,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr7 DefaultCharExpr7;
+ OFP::DefaultCharExpr DefaultCharExpr7;
  if (ATmatch(term, "ConnectSpec_DELIM(<term>)", &DefaultCharExpr7.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
@@ -14183,7 +14169,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr8 DefaultCharExpr8;
+ OFP::DefaultCharExpr DefaultCharExpr8;
  if (ATmatch(term, "ConnectSpec_DECIMAL(<term>)", &DefaultCharExpr8.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr8.term, &DefaultCharExpr8)) {
@@ -14195,7 +14181,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr9 DefaultCharExpr9;
+ OFP::DefaultCharExpr DefaultCharExpr9;
  if (ATmatch(term, "ConnectSpec_BLANK(<term>)", &DefaultCharExpr9.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr9.term, &DefaultCharExpr9)) {
@@ -14207,7 +14193,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr10 DefaultCharExpr10;
+ OFP::DefaultCharExpr DefaultCharExpr10;
  if (ATmatch(term, "ConnectSpec_ASYNC(<term>)", &DefaultCharExpr10.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr10.term, &DefaultCharExpr10)) {
@@ -14219,7 +14205,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr11 DefaultCharExpr11;
+ OFP::DefaultCharExpr DefaultCharExpr11;
  if (ATmatch(term, "ConnectSpec_ACTION(<term>)", &DefaultCharExpr11.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr11.term, &DefaultCharExpr11)) {
@@ -14231,7 +14217,7 @@ ATbool ofp_traverse_ConnectSpec(ATerm term, OFP::ConnectSpec* ConnectSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr12 DefaultCharExpr12;
+ OFP::DefaultCharExpr DefaultCharExpr12;
  if (ATmatch(term, "ConnectSpec_ACCESS(<term>)", &DefaultCharExpr12.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr12.term, &DefaultCharExpr12)) {
@@ -14498,10 +14484,10 @@ ATbool ofp_traverse_ReadStmt(ATerm term, OFP::ReadStmt* ReadStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::IoControlSpecList IoControlSpecList;
- OFP::InputItemList1 InputItemList1;
- OFP::EOS1 EOS1;
+ OFP::InputItemList InputItemList1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "ReadStmt_ICSL(<term>,<term>,<term>,<term>)", &Label1.term, &IoControlSpecList.term, &InputItemList1.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -14649,7 +14635,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr1 DefaultCharExpr1;
+ OFP::DefaultCharExpr DefaultCharExpr1;
  if (ATmatch(term, "IoControlSpec_ROUND(<term>)", &DefaultCharExpr1.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
@@ -14673,7 +14659,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::Expr1 Expr1;
+ OFP::Expr Expr1;
  if (ATmatch(term, "IoControlSpec_POS(<term>)", &Expr1.term)) {
 
       if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
@@ -14685,7 +14671,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr2 DefaultCharExpr2;
+ OFP::DefaultCharExpr DefaultCharExpr2;
  if (ATmatch(term, "IoControlSpec_PAD(<term>)", &DefaultCharExpr2.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
@@ -14697,7 +14683,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::IntVariable1 IntVariable1;
+ OFP::IntVariable IntVariable1;
  if (ATmatch(term, "IoControlSpec_IOSTAT(<term>)", &IntVariable1.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
@@ -14745,7 +14731,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::LblRef1 LblRef1;
+ OFP::LblRef LblRef1;
  if (ATmatch(term, "IoControlSpec_EOR(<term>)", &LblRef1.term)) {
 
       if (ofp_traverse_LblRef(LblRef1.term, &LblRef1)) {
@@ -14757,7 +14743,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::LblRef2 LblRef2;
+ OFP::LblRef LblRef2;
  if (ATmatch(term, "IoControlSpec_END(<term>)", &LblRef2.term)) {
 
       if (ofp_traverse_LblRef(LblRef2.term, &LblRef2)) {
@@ -14769,7 +14755,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr3 DefaultCharExpr3;
+ OFP::DefaultCharExpr DefaultCharExpr3;
  if (ATmatch(term, "IoControlSpec_DELIM(<term>)", &DefaultCharExpr3.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
@@ -14781,7 +14767,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr4 DefaultCharExpr4;
+ OFP::DefaultCharExpr DefaultCharExpr4;
  if (ATmatch(term, "IoControlSpec_DECIMAL(<term>)", &DefaultCharExpr4.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
@@ -14793,7 +14779,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr5 DefaultCharExpr5;
+ OFP::DefaultCharExpr DefaultCharExpr5;
  if (ATmatch(term, "IoControlSpec_BLANK(<term>)", &DefaultCharExpr5.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
@@ -14805,7 +14791,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr6 DefaultCharExpr6;
+ OFP::DefaultCharExpr DefaultCharExpr6;
  if (ATmatch(term, "IoControlSpec_ASYNC(<term>)", &DefaultCharExpr6.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
@@ -14817,7 +14803,7 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr7 DefaultCharExpr7;
+ OFP::DefaultCharExpr DefaultCharExpr7;
  if (ATmatch(term, "IoControlSpec_ADVANCE(<term>)", &DefaultCharExpr7.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
@@ -15175,8 +15161,8 @@ ATbool ofp_traverse_IoImpliedDoControl(ATerm term, OFP::IoImpliedDoControl* IoIm
 
  OFP::DoVariable DoVariable;
  OFP::IntExpr IntExpr;
- OFP::IntExpr1 IntExpr1;
- OFP::IntExpr2 IntExpr2;
+ OFP::IntExpr IntExpr1;
+ OFP::IntExpr IntExpr2;
  if (ATmatch(term, "IoImpliedDoControl(<term>,<term>,<term>,<term>)", &DoVariable.term, &IntExpr.term, &IntExpr1.term, &IntExpr2.term)) {
 
       if (ofp_traverse_DoVariable(DoVariable.term, &DoVariable)) {
@@ -15272,7 +15258,7 @@ ATbool ofp_traverse_WaitSpec(ATerm term, OFP::WaitSpec* WaitSpec)
    return ATtrue;
  }
 
- OFP::IntExpr1 IntExpr1;
+ OFP::IntExpr IntExpr1;
  if (ATmatch(term, "WaitSpec_ID(<term>)", &IntExpr1.term)) {
 
       if (ofp_traverse_IntExpr(IntExpr1.term, &IntExpr1)) {
@@ -15296,7 +15282,7 @@ ATbool ofp_traverse_WaitSpec(ATerm term, OFP::WaitSpec* WaitSpec)
    return ATtrue;
  }
 
- OFP::LblRef1 LblRef1;
+ OFP::LblRef LblRef1;
  if (ATmatch(term, "WaitSpec_EOR(<term>)", &LblRef1.term)) {
 
       if (ofp_traverse_LblRef(LblRef1.term, &LblRef1)) {
@@ -15308,7 +15294,7 @@ ATbool ofp_traverse_WaitSpec(ATerm term, OFP::WaitSpec* WaitSpec)
    return ATtrue;
  }
 
- OFP::LblRef2 LblRef2;
+ OFP::LblRef LblRef2;
  if (ATmatch(term, "WaitSpec_END(<term>)", &LblRef2.term)) {
 
       if (ofp_traverse_LblRef(LblRef2.term, &LblRef2)) {
@@ -15392,9 +15378,9 @@ ATbool ofp_traverse_BackspaceStmt(ATerm term, OFP::BackspaceStmt* BackspaceStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::FileUnitNumber FileUnitNumber;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "BackspaceStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -15452,9 +15438,9 @@ ATbool ofp_traverse_EndfileStmt(ATerm term, OFP::EndfileStmt* EndfileStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::FileUnitNumber FileUnitNumber;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "EndfileStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -15512,9 +15498,9 @@ ATbool ofp_traverse_RewindStmt(ATerm term, OFP::RewindStmt* RewindStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::FileUnitNumber FileUnitNumber;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "RewindStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -15656,9 +15642,9 @@ ATbool ofp_traverse_FlushStmt(ATerm term, OFP::FlushStmt* FlushStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::FileUnitNumber FileUnitNumber;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "FlushStmt_FUN(<term>,<term>,<term>)", &Label1.term, &FileUnitNumber.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -15805,9 +15791,9 @@ ATbool ofp_traverse_InquireStmt(ATerm term, OFP::InquireStmt* InquireStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::InquireSpecList InquireSpecList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "InquireStmt_ISL(<term>,<term>,<term>)", &Label1.term, &InquireSpecList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -15853,7 +15839,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr1 DefaultCharExpr1;
+ OFP::DefaultCharExpr DefaultCharExpr1;
  if (ATmatch(term, "InquireSpec_UNFORMATTED(<term>)", &DefaultCharExpr1.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr1.term, &DefaultCharExpr1)) {
@@ -15865,7 +15851,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr2 DefaultCharExpr2;
+ OFP::DefaultCharExpr DefaultCharExpr2;
  if (ATmatch(term, "InquireSpec_STREAM(<term>)", &DefaultCharExpr2.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr2.term, &DefaultCharExpr2)) {
@@ -15889,7 +15875,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr3 DefaultCharExpr3;
+ OFP::DefaultCharExpr DefaultCharExpr3;
  if (ATmatch(term, "InquireSpec_SIGN(<term>)", &DefaultCharExpr3.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr3.term, &DefaultCharExpr3)) {
@@ -15901,7 +15887,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr4 DefaultCharExpr4;
+ OFP::DefaultCharExpr DefaultCharExpr4;
  if (ATmatch(term, "InquireSpec_SEQUENTIAL(<term>)", &DefaultCharExpr4.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr4.term, &DefaultCharExpr4)) {
@@ -15913,7 +15899,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr5 DefaultCharExpr5;
+ OFP::DefaultCharExpr DefaultCharExpr5;
  if (ATmatch(term, "InquireSpec_ROUND(<term>)", &DefaultCharExpr5.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr5.term, &DefaultCharExpr5)) {
@@ -15925,7 +15911,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::IntVariable1 IntVariable1;
+ OFP::IntVariable IntVariable1;
  if (ATmatch(term, "InquireSpec_RECL(<term>)", &IntVariable1.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable1.term, &IntVariable1)) {
@@ -15937,7 +15923,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr6 DefaultCharExpr6;
+ OFP::DefaultCharExpr DefaultCharExpr6;
  if (ATmatch(term, "InquireSpec_READWRITE(<term>)", &DefaultCharExpr6.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr6.term, &DefaultCharExpr6)) {
@@ -15949,7 +15935,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr7 DefaultCharExpr7;
+ OFP::DefaultCharExpr DefaultCharExpr7;
  if (ATmatch(term, "InquireSpec_READ(<term>)", &DefaultCharExpr7.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr7.term, &DefaultCharExpr7)) {
@@ -15961,7 +15947,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr8 DefaultCharExpr8;
+ OFP::DefaultCharExpr DefaultCharExpr8;
  if (ATmatch(term, "InquireSpec_POSITION(<term>)", &DefaultCharExpr8.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr8.term, &DefaultCharExpr8)) {
@@ -15973,7 +15959,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::IntVariable2 IntVariable2;
+ OFP::IntVariable IntVariable2;
  if (ATmatch(term, "InquireSpec_POS(<term>)", &IntVariable2.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable2.term, &IntVariable2)) {
@@ -15997,7 +15983,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr9 DefaultCharExpr9;
+ OFP::DefaultCharExpr DefaultCharExpr9;
  if (ATmatch(term, "InquireSpec_PAD(<term>)", &DefaultCharExpr9.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr9.term, &DefaultCharExpr9)) {
@@ -16009,7 +15995,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::LogicalVariable1 LogicalVariable1;
+ OFP::LogicalVariable LogicalVariable1;
  if (ATmatch(term, "InquireSpec_OPENED(<term>)", &LogicalVariable1.term)) {
 
       if (ofp_traverse_LogicalVariable(LogicalVariable1.term, &LogicalVariable1)) {
@@ -16021,7 +16007,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::IntVariable3 IntVariable3;
+ OFP::IntVariable IntVariable3;
  if (ATmatch(term, "InquireSpec_NUMBER(<term>)", &IntVariable3.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable3.term, &IntVariable3)) {
@@ -16033,7 +16019,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::IntVariable4 IntVariable4;
+ OFP::IntVariable IntVariable4;
  if (ATmatch(term, "InquireSpec_NEXTREC(<term>)", &IntVariable4.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable4.term, &IntVariable4)) {
@@ -16045,7 +16031,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::LogicalVariable2 LogicalVariable2;
+ OFP::LogicalVariable LogicalVariable2;
  if (ATmatch(term, "InquireSpec_NAMED(<term>)", &LogicalVariable2.term)) {
 
       if (ofp_traverse_LogicalVariable(LogicalVariable2.term, &LogicalVariable2)) {
@@ -16057,7 +16043,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr10 DefaultCharExpr10;
+ OFP::DefaultCharExpr DefaultCharExpr10;
  if (ATmatch(term, "InquireSpec_NAME(<term>)", &DefaultCharExpr10.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr10.term, &DefaultCharExpr10)) {
@@ -16069,7 +16055,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::IntVariable5 IntVariable5;
+ OFP::IntVariable IntVariable5;
  if (ATmatch(term, "InquireSpec_IOSTAT(<term>)", &IntVariable5.term)) {
 
       if (ofp_traverse_IntVariable(IntVariable5.term, &IntVariable5)) {
@@ -16105,7 +16091,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr11 DefaultCharExpr11;
+ OFP::DefaultCharExpr DefaultCharExpr11;
  if (ATmatch(term, "InquireSpec_FORMATTED(<term>)", &DefaultCharExpr11.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr11.term, &DefaultCharExpr11)) {
@@ -16117,7 +16103,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr12 DefaultCharExpr12;
+ OFP::DefaultCharExpr DefaultCharExpr12;
  if (ATmatch(term, "InquireSpec_FORM(<term>)", &DefaultCharExpr12.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr12.term, &DefaultCharExpr12)) {
@@ -16129,7 +16115,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::LogicalVariable3 LogicalVariable3;
+ OFP::LogicalVariable LogicalVariable3;
  if (ATmatch(term, "InquireSpec_EXIST(<term>)", &LogicalVariable3.term)) {
 
       if (ofp_traverse_LogicalVariable(LogicalVariable3.term, &LogicalVariable3)) {
@@ -16153,7 +16139,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr13 DefaultCharExpr13;
+ OFP::DefaultCharExpr DefaultCharExpr13;
  if (ATmatch(term, "InquireSpec_ENCODING(<term>)", &DefaultCharExpr13.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr13.term, &DefaultCharExpr13)) {
@@ -16165,7 +16151,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr14 DefaultCharExpr14;
+ OFP::DefaultCharExpr DefaultCharExpr14;
  if (ATmatch(term, "InquireSpec_DIRECT(<term>)", &DefaultCharExpr14.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr14.term, &DefaultCharExpr14)) {
@@ -16177,7 +16163,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr15 DefaultCharExpr15;
+ OFP::DefaultCharExpr DefaultCharExpr15;
  if (ATmatch(term, "InquireSpec_DELIM(<term>)", &DefaultCharExpr15.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr15.term, &DefaultCharExpr15)) {
@@ -16189,7 +16175,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr16 DefaultCharExpr16;
+ OFP::DefaultCharExpr DefaultCharExpr16;
  if (ATmatch(term, "InquireSpec_DECIMAL(<term>)", &DefaultCharExpr16.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr16.term, &DefaultCharExpr16)) {
@@ -16201,7 +16187,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr17 DefaultCharExpr17;
+ OFP::DefaultCharExpr DefaultCharExpr17;
  if (ATmatch(term, "InquireSpec_BLANK(<term>)", &DefaultCharExpr17.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr17.term, &DefaultCharExpr17)) {
@@ -16213,7 +16199,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr18 DefaultCharExpr18;
+ OFP::DefaultCharExpr DefaultCharExpr18;
  if (ATmatch(term, "InquireSpec_ASYNC(<term>)", &DefaultCharExpr18.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr18.term, &DefaultCharExpr18)) {
@@ -16225,7 +16211,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr19 DefaultCharExpr19;
+ OFP::DefaultCharExpr DefaultCharExpr19;
  if (ATmatch(term, "InquireSpec_ACTION(<term>)", &DefaultCharExpr19.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr19.term, &DefaultCharExpr19)) {
@@ -16237,7 +16223,7 @@ ATbool ofp_traverse_InquireSpec(ATerm term, OFP::InquireSpec* InquireSpec)
    return ATtrue;
  }
 
- OFP::DefaultCharExpr20 DefaultCharExpr20;
+ OFP::DefaultCharExpr DefaultCharExpr20;
  if (ATmatch(term, "InquireSpec_ACCESS(<term>)", &DefaultCharExpr20.term)) {
 
       if (ofp_traverse_DefaultCharExpr(DefaultCharExpr20.term, &DefaultCharExpr20)) {
@@ -16329,9 +16315,9 @@ ATbool ofp_traverse_FormatStmt(ATerm term, OFP::FormatStmt* FormatStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::FormatSpecification1 FormatSpecification1;
- OFP::EOS1 EOS1;
+ OFP::Label Label1;
+ OFP::FormatSpecification FormatSpecification1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "FormatStmt(<term>,<term>,<term>)", &Label1.term, &FormatSpecification1.term, &EOS1.term)) {
 
       if (ofp_traverse_Label(Label1.term, &Label1)) {
@@ -16373,7 +16359,7 @@ ATbool ofp_traverse_FormatSpecification(ATerm term, OFP::FormatSpecification* Fo
    return ATtrue;
  }
 
- OFP::FormatItems1 FormatItems1;
+ OFP::FormatItems FormatItems1;
  OFP::UnlimitedFormatItem UnlimitedFormatItem;
  if (ATmatch(term, "FormatSpecification_UFI(<term>,<term>)", &FormatItems1.term, &UnlimitedFormatItem.term)) {
 
@@ -16416,8 +16402,8 @@ ATbool ofp_traverse_FormatItems(ATerm term, OFP::FormatItems* FormatItems)
    return ATtrue;
  }
 
- OFP::FormatItems1 FormatItems1;
- OFP::FormatItem1 FormatItem1;
+ OFP::FormatItems FormatItems1;
+ OFP::FormatItem FormatItem1;
  if (ATmatch(term, "FormatItems_FIs(<term>,<term>)", &FormatItems1.term, &FormatItem1.term)) {
 
       if (ofp_traverse_FormatItems(FormatItems1.term, &FormatItems1)) {
@@ -16488,7 +16474,7 @@ ATbool ofp_traverse_FormatItem(ATerm term, OFP::FormatItem* FormatItem)
    return ATtrue;
  }
 
- OFP::Icon1 Icon1;
+ OFP::Icon Icon1;
  OFP::DataEditDesc DataEditDesc;
  if (ATmatch(term, "FormatItem_RED(<term>,<term>)", &Icon1.term, &DataEditDesc.term)) {
 
@@ -16587,7 +16573,7 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
  }
 
  OFP::Icon Icon;
- OFP::Icon1 Icon1;
+ OFP::Icon Icon1;
  if (ATmatch(term, "DataEditDesc_D(<term>,<term>)", &Icon.term, &Icon1.term)) {
 
       if (ofp_traverse_Icon(Icon.term, &Icon)) {
@@ -16603,7 +16589,7 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon2 Icon2;
+ OFP::Icon Icon2;
  if (ATmatch(term, "DataEditDesc_A(<term>)", &Icon2.term)) {
 
    if (ATmatch(Icon2.term, "Some(<term>)", &Icon2.term)) {
@@ -16617,7 +16603,7 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon3 Icon3;
+ OFP::Icon Icon3;
  if (ATmatch(term, "DataEditDesc_L(<term>)", &Icon3.term)) {
 
       if (ofp_traverse_Icon(Icon3.term, &Icon3)) {
@@ -16629,7 +16615,7 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon4 Icon4;
+ OFP::Icon Icon4;
  if (ATmatch(term, "DataEditDesc_G(<term>)", &Icon4.term)) {
 
       if (ofp_traverse_Icon(Icon4.term, &Icon4)) {
@@ -16641,9 +16627,9 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon5 Icon5;
- OFP::Icon6 Icon6;
- OFP::Icon7 Icon7;
+ OFP::Icon Icon5;
+ OFP::Icon Icon6;
+ OFP::Icon Icon7;
  if (ATmatch(term, "DataEditDesc_GE(<term>,<term>,<term>)", &Icon5.term, &Icon6.term, &Icon7.term)) {
 
       if (ofp_traverse_Icon(Icon5.term, &Icon5)) {
@@ -16667,9 +16653,9 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon8 Icon8;
- OFP::Icon9 Icon9;
- OFP::Icon10 Icon10;
+ OFP::Icon Icon8;
+ OFP::Icon Icon9;
+ OFP::Icon Icon10;
  if (ATmatch(term, "DataEditDesc_ES(<term>,<term>,<term>)", &Icon8.term, &Icon9.term, &Icon10.term)) {
 
       if (ofp_traverse_Icon(Icon8.term, &Icon8)) {
@@ -16693,9 +16679,9 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon11 Icon11;
- OFP::Icon12 Icon12;
- OFP::Icon13 Icon13;
+ OFP::Icon Icon11;
+ OFP::Icon Icon12;
+ OFP::Icon Icon13;
  if (ATmatch(term, "DataEditDesc_EN(<term>,<term>,<term>)", &Icon11.term, &Icon12.term, &Icon13.term)) {
 
       if (ofp_traverse_Icon(Icon11.term, &Icon11)) {
@@ -16719,9 +16705,9 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon14 Icon14;
- OFP::Icon15 Icon15;
- OFP::Icon16 Icon16;
+ OFP::Icon Icon14;
+ OFP::Icon Icon15;
+ OFP::Icon Icon16;
  if (ATmatch(term, "DataEditDesc_E(<term>,<term>,<term>)", &Icon14.term, &Icon15.term, &Icon16.term)) {
 
       if (ofp_traverse_Icon(Icon14.term, &Icon14)) {
@@ -16745,8 +16731,8 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon17 Icon17;
- OFP::Icon18 Icon18;
+ OFP::Icon Icon17;
+ OFP::Icon Icon18;
  if (ATmatch(term, "DataEditDesc_F(<term>,<term>)", &Icon17.term, &Icon18.term)) {
 
       if (ofp_traverse_Icon(Icon17.term, &Icon17)) {
@@ -16762,8 +16748,8 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon19 Icon19;
- OFP::Icon20 Icon20;
+ OFP::Icon Icon19;
+ OFP::Icon Icon20;
  if (ATmatch(term, "DataEditDesc_Z(<term>,<term>)", &Icon19.term, &Icon20.term)) {
 
       if (ofp_traverse_Icon(Icon19.term, &Icon19)) {
@@ -16783,8 +16769,8 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon21 Icon21;
- OFP::Icon22 Icon22;
+ OFP::Icon Icon21;
+ OFP::Icon Icon22;
  if (ATmatch(term, "DataEditDesc_O(<term>,<term>)", &Icon21.term, &Icon22.term)) {
 
       if (ofp_traverse_Icon(Icon21.term, &Icon21)) {
@@ -16804,8 +16790,8 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon23 Icon23;
- OFP::Icon24 Icon24;
+ OFP::Icon Icon23;
+ OFP::Icon Icon24;
  if (ATmatch(term, "DataEditDesc_B(<term>,<term>)", &Icon23.term, &Icon24.term)) {
 
       if (ofp_traverse_Icon(Icon23.term, &Icon23)) {
@@ -16825,8 +16811,8 @@ ATbool ofp_traverse_DataEditDesc(ATerm term, OFP::DataEditDesc* DataEditDesc)
    return ATtrue;
  }
 
- OFP::Icon25 Icon25;
- OFP::Icon26 Icon26;
+ OFP::Icon Icon25;
+ OFP::Icon Icon26;
  if (ATmatch(term, "DataEditDesc_I(<term>,<term>)", &Icon25.term, &Icon26.term)) {
 
       if (ofp_traverse_Icon(Icon25.term, &Icon25)) {
@@ -17131,7 +17117,7 @@ ATbool ofp_traverse_PositionEditDesc(ATerm term, OFP::PositionEditDesc* Position
    return ATtrue;
  }
 
- OFP::Icon1 Icon1;
+ OFP::Icon Icon1;
  if (ATmatch(term, "PositionEditDesc_TR(<term>)", &Icon1.term)) {
 
       if (ofp_traverse_Icon(Icon1.term, &Icon1)) {
@@ -17143,7 +17129,7 @@ ATbool ofp_traverse_PositionEditDesc(ATerm term, OFP::PositionEditDesc* Position
    return ATtrue;
  }
 
- OFP::Icon2 Icon2;
+ OFP::Icon Icon2;
  if (ATmatch(term, "PositionEditDesc_TL(<term>)", &Icon2.term)) {
 
       if (ofp_traverse_Icon(Icon2.term, &Icon2)) {
@@ -17155,7 +17141,7 @@ ATbool ofp_traverse_PositionEditDesc(ATerm term, OFP::PositionEditDesc* Position
    return ATtrue;
  }
 
- OFP::Icon3 Icon3;
+ OFP::Icon Icon3;
  if (ATmatch(term, "PositionEditDesc_T(<term>)", &Icon3.term)) {
 
       if (ofp_traverse_Icon(Icon3.term, &Icon3)) {
@@ -17408,11 +17394,11 @@ ATbool ofp_traverse_MainProgram(ATerm term, OFP::MainProgram* MainProgram)
 ATbool ofp_traverse_ProgramStmt(ATerm term, OFP::ProgramStmt* ProgramStmt)
 {
 #ifdef DEBUG_PRINT
-   printf("\nProgramStmt(F): %s\n", ATwriteToString(term));
+   printf("ProgramStmt: %s\n", ATwriteToString(term));
 #endif
 
  OFP::Label Label;
- OFP::Name ProgramName;
+ OFP::ProgramName ProgramName;
  OFP::EOS EOS;
  if (ATmatch(term, "ProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
@@ -17425,7 +17411,7 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, OFP::ProgramStmt* ProgramStmt)
 
       if (ofp_traverse_ProgramName(ProgramName.term, &ProgramName)) {
          // MATCHED ProgramName
-         ProgramStmt->setProgramName(ProgramName.newName());
+         ProgramStmt->setProgramName(ProgramName.newProgramName());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
@@ -17445,11 +17431,11 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, OFP::ProgramStmt* ProgramStmt)
 ATbool ofp_traverse_EndProgramStmt(ATerm term, OFP::EndProgramStmt* EndProgramStmt)
 {
 #ifdef DEBUG_PRINT
-   printf("\nEndProgramStmt(F): %s\n", ATwriteToString(term));
+   printf("EndProgramStmt: %s\n", ATwriteToString(term));
 #endif
 
  OFP::Label Label;
- OFP::Name ProgramName;
+ OFP::ProgramName ProgramName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
@@ -17464,7 +17450,7 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, OFP::EndProgramStmt* EndProgramSt
    if (ATmatch(ProgramName.term, "(Some(<term>))", &ProgramName.term)) {
       if (ofp_traverse_ProgramName(ProgramName.term, &ProgramName)) {
          // MATCHED ProgramName
-         EndProgramStmt->setProgramName(ProgramName.newName());
+         EndProgramStmt->setProgramName(ProgramName.newProgramName());
       } else return ATfalse;
    }
    }
@@ -17722,11 +17708,11 @@ ATbool ofp_traverse_UseStmt(ATerm term, OFP::UseStmt* UseStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::ModuleNature1 ModuleNature1;
- OFP::ModuleName1 ModuleName1;
+ OFP::Label Label1;
+ OFP::ModuleNature ModuleNature1;
+ OFP::ModuleName ModuleName1;
  OFP::RenameList RenameList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "UseStmt_RL(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &ModuleNature1.term, &ModuleName1.term, &RenameList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -18260,9 +18246,9 @@ ATbool ofp_traverse_EndBlockDataStmt(ATerm term, OFP::EndBlockDataStmt* EndBlock
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::BlockDataName BlockDataName;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "EndBlockDataStmt_BDN(<term>,<term>,<term>)", &Label1.term, &BlockDataName.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -18390,9 +18376,9 @@ ATbool ofp_traverse_InterfaceStmt(ATerm term, OFP::InterfaceStmt* InterfaceStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::GenericSpec GenericSpec;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "InterfaceStmt_GS(<term>,<term>,<term>)", &Label1.term, &GenericSpec.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -18487,7 +18473,7 @@ ATbool ofp_traverse_InterfaceBody(ATerm term, OFP::InterfaceBody* InterfaceBody)
  }
 
  OFP::FunctionStmt FunctionStmt;
- OFP::SpecificationPart1 SpecificationPart1;
+ OFP::SpecificationPart SpecificationPart1;
  OFP::EndFunctionStmt EndFunctionStmt;
  if (ATmatch(term, "InterfaceBody_FS(<term>,<term>,<term>)", &FunctionStmt.term, &SpecificationPart1.term, &EndFunctionStmt.term)) {
 
@@ -18544,9 +18530,9 @@ ATbool ofp_traverse_ProcedureStmt(ATerm term, OFP::ProcedureStmt* ProcedureStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::ProcedureNameList1 ProcedureNameList1;
- OFP::EOS1 EOS1;
+ OFP::Label Label1;
+ OFP::ProcedureNameList ProcedureNameList1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "ProcedureStmt_MP(<term>,<term>,<term>)", &Label1.term, &ProcedureNameList1.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -18716,9 +18702,9 @@ ATbool ofp_traverse_ImportStmt(ATerm term, OFP::ImportStmt* ImportStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
+ OFP::Label Label1;
  OFP::ImportNameList ImportNameList;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "ImportStmt_INL(<term>,<term>,<term>)", &Label1.term, &ImportNameList.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -19213,8 +19199,8 @@ ATbool ofp_traverse_CallStmt(ATerm term, OFP::CallStmt* CallStmt)
    printf("CallStmt: %s\n", ATwriteToString(term));
 #endif
 
- OFP::Label;, ProcedureDesignator, ActualArgSpecList, EOS Label;, ProcedureDesignator, ActualArgSpecList, EOS;
- OFP::Label, ProcedureDesignator;, ActualArgSpecList, EOS Label, ProcedureDesignator;, ActualArgSpecList, EOS;
+ OFP::Label Label;
+ OFP::ProcedureDesignator ProcedureDesignator;
  OFP::ActualArgSpecList ActualArgSpecList;
  OFP::EOS EOS;
  if (ATmatch(term, "CallStmt(<term>,<term>,<term>,<term>)", &Label.term, &ProcedureDesignator.term, &ActualArgSpecList.term, &EOS.term)) {
@@ -19222,23 +19208,27 @@ ATbool ofp_traverse_CallStmt(ATerm term, OFP::CallStmt* CallStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         CallStmt->setLabel(Label.newLabel());
       } else return ATfalse;
    }
 
       if (ofp_traverse_ProcedureDesignator(ProcedureDesignator.term, &ProcedureDesignator)) {
          // MATCHED ProcedureDesignator
+         CallStmt->setProcedureDesignator(ProcedureDesignator.newProcedureDesignator());
       } else return ATfalse;
 
    if (ATmatch(ActualArgSpecList.term, "Some(<term>)", &ActualArgSpecList.term)) {
    if (ATmatch(ActualArgSpecList.term, "(Some(<term>))", &ActualArgSpecList.term)) {
       if (ofp_traverse_ActualArgSpecList(ActualArgSpecList.term, &ActualArgSpecList)) {
          // MATCHED ActualArgSpecList
+         CallStmt->setActualArgSpecList(ActualArgSpecList.newActualArgSpecList());
       } else return ATfalse;
    }
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         CallStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
 
    return ATtrue;
@@ -19656,8 +19646,8 @@ ATbool ofp_traverse_Suffix(ATerm term, OFP::Suffix* Suffix)
    return ATtrue;
  }
 
- OFP::ProcLanguageBindingSpec1 ProcLanguageBindingSpec1;
- OFP::ResultName1 ResultName1;
+ OFP::ProcLanguageBindingSpec ProcLanguageBindingSpec1;
+ OFP::ResultName ResultName1;
  if (ATmatch(term, "Suffix_PR(<term>,<term>)", &ProcLanguageBindingSpec1.term, &ResultName1.term)) {
 
       if (ofp_traverse_ProcLanguageBindingSpec(ProcLanguageBindingSpec1.term, &ProcLanguageBindingSpec1)) {
@@ -19800,12 +19790,12 @@ ATbool ofp_traverse_SubroutineStmt(ATerm term, OFP::SubroutineStmt* SubroutineSt
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::Prefix1 Prefix1;
- OFP::SubroutineName1 SubroutineName1;
+ OFP::Label Label1;
+ OFP::Prefix Prefix1;
+ OFP::SubroutineName SubroutineName1;
  OFP::DummyArgList DummyArgList;
  OFP::ProcLanguageBindingSpec ProcLanguageBindingSpec;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "SubroutineStmt_DAL(<term>,<term>,<term>,<term>,<term>,<term>)", &Label1.term, &Prefix1.term, &SubroutineName1.term, &DummyArgList.term, &ProcLanguageBindingSpec.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -20088,11 +20078,11 @@ ATbool ofp_traverse_EntryStmt(ATerm term, OFP::EntryStmt* EntryStmt)
    return ATtrue;
  }
 
- OFP::Label1 Label1;
- OFP::EntryName1 EntryName1;
+ OFP::Label Label1;
+ OFP::EntryName EntryName1;
  OFP::DummyArgList DummyArgList;
  OFP::Suffix Suffix;
- OFP::EOS1 EOS1;
+ OFP::EOS EOS1;
  if (ATmatch(term, "EntryStmt_DAL(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &EntryName1.term, &DummyArgList.term, &Suffix.term, &EOS1.term)) {
 
    if (ATmatch(Label1.term, "Some(<term>)", &Label1.term)) {
@@ -21005,10 +20995,10 @@ ATbool ofp_traverse_ProcEntityName(ATerm term, OFP::ProcEntityName* ProcEntityNa
  return ATfalse;
 }
 
-ATbool ofp_traverse_ProgramName(ATerm term, OFP::Name* ProgramName)
+ATbool ofp_traverse_ProgramName(ATerm term, OFP::ProgramName* ProgramName)
 {
 #ifdef DEBUG_PRINT
-   printf("ProgramName(F): %s\n", ATwriteToString(term));
+   printf("ProgramName: %s\n", ATwriteToString(term));
 #endif
 
  OFP::Ident Ident;
