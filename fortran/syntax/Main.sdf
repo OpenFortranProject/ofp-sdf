@@ -1338,7 +1338,7 @@ context-free syntax
 %%
 
 %%R524
-  Label? AccessSpec                                     EOS -> AccessStmt   {cons("AccessStmt")}
+  Label? AccessSpec                                     EOS -> AccessStmt   {cons("AccessStmt_0")}
   Label? AccessSpec      AccessIdList                   EOS -> AccessStmt   {cons("AccessStmt_AIL")}
   Label? AccessSpec '::' AccessIdList                   EOS -> AccessStmt   {cons("AccessStmt_AIL")}
 
@@ -1485,12 +1485,12 @@ context-free syntax
 %%R553
   Label? 'SAVE' '::' SavedEntityList                       EOS -> SaveStmt        {cons("SaveStmt_SEL")}
   Label? 'SAVE'      SavedEntityList                       EOS -> SaveStmt        {cons("SaveStmt_SEL")}
-  Label? 'SAVE'                                            EOS -> SaveStmt        {cons("SaveStmt")}
+  Label? 'SAVE'                                            EOS -> SaveStmt        {cons("SaveStmt_0")}
 
 %%R554
-  ObjectName                                                   -> SavedEntity     {cons("SavedEntity")}
+  ObjectName                                                   -> SavedEntity     {cons("SavedEntity_AMB")}
 %%ProcPointerName           %% Ambiguous with object-name
-  '/' CommonBlockName '/'                                      -> SavedEntity     {cons("SavedEntity")}
+  '/' CommonBlockName '/'                                      -> SavedEntity     {cons("SavedEntity_CBN")}
   {SavedEntity ','}+                                           -> SavedEntityList {cons("SavedEntityList")}
 
 %%R555
@@ -1538,7 +1538,7 @@ context-free syntax
 
   '/' NamelistGroupName '/' NamelistGroupObjectList    -> NamelistEntry     {cons("NamelistEntry")}
 
-  NamelistEntry                                        -> NamelistEntryList {cons("NamelistEntryList")}
+  NamelistEntry                                        -> NamelistEntryList {cons("NamelistEntryList_0")}
   NamelistEntryList ',' NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
   NamelistEntryList     NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
 
@@ -1963,7 +1963,7 @@ context-free syntax
 %%R722
 %%TODO-short circuit the expr nonsense and make it more sensible
 %%( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("Expr")}
-Primary                                    -> Expr            {cons("Expr")}
+Primary                                    -> Expr            {cons("Expr_P")}
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("DefinedBinaryOp")}
@@ -2561,7 +2561,7 @@ context-free syntax
 
 %%R858
   Label? 'SYNC' 'ALL' '(' SyncStatList? ')'         EOS -> SyncAllStmt          {cons("SyncAllStmt_SSL")}
-  Label? 'SYNC' 'ALL'                               EOS -> SyncAllStmt          {cons("SyncAllStmt")}
+  Label? 'SYNC' 'ALL'                               EOS -> SyncAllStmt          {cons("SyncAllStmt_0")}
 
 %%R859
   'STAT'   '=' StatVariable                             -> SyncStat             {cons("SyncStat_STAT")}
@@ -2578,7 +2578,7 @@ context-free syntax
 
 %%R862
   Label? 'SYNC' 'MEMORY' '(' SyncStatList? ')'      EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt_SSL")}
-  Label? 'SYNC' 'MEMORY'                            EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
+  Label? 'SYNC' 'MEMORY'                            EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt_0")}
 
 %%R863
   Label? 'LOCK' '(' LockVariable
@@ -2896,7 +2896,7 @@ context-free syntax
   Label 'FORMAT' FormatSpecification            EOS -> FormatStmt           {cons("FormatStmt")}
 
 %%R1002
-  '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("FormatSpecification")}
+  '(' ( FormatItems    )?                     ')'   -> FormatSpecification  {cons("FormatSpecification_0")}
   '(' ( FormatItems ',')? UnlimitedFormatItem ')'   -> FormatSpecification  {cons("FormatSpecification_UFI")}
 
 
@@ -2904,7 +2904,7 @@ context-free syntax
 %%
 
 %%R1003
-  FormatItem                                        -> FormatItems          {cons("FormatItems")}
+  FormatItem                                        -> FormatItems          {cons("FormatItems_0")}
   FormatItems ',' FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
   FormatItems     FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
 
@@ -3305,7 +3305,7 @@ context-free syntax
 
 %%R1122
   Label? 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt_BDN")}
-  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
+  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt_0")}
 
 %%context-free priorities
 %%
@@ -3394,7 +3394,7 @@ context-free syntax
 %%R1209
   Label? 'IMPORT' '::' ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
   Label? 'IMPORT'      ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
-  Label? 'IMPORT'                                 EOS -> ImportStmt       {cons("ImportStmt")}
+  Label? 'IMPORT'                                 EOS -> ImportStmt       {cons("ImportStmt_0")}
 
   {ImportName ','}+                                   -> ImportNameList   {cons("ImportNameList")}
 
@@ -3465,7 +3465,7 @@ context-free syntax
 %%Variable           %% AMB with alt1
 %%ProcedureName      %% AMB with alt1
 %%ProcComponentRef   %% AMB with alt1
-  AltReturnSpec                                       -> ActualArg           {cons("ActualArg")}
+  AltReturnSpec                                       -> ActualArg           {cons("ActualArg_ARS")}
 
 %%1224
   '*' Label                                           -> AltReturnSpec       {cons("AltReturnSpec")}
@@ -3526,7 +3526,7 @@ context-free syntax
   Label? Prefix? 'SUBROUTINE' SubroutineName
             '(' DummyArgList? ')'
              ProcLanguageBindingSpec?        EOS -> SubroutineStmt       {cons("SubroutineStmt_DAL")}
-  Label? Prefix? 'SUBROUTINE' SubroutineName EOS -> SubroutineStmt       {cons("SubroutineStmt")}
+  Label? Prefix? 'SUBROUTINE' SubroutineName EOS -> SubroutineStmt       {cons("SubroutineStmt_0")}
 
 %%R1235
   DummyArgName                                   -> DummyArg             {cons("DummyArg_DAN")}
@@ -3556,7 +3556,7 @@ context-free syntax
 
 %%R1240
   Label? 'ENTRY' EntryName '(' DummyArgList? ')' Suffix?  EOS -> EntryStmt   {cons("EntryStmt_DAL")}
-  Label? 'ENTRY' EntryName                                EOS -> EntryStmt   {cons("EntryStmt")}
+  Label? 'ENTRY' EntryName                                EOS -> EntryStmt   {cons("EntryStmt_0")}
 
 %%R1241
 %%       expr substituted for scalar-int-expr
