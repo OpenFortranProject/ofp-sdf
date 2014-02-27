@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "traversal.h"
 #include "OFPExpr.h"
 #include <vector>
@@ -5,6 +7,9 @@
 #ifdef __cplusplus
 //extern "C" {
 #endif
+
+OFP::Unparser* unparser = NULL;
+void OFP::setUnparser(OFP::Unparser* u) {unparser = u;}
 
 /**                                                                                             
  * Section/Clause 2: Fortran concepts
@@ -16,7 +21,7 @@
 ATbool ofp_traverse_Program(ATerm term, OFP::Program* Program)
 {
 #ifdef DEBUG_PRINT
-   printf("\nProgram: %s\n", ATwriteToString(term));
+   printf("Program: %s\n", ATwriteToString(term));
 #endif
 
  OFP::StartCommentBlock StartCommentBlock;
@@ -26,6 +31,7 @@ ATbool ofp_traverse_Program(ATerm term, OFP::Program* Program)
    if (ATmatch(StartCommentBlock.term, "Some(<term>)", &StartCommentBlock.term)) {
       if (ofp_traverse_StartCommentBlock(StartCommentBlock.term, &StartCommentBlock)) {
          // MATCHED StartCommentBlock
+         Program->setStartCommentBlock(StartCommentBlock.newStartCommentBlock());
       } else return ATfalse;
    }
 
@@ -50,7 +56,7 @@ ATbool ofp_traverse_Program(ATerm term, OFP::Program* Program)
 ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 {
 #ifdef DEBUG_PRINT
-   printf("\nProgramUnit: %s\n", ATwriteToString(term));
+   printf("ProgramUnit: %s\n", ATwriteToString(term));
 #endif
 
  OFP::BlockData BlockData;
@@ -58,9 +64,11 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 
       if (ofp_traverse_BlockData(BlockData.term, &BlockData)) {
          // MATCHED BlockData
+         ProgramUnit->setBlockData(BlockData.newBlockData());
       } else return ATfalse;
 
    // MATCHED ProgramUnit_BD
+   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_BD);
 
    return ATtrue;
  }
@@ -70,9 +78,11 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 
       if (ofp_traverse_Submodule(Submodule.term, &Submodule)) {
          // MATCHED Submodule
+         ProgramUnit->setSubmodule(Submodule.newSubmodule());
       } else return ATfalse;
 
    // MATCHED ProgramUnit_S
+   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_S);
 
    return ATtrue;
  }
@@ -82,9 +92,11 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 
       if (ofp_traverse_Module(Module.term, &Module)) {
          // MATCHED Module
+         ProgramUnit->setModule(Module.newModule());
       } else return ATfalse;
 
    // MATCHED ProgramUnit_M
+   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_M);
 
    return ATtrue;
  }
@@ -94,9 +106,11 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 
       if (ofp_traverse_ExternalSubprogram(ExternalSubprogram.term, &ExternalSubprogram)) {
          // MATCHED ExternalSubprogram
+         ProgramUnit->setExternalSubprogram(ExternalSubprogram.newExternalSubprogram());
       } else return ATfalse;
 
    // MATCHED ProgramUnit_ES
+   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_ES);
 
    return ATtrue;
  }
@@ -106,9 +120,11 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
 
       if (ofp_traverse_MainProgram(MainProgram.term, &MainProgram)) {
          // MATCHED MainProgram
+         ProgramUnit->setMainProgram(MainProgram.newMainProgram());
       } else return ATfalse;
 
    // MATCHED ProgramUnit_MP
+   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_MP);
 
    return ATtrue;
  }
@@ -453,8 +469,12 @@ ATbool ofp_traverse_ExecutionPart(ATerm term, OFP::ExecutionPart* ExecutionPart)
       ExecutionPartConstruct_tail = ATgetNext (ExecutionPartConstruct_tail);
       if (ofp_traverse_ExecutionPartConstruct(ExecutionPartConstruct.term, &ExecutionPartConstruct)) {
          // MATCHED ExecutionPartConstruct
+         // TODO - CER - do the list thing instead
+         ExecutionPart->appendExecutionPartConstruct(ExecutionPartConstruct.newExecutionPartConstruct());
       } else return ATfalse;
    }
+   // TODO - CER - Fix list
+   //   ExecutionPart->inheritPayload(ExecutionPart->getExecutionPartConstruct());
 
    return ATtrue;
  }
@@ -476,9 +496,11 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, OFP::ExecutionPartConstru
 
       if (ofp_traverse_DataStmt(DataStmt.term, &DataStmt)) {
          // MATCHED DataStmt
+         ExecutionPartConstruct->setDataStmt(DataStmt.newDataStmt());
       } else return ATfalse;
 
    // MATCHED ExecutionPartConstruct_DS
+   ExecutionPartConstruct->setOptionType(OFP::ExecutionPartConstruct::ExecutionPartConstruct_DS);
 
    return ATtrue;
  }
@@ -488,9 +510,11 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, OFP::ExecutionPartConstru
 
       if (ofp_traverse_EntryStmt(EntryStmt.term, &EntryStmt)) {
          // MATCHED EntryStmt
+         ExecutionPartConstruct->setEntryStmt(EntryStmt.newEntryStmt());
       } else return ATfalse;
 
    // MATCHED ExecutionPartConstruct_ES
+   ExecutionPartConstruct->setOptionType(OFP::ExecutionPartConstruct::ExecutionPartConstruct_ES);
 
    return ATtrue;
  }
@@ -500,9 +524,11 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, OFP::ExecutionPartConstru
 
       if (ofp_traverse_FormatStmt(FormatStmt.term, &FormatStmt)) {
          // MATCHED FormatStmt
+         ExecutionPartConstruct->setFormatStmt(FormatStmt.newFormatStmt());
       } else return ATfalse;
 
    // MATCHED ExecutionPartConstruct_FS
+   ExecutionPartConstruct->setOptionType(OFP::ExecutionPartConstruct::ExecutionPartConstruct_FS);
 
    return ATtrue;
  }
@@ -512,9 +538,12 @@ ATbool ofp_traverse_ExecutionPartConstruct(ATerm term, OFP::ExecutionPartConstru
 
       if (ofp_traverse_ExecutableConstruct(ExecutableConstruct.term, &ExecutableConstruct)) {
          // MATCHED ExecutableConstruct
+         ExecutionPartConstruct->setExecutableConstruct(ExecutableConstruct.newExecutableConstruct());
+         ExecutionPartConstruct->inheritPayload(ExecutionPartConstruct->getExecutableConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutionPartConstruct_EC
+   ExecutionPartConstruct->setOptionType(OFP::ExecutionPartConstruct::ExecutionPartConstruct_EC);
 
    return ATtrue;
  }
@@ -864,9 +893,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_WhereConstruct(WhereConstruct.term, &WhereConstruct)) {
          // MATCHED WhereConstruct
+         ExecutableConstruct->setWhereConstruct(WhereConstruct.newWhereConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_WC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_WC);
 
    return ATtrue;
  }
@@ -876,9 +907,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_SelectTypeConstruct(SelectTypeConstruct.term, &SelectTypeConstruct)) {
          // MATCHED SelectTypeConstruct
+         ExecutableConstruct->setSelectTypeConstruct(SelectTypeConstruct.newSelectTypeConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_STC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_STC);
 
    return ATtrue;
  }
@@ -888,9 +921,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_IfConstruct(IfConstruct.term, &IfConstruct)) {
          // MATCHED IfConstruct
+         ExecutableConstruct->setIfConstruct(IfConstruct.newIfConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_IC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_IC);
 
    return ATtrue;
  }
@@ -900,9 +935,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_ForallConstruct(ForallConstruct.term, &ForallConstruct)) {
          // MATCHED ForallConstruct
+         ExecutableConstruct->setForallConstruct(ForallConstruct.newForallConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_FC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_FC);
 
    return ATtrue;
  }
@@ -912,9 +949,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_CriticalConstruct(CriticalConstruct.term, &CriticalConstruct)) {
          // MATCHED CriticalConstruct
+         ExecutableConstruct->setCriticalConstruct(CriticalConstruct.newCriticalConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_CC2
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_CC2);
 
    return ATtrue;
  }
@@ -924,9 +963,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_CaseConstruct(CaseConstruct.term, &CaseConstruct)) {
          // MATCHED CaseConstruct
+         ExecutableConstruct->setCaseConstruct(CaseConstruct.newCaseConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_CC1
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_CC1);
 
    return ATtrue;
  }
@@ -936,9 +977,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_BlockConstruct(BlockConstruct.term, &BlockConstruct)) {
          // MATCHED BlockConstruct
+         ExecutableConstruct->setBlockConstruct(BlockConstruct.newBlockConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_BC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_BC);
 
    return ATtrue;
  }
@@ -948,9 +991,11 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_AssociateConstruct(AssociateConstruct.term, &AssociateConstruct)) {
          // MATCHED AssociateConstruct
+         ExecutableConstruct->setAssociateConstruct(AssociateConstruct.newAssociateConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_AC
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_AC);
 
    return ATtrue;
  }
@@ -960,9 +1005,12 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
 
       if (ofp_traverse_ActionStmt(ActionStmt.term, &ActionStmt)) {
          // MATCHED ActionStmt
+         ExecutableConstruct->setActionStmt(ActionStmt.newActionStmt());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getActionStmt());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_AS
+   ExecutableConstruct->setOptionType(OFP::ExecutableConstruct::ExecutableConstruct_AS);
 
    return ATtrue;
  }
@@ -984,9 +1032,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndDoStmt(EndDoStmt.term, &EndDoStmt)) {
          // MATCHED EndDoStmt
+         ActionStmt->setEndDoStmt(EndDoStmt.newEndDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EDS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_EDS);
 
    return ATtrue;
  }
@@ -996,9 +1046,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_NonlabelDoStmt(NonlabelDoStmt.term, &NonlabelDoStmt)) {
          // MATCHED NonlabelDoStmt
+         ActionStmt->setNonlabelDoStmt(NonlabelDoStmt.newNonlabelDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_NDS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_NDS);
 
    return ATtrue;
  }
@@ -1008,9 +1060,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_LabelDoStmt(LabelDoStmt.term, &LabelDoStmt)) {
          // MATCHED LabelDoStmt
+         ActionStmt->setLabelDoStmt(LabelDoStmt.newLabelDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_LDS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_LDS);
 
    return ATtrue;
  }
@@ -1020,9 +1074,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ComputedGotoStmt(ComputedGotoStmt.term, &ComputedGotoStmt)) {
          // MATCHED ComputedGotoStmt
+         ActionStmt->setComputedGotoStmt(ComputedGotoStmt.newComputedGotoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CGS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_CGS);
 
    return ATtrue;
  }
@@ -1032,9 +1088,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ArithmeticIfStmt(ArithmeticIfStmt.term, &ArithmeticIfStmt)) {
          // MATCHED ArithmeticIfStmt
+         ActionStmt->setArithmeticIfStmt(ArithmeticIfStmt.newArithmeticIfStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_AIS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_AIS);
 
    return ATtrue;
  }
@@ -1044,9 +1102,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_WriteStmt(WriteStmt.term, &WriteStmt)) {
          // MATCHED WriteStmt
+         ActionStmt->setWriteStmt(WriteStmt.newWriteStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS3
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_WS3);
 
    return ATtrue;
  }
@@ -1056,9 +1116,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_WhereStmt(WhereStmt.term, &WhereStmt)) {
          // MATCHED WhereStmt
+         ActionStmt->setWhereStmt(WhereStmt.newWhereStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_WS2);
 
    return ATtrue;
  }
@@ -1068,9 +1130,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_WaitStmt(WaitStmt.term, &WaitStmt)) {
          // MATCHED WaitStmt
+         ActionStmt->setWaitStmt(WaitStmt.newWaitStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_WS1);
 
    return ATtrue;
  }
@@ -1080,9 +1144,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_UnlockStmt(UnlockStmt.term, &UnlockStmt)) {
          // MATCHED UnlockStmt
+         ActionStmt->setUnlockStmt(UnlockStmt.newUnlockStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_US
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_US);
 
    return ATtrue;
  }
@@ -1092,9 +1158,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_SyncMemoryStmt(SyncMemoryStmt.term, &SyncMemoryStmt)) {
          // MATCHED SyncMemoryStmt
+         ActionStmt->setSyncMemoryStmt(SyncMemoryStmt.newSyncMemoryStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SMS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_SMS);
 
    return ATtrue;
  }
@@ -1104,9 +1172,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_SyncImagesStmt(SyncImagesStmt.term, &SyncImagesStmt)) {
          // MATCHED SyncImagesStmt
+         ActionStmt->setSyncImagesStmt(SyncImagesStmt.newSyncImagesStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SIS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_SIS);
 
    return ATtrue;
  }
@@ -1116,9 +1186,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_SyncAllStmt(SyncAllStmt.term, &SyncAllStmt)) {
          // MATCHED SyncAllStmt
+         ActionStmt->setSyncAllStmt(SyncAllStmt.newSyncAllStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SAS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_SAS);
 
    return ATtrue;
  }
@@ -1128,9 +1200,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_StopStmt(StopStmt.term, &StopStmt)) {
          // MATCHED StopStmt
+         ActionStmt->setStopStmt(StopStmt.newStopStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_SS);
 
    return ATtrue;
  }
@@ -1140,9 +1214,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_RewindStmt(RewindStmt.term, &RewindStmt)) {
          // MATCHED RewindStmt
+         ActionStmt->setRewindStmt(RewindStmt.newRewindStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS3
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_RS3);
 
    return ATtrue;
  }
@@ -1152,9 +1228,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ReturnStmt(ReturnStmt.term, &ReturnStmt)) {
          // MATCHED ReturnStmt
+         ActionStmt->setReturnStmt(ReturnStmt.newReturnStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_RS2);
 
    return ATtrue;
  }
@@ -1164,9 +1242,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ReadStmt(ReadStmt.term, &ReadStmt)) {
          // MATCHED ReadStmt
+         ActionStmt->setReadStmt(ReadStmt.newReadStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_RS1);
 
    return ATtrue;
  }
@@ -1176,9 +1256,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_PrintStmt(PrintStmt.term, &PrintStmt)) {
          // MATCHED PrintStmt
+         ActionStmt->setPrintStmt(PrintStmt.newPrintStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_PS1);
 
    return ATtrue;
  }
@@ -1188,9 +1270,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_PointerAssignmentStmt(PointerAssignmentStmt.term, &PointerAssignmentStmt)) {
          // MATCHED PointerAssignmentStmt
+         ActionStmt->setPointerAssignmentStmt(PointerAssignmentStmt.newPointerAssignmentStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PAS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_PAS);
 
    return ATtrue;
  }
@@ -1200,9 +1284,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_OpenStmt(OpenStmt.term, &OpenStmt)) {
          // MATCHED OpenStmt
+         ActionStmt->setOpenStmt(OpenStmt.newOpenStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_OS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_OS);
 
    return ATtrue;
  }
@@ -1212,9 +1298,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_NullifyStmt(NullifyStmt.term, &NullifyStmt)) {
          // MATCHED NullifyStmt
+         ActionStmt->setNullifyStmt(NullifyStmt.newNullifyStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_NS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_NS);
 
    return ATtrue;
  }
@@ -1224,9 +1312,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_LockStmt(LockStmt.term, &LockStmt)) {
          // MATCHED LockStmt
+         ActionStmt->setLockStmt(LockStmt.newLockStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_LS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_LS);
 
    return ATtrue;
  }
@@ -1236,9 +1326,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_InquireStmt(InquireStmt.term, &InquireStmt)) {
          // MATCHED InquireStmt
+         ActionStmt->setInquireStmt(InquireStmt.newInquireStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_IS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_IS2);
 
    return ATtrue;
  }
@@ -1248,9 +1340,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_IfStmt(IfStmt.term, &IfStmt)) {
          // MATCHED IfStmt
+         ActionStmt->setIfStmt(IfStmt.newIfStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_IS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_IS1);
 
    return ATtrue;
  }
@@ -1260,9 +1354,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_GotoStmt(GotoStmt.term, &GotoStmt)) {
          // MATCHED GotoStmt
+         ActionStmt->setGotoStmt(GotoStmt.newGotoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_GS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_GS);
 
    return ATtrue;
  }
@@ -1272,9 +1368,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ForallStmt(ForallStmt.term, &ForallStmt)) {
          // MATCHED ForallStmt
+         ActionStmt->setForallStmt(ForallStmt.newForallStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_FS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_FS2);
 
    return ATtrue;
  }
@@ -1284,9 +1382,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_FlushStmt(FlushStmt.term, &FlushStmt)) {
          // MATCHED FlushStmt
+         ActionStmt->setFlushStmt(FlushStmt.newFlushStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_FS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_FS1);
 
    return ATtrue;
  }
@@ -1296,9 +1396,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ExitStmt(ExitStmt.term, &ExitStmt)) {
          // MATCHED ExitStmt
+         ActionStmt->setExitStmt(ExitStmt.newExitStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ES2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_ES2);
 
    return ATtrue;
  }
@@ -1308,9 +1410,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ErrorStopStmt(ErrorStopStmt.term, &ErrorStopStmt)) {
          // MATCHED ErrorStopStmt
+         ActionStmt->setErrorStopStmt(ErrorStopStmt.newErrorStopStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ESS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_ESS2);
 
    return ATtrue;
  }
@@ -1320,9 +1424,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndfileStmt(EndfileStmt.term, &EndfileStmt)) {
          // MATCHED EndfileStmt
+         ActionStmt->setEndfileStmt(EndfileStmt.newEndfileStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ES1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_ES1);
 
    return ATtrue;
  }
@@ -1332,9 +1438,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndSubroutineStmt(EndSubroutineStmt.term, &EndSubroutineStmt)) {
          // MATCHED EndSubroutineStmt
+         ActionStmt->setEndSubroutineStmt(EndSubroutineStmt.newEndSubroutineStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ESS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_ESS1);
 
    return ATtrue;
  }
@@ -1344,10 +1452,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
          // MATCHED EndProgramStmt
-         // TODO
+         ActionStmt->setEndProgramStmt(EndProgramStmt.newEndProgramStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EPS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_EPS);
 
    return ATtrue;
  }
@@ -1357,9 +1466,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndMpSubprogramStmt(EndMpSubprogramStmt.term, &EndMpSubprogramStmt)) {
          // MATCHED EndMpSubprogramStmt
+         ActionStmt->setEndMpSubprogramStmt(EndMpSubprogramStmt.newEndMpSubprogramStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EMSS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_EMSS);
 
    return ATtrue;
  }
@@ -1369,9 +1480,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_EndFunctionStmt(EndFunctionStmt.term, &EndFunctionStmt)) {
          // MATCHED EndFunctionStmt
+         ActionStmt->setEndFunctionStmt(EndFunctionStmt.newEndFunctionStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EFS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_EFS);
 
    return ATtrue;
  }
@@ -1381,9 +1494,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_DeallocateStmt(DeallocateStmt.term, &DeallocateStmt)) {
          // MATCHED DeallocateStmt
+         ActionStmt->setDeallocateStmt(DeallocateStmt.newDeallocateStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_DS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_DS);
 
    return ATtrue;
  }
@@ -1393,9 +1508,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_CycleStmt(CycleStmt.term, &CycleStmt)) {
          // MATCHED CycleStmt
+         ActionStmt->setCycleStmt(CycleStmt.newCycleStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS4
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_CS4);
 
    return ATtrue;
  }
@@ -1405,9 +1522,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_ContinueStmt(ContinueStmt.term, &ContinueStmt)) {
          // MATCHED ContinueStmt
+         ActionStmt->setContinueStmt(ContinueStmt.newContinueStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS3
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_CS3);
 
    return ATtrue;
  }
@@ -1417,9 +1536,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_CloseStmt(CloseStmt.term, &CloseStmt)) {
          // MATCHED CloseStmt
+         ActionStmt->setCloseStmt(CloseStmt.newCloseStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_CS2);
 
    return ATtrue;
  }
@@ -1429,9 +1550,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_CallStmt(CallStmt.term, &CallStmt)) {
          // MATCHED CallStmt
+         ActionStmt->setCallStmt(CallStmt.newCallStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_CS1);
 
    return ATtrue;
  }
@@ -1441,9 +1564,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_BackspaceStmt(BackspaceStmt.term, &BackspaceStmt)) {
          // MATCHED BackspaceStmt
+         ActionStmt->setBackspaceStmt(BackspaceStmt.newBackspaceStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_BS
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_BS);
 
    return ATtrue;
  }
@@ -1453,9 +1578,12 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_AssignmentStmt(AssignmentStmt.term, &AssignmentStmt)) {
          // MATCHED AssignmentStmt
+         ActionStmt->setAssignmentStmt(AssignmentStmt.newAssignmentStmt());
+         ActionStmt->inheritPayload(ActionStmt->getAssignmentStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_AS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_AS2);
 
    return ATtrue;
  }
@@ -1465,9 +1593,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_AllocateStmt(AllocateStmt.term, &AllocateStmt)) {
          // MATCHED AllocateStmt
+         ActionStmt->setAllocateStmt(AllocateStmt.newAllocateStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_AS1
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_AS1);
 
    return ATtrue;
  }
@@ -1477,9 +1607,11 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
 
       if (ofp_traverse_PauseStmt(PauseStmt.term, &PauseStmt)) {
          // MATCHED PauseStmt
+         ActionStmt->setPauseStmt(PauseStmt.newPauseStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PS2
+   ActionStmt->setOptionType(OFP::ActionStmt::ActionStmt_PS2);
 
    return ATtrue;
  }
@@ -1520,7 +1652,7 @@ ATbool ofp_traverse_Keyword(ATerm term, OFP::Keyword* Keyword)
 ATbool ofp_traverse_Constant(ATerm term, OFP::Constant* Constant)
 {
 #ifdef DEBUG_PRINT
-   printf("Constant: %s\n", ATwriteToString(term));
+   printf("Constant(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::LiteralConstant LiteralConstant;
@@ -1528,9 +1660,13 @@ ATbool ofp_traverse_Constant(ATerm term, OFP::Constant* Constant)
 
       if (ofp_traverse_LiteralConstant(LiteralConstant.term, &LiteralConstant)) {
          // MATCHED LiteralConstant
+         Constant->setLiteralConstant(LiteralConstant.newLiteralConstant());
+         Constant->inheritPayload(Constant->getLiteralConstant());
       } else return ATfalse;
 
    // MATCHED Constant_AMB
+   // TODO - I think this goes away when only one option
+   // Constant->setOptionType(OFP::Constant::Constant_AMB);
 
    return ATtrue;
  }
@@ -1544,7 +1680,7 @@ ATbool ofp_traverse_Constant(ATerm term, OFP::Constant* Constant)
 ATbool ofp_traverse_LiteralConstant(ATerm term, OFP::LiteralConstant* LiteralConstant)
 {
 #ifdef DEBUG_PRINT
-   printf("LiteralConstant: %s\n", ATwriteToString(term));
+   printf("LiteralConstant(F): %s\n", ATwriteToString(term));
 #endif
 
  OFP::BozLiteralConstant BozLiteralConstant;
@@ -1552,21 +1688,27 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, OFP::LiteralConstant* LiteralCon
 
       if (ofp_traverse_BozLiteralConstant(BozLiteralConstant.term, &BozLiteralConstant)) {
          // MATCHED BozLiteralConstant
+         LiteralConstant->setBozLiteralConstant(BozLiteralConstant.newBozLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getBozLiteralConstant());
       } else return ATfalse;
 
    // MATCHED LiteralConstant_BLC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_BLC);
 
    return ATtrue;
  }
 
  OFP::CharLiteralConstant CharLiteralConstant;
- if (ATmatch(term, "LiteralConstant_CLC(<term>)", &CharLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_CRLC(<term>)", &CharLiteralConstant.term)) {
 
       if (ofp_traverse_CharLiteralConstant(CharLiteralConstant.term, &CharLiteralConstant)) {
          // MATCHED CharLiteralConstant
+         LiteralConstant->setCharLiteralConstant(CharLiteralConstant.newCharLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getCharLiteralConstant());
       } else return ATfalse;
 
-   // MATCHED LiteralConstant_CLC
+   // MATCHED LiteralConstant_CRLC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_CRLC);
 
    return ATtrue;
  }
@@ -1576,21 +1718,27 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, OFP::LiteralConstant* LiteralCon
 
       if (ofp_traverse_LogicalLiteralConstant(LogicalLiteralConstant.term, &LogicalLiteralConstant)) {
          // MATCHED LogicalLiteralConstant
+         LiteralConstant->setLogicalLiteralConstant(LogicalLiteralConstant.newLogicalLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getLogicalLiteralConstant());
       } else return ATfalse;
 
    // MATCHED LiteralConstant_LLC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_LLC);
 
    return ATtrue;
  }
 
  OFP::ComplexLiteralConstant ComplexLiteralConstant;
- if (ATmatch(term, "LiteralConstant_CLC(<term>)", &ComplexLiteralConstant.term)) {
+ if (ATmatch(term, "LiteralConstant_CXLC(<term>)", &ComplexLiteralConstant.term)) {
 
       if (ofp_traverse_ComplexLiteralConstant(ComplexLiteralConstant.term, &ComplexLiteralConstant)) {
          // MATCHED ComplexLiteralConstant
+         LiteralConstant->setComplexLiteralConstant(ComplexLiteralConstant.newComplexLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getComplexLiteralConstant());
       } else return ATfalse;
 
-   // MATCHED LiteralConstant_CLC
+   // MATCHED LiteralConstant_CXLC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_CXLC);
 
    return ATtrue;
  }
@@ -1600,9 +1748,12 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, OFP::LiteralConstant* LiteralCon
 
       if (ofp_traverse_RealLiteralConstant(RealLiteralConstant.term, &RealLiteralConstant)) {
          // MATCHED RealLiteralConstant
+         LiteralConstant->setRealLiteralConstant(RealLiteralConstant.newRealLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getRealLiteralConstant());
       } else return ATfalse;
 
    // MATCHED LiteralConstant_RLC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_RLC);
 
    return ATtrue;
  }
@@ -1612,9 +1763,12 @@ ATbool ofp_traverse_LiteralConstant(ATerm term, OFP::LiteralConstant* LiteralCon
 
       if (ofp_traverse_IntLiteralConstant(IntLiteralConstant.term, &IntLiteralConstant)) {
          // MATCHED IntLiteralConstant
+         LiteralConstant->setIntLiteralConstant(IntLiteralConstant.newIntLiteralConstant());
+         LiteralConstant->inheritPayload(LiteralConstant->getIntLiteralConstant());
       } else return ATfalse;
 
    // MATCHED LiteralConstant_ILC
+   LiteralConstant->setOptionType(OFP::LiteralConstant::LiteralConstant_ILC);
 
    return ATtrue;
  }
@@ -1969,7 +2123,7 @@ ATbool ofp_traverse_SignedIntLiteralConstant(ATerm term, OFP::SignedIntLiteralCo
 ATbool ofp_traverse_IntLiteralConstant(ATerm term, OFP::IntLiteralConstant* IntLiteralConstant)
 {
 #ifdef DEBUG_PRINT
-   printf("IntLiteralConstant: %s\n", ATwriteToString(term));
+   printf("IntLiteralConstant(F): %s\n", ATwriteToString(term));
 #endif
 
  OFP::DigitString DigitString;
@@ -1978,15 +2132,40 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, OFP::IntLiteralConstant* IntL
 
       if (ofp_traverse_DigitString(DigitString.term, &DigitString)) {
          // MATCHED DigitString
+         IntLiteralConstant->setDigitString(DigitString.newDigitString());
+         IntLiteralConstant->inheritPayload(IntLiteralConstant->getDigitString());
+#ifdef OFP_CLIENT
+         SgUntypedValueExpression* value = dynamic_cast<SgUntypedValueExpression*>(IntLiteralConstant->getPayload());
+         value->set_literal_flag(true);
+         value->set_constant_flag(true);
+         value->set_type(SgToken::FORTRAN_INTEGER);
+#endif
       } else return ATfalse;
 
    if (ATmatch(KindParam.term, "Some(<term>)", &KindParam.term)) {
    if (ATmatch(KindParam.term, "(<term>)", &KindParam.term)) {
       if (ofp_traverse_KindParam(KindParam.term, &KindParam)) {
          // MATCHED KindParam
+         IntLiteralConstant->setKindParam(KindParam.newKindParam());
+#ifdef OFP_CLIENT
+         OFP::KindParam*           kindParam = IntLiteralConstant->getKindParam();
+         SgUntypedValueExpression* kindExpr  = dynamic_cast<SgUntypedValueExpression*>(kindParam->getPayload());
+         SgUntypedValueExpression*    value  = dynamic_cast<SgUntypedValueExpression*>(IntLiteralConstant->getPayload());
+         std::string str = kindExpr->get_value();
+         value->set_kind(str);
+#endif
+#ifdef DEBUG_OFP_CLIENT
+         printf("ROSE IntLiteralConstant(kind): ...... ");
+         unparser->unparseExpr(kindExpr);  printf("\n");
+#endif
       } else return ATfalse;
    }
    }
+
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE IntLiteralConstant ............. ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(IntLiteralConstant->getPayload()));  printf("\n");
+#endif
 
    return ATtrue;
  }
@@ -2000,17 +2179,19 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, OFP::IntLiteralConstant* IntL
 ATbool ofp_traverse_KindParam(ATerm term, OFP::KindParam* KindParam)
 {
 #ifdef DEBUG_PRINT
-   printf("KindParam: %s\n", ATwriteToString(term));
+   printf("KindParam(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::ScalarIntConstantName ScalarIntConstantName;
  if (ATmatch(term, "KindParam_SICN(<term>)", &ScalarIntConstantName.term)) {
 
       if (ofp_traverse_ScalarIntConstantName(ScalarIntConstantName.term, &ScalarIntConstantName)) {
-         // MATCHED ScalarIntConstantName
+         // MATCHED ScalarIntConstantName                                                                       
+         KindParam->setScalarIntConstantName(ScalarIntConstantName.newScalarIntConstantName());
       } else return ATfalse;
 
-   // MATCHED KindParam_SICN
+   // MATCHED KindParam_SICN                                                                                    
+   KindParam->setOptionType(OFP::KindParam::KindParam_SICN);
 
    return ATtrue;
  }
@@ -2019,10 +2200,17 @@ ATbool ofp_traverse_KindParam(ATerm term, OFP::KindParam* KindParam)
  if (ATmatch(term, "KindParam_DS(<term>)", &DigitString.term)) {
 
       if (ofp_traverse_DigitString(DigitString.term, &DigitString)) {
-         // MATCHED DigitString
+         // MATCHED DigitString                                                                                 
+         KindParam->setDigitString(DigitString.newDigitString());
+         KindParam->inheritPayload(KindParam->getDigitString());
+#ifdef DEBUG_OFP_CLIENT
+         printf("ROSE KindParam: ..................... ");
+         unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(KindParam->getPayload()));  printf("\n");
+#endif
       } else return ATfalse;
 
-   // MATCHED KindParam_DS
+   // MATCHED KindParam_DS                                                                                      
+   KindParam->setOptionType(OFP::KindParam::KindParam_DS);
 
    return ATtrue;
  }
@@ -2036,7 +2224,7 @@ ATbool ofp_traverse_KindParam(ATerm term, OFP::KindParam* KindParam)
 ATbool ofp_traverse_DigitString(ATerm term, OFP::DigitString* DigitString)
 {
 #ifdef DEBUG_PRINT
-   printf("DigitString: %s\n", ATwriteToString(term));
+   printf("DigitString(F): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Icon Icon;
@@ -2044,7 +2232,14 @@ ATbool ofp_traverse_DigitString(ATerm term, OFP::DigitString* DigitString)
 
       if (ofp_traverse_Icon(Icon.term, &Icon)) {
          // MATCHED Icon
+         DigitString->setIcon(Icon.newIcon());
+         DigitString->inheritPayload(DigitString->getIcon());
       } else return ATfalse;
+
+#ifdef DEBUG_OFP_CLIENT
+      printf("ROSE DigitString: ................... ");
+      unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(DigitString->getPayload()));  printf("\n");
+#endif
 
    return ATtrue;
  }
@@ -8063,7 +8258,7 @@ ATbool ofp_traverse_CommonBlockObjectList(ATerm term, OFP::CommonBlockObjectList
 ATbool ofp_traverse_Designator(ATerm term, OFP::Designator* Designator)
 {
 #ifdef DEBUG_PRINT
-   printf("Designator: %s\n", ATwriteToString(term));
+   printf("Designator(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Substring Substring;
@@ -8071,9 +8266,12 @@ ATbool ofp_traverse_Designator(ATerm term, OFP::Designator* Designator)
 
       if (ofp_traverse_Substring(Substring.term, &Substring)) {
          // MATCHED Substring
+         Designator->setSubstring(Substring.newSubstring());
+         Designator->inheritPayload(Designator->getSubstring());
       } else return ATfalse;
 
    // MATCHED Designator_S_AMB
+   Designator->setOptionType(OFP::Designator::Designator_S_AMB);
 
    return ATtrue;
  }
@@ -8083,9 +8281,12 @@ ATbool ofp_traverse_Designator(ATerm term, OFP::Designator* Designator)
 
       if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
          // MATCHED DataRef
+         Designator->setDataRef(DataRef.newDataRef());
+         Designator->inheritPayload(Designator->getDataRef());
       } else return ATfalse;
 
    // MATCHED Designator_DR_AMB
+   Designator->setOptionType(OFP::Designator::Designator_DR_AMB);
 
    return ATtrue;
  }
@@ -8099,7 +8300,7 @@ ATbool ofp_traverse_Designator(ATerm term, OFP::Designator* Designator)
 ATbool ofp_traverse_Variable(ATerm term, OFP::Variable* Variable)
 {
 #ifdef DEBUG_PRINT
-   printf("Variable: %s\n", ATwriteToString(term));
+   printf("Variable(F): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Designator Designator;
@@ -8108,7 +8309,12 @@ ATbool ofp_traverse_Variable(ATerm term, OFP::Variable* Variable)
       if (ofp_traverse_Designator(Designator.term, &Designator)) {
          // MATCHED Designator
          Variable->setDesignator(Designator.newDesignator());
+         Variable->inheritPayload(Variable->getDesignator());
       } else return ATfalse;
+#ifdef OFP_CLIENT
+      SgUntypedRefExpression* refExpr = dynamic_cast<SgUntypedRefExpression*>(Variable->getPayload());
+      refExpr->set_variable_flag(true);
+#endif
 
    return ATtrue;
  }
@@ -8362,7 +8568,7 @@ ATbool ofp_traverse_SubstringRange(ATerm term, OFP::SubstringRange* SubstringRan
 ATbool ofp_traverse_DataRef(ATerm term, OFP::DataRef* DataRef)
 {
 #ifdef DEBUG_PRINT
-   printf("DataRef: %s\n", ATwriteToString(term));
+   printf("DataRef(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::PartRef PartRef;
@@ -8374,22 +8580,32 @@ ATbool ofp_traverse_DataRef(ATerm term, OFP::DataRef* DataRef)
       PartRef_tail = ATgetNext (PartRef_tail);
       if (ofp_traverse_PartRef(PartRef.term, &PartRef)) {
          // MATCHED PartRef
+         DataRef->appendPartRef(PartRef.newPartRef());
       } else return ATfalse;
    }
+
+#ifdef OFP_CLIENT
+   // TODO - handle PartRef list instead of just grabbing first element
+   DataRef->inheritPayload(DataRef->getPartRefList()->front());
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE DataRef: ....................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(DataRef->getPayload()));  printf("\n");
+#endif
+#endif
 
    return ATtrue;
  }
 
  return ATfalse;
 }
-
+ 
 //========================================================================================
 // R612 part-ref
 //----------------------------------------------------------------------------------------
 ATbool ofp_traverse_PartRef(ATerm term, OFP::PartRef* PartRef)
 {
 #ifdef DEBUG_PRINT
-   printf("PartRef: %s\n", ATwriteToString(term));
+   printf("PartRef(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::PartName PartName;
@@ -8399,12 +8615,19 @@ ATbool ofp_traverse_PartRef(ATerm term, OFP::PartRef* PartRef)
 
       if (ofp_traverse_PartName(PartName.term, &PartName)) {
          // MATCHED PartName
+         PartRef->setPartName(PartName.newPartName());
+#ifdef OFP_CLIENT
+         SgUntypedRefExpression* expr = new SgUntypedRefExpression(PartRef->getPartName()->getIdent()->getValue()->c_str());
+         PartRef->setPayload(expr);
+#endif
       } else return ATfalse;
 
    if (ATmatch(SectionSubscriptList.term, "Some(<term>)", &SectionSubscriptList.term)) {
    if (ATmatch(SectionSubscriptList.term, "(<term>)", &SectionSubscriptList.term)) {
       if (ofp_traverse_SectionSubscriptList(SectionSubscriptList.term, &SectionSubscriptList)) {
          // MATCHED SectionSubscriptList
+         PartRef->setSectionSubscriptList(SectionSubscriptList.newSectionSubscriptList());
+         //TODO PartRef->inheritPayload(PartRef->getSectionSubscriptList());
       } else return ATfalse;
    }
    }
@@ -8412,8 +8635,15 @@ ATbool ofp_traverse_PartRef(ATerm term, OFP::PartRef* PartRef)
    if (ATmatch(ImageSelector.term, "Some(<term>)", &ImageSelector.term)) {
       if (ofp_traverse_ImageSelector(ImageSelector.term, &ImageSelector)) {
          // MATCHED ImageSelector
+         PartRef->setImageSelector(ImageSelector.newImageSelector());
+         //TODO PartRef->inheritPayload(PartRef->getImageSelector());
       } else return ATfalse;
    }
+
+#ifdef DEBUG_OFP_CLIENT
+      printf("ROSE PartRef: ....................... ");
+      unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(PartRef->getPayload()));  printf("\n");
+#endif
 
    return ATtrue;
  }
@@ -9416,6 +9646,7 @@ ATbool ofp_traverse_DeallocOptList(ATerm term, OFP::DeallocOptList* DeallocOptLi
  return ATfalse;
 }
 
+#ifdef MOVED_TO_OFP_EXPR
 //========================================================================================
 // R309 intrinsic-operator
 //----------------------------------------------------------------------------------------
@@ -9553,6 +9784,7 @@ ATbool ofp_traverse_IntrinsicOperator(ATerm term, OFP::IntrinsicOperator* Intrin
 
  return ATfalse;
 }
+#endif
 
 //========================================================================================
 // R310 defined-operator
@@ -9630,7 +9862,7 @@ ATbool ofp_traverse_ExtendedIntrinsicOp(ATerm term, OFP::ExtendedIntrinsicOp* Ex
 ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 {
 #ifdef DEBUG_PRINT
-   printf("Primary: %s\n", ATwriteToString(term));
+   printf("Primary(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Expr Expr;
@@ -9638,9 +9870,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
+         Primary->setExpr(Expr.newExpr());
+         Primary->inheritPayload(Primary->getExpr());
       } else return ATfalse;
 
    // MATCHED Primary_E_AMB
+   Primary->setOptionType(OFP::Primary::Primary_E_AMB);
 
    return ATtrue;
  }
@@ -9650,9 +9885,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_TypeParamInquiry(TypeParamInquiry.term, &TypeParamInquiry)) {
          // MATCHED TypeParamInquiry
+         Primary->setTypeParamInquiry(TypeParamInquiry.newTypeParamInquiry());
+         Primary->inheritPayload(Primary->getTypeParamInquiry());
       } else return ATfalse;
 
    // MATCHED Primary_TPI_AMB
+   Primary->setOptionType(OFP::Primary::Primary_TPI_AMB);
 
    return ATtrue;
  }
@@ -9662,9 +9900,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_FunctionReference(FunctionReference.term, &FunctionReference)) {
          // MATCHED FunctionReference
+         Primary->setFunctionReference(FunctionReference.newFunctionReference());
+         Primary->inheritPayload(Primary->getFunctionReference());
       } else return ATfalse;
 
    // MATCHED Primary_FR_AMB
+   Primary->setOptionType(OFP::Primary::Primary_FR_AMB);
 
    return ATtrue;
  }
@@ -9674,9 +9915,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_StructureConstructor(StructureConstructor.term, &StructureConstructor)) {
          // MATCHED StructureConstructor
+         Primary->setStructureConstructor(StructureConstructor.newStructureConstructor());
+         Primary->inheritPayload(Primary->getStructureConstructor());
       } else return ATfalse;
 
    // MATCHED Primary_SC_AMB
+   Primary->setOptionType(OFP::Primary::Primary_SC_AMB);
 
    return ATtrue;
  }
@@ -9686,9 +9930,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_ArrayConstructor(ArrayConstructor.term, &ArrayConstructor)) {
          // MATCHED ArrayConstructor
+         Primary->setArrayConstructor(ArrayConstructor.newArrayConstructor());
+         Primary->inheritPayload(Primary->getArrayConstructor());
       } else return ATfalse;
 
    // MATCHED Primary_AC_AMB
+   Primary->setOptionType(OFP::Primary::Primary_AC_AMB);
 
    return ATtrue;
  }
@@ -9698,9 +9945,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_Designator(Designator.term, &Designator)) {
          // MATCHED Designator
+         Primary->setDesignator(Designator.newDesignator());
+         Primary->inheritPayload(Primary->getDesignator());
       } else return ATfalse;
 
    // MATCHED Primary_D_AMB
+   Primary->setOptionType(OFP::Primary::Primary_D_AMB);
 
    return ATtrue;
  }
@@ -9710,9 +9960,12 @@ ATbool ofp_traverse_Primary(ATerm term, OFP::Primary* Primary)
 
       if (ofp_traverse_Constant(Constant.term, &Constant)) {
          // MATCHED Constant
+         Primary->setConstant(Constant.newConstant());
+         Primary->inheritPayload(Primary->getConstant());
       } else return ATfalse;
 
    // MATCHED Primary_C_AMB
+   Primary->setOptionType(OFP::Primary::Primary_C_AMB);
 
    return ATtrue;
  }
@@ -9932,18 +10185,16 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    return ATtrue;
  }
 
- OFP::Expr Expr18;
- OFP::Expr Expr19;
- if (ATmatch(term, "LT_Expr(<term>,<term>)", &Expr.term, &Expr.term)) {
+ if (ATmatch(term, "LT_Expr(<term>,<term>)", &Expr1.term, &Expr2.term)) {
 
-      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+      if (ofp_traverse_Expr(Expr1.term, &Expr1)) {
          // MATCHED Expr
-         Expr->setExpr(Expr.newExpr());
+         Expr1->setExpr(Expr1.newExpr());
       } else return ATfalse;
 
-      if (ofp_traverse_Expr(Expr.term, &Expr)) {
+      if (ofp_traverse_Expr(Expr2.term, &Expr2)) {
          // MATCHED Expr
-         Expr->setExpr(Expr.newExpr());
+         Expr2->setExpr(Expr2.newExpr());
       } else return ATfalse;
 
    // MATCHED LT_Expr
@@ -10369,10 +10620,19 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, OFP::AssignmentStmt* AssignmentSt
          AssignmentStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
 
-      //TODO - WhatToDo: AssignmentStmt->payload = new SgUntypedAssignmentStatement(Label.getValue(), 
-      //                                                           (SgUntypedExpression*) Variable.payload,
+#ifdef OFP_CLIENT
+      SgUntypedExpression* lhs = dynamic_cast<SgUntypedExpression*>(AssignmentStmt->getVariable()->payload);
+      SgUntypedExpression* rhs = dynamic_cast<SgUntypedExpression*>(AssignmentStmt->getExpr()->payload);
 
-      //                                                           (SgUntypedExpression*) Expr.payload);
+      SgUntypedAssignmentStatement* stmt = new SgUntypedAssignmentStatement("", lhs, rhs);
+      AssignmentStmt->setPayload(stmt);
+
+#ifdef DEBUG_OFP_CLIENT
+      printf("ROSE AssignmentStmt: ................ ");
+      unparser->unparseStmt(dynamic_cast<SgUntypedAssignmentStatement*>(AssignmentStmt->getPayload()));  printf("\n");
+#endif
+#endif
+
    return ATtrue;
  }
 
@@ -20245,6 +20505,7 @@ ATbool ofp_traverse_AncestorModuleName(ATerm term, OFP::AncestorModuleName* Ance
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         AncestorModuleName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20264,6 +20525,7 @@ ATbool ofp_traverse_ArgName(ATerm term, OFP::ArgName* ArgName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ArgName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20283,6 +20545,7 @@ ATbool ofp_traverse_ArrayName(ATerm term, OFP::ArrayName* ArrayName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ArrayName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20302,6 +20565,7 @@ ATbool ofp_traverse_AssociateConstructName(ATerm term, OFP::AssociateConstructNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         AssociateConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20321,6 +20585,7 @@ ATbool ofp_traverse_AssociateName(ATerm term, OFP::AssociateName* AssociateName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         AssociateName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20340,6 +20605,7 @@ ATbool ofp_traverse_BindingName(ATerm term, OFP::BindingName* BindingName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         BindingName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20359,6 +20625,7 @@ ATbool ofp_traverse_BlockConstructName(ATerm term, OFP::BlockConstructName* Bloc
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         BlockConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20378,6 +20645,7 @@ ATbool ofp_traverse_BlockDataName(ATerm term, OFP::BlockDataName* BlockDataName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         BlockDataName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20397,6 +20665,7 @@ ATbool ofp_traverse_CaseConstructName(ATerm term, OFP::CaseConstructName* CaseCo
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         CaseConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20416,6 +20685,7 @@ ATbool ofp_traverse_CoarrayName(ATerm term, OFP::CoarrayName* CoarrayName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         CoarrayName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20435,6 +20705,7 @@ ATbool ofp_traverse_CommonBlockName(ATerm term, OFP::CommonBlockName* CommonBloc
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         CommonBlockName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20454,6 +20725,7 @@ ATbool ofp_traverse_ComponentName(ATerm term, OFP::ComponentName* ComponentName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ComponentName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20473,6 +20745,7 @@ ATbool ofp_traverse_ConstructName(ATerm term, OFP::ConstructName* ConstructName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20492,6 +20765,7 @@ ATbool ofp_traverse_CriticalConstructName(ATerm term, OFP::CriticalConstructName
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         CriticalConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20511,6 +20785,7 @@ ATbool ofp_traverse_DataPointerComponentName(ATerm term, OFP::DataPointerCompone
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         DataPointerComponentName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20530,6 +20805,7 @@ ATbool ofp_traverse_DoConstructName(ATerm term, OFP::DoConstructName* DoConstruc
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         DoConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20549,6 +20825,7 @@ ATbool ofp_traverse_EntityName(ATerm term, OFP::EntityName* EntityName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         EntityName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20568,6 +20845,7 @@ ATbool ofp_traverse_EntryName(ATerm term, OFP::EntryName* EntryName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         EntryName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20587,6 +20865,7 @@ ATbool ofp_traverse_ExternalName(ATerm term, OFP::ExternalName* ExternalName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ExternalName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20606,6 +20885,7 @@ ATbool ofp_traverse_FinalSubroutineName(ATerm term, OFP::FinalSubroutineName* Fi
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         FinalSubroutineName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20625,6 +20905,7 @@ ATbool ofp_traverse_ForallConstructName(ATerm term, OFP::ForallConstructName* Fo
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ForallConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20644,6 +20925,7 @@ ATbool ofp_traverse_FunctionName(ATerm term, OFP::FunctionName* FunctionName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         FunctionName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20663,6 +20945,7 @@ ATbool ofp_traverse_GenericName(ATerm term, OFP::GenericName* GenericName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         GenericName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20682,6 +20965,7 @@ ATbool ofp_traverse_IfConstructName(ATerm term, OFP::IfConstructName* IfConstruc
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         IfConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20701,6 +20985,7 @@ ATbool ofp_traverse_ImportName(ATerm term, OFP::ImportName* ImportName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ImportName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20720,6 +21005,7 @@ ATbool ofp_traverse_IndexName(ATerm term, OFP::IndexName* IndexName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         IndexName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20739,6 +21025,7 @@ ATbool ofp_traverse_IntrinsicProcedureName(ATerm term, OFP::IntrinsicProcedureNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         IntrinsicProcedureName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20758,6 +21045,7 @@ ATbool ofp_traverse_LocalName(ATerm term, OFP::LocalName* LocalName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         LocalName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20777,6 +21065,7 @@ ATbool ofp_traverse_ModuleName(ATerm term, OFP::ModuleName* ModuleName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ModuleName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20796,6 +21085,7 @@ ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         Name->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20815,6 +21105,7 @@ ATbool ofp_traverse_NamelistGroupName(ATerm term, OFP::NamelistGroupName* Nameli
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         NamelistGroupName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20826,7 +21117,7 @@ ATbool ofp_traverse_NamelistGroupName(ATerm term, OFP::NamelistGroupName* Nameli
 ATbool ofp_traverse_ObjectName(ATerm term, OFP::Name* ObjectName)
 {
 #ifdef DEBUG_PRINT
-   printf("ObjectName(F): %s\n", ATwriteToString(term));
+   printf("ObjectName: %s\n", ATwriteToString(term));
 #endif
 
  OFP::Ident Ident;
@@ -20854,6 +21145,7 @@ ATbool ofp_traverse_ObjectName(ATerm term, OFP::ObjectName* ObjectName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ObjectName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20873,6 +21165,7 @@ ATbool ofp_traverse_ParentSubmoduleName(ATerm term, OFP::ParentSubmoduleName* Pa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ParentSubmoduleName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20892,6 +21185,7 @@ ATbool ofp_traverse_ParentTypeName(ATerm term, OFP::ParentTypeName* ParentTypeNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ParentTypeName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20903,7 +21197,7 @@ ATbool ofp_traverse_ParentTypeName(ATerm term, OFP::ParentTypeName* ParentTypeNa
 ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName)
 {
 #ifdef DEBUG_PRINT
-   printf("PartName: %s\n", ATwriteToString(term));
+   printf("PartName(F): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Ident Ident;
@@ -20911,7 +21205,15 @@ ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         PartName->setIdent(Ident.newIdent());
+         PartName->inheritPayload(PartName->getIdent());
       } else return ATfalse;
+
+#ifdef DEBUG_OFP_CLIENT
+      printf("ROSE PartName: ...................... ");
+      unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(PartName->getPayload()));
+      printf("\n");
+#endif
 
    return ATtrue;
  }
@@ -20930,6 +21232,7 @@ ATbool ofp_traverse_ProcedureComponentName(ATerm term, OFP::ProcedureComponentNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ProcedureComponentName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20949,6 +21252,7 @@ ATbool ofp_traverse_ProcedureEntityName(ATerm term, OFP::ProcedureEntityName* Pr
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ProcedureEntityName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20968,6 +21272,7 @@ ATbool ofp_traverse_ProcedureName(ATerm term, OFP::ProcedureName* ProcedureName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ProcedureName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -20987,6 +21292,7 @@ ATbool ofp_traverse_ProcEntityName(ATerm term, OFP::ProcEntityName* ProcEntityNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ProcEntityName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21026,6 +21332,7 @@ ATbool ofp_traverse_ResultName(ATerm term, OFP::ResultName* ResultName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ResultName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21045,6 +21352,7 @@ ATbool ofp_traverse_ScalarIntConstantName(ATerm term, OFP::ScalarIntConstantName
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ScalarIntConstantName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21064,6 +21372,7 @@ ATbool ofp_traverse_ScalarIntVariableName(ATerm term, OFP::ScalarIntVariableName
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ScalarIntVariableName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21083,6 +21392,7 @@ ATbool ofp_traverse_ScalarVariableName(ATerm term, OFP::ScalarVariableName* Scal
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         ScalarVariableName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21102,6 +21412,7 @@ ATbool ofp_traverse_SelectConstructName(ATerm term, OFP::SelectConstructName* Se
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         SelectConstructName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21121,6 +21432,7 @@ ATbool ofp_traverse_SubmoduleName(ATerm term, OFP::SubmoduleName* SubmoduleName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         SubmoduleName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21140,6 +21452,7 @@ ATbool ofp_traverse_SubroutineName(ATerm term, OFP::SubroutineName* SubroutineNa
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         SubroutineName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21159,6 +21472,7 @@ ATbool ofp_traverse_TypeName(ATerm term, OFP::TypeName* TypeName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         TypeName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21178,6 +21492,7 @@ ATbool ofp_traverse_TypeParamName(ATerm term, OFP::TypeParamName* TypeParamName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         TypeParamName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
@@ -21197,6 +21512,7 @@ ATbool ofp_traverse_UseName(ATerm term, OFP::UseName* UseName)
 
       if (ofp_traverse_Ident(Ident.term, &Ident)) {
          // MATCHED Ident
+         UseName->setIdent(Ident.newIdent());
       } else return ATfalse;
 
    return ATtrue;
