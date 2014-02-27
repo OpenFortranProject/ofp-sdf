@@ -894,6 +894,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_WhereConstruct(WhereConstruct.term, &WhereConstruct)) {
          // MATCHED WhereConstruct
          ExecutableConstruct->setWhereConstruct(WhereConstruct.newWhereConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getWhereConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_WC
@@ -908,6 +909,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_SelectTypeConstruct(SelectTypeConstruct.term, &SelectTypeConstruct)) {
          // MATCHED SelectTypeConstruct
          ExecutableConstruct->setSelectTypeConstruct(SelectTypeConstruct.newSelectTypeConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getSelectTypeConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_STC
@@ -922,6 +924,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_IfConstruct(IfConstruct.term, &IfConstruct)) {
          // MATCHED IfConstruct
          ExecutableConstruct->setIfConstruct(IfConstruct.newIfConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getIfConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_IC
@@ -936,6 +939,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_ForallConstruct(ForallConstruct.term, &ForallConstruct)) {
          // MATCHED ForallConstruct
          ExecutableConstruct->setForallConstruct(ForallConstruct.newForallConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getForallConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_FC
@@ -950,6 +954,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_CriticalConstruct(CriticalConstruct.term, &CriticalConstruct)) {
          // MATCHED CriticalConstruct
          ExecutableConstruct->setCriticalConstruct(CriticalConstruct.newCriticalConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getCriticalConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_CC2
@@ -964,6 +969,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_CaseConstruct(CaseConstruct.term, &CaseConstruct)) {
          // MATCHED CaseConstruct
          ExecutableConstruct->setCaseConstruct(CaseConstruct.newCaseConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getCaseConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_CC1
@@ -978,6 +984,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_BlockConstruct(BlockConstruct.term, &BlockConstruct)) {
          // MATCHED BlockConstruct
          ExecutableConstruct->setBlockConstruct(BlockConstruct.newBlockConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getBlockConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_BC
@@ -992,6 +999,7 @@ ATbool ofp_traverse_ExecutableConstruct(ATerm term, OFP::ExecutableConstruct* Ex
       if (ofp_traverse_AssociateConstruct(AssociateConstruct.term, &AssociateConstruct)) {
          // MATCHED AssociateConstruct
          ExecutableConstruct->setAssociateConstruct(AssociateConstruct.newAssociateConstruct());
+         ExecutableConstruct->inheritPayload(ExecutableConstruct->getAssociateConstruct());
       } else return ATfalse;
 
    // MATCHED ExecutableConstruct_AC
@@ -1033,6 +1041,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndDoStmt(EndDoStmt.term, &EndDoStmt)) {
          // MATCHED EndDoStmt
          ActionStmt->setEndDoStmt(EndDoStmt.newEndDoStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EDS
@@ -1047,6 +1056,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_NonlabelDoStmt(NonlabelDoStmt.term, &NonlabelDoStmt)) {
          // MATCHED NonlabelDoStmt
          ActionStmt->setNonlabelDoStmt(NonlabelDoStmt.newNonlabelDoStmt());
+         ActionStmt->inheritPayload(ActionStmt->getNonlabelDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_NDS
@@ -1061,6 +1071,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_LabelDoStmt(LabelDoStmt.term, &LabelDoStmt)) {
          // MATCHED LabelDoStmt
          ActionStmt->setLabelDoStmt(LabelDoStmt.newLabelDoStmt());
+         ActionStmt->inheritPayload(ActionStmt->getLabelDoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_LDS
@@ -1075,6 +1086,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ComputedGotoStmt(ComputedGotoStmt.term, &ComputedGotoStmt)) {
          // MATCHED ComputedGotoStmt
          ActionStmt->setComputedGotoStmt(ComputedGotoStmt.newComputedGotoStmt());
+         ActionStmt->inheritPayload(ActionStmt->getComputedGotoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CGS
@@ -1089,6 +1101,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ArithmeticIfStmt(ArithmeticIfStmt.term, &ArithmeticIfStmt)) {
          // MATCHED ArithmeticIfStmt
          ActionStmt->setArithmeticIfStmt(ArithmeticIfStmt.newArithmeticIfStmt());
+         ActionStmt->inheritPayload(ActionStmt->getArithmeticIfStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_AIS
@@ -1103,6 +1116,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_WriteStmt(WriteStmt.term, &WriteStmt)) {
          // MATCHED WriteStmt
          ActionStmt->setWriteStmt(WriteStmt.newWriteStmt());
+         ActionStmt->inheritPayload(ActionStmt->getWriteStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS3
@@ -1117,6 +1131,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_WhereStmt(WhereStmt.term, &WhereStmt)) {
          // MATCHED WhereStmt
          ActionStmt->setWhereStmt(WhereStmt.newWhereStmt());
+         ActionStmt->inheritPayload(ActionStmt->getWhereStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS2
@@ -1131,6 +1146,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_WaitStmt(WaitStmt.term, &WaitStmt)) {
          // MATCHED WaitStmt
          ActionStmt->setWaitStmt(WaitStmt.newWaitStmt());
+         ActionStmt->inheritPayload(ActionStmt->getWaitStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_WS1
@@ -1145,6 +1161,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_UnlockStmt(UnlockStmt.term, &UnlockStmt)) {
          // MATCHED UnlockStmt
          ActionStmt->setUnlockStmt(UnlockStmt.newUnlockStmt());
+         ActionStmt->inheritPayload(ActionStmt->getUnlockStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_US
@@ -1159,6 +1176,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_SyncMemoryStmt(SyncMemoryStmt.term, &SyncMemoryStmt)) {
          // MATCHED SyncMemoryStmt
          ActionStmt->setSyncMemoryStmt(SyncMemoryStmt.newSyncMemoryStmt());
+         ActionStmt->inheritPayload(ActionStmt->getSyncMemoryStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SMS
@@ -1173,6 +1191,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_SyncImagesStmt(SyncImagesStmt.term, &SyncImagesStmt)) {
          // MATCHED SyncImagesStmt
          ActionStmt->setSyncImagesStmt(SyncImagesStmt.newSyncImagesStmt());
+         ActionStmt->inheritPayload(ActionStmt->getSyncImagesStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SIS
@@ -1187,6 +1206,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_SyncAllStmt(SyncAllStmt.term, &SyncAllStmt)) {
          // MATCHED SyncAllStmt
          ActionStmt->setSyncAllStmt(SyncAllStmt.newSyncAllStmt());
+         ActionStmt->inheritPayload(ActionStmt->getSyncAllStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SAS
@@ -1201,6 +1221,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_StopStmt(StopStmt.term, &StopStmt)) {
          // MATCHED StopStmt
          ActionStmt->setStopStmt(StopStmt.newStopStmt());
+         ActionStmt->inheritPayload(ActionStmt->getStopStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_SS
@@ -1215,6 +1236,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_RewindStmt(RewindStmt.term, &RewindStmt)) {
          // MATCHED RewindStmt
          ActionStmt->setRewindStmt(RewindStmt.newRewindStmt());
+         ActionStmt->inheritPayload(ActionStmt->getRewindStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS3
@@ -1229,6 +1251,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ReturnStmt(ReturnStmt.term, &ReturnStmt)) {
          // MATCHED ReturnStmt
          ActionStmt->setReturnStmt(ReturnStmt.newReturnStmt());
+         ActionStmt->inheritPayload(ActionStmt->getReturnStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS2
@@ -1243,6 +1266,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ReadStmt(ReadStmt.term, &ReadStmt)) {
          // MATCHED ReadStmt
          ActionStmt->setReadStmt(ReadStmt.newReadStmt());
+         ActionStmt->inheritPayload(ActionStmt->getReadStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_RS1
@@ -1257,6 +1281,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_PrintStmt(PrintStmt.term, &PrintStmt)) {
          // MATCHED PrintStmt
          ActionStmt->setPrintStmt(PrintStmt.newPrintStmt());
+         ActionStmt->inheritPayload(ActionStmt->getPrintStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PS1
@@ -1271,6 +1296,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_PointerAssignmentStmt(PointerAssignmentStmt.term, &PointerAssignmentStmt)) {
          // MATCHED PointerAssignmentStmt
          ActionStmt->setPointerAssignmentStmt(PointerAssignmentStmt.newPointerAssignmentStmt());
+         ActionStmt->inheritPayload(ActionStmt->getPointerAssignmentStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PAS
@@ -1285,6 +1311,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_OpenStmt(OpenStmt.term, &OpenStmt)) {
          // MATCHED OpenStmt
          ActionStmt->setOpenStmt(OpenStmt.newOpenStmt());
+         ActionStmt->inheritPayload(ActionStmt->getOpenStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_OS
@@ -1299,6 +1326,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_NullifyStmt(NullifyStmt.term, &NullifyStmt)) {
          // MATCHED NullifyStmt
          ActionStmt->setNullifyStmt(NullifyStmt.newNullifyStmt());
+         ActionStmt->inheritPayload(ActionStmt->getNullifyStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_NS
@@ -1313,6 +1341,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_LockStmt(LockStmt.term, &LockStmt)) {
          // MATCHED LockStmt
          ActionStmt->setLockStmt(LockStmt.newLockStmt());
+         ActionStmt->inheritPayload(ActionStmt->getLockStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_LS
@@ -1327,6 +1356,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_InquireStmt(InquireStmt.term, &InquireStmt)) {
          // MATCHED InquireStmt
          ActionStmt->setInquireStmt(InquireStmt.newInquireStmt());
+         ActionStmt->inheritPayload(ActionStmt->getInquireStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_IS2
@@ -1341,6 +1371,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_IfStmt(IfStmt.term, &IfStmt)) {
          // MATCHED IfStmt
          ActionStmt->setIfStmt(IfStmt.newIfStmt());
+         ActionStmt->inheritPayload(ActionStmt->getIfStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_IS1
@@ -1355,6 +1386,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_GotoStmt(GotoStmt.term, &GotoStmt)) {
          // MATCHED GotoStmt
          ActionStmt->setGotoStmt(GotoStmt.newGotoStmt());
+         ActionStmt->inheritPayload(ActionStmt->getGotoStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_GS
@@ -1369,6 +1401,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ForallStmt(ForallStmt.term, &ForallStmt)) {
          // MATCHED ForallStmt
          ActionStmt->setForallStmt(ForallStmt.newForallStmt());
+         ActionStmt->inheritPayload(ActionStmt->getForallStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_FS2
@@ -1383,6 +1416,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_FlushStmt(FlushStmt.term, &FlushStmt)) {
          // MATCHED FlushStmt
          ActionStmt->setFlushStmt(FlushStmt.newFlushStmt());
+         ActionStmt->inheritPayload(ActionStmt->getFlushStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_FS1
@@ -1397,6 +1431,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ExitStmt(ExitStmt.term, &ExitStmt)) {
          // MATCHED ExitStmt
          ActionStmt->setExitStmt(ExitStmt.newExitStmt());
+         ActionStmt->inheritPayload(ActionStmt->getExitStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ES2
@@ -1411,6 +1446,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ErrorStopStmt(ErrorStopStmt.term, &ErrorStopStmt)) {
          // MATCHED ErrorStopStmt
          ActionStmt->setErrorStopStmt(ErrorStopStmt.newErrorStopStmt());
+         ActionStmt->inheritPayload(ActionStmt->getErrorStopStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ESS2
@@ -1425,6 +1461,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndfileStmt(EndfileStmt.term, &EndfileStmt)) {
          // MATCHED EndfileStmt
          ActionStmt->setEndfileStmt(EndfileStmt.newEndfileStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndfileStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ES1
@@ -1439,6 +1476,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndSubroutineStmt(EndSubroutineStmt.term, &EndSubroutineStmt)) {
          // MATCHED EndSubroutineStmt
          ActionStmt->setEndSubroutineStmt(EndSubroutineStmt.newEndSubroutineStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndSubroutineStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_ESS1
@@ -1453,6 +1491,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
          // MATCHED EndProgramStmt
          ActionStmt->setEndProgramStmt(EndProgramStmt.newEndProgramStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndProgramStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EPS
@@ -1467,6 +1506,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndMpSubprogramStmt(EndMpSubprogramStmt.term, &EndMpSubprogramStmt)) {
          // MATCHED EndMpSubprogramStmt
          ActionStmt->setEndMpSubprogramStmt(EndMpSubprogramStmt.newEndMpSubprogramStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndMpSubprogramStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EMSS
@@ -1481,6 +1521,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_EndFunctionStmt(EndFunctionStmt.term, &EndFunctionStmt)) {
          // MATCHED EndFunctionStmt
          ActionStmt->setEndFunctionStmt(EndFunctionStmt.newEndFunctionStmt());
+         ActionStmt->inheritPayload(ActionStmt->getEndFunctionStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_EFS
@@ -1495,6 +1536,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_DeallocateStmt(DeallocateStmt.term, &DeallocateStmt)) {
          // MATCHED DeallocateStmt
          ActionStmt->setDeallocateStmt(DeallocateStmt.newDeallocateStmt());
+         ActionStmt->inheritPayload(ActionStmt->getDeallocateStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_DS
@@ -1509,6 +1551,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_CycleStmt(CycleStmt.term, &CycleStmt)) {
          // MATCHED CycleStmt
          ActionStmt->setCycleStmt(CycleStmt.newCycleStmt());
+         ActionStmt->inheritPayload(ActionStmt->getCycleStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS4
@@ -1523,6 +1566,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_ContinueStmt(ContinueStmt.term, &ContinueStmt)) {
          // MATCHED ContinueStmt
          ActionStmt->setContinueStmt(ContinueStmt.newContinueStmt());
+         ActionStmt->inheritPayload(ActionStmt->getContinueStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS3
@@ -1537,6 +1581,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_CloseStmt(CloseStmt.term, &CloseStmt)) {
          // MATCHED CloseStmt
          ActionStmt->setCloseStmt(CloseStmt.newCloseStmt());
+         ActionStmt->inheritPayload(ActionStmt->getCloseStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS2
@@ -1551,6 +1596,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_CallStmt(CallStmt.term, &CallStmt)) {
          // MATCHED CallStmt
          ActionStmt->setCallStmt(CallStmt.newCallStmt());
+         ActionStmt->inheritPayload(ActionStmt->getCallStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_CS1
@@ -1565,6 +1611,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_BackspaceStmt(BackspaceStmt.term, &BackspaceStmt)) {
          // MATCHED BackspaceStmt
          ActionStmt->setBackspaceStmt(BackspaceStmt.newBackspaceStmt());
+         ActionStmt->inheritPayload(ActionStmt->getBackspaceStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_BS
@@ -1594,6 +1641,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_AllocateStmt(AllocateStmt.term, &AllocateStmt)) {
          // MATCHED AllocateStmt
          ActionStmt->setAllocateStmt(AllocateStmt.newAllocateStmt());
+         ActionStmt->inheritPayload(ActionStmt->getAllocateStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_AS1
@@ -1608,6 +1656,7 @@ ATbool ofp_traverse_ActionStmt(ATerm term, OFP::ActionStmt* ActionStmt)
       if (ofp_traverse_PauseStmt(PauseStmt.term, &PauseStmt)) {
          // MATCHED PauseStmt
          ActionStmt->setPauseStmt(PauseStmt.newPauseStmt());
+         ActionStmt->inheritPayload(ActionStmt->getPauseStmt());
       } else return ATfalse;
 
    // MATCHED ActionStmt_PS2
