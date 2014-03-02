@@ -12,10 +12,15 @@ LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
-TRAVERSE_OBJS = traversal.o ofp_traverse_productions.o OFPNodes.o OFPExpr.o
+TRAVERSE_OBJS = traversal.o ofp_traverse_productions.o \
+                OFPNodes.o OFPExpr.o OFPUnparser.o UntypedASTBuilder.o
 
 EXES = build_classes build_includes build_traversals \
        traverse traverse_sig check_cons_name
+
+%.o: %.cpp
+	@echo 'Compiling file: $<'
+	@$(CPC) -c $(CFLAGS) -o $@ $<
 
 %.o: %.C
 	@echo 'Compiling file: $<'
@@ -51,12 +56,15 @@ build_list_traversals: build_list_traversals.o traverse_sig.o $(OBJS)
 build_productions: build_productions.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
-heck_cons_name: check_cons_name.o traverse_sig.o $(OBJS)
+check_cons_name: check_cons_name.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 support.o: support.c support.h
-traversal.o: traversal.C traversal.h OFPNodes.h UntypedNodes.h
+traversal.o: traversal.C traversal.h OFPNodes.h OFPExpr.h UntypedNodes.h ofp_traverse_productions.o OFPExpr.o \
+             OFPUnparser.h OFPUnparser.C
 ofp_traverse_productions.o: ofp_traverse_productions.C traversal.h OFPNodes.h UntypedNodes.h
+OFPExpr.o: OFPExpr.C OFPExpr.h UntypedNodes.h
+OFPUnparser.o: OFPUnparser.C OFPUnparser.h
 traversal_f.o: traversal_f.c traversal.h
 
 check: traverse
