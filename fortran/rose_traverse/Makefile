@@ -60,7 +60,7 @@ check_cons_name: check_cons_name.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 support.o: support.c support.h
-traversal.o: traversal.C traversal.h OFPNodes.h OFPExpr.h UntypedNodes.h ofp_traverse_productions.o OFPExpr.o \
+traversal.o: traversal.cpp traversal.h OFPNodes.h OFPExpr.h UntypedNodes.h ofp_traverse_productions.o OFPExpr.o \
              OFPUnparser.hpp OFPUnparser.cpp
 ofp_traverse_productions.o: ofp_traverse_productions.C traversal.h OFPNodes.h UntypedNodes.h
 OFPExpr.o: OFPExpr.C OFPExpr.h UntypedNodes.h
