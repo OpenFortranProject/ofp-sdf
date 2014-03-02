@@ -1,4 +1,8 @@
 #include "OFPExpr.h"
+#include <assert.h>
+#include <string>
+#include <iostream>
+#include <sstream>
 
 OFP::Expr::~Expr()
 {
@@ -9,13 +13,161 @@ OFP::Expr::~Expr()
    if (pDefinedUnaryOp)   delete pDefinedUnaryOp;
 }
 
+static
+SgUntypedBinaryOperator * buildBinaryOp(OFP::Expr * expr, SgToken::ROSE_Fortran_Operators op, const char * name)
+{
+   SgUntypedBinaryOperator * binop;
+   SgUntypedExpression * lhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr1()->getPayload());
+   SgUntypedExpression * rhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr2()->getPayload());
+   assert(rhs);  assert(lhs);
+   return new SgUntypedBinaryOperator(op, name, lhs, rhs);
+}
+
+//========================================================================================
+// R309 intrinsic-operator
+//----------------------------------------------------------------------------------------
+ATbool ofp_traverse_IntrinsicOperator(ATerm term, OFP::IntrinsicOperator* IntrinsicOperator)
+{
+#ifdef DEBUG_PRINT
+   printf("IntrinsicOperator: %s\n", ATwriteToString(term));
+#endif
+
+#ifdef NOT_YET
+ OFP::EquivOp EquivOp;
+ if (ATmatch(term, "IntrinsicOperator_EO(<term>)", &EquivOp.term)) {
+
+      if (ofp_traverse_EquivOp(EquivOp.term, &EquivOp)) {
+         // MATCHED EquivOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_EO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::OrOp OrOp;
+ if (ATmatch(term, "IntrinsicOperator_OO(<term>)", &OrOp.term)) {
+
+      if (ofp_traverse_OrOp(OrOp.term, &OrOp)) {
+         // MATCHED OrOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_OO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::AndOp AndOp;
+ if (ATmatch(term, "IntrinsicOperator_AO2(<term>)", &AndOp.term)) {
+
+      if (ofp_traverse_AndOp(AndOp.term, &AndOp)) {
+         // MATCHED AndOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_AO2
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::NotOp NotOp;
+ if (ATmatch(term, "IntrinsicOperator_NO(<term>)", &NotOp.term)) {
+
+      if (ofp_traverse_NotOp(NotOp.term, &NotOp)) {
+         // MATCHED NotOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_NO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::RelOp RelOp;
+ if (ATmatch(term, "IntrinsicOperator_RO(<term>)", &RelOp.term)) {
+
+      if (ofp_traverse_RelOp(RelOp.term, &RelOp)) {
+         // MATCHED RelOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_RO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::ConcatOp ConcatOp;
+ if (ATmatch(term, "IntrinsicOperator_CO(<term>)", &ConcatOp.term)) {
+
+      if (ofp_traverse_ConcatOp(ConcatOp.term, &ConcatOp)) {
+         // MATCHED ConcatOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_CO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::AddOp AddOp;
+ if (ATmatch(term, "IntrinsicOperator_AO1(<term>)", &AddOp.term)) {
+
+      if (ofp_traverse_AddOp(AddOp.term, &AddOp)) {
+         // MATCHED AddOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_AO1
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::MultOp MultOp;
+ if (ATmatch(term, "IntrinsicOperator_MO(<term>)", &MultOp.term)) {
+
+      if (ofp_traverse_MultOp(MultOp.term, &MultOp)) {
+         // MATCHED MultOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_MO
+
+   return ATtrue;
+ }
+#endif
+
+#ifdef NOT_YET
+ OFP::PowerOp PowerOp;
+ if (ATmatch(term, "IntrinsicOperator_PO(<term>)", &PowerOp.term)) {
+
+      if (ofp_traverse_PowerOp(PowerOp.term, &PowerOp)) {
+         // MATCHED PowerOp
+      } else return ATfalse;
+
+   // MATCHED IntrinsicOperator_PO
+
+   return ATtrue;
+ }
+#endif
+
+ return ATfalse;
+}
+
 //========================================================================================
 // R722 expr
 //----------------------------------------------------------------------------------------
 ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 {
 #ifdef DEBUG_PRINT
-   printf("Expr: %s\n", ATwriteToString(term));
+   printf("Expr(W): %s\n", ATwriteToString(term));
 #endif
 
  OFP::Expr Expr1, Expr2;
@@ -196,6 +348,14 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED LT_Expr
    Expr->setOptionType(OFP::Expr::LT_Expr);
+#ifdef OFP_CLIENT
+   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_LT, "<");
+   Expr->setPayload(binop);
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE LT_Expr: ....................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
+#endif
+#endif
 
    return ATtrue;
  }
@@ -268,6 +428,14 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED MinusExpr
    Expr->setOptionType(OFP::Expr::MinusExpr);
+#ifdef OFP_CLIENT
+   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_MINUS, "-");
+   Expr->setPayload(binop);
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE MINUS_Expr: .................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
+#endif
+#endif
 
    return ATtrue;
  }
@@ -330,6 +498,14 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED DivExpr
    Expr->setOptionType(OFP::Expr::DivExpr);
+#ifdef OFP_CLIENT
+   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_DIVIDE, "/");
+   Expr->setPayload(binop);
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE DIV_Expr: ...................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
+#endif
+#endif
 
    return ATtrue;
  }
@@ -348,6 +524,14 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED MultExpr
    Expr->setOptionType(OFP::Expr::MultExpr);
+#ifdef OFP_CLIENT
+   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_TIMES, "*");
+   Expr->setPayload(binop);
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE MULT_Expr: ..................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
+#endif
+#endif
 
    return ATtrue;
  }
@@ -395,10 +579,16 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
       if (ofp_traverse_Primary(Primary.term, &Primary)) {
          // MATCHED Primary
          Expr->setPrimary(Primary.newPrimary());
+         Expr->inheritPayload(Expr->getPrimary());
       } else return ATfalse;
 
    // MATCHED Expr_P
    Expr->setOptionType(OFP::Expr::Expr_P);
+
+#ifdef DEBUG_OFP_CLIENT
+   printf("ROSE Expr: .......................... ");
+   unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(Expr->getPayload()));  printf("\n");
+#endif
 
    return ATtrue;
  }
