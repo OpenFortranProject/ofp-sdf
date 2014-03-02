@@ -1722,7 +1722,7 @@ Module(
               )
             )
           , OpDecl(
-              "AccessStmt"
+              "AccessStmt_0"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("AccessSpec"))
@@ -2156,7 +2156,7 @@ Module(
             )
 
           , OpDecl(
-              "SaveStmt"
+              "SaveStmt_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("SaveStmt"))
@@ -2174,11 +2174,11 @@ Module(
             )
 
           , OpDecl(
-              "SavedEntity"
+              "SavedEntity_CBN"
             , FunType([ConstType(SortNoArgs("CommonBlockName"))], ConstType(SortNoArgs("SavedEntity")))
             )
           , OpDecl(
-              "SavedEntity"
+              "SavedEntity_AMB"
             , FunType([ConstType(SortNoArgs("ObjectName"))], ConstType(SortNoArgs("SavedEntity")))
             )
 
@@ -2321,7 +2321,7 @@ Module(
             )
 
           , OpDecl(
-              "NamelistEntryList"
+              "NamelistEntryList_0"
             , FunType([ConstType(SortNoArgs("NamelistEntry"))], ConstType(SortNoArgs("NamelistEntryList")))
             )
           , OpDecl(
@@ -3087,7 +3087,7 @@ Module(
               )
             )
           , OpDecl(
-              "Expr"
+              "Expr_P"
             , FunType([ConstType(SortNoArgs("Primary"))], ConstType(SortNoArgs("Expr")))
             )
 
@@ -4072,7 +4072,7 @@ Module(
           , Comment("---------------------------")
 
           , OpDecl(
-              "SyncAllStmt"
+              "SyncAllStmt_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("SyncAllStmt"))
@@ -4128,7 +4128,7 @@ Module(
             )
 
           , OpDecl(
-              "SyncMemoryStmt"
+              "SyncMemoryStmt_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("SyncMemoryStmt"))
@@ -4961,14 +4961,6 @@ Module(
               )
             )
 
-          , OpDecl(
-              "FormatStmt"
-            , FunType(
-                [ConstType(SortNoArgs("Label")), ConstType(SortNoArgs("FormatSpecification")), ConstType(SortNoArgs("EOS"))]
-              , ConstType(SortNoArgs("FormatStmt"))
-              )
-            )
-
 
           , Comment("Section/Clause 10 Input/Output editing")
           , Comment("-----------------------------------------------------------------------------------------")
@@ -4982,7 +4974,7 @@ Module(
             )
 
           , OpDecl(
-              "FormatSpecification"
+              "FormatSpecification_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("FormatItems")]))]
               , ConstType(SortNoArgs("FormatSpecification"))
@@ -4997,7 +4989,7 @@ Module(
             )
 
           , OpDecl(
-              "FormatItems"
+              "FormatItems_0"
             , FunType([ConstType(SortNoArgs("FormatItem"))], ConstType(SortNoArgs("FormatItems")))
             )
           , OpDecl(
@@ -5560,7 +5552,7 @@ Module(
             )
 
           , OpDecl(
-              "EndBlockDataStmt"
+              "EndBlockDataStmt_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("EndBlockDataStmt"))
@@ -5693,7 +5685,7 @@ Module(
           , OpDecl("DefinedIoGenericSpec_RF", ConstType(SortNoArgs("DefinedIoGenericSpec")))
 
           , OpDecl(
-              "ImportStmt"
+              "ImportStmt_0"
             , FunType(
                 [ConstType(Sort("Option", [SortNoArgs("Label")])), ConstType(SortNoArgs("EOS"))]
               , ConstType(SortNoArgs("ImportStmt"))
@@ -5897,7 +5889,7 @@ Module(
             )
 
           , OpDecl(
-              "ActualArg"
+              "ActualArg_ARS"
             , FunType([ConstType(SortNoArgs("AltReturnSpec"))], ConstType(SortNoArgs("ActualArg")))
             )
           , OpDecl(
@@ -6014,7 +6006,7 @@ Module(
             )
 
           , OpDecl(
-              "SubroutineStmt"
+              "SubroutineStmt_0"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(Sort("Option", [SortNoArgs("Prefix")]))
@@ -6111,7 +6103,7 @@ Module(
             )
 
           , OpDecl(
-              "EntryStmt"
+              "EntryStmt_0"
             , FunType(
                 [ ConstType(Sort("Option", [SortNoArgs("Label")]))
                 , ConstType(SortNoArgs("EntryName"))
