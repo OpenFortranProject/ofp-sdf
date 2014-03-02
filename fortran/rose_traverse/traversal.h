@@ -2,11 +2,16 @@
 #define	OFP_TRAVERSAL_H
 
 #define DEBUG_PRINT
+#define OFP_CLIENT
+#define DEBUG_OFP_CLIENT
 
 #include <aterm2.h>
 
 #include "OFPNodes.h"
+#include "OFPUnparser.h"
 #include "junk_traverse.hpp"
+
+extern OFP::Unparser* unparser;
 
 #ifdef OBSOLETE
 namespace OFP {
