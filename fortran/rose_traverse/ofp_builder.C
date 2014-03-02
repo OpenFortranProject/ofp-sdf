@@ -64,6 +64,14 @@ ATerm ofp_getUniqueSymbol(ATermTable table, ATerm symbol)
    return sym;   
 }
 
+ATbool ofp_isListType(ATerm term)
+{
+   if (ATmatch(term, "\"List\"")) {
+      return ATtrue;
+   }
+   return ATfalse;
+}
+
 ATbool ofp_isStringType(ATerm term)
 {
    if (ATmatch(term, "\"String\"")) {
@@ -518,8 +526,15 @@ ATbool ofp_build_class_vars_decl(FILE * fp, ATermList vars)
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
       tail = ATgetNext(tail);
-      fprintf(fp, "    %s* p%s;\n", ofp_getChars(name), ofp_getChars(name));
+
+      if (ofp_isListType(type)) {
+         fprintf(fp, "    std::vector<%s*>* p%sList;\n", ofp_getChars(name), ofp_getChars(name));
+      }
+      else {
+         fprintf(fp, "    %s* p%s;\n", ofp_getChars(name), ofp_getChars(name));
+      }
    }
 
    return ATtrue;
@@ -540,8 +555,14 @@ ATbool ofp_build_class_cons(FILE * fp, ATerm name, ATermList vars)
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
       tail = ATgetNext(tail);
-      fprintf(fp, "         p%s = NULL;\n", ofp_getChars(name));
+      if (ofp_isListType(type)) {
+         fprintf(fp, "         p%sList = new std::vector<%s*>();\n", ofp_getChars(name), ofp_getChars(name));
+      }
+      else {
+         fprintf(fp, "         p%s = NULL;\n", ofp_getChars(name));
+      }
    }
 
    fprintf(fp, "      }\n");
@@ -595,11 +616,19 @@ ATbool ofp_build_class_new(FILE * fp, ATerm name, ATermList vars)
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
       nameStr = ofp_getChars(name);
       tail = ATgetNext(tail);
-      fprintf(fp, "         node->p%s = p%s;  p%s = NULL;\n", nameStr, nameStr, nameStr);
+      if (ofp_isListType(type)) {
+         fprintf(fp, "         delete node->p%sList; node->p%sList = p%sList;  p%sList = NULL;\n", nameStr, nameStr, nameStr, nameStr);
+      }
+      else {
+         fprintf(fp, "         node->p%s = p%s;  p%s = NULL;\n", nameStr, nameStr, nameStr);
+      }
    }
 
+   fprintf(fp, "         node->setOptionType(optionType);\n");
+   fprintf(fp, "         node->inheritPayload(this);\n");
    fprintf(fp, "         return node;\n");
    fprintf(fp, "      }\n\n");
 
@@ -618,9 +647,15 @@ ATbool ofp_build_class_get(FILE * fp, ATermList vars)
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
       char * nameStr = ofp_getChars(name);
       tail = ATgetNext(tail);
-      fprintf(fp, "    %s* get%s() {return p%s;}\n", nameStr, nameStr, nameStr);
+      if (ofp_isListType(type)) {
+         fprintf(fp, "    std::vector<%s*>* get%sList() {return p%sList;}\n", nameStr, nameStr, nameStr);
+      }
+      else {
+         fprintf(fp, "    %s* get%s() {return p%s;}\n", nameStr, nameStr, nameStr);
+      }
    }
    fprintf(fp, "\n");
 
@@ -639,13 +674,23 @@ ATbool ofp_build_class_set(FILE * fp, ATermList vars)
    while (! ATisEmpty(tail)) {
       ATerm head = ATgetFirst(tail);
       ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
       char * nameStr = ofp_getChars(name);
       tail = ATgetNext(tail);
-      fprintf(fp, "    void set%s(%s* ", nameStr, nameStr);
-      printLowerCase(fp, nameStr); 
-      fprintf(fp, ") {p%s = ", nameStr);
-      printLowerCase(fp, nameStr);
-      fprintf(fp, ";}\n");
+      if (ofp_isListType(type)) {
+         fprintf(fp, "    void append%s(%s* ", nameStr, nameStr);
+         printLowerCase(fp, nameStr); 
+         fprintf(fp, ") {p%sList->push_back(", nameStr);
+         printLowerCase(fp, nameStr);
+         fprintf(fp, ");}\n");
+      }
+      else {
+         fprintf(fp, "    void set%s(%s* ", nameStr, nameStr);
+         printLowerCase(fp, nameStr); 
+         fprintf(fp, ") {p%s = ", nameStr);
+         printLowerCase(fp, nameStr);
+         fprintf(fp, ";}\n");
+      }
    }
    fprintf(fp, "\n");
 
@@ -685,6 +730,7 @@ ATbool ofp_build_traversal_class_def(FILE * fp, ATerm name, ATermList cons, ATer
 ATbool ofp_build_traversal_class_destructor(FILE * fp, ATerm name, ATermList cons, ATermList vars)
 {
    char * nameStr;
+   ATermList tail = (ATermList) ATmake("<term>", vars);
 
    if (! ATmatch(name, "<str>", &nameStr)) {
       return ATfalse;
@@ -692,6 +738,20 @@ ATbool ofp_build_traversal_class_destructor(FILE * fp, ATerm name, ATermList con
 
    fprintf(fp, "OFP::%s::~%s()\n", nameStr, nameStr);
    fprintf(fp, "   {\n");
+
+   while (! ATisEmpty(tail)) {
+      ATerm head = ATgetFirst(tail);
+      ATerm name = ofp_getArgName(head);
+      ATerm type = ofp_getArgType(head);
+      nameStr = ofp_getChars(name);
+      tail = ATgetNext(tail);
+      if (ofp_isListType(type)) {
+         fprintf(fp, "      if (p%sList) delete p%sList;\n", nameStr, nameStr);
+      }
+      else {
+         fprintf(fp, "      if (p%s) delete p%s;\n", nameStr, nameStr);
+      }
+   }
    fprintf(fp, "   }\n\n");
 
    return ATtrue;
@@ -935,6 +995,7 @@ ATbool ofp_build_traversal_nonterminal(FILE * fp, ATerm symbol, ATerm prod_symbo
    fprintf(fp, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, unique, unique);
    fprintf(fp, "         // MATCHED %s\n", prod_name);
    fprintf(fp, "         %s->set%s(%s.new%s());\n", sym_name, prod_name, prod_name, prod_name);
+   fprintf(fp, "         %s->inheritPayload(%s->get%s());\n", sym_name, sym_name, prod_name);
 #ifdef USE_MATCHED_VARIABLE
    fprintf(fp, "         matched = ATtrue;\n");
 #endif
@@ -988,7 +1049,7 @@ ATbool ofp_build_traversal_production(FILE * fp, ATermTable aliasTable,
       }
       else if (ATmatch(head, "Sort(\"List\", [SortNoArgs(<term>)])", &prod_symbol)) {
          fprintf(fp, "\n");
-         ofp_build_traversal_list(fp, prod_symbol);
+         ofp_build_traversal_list(fp, symbol, prod_symbol, unique);
       }
       else if (ATmatch(head, "SortNoArgs(<term>)", &prod_symbol)) {
          fprintf(fp, "\n");  // to make spacing same as sort match
@@ -1004,28 +1065,26 @@ ATbool ofp_build_traversal_production(FILE * fp, ATermTable aliasTable,
    return ATtrue;
 }
 
-ATbool ofp_build_traversal_list(FILE * fp, ATerm name)
+ATbool ofp_build_traversal_list(FILE * fp, ATerm symbol, ATerm prod_symbol, ATerm unique_symbol)
 {
-   char * nameStr;
-   const char * percs = "%s";
-
-   if (! ATmatch(name, "<str>", &nameStr)) {
-      return ATfalse;
-   }
+   char * sym_name, * prod_name;
+   assert(ATmatch(symbol, "<str>", &sym_name));
+   assert(ATmatch(prod_symbol, "<str>", &prod_name));
 
    /** Traverse the list
     */
-   fprintf(fp, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s.term);\n", nameStr, nameStr);
+   fprintf(fp, "   ATermList %s_tail = (ATermList) ATmake(\"<term>\", %s.term);\n", prod_name, prod_name);
 #ifdef USE_MATCHED_VARIABLE
-   fprintf(fp, "   if (ATisEmpty(%s_tail)) matched = ATtrue;\n", nameStr);
+   fprintf(fp, "   if (ATisEmpty(%s_tail)) matched = ATtrue;\n", prod_name);
 #endif
-   fprintf(fp, "   while (! ATisEmpty(%s_tail)) {\n", nameStr);
-   fprintf(fp, "      %s.term = ATgetFirst(%s_tail);\n", nameStr, nameStr);
-   fprintf(fp, "      %s_tail = ATgetNext (%s_tail);\n", nameStr, nameStr);
-   fprintf(fp, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", nameStr, nameStr, nameStr);
-   fprintf(fp, "         // MATCHED %s\n", nameStr);
+   fprintf(fp, "   while (! ATisEmpty(%s_tail)) {\n", prod_name);
+   fprintf(fp, "      %s.term = ATgetFirst(%s_tail);\n", prod_name, prod_name);
+   fprintf(fp, "      %s_tail = ATgetNext (%s_tail);\n", prod_name, prod_name);
+   fprintf(fp, "      if (ofp_traverse_%s(%s.term, &%s)) {\n", prod_name, prod_name, prod_name);
+   fprintf(fp, "         // MATCHED %s\n", prod_name);
+   fprintf(fp, "         %s->append%s(%s.new%s());\n", sym_name, prod_name, prod_name, prod_name);
 #ifdef USE_MATCHED_VARIABLE
-   fprintf(fp, "         matched = ATtrue;\n", nameStr);
+   fprintf(fp, "         matched = ATtrue;\n", prod_name);
 #endif
    fprintf(fp, "      } else return ATfalse;\n");
    fprintf(fp, "   }\n");

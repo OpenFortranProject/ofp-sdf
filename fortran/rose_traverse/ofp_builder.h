@@ -78,7 +78,7 @@ ATbool        ofp_build_traversal_func_begin    (FILE * fp, ATerm name);
 ATbool        ofp_build_traversal_func_end      (FILE * fp, ATerm name, ATbool returnTrue);
 ATbool        ofp_build_traversal_production    (FILE * fp, ATermTable aliasTable, ATerm symbol, ATerm constructor, ATermList prod_symbols, ATermList args);
 ATbool        ofp_build_traversal_nonterminal   (FILE * fp, ATerm symbol, ATerm prod_symbol, ATerm unique_sym);
-ATbool        ofp_build_traversal_list          (FILE * fp, ATerm name);
+ATbool        ofp_build_traversal_list          (FILE * fp, ATerm symbol, ATerm prod_symbol, ATerm unique_sym);
 
 ATbool        ofp_traverse_Constructors         (ATerm term, pOFP_Traverse Constructors);
 
