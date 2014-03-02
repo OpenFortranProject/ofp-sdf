@@ -8,7 +8,7 @@
 #include <aterm2.h>
 
 #include "OFPNodes.h"
-#include "OFPUnparser.h"
+#include "OFPUnparser.hpp"
 #include "junk_traverse.hpp"
 
 extern OFP::Unparser* unparser;
