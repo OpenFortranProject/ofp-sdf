@@ -76,6 +76,8 @@ ATbool traverse_init()
    fprintf(fpc, "#include \"traversal.h\"\n");
    fprintf(fpc, "#include \"ofp_traverse.h\"\n\n");
 
+   fprintf(fpH, "#ifndef	JUNK_TRAVERSE_HPP\n");
+   fprintf(fpH, "#define JUNK_TRAVERSE_HPP\n\n");
    fprintf(fpH, "namespace OFP {\n\n");
 
    fprintf(fpC, "#include \"OFPNodes.h\"\n");
@@ -90,6 +92,8 @@ ATbool traverse_init()
 ATbool traverse_finalize()
 {
    fprintf(fpH, "\n} // namespace OFP\n");
+   fprintf(fpH, "\n");
+   fprintf(fpH, "#endif\n");
 
    fclose(fpc);
    fclose(fph);
