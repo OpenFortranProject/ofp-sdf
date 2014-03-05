@@ -1,13 +1,18 @@
 ATERM_ROOT = /usr/local/stratego-debug-32
+SDF_GRAMMAR_DIR = ../syntax
 
 CC  = cc
 CPC = c++
 
-# -m32 flag used in aterm build
+## -m32 flag used in aterm build on Mac OS X
 #
-ARCH = -m32
+OSX_ARCH = -m32
+OSX_ERROR_LIMIT = -ferror-limit=5
 
-CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include -ferror-limit=5
+ARCH =
+ERROR_LIMIT =
+
+CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
@@ -30,7 +35,7 @@ EXES = build_classes build_includes build_traversals \
 	@echo 'Compiling file: $<'
 	@$(CC) -c $(CFLAGS) -o $@ $<
 
-all: $(OBJS) $(EXES)
+all: $(OBJS) traverse
 
 traverse: traverse.o $(TRAVERSE_OBJS)
 	$(CPC) -o $@ $(ARCH) $< $(TRAVERSE_OBJS) $(LIBS)
@@ -39,9 +44,6 @@ traverse_sig: traverse_sig.o traversal_f.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traversal_f.o $(OBJS) $(LIBS)
 
 build_includes: build_includes.o traverse_sig.o $(OBJS)
-	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
-
-build_aliases: build_aliases.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
 
 build_classes: build_classes.o traverse_sig.o $(OBJS)
@@ -68,7 +70,7 @@ OFPUnparser.o: OFPUnparser.cpp OFPUnparser.hpp
 traversal_f.o: traversal_f.c traversal.h
 
 check: traverse
-	sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
+	sglri -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl -o testfile.f90.aterm
 	traverse testfile.f90.aterm
 
 clean:
