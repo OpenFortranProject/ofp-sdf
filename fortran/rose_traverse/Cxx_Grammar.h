@@ -83,7 +83,29 @@ class SgToken;
 class SgLocatedNode;
 class SgNode;
 
+
+ROSE_DLL_API SgUntypedProgramHeaderDeclaration* isSgUntypedProgramHeaderDeclaration(SgNode* node);
+ROSE_DLL_API const SgUntypedProgramHeaderDeclaration* isSgUntypedProgramHeaderDeclaration(const SgNode* node);
+
+ROSE_DLL_API SgUntypedDeclarationStatement* isSgUntypedDeclarationStatement(SgNode* node);
+ROSE_DLL_API const SgUntypedDeclarationStatement* isSgUntypedDeclarationStatement(const SgNode* node);
+
+ROSE_DLL_API SgUntypedStatement* isSgUntypedStatement(SgNode* node);
+ROSE_DLL_API const SgUntypedStatement* isSgUntypedStatement(const SgNode* node);
+
+ROSE_DLL_API SgUntypedType* isSgUntypedType(SgNode* node);
+ROSE_DLL_API const SgUntypedType* isSgUntypedType(const SgNode* node);
+
+#ifdef NOT_YET
 extern const uint8_t rose_ClassHierarchyCastTable[783][98] ;
+
+#define IS_SgUntypedProgramHeaderDeclaration_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedProgramHeaderDeclaration::static_variant >> 3] & (1 << (SgUntypedProgramHeaderDeclaration::static_variant & 7)))) ? ((SgUntypedProgramHeaderDeclaration*) (node)) : NULL) : NULL)
+
+#define IS_SgUntypedDeclarationStatement_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedDeclarationStatement::static_variant >> 3] & (1 << (SgUntypedDeclarationStatement::static_variant & 7)))) ? ((SgUntypedDeclarationStatement*) (node)) : NULL) : NULL)
+
+#define IS_SgUntypedStatement_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedStatement::static_variant >> 3] & (1 << (SgUntypedStatement::static_variant & 7)))) ? ((SgUntypedStatement*) (node)) : NULL) : NULL)
+
+#define IS_SgUntypedType_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedType::static_variant >> 3] & (1 << (SgUntypedType::static_variant & 7)))) ? ((SgUntypedType*) (node)) : NULL) : NULL)
 
 ROSE_DLL_API SgUntypedUnaryOperator* isSgUntypedUnaryOperator(SgNode* node);
 ROSE_DLL_API const SgUntypedUnaryOperator* isSgUntypedUnaryOperator(const SgNode* node);
@@ -115,9 +137,7 @@ ROSE_DLL_API const SgUntypedImplicitDeclaration* isSgUntypedImplicitDeclaration(
 ROSE_DLL_API SgUntypedVariableDeclaration* isSgUntypedVariableDeclaration(SgNode* node);
 ROSE_DLL_API const SgUntypedVariableDeclaration* isSgUntypedVariableDeclaration(const SgNode* node);
 #define IS_SgUntypedVariableDeclaration_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedVariableDeclaration::static_variant >> 3] & (1 << (SgUntypedVariableDeclaration::static_variant & 7)))) ? ((SgUntypedVariableDeclaration*) (node)) : NULL) : NULL)
-ROSE_DLL_API SgUntypedProgramHeaderDeclaration* isSgUntypedProgramHeaderDeclaration(SgNode* node);
-ROSE_DLL_API const SgUntypedProgramHeaderDeclaration* isSgUntypedProgramHeaderDeclaration(const SgNode* node);
-#define IS_SgUntypedProgramHeaderDeclaration_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedProgramHeaderDeclaration::static_variant >> 3] & (1 << (SgUntypedProgramHeaderDeclaration::static_variant & 7)))) ? ((SgUntypedProgramHeaderDeclaration*) (node)) : NULL) : NULL)
+
 ROSE_DLL_API SgUntypedSubroutineDeclaration* isSgUntypedSubroutineDeclaration(SgNode* node);
 ROSE_DLL_API const SgUntypedSubroutineDeclaration* isSgUntypedSubroutineDeclaration(const SgNode* node);
 #define IS_SgUntypedSubroutineDeclaration_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedSubroutineDeclaration::static_variant >> 3] & (1 << (SgUntypedSubroutineDeclaration::static_variant & 7)))) ? ((SgUntypedSubroutineDeclaration*) (node)) : NULL) : NULL)
@@ -157,15 +177,9 @@ ROSE_DLL_API const SgUntypedGlobalScope* isSgUntypedGlobalScope(const SgNode* no
 ROSE_DLL_API SgUntypedScope* isSgUntypedScope(SgNode* node);
 ROSE_DLL_API const SgUntypedScope* isSgUntypedScope(const SgNode* node);
 #define IS_SgUntypedScope_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedScope::static_variant >> 3] & (1 << (SgUntypedScope::static_variant & 7)))) ? ((SgUntypedScope*) (node)) : NULL) : NULL)
-ROSE_DLL_API SgUntypedStatement* isSgUntypedStatement(SgNode* node);
-ROSE_DLL_API const SgUntypedStatement* isSgUntypedStatement(const SgNode* node);
-#define IS_SgUntypedStatement_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedStatement::static_variant >> 3] & (1 << (SgUntypedStatement::static_variant & 7)))) ? ((SgUntypedStatement*) (node)) : NULL) : NULL)
 ROSE_DLL_API SgUntypedArrayType* isSgUntypedArrayType(SgNode* node);
 ROSE_DLL_API const SgUntypedArrayType* isSgUntypedArrayType(const SgNode* node);
 #define IS_SgUntypedArrayType_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedArrayType::static_variant >> 3] & (1 << (SgUntypedArrayType::static_variant & 7)))) ? ((SgUntypedArrayType*) (node)) : NULL) : NULL)
-ROSE_DLL_API SgUntypedType* isSgUntypedType(SgNode* node);
-ROSE_DLL_API const SgUntypedType* isSgUntypedType(const SgNode* node);
-#define IS_SgUntypedType_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedType::static_variant >> 3] & (1 << (SgUntypedType::static_variant & 7)))) ? ((SgUntypedType*) (node)) : NULL) : NULL)
 ROSE_DLL_API SgUntypedAttribute* isSgUntypedAttribute(SgNode* node);
 ROSE_DLL_API const SgUntypedAttribute* isSgUntypedAttribute(const SgNode* node);
 #define IS_SgUntypedAttribute_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedAttribute::static_variant >> 3] & (1 << (SgUntypedAttribute::static_variant & 7)))) ? ((SgUntypedAttribute*) (node)) : NULL) : NULL)
@@ -190,6 +204,7 @@ ROSE_DLL_API const SgUntypedInitializedNameList* isSgUntypedInitializedNameList(
 ROSE_DLL_API SgUntypedNode* isSgUntypedNode(SgNode* node);
 ROSE_DLL_API const SgUntypedNode* isSgUntypedNode(const SgNode* node);
 #define IS_SgUntypedNode_FAST_MACRO(node) ( (node) ? (( (rose_ClassHierarchyCastTable[(node)->variantT()][SgUntypedNode::static_variant >> 3] & (1 << (SgUntypedNode::static_variant & 7)))) ? ((SgUntypedNode*) (node)) : NULL) : NULL)
+#endif
 
 
 // Class Definition for SgUntypedNode
