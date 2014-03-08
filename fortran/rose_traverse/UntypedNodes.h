@@ -1,6 +1,9 @@
 #ifndef UNTYPED_NODES_H
 #define UNTYPED_NODES_H
 
+#define COMPILED_WITH_ROSE
+#ifndef COMPILED_WITH_ROSE
+
 #include <vector>
 #include <string>
 
@@ -16,7 +19,6 @@
 #define AstRegExAttribute int
 
 
-// DQ (3/6/2014): Added support for Untyped IR nodes.
 class SgUntypedInitializedName;
 typedef Rose_STL_Container<SgUntypedInitializedName*> SgUntypedInitializedNamePtrList;
 typedef SgUntypedInitializedNamePtrList*              SgUntypedInitializedNamePtrListPtr;
@@ -239,47 +241,15 @@ enum ROSE_Fortran_Operators
    }; // enum ROSE_Fortran_Operators
    }; // class SgToken
 
+#else
 
 #include "Cxx_Grammar.h"
 //------------------------------------------------------------------------------------------------------
 // from Cxx_Gramman.h
 //
-
-
 //------------------------------------------------------------------------------------------------------
 
-
-
-// Forward declarations
-class SgUntypedUnaryOperator;
-class SgUntypedBinaryOperator;
-class SgUntypedValueExpression;
-class SgUntypedArrayReferenceExpression;
-class SgUntypedOtherExpression;
-class SgUntypedFunctionCallOrArrayReferenceExpression;
-class SgUntypedExpression;
-class SgUntypedImplicitDeclaration;
-class SgUntypedVariableDeclaration;
-class SgUntypedProcedureHeaderDeclaration;
-class SgUntypedFunctionDeclaration;
-class SgUntypedSubroutineDeclaration;
-class SgUntypedAssignmentStatement;
-class SgUntypedFunctionCallStatement;
-class SgUntypedBlockStatement;
-class SgUntypedNode;
-class SgUntypedType;
-// CER
-class SgUntypedStatementList;
-class SgUntypedRefExpression;
-class SgUntypedBlockStatement;
-class SgUntypedFunctionDefinition;
-
-// 2014.3.6
-class SgUntypedBasicBlock;
-class SgUntypedDeclarationList;
-class SgUntypedFunctionDeclarationList;
-class SgUntypedFunctionScope;
-class SgUntypedScope;
+#ifndef COMPILED_WITH_ROSE
 
 //TODO-CER- remove?
 //typedef Rose_STL_Container<SgUntypedDeclaration*> SgUntypedDeclarationPtrList;
@@ -1265,5 +1235,6 @@ class SgUntypedSubroutineDeclaration : public SgUntypedDeclarationStatement
 
 //------------------------------------------------------------------------------------------------------
 
+#endif // COMPILED_WITH_ROSE
 
 #endif // UNTYPED_NODES_H
