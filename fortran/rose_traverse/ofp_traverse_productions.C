@@ -1993,6 +1993,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_T_STAR
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_STAR);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2001,6 +2002,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_C_STAR
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_C_STAR);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2016,6 +2018,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_C_DTS
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_C_DTS);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2031,6 +2034,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_T_DTS
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_DTS);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2046,6 +2050,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_T_ITS
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_ITS);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2061,6 +2066,7 @@ ATbool ofp_traverse_DeclarationTypeSpec(ATerm term, OFP::DeclarationTypeSpec* De
 
    // MATCHED DeclarationTypeSpec_ITS
    DeclarationTypeSpec->setOptionType(OFP::DeclarationTypeSpec::DeclarationTypeSpec_ITS);
+   ast->build_DeclarationTypeSpec(DeclarationTypeSpec);
 
    return ATtrue;
  }
@@ -2269,9 +2275,11 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, OFP::IntLiteralConstant* IntL
          IntLiteralConstant->inheritPayload(IntLiteralConstant->getDigitString());
 #ifdef OFP_CLIENT
          SgUntypedValueExpression* value = dynamic_cast<SgUntypedValueExpression*>(IntLiteralConstant->getPayload());
-         value->set_literal_flag(true);
-         value->set_constant_flag(true);
-         value->set_type(SgToken::FORTRAN_INTEGER);
+         SgUntypedType * type = value->get_type();
+         type->set_is_literal(true);
+         type->set_is_constant(true);
+         //TODO-DQ-2014.3.7 ok for a type to have a keyword
+         //type->set_keyword(SgToken::FORTRAN_INTEGER);
 #endif
       } else return ATfalse;
 
@@ -2282,14 +2290,13 @@ ATbool ofp_traverse_IntLiteralConstant(ATerm term, OFP::IntLiteralConstant* IntL
          IntLiteralConstant->setKindParam(KindParam.newKindParam());
 #ifdef OFP_CLIENT
          OFP::KindParam*           kindParam = IntLiteralConstant->getKindParam();
-         SgUntypedValueExpression* kindExpr  = dynamic_cast<SgUntypedValueExpression*>(kindParam->getPayload());
-         SgUntypedValueExpression*    value  = dynamic_cast<SgUntypedValueExpression*>(IntLiteralConstant->getPayload());
-         std::string str = kindExpr->get_value();
-         value->set_kind(str);
+         SgUntypedType*            kindType  = dynamic_cast<SgUntypedValueExpression*>(kindParam->getPayload())->get_type();
+         SgUntypedValueExpression*     expr  = dynamic_cast<SgUntypedValueExpression*>(IntLiteralConstant->getPayload());
+         expr->set_type(kindType);
 #endif
 #ifdef DEBUG_OFP_CLIENT
          printf("ROSE IntLiteralConstant(kind): ...... ");
-         unparser->unparseExpr(kindExpr);  printf("\n");
+         //unparser->unparseExpr(kindExpr);  printf("\n");
 #endif
       } else return ATfalse;
    }
@@ -5300,6 +5307,8 @@ ATbool ofp_traverse_EntityDecl(ATerm term, OFP::EntityDecl* EntityDecl)
          // MATCHED Initialization
       } else return ATfalse;
    }
+
+   ast->build_EntityDecl(EntityDecl);
 
    return ATtrue;
  }
@@ -8453,8 +8462,9 @@ ATbool ofp_traverse_Variable(ATerm term, OFP::Variable* Variable)
          Variable->inheritPayload(Variable->getDesignator());
       } else return ATfalse;
 #ifdef OFP_CLIENT
-      SgUntypedRefExpression* refExpr = dynamic_cast<SgUntypedRefExpression*>(Variable->getPayload());
-      refExpr->set_variable_flag(true);
+      SgUntypedReferenceExpression* refExpr = dynamic_cast<SgUntypedReferenceExpression*>(Variable->getPayload());
+      //TODO-CER-2014.3.7 FIXME by getting variable name
+      refExpr->set_name("FIXME");
 #endif
 
    return ATtrue;
@@ -8758,7 +8768,7 @@ ATbool ofp_traverse_PartRef(ATerm term, OFP::PartRef* PartRef)
          // MATCHED PartName
          PartRef->setPartName(PartName.newPartName());
 #ifdef OFP_CLIENT
-         SgUntypedRefExpression* expr = new SgUntypedRefExpression(PartRef->getPartName()->getIdent()->getValue()->c_str());
+         SgUntypedReferenceExpression* expr = new SgUntypedReferenceExpression(NULL, SgToken::FORTRAN_UNKNOWN, PartRef->getPartName()->getIdent()->getValue().c_str());
          PartRef->setPayload(expr);
 #endif
       } else return ATfalse;
@@ -10765,7 +10775,8 @@ ATbool ofp_traverse_AssignmentStmt(ATerm term, OFP::AssignmentStmt* AssignmentSt
       SgUntypedExpression* lhs = dynamic_cast<SgUntypedExpression*>(AssignmentStmt->getVariable()->payload);
       SgUntypedExpression* rhs = dynamic_cast<SgUntypedExpression*>(AssignmentStmt->getExpr()->payload);
 
-      SgUntypedAssignmentStatement* stmt = new SgUntypedAssignmentStatement("", lhs, rhs);
+      //TODO-CER- fix label to cons
+      SgUntypedAssignmentStatement* stmt = new SgUntypedAssignmentStatement(NULL, lhs, rhs);
       AssignmentStmt->setPayload(stmt);
 
 #ifdef DEBUG_OFP_CLIENT
@@ -17786,6 +17797,10 @@ ATbool ofp_traverse_MainProgram(ATerm term, OFP::MainProgram* MainProgram)
       } else return ATfalse;
 
    ast->build_MainProgram(MainProgram);
+
+   printf("\n\n----------------------------\n");
+   unparser->unparseNode(MainProgram->getPayload());
+   printf("----------------------------\n\n");
 
    return ATtrue;
  }

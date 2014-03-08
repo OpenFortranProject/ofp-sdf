@@ -54,27 +54,29 @@ class Node
 class Terminal : public Node
 {
  public:
-   Terminal() : pValue(NULL)                 {}
-   Terminal(std::string * val) : pValue(val) {}
-   virtual ~Terminal()                       {if (pValue) delete pValue;}
+   Terminal() : value("")                  {}
+   Terminal(std::string val) : value(val)  {}
+   virtual ~Terminal()                     {}
 
-   std::string * getValue()           {return pValue;}
-   void          setValue(char * str) {pValue = new std::string(str);}
+   std::string & getValue()           {return value;}
+   void          setValue(char * str) {value = std::string(str);}
+
+   std::string getName() const        {return value;}
 
  protected:
-   std::string * pValue;
+   //TODO - change from pointer
+   std::string value;
 };
 
 class Dop : public Terminal
 {
  public:
    Dop() : Terminal() {}
-   Dop(std::string * val) : Terminal(val) {}
+   Dop(std::string val) : Terminal(val) {}
 
    Dop * newDop()
      {
-        Dop * node = new Dop(pValue);
-        pValue = NULL;
+        Dop * node = new Dop(value);
         node->inheritPayload(this);
         return node;
      }
@@ -84,12 +86,11 @@ class HexConstant : public Terminal
 {
  public:
    HexConstant() : Terminal() {}
-   HexConstant(std::string * val) : Terminal(val) {}
+   HexConstant(std::string val) : Terminal(val) {}
 
    HexConstant * newHexConstant()
      {
-        HexConstant * node = new HexConstant(pValue);
-        pValue = NULL;
+        HexConstant * node = new HexConstant(value);
         node->inheritPayload(this);
         return node;
      }
@@ -99,12 +100,11 @@ class OctalConstant : public Terminal
 {
  public:
    OctalConstant() : Terminal() {}
-   OctalConstant(std::string * val) : Terminal(val) {}
+   OctalConstant(std::string val) : Terminal(val) {}
 
    OctalConstant * newOctalConstant()
      {
-        OctalConstant * node = new OctalConstant(pValue);
-        pValue = NULL;
+        OctalConstant * node = new OctalConstant(value);
         node->inheritPayload(this);
         return node;
      }
@@ -114,12 +114,11 @@ class BinaryConstant : public Terminal
 {
  public:
    BinaryConstant() : Terminal() {}
-   BinaryConstant(std::string * val) : Terminal(val) {}
+   BinaryConstant(std::string val) : Terminal(val) {}
 
    BinaryConstant * newBinaryConstant()
      {
-        BinaryConstant * node = new BinaryConstant(pValue);
-        pValue = NULL;
+        BinaryConstant * node = new BinaryConstant(value);
         node->inheritPayload(this);
         return node;
      }
@@ -129,12 +128,11 @@ class Rcon : public Terminal
 {
  public:
    Rcon() : Terminal() {}
-   Rcon(std::string * val) : Terminal(val) {}
+   Rcon(std::string val) : Terminal(val) {}
 
    Rcon * newRcon()
      {
-        Rcon * node = new Rcon(pValue);
-        pValue = NULL;
+        Rcon * node = new Rcon(value);
         node->inheritPayload(this);
         return node;
      }
@@ -144,12 +142,11 @@ class Scon : public Terminal
 {
  public:
    Scon() : Terminal() {}
-   Scon(std::string * val) : Terminal(val) {}
+   Scon(std::string val) : Terminal(val) {}
 
    Scon * newScon()
      {
-        Scon * node = new Scon(pValue);
-        pValue = NULL;
+        Scon * node = new Scon(value);
         node->inheritPayload(this);
         return node;
      }
@@ -159,12 +156,11 @@ class Icon : public Terminal
 {
  public:
    Icon() : Terminal() {}
-   Icon(std::string * val) : Terminal(val) {}
+   Icon(std::string val) : Terminal(val) {}
 
    Icon * newIcon()
      {
-        Icon * node = new Icon(pValue);
-        pValue = NULL;
+        Icon * node = new Icon(value);
         node->inheritPayload(this);
         return node;
      }
@@ -174,12 +170,11 @@ class Ident : public Terminal
 {
  public:
    Ident() : Terminal() {}
-   Ident(std::string * val) : Terminal(val) {}
+   Ident(std::string val) : Terminal(val) {}
 
    Ident * newIdent()
      {
-        Ident * node = new Ident(pValue);
-        pValue = NULL;
+        Ident * node = new Ident(value);
         node->inheritPayload(this);
         return node;
      }
@@ -189,12 +184,11 @@ class Letter : public Terminal
 {
  public:
    Letter() : Terminal() {}
-   Letter(std::string * val) : Terminal(val) {}
+   Letter(std::string val) : Terminal(val) {}
 
    Letter * newLetter()
      {
-        Letter * node = new Letter(pValue);
-        pValue = NULL;
+        Letter * node = new Letter(value);
         node->inheritPayload(this);
         return node;
      }
@@ -204,12 +198,11 @@ class Label : public Terminal
 {
  public:
    Label() : Terminal() {}
-   Label(std::string * val) : Terminal(val) {}
+   Label(std::string val) : Terminal(val) {}
 
    Label * newLabel()
      {
-        Label * node = new Label(pValue);
-        pValue = NULL;
+        Label * node = new Label(value);
         node->inheritPayload(this);
         return node;
      }
@@ -219,12 +212,11 @@ class LblRef : public Terminal
 {
  public:
    LblRef() : Terminal() {}
-   LblRef(std::string * val) : Terminal(val) {}
+   LblRef(std::string val) : Terminal(val) {}
 
    LblRef * newLblRef()
      {
-        LblRef * node = new LblRef(pValue);
-        pValue = NULL;
+        LblRef * node = new LblRef(value);
         node->inheritPayload(this);
         return node;
      }
@@ -234,12 +226,11 @@ class StartCommentBlock : public Terminal
 {
  public:
    StartCommentBlock() : Terminal() {}
-   StartCommentBlock(std::string * val) : Terminal(val) {}
+   StartCommentBlock(std::string val) : Terminal(val) {}
 
    StartCommentBlock * newStartCommentBlock()
      {
-        StartCommentBlock * node = new StartCommentBlock(pValue);
-        pValue = NULL;
+        StartCommentBlock * node = new StartCommentBlock(value);
         node->inheritPayload(this);
         return node;
      }
@@ -249,12 +240,11 @@ class EOS : public Terminal
 {
  public:
    EOS() : Terminal() {}
-   EOS(std::string * val) : Terminal(val) {}
+   EOS(std::string val) : Terminal(val) {}
 
    EOS * newEOS()
      {
-        EOS * node = new EOS(pValue);
-        pValue = NULL;
+        EOS * node = new EOS(value);
         node->inheritPayload(this);
         return node;
      }

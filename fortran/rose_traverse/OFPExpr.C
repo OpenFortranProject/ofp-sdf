@@ -1,8 +1,11 @@
 #include "OFPExpr.h"
+#include "ASTBuilder.hpp"
 #include <assert.h>
 #include <string>
 #include <iostream>
 #include <sstream>
+
+extern OFP::ASTBuilder * ast;
 
 OFP::Expr::~Expr()
 {
@@ -11,16 +14,6 @@ OFP::Expr::~Expr()
    if (pPrimary)          delete pPrimary;
    if (pDefinedBinaryOp)  delete pDefinedBinaryOp;
    if (pDefinedUnaryOp)   delete pDefinedUnaryOp;
-}
-
-static
-SgUntypedBinaryOperator * buildBinaryOp(OFP::Expr * expr, SgToken::ROSE_Fortran_Operators op, const char * name)
-{
-   SgUntypedBinaryOperator * binop;
-   SgUntypedExpression * lhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr1()->getPayload());
-   SgUntypedExpression * rhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr2()->getPayload());
-   assert(rhs);  assert(lhs);
-   return new SgUntypedBinaryOperator(op, name, lhs, rhs);
 }
 
 //========================================================================================
@@ -348,14 +341,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED LT_Expr
    Expr->setOptionType(OFP::Expr::LT_Expr);
-#ifdef OFP_CLIENT
-   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_LT, "<");
-   Expr->setPayload(binop);
-#ifdef DEBUG_OFP_CLIENT
-   printf("ROSE LT_Expr: ....................... ");
-   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
-#endif
-#endif
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_LT, "<");
 
    return ATtrue;
  }
@@ -428,14 +415,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED MinusExpr
    Expr->setOptionType(OFP::Expr::MinusExpr);
-#ifdef OFP_CLIENT
-   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_MINUS, "-");
-   Expr->setPayload(binop);
-#ifdef DEBUG_OFP_CLIENT
-   printf("ROSE MINUS_Expr: .................... ");
-   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
-#endif
-#endif
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_MINUS, "-");
 
    return ATtrue;
  }
@@ -498,14 +479,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED DivExpr
    Expr->setOptionType(OFP::Expr::DivExpr);
-#ifdef OFP_CLIENT
-   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_DIVIDE, "/");
-   Expr->setPayload(binop);
-#ifdef DEBUG_OFP_CLIENT
-   printf("ROSE DIV_Expr: ...................... ");
-   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
-#endif
-#endif
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_DIVIDE, "/");
 
    return ATtrue;
  }
@@ -524,14 +499,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED MultExpr
    Expr->setOptionType(OFP::Expr::MultExpr);
-#ifdef OFP_CLIENT
-   SgUntypedBinaryOperator * binop = buildBinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_TIMES, "*");
-   Expr->setPayload(binop);
-#ifdef DEBUG_OFP_CLIENT
-   printf("ROSE MULT_Expr: ..................... ");
-   unparser->unparseExpr(dynamic_cast<SgUntypedBinaryOperator*>(Expr->getPayload()));  printf("\n");
-#endif
-#endif
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_TIMES, "*");
 
    return ATtrue;
  }
@@ -584,11 +553,6 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED Expr_P
    Expr->setOptionType(OFP::Expr::Expr_P);
-
-#ifdef DEBUG_OFP_CLIENT
-   printf("ROSE Expr: .......................... ");
-   unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(Expr->getPayload()));  printf("\n");
-#endif
 
    return ATtrue;
  }

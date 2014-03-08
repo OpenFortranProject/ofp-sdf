@@ -31,9 +31,13 @@ class Unparser
    Unparser(UnparseInfo & infoObj) : oss(std::cout) {info = infoObj;}
    virtual ~Unparser() {}
 
+   virtual void unparseNode(SgUntypedNode * node) = 0;
+   virtual void unparseDecl(SgUntypedDeclarationStatement * decl) = 0;
    virtual void unparseExpr(SgUntypedExpression * expr) = 0;
-   virtual void unparseStmt(SgUntypedStatement  * stmt) = 0;
+   virtual void unparseLabel(std::string label) = 0;
+   virtual void unparseName(std::string name, std::string pre, std::string post) = 0;
    virtual void unparseOpEnum(SgToken::ROSE_Fortran_Operators e) = 0;
+   virtual void unparseStmt(SgUntypedStatement  * stmt) = 0;
 
  protected:
    std::ostream & oss;
@@ -49,7 +53,11 @@ class FortranTextUnparser : public Unparser
    FortranTextUnparser(UnparseInfo & infoObj) {}
   ~FortranTextUnparser()                      {}
 
+   void unparseNode(SgUntypedNode * node);
+   void unparseDecl(SgUntypedDeclarationStatement * decl);
    void unparseExpr(SgUntypedExpression * expr);
+   void unparseLabel(std::string label);
+   void unparseName(std::string name, std::string pre, std::string post);
    void unparseStmt(SgUntypedStatement  * stmt);
    void unparseOpEnum(SgToken::ROSE_Fortran_Operators e);
 

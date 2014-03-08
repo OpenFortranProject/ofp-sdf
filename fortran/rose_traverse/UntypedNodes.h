@@ -1,44 +1,73 @@
-#include <string>
-#include <vector>
+#ifndef UNTYPED_NODES_H
+#define UNTYPED_NODES_H
 
-// Forward declarations
-class SgUntypedUnaryOperator;
-class SgUntypedBinaryOperator;
-class SgUntypedValueExpression;
-class SgUntypedArrayReferenceExpression;
-class SgUntypedOtherExpression;
-class SgUntypedFunctionCallOrArrayReferenceExpression;
-class SgUntypedExpression;
-class SgUntypedImplicitDeclaration;
-class SgUntypedVariableDeclaration;
-class SgUntypedProcedureHeaderDeclaration;
-class SgUntypedFunctionDeclaration;
-class SgUntypedSubroutineDeclaration;
-class SgUntypedDeclarationStatement;
-class SgUntypedAssignmentStatement;
-class SgUntypedFunctionCallStatement;
-class SgUntypedBlockStatement;
-class SgUntypedStatement;
-class SgUntypedNode;
-// CER
-class SgUntypedStatementList;
+#include <vector>
+#include <string>
+
+#define ROSE_DEPRECATED_FUNCTION
+#define Rose_STL_Container std::vector
+#define ROSE_DLL_API
+
+#define SgCopyHelp int
+#define RTIReturnType int
+#define ROSE_VisitorPattern int
+#define ROSE_VisitTraversal int
+#define ReferenceToPointerHandler int
+#define AstRegExAttribute int
+
+
+// DQ (3/6/2014): Added support for Untyped IR nodes.
 class SgUntypedInitializedName;
-class SgUntypedRefExpression;
-class SgUntypedBlockStatement;
+typedef Rose_STL_Container<SgUntypedInitializedName*> SgUntypedInitializedNamePtrList;
+typedef SgUntypedInitializedNamePtrList*              SgUntypedInitializedNamePtrListPtr;
+
+class SgUntypedStatement;
+typedef Rose_STL_Container<SgUntypedStatement*> SgUntypedStatementPtrList;
+typedef SgUntypedStatementPtrList*              SgUntypedStatementPtrListPtr;
+
+class SgUntypedDeclarationStatement;
+typedef Rose_STL_Container<SgUntypedDeclarationStatement*> SgUntypedDeclarationStatementPtrList;
+typedef SgUntypedDeclarationStatementPtrList*              SgUntypedDeclarationStatementPtrListPtr;
+
+class SgUntypedFunctionDeclaration;
+typedef Rose_STL_Container<SgUntypedFunctionDeclaration*> SgUntypedFunctionDeclarationPtrList;
+typedef SgUntypedFunctionDeclarationPtrList*              SgUntypedFunctionDeclarationPtrListPtr;
+
 
 class Sg_File_Info
    {
    };
 
-class SgLocatedNode
+class SgNode
+  {
+     public: 
+         virtual ~SgNode() {}
+         SgNode() {}
+  };
+
+class SgLocatedNode : public SgNode
    {
+     public: 
+         Sg_File_Info* get_startOfConstruct() const;
+         void set_startOfConstruct(Sg_File_Info* startOfConstruct);
+
+     public: 
+         virtual ~SgLocatedNode();
+
+     public: 
+         SgLocatedNode(Sg_File_Info* startOfConstruct = NULL); 
+
+     protected:
+         Sg_File_Info* p_startOfConstruct;
+
    };
 
 class SgLocatedNodeSupport: public SgLocatedNode
    {
+     public:
+         SgLocatedNodeSupport(Sg_File_Info* startOfConstruct ); 
    };
 
-   
 class SgToken : public SgLocatedNodeSupport
    {
      public: 
@@ -171,21 +200,17 @@ enum ROSE_Fortran_Keywords
       FORTRAN_WAIT = 123 + 0,
       FORTRAN_WHERE = 124 + 0,
       FORTRAN_WRITE = 125 + 0,
-      // CER
-      FORTRAN_VARIABLE = 126 + 0,
-      // CER
-      FORTRAN_VARIABLE_REF = 127 + 0,
-      // CER
-      FORTRAN_SPECIFICATION_PART = 128 + 0,
-      // CER
-      FORTRAN_UNKNOWN_TYPE = 129 + 0,
-      // CER
-      FORTRAN_MAIN_PROGRAM = 130 + 0,
-      FORTRAN_PROGRAM_STMT = 131 + 0,
-      FORTRAN_END_PROGRAM_STMT = 132 + 0,
-      FORTRAN_TYPE_DECLARATION_STMT = 133 + 0
+   // DQ (11/27/2013): Added missing entries.
+      FORTRAN_END_PROGRAM = 126 + 0,
+      FORTRAN_END_FUNCTION = 127 + 0,
+      FORTRAN_END_SUBROUTINE = 128 + 0,
+      FORTRAN_END_MODULE = 129 + 0,
+      FORTRAN_DOUBLE_COMPLEX = 130 + 0,
+      FORTRAN_TYPE = 131 + 0,
+      FORTRAN_UNKNOWN = 132 + 0
    };
 
+// Langauge specific token enums for Fortran intrinsic operators
 enum ROSE_Fortran_Operators
    {
       FORTRAN_INTRINSIC_PLUS = 0 + 10000,
@@ -211,36 +236,111 @@ enum ROSE_Fortran_Operators
       FORTRAN_INTRINSIC_OLDLE = 20 + 10000,
       FORTRAN_INTRINSIC_OLDLT = 21 + 10000,
       FORTRAN_INTRINSIC_OLDGT = 22 + 10000
-   };
+   }; // enum ROSE_Fortran_Operators
+   }; // class SgToken
 
-   };
+
+#include "Cxx_Grammar.h"
+//------------------------------------------------------------------------------------------------------
+// from Cxx_Gramman.h
+//
 
 
+//------------------------------------------------------------------------------------------------------
+
+
+
+// Forward declarations
+class SgUntypedUnaryOperator;
+class SgUntypedBinaryOperator;
+class SgUntypedValueExpression;
+class SgUntypedArrayReferenceExpression;
+class SgUntypedOtherExpression;
+class SgUntypedFunctionCallOrArrayReferenceExpression;
+class SgUntypedExpression;
+class SgUntypedImplicitDeclaration;
+class SgUntypedVariableDeclaration;
+class SgUntypedProcedureHeaderDeclaration;
+class SgUntypedFunctionDeclaration;
+class SgUntypedSubroutineDeclaration;
+class SgUntypedAssignmentStatement;
+class SgUntypedFunctionCallStatement;
+class SgUntypedBlockStatement;
+class SgUntypedNode;
+class SgUntypedType;
+// CER
+class SgUntypedStatementList;
+class SgUntypedRefExpression;
+class SgUntypedBlockStatement;
+class SgUntypedFunctionDefinition;
+
+// 2014.3.6
+class SgUntypedBasicBlock;
+class SgUntypedDeclarationList;
+class SgUntypedFunctionDeclarationList;
+class SgUntypedFunctionScope;
+class SgUntypedScope;
+
+//TODO-CER- remove?
+//typedef Rose_STL_Container<SgUntypedDeclaration*> SgUntypedDeclarationPtrList;
+typedef Rose_STL_Container<SgUntypedFunctionDeclaration*> SgUntypedFunctionDeclarationPtrList;
+// end 2014.3.6
+
+class SgUntypedInitializedName;
+typedef Rose_STL_Container<SgUntypedInitializedName*> SgUntypedInitializedNamePtrList;
+
+class SgUntypedStatement;
+typedef Rose_STL_Container<SgUntypedStatement*> SgUntypedStatementPtrList;
+
+class SgUntypedDeclarationStatement;
+typedef Rose_STL_Container<SgUntypedDeclarationStatement*> SgUntypedDeclarationStatementPtrList;
+
+ 
+#ifdef OBSOLETE_2014_3_7
 // Class Definition for SgUntypedNode
-class SgUntypedNode  : public SgLocatedNodeSupport
+class SgUntypedNode : public SgLocatedNodeSupport
    {
      public: 
 
-      enum SgNodeType
-        {
-           UNKNOWN = 0 + 20000,
+      virtual VariantT variantT() const {return V_SgUntypedNode;}
 
-           T_UntypedRefExpr      = 1 + 20000,
-           T_UntypedValueExpr    = 2 + 20000,
-           T_UntypedBinaryOp     = 3 + 20000,
+      virtual ~SgUntypedNode() {}
 
-           T_UntypedAssignmentStmt  = 1 + 30000
+      SgUntypedNode(Sg_File_Info* startOfConstruct) : start(startOfConstruct) {}
+      SgUntypedNode() : start(NULL) {}
 
-        };
+      Sg_File_Info* get_startOfConstruct()                    {return start;}
 
-         virtual ~SgUntypedNode() {}
+    protected:
+      Sg_File_Info* start;
+   };
+#endif
 
-         SgUntypedNode(Sg_File_Info* startOfConstruct ); 
-         SgUntypedNode() {} 
+#ifdef OBSOLETE_2014_3_7
 
-         virtual SgNodeType typeId() {return UNKNOWN;}
+// 2014.3.6
+class SgUntypedStatementList : public SgUntypedNode
+   {
+     public: 
+         const SgUntypedStatementPtrList&  get_stmt_list() const;
+         SgUntypedStatementPtrList& get_stmt_list(); 
+
+
+     public: 
+         virtual ~SgUntypedStatementList();
+
+
+     public: 
+         SgUntypedStatementList(Sg_File_Info* startOfConstruct ); 
+         SgUntypedStatementList(); 
+
+    protected:
+         SgUntypedStatementPtrList p_stmt_list;
+
    };
 
+
+#ifdef OBSOLETE
 class SgUntypedStatementList : public SgUntypedNode
    {
      public: 
@@ -253,7 +353,7 @@ class SgUntypedStatementList : public SgUntypedNode
           }
 
        std::vector<SgUntypedStatement*>* get_statement_list() {return p_stmt_list;}
-       std::vector<SgUntypedStatement*>* take_statement_list()
+       std::vector<SgUntypedStatement*>* give_statement_list()
           {
              std::vector<SgUntypedStatement*>* stmt_list = p_stmt_list;
              p_stmt_list = NULL;
@@ -264,17 +364,24 @@ class SgUntypedStatementList : public SgUntypedNode
      private: 
        std::vector<SgUntypedStatement*>* p_stmt_list;
    };
+#endif
 
+
+// 2014.3.6
 class SgUntypedExpression : public SgUntypedNode
    {
      public: 
-         virtual ~SgUntypedExpression() {}
+         virtual ~SgUntypedExpression();
 
+     public: 
          SgUntypedExpression(Sg_File_Info* startOfConstruct ); 
          SgUntypedExpression() {}
+
+    protected:
    };
 
-class SgUntypedUnaryOperator  : public SgUntypedExpression
+
+class SgUntypedUnaryOperator : public SgUntypedExpression
    {
      public: 
           SgToken::ROSE_Fortran_Operators get_operator_enum() const;
@@ -315,8 +422,6 @@ class SgUntypedBinaryOperator  : public SgUntypedExpression
 
          virtual ~SgUntypedBinaryOperator() {}
 
-         virtual SgNodeType typeId() {return T_UntypedBinaryOp;}
-
          SgUntypedBinaryOperator(Sg_File_Info* startOfConstruct , SgToken::ROSE_Fortran_Operators operator_enum = SgToken::FORTRAN_INTRINSIC_PLUS, std::string operator_name = "", SgUntypedExpression* lhs_operand = NULL, SgUntypedExpression* rhs_operand = NULL); 
 
          SgUntypedBinaryOperator(SgToken::ROSE_Fortran_Operators operator_enum, std::string operator_name, SgUntypedExpression* lhs_operand, SgUntypedExpression* rhs_operand)
@@ -334,6 +439,38 @@ class SgUntypedBinaryOperator  : public SgUntypedExpression
           SgUntypedExpression* p_rhs_operand;
    };
 
+
+// 2014.3.6
+class SgUntypedValueExpression : public SgUntypedExpression
+   {
+     public: 
+         std::string get_value_string() const;
+         void set_value_string(std::string value_string);
+
+     public: 
+         SgUntypedType* get_type() const;
+         void set_type(SgUntypedType* type) {p_type = type;}
+
+     public: 
+         virtual ~SgUntypedValueExpression();
+
+     public: 
+         SgUntypedValueExpression(Sg_File_Info* startOfConstruct , std::string value_string = "", SgUntypedType* type = NULL); 
+         SgUntypedValueExpression(std::string value_string, SgUntypedType* type); 
+
+    protected:
+         std::string p_value_string;
+         SgUntypedType* p_type;
+
+         //TODO-DQ-2014.3.6 consider these member variables (perhaps are all part of type)
+         //         std::string kind;                               // should be part of type
+         //         SgToken::ROSE_Fortran_Keywords type;            // e.g., FORTRAN_INTEGER
+         //         bool has_kind;
+         //         bool is_literal;
+   };
+
+
+#ifdef OBSOLETE
 class SgUntypedValueExpression  : public SgUntypedExpression
    {
      public: 
@@ -345,13 +482,9 @@ class SgUntypedValueExpression  : public SgUntypedExpression
                                                      type(SgToken::FORTRAN_UNKNOWN_TYPE),
                                                      is_constant(false), is_literal(false) {}
 
-         virtual SgNodeType typeId() {return T_UntypedValueExpr;}
-
          std::string get_value() const     {return value;}
          void set_value(std::string& val)  {value = val;}
 
-         // TODO--------------
-         // TODO - kind should be an expression
          std::string get_kind() const      {return kind;}
          void set_kind(std::string& k)     {kind = k;  has_kind=true;}
          bool hasKind()                    {return has_kind;}
@@ -373,6 +506,7 @@ class SgUntypedValueExpression  : public SgUntypedExpression
          bool is_constant;
          bool is_literal;
    };
+#endif
 
 class SgUntypedRefExpression  : public SgUntypedExpression
    {
@@ -384,8 +518,6 @@ class SgUntypedRefExpression  : public SgUntypedExpression
                                                    is_variable(false), is_constant(false)
             {
             }
-
-         virtual SgNodeType typeId() {return T_UntypedRefExpr;}
 
          // TODO - need component and array elements
 
@@ -436,14 +568,40 @@ class SgUntypedFunctionCallOrArrayReferenceExpression  : public SgUntypedExpress
 
    };
 
-class SgUntypedStatement  : public SgUntypedNode
+
+// 2014.3.6
+class SgUntypedStatement : public SgUntypedNode
+   {
+     public: 
+         std::string get_label_string() const;
+         void set_label_string(std::string label_string);
+
+     public: 
+         SgToken::ROSE_Fortran_Keywords get_statement_enum() const;
+         void set_statement_enum(SgToken::ROSE_Fortran_Keywords statement_enum);
+
+     public: 
+         virtual ~SgUntypedStatement();
+
+     public: 
+         SgUntypedStatement(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+
+    protected:
+         std::string p_label_string;
+         SgToken::ROSE_Fortran_Keywords p_statement_enum;
+
+   };
+
+
+#ifdef OBSOLETE
+class SgUntypedStatement : public SgUntypedNode
    {
      public: 
          unsigned int get_numeric_label() const;
          void set_numeric_label(unsigned int numeric_label);
          // CER
          std::string & get_string_label() {return p_string_label;}
-         SgToken::ROSE_Fortran_Keywords get_statement_enum() const;
+         SgToken::ROSE_Fortran_Keywords get_statement_enum() const {return p_statement_enum;};
          void set_statement_enum(SgToken::ROSE_Fortran_Keywords statement_enum);
 
          // CER
@@ -454,13 +612,11 @@ class SgUntypedStatement  : public SgUntypedNode
          // CER
          SgUntypedStatement() {}
 
-         SgUntypedStatement(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedStatement(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
-
-         // CER
-         SgUntypedStatement(std::string string_label, SgToken::ROSE_Fortran_Keywords statement_enum)
+         SgUntypedStatement(Sg_File_Info* startOfConstruct , std::string label_string = "",
+                            SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT)
+            : SgUntypedNode(startOfConstruct)
             {
-               p_string_label = string_label;
+               p_string_label = label_string;
                p_statement_enum = statement_enum;
             }
 
@@ -470,105 +626,227 @@ class SgUntypedStatement  : public SgUntypedNode
          std::string  p_statement_name;
          SgToken::ROSE_Fortran_Keywords p_statement_enum;
    };
+#endif
 
-class SgUntypedDeclarationStatement  : public SgUntypedStatement
+
+
+// 2014.3.6
+class SgUntypedNamedStatement : public SgUntypedStatement
+{
+     public: 
+         std::string get_statement_name() const;
+         void set_statement_name(std::string statement_name);
+
+     public: 
+         virtual ~SgUntypedNamedStatement();
+
+     public: 
+         SgUntypedNamedStatement(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT, std::string statement_name = ""); 
+
+    protected:
+         std::string p_statement_name;
+   };
+
+
+// 2014.3.6
+class SgUntypedDeclarationStatement : public SgUntypedStatement
    {
      public: 
-         virtual ~SgUntypedDeclarationStatement() {}
-         SgUntypedDeclarationStatement(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedDeclarationStatement(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum);
-         // CER
-         SgUntypedDeclarationStatement(std::string string_label, SgToken::ROSE_Fortran_Keywords statement_enum)
-            : SgUntypedStatement(string_label, statement_enum)
+         virtual ~SgUntypedDeclarationStatement();
+
+     public: 
+         SgUntypedDeclarationStatement(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+         SgUntypedDeclarationStatement(std::string label_string, SgToken::ROSE_Fortran_Keywords statement_enum); 
+
+    protected:
+
+   };
+
+
+
+#ifdef OBSOLETE
+class SgUntypedDeclarationStatement : public SgUntypedStatement
+{
+     public: 
+         virtual ~SgUntypedDeclarationStatement();
+
+     public: 
+         SgUntypedDeclarationStatement(Sg_File_Info* startOfConstruct , std::string label_string = "",
+                                       SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT)
+            : SgUntypedStatement(start, label_string, statement_enum)
             {
             }
-         SgUntypedDeclarationStatement() {}
 
-         void appendExecPart(SgUntypedStatement* stmt) {exec_part_list.push_back(stmt);}
+    protected:
 
-     protected:
-         std::vector<SgUntypedStatement*> spec_part_list;
-         std::vector<SgUntypedStatement*> exec_part_list;
+   };
+#endif
+
+
+// 2014.3.6
+class SgUntypedVariableDeclaration : public SgUntypedDeclarationStatement
+{
+     public: 
+         SgUntypedType* get_type() const;
+         void set_type(SgUntypedType* type);
+
+     public: 
+         const SgUntypedInitializedNamePtrList&  get_variables() const;
+         SgUntypedInitializedNamePtrList& get_variables(); 
+
+     public: 
+         virtual ~SgUntypedVariableDeclaration();
+
+     public: 
+         SgUntypedVariableDeclaration(Sg_File_Info* startOfConstruct , std::string label_string = "",
+                                      SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT,
+                                      SgUntypedType* type = NULL); 
+
+    protected:
+         SgUntypedType* p_type;
+         SgUntypedInitializedNamePtrList p_variables;
+
    };
 
-class SgUntypedImplicitDeclaration  : public SgUntypedDeclarationStatement
+
+#ifdef OBSOLETE
+class SgUntypedVariableDeclaration : public SgUntypedDeclarationStatement
    {
      public: 
-         virtual ~SgUntypedImplicitDeclaration() {}
-         SgUntypedImplicitDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedImplicitDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
-         // CER
-         SgUntypedImplicitDeclaration(std::string label, SgToken::ROSE_Fortran_Keywords statement_enum) {} 
-   };
+         SgUntypedType* get_type() const;
+         void set_type(SgUntypedType* type);
 
-class SgUntypedVariableDeclaration  : public SgUntypedDeclarationStatement
-   {
      public: 
-         virtual ~SgUntypedVariableDeclaration() {}
-         SgUntypedVariableDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedVariableDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
+         const SgUntypedInitializedNamePtrList&  get_variables() const;
+         SgUntypedInitializedNamePtrList& get_variables(); 
 
-         // CER
-         SgUntypedVariableDeclaration(std::string string_label, SgToken::ROSE_Fortran_Keywords statement_enum)
-            : SgUntypedDeclarationStatement(string_label, statement_enum)
+
+     public: 
+         virtual ~SgUntypedVariableDeclaration();
+
+
+     public: 
+         SgUntypedVariableDeclaration(Sg_File_Info* startOfConstruct, std::string label_string = "",
+                                      SgToken::ROSE_Fortran_Keywords stmt_enum = SgToken::FORTRAN_ABSTRACT,
+                                      SgUntypedType* type = NULL)
+            : SgUntypedDeclarationStatement(startOfConstruct, label_string, stmt_enum)
             {
+               p_type = type;
             }
 
+    protected:
+// Start of memberFunctionString
+SgUntypedType* p_type;
+          
+// End of memberFunctionString
+// Start of memberFunctionString
+SgUntypedInitializedNamePtrList p_variables;
    };
+#endif
 
-class SgUntypedProcedureHeaderDeclaration  : public SgUntypedDeclarationStatement
+
+// 2014.3.6
+class SgUntypedFunctionDeclaration : public SgUntypedDeclarationStatement
    {
      public: 
-         virtual ~SgUntypedProcedureHeaderDeclaration() {}
-         SgUntypedProcedureHeaderDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedProcedureHeaderDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
+
+         //TODO-DQ- need this for function name and type
+         std::string get_name() {return p_name;}
+         void        set_name(std::string name) {p_name = name;}
+
+         SgUntypedFunctionScope* get_scope() const;
+         void set_scope(SgUntypedFunctionScope* scope);
+
+         //TODO-DQ-2014.3.6 add end_statement
+         SgUntypedStatement* get_end_statement() const {return p_end_statement;}
+         void                set_end_statement(SgUntypedStatement* stmt) {p_end_statement = stmt;}
+
+     public: 
+         virtual ~SgUntypedFunctionDeclaration();
+
+     public: 
+         SgUntypedFunctionDeclaration(Sg_File_Info* startOfConstruct , std::string label_string = "",
+                                      SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+
+    protected:
+         SgUntypedFunctionScope* p_scope;
+         //TODO-DQ-2014.3.6 add end_statement
+         SgUntypedStatement* p_end_statement;
+         //TODO-DQ- need this for function name and type
+         std::string p_name;
+         //TODO-DQ- parameter list
+         //......
    };
 
-class SgUntypedFunctionDeclaration  : public SgUntypedDeclarationStatement
+
+// 2014.3.6
+class SgUntypedScope : public SgUntypedStatement
    {
      public: 
-      virtual ~SgUntypedFunctionDeclaration();
-         SgUntypedFunctionDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-         SgUntypedFunctionDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
+         SgUntypedDeclarationList* get_declaration_list() const;
+         void set_declaration_list(SgUntypedDeclarationList* declaration_list);
+
+     public: 
+         SgUntypedStatementList* get_statement_list() const;
+         void set_statement_list(SgUntypedStatementList* statement_list);
+
+     public: 
+         SgUntypedFunctionDeclarationList* get_function_list() const;
+         void set_function_list(SgUntypedFunctionDeclarationList* function_list);
+
+     public: 
+         virtual ~SgUntypedScope();
+
+     public: 
+         SgUntypedScope(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+
+    protected:
+         SgUntypedDeclarationList* p_declaration_list;
+         SgUntypedStatementList* p_statement_list;
+         SgUntypedFunctionDeclarationList* p_function_list;
    };
 
-class SgUntypedSubroutineDeclaration  : public SgUntypedDeclarationStatement
+
+// 2014.3.6
+class SgUntypedFunctionScope : public SgUntypedScope
    {
      public: 
-      virtual ~SgUntypedSubroutineDeclaration() {}
-      SgUntypedSubroutineDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
-      SgUntypedSubroutineDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
-      // CER
-      SgUntypedSubroutineDeclaration(std::string str_label, SgToken::ROSE_Fortran_Keywords statement_enum)
-         : SgUntypedDeclarationStatement(str_label, statement_enum)
-         {
-            p_begin_stmt = NULL;
-            p_end_stmt = NULL;
-            p_spec_part_list = NULL;
-            p_exec_part_list = NULL;
-            p_subprogram_part_list = NULL;
-         }
+         virtual ~SgUntypedFunctionScope();
 
-      // CER
-      void set_begin_statement(SgUntypedStatement* stmt) {p_begin_stmt = stmt;}
-      void set_end_statement  (SgUntypedStatement* stmt) {p_end_stmt   = stmt;}
+     public: 
+         SgUntypedFunctionScope(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
 
-      std::vector<SgUntypedStatement*>* get_spec_part_list() {return p_spec_part_list;}
-      std::vector<SgUntypedStatement*>* get_exec_part_list() {return p_exec_part_list;}
+    protected:
 
-      void set_spec_part_list (std::vector<SgUntypedStatement*>* list) {p_spec_part_list = list;}
-      void set_exec_part_list (std::vector<SgUntypedStatement*>* list) {p_exec_part_list = list;}
-      // CER - TODO - don't know what type this is (statement list?)
-      void set_subprogram_part(std::vector<SgUntypedStatement*>* list) {p_subprogram_part_list = list;}
-
-     protected:
-      SgUntypedStatement* p_begin_stmt;
-      SgUntypedStatement* p_end_stmt;
-      std::vector<SgUntypedStatement*>* p_spec_part_list;
-      std::vector<SgUntypedStatement*>* p_exec_part_list;
-      std::vector<SgUntypedStatement*>* p_subprogram_part_list;
    };
 
+
+// 2014.3.6
+class SgUntypedAssignmentStatement  : public SgUntypedStatement
+   {
+     public: 
+         SgUntypedExpression* get_lhs_operand() const;
+         void set_lhs_operand(SgUntypedExpression* lhs_operand);
+
+     public: 
+         SgUntypedExpression* get_rhs_operand() const;
+         void set_rhs_operand(SgUntypedExpression* rhs_operand);
+
+     public: 
+         virtual ~SgUntypedAssignmentStatement();
+
+     public: 
+         SgUntypedAssignmentStatement(Sg_File_Info* startOfConstruct , std::string label_string = "",
+                                      SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT,
+                                      SgUntypedExpression* lhs_operand = NULL, SgUntypedExpression* rhs_operand = NULL); 
+
+    protected:
+         SgUntypedExpression* p_lhs_operand;
+         SgUntypedExpression* p_rhs_operand;
+   };
+
+
+#ifdef OBSOLETE
 class SgUntypedAssignmentStatement  : public SgUntypedStatement
    {
      public: 
@@ -584,8 +862,6 @@ class SgUntypedAssignmentStatement  : public SgUntypedStatement
                p_rhs = rhs;
             }
 
-         virtual SgNodeType typeId() {return T_UntypedAssignmentStmt;}
-
          // TODO - CER
          SgUntypedExpression* get_lhs() {return p_lhs;}
          SgUntypedExpression* get_rhs() {return p_rhs;}
@@ -595,6 +871,37 @@ class SgUntypedAssignmentStatement  : public SgUntypedStatement
          SgUntypedExpression* p_lhs;
          SgUntypedExpression* p_rhs;
    };
+#endif
+
+
+// 2014.3.6
+class SgUntypedReferenceExpression : public SgUntypedExpression
+   {
+     public: 
+         //TODO-DQ-2014.3.6 I think these can go away
+         SgUntypedType* get_type() const;
+         void set_type(SgUntypedType* type);
+
+         //TODO-DQ-2014.3.6 I think name should replace type
+         SgUntypedInitializedName* get_name() const;
+         void set_name(SgUntypedInitializedName* initializedName);
+
+     public: 
+         virtual ~SgUntypedReferenceExpression();
+
+     public: 
+         SgUntypedReferenceExpression(Sg_File_Info* startOfConstruct , SgUntypedType* type = NULL); 
+         SgUntypedReferenceExpression(SgUntypedType* type); 
+
+    protected:
+         //TODO-DQ-2014.3.6 I think this should go away
+         SgUntypedType* p_type;
+         //TODO-DQ-2014.3.6 I think this should replace type
+         SgUntypedInitializedName* p_name;
+
+   };
+
+
 
 class SgUntypedFunctionCallStatement  : public SgUntypedStatement
    {
@@ -604,24 +911,55 @@ class SgUntypedFunctionCallStatement  : public SgUntypedStatement
          SgUntypedFunctionCallStatement(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
    };
 
-// TODO - CER
+
+// 2014.3.6
+class SgUntypedInitializedName : public SgUntypedNode
+   {
+     public: 
+         SgUntypedType* get_type() const;
+         void set_type(SgUntypedType* type);
+
+     public: 
+         std::string get_name() const;
+         void set_name(std::string name);
+
+     public: 
+         virtual ~SgUntypedInitializedName();
+
+     public: 
+         SgUntypedInitializedName(Sg_File_Info* startOfConstruct , SgUntypedType* type = NULL, std::string name = ""); 
+         SgUntypedInitializedName(SgUntypedType* type, std::string name); 
+
+    protected:
+         SgUntypedType* p_type;
+         std::string p_name;
+   };
+
+
+#ifdef OBSOLETE
 class SgUntypedInitializedName  : public SgUntypedExpression
    {
      public: 
          virtual ~SgUntypedInitializedName() {}
          SgUntypedInitializedName(Sg_File_Info* startOfConstruct ); 
          SgUntypedInitializedName();
-         // TODO - CER         
-         SgUntypedInitializedName(const char* pname) : name(pname) {}
+         SgUntypedInitializedName(Sg_File_Info* startOfConstruct , SgUntypedType* type = NULL, std::string name = "")
+            : p_name(name), p_type(type)
+            {
+            }
 
-         const std::string& getName() {return name;}
+         const std::string& getName() {return p_name;}
 
     protected:
-         std::string name;
+         std::string p_name;
+         SgUntypedType* p_type;
    };
+#endif
+
 
 // CER
-class SgUntypedBlockStatement  : public SgUntypedStatement
+#ifdef NOT_YET
+class SgUntypedBlockStatement : public SgUntypedStatement
    {
      public: 
         virtual ~SgUntypedBlockStatement();
@@ -637,3 +975,295 @@ class SgUntypedBlockStatement  : public SgUntypedStatement
          std::vector<SgUntypedStatement*> statement_list;
 
    };
+#endif
+
+
+// 2014.3.6
+class SgUntypedType : public SgUntypedNode
+   {
+     public:
+         bool get_is_constant() const;
+         void set_is_constant(bool is_constant);
+
+         //TODO-DQ-2014-3-6
+         std::string get_name() {return p_name;}
+         void set_name(std::string name) {p_name = name;}
+
+         bool has_kind() {return p_has_kind;}
+         SgUntypedExpression* get_kind() {return p_kind;}
+
+         void set_literal_flag(bool flag) {p_is_literal = flag;}
+         void set_constant_flag(bool flag) {p_is_constant = flag;}
+         void set_keyword(SgToken::ROSE_Fortran_Keywords keyword) {p_keyword = keyword;}
+
+     public: 
+         virtual ~SgUntypedType() {}
+
+     public: 
+         //TODO-DQ-2014-3-6 change constructor
+         SgUntypedType(Sg_File_Info* startOfConstruct, SgToken::ROSE_Fortran_Keywords keyword)
+            {
+               p_keyword = keyword;
+            }
+         SgUntypedType() {}
+
+    protected:
+         bool p_is_constant;
+         //TODO-DQ-2014.3.6 need following member variables
+         std::string p_name;
+
+         //TODO-DQ-2014.3.6 consider these member variables (perhaps are all part of type)
+         //         std::string kind;                               // should be part of type
+         //         SgToken::ROSE_Fortran_Keywords type;            // e.g., FORTRAN_INTEGER
+         //         bool has_kind;
+         //         bool is_literal;
+         //         bool is_class;
+         //         bool is_intrinsic;
+         //         bool is_user_defined;
+
+         SgUntypedExpression* p_kind;
+         SgToken::ROSE_Fortran_Keywords p_keyword;            // e.g., FORTRAN_INTEGER
+         bool p_has_kind;
+         bool p_is_literal;
+         bool p_is_class;
+         bool p_is_intrinsic;
+         bool p_is_user_defined;
+
+   };
+
+
+// 2014.3.6
+class SgUntypedDeclarationList : public SgUntypedNode
+   {
+     public: 
+         const SgUntypedDeclarationStatementPtrList&  get_decl_list() const;
+         SgUntypedDeclarationStatementPtrList& get_decl_list(); 
+
+     public: 
+         virtual ~SgUntypedDeclarationList();
+
+     public: 
+         SgUntypedDeclarationList(Sg_File_Info* startOfConstruct ); 
+         SgUntypedDeclarationList(); 
+
+    protected:
+         SgUntypedDeclarationStatementPtrList p_decl_list;
+   };
+
+
+#ifdef DELETE_ME
+class SgUntypedDeclarationStatement  : public SgUntypedStatement
+   {
+     public: 
+         virtual ~SgUntypedDeclarationStatement() {}
+         SgUntypedDeclarationStatement(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+         SgUntypedDeclarationStatement(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum);
+         // CER
+         SgUntypedDeclarationStatement(Sg_File_Info* start, std::string string_label, SgToken::ROSE_Fortran_Keywords stmt_enum,
+                                       SgUntypedType* type)
+            : SgUntypedStatement(start, string_label, stmt_enum)
+            {
+            }
+         SgUntypedDeclarationStatement() {}
+
+         void appendExecPart(SgUntypedStatement* stmt) {exec_part_list.push_back(stmt);}
+
+     protected:
+         std::vector<SgUntypedStatement*> spec_part_list;
+         std::vector<SgUntypedStatement*> exec_part_list;
+   };
+#endif
+
+
+// 2014.3.6
+class SgUntypedImplicitDeclaration : public SgUntypedDeclarationStatement
+   {
+     public: 
+         virtual ~SgUntypedImplicitDeclaration();
+
+     public: 
+         SgUntypedImplicitDeclaration(Sg_File_Info* startOfConstruct , std::string label_string = "", 
+                                      SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT)
+            : SgUntypedDeclarationStatement(start, label_string, statement_enum)
+            {
+            }
+
+    protected:
+
+   };
+
+
+#ifdef DELETE_ME
+class SgUntypedVariableDeclaration : public SgUntypedDeclarationStatement
+   {
+     public: 
+         virtual ~SgUntypedVariableDeclaration() {}
+         SgUntypedVariableDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+         SgUntypedVariableDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
+
+         SgUntypedVariableDeclaration(Sg_File_Info* start, std::string label_str, SgToken::ROSE_Fortran_Keywords stmt_enum,
+                                      SgUntypedType* type)
+            : SgUntypedDeclarationStatement(start, label_str, stmt_enum, type)
+            {
+            }
+
+         SgToken::ROSE_Fortran_Keywords get_type_name() {return p_type_name;}
+         void set_type_name(SgToken::ROSE_Fortran_Keywords type_name) {p_type_name = type_name;}
+
+         const std::vector<SgUntypedInitializedName*> & get_variable_name_list() {return p_variable_name_list;}
+         void append_variable_name(SgUntypedInitializedName* name) {p_variable_name_list.push_back(name);}
+
+     private: 
+         SgToken::ROSE_Fortran_Keywords p_type_name;
+         std::vector<SgUntypedInitializedName*> p_variable_name_list;
+   };
+#endif
+
+
+#ifdef OBSOLETE
+//TODO-CER- update
+class SgUntypedScopeStatement  : public SgUntypedStatement
+   {
+     public: 
+
+         virtual void append_declaration ( SgUntypedDeclarationStatement* decl );
+         virtual void append_statement   ( SgUntypedStatement* stmt );
+         virtual void append_isub_part   ( SgUntypedFunctionDefinition* fdef );
+
+     public: 
+         virtual ~SgUntypedScopeStatement();
+
+    protected:
+
+         SgUntypedDeclarationPtrList* p_decl_list;
+         SgUntypedStatementPtrList*   p_exec_list;
+         SgUntypedStatementPtrList*   p_isub_list;
+
+   };
+#endif
+
+
+#ifdef DELETE
+class SgUntypedBasicBlock  : public SgUntypedScopeStatement
+   {
+     public: 
+         const SgUntypedStatementPtrList&  get_statements() const;
+         SgUntypedStatementPtrList& get_statements(); 
+
+     public: 
+         virtual ~SgUntypedBasicBlock();
+
+    protected:
+         SgUntypedStatementPtrList p_statements;
+   };
+#endif
+
+// 2014.3.6
+class SgUntypedFunctionDeclarationList : public SgUntypedNode
+   {
+     public: 
+         const SgUntypedFunctionDeclarationPtrList&  get_func_list() const;
+         SgUntypedFunctionDeclarationPtrList& get_func_list(); 
+
+     public: 
+         virtual ~SgUntypedFunctionDeclarationList();
+
+     public: 
+         SgUntypedFunctionDeclarationList(Sg_File_Info* startOfConstruct ); 
+         SgUntypedFunctionDeclarationList(); 
+
+    protected:
+         SgUntypedFunctionDeclarationPtrList p_func_list;
+
+   };
+
+
+// 2014.3.6
+//TODO-DQ- change parent class?  //class SgUntypedProgramHeaderDeclaration : public SgUntypedDeclarationStatement
+class SgUntypedProgramHeaderDeclaration : public SgUntypedFunctionDeclaration
+   {
+     public: 
+         virtual ~SgUntypedProgramHeaderDeclaration();
+
+     public: 
+         SgUntypedProgramHeaderDeclaration(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+
+   };
+
+
+
+// 2014.3.6
+//TODO-DQ- change parent class?
+//class SgUntypedSubroutineDeclaration : public SgUntypedDeclarationStatement
+class SgUntypedSubroutineDeclaration : public SgUntypedFunctionDeclaration
+   {
+     public: 
+      //TODO-DQ-2014.3.6 - removed scope
+         SgUntypedFunctionScope* get_scope() const;
+         void set_scope(SgUntypedFunctionScope* scope);
+
+     public: 
+         virtual ~SgUntypedSubroutineDeclaration();
+
+     public: 
+         SgUntypedSubroutineDeclaration(Sg_File_Info* startOfConstruct , std::string label_string = "", SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+
+    protected:
+      //TODO-DQ-2014.3.6 - removed scope
+         SgUntypedFunctionScope* p_scope;
+
+   };
+
+
+
+#ifdef OBSOLETE
+class SgUntypedSubroutineDeclaration : public SgUntypedDeclarationStatement
+   {
+     public: 
+      virtual ~SgUntypedSubroutineDeclaration() {}
+      SgUntypedSubroutineDeclaration(Sg_File_Info* startOfConstruct , unsigned int numeric_label = 0, SgToken::ROSE_Fortran_Keywords statement_enum = SgToken::FORTRAN_ABSTRACT); 
+      SgUntypedSubroutineDeclaration(unsigned int numeric_label, SgToken::ROSE_Fortran_Keywords statement_enum); 
+      // CER
+      SgUntypedSubroutineDeclaration(Sg_File_Info* start, std::string str_label, SgToken::ROSE_Fortran_Keywords statement_enum,
+                                     SgUntypedType* type)
+         : SgUntypedDeclarationStatement(start, str_label, statement_enum, type)
+         {
+            p_begin_stmt = NULL;
+            p_end_stmt = NULL;
+            p_spec_part_list = NULL;
+            p_exec_part_list = NULL;
+            p_subprogram_part_list = NULL;
+         }
+
+      // CER
+      SgUntypedStatement* get_begin_statement() {return p_begin_stmt;}
+      SgUntypedStatement* get_end_statement  () {return p_end_stmt;}
+
+      void set_begin_statement(SgUntypedStatement* stmt) {p_begin_stmt = stmt;}
+      void set_end_statement  (SgUntypedStatement* stmt) {p_end_stmt   = stmt;}
+
+      std::vector<SgUntypedStatement*>* get_spec_part_list() {return p_spec_part_list;}
+      std::vector<SgUntypedStatement*>* get_exec_part_list() {return p_exec_part_list;}
+
+      std::vector<SgUntypedStatement*>* get_subprogram_part_list() {return p_subprogram_part_list;}
+
+      void set_spec_part_list (std::vector<SgUntypedStatement*>* list) {p_spec_part_list = list;}
+      void set_exec_part_list (std::vector<SgUntypedStatement*>* list) {p_exec_part_list = list;}
+      // CER - TODO - don't know what type this is (statement list?)
+      void set_subprogram_part(std::vector<SgUntypedStatement*>* list) {p_subprogram_part_list = list;}
+
+     protected:
+      SgUntypedStatement* p_begin_stmt;
+      SgUntypedStatement* p_end_stmt;
+      std::vector<SgUntypedStatement*>* p_spec_part_list;
+      std::vector<SgUntypedStatement*>* p_exec_part_list;
+      std::vector<SgUntypedStatement*>* p_subprogram_part_list;
+   };
+#endif
+
+#endif // OBSOLETE_2014_3_7
+
+//------------------------------------------------------------------------------------------------------
+
+
+#endif // UNTYPED_NODES_H

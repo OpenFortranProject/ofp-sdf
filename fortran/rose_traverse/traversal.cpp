@@ -127,7 +127,10 @@ ATbool ofp_traverse_Icon(ATerm term, OFP::Icon* Icon)
       Icon->setValue(Icon_val);
 
 #ifdef OFP_CLIENT
-      SgUntypedValueExpression* value = new SgUntypedValueExpression(Icon_val);
+      //TODO-CER-2014.3.7 set (or request) SgToken::FORTRAN_INTEGER);
+      SgUntypedType*             type = new SgUntypedType(NULL, "INTEGER");
+      //TODO-CER-2014.3.7 set (or request) SgToken::FORTRAN_INTEGER);
+      SgUntypedValueExpression* value = new SgUntypedValueExpression(NULL, SgToken::FORTRAN_UNKNOWN, Icon->getValue(), type);
       Icon->setPayload(value);
 #ifdef DEBUG_OFP_CLIENT
       printf("ROSE Icon: .......................... ");
@@ -152,8 +155,9 @@ ATbool ofp_traverse_Ident(ATerm term, OFP::Ident* Ident)
       // MATCHED Ident
       Ident->setValue(Ident_val);
 
-#ifdef OFP_CLIENT
-      SgUntypedValueExpression* value = new SgUntypedValueExpression(Ident_val);
+#ifdef OFP_CLIENT 
+      //TODO-CER-2014.3.7 set (or request) SgToken::FORTRAN_INTEGER);
+      SgUntypedValueExpression* value = new SgUntypedValueExpression(NULL, SgToken::FORTRAN_INTEGER, Ident->getValue(), NULL);
       Ident->setPayload(value);
 #ifdef DEBUG_OFP_CLIENT
       printf("ROSE Ident: ......................... ");

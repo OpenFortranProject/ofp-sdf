@@ -1,4 +1,5 @@
 #include "UntypedASTBuilder.hpp"
+#include "OFPExpr.h"
 #include <assert.h>
 #include <stdio.h>
 
@@ -19,41 +20,41 @@ UntypedASTBuilder::~UntypedASTBuilder()
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_SpecificationPart(SpecificationPart * specificationPart)
 {
-   SgUntypedStatement * stmt;
-   std::vector<SgUntypedStatement*>* stmtList = new std::vector<SgUntypedStatement*>();
+   SgUntypedDeclarationStatement * decl;
+   SgUntypedDeclarationList * sgDeclList = new SgUntypedDeclarationList(NULL);
 
    std::vector<UseStmt*>* useList = specificationPart->getUseStmtList();
    for (int i = 0; i < useList->size(); i++) {
-      stmt = dynamic_cast<SgUntypedStatement*>(useList->at(i)->getPayload());  assert(stmt);
-      stmtList->push_back(stmt);
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(useList->at(i)->getPayload());  assert(decl);
+      sgDeclList->get_decl_list().push_back(decl);
    }
 
    std::vector<ImportStmt*>* importList = specificationPart->getImportStmtList();
    for (int i = 0; i < importList->size(); i++) {
-      stmt = dynamic_cast<SgUntypedStatement*>(importList->at(i)->getPayload());  assert(stmt);
-      stmtList->push_back(stmt);
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(importList->at(i)->getPayload());  assert(decl);
+      sgDeclList->get_decl_list().push_back(decl);
    }
 
    ImplicitPart* implicitPart = specificationPart->getImplicitPart();
    if (implicitPart) {
-      SgUntypedStatementList * sgStmtList;
-      sgStmtList = dynamic_cast<SgUntypedStatementList*>(implicitPart->getPayload());  assert(sgStmtList);
-      std::vector<SgUntypedStatement*>* implList = sgStmtList->get_statement_list();
-      for (int i = 0; i < implList->size(); i++) {
-         stmt = dynamic_cast<SgUntypedStatement*>(implList->at(i));  assert(stmt);
-         stmtList->push_back(stmt);
+      SgUntypedDeclarationList * sgDeclList;
+      sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(implicitPart->getPayload());  assert(sgDeclList);
+      SgUntypedDeclarationStatementPtrList implList = sgDeclList->get_decl_list();
+      for (int i = 0; i < implList.size(); i++) {
+         decl = dynamic_cast<SgUntypedDeclarationStatement*>(implList.at(i));  assert(decl);
+         sgDeclList->get_decl_list().push_back(decl);
       }
    }
 
    std::vector<DeclarationConstruct*>* declList = specificationPart->getDeclarationConstructList();
    for (int i = 0; i < declList->size(); i++) {
-      stmt = dynamic_cast<SgUntypedStatement*>(declList->at(i)->getPayload());  assert(stmt);
-      stmtList->push_back(stmt);
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(declList->at(i)->getPayload());  assert(decl);
+      sgDeclList->get_decl_list().push_back(decl);
    }
 
-   specificationPart->setPayload(new SgUntypedStatementList(stmtList));
+   specificationPart->setPayload(sgDeclList);
    
-   printf("build_SpecificationPart: ........... %lu\n", stmtList->size());
+   printf("build_SpecificationPart: ........... %lu\n", sgDeclList->get_decl_list().size());
 
 }
 
@@ -62,21 +63,21 @@ void UntypedASTBuilder::build_SpecificationPart(SpecificationPart * specificatio
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_ImplicitPart(ImplicitPart* implicitPart)
 {
-   SgUntypedStatement * stmt;
+   SgUntypedDeclarationStatement * decl;
 
-   std::vector<SgUntypedStatement*>* specList = new std::vector<SgUntypedStatement*>();
-   std::vector<ImplicitPartStmt*>*  ipartList = implicitPart->getImplicitPartStmtList();
+   SgUntypedDeclarationList * sgDeclList = new SgUntypedDeclarationList(NULL);
+   std::vector<ImplicitPartStmt*>* ipartList = implicitPart->getImplicitPartStmtList();
 
    for (int i = 0; i < ipartList->size(); i++) {
-      stmt = dynamic_cast<SgUntypedStatement*>(ipartList->at(i)->getPayload());  assert(stmt);
-      specList->push_back(stmt);
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(ipartList->at(i)->getPayload());  assert(decl);
+      sgDeclList->get_decl_list().push_back(decl);
    }
-   stmt = dynamic_cast<SgUntypedStatement*>(implicitPart->getImplicitStmt()->getPayload());  assert(stmt);
-   specList->push_back(stmt);
+   decl = dynamic_cast<SgUntypedDeclarationStatement*>(implicitPart->getImplicitStmt()->getPayload());  assert(decl);
+   sgDeclList->get_decl_list().push_back(decl);
 
-   implicitPart->setPayload(new SgUntypedStatementList(specList));
+   implicitPart->setPayload(sgDeclList);
 
-   printf("build_ImplicitPart: .............. %lu\n", specList->size());
+   printf("build_ImplicitPart: .............. %lu\n", sgDeclList->get_decl_list().size());
 }
 
 //========================================================================================
@@ -86,52 +87,155 @@ void UntypedASTBuilder::build_ExecutionPart(ExecutionPart * executionPart)
 {
    SgUntypedStatement * stmt;
 
+   SgUntypedStatementList * sgStmtList = new SgUntypedStatementList(NULL);
    std::vector<ExecutionPartConstruct*>* execList = executionPart->getExecutionPartConstructList();
-   std::vector<SgUntypedStatement*>* sgStmtList = new std::vector<SgUntypedStatement*>();
 
    for (int i = 0; i < execList->size(); i++) {
       stmt = dynamic_cast<SgUntypedStatement*>(execList->at(i)->getPayload());  assert(stmt);
-      sgStmtList->push_back(stmt);
+      sgStmtList->get_stmt_list().push_back(stmt);
    }
-   executionPart->setPayload(new SgUntypedStatementList(sgStmtList));
+   executionPart->setPayload(sgStmtList);
 
-   printf("build_ExecutionPart: ............... %lu\n", sgStmtList->size());
+   printf("build_ExecutionPart: ............... %lu\n", sgStmtList->get_stmt_list().size());
 }
 
+//========================================================================================  
+// R403 declaration-type-spec                                                              
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_DeclarationTypeSpec(DeclarationTypeSpec * declarationTypeSpec)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedType * node;
+   SgToken::ROSE_Fortran_Keywords keyword;
+
+   bool checkKind = true;
+   bool checkChar = false;
+   IntrinsicTypeSpec * intrinsicTypeSpec = NULL;
+
+   switch (intrinsicTypeSpec->getOptionType()) {
+    //TODO-DQ- new keyword FORTRAN_TYPE is needed
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_STAR: keyword = SgToken::FORTRAN_TYPE;   break;
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_C_STAR: keyword = SgToken::FORTRAN_CLASS;  break;
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_C_DTS:
+       keyword = SgToken::FORTRAN_CLASS;
+       break;
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_DTS:
+       keyword = SgToken::FORTRAN_TYPE;
+       break;
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_ITS:
+       keyword = SgToken::FORTRAN_TYPE;
+       break;
+     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_ITS:
+       switch (intrinsicTypeSpec->getOptionType()) {
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_INT:      keyword = SgToken::FORTRAN_INTEGER;         break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_REAL:     keyword = SgToken::FORTRAN_REAL;            break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_CMPLX:    keyword = SgToken::FORTRAN_COMPLEX;         break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_LOGICAL:  keyword = SgToken::FORTRAN_LOGICAL;         break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_DBL_PREC:
+           checkKind = false;                                     keyword = SgToken::FORTRAN_DOUBLEPRECISION; break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_DBL_CMPLX:
+           //TODO-DQ- new keyword FORTRAN_DOUBLECOMPLEX is needed (I think this is nonstandard)
+           checkKind = false;                                     keyword = SgToken::FORTRAN_DOUBLE_COMPLEX;  break;
+         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_CHAR:
+           checkChar = true;                                      keyword = SgToken::FORTRAN_CHARACTER;       break;
+       }
+       intrinsicTypeSpec = declarationTypeSpec->getIntrinsicTypeSpec();
+       break;
+   }
+
+   //TODO-CER- FIXME by setting type name string
+   node = new SgUntypedType(start, "INTEGER");
+   //TODO-DQ-2014.3.7 there should be an enum for the type
+   //node->set_statement_enum(keyword);
+
+   if (intrinsicTypeSpec) {
+      if (checkKind) {
+         KindSelector* kindSelector = intrinsicTypeSpec->getKindSelector();
+         //TODO-DQ- need a kind parameter (scalar integer constant expression)
+         //TODO-CER- node->set_kind();
+      }
+      if (checkChar) {
+         //TODO-DQ- need a length parameter (scalar integer expression or "*" or ":")
+         //TODO-CER- node->set_kind();
+         //TODO-CER- node->set_char_length();
+         CharSelector* charSelector = intrinsicTypeSpec->getCharSelector();
+      }
+   }
+   
+   declarationTypeSpec->setPayload(node);
+}
+ 
 //========================================================================================
 // R501 type-declaration-stmt
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_TypeDeclarationStmt(TypeDeclarationStmt * typeDeclarationStmt)
 {
-   SgUntypedStatement * stmt;
-   std::string label = (typeDeclarationStmt->getLabel()) ? *typeDeclarationStmt->getLabel()->getValue() : "";
+   Sg_File_Info * start = NULL;
+   SgUntypedType * type  = NULL;
+   SgUntypedVariableDeclaration * stmt;
+   SgUntypedInitializedNameList * parameters;
 
-   stmt = new SgUntypedVariableDeclaration(label, SgToken::FORTRAN_TYPE_DECLARATION_STMT);
+   // DeclarationTypeSpec 
+   //
+   type = isSgUntypedType(typeDeclarationStmt->getDeclarationTypeSpec()->getPayload());
+   start = type->get_startOfConstruct();
 
-   DeclarationTypeSpec * declSpec = typeDeclarationStmt->getDeclarationTypeSpec();
-   // OFP::OptAttrSpecList OptAttrSpecList;
-
-   std::vector<EntityDecl*>* declList = typeDeclarationStmt->getEntityDeclList()->getEntityDeclList();
-
-   // OFP::EntityDeclList EntityDeclList;
+   stmt = new SgUntypedVariableDeclaration(start, type);
+   if (typeDeclarationStmt->getLabel()) stmt->set_label_string(typeDeclarationStmt->getLabel()->getValue());
 
    printf("build_TypeDeclarationStmt: .........\n");
 
+   // OptAttrSpecList
+   //TODO-CER- implement
+   //
+
+   // EntityDeclList
+   //
+   std::vector<EntityDecl*>* declList = typeDeclarationStmt->getEntityDeclList()->getEntityDeclList();
+
+#ifdef NOT_NEEDED
    if (declSpec->getOptionType() == DeclarationTypeSpec::DeclarationTypeSpec_ITS) {
       IntrinsicTypeSpec* ispec = declSpec->getIntrinsicTypeSpec();
       if (ispec->getOptionType() == IntrinsicTypeSpec::IntrinsicTypeSpec_INT) {
+         type = new SgUntypedType(start, false); 
+         //TODO - set intrinsic type (FORTRAN_INTEGER)
          printf("                type_spec: ......... INTEGER\n");
       }
    }
+#endif
 
+   //TODO-CER-2014.3.7 should this be variables or parameters?
    printf("                variables: ......... ");
+   parameters = stmt->get_parameters();
    for (int i = 0; i < declList->size(); i++) {
-      std::string * name = declList->at(i)->getObjectName()->getIdent()->getValue();
-      printf("%s ", name->c_str());
+      std::string name = declList->at(i)->getObjectName()->getIdent()->getName();
+      parameters->get_name_list().push_back(new SgUntypedInitializedName(start, type, name));
+      printf("%s ", name.c_str());
    }
    printf("\n");
 
    typeDeclarationStmt->setPayload(stmt);
+}
+
+//========================================================================================  
+// R503 entity-decl                                                                         
+//----------------------------------------------------------------------------------------  
+void UntypedASTBuilder::build_EntityDecl(EntityDecl * entityDecl)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedType * type = NULL;
+   SgUntypedInitializedName * node;
+
+   std::string name = entityDecl->getObjectName()->getIdent()->getName();
+
+   node = new SgUntypedInitializedName(start, type, name);
+
+   //TODO ArraySpec;
+   //TODO CoarraySpec;
+   //TODO CharLength;
+   //TODO Initialization;
+
+   entityDecl->setPayload(node);
 }
 
 //========================================================================================
@@ -139,16 +243,20 @@ void UntypedASTBuilder::build_TypeDeclarationStmt(TypeDeclarationStmt * typeDecl
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_ImplicitStmt(ImplicitStmt * implicitStmt)
 {
-   SgUntypedStatement * stmt;
-   std::string label = (implicitStmt->getLabel()) ? *implicitStmt->getLabel()->getValue() : "";
+   Sg_File_Info * start = NULL;
+   SgUntypedImplicitDeclaration * stmt;
 
    switch (implicitStmt->getOptionType()) {
      case ImplicitStmt::ImplicitStmt_NONE:
-        stmt = new SgUntypedStatement(label, SgToken::FORTRAN_IMPLICIT_NONE);
+        stmt = new SgUntypedImplicitDeclaration(start);
+        stmt->set_statement_enum(SgToken::FORTRAN_IMPLICIT_NONE);
+        if (implicitStmt->getLabel()) stmt->set_label_string(implicitStmt->getLabel()->getValue());
+
         printf("build_ImplicitStmt: NONE .........\n");
         break;
      case ImplicitStmt::ImplicitStmt_ISL:
-        stmt = new SgUntypedStatement(label, SgToken::FORTRAN_IMPLICIT);
+        //TODO-CER- fix this cons call
+        //stmt = new SgUntypedImplicitStatement(start, false);
         printf("build_ImplicitStmt: ISL  .........\n");
         break;
    }
@@ -161,48 +269,52 @@ void UntypedASTBuilder::build_ImplicitStmt(ImplicitStmt * implicitStmt)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 {
-   SgUntypedStatement * stmt;
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt;
+   SgUntypedDeclarationList* sgDeclList;
    SgUntypedStatementList* sgStmtList;
-   SgUntypedSubroutineDeclaration * program;
+   SgUntypedProgramHeaderDeclaration * program;
+   SgUntypedFunctionScope * scope;
 
-   program = new SgUntypedSubroutineDeclaration("", SgToken::FORTRAN_MAIN_PROGRAM);
+   // ProgramStmt
+   //
+   program = dynamic_cast<SgUntypedProgramHeaderDeclaration*>(mainProgram->getProgramStmt()->getPayload());  assert(program);
 
-   stmt = dynamic_cast<SgUntypedStatement*>(mainProgram->getProgramStmt()->getPayload());  assert(stmt);
-   program->set_begin_statement(stmt);
-
-   printf("build_MainProgram label: ........... %s\n", stmt->get_string_label().c_str());
-   printf("             begin name: ........... %s\n", stmt->get_statement_name().c_str());
+   printf("build_MainProgram label: ........... %s\n", program->get_label_string().c_str());
+   printf("             begin name: ........... %s\n", program->get_name().c_str());
 
    // SpecificationPart
    //
    SpecificationPart * specPart = mainProgram->getSpecificationPart();
-   sgStmtList = dynamic_cast<SgUntypedStatementList*>(specPart->getPayload());  assert(sgStmtList);
+   sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->getPayload());  assert(sgDeclList);
    specPart->setPayload(NULL);  //TODO - consider takePayload() method instead
-   program->set_spec_part_list(sgStmtList->take_statement_list());
+   scope->set_declaration_list(sgDeclList);
 
-   std::vector<SgUntypedStatement*>* list = program->get_spec_part_list();
-   printf("         spec_list_size: ........... %lu\n", list->size());
+   printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
 
    // ExecutionPart
    //
    ExecutionPart * execPart = mainProgram->getExecutionPart();
    sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->getPayload());  assert(sgStmtList);
    execPart->setPayload(NULL);  //TODO - consider takePayload() method instead
-   program->set_exec_part_list(sgStmtList->take_statement_list());
+   scope->set_statement_list(sgStmtList);
 
-   list = program->get_exec_part_list();
-   printf("         exec_list_size: ........... %lu\n", list->size());
+   printf("         exec_list_size: ........... %lu\n", sgStmtList->get_stmt_list().size());
 
    // InternalSubprogramPart
-   // TODO
-   // 
+   //TODO
    InternalSubprogramPart * subPart = mainProgram->getInternalSubprogramPart();
 
-   stmt = dynamic_cast<SgUntypedStatement*>(mainProgram->getEndProgramStmt()->getPayload());  assert(stmt);
+   // EndProgramStmt
+   //
+   stmt = dynamic_cast<SgUntypedNamedStatement*>(mainProgram->getEndProgramStmt()->getPayload());  assert(stmt);
+   //TODO-DQ- set_end_statement function needed?
    program->set_end_statement(stmt);
 
-   printf("              end label: ........... %s\n", stmt->get_string_label().c_str());
+   printf("              end label: ........... %s\n", stmt->get_label_string().c_str());
    printf("              end  name: ........... %s\n", stmt->get_statement_name().c_str());
+
+   mainProgram->setPayload(program);
 }
    
 //========================================================================================
@@ -210,11 +322,18 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_ProgramStmt(ProgramStmt * programStmt)
 {
-   SgUntypedStatement * stmt;
-   std::string label = (programStmt->getLabel()) ? *programStmt->getLabel()->getValue() : "";
-   stmt = new SgUntypedStatement(label, SgToken::FORTRAN_PROGRAM_STMT);
-   stmt->set_statement_name(*programStmt->getProgramName()->getIdent()->getValue());
-   programStmt->setPayload(stmt);
+   Sg_File_Info * start = NULL;
+   SgUntypedProgramHeaderDeclaration * program;
+
+   //TODO-CER- set no_label member if needed
+   std::string label = (programStmt->getLabel()) ? programStmt->getLabel()->getValue() : "";
+
+   //TODO-DQ- remove label from constructor use set_label_string()? And why is SgToken needed?
+   program = new SgUntypedProgramHeaderDeclaration(start, label);
+   program->set_statement_enum(SgToken::FORTRAN_PROGRAM);
+   if (programStmt->getProgramName()) program->set_name(programStmt->getProgramName()->getIdent()->getName());
+
+   programStmt->setPayload(program);
 }
 
 //========================================================================================
@@ -222,14 +341,29 @@ void UntypedASTBuilder::build_ProgramStmt(ProgramStmt * programStmt)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_EndProgramStmt(EndProgramStmt * endProgramStmt)
 {
-   SgUntypedStatement * stmt;
-   std::string label = (endProgramStmt->getLabel())       ? *endProgramStmt->getLabel()->getValue() : "";
-   std::string name  = (endProgramStmt->getProgramName()) ? *endProgramStmt->getProgramName()->getIdent()->getValue() : "";
-   stmt = new SgUntypedStatement(label, SgToken::FORTRAN_END_PROGRAM_STMT);
-   stmt->set_statement_name(name);
+   SgUntypedNamedStatement * stmt = new SgUntypedNamedStatement(NULL);
+   if (endProgramStmt->getLabel())       stmt->set_label_string  (endProgramStmt->getLabel()->getValue());
+   if (endProgramStmt->getProgramName()) stmt->set_statement_name(endProgramStmt->getProgramName()->getIdent()->getValue());
+
    endProgramStmt->setPayload(stmt);
 }
 
+//========================================================================================
+// Binary operators
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_BinaryOp(Expr * expr, SgToken::ROSE_Fortran_Operators op, std::string name)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedBinaryOperator * binop;
+
+   SgUntypedExpression * lhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr1()->getPayload());
+   SgUntypedExpression * rhs = dynamic_cast<SgUntypedExpression*>(expr->getExpr2()->getPayload());
+   assert(rhs);  assert(lhs);
+
+   //TODO-DQ-2014.3.7 I don't think a Fortran enum should be in constructor
+   binop = new SgUntypedBinaryOperator(start, SgToken::FORTRAN_UNKNOWN, op, name, lhs, rhs); 
+   expr->setPayload(binop);
+}
+
+
 }; // namespace OFP
-
-
