@@ -17,8 +17,8 @@ LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
-TRAVERSE_OBJS = traversal.o ofp_traverse_productions.o \
-                OFPNodes.o OFPExpr.o OFPUnparser.o UntypedASTBuilder.o
+TRAVERSE_OBJS = UntypedNodes.o \
+                OFPNodes.o OFPExpr.o OFPUnparser.o UntypedASTBuilder.o traversal.o ofp_traverse_productions.o
 
 EXES = build_classes build_includes build_traversals \
        traverse traverse_sig check_cons_name
