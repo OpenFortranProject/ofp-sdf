@@ -241,7 +241,7 @@ enum ROSE_Fortran_Operators
    }; // enum ROSE_Fortran_Operators
    }; // class SgToken
 
-#else
+#endif // COMPILED_WITH_ROSE
 
 #include "Cxx_Grammar.h"
 //------------------------------------------------------------------------------------------------------
@@ -249,7 +249,7 @@ enum ROSE_Fortran_Operators
 //
 //------------------------------------------------------------------------------------------------------
 
-#ifndef COMPILED_WITH_ROSE
+#ifndef   COMPILED_WITH_ROSE
 
 //TODO-CER- remove?
 //typedef Rose_STL_Container<SgUntypedDeclaration*> SgUntypedDeclarationPtrList;
