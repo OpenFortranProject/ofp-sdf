@@ -71,7 +71,7 @@ traversal_f.o: traversal_f.c traversal.h
 
 check: traverse
 	sglri -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl -o testfile.f90.aterm
-	traverse testfile.f90.aterm
+	traverse -i testfile.f90.aterm
 
 clean:
 	rm -f *.o $(EXES) $(OBJS)
