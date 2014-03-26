@@ -589,27 +589,22 @@ class ROSE_DLL_API SgUntypedProgramHeaderDeclaration  : public SgUntypedFunction
 
 
 // Class Definition for SgUntypedSubroutineDeclaration
-class ROSE_DLL_API SgUntypedSubroutineDeclaration  : public SgUntypedFunctionDeclaration
+class ROSE_DLL_API SgUntypedSubroutineDeclaration : public SgUntypedFunctionDeclaration
    {
-     public:
-
-          typedef SgUntypedFunctionDeclaration base_node_type;
-
      public: 
-         virtual ~SgUntypedSubroutineDeclaration();
+         virtual VariantT variantT() const;
+         enum { static_variant = V_SgUntypedSubroutineDeclaration };
 
+         virtual ~SgUntypedSubroutineDeclaration();
 
      public: 
          SgUntypedSubroutineDeclaration(Sg_File_Info* startOfConstruct , std::string name = ""); 
          SgUntypedSubroutineDeclaration(std::string name); 
-
-    protected:
-
    };
 
 
 // Class Definition for SgUntypedModuleDeclaration
-class ROSE_DLL_API SgUntypedModuleDeclaration  : public SgUntypedDeclarationStatement
+class ROSE_DLL_API SgUntypedModuleDeclaration : public SgUntypedDeclarationStatement
    {
      public: 
          SgUntypedModuleScope* get_scope() const;
@@ -617,7 +612,6 @@ class ROSE_DLL_API SgUntypedModuleDeclaration  : public SgUntypedDeclarationStat
 
      public: 
          virtual ~SgUntypedModuleDeclaration();
-
 
      public: 
          SgUntypedModuleDeclaration(Sg_File_Info* startOfConstruct ); 
@@ -751,7 +745,7 @@ class ROSE_DLL_API SgUntypedScope  : public SgUntypedStatement
          virtual ~SgUntypedScope();
 
      public: 
-         SgUntypedScope(Sg_File_Info* startOfConstruct ); 
+         SgUntypedScope(Sg_File_Info* startOfConstruct); 
          SgUntypedScope(); 
 
     protected:
@@ -809,10 +803,6 @@ class ROSE_DLL_API SgUntypedGlobalScope  : public SgUntypedScope
 // Class Definition for SgUntypedType
 class ROSE_DLL_API SgUntypedType  : public SgUntypedNode
    {
-     public:
-
-          typedef SgUntypedNode base_node_type;
-
      public: 
          std::string get_type_name() const;
          void set_type_name(std::string type_name);
@@ -882,12 +872,8 @@ class ROSE_DLL_API SgUntypedType  : public SgUntypedNode
 // Class Definition for SgUntypedArrayType
 class ROSE_DLL_API SgUntypedArrayType  : public SgUntypedType
    {
-     public:
-          typedef SgUntypedType base_node_type;
-
      public: 
          virtual ~SgUntypedArrayType();
-
 
      public: 
          SgUntypedArrayType(Sg_File_Info* startOfConstruct , std::string type_name = ""); 
@@ -1002,26 +988,19 @@ class ROSE_DLL_API SgUntypedFile  : public SgUntypedNode
 // Class Definition for SgUntypedStatementList
 class ROSE_DLL_API SgUntypedStatementList  : public SgUntypedNode
    {
-     public:
-
-          typedef SgUntypedNode base_node_type;
-
      public: 
          const SgUntypedStatementPtrList&  get_stmt_list() const;
          SgUntypedStatementPtrList& get_stmt_list(); 
 
-
      public: 
          virtual ~SgUntypedStatementList();
-
 
      public: 
          SgUntypedStatementList(Sg_File_Info* startOfConstruct ); 
          SgUntypedStatementList(); 
 
     protected:
-// Start of memberFunctionString
-SgUntypedStatementPtrList p_stmt_list;
+         SgUntypedStatementPtrList p_stmt_list;
 
    };
 
@@ -1029,26 +1008,19 @@ SgUntypedStatementPtrList p_stmt_list;
 // Class Definition for SgUntypedDeclarationList
 class ROSE_DLL_API SgUntypedDeclarationList  : public SgUntypedNode
    {
-     public:
-
-          typedef SgUntypedNode base_node_type;
-
      public: 
          const SgUntypedDeclarationStatementPtrList&  get_decl_list() const;
          SgUntypedDeclarationStatementPtrList& get_decl_list(); 
 
-
      public: 
          virtual ~SgUntypedDeclarationList();
-
 
      public: 
          SgUntypedDeclarationList(Sg_File_Info* startOfConstruct ); 
          SgUntypedDeclarationList(); 
 
     protected:
-// Start of memberFunctionString
-SgUntypedDeclarationStatementPtrList p_decl_list;
+         SgUntypedDeclarationStatementPtrList p_decl_list;
           
    };
 
@@ -1056,14 +1028,9 @@ SgUntypedDeclarationStatementPtrList p_decl_list;
 // Class Definition for SgUntypedFunctionDeclarationList
 class ROSE_DLL_API SgUntypedFunctionDeclarationList  : public SgUntypedNode
    {
-     public:
-
-          typedef SgUntypedNode base_node_type;
-
      public: 
          const SgUntypedFunctionDeclarationPtrList&  get_func_list() const;
          SgUntypedFunctionDeclarationPtrList& get_func_list(); 
-
 
      public: 
          virtual ~SgUntypedFunctionDeclarationList();
@@ -1073,9 +1040,7 @@ class ROSE_DLL_API SgUntypedFunctionDeclarationList  : public SgUntypedNode
          SgUntypedFunctionDeclarationList(); 
 
     protected:
-// Start of memberFunctionString
-SgUntypedFunctionDeclarationPtrList p_func_list;
-          
+         SgUntypedFunctionDeclarationPtrList p_func_list;
    };
 
 
