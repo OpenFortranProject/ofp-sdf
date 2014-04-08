@@ -634,6 +634,7 @@ ATbool ofp_traverse_InternalSubprogramPart(ATerm term, OFP::InternalSubprogramPa
 
       if (ofp_traverse_ContainsStmt(ContainsStmt.term, &ContainsStmt)) {
          // MATCHED ContainsStmt
+         InternalSubprogramPart->setContainsStmt(ContainsStmt.newContainsStmt());
       } else return ATfalse;
 
    ATermList InternalSubprogram_tail = (ATermList) ATmake("<term>", InternalSubprogram.term);
@@ -642,8 +643,11 @@ ATbool ofp_traverse_InternalSubprogramPart(ATerm term, OFP::InternalSubprogramPa
       InternalSubprogram_tail = ATgetNext (InternalSubprogram_tail);
       if (ofp_traverse_InternalSubprogram(InternalSubprogram.term, &InternalSubprogram)) {
          // MATCHED InternalSubprogram
+         InternalSubprogramPart->appendInternalSubprogram(InternalSubprogram.newInternalSubprogram());
       } else return ATfalse;
    }
+
+   ast->build_InternalSubprogramPart(InternalSubprogramPart);
 
    return ATtrue;
  }
@@ -2346,10 +2350,6 @@ ATbool ofp_traverse_KindParam(ATerm term, OFP::KindParam* KindParam)
          // MATCHED DigitString                                                                                 
          KindParam->setDigitString(DigitString.newDigitString());
          KindParam->inheritPayload(KindParam->getDigitString());
-#ifdef DEBUG_OFP_CLIENT
-         printf("ROSE KindParam: ..................... ");
-         unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(KindParam->getPayload()));  printf("\n");
-#endif
       } else return ATfalse;
 
    // MATCHED KindParam_DS                                                                                      
@@ -2378,11 +2378,6 @@ ATbool ofp_traverse_DigitString(ATerm term, OFP::DigitString* DigitString)
          DigitString->setIcon(Icon.newIcon());
          DigitString->inheritPayload(DigitString->getIcon());
       } else return ATfalse;
-
-#ifdef DEBUG_OFP_CLIENT
-      printf("ROSE DigitString: ................... ");
-      unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(DigitString->getPayload()));  printf("\n");
-#endif
 
    return ATtrue;
  }
@@ -8778,7 +8773,6 @@ ATbool ofp_traverse_PartRef(ATerm term, OFP::PartRef* PartRef)
       } else return ATfalse;
    }
 
-   printf("==============will call build_PartRef %p\n", PartRef);
    ast->build_PartRef(PartRef);
 
    return ATtrue;
@@ -20594,12 +20588,16 @@ ATbool ofp_traverse_ContainsStmt(ATerm term, OFP::ContainsStmt* ContainsStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         ContainsStmt->setLabel(Label.newLabel());
       } else return ATfalse;
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         ContainsStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_ContainsStmt(ContainsStmt);
 
    return ATtrue;
  }
@@ -21371,12 +21369,6 @@ ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName)
          PartName->setIdent(Ident.newIdent());
          PartName->inheritPayload(PartName->getIdent());
       } else return ATfalse;
-
-#ifdef DEBUG_OFP_CLIENT
-      printf("ROSE PartName: ...................... ");
-      unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(PartName->getPayload()));
-      printf("\n");
-#endif
 
    return ATtrue;
  }
