@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
    OFP::setUnparser(unparser);
 
    if (ofp_traverse_Program(Program.term, &Program)) {
-      printf("\nWoot!\n");
+      if (ofs == NULL) printf("\nWoot!\n");
    } else return 1;
 
    if (ofs == NULL) printf("----------------------------\n");
