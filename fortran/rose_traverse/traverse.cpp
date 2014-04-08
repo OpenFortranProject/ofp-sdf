@@ -39,7 +39,9 @@ int main(int argc, char * argv[])
 
    Program.term = ATreadFromTextFile(file);
 
+#ifdef OFP_DEBUG
    printf("\n%s\n\n", ATwriteToString(Program.term));
+#endif
 
    OFP::setASTBuilder(&ast);
    OFP::setUnparser(unparser);
@@ -48,7 +50,7 @@ int main(int argc, char * argv[])
       printf("\nWoot!\n");
    } else return 1;
 
-   if (ofs == NULL) printf("\n\n----------------------------\n");
+   if (ofs == NULL) printf("----------------------------\n");
    unparser->unparseNode(Program.getPayload());
    if (ofs == NULL) printf("----------------------------\n\n");
 
