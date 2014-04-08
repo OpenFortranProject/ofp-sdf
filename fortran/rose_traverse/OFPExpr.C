@@ -416,8 +416,6 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED MinusExpr
    Expr->setOptionType(OFP::Expr::MinusExpr);
 
-   printf("============will call build_BinaryOp %p\n", Expr);
-
    ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_MINUS, "-");
 
    return ATtrue;
