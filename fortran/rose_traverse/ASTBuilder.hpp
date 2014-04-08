@@ -23,6 +23,7 @@ class ASTBuilder
    virtual void build_SpecificationPart(SpecificationPart * specificationPart) = 0;
    virtual void build_ImplicitPart(ImplicitPart * implicitPart) = 0;
    virtual void build_ExecutionPart(ExecutionPart * executionPart) = 0;
+   virtual void build_InternalSubprogramPart(InternalSubprogramPart* internalSubprogramPart) = 0;
    virtual void build_DeclarationTypeSpec(DeclarationTypeSpec * declarationTypeSpec) = 0;
    virtual void build_TypeDeclarationStmt(TypeDeclarationStmt * typeDeclarationStmt) = 0;
    virtual void build_EntityDecl(EntityDecl* entityDecl) = 0;
@@ -33,6 +34,7 @@ class ASTBuilder
    virtual void build_SubroutineSubprogram(SubroutineSubprogram * subroutineSubprogram) = 0;
    virtual void build_SubroutineStmt(SubroutineStmt * subroutineStmt) = 0;
    virtual void build_EndSubroutineStmt(EndSubroutineStmt * endSubroutineStmt) = 0;
+   virtual void build_ContainsStmt(ContainsStmt* containsStmt) = 0;
 
    // Expressions
    //
@@ -42,6 +44,20 @@ class ASTBuilder
    //
    virtual void build_BinaryOp(Expr * expr, SgToken::ROSE_Fortran_Operators op, std::string name) = 0;
 
+   // Terminals
+   //
+   virtual void build_Dop(Dop* dop) = 0;
+   virtual void build_HexConstant(HexConstant* hexConstant) = 0;
+   virtual void build_OctalConstant(OctalConstant* octalConstant) = 0;
+   virtual void build_BinaryConstant(BinaryConstant* binaryConstant) = 0;
+   virtual void build_Rcon(Rcon* rcon) = 0;
+   virtual void build_Scon(Scon* scon) = 0;
+   virtual void build_Icon(Icon* icon) = 0;
+   virtual void build_Ident(Ident* ident) = 0;
+   virtual void build_Letter(Letter* letter) = 0;
+   virtual void build_LblRef(LblRef* lblRef) = 0;
+   virtual void build_StartCommentBlock(StartCommentBlock* startCommentBlock) = 0;
+   virtual void build_EOS(EOS* eos) = 0;
 };
 
 } // namespace OFP
