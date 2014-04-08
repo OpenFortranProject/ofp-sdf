@@ -390,7 +390,6 @@ class ROSE_DLL_API SgUntypedOtherExpression  : public SgUntypedExpression
          SgUntypedOtherExpression(SgToken::ROSE_Fortran_Keywords statement_enum); 
 
     protected:
-
    };
 
 
@@ -409,7 +408,6 @@ class ROSE_DLL_API SgUntypedFunctionCallOrArrayReferenceExpression  : public SgU
          SgUntypedFunctionCallOrArrayReferenceExpression(SgToken::ROSE_Fortran_Keywords statement_enum); 
 
     protected:
-
    };
 
 
@@ -438,7 +436,10 @@ class ROSE_DLL_API SgUntypedReferenceExpression  : public SgUntypedExpression
 // Class Definition for SgUntypedStatement
 class ROSE_DLL_API SgUntypedStatement  : public SgUntypedNode
    {
-     public: 
+     public:
+         virtual VariantT variantT() const;
+         enum { static_variant = V_SgUntypedStatement };
+
          std::string get_label_string() const;
          void set_label_string(std::string label_string);
 
@@ -475,7 +476,6 @@ class ROSE_DLL_API SgUntypedDeclarationStatement  : public SgUntypedStatement
          SgUntypedDeclarationStatement(); 
 
     protected:
-
    };
 
 
@@ -494,7 +494,6 @@ class ROSE_DLL_API SgUntypedImplicitDeclaration  : public SgUntypedDeclarationSt
          SgUntypedImplicitDeclaration(); 
 
     protected:
-
    };
 
 
@@ -660,7 +659,6 @@ class ROSE_DLL_API SgUntypedFunctionCallStatement  : public SgUntypedStatement
          SgUntypedFunctionCallStatement(); 
 
     protected:
-
    };
 
 
@@ -722,7 +720,6 @@ class ROSE_DLL_API SgUntypedOtherStatement  : public SgUntypedStatement
          SgUntypedOtherStatement(); 
 
     protected:
-
    };
 
 
@@ -766,7 +763,6 @@ class ROSE_DLL_API SgUntypedFunctionScope : public SgUntypedScope
          SgUntypedFunctionScope(); 
 
     protected:
-
    };
 
 
@@ -781,7 +777,6 @@ class ROSE_DLL_API SgUntypedModuleScope  : public SgUntypedScope
          SgUntypedModuleScope(); 
 
     protected:
-
    };
 
 
@@ -796,7 +791,6 @@ class ROSE_DLL_API SgUntypedGlobalScope  : public SgUntypedScope
          SgUntypedGlobalScope(); 
 
     protected:
-
    };
 
 
@@ -880,7 +874,6 @@ class ROSE_DLL_API SgUntypedArrayType  : public SgUntypedType
          SgUntypedArrayType(std::string type_name); 
 
     protected:
-
    };
 
 
@@ -912,13 +905,8 @@ class ROSE_DLL_API SgUntypedAttribute  : public SgUntypedNode
          SgUntypedAttribute(SgToken::ROSE_Fortran_Keywords type_name); 
 
     protected:
-// Start of memberFunctionString
-SgToken::ROSE_Fortran_Keywords p_type_name;
-          
-// End of memberFunctionString
-// Start of memberFunctionString
-std::string p_named_attribute;
-          
+         SgToken::ROSE_Fortran_Keywords p_type_name;
+         std::string p_named_attribute;
    };
 
 
@@ -939,23 +927,16 @@ class ROSE_DLL_API SgUntypedInitializedName  : public SgUntypedNode
          std::string get_name() const;
          void set_name(std::string name);
 
-
      public: 
          virtual ~SgUntypedInitializedName();
-
 
      public: 
          SgUntypedInitializedName(Sg_File_Info* startOfConstruct , SgUntypedType* type = NULL, std::string name = ""); 
          SgUntypedInitializedName(SgUntypedType* type, std::string name); 
 
     protected:
-// Start of memberFunctionString
-SgUntypedType* p_type;
-          
-// End of memberFunctionString
-// Start of memberFunctionString
-std::string p_name;
-          
+         SgUntypedType* p_type;
+         std::string p_name;
    };
 
 
@@ -1001,7 +982,6 @@ class ROSE_DLL_API SgUntypedStatementList  : public SgUntypedNode
 
     protected:
          SgUntypedStatementPtrList p_stmt_list;
-
    };
 
 
@@ -1021,7 +1001,6 @@ class ROSE_DLL_API SgUntypedDeclarationList  : public SgUntypedNode
 
     protected:
          SgUntypedDeclarationStatementPtrList p_decl_list;
-          
    };
 
 
@@ -1065,10 +1044,7 @@ class ROSE_DLL_API SgUntypedInitializedNameList  : public SgUntypedNode
          SgUntypedInitializedNameList(); 
 
     protected:
-// Start of memberFunctionString
-SgUntypedInitializedNamePtrList p_name_list;
-          
+         SgUntypedInitializedNamePtrList p_name_list;
    };
-
 
 #endif
