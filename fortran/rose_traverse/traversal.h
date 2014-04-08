@@ -1,9 +1,7 @@
 #ifndef	OFP_TRAVERSAL_H
 #define	OFP_TRAVERSAL_H
 
-#define DEBUG_PRINT
-#define OFP_CLIENT
-#define DEBUG_OFP_CLIENT
+#undef  DEBUG_PRINT
 
 #include <aterm2.h>
 
