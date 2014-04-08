@@ -143,6 +143,19 @@ void OFP::FortranTextUnparser::unparseStmt(SgUntypedStatement* stmt)
 
    switch (stmt->variantT())
       {
+        case V_SgUntypedStatement:
+           {
+              SgUntypedStatement * s = dynamic_cast<SgUntypedStatement*>(stmt);
+              if (s) {
+                 switch (s->get_statement_enum()) {
+                       case SgToken::FORTRAN_CONTAINS:   oss << "CONTAINS" << "\n";   break;
+                       default:
+                          oss << "FortranTextUnparser::UnparseUnknownStmt enum::::::::::::::::::: "
+                              << s->get_statement_enum() << "\n";
+                 }
+              }
+              break;
+           }
         case V_SgUntypedAssignmentStatement:
            {
               SgUntypedAssignmentStatement * s = dynamic_cast<SgUntypedAssignmentStatement*>(stmt);
@@ -241,7 +254,7 @@ void OFP::FortranTextUnparser::unparseDecl(SgUntypedDeclarationStatement * decl)
                     unparseStmt(stmtList->get_stmt_list().at(i));
                  }
                  for (int i = 0; i < funcList->get_func_list().size(); i++) {
-                    //TODO-CER-2014.3.18 unparse funcList
+                    unparseDecl(funcList->get_func_list().at(i));
                  }
 
                  unparseSgUntypedNamedStatement(d->get_end_statement());
