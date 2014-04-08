@@ -19,6 +19,7 @@ class UntypedASTBuilder : public ASTBuilder
    virtual void build_SpecificationPart(SpecificationPart * specificationPart);
    virtual void build_ImplicitPart(ImplicitPart * implicitPart);
    virtual void build_ExecutionPart(ExecutionPart * executionPart);
+   virtual void build_InternalSubprogramPart(InternalSubprogramPart* internalSubprogramPart);
    virtual void build_DeclarationTypeSpec(DeclarationTypeSpec * declarationTypeSpec);
    virtual void build_TypeDeclarationStmt(TypeDeclarationStmt * typeDeclarationStmt);
    virtual void build_EntityDecl(EntityDecl* entityDecl);
@@ -29,6 +30,7 @@ class UntypedASTBuilder : public ASTBuilder
    virtual void build_SubroutineSubprogram(SubroutineSubprogram * subroutineSubprogram);
    virtual void build_SubroutineStmt(SubroutineStmt * subroutineStmt);
    virtual void build_EndSubroutineStmt(EndSubroutineStmt * endSubroutineStmt);
+   virtual void build_ContainsStmt(ContainsStmt* containsStmt);
 
    // Expressions
    //
@@ -38,39 +40,21 @@ class UntypedASTBuilder : public ASTBuilder
    //
    virtual void build_BinaryOp(Expr * expr, SgToken::ROSE_Fortran_Operators op, std::string name);
 
- private:
-   
+   // Terminals
+   //
+   virtual void build_Dop(Dop* dop);
+   virtual void build_HexConstant(HexConstant* hexConstant);
+   virtual void build_OctalConstant(OctalConstant* octalConstant);
+   virtual void build_BinaryConstant(BinaryConstant* binaryConstant);
+   virtual void build_Rcon(Rcon* rcon);
+   virtual void build_Scon(Scon* scon);
+   virtual void build_Icon(Icon* icon);
+   virtual void build_Ident(Ident* ident);
+   virtual void build_Letter(Letter* letter);
+   virtual void build_LblRef(LblRef* lblRef);
+   virtual void build_StartCommentBlock(StartCommentBlock* startCommentBlock);
+   virtual void build_EOS(EOS* eos);
 };
-
-#ifdef OBSOLETE
-// Helper class to contain a vector of SgUntypedStatements.  The class is needed because
-// the node payload must be an SgNode; otherwise not needed as a regular SgUntypedNode.
-//
-class SgUntypedStatementList : public SgUntypedNode
-   {
-     public:
-       SgUntypedStatementList(std::vector<SgUntypedStatement*>* list) : stmt_list(list) {}
-
-       virtual ~SgUntypedStatementList()
-          {
-             // TODO - what about content of list                                         
-             if (stmt_list) delete stmt_list;
-          }
-
-       std::vector<SgUntypedStatement*>* get_statement_list() {return stmt_list;}
-       std::vector<SgUntypedStatement*>* give_statement_list()
-          {
-             std::vector<SgUntypedStatement*>* tmp_stmt_list = stmt_list;
-             stmt_list = NULL;
-             return tmp_stmt_list;
-          }
-       //TODO delete void set_statement_list(std::vector<SgUntypedStatement*>* list) {stmt_list = list;}                                                                         
-     private:
-      //TODO - change from pointer type
-      std::vector<SgUntypedStatement*>* stmt_list;
-   };
-#endif
-
 
 } // namespace OFP
 
