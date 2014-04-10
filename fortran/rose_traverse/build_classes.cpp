@@ -68,10 +68,10 @@ ATbool traverse_init()
    gSymTable   = ATtableCreate(200, 50);
    gAliasTable = ATtableCreate(200, 50);
 
-   fpc = fopen("junk_traverse.C",   "w");    assert(fpc != NULL);
-   fph = fopen("junk_traverse.h",   "w");    assert(fph != NULL);
-   fpH = fopen("junk_traverse.hpp", "w");    assert(fpH != NULL);
-   fpC = fopen("junk_nodes.C",      "w");    assert(fpC != NULL);
+   fpc = fopen("junk_traverse.cpp",  "w");    assert(fpc != NULL);
+   fph = fopen("junk_traverse.h",    "w");    assert(fph != NULL);
+   fpH = fopen("junk_traverse.hpp",  "w");    assert(fpH != NULL);
+   fpC = fopen("junk_nodes.cpp",     "w");    assert(fpC != NULL);
 
    fprintf(fpc, "#include \"traversal.h\"\n");
    fprintf(fpc, "#include \"ofp_traverse.h\"\n\n");
