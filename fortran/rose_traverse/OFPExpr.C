@@ -185,6 +185,10 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED DefBinExpr
    Expr->setOptionType(OFP::Expr::DefBinExpr);
 
+   //TODO-CER-2014.4.15 - implement defined binary operators
+   //   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_DEFINED_BINARY, "");
+   assert(0);
+
    return ATtrue;
  }
 
@@ -202,6 +206,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED NotEqvExpr
    Expr->setOptionType(OFP::Expr::NotEqvExpr);
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_NEQV, ".NEQV.");
 
    return ATtrue;
  }
@@ -221,6 +227,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED EqvExpr
    Expr->setOptionType(OFP::Expr::EqvExpr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_EQV, ".EQV.");
+
    return ATtrue;
  }
 
@@ -238,6 +246,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED OrExpr
    Expr->setOptionType(OFP::Expr::OrExpr);
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_OR, ".OR.");
 
    return ATtrue;
  }
@@ -257,6 +267,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED AndExpr
    Expr->setOptionType(OFP::Expr::AndExpr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_AND, ".AND.");
+
    return ATtrue;
  }
 
@@ -269,6 +281,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED NotExpr
    Expr->setOptionType(OFP::Expr::NotExpr);
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_NOT, ".NOT.");
 
    return ATtrue;
  }
@@ -288,6 +302,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED GE_Expr
    Expr->setOptionType(OFP::Expr::GE_Expr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_GE, ">=");
+
    return ATtrue;
  }
 
@@ -306,6 +322,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED GT_Expr
    Expr->setOptionType(OFP::Expr::GT_Expr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_GT, ">");
+
    return ATtrue;
  }
 
@@ -323,6 +341,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED LE_Expr
    Expr->setOptionType(OFP::Expr::LE_Expr);
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_LE, "<=");
 
    return ATtrue;
  }
@@ -362,6 +382,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED NE_Expr
    Expr->setOptionType(OFP::Expr::NE_Expr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_NE, "/=");
+
    return ATtrue;
  }
 
@@ -380,6 +402,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED EQ_Expr
    Expr->setOptionType(OFP::Expr::EQ_Expr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_EQ, "==");
+
    return ATtrue;
  }
 
@@ -397,6 +421,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED ConcatExpr
    Expr->setOptionType(OFP::Expr::ConcatExpr);
+
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_CONCAT, "//");
 
    return ATtrue;
  }
@@ -436,6 +462,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED PlusExpr
    Expr->setOptionType(OFP::Expr::PlusExpr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_PLUS, "+");
+
    return ATtrue;
  }
 
@@ -449,6 +477,10 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED UnaryMinusExpr
    Expr->setOptionType(OFP::Expr::UnaryMinusExpr);
 
+   //TODO-CER-2014.4.15 - implement unary operators
+   //   ast->build_UnaryOp(Expr, SgToken::FORTRAN_INTRINSIC_UNARY_MINUS, "-");
+   assert(0);
+
    return ATtrue;
  }
 
@@ -461,6 +493,10 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED UnaryPlusExpr
    Expr->setOptionType(OFP::Expr::UnaryPlusExpr);
+
+   //TODO-CER-2014.4.15 - implement unary operators
+   //   ast->build_UnaryOp(Expr, SgToken::FORTRAN_INTRINSIC_UNARY_PLUS, "+");
+   assert(0);
 
    return ATtrue;
  }
@@ -520,6 +556,8 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
    // MATCHED PowerExpr
    Expr->setOptionType(OFP::Expr::PowerExpr);
 
+   ast->build_BinaryOp(Expr, SgToken::FORTRAN_INTRINSIC_POWER, "**");
+
    return ATtrue;
  }
 
@@ -538,6 +576,10 @@ ATbool ofp_traverse_Expr(ATerm term, OFP::Expr* Expr)
 
    // MATCHED DefUnaryExpr
    Expr->setOptionType(OFP::Expr::DefUnaryExpr);
+
+   //TODO-CER-2014.4.15 - implement defined unary operators
+   //   ast->build_UnaryOp(Expr, SgToken::FORTRAN_INTRINSIC_DEFINED_UNARY, "");
+   assert(0);
 
    return ATtrue;
  }
