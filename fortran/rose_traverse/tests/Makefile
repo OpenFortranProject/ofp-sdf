@@ -16,4 +16,4 @@ check : $(SYNTAX)/Fortran.tbl
         done;
 
 clean :
-	rm -f *.aterm ofp_*.f90 *.o
+	rm -f *.aterm ofp_*.f90 *.o *.mod
