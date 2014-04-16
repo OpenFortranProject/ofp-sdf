@@ -45,8 +45,15 @@ CONTAINS
   END FUNCTION foo
 END MODULE e
 
-! Include all optional parts
+! Include an optional separate-module-subprogram
 MODULE f
+CONTAINS
+  MODULE procedure mp
+  end PROCEDURE mp
+END MODULE f
+
+! Include all optional parts
+MODULE g
   integer i
 contains
   subroutine sub()
@@ -54,4 +61,6 @@ contains
   FUNCTION foo()
     foo = 13
   END FUNCTION foo
-END MODULE f
+  module PROCEDURE mp
+  END procedure mp
+END MODULE g
