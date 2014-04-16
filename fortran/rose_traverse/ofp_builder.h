@@ -68,6 +68,8 @@ ATbool        ofp_build_match_sort_option_end    (FILE * fp, ATerm symbol);
 ATbool        ofp_build_match_nonterminal_begin  (FILE * fp, ATerm constructor, ATerm symbol);
 ATbool        ofp_build_match_nonterminal_end    (FILE * fp, ATerm constructor, ATerm symbol);
 
+ATbool        ofp_build_untyped_ast_node_decls  (FILE * fp, ATermList prodTable);
+
 ATbool        ofp_build_traversal_class_decls   (FILE * fp, ATermList prodTable);
 ATbool        ofp_build_traversal_class_decl    (FILE * fp, ATerm name);
 ATbool        ofp_build_traversal_class_def        (FILE * fp, ATerm name, ATermList cons, ATermList args);

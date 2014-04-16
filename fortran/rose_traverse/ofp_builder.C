@@ -481,6 +481,46 @@ ATermList ofp_coalesceAliasTable(ATermList oldTable)
    return table;
 }
 
+ATbool ofp_build_untyped_ast_node_decl(FILE * fp, ATerm name)
+{
+   char * nameStr;
+
+   if (! ATmatch(name, "<str>", &nameStr)) {
+      return ATfalse;
+   }
+
+   /** write C++ function declaration for definition
+    */
+   fprintf(fp, "void UntypedASTBuilder::build_%s(%s* %s)\n", nameStr, nameStr, nameStr);
+   fprintf(fp, "{\n");
+   fprintf(fp, "}\n");
+
+   /** write C++ virtual function declaration for base class
+    */
+   fprintf(fp, "   virtual void build_%s(%s* %s) = 0;\n", nameStr, nameStr, nameStr);
+   fprintf(fp, "\n");
+
+   return ATtrue;
+}
+
+ATbool ofp_build_untyped_ast_node_decls(FILE * fp, ATermList prodTable)
+{
+   ATerm term, symbol;
+   ATermList productions, tail;
+
+   tail = (ATermList) ATmake("<term>", prodTable);
+   while (! ATisEmpty(tail)) {
+      term = ATgetFirst(tail);
+      tail = ATgetNext (tail);
+      if (ATmatch(term, "Symbol(<term>,<term>)", &symbol, &productions)) {
+         ofp_build_untyped_ast_node_decl(fp, symbol);
+      }
+   }
+   fprintf(fp, "\n");
+
+   return ATtrue;
+}
+
 ATbool ofp_build_traversal_class_decl(FILE * fp, ATerm name)
 {
    char * nameStr;
@@ -884,12 +924,14 @@ ATbool ofp_build_match_end(FILE * fp, ATerm symbol, ATerm constructor)
 #ifdef USE_MATCHED_VARIABLE
       fprintf(fp, "\n   if (matched) return ATtrue;\n");
 #else
+      fprintf(fp, "\n   ast->build_%s(%s);\n", ofp_getChars(symbol), ofp_getChars(symbol));
       fprintf(fp, "\n   return ATtrue;\n");
 #endif
    }
    else {
       fprintf(fp, "\n   // MATCHED %s\n", ofp_getChars(constructor));
       fprintf(fp, "   %s->setOptionType(OFP::%s::%s);\n", ofp_getChars(symbol), ofp_getChars(symbol), ofp_getChars(constructor));
+      fprintf(fp, "   ast->build_%s(%s);\n", ofp_getChars(symbol), ofp_getChars(symbol));
       fprintf(fp, "\n   return ATtrue;\n");
    }
    fprintf(fp, " }\n\n");

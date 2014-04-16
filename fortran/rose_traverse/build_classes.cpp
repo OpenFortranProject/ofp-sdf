@@ -13,6 +13,7 @@ FILE * fpc;
 FILE * fph;
 FILE * fpH;
 FILE * fpC;
+FILE * fpU;
 
 /* List for storing productions (prodName, [(consName, [symType]]) */
 ATermList gProdTable;
@@ -73,6 +74,8 @@ ATbool traverse_init()
    fpH = fopen("junk_traverse.hpp",  "w");    assert(fpH != NULL);
    fpC = fopen("junk_nodes.cpp",     "w");    assert(fpC != NULL);
 
+   fpU = fopen("untyped_ast_builder.hpp", "w");    assert(fpU != NULL);
+
    fprintf(fpc, "#include \"traversal.h\"\n");
    fprintf(fpc, "#include \"ofp_traverse.h\"\n\n");
 
@@ -99,6 +102,7 @@ ATbool traverse_finalize()
    fclose(fph);
    fclose(fpH);
    fclose(fpC);
+   fclose(fpU);
    ATtableDestroy(gSymTable);
    ATtableDestroy(gAliasTable);
    return ATtrue;
@@ -290,6 +294,10 @@ ATbool ofp_traverse_Constructors(ATerm term, pOFP_Traverse Constructors)
       /* Build the simple class declaration file
        */
       ofp_build_traversal_class_decls(fpH, gProdTable);
+
+      /* Build untyped AST node declarations
+       */
+      ofp_build_untyped_ast_node_decls(fpU, gProdTable);
 
       OFP_Traverse Symbol;
       ATermList    Symbols_tail;
