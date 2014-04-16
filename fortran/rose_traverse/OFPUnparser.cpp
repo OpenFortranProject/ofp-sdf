@@ -14,100 +14,24 @@ void OFP::FortranTextUnparser::unparseNode(SgUntypedNode * node)
 
                SgUntypedDeclarationStatementPtrList programUnitList = scope->get_declaration_list()->get_decl_list();
                for (int i = 0; i < programUnitList.size(); i++) {
-                  SgUntypedFunctionDeclaration * decl = isSgUntypedFunctionDeclaration(programUnitList.at(i));  assert(decl);
-                  unparseDecl(decl);
+                  SgUntypedDeclarationStatement * decl = isSgUntypedDeclarationStatement(programUnitList.at(i));  assert(decl);
+                  decl->unparse(oss);
                }
                break;
             }
-         case V_SgUntypedProgramHeaderDeclaration:
-            {
-               SgUntypedProgramHeaderDeclaration * mp = isSgUntypedProgramHeaderDeclaration(node);  assert(mp);
-               SgUntypedFunctionScope* scope = mp->get_scope();
-
-               SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
-               SgUntypedStatementPtrList            execList = scope->get_statement_list()->get_stmt_list();
-               SgUntypedFunctionDeclarationPtrList  isubList = scope->get_function_list()->get_func_list();
-
-               unparseDecl(mp);
-               for (int i = 0; i < specList.size(); i++) {
-                  SgUntypedDeclarationStatement * decl = isSgUntypedDeclarationStatement(specList.at(i));  assert(decl);
-                  unparseDecl(decl);
-               }
-               for (int i = 0; i < execList.size(); i++) {
-                  SgUntypedStatement * stmt = isSgUntypedStatement(execList.at(i));  assert(stmt);
-                  unparseStmt(stmt);
-               }
-               //TODO for (int i = 0; i < subpList->size(); i++) {
-               //TODO    SgUntypedStatement * stmt = dynamic_cast<SgUntypedStatement*>(subpList->at(i));  assert(stmt);
-               //TODO    unparseStmt(stmt);
-               //TODO }
-               unparseStmt(mp->get_end_statement());
-               break;
-            }
-
-         default:
-            oss << "FortranTextUnparser::UnparseUnknownNode::::::::::::::::: " << node->variantT() << "\n";
-      }
-}
-
-void OFP::FortranTextUnparser::unparseExpr(SgUntypedExpression * expr)
-{
-   if (!expr) return;
-
-   switch (expr->variantT())
-      {
-        case V_SgUntypedReferenceExpression:
-           {
-              SgUntypedReferenceExpression * e = dynamic_cast<SgUntypedReferenceExpression*>(expr);
-              if (e) {
-                 oss << e->get_name();
-              }
-              break;
-           }
-        case V_SgUntypedValueExpression:
-           {
-              SgUntypedValueExpression * e = dynamic_cast<SgUntypedValueExpression*>(expr);
-              if (e) {
-                 oss << e->get_value_string();
-                 if (e->get_type() && e->get_type()->get_has_kind()) {
-                    // TODO kind should be an expression
-                    oss << "_";
-                    unparseExpr(e->get_type()->get_type_kind());
-                 }
-              }
-              break;
-           }
-        case V_SgUntypedBinaryOperator:
-           {
-              SgUntypedBinaryOperator * binop = dynamic_cast<SgUntypedBinaryOperator*>(expr);
-              if (binop) {
-                 unparseExpr   (binop->get_lhs_operand());
-                 unparseOpEnum (binop->get_operator_enum());
-                 unparseExpr   (binop->get_rhs_operand());
-              }
-              break;
-           }
-
         default:
-           oss << "FortranTextUnparser::UnparseUnknownExpr:::::::::::::::::::::::: " << expr->variantT() << "\n";
+           if (node->get_has_unparse()) {
+              node->unparse(oss);
+           }
+           else {
+              std::cerr << "OFPUnparser::unparseNode::::::::::::::::: virtual method unparse NEEDS IMPLEMENTATION!\n";
+              assert(0);
+           }
       }
 }
 
-void OFP::FortranTextUnparser::unparseLabel(std::string label)
-{
-   if (label.length() > 0) {
-      oss << label << " ";
-   }
-}
-
-void OFP::FortranTextUnparser::unparseName(std::string name, std::string pre, std::string post)
-{
-   if (name.length() > 0) {
-      oss << pre << name << post;
-   }
-}
-
-void OFP::FortranTextUnparser::unparseOpEnum(SgToken::ROSE_Fortran_Operators e)
+//static void OFP::FortranTextUnparser::unparseOpEnum(SgToken::ROSE_Fortran_Operators e)
+static void unparseOpEnum(std::ostream & oss, SgToken::ROSE_Fortran_Operators e)
 {
    switch (e)
       {
@@ -137,177 +61,260 @@ void OFP::FortranTextUnparser::unparseOpEnum(SgToken::ROSE_Fortran_Operators e)
       }
 }
 
-void OFP::FortranTextUnparser::unparseStmt(SgUntypedStatement* stmt)
+static void unparseLabel(std::ostream & oss, std::string label)
 {
-   if (!stmt) return;
-
-   switch (stmt->variantT())
-      {
-        case V_SgUntypedStatement:
-           {
-              SgUntypedStatement * s = dynamic_cast<SgUntypedStatement*>(stmt);
-              if (s) {
-                 switch (s->get_statement_enum()) {
-                       case SgToken::FORTRAN_CONTAINS:   oss << "CONTAINS" << "\n";   break;
-                       default:
-                          oss << "FortranTextUnparser::UnparseUnknownStmt enum::::::::::::::::::: "
-                              << s->get_statement_enum() << "\n";
-                 }
-              }
-              break;
-           }
-        case V_SgUntypedAssignmentStatement:
-           {
-              SgUntypedAssignmentStatement * s = dynamic_cast<SgUntypedAssignmentStatement*>(stmt);
-              if (s) {
-                 unparseExpr(s->get_lhs_operand());
-                 oss << " = ";
-                 unparseExpr(s->get_rhs_operand());
-                 oss << "\n";
-              }
-              break;
-           }
-        case V_SgUntypedNamedStatement:
-           {
-              SgUntypedNamedStatement * s = dynamic_cast<SgUntypedNamedStatement*>(stmt);
-              if (s) {
-                 unparseSgUntypedNamedStatement(s);
-              }
-              break;
-           }
-
-        default:
-           oss << "FortranTextUnparser::UnparseUnknownStmt:::::::::::::::::::::::: " << stmt->variantT() << "\n";
-      }
+   if (label.length() > 0) {
+      oss << label << " ";
+   }
 }
 
-
-void OFP::FortranTextUnparser::unparseDecl(SgUntypedDeclarationStatement * decl)
+void SgUntypedProgramHeaderDeclaration::unparse(std::ostream & oss)
 {
-   if (!decl) return;
+   SgUntypedFunctionScope * scope = get_scope();
 
-   switch (decl->variantT())
-      {
-        case V_SgUntypedImplicitDeclaration:
-           {
-              SgUntypedStatement * s = dynamic_cast<SgUntypedStatement*>(decl);
-              if (s) {
-                 unparseLabel(s->get_label_string());
-                 oss << "IMPLICIT";
-                 if (s->get_statement_enum() == SgToken::FORTRAN_IMPLICIT_NONE) oss << " NONE";
-                 else                                                           oss << " TODO";
-                 oss << "\n";
-              }
-              break;
-           }
-        case V_SgUntypedSubroutineDeclaration:
-           {
-              SgUntypedSubroutineDeclaration * d = dynamic_cast<SgUntypedSubroutineDeclaration*>(decl);
-              if (d) {
-                 SgUntypedFunctionScope * scope = d->get_scope();
-                 SgUntypedDeclarationList * declList = scope->get_declaration_list();
-                 SgUntypedStatementList   * stmtList = scope->get_statement_list();
-                 SgUntypedFunctionDeclarationList * funcList = scope->get_function_list();
-                 
-                 unparseLabel(d->get_label_string());
-                 if (d->get_name().size() > 0) {
-                    oss << "SUBROUTINE";
-                    oss << " " << d->get_name();
-                    oss << "\n";
-                 }
+   SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
+   SgUntypedStatementPtrList            execList = scope->get_statement_list()->get_stmt_list();
+   SgUntypedFunctionDeclarationPtrList  isubList = scope->get_function_list()->get_func_list();
 
-                 for (int i = 0; i < declList->get_decl_list().size(); i++) {
-                    unparseDecl(declList->get_decl_list().at(i));
-                 }
-                 for (int i = 0; i < stmtList->get_stmt_list().size(); i++) {
-                    unparseStmt(stmtList->get_stmt_list().at(i));
-                 }
-                 for (int i = 0; i < funcList->get_func_list().size(); i++) {
-                    //TODO-CER-2014.3.18 unparse funcList
-                 }
+   unparseLabel(oss, get_label_string());
 
-                 unparseSgUntypedNamedStatement(d->get_end_statement());
-              }
-              break;
-           }
-        case V_SgUntypedProgramHeaderDeclaration:
-           {
-              SgUntypedProgramHeaderDeclaration * d = dynamic_cast<SgUntypedProgramHeaderDeclaration*>(decl);
-              if (d) {
-                 SgUntypedFunctionScope * scope = d->get_scope();
-                 SgUntypedDeclarationList * declList = scope->get_declaration_list();
-                 SgUntypedStatementList   * stmtList = scope->get_statement_list();
-                 SgUntypedFunctionDeclarationList * funcList = scope->get_function_list();
-                 
-                 unparseLabel(d->get_label_string());
-                 if (d->get_name().size() > 0) {
-                    //TODO-DQ-2014.3.21 add has_program_statement member variable
-                    oss << "PROGRAM";
-                    oss << " " << d->get_name();
-                    oss << "\n";
-                 }
+   //TODO-DQ-2014.3.21 add has_program_statement member variable
+   if (get_name().size() > 0) {
+      oss << "PROGRAM" << " " << get_name() << "\n";
+   }
 
-                 for (int i = 0; i < declList->get_decl_list().size(); i++) {
-                    unparseDecl(declList->get_decl_list().at(i));
-                 }
-                 for (int i = 0; i < stmtList->get_stmt_list().size(); i++) {
-                    unparseStmt(stmtList->get_stmt_list().at(i));
-                 }
-                 for (int i = 0; i < funcList->get_func_list().size(); i++) {
-                    unparseDecl(funcList->get_func_list().at(i));
-                 }
+   for (int i = 0; i < specList.size(); i++) {
+      specList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < execList.size(); i++) {
+      execList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < isubList.size(); i++) {
+      isubList.at(i)->unparse(oss);
+   }
 
-                 unparseSgUntypedNamedStatement(d->get_end_statement());
-              }
-              break;
-           }
-        case V_SgUntypedVariableDeclaration:
-           {
-              SgUntypedVariableDeclaration * d = dynamic_cast<SgUntypedVariableDeclaration*>(decl);
-              if (d) {
-                 SgUntypedInitializedNamePtrList names = d->get_parameters()->get_name_list();
-                 assert(names.size() > 0);
-                 oss << names.at(0)->get_type()->get_type_name() << " ";
-                 for (int i = 0; i < names.size(); i++) {
-                    oss << names.at(i)->get_name();
-                    if (i < names.size() - 1) oss << ", ";
-                 }
-                 oss << "\n";
-              }
-              break;
-           }
-
-        default:
-           oss << "FortranTextUnparser::UnparseUnknownDecl::::::::::::::::::::::::" << decl->variantT() << "\n";
-      }
+   get_end_statement()->unparse(oss);
 }
 
-
-void OFP::FortranTextUnparser::unparseSgUntypedNamedStatement(SgUntypedNamedStatement* stmt)
+void SgUntypedModuleDeclaration::unparse(std::ostream & oss)
 {
-   if (!stmt) return;
+   SgUntypedModuleScope * scope = get_scope();
 
-   switch (stmt->get_statement_enum())
+   SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
+   SgUntypedStatementPtrList            stmtList = scope->get_statement_list()->get_stmt_list();
+   SgUntypedFunctionDeclarationPtrList  msubList = scope->get_function_list()->get_func_list();
+                 
+   //TODO-CER-2014.4.12 - needs prefix, args, suffix, ...
+
+   unparseLabel(oss, get_label_string());
+
+   oss << "MODULE" << " " << get_name() << "\n";
+
+   for (int i = 0; i < specList.size(); i++) {
+      specList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < stmtList.size(); i++) {
+      stmtList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < msubList.size(); i++) {
+      msubList.at(i)->unparse(oss);
+   }
+   
+   get_end_statement()->unparse(oss);
+}
+
+void SgUntypedSubroutineDeclaration::unparse(std::ostream & oss)
+{
+   SgUntypedFunctionScope * scope = get_scope();
+
+   SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
+   SgUntypedStatementPtrList            execList = scope->get_statement_list()->get_stmt_list();
+   SgUntypedFunctionDeclarationPtrList  isubList = scope->get_function_list()->get_func_list();
+                 
+   //TODO-CER-2014.4.12 - needs prefix, args, suffix, ...
+
+   unparseLabel(oss, get_label_string());
+
+   oss << "SUBROUTINE" << " " << get_name() << "\n";
+
+   for (int i = 0; i < specList.size(); i++) {
+      specList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < execList.size(); i++) {
+      execList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < isubList.size(); i++) {
+      isubList.at(i)->unparse(oss);
+   }
+   
+   get_end_statement()->unparse(oss);
+}
+
+void SgUntypedMpSubprogramDeclaration::unparse(std::ostream & oss)
+{
+   SgUntypedFunctionScope * scope = get_scope();
+
+   SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
+   SgUntypedStatementPtrList            execList = scope->get_statement_list()->get_stmt_list();
+   SgUntypedFunctionDeclarationPtrList  isubList = scope->get_function_list()->get_func_list();
+                 
+   unparseLabel(oss, get_label_string());
+
+   oss << "MODULE PROCEDURE" << " " << get_name() << "\n";
+
+   for (int i = 0; i < specList.size(); i++) {
+      specList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < execList.size(); i++) {
+      execList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < isubList.size(); i++) {
+      isubList.at(i)->unparse(oss);
+   }
+   
+   get_end_statement()->unparse(oss);
+}
+
+void SgUntypedFunctionDeclaration::unparse(std::ostream & oss)
+{
+   SgUntypedFunctionScope * scope = get_scope();
+
+   SgUntypedDeclarationStatementPtrList specList = scope->get_declaration_list()->get_decl_list();
+   SgUntypedStatementPtrList            execList = scope->get_statement_list()->get_stmt_list();
+   SgUntypedFunctionDeclarationPtrList  isubList = scope->get_function_list()->get_func_list();
+
+   //TODO-CER-2014.4.12 - needs prefix, args, suffix, ...
+
+   unparseLabel(oss, get_label_string());
+
+   oss << "FUNCTION " << get_name() << "()" << "\n";
+
+   for (int i = 0; i < specList.size(); i++) {
+      specList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < execList.size(); i++) {
+      execList.at(i)->unparse(oss);
+   }
+   for (int i = 0; i < isubList.size(); i++) {
+      isubList.at(i)->unparse(oss);
+   }
+   
+   get_end_statement()->unparse(oss);
+}
+
+void SgUntypedImplicitDeclaration::unparse(std::ostream & oss)
+{
+   unparseLabel(oss, get_label_string());
+   oss << "IMPLICIT";
+   if (get_statement_enum() == SgToken::FORTRAN_IMPLICIT_NONE) oss << " NONE";
+   else                                                        oss << " TODO";
+   oss << "\n";
+}
+
+// Statements
+//
+
+void SgUntypedNamedStatement::unparse(std::ostream & oss)
+{
+   switch (get_statement_enum())
       {
         case SgToken::FORTRAN_END_PROGRAM:
            {
-              unparseLabel(stmt->get_label_string());
+              unparseLabel(oss, get_label_string());
               oss << "END PROGRAM ";
-              oss << stmt->get_statement_name();
+              oss << get_statement_name();
+              oss << "\n";
+              break;
+           }
+        case SgToken::FORTRAN_END_MODULE:
+           {
+              unparseLabel(oss, get_label_string());
+              oss << "END MODULE ";
+              oss << get_statement_name();
               oss << "\n";
               break;
            }
         case SgToken::FORTRAN_END_SUBROUTINE:
            {
-              unparseLabel(stmt->get_label_string());
+              unparseLabel(oss, get_label_string());
               oss << "END SUBROUTINE ";
-              oss << stmt->get_statement_name();
+              oss << get_statement_name();
+              oss << "\n";
+              break;
+           }
+        case SgToken::FORTRAN_END_FUNCTION:
+           {
+              unparseLabel(oss, get_label_string());
+              oss << "END FUNCTION ";
+              oss << get_statement_name();
+              oss << "\n";
+              break;
+           }
+        case SgToken::FORTRAN_END_MP_SUBPROGRAM:
+           {
+              unparseLabel(oss, get_label_string());
+              oss << "END PROCEDURE ";
+              oss << get_statement_name();
               oss << "\n";
               break;
            }
 
         default:
-           oss << "FortranTextUnparser::UnparseSgUntypedNamedStatement:::::::::::::::::::::::: " << stmt->get_statement_enum() << "\n";
+           oss << "FortranTextUnparser::UnparseSgUntypedNamedStatement:::::::::::::::::::::::: " << get_statement_enum() << "\n";
       }
 }
 
+void SgUntypedVariableDeclaration::unparse(std::ostream & oss)
+{
+   SgUntypedInitializedNamePtrList names = get_parameters()->get_name_list();
+   assert(names.size() > 0);
+   oss << names.at(0)->get_type()->get_type_name() << " ";
+   for (int i = 0; i < names.size(); i++) {
+      oss << names.at(i)->get_name();
+      if (i < names.size() - 1) oss << ", ";
+   }
+   oss << "\n";
+}
+
+// Statements
+//
+
+void SgUntypedStatement::unparse(std::ostream & oss)
+{
+   switch (get_statement_enum()) {
+      case SgToken::FORTRAN_CONTAINS:   oss << "CONTAINS" << "\n";   break;
+      default:
+         oss << "FortranTextUnparser::UnparseUnknownStmt enum::::::::::::::::::: "
+             << get_statement_enum() << "\n";
+   }
+}
+
+void SgUntypedAssignmentStatement::unparse(std::ostream & oss)
+{
+   get_lhs_operand()->unparse(oss);
+   oss << " = ";
+   get_rhs_operand()->unparse(oss);
+   oss << "\n";
+}
+
+void SgUntypedReferenceExpression::unparse(std::ostream & oss)
+{
+   oss << get_name();
+}
+
+void SgUntypedValueExpression::unparse(std::ostream & oss)
+{
+   oss << get_value_string();
+   if (get_type() && get_type()->get_has_kind()) {
+      // TODO kind should be an expression
+      oss << "_";
+      get_type()->get_type_kind()->unparse(oss);
+   }
+}
+
+void SgUntypedBinaryOperator::unparse(std::ostream & oss)
+{
+   get_lhs_operand()->unparse(oss);
+   unparseOpEnum (oss, get_operator_enum());
+   get_rhs_operand()->unparse(oss);
+}
