@@ -11,10 +11,28 @@ class UntypedASTBuilder : public ASTBuilder
    UntypedASTBuilder();
   ~UntypedASTBuilder();
 
+   // Programs
+   //
    virtual void build_Program(Program * program);
    virtual void build_MainProgram(MainProgram * mainProgram);
    virtual void build_ProgramStmt(ProgramStmt * programStmt);
    virtual void build_EndProgramStmt(EndProgramStmt * endProgramStmt);
+
+   // Modules
+   //
+   virtual void build_Module(Module* module);
+   virtual void build_ModuleStmt(ModuleStmt* moduleStmt);
+   virtual void build_EndModuleStmt(EndModuleStmt* endModuleStmt);
+   virtual void build_ModuleSubprogramPart(ModuleSubprogramPart* moduleSubprogramPart);
+   virtual void build_SeparateModuleSubprogram(SeparateModuleSubprogram* separateModuleSubprogram);
+   virtual void build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStmt);
+   virtual void build_EndMpSubprogramStmt(EndMpSubprogramStmt* endMpSubprogramStmt);
+
+   // Functions
+   //
+   virtual void build_FunctionSubprogram(FunctionSubprogram* functionSubprogram);
+   virtual void build_FunctionStmt(FunctionStmt* functionStmt);
+   virtual void build_EndFunctionStmt(EndFunctionStmt* endFunctionStmt);
 
    virtual void build_SpecificationPart(SpecificationPart * specificationPart);
    virtual void build_ImplicitPart(ImplicitPart * implicitPart);

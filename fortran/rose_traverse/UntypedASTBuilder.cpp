@@ -22,7 +22,7 @@ void UntypedASTBuilder::build_Program(Program * program)
 {
    Sg_File_Info * start = NULL;
    SgUntypedGlobalScope * scope = NULL;
-   SgUntypedFunctionDeclaration * decl = NULL;
+   SgUntypedDeclarationStatement * decl = NULL;
    SgUntypedDeclarationList * declList = NULL;
 
    // set up the global program scope
@@ -43,7 +43,7 @@ void UntypedASTBuilder::build_Program(Program * program)
    //
    std::vector<ProgramUnit*>* unitList = program->getProgramUnitList();
    for (int i = 0; i < unitList->size(); i++) {
-      decl = dynamic_cast<SgUntypedFunctionDeclaration*>(unitList->at(i)->getPayload());  assert(decl);
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(unitList->at(i)->getPayload());  assert(decl);
       declList->get_decl_list().push_back(decl);
    }
 
@@ -291,6 +291,8 @@ void UntypedASTBuilder::build_TypeDeclarationStmt(TypeDeclarationStmt * typeDecl
    start = type->get_startOfConstruct();
 
    stmt = new SgUntypedVariableDeclaration(start, type);
+   stmt->set_has_unparse(true);
+
    if (typeDeclarationStmt->getLabel()) stmt->set_label_string(typeDeclarationStmt->getLabel()->getValue());
    stmt->set_parameters(new SgUntypedInitializedNameList(start));
 
@@ -357,6 +359,7 @@ void UntypedASTBuilder::build_ImplicitStmt(ImplicitStmt * implicitStmt)
    switch (implicitStmt->getOptionType()) {
      case ImplicitStmt::ImplicitStmt_NONE:
         stmt = new SgUntypedImplicitDeclaration(start);
+        stmt->set_has_unparse(true);
         stmt->set_statement_enum(SgToken::FORTRAN_IMPLICIT_NONE);
         if (implicitStmt->getLabel()) stmt->set_label_string(implicitStmt->getLabel()->getValue());
 
@@ -421,7 +424,7 @@ void UntypedASTBuilder::build_AssignmentStmt(AssignmentStmt * assignmentStmt)
    SgUntypedExpression* rhs = dynamic_cast<SgUntypedExpression*>(assignmentStmt->getExpr()->payload);
 
    stmt = new SgUntypedAssignmentStatement(start, lhs, rhs);
-   stmt->set_statement_enum(SgToken::FORTRAN_IMPLICIT_NONE);
+   stmt->set_statement_enum(SgToken::FORTRAN_ASSIGN);
    if (assignmentStmt->getLabel()) stmt->set_label_string(assignmentStmt->getLabel()->getValue());
 
    assignmentStmt->setPayload(stmt);
@@ -449,6 +452,7 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
       program->set_statement_enum(SgToken::FORTRAN_PROGRAM);
    }
    program->set_scope(new SgUntypedFunctionScope(start));
+   program->set_has_unparse(true);
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_MainProgram label: ........... %s\n", program->get_label_string().c_str());
@@ -514,16 +518,8 @@ void UntypedASTBuilder::build_ProgramStmt(ProgramStmt * programStmt)
    Sg_File_Info * start = NULL;
    SgUntypedProgramHeaderDeclaration * program = NULL;
 
-   // set up the function scope
-   //
-   SgUntypedFunctionScope * scope = new SgUntypedFunctionScope(start);
-   scope->set_declaration_list(new SgUntypedDeclarationList(start));  
-   scope->set_statement_list(new SgUntypedStatementList(start));  
-   scope->set_function_list(new SgUntypedFunctionDeclarationList(start));  
-
    program = new SgUntypedProgramHeaderDeclaration(start, programStmt->getProgramName()->getIdent()->getName());
    program->set_statement_enum(SgToken::FORTRAN_PROGRAM);
-   program->set_scope(scope);
 
    if (programStmt->getLabel()) program->set_label_string(programStmt->getLabel()->getValue());
 
@@ -546,6 +542,234 @@ void UntypedASTBuilder::build_EndProgramStmt(EndProgramStmt * endProgramStmt)
 }
 
 //========================================================================================
+// R1104 module
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_Module(Module* module)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * endStmt = NULL;
+   SgUntypedDeclarationList * sgDeclList = NULL;
+   SgUntypedModuleDeclaration * sgModule = NULL;
+
+   // ModuleStmt
+   //
+   sgModule = dynamic_cast<SgUntypedModuleDeclaration*>(module->getModuleStmt()->getPayload());  assert(sgModule);
+   start = sgModule->get_startOfConstruct();
+   sgModule->set_scope(new SgUntypedModuleScope(start));
+   sgModule->set_has_unparse(true);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("build_Module label: ................ %s\n", sgModule->get_label_string().c_str());
+   printf("             begin name: ........... %s\n", sgModule->get_name().c_str());
+#endif
+
+   // SpecificationPart
+   //
+   SpecificationPart * specPart = module->getSpecificationPart();
+   sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
+   sgModule->get_scope()->set_declaration_list(sgDeclList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
+#endif
+
+   // ModuleSubprogramPart
+   //
+   ModuleSubprogramPart * msubPart = module->getModuleSubprogramPart();
+   if (msubPart) {
+      SgUntypedScope * msubScope = dynamic_cast<SgUntypedScope*>(msubPart->givePayload());  assert(msubScope);
+      sgModule->get_scope()->set_statement_list(msubScope->get_statement_list());
+      sgModule->get_scope()->set_function_list (msubScope->get_function_list());
+   }
+   else {
+      sgModule->get_scope()->set_statement_list(new SgUntypedStatementList(NULL));
+      sgModule->get_scope()->set_function_list (new SgUntypedFunctionDeclarationList(NULL));
+   }
+
+   // EndModuleStmt
+   //
+   endStmt = dynamic_cast<SgUntypedNamedStatement*>(module->getEndModuleStmt()->getPayload());  assert(endStmt);
+   sgModule->set_end_statement(endStmt);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("              end label: ........... %s\n", endStmt->get_label_string().c_str());
+   printf("              end  name: ........... %s\n", endStmt->get_statement_name().c_str());
+#endif
+
+   module->setPayload(sgModule);
+}
+
+//========================================================================================
+// R1105 module-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_ModuleStmt(ModuleStmt* moduleStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedModuleDeclaration * module = NULL;
+
+   module = new SgUntypedModuleDeclaration(start, moduleStmt->getModuleName()->getIdent()->getName());
+   module->set_statement_enum(SgToken::FORTRAN_MODULE);
+
+   if (moduleStmt->getLabel()) module->set_label_string(moduleStmt->getLabel()->getValue());
+
+   moduleStmt->setPayload(module);
+}
+
+//========================================================================================
+// R1106 end-module-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_EndModuleStmt(EndModuleStmt* endModuleStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt = new SgUntypedNamedStatement(start);
+   stmt->set_statement_enum(SgToken::FORTRAN_END_MODULE);
+
+   if (endModuleStmt->getLabel())       stmt->set_label_string  (endModuleStmt->getLabel()->getValue());
+   if (endModuleStmt->getModuleName()) stmt->set_statement_name(endModuleStmt->getModuleName()->getIdent()->getValue());
+
+   endModuleStmt->setPayload(stmt);
+}
+
+//========================================================================================
+// R1107 module-subprogram-part
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_ModuleSubprogramPart(ModuleSubprogramPart* moduleSubprogramPart)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedStatement * stmt = NULL;
+   SgUntypedFunctionDeclaration * fdecl = NULL;
+
+   ContainsStmt * contains = moduleSubprogramPart->getContainsStmt();  assert(contains);
+
+   stmt = dynamic_cast<SgUntypedStatement*>(contains->getPayload());  assert(stmt);
+   start = stmt->get_startOfConstruct();
+
+   SgUntypedScope * scope = new SgUntypedScope(start);
+   scope->set_declaration_list(new SgUntypedDeclarationList(start));
+   scope->set_statement_list(new SgUntypedStatementList(start));  
+   scope->set_function_list(new SgUntypedFunctionDeclarationList(start));  
+
+   scope->get_statement_list()->get_stmt_list().push_back(stmt);
+
+   std::vector<ModuleSubprogram*>* msubList = moduleSubprogramPart->getModuleSubprogramList();
+   for (int i = 0; i < msubList->size(); i++) {
+      fdecl = dynamic_cast<SgUntypedFunctionDeclaration*>(msubList->at(i)->getPayload());  assert(fdecl);
+      scope->get_function_list()->get_func_list().push_back(fdecl);
+   }
+   moduleSubprogramPart->setPayload(scope);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("build_ModuleSubprogramPart: ...... %lu\n", scope->get_function_list()->get_func_list().size());
+#endif
+}
+
+//========================================================================================
+// R1227 function-subprogram
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_FunctionSubprogram(FunctionSubprogram* functionSubprogram)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt = NULL;
+   SgUntypedDeclarationList* sgDeclList = NULL;
+   SgUntypedStatementList* sgStmtList = NULL;
+   SgUntypedFunctionDeclaration * function = NULL;
+
+   // FunctionStmt
+   //
+   function = dynamic_cast<SgUntypedFunctionDeclaration*>(functionSubprogram->getFunctionStmt()->getPayload());
+   assert(function);
+   start = function->get_startOfConstruct();
+   function->set_scope(new SgUntypedFunctionScope(start));
+   function->set_has_unparse(true);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("build_Function    label: ........... %s\n", function->get_label_string().c_str());
+   printf("             begin name: ........... %s\n", function->get_name().c_str());
+#endif
+
+   // SpecificationPart
+   //
+   SpecificationPart * specPart = functionSubprogram->getSpecificationPart();
+   sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
+   function->get_scope()->set_declaration_list(sgDeclList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
+#endif
+
+   // ExecutionPart
+   //
+   ExecutionPart * execPart = functionSubprogram->getExecutionPart();
+   sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
+   function->get_scope()->set_statement_list(sgStmtList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("         exec_list_size: ........... %lu\n", sgStmtList->get_stmt_list().size());
+#endif
+
+   // InternalSubprogramPart
+   //
+   InternalSubprogramPart * isubPart = functionSubprogram->getInternalSubprogramPart();
+   if (isubPart) {
+      SgUntypedFunctionDeclarationList* sgFuncList;
+      sgFuncList = dynamic_cast<SgUntypedFunctionDeclarationList*>(isubPart->givePayload());  assert(sgFuncList);
+      function->get_scope()->set_function_list(sgFuncList);
+   }
+   else {
+      function->get_scope()->set_function_list(new SgUntypedFunctionDeclarationList(NULL));
+   }
+
+   // EndFunctionStmt
+   //
+   stmt = dynamic_cast<SgUntypedNamedStatement*>(functionSubprogram->getEndFunctionStmt()->getPayload());  assert(stmt);
+   function->set_end_statement(stmt);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("              end label: ........... %s\n", stmt->get_label_string().c_str());
+   printf("              end  name: ........... %s\n", stmt->get_statement_name().c_str());
+#endif
+
+   functionSubprogram->setPayload(function);
+}
+
+//========================================================================================
+// R1228 function-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_FunctionStmt(FunctionStmt* functionStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedFunctionDeclaration * function = NULL;
+
+   function = new SgUntypedFunctionDeclaration(start, functionStmt->getFunctionName()->getIdent()->getName());
+   function->set_statement_enum(SgToken::FORTRAN_FUNCTION);
+
+   if (functionStmt->getLabel()) function->set_label_string(functionStmt->getLabel()->getValue());
+
+   //TODO-CER-2014.4.11 - handle prefix, arguments, language-binding
+
+   functionStmt->setPayload(function);
+}
+
+//========================================================================================
+// R1232 end-function-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_EndFunctionStmt(EndFunctionStmt* endFunctionStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt = new SgUntypedNamedStatement(start);
+   stmt->set_statement_enum(SgToken::FORTRAN_END_FUNCTION);
+
+   if (endFunctionStmt->getLabel()) {
+      stmt->set_label_string  (endFunctionStmt->getLabel()->getValue());
+   }
+   if (endFunctionStmt->getFunctionName()) {
+      stmt->set_statement_name(endFunctionStmt->getFunctionName()->getIdent()->getValue());
+   }
+
+   endFunctionStmt->setPayload(stmt);
+}
+
+//========================================================================================
 // R1233 subroutine-subprogram
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_SubroutineSubprogram(SubroutineSubprogram * subroutineSubprogram)
@@ -558,13 +782,13 @@ void UntypedASTBuilder::build_SubroutineSubprogram(SubroutineSubprogram * subrou
 
    // SubroutineStmt
    //
-   if (subroutineSubprogram->getSubroutineStmt()) {
-      subroutine = dynamic_cast<SgUntypedSubroutineDeclaration*>(subroutineSubprogram->getSubroutineStmt()->getPayload());
-      assert(subroutine);
-   }
+   subroutine = dynamic_cast<SgUntypedSubroutineDeclaration*>(subroutineSubprogram->getSubroutineStmt()->getPayload());
+   assert(subroutine);
+   start = subroutine->get_startOfConstruct();
+   subroutine->set_scope(new SgUntypedFunctionScope(start));
 
 #ifdef OFP_BUILD_DEBUG
-   printf("build_Subroutine label: ............ %s\n", subroutine->get_label_string().c_str());
+   printf("build_Subroutine  label: ........... %s\n", subroutine->get_label_string().c_str());
    printf("             begin name: ........... %s\n", subroutine->get_name().c_str());
 #endif
 
@@ -596,6 +820,9 @@ void UntypedASTBuilder::build_SubroutineSubprogram(SubroutineSubprogram * subrou
       sgFuncList = dynamic_cast<SgUntypedFunctionDeclarationList*>(isubPart->givePayload());  assert(sgFuncList);
       subroutine->get_scope()->set_function_list(sgFuncList);
    }
+   else {
+      subroutine->get_scope()->set_function_list(new SgUntypedFunctionDeclarationList(NULL));  
+   }
 
    // EndSubroutineStmt
    //
@@ -618,16 +845,8 @@ void UntypedASTBuilder::build_SubroutineStmt(SubroutineStmt * subroutineStmt)
    Sg_File_Info * start = NULL;
    SgUntypedSubroutineDeclaration * subroutine = NULL;
 
-   // set up the function scope
-   //
-   SgUntypedFunctionScope * scope = new SgUntypedFunctionScope(start);
-   scope->set_declaration_list(new SgUntypedDeclarationList(start));  
-   scope->set_statement_list(new SgUntypedStatementList(start));  
-   scope->set_function_list(new SgUntypedFunctionDeclarationList(start));  
-
    subroutine = new SgUntypedSubroutineDeclaration(start, subroutineStmt->getSubroutineName()->getIdent()->getName());
    subroutine->set_statement_enum(SgToken::FORTRAN_SUBROUTINE);
-   subroutine->set_scope(scope);
 
    if (subroutineStmt->getLabel()) subroutine->set_label_string(subroutineStmt->getLabel()->getValue());
 
@@ -656,6 +875,110 @@ void  UntypedASTBuilder::build_EndSubroutineStmt(EndSubroutineStmt * endSubrouti
 }
 
 //========================================================================================
+// R1237 separate-module-subprogram
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram* separateModuleSubprogram)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt = NULL;
+   SgUntypedDeclarationList* sgDeclList = NULL;
+   SgUntypedStatementList* sgStmtList = NULL;
+   //TODO-DQ-2014.4.15 - need SgUntypedMpSubprogramDeclaration
+   SgUntypedMpSubprogramDeclaration * subprogram = NULL;
+
+   // MpSubprogramStmt
+   //
+   subprogram = dynamic_cast<SgUntypedMpSubprogramDeclaration*>(separateModuleSubprogram->getMpSubprogramStmt()->getPayload());
+   assert(subprogram);
+   start = subprogram->get_startOfConstruct();
+   subprogram->set_scope(new SgUntypedFunctionScope(start));
+
+#ifdef OFP_BUILD_DEBUG
+   printf("build_Subprogram  label: ........... %s\n", subprogram->get_label_string().c_str());
+   printf("             begin name: ........... %s\n", subprogram->get_name().c_str());
+#endif
+
+   // SpecificationPart
+   //
+   SpecificationPart * specPart = separateModuleSubprogram->getSpecificationPart();
+   sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
+   subprogram->get_scope()->set_declaration_list(sgDeclList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
+#endif
+
+   // ExecutionPart
+   //
+   ExecutionPart * execPart = separateModuleSubprogram->getExecutionPart();
+   sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
+   subprogram->get_scope()->set_statement_list(sgStmtList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("         exec_list_size: ........... %lu\n", sgStmtList->get_stmt_list().size());
+#endif
+
+   // InternalSubprogramPart
+   //
+   InternalSubprogramPart * isubPart = separateModuleSubprogram->getInternalSubprogramPart();
+   if (isubPart) {
+      SgUntypedFunctionDeclarationList* sgFuncList;
+      sgFuncList = dynamic_cast<SgUntypedFunctionDeclarationList*>(isubPart->givePayload());  assert(sgFuncList);
+      subprogram->get_scope()->set_function_list(sgFuncList);
+   }
+   else {
+      subprogram->get_scope()->set_function_list(new SgUntypedFunctionDeclarationList(NULL));  
+   }
+
+   // EndMpSubprogramStmt
+   //
+   stmt = dynamic_cast<SgUntypedNamedStatement*>(separateModuleSubprogram->getEndMpSubprogramStmt()->getPayload());  assert(stmt);
+   subprogram->set_end_statement(stmt);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("              end label: ........... %s\n", stmt->get_label_string().c_str());
+   printf("              end  name: ........... %s\n", stmt->get_statement_name().c_str());
+#endif
+
+   separateModuleSubprogram->setPayload(subprogram);
+}
+
+//========================================================================================
+// R1238 mp-subprogram-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedMpSubprogramDeclaration * subprogram = NULL;
+
+   subprogram = new SgUntypedMpSubprogramDeclaration(start, mpSubprogramStmt->getProcedureName()->getIdent()->getName());
+   subprogram->set_statement_enum(SgToken::FORTRAN_MP_SUBPROGRAM);
+
+   if (mpSubprogramStmt->getLabel()) subprogram->set_label_string(mpSubprogramStmt->getLabel()->getValue());
+
+   mpSubprogramStmt->setPayload(subprogram);
+}
+
+//========================================================================================
+// R1239 end-mp-subprogram-stmt
+//----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_EndMpSubprogramStmt(EndMpSubprogramStmt* endMpSubprogramStmt)
+{
+   Sg_File_Info * start = NULL;
+   SgUntypedNamedStatement * stmt = new SgUntypedNamedStatement(start);
+   stmt->set_statement_enum(SgToken::FORTRAN_END_MP_SUBPROGRAM);
+
+   if (endMpSubprogramStmt->getLabel()) {
+      stmt->set_label_string  (endMpSubprogramStmt->getLabel()->getValue());
+   }
+   if (endMpSubprogramStmt->getProcedureName()) {
+      stmt->set_statement_name(endMpSubprogramStmt->getProcedureName()->getIdent()->getValue());
+   }
+
+   endMpSubprogramStmt->setPayload(stmt);
+}
+
+//========================================================================================
 // R1242 contains-stmt
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_ContainsStmt(ContainsStmt* containsStmt)
@@ -663,6 +986,7 @@ void UntypedASTBuilder::build_ContainsStmt(ContainsStmt* containsStmt)
    Sg_File_Info * start = NULL;
    SgUntypedStatement * stmt = new SgUntypedStatement(start);
    stmt->set_statement_enum(SgToken::FORTRAN_CONTAINS);
+   stmt->set_has_unparse(true);
 
    if (containsStmt->getLabel()) {
       stmt->set_label_string  (containsStmt->getLabel()->getValue());
