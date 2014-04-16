@@ -41,8 +41,20 @@ class Sg_File_Info
 class SgNode
   {
      public: 
-         SgNode()          {}
+         SgNode()          {p_has_unparse = false;}
          virtual ~SgNode() {}  // need to allow deletion of lists
+
+         virtual void unparse(std::ostream & oss)
+            {
+               printf("SgNode::unparse::::::::::::::::: virtual method unparse NEEDS IMPLEMENTATION!\n");
+               assert(0);
+            }
+
+         bool get_has_unparse()                  {return p_has_unparse;}
+         void set_has_unparse(bool has_unparse)  {p_has_unparse = has_unparse;}
+
+     protected:
+         bool p_has_unparse;
   };
 
 class SgLocatedNode : public SgNode
@@ -207,7 +219,11 @@ enum ROSE_Fortran_Keywords
       FORTRAN_END_MODULE = 129 + 0,
       FORTRAN_DOUBLE_COMPLEX = 130 + 0,
       FORTRAN_TYPE = 131 + 0,
-      FORTRAN_UNKNOWN = 132 + 0
+      //TODO-DQ-2014.4.15 - need following
+      FORTRAN_MP_SUBPROGRAM = 132 + 0,
+      //TODO-DQ-2014.4.15 - need following
+      FORTRAN_END_MP_SUBPROGRAM = 133 + 0,
+      FORTRAN_UNKNOWN = 134 + 0
    };
 
 // Langauge specific token enums for Fortran intrinsic operators

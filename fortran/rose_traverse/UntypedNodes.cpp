@@ -291,6 +291,18 @@ VariantT SgUntypedSubroutineDeclaration::variantT() const {return V_SgUntypedSub
 
 
 //========================================================================================
+// SgUntypedMpSubprogramDeclaration
+//----------------------------------------------------------------------------------------
+SgUntypedMpSubprogramDeclaration:: SgUntypedMpSubprogramDeclaration(Sg_File_Info* start, std::string name)
+   :  SgUntypedFunctionDeclaration(start, name)
+   {
+   }
+SgUntypedMpSubprogramDeclaration::~SgUntypedMpSubprogramDeclaration() {}
+
+VariantT SgUntypedMpSubprogramDeclaration::variantT() const {return V_SgUntypedMpSubprogramDeclaration;}
+
+
+//========================================================================================
 // SgUntypedProgramHeaderDeclaration
 //----------------------------------------------------------------------------------------
 SgUntypedProgramHeaderDeclaration:: SgUntypedProgramHeaderDeclaration(Sg_File_Info* start, std::string name)
@@ -303,7 +315,29 @@ VariantT SgUntypedProgramHeaderDeclaration::variantT() const {return V_SgUntyped
 
 
 //========================================================================================
-// SgUntypedProgramImplicitDeclaration
+// SgUntypedModuleDeclaration
+//----------------------------------------------------------------------------------------
+SgUntypedModuleDeclaration::SgUntypedModuleDeclaration(Sg_File_Info* start, std::string name)
+   : SgUntypedDeclarationStatement(start), p_name(name)
+   {
+      p_end_statement = NULL;
+      p_scope = NULL;
+   }
+
+SgUntypedModuleDeclaration::~SgUntypedModuleDeclaration() {assert(0);}
+
+std::string SgUntypedModuleDeclaration::get_name() const     {return p_name;}
+void SgUntypedModuleDeclaration::set_name(std::string name)  {p_name = name;}
+
+SgUntypedModuleScope* SgUntypedModuleDeclaration::get_scope() const      {return p_scope;}
+void SgUntypedModuleDeclaration::set_scope(SgUntypedModuleScope* scope)  {p_scope = scope;}
+
+SgUntypedNamedStatement* SgUntypedModuleDeclaration::get_end_statement() const         {return p_end_statement;}
+void SgUntypedModuleDeclaration::set_end_statement(SgUntypedNamedStatement* end_stmt)  {p_end_statement = end_stmt;}
+
+
+//========================================================================================
+// SgUntypedImplicitDeclaration
 //----------------------------------------------------------------------------------------
 SgUntypedImplicitDeclaration::SgUntypedImplicitDeclaration(Sg_File_Info* start)
    :  SgUntypedDeclarationStatement(start)
@@ -315,7 +349,7 @@ VariantT SgUntypedImplicitDeclaration::variantT() const {return V_SgUntypedImpli
 
 
 //========================================================================================
-// SgUntypedProgramImplicitDeclaration
+// SgUntypedInitializedName
 //----------------------------------------------------------------------------------------
 SgUntypedInitializedName::SgUntypedInitializedName(Sg_File_Info* start, SgUntypedType* type, std::string name)
    :  SgUntypedNode(start), p_type(type), p_name(name)
@@ -453,6 +487,12 @@ void SgUntypedScope::set_function_list(SgUntypedFunctionDeclarationList* func_li
 //----------------------------------------------------------------------------------------
 SgUntypedFunctionScope::~SgUntypedFunctionScope() {}
 SgUntypedFunctionScope::SgUntypedFunctionScope(Sg_File_Info* start) : SgUntypedScope(start) {}
+
+//========================================================================================
+// SgUntypedModuleScope
+//----------------------------------------------------------------------------------------
+SgUntypedModuleScope::~SgUntypedModuleScope() {}
+SgUntypedModuleScope::SgUntypedModuleScope(Sg_File_Info* start) : SgUntypedScope(start) {}
 
 //========================================================================================
 // SgUntypedGlobalScope
