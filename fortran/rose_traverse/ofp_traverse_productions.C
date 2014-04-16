@@ -17859,7 +17859,7 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, OFP::EndProgramStmt* EndProgramSt
 ATbool ofp_traverse_Module(ATerm term, OFP::Module* Module)
 {
 #ifdef DEBUG_PRINT
-   printf("\nModule: %s\n", ATwriteToString(term));
+   printf("Module: %s\n", ATwriteToString(term));
 #endif
 
  OFP::ModuleStmt ModuleStmt;
@@ -17870,21 +17870,27 @@ ATbool ofp_traverse_Module(ATerm term, OFP::Module* Module)
 
       if (ofp_traverse_ModuleStmt(ModuleStmt.term, &ModuleStmt)) {
          // MATCHED ModuleStmt
+         Module->setModuleStmt(ModuleStmt.newModuleStmt());
       } else return ATfalse;
 
       if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
          // MATCHED SpecificationPart
+         Module->setSpecificationPart(SpecificationPart.newSpecificationPart());
       } else return ATfalse;
 
    if (ATmatch(ModuleSubprogramPart.term, "Some(<term>)", &ModuleSubprogramPart.term)) {
       if (ofp_traverse_ModuleSubprogramPart(ModuleSubprogramPart.term, &ModuleSubprogramPart)) {
          // MATCHED ModuleSubprogramPart
+         Module->setModuleSubprogramPart(ModuleSubprogramPart.newModuleSubprogramPart());
       } else return ATfalse;
    }
 
       if (ofp_traverse_EndModuleStmt(EndModuleStmt.term, &EndModuleStmt)) {
          // MATCHED EndModuleStmt
+         Module->setEndModuleStmt(EndModuleStmt.newEndModuleStmt());
       } else return ATfalse;
+
+   ast->build_Module(Module);
 
    return ATtrue;
  }
@@ -17909,16 +17915,21 @@ ATbool ofp_traverse_ModuleStmt(ATerm term, OFP::ModuleStmt* ModuleStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         ModuleStmt->setLabel(Label.newLabel());
       } else return ATfalse;
    }
 
       if (ofp_traverse_ModuleName(ModuleName.term, &ModuleName)) {
          // MATCHED ModuleName
+         ModuleStmt->setModuleName(ModuleName.newModuleName());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         ModuleStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_ModuleStmt(ModuleStmt);
 
    return ATtrue;
  }
@@ -17943,6 +17954,7 @@ ATbool ofp_traverse_EndModuleStmt(ATerm term, OFP::EndModuleStmt* EndModuleStmt)
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         EndModuleStmt->setLabel(Label.newLabel());
       } else return ATfalse;
    }
 
@@ -17950,13 +17962,17 @@ ATbool ofp_traverse_EndModuleStmt(ATerm term, OFP::EndModuleStmt* EndModuleStmt)
    if (ATmatch(ModuleName.term, "(Some(<term>))", &ModuleName.term)) {
       if (ofp_traverse_ModuleName(ModuleName.term, &ModuleName)) {
          // MATCHED ModuleName
+         EndModuleStmt->setModuleName(ModuleName.newModuleName());
       } else return ATfalse;
    }
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         EndModuleStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_EndModuleStmt(EndModuleStmt);
 
    return ATtrue;
  }
@@ -17979,6 +17995,7 @@ ATbool ofp_traverse_ModuleSubprogramPart(ATerm term, OFP::ModuleSubprogramPart* 
 
       if (ofp_traverse_ContainsStmt(ContainsStmt.term, &ContainsStmt)) {
          // MATCHED ContainsStmt
+         ModuleSubprogramPart->setContainsStmt(ContainsStmt.newContainsStmt());
       } else return ATfalse;
 
    ATermList ModuleSubprogram_tail = (ATermList) ATmake("<term>", ModuleSubprogram.term);
@@ -17987,8 +18004,11 @@ ATbool ofp_traverse_ModuleSubprogramPart(ATerm term, OFP::ModuleSubprogramPart* 
       ModuleSubprogram_tail = ATgetNext (ModuleSubprogram_tail);
       if (ofp_traverse_ModuleSubprogram(ModuleSubprogram.term, &ModuleSubprogram)) {
          // MATCHED ModuleSubprogram
+         ModuleSubprogramPart->appendModuleSubprogram(ModuleSubprogram.newModuleSubprogram());
       } else return ATfalse;
    }
+
+   ast->build_ModuleSubprogramPart(ModuleSubprogramPart);
 
    return ATtrue;
  }
@@ -18010,9 +18030,12 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, OFP::ModuleSubprogram* ModuleSu
 
       if (ofp_traverse_SeparateModuleSubprogram(SeparateModuleSubprogram.term, &SeparateModuleSubprogram)) {
          // MATCHED SeparateModuleSubprogram
+         ModuleSubprogram->setSeparateModuleSubprogram(SeparateModuleSubprogram.newSeparateModuleSubprogram());
+         ModuleSubprogram->inheritPayload(ModuleSubprogram->getSeparateModuleSubprogram());
       } else return ATfalse;
 
    // MATCHED ModuleSubprogram_SMS
+   ModuleSubprogram->setOptionType(OFP::ModuleSubprogram::ModuleSubprogram_SMS);
 
    return ATtrue;
  }
@@ -18022,9 +18045,12 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, OFP::ModuleSubprogram* ModuleSu
 
       if (ofp_traverse_SubroutineSubprogram(SubroutineSubprogram.term, &SubroutineSubprogram)) {
          // MATCHED SubroutineSubprogram
+         ModuleSubprogram->setSubroutineSubprogram(SubroutineSubprogram.newSubroutineSubprogram());
+         ModuleSubprogram->inheritPayload(ModuleSubprogram->getSubroutineSubprogram());
       } else return ATfalse;
 
    // MATCHED ModuleSubprogram_SS
+   ModuleSubprogram->setOptionType(OFP::ModuleSubprogram::ModuleSubprogram_SS);
 
    return ATtrue;
  }
@@ -18034,9 +18060,12 @@ ATbool ofp_traverse_ModuleSubprogram(ATerm term, OFP::ModuleSubprogram* ModuleSu
 
       if (ofp_traverse_FunctionSubprogram(FunctionSubprogram.term, &FunctionSubprogram)) {
          // MATCHED FunctionSubprogram
+         ModuleSubprogram->setFunctionSubprogram(FunctionSubprogram.newFunctionSubprogram());
+         ModuleSubprogram->inheritPayload(ModuleSubprogram->getFunctionSubprogram());
       } else return ATfalse;
 
    // MATCHED ModuleSubprogram_FS
+   ModuleSubprogram->setOptionType(OFP::ModuleSubprogram::ModuleSubprogram_FS);
 
    return ATtrue;
  }
@@ -19880,25 +19909,32 @@ ATbool ofp_traverse_FunctionSubprogram(ATerm term, OFP::FunctionSubprogram* Func
 
       if (ofp_traverse_FunctionStmt(FunctionStmt.term, &FunctionStmt)) {
          // MATCHED FunctionStmt
+         FunctionSubprogram->setFunctionStmt(FunctionStmt.newFunctionStmt());
       } else return ATfalse;
 
       if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
          // MATCHED SpecificationPart
+         FunctionSubprogram->setSpecificationPart(SpecificationPart.newSpecificationPart());
       } else return ATfalse;
 
       if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
          // MATCHED ExecutionPart
+         FunctionSubprogram->setExecutionPart(ExecutionPart.newExecutionPart());
       } else return ATfalse;
 
    if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
       if (ofp_traverse_InternalSubprogramPart(InternalSubprogramPart.term, &InternalSubprogramPart)) {
          // MATCHED InternalSubprogramPart
+         FunctionSubprogram->setInternalSubprogramPart(InternalSubprogramPart.newInternalSubprogramPart());
       } else return ATfalse;
    }
 
       if (ofp_traverse_EndFunctionStmt(EndFunctionStmt.term, &EndFunctionStmt)) {
          // MATCHED EndFunctionStmt
+         FunctionSubprogram->setEndFunctionStmt(EndFunctionStmt.newEndFunctionStmt());
       } else return ATfalse;
+
+   ast->build_FunctionSubprogram(FunctionSubprogram);
 
    return ATtrue;
  }
@@ -19924,36 +19960,46 @@ ATbool ofp_traverse_FunctionStmt(ATerm term, OFP::FunctionStmt* FunctionStmt)
  if (ATmatch(term, "FunctionStmt(<term>,<term>,<term>,<term>,<term>,<term>)", &Label.term, &Prefix.term, &FunctionName.term, &DummyArgNameList.term, &Suffix.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+   if (ATmatch(Label.term, "(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         FunctionStmt->setLabel(Label.newLabel());
       } else return ATfalse;
+   }
    }
 
    if (ATmatch(Prefix.term, "Some(<term>)", &Prefix.term)) {
       if (ofp_traverse_Prefix(Prefix.term, &Prefix)) {
          // MATCHED Prefix
+         FunctionStmt->setPrefix(Prefix.newPrefix());
       } else return ATfalse;
    }
 
       if (ofp_traverse_FunctionName(FunctionName.term, &FunctionName)) {
          // MATCHED FunctionName
+         FunctionStmt->setFunctionName(FunctionName.newFunctionName());
       } else return ATfalse;
 
    if (ATmatch(DummyArgNameList.term, "Some(<term>)", &DummyArgNameList.term)) {
       if (ofp_traverse_DummyArgNameList(DummyArgNameList.term, &DummyArgNameList)) {
          // MATCHED DummyArgNameList
+         FunctionStmt->setDummyArgNameList(DummyArgNameList.newDummyArgNameList());
       } else return ATfalse;
    }
 
    if (ATmatch(Suffix.term, "Some(<term>)", &Suffix.term)) {
       if (ofp_traverse_Suffix(Suffix.term, &Suffix)) {
          // MATCHED Suffix
+         FunctionStmt->setSuffix(Suffix.newSuffix());
       } else return ATfalse;
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         FunctionStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_FunctionStmt(FunctionStmt);
 
    return ATtrue;
  }
@@ -20072,22 +20118,29 @@ ATbool ofp_traverse_EndFunctionStmt(ATerm term, OFP::EndFunctionStmt* EndFunctio
  if (ATmatch(term, "EndFunctionStmt(<term>,<term>,<term>)", &Label.term, &FunctionName.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+   if (ATmatch(Label.term, "(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         EndFunctionStmt->setLabel(Label.newLabel());
       } else return ATfalse;
+   }
    }
 
    if (ATmatch(FunctionName.term, "Some(<term>)", &FunctionName.term)) {
    if (ATmatch(FunctionName.term, "(Some(<term>))", &FunctionName.term)) {
       if (ofp_traverse_FunctionName(FunctionName.term, &FunctionName)) {
          // MATCHED FunctionName
+         EndFunctionStmt->setFunctionName(FunctionName.newFunctionName());
       } else return ATfalse;
    }
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         EndFunctionStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_EndFunctionStmt(EndFunctionStmt);
 
    return ATtrue;
  }
@@ -20366,25 +20419,32 @@ ATbool ofp_traverse_SeparateModuleSubprogram(ATerm term, OFP::SeparateModuleSubp
 
       if (ofp_traverse_MpSubprogramStmt(MpSubprogramStmt.term, &MpSubprogramStmt)) {
          // MATCHED MpSubprogramStmt
+         SeparateModuleSubprogram->setMpSubprogramStmt(MpSubprogramStmt.newMpSubprogramStmt());
       } else return ATfalse;
 
       if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
          // MATCHED SpecificationPart
+         SeparateModuleSubprogram->setSpecificationPart(SpecificationPart.newSpecificationPart());
       } else return ATfalse;
 
       if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
          // MATCHED ExecutionPart
+         SeparateModuleSubprogram->setExecutionPart(ExecutionPart.newExecutionPart());
       } else return ATfalse;
 
    if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
       if (ofp_traverse_InternalSubprogramPart(InternalSubprogramPart.term, &InternalSubprogramPart)) {
          // MATCHED InternalSubprogramPart
+         SeparateModuleSubprogram->setInternalSubprogramPart(InternalSubprogramPart.newInternalSubprogramPart());
       } else return ATfalse;
    }
 
       if (ofp_traverse_EndMpSubprogramStmt(EndMpSubprogramStmt.term, &EndMpSubprogramStmt)) {
          // MATCHED EndMpSubprogramStmt
+         SeparateModuleSubprogram->setEndMpSubprogramStmt(EndMpSubprogramStmt.newEndMpSubprogramStmt());
       } else return ATfalse;
+
+   ast->build_SeparateModuleSubprogram(SeparateModuleSubprogram);
 
    return ATtrue;
  }
@@ -20407,18 +20467,25 @@ ATbool ofp_traverse_MpSubprogramStmt(ATerm term, OFP::MpSubprogramStmt* MpSubpro
  if (ATmatch(term, "MpSubprogramStmt(<term>,<term>,<term>)", &Label.term, &ProcedureName.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+   if (ATmatch(Label.term, "(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         MpSubprogramStmt->setLabel(Label.newLabel());
       } else return ATfalse;
+   }
    }
 
       if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
          // MATCHED ProcedureName
+         MpSubprogramStmt->setProcedureName(ProcedureName.newProcedureName());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         MpSubprogramStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_MpSubprogramStmt(MpSubprogramStmt);
 
    return ATtrue;
  }
@@ -20441,22 +20508,29 @@ ATbool ofp_traverse_EndMpSubprogramStmt(ATerm term, OFP::EndMpSubprogramStmt* En
  if (ATmatch(term, "EndMpSubprogramStmt(<term>,<term>,<term>)", &Label.term, &ProcedureName.term, &EOS.term)) {
 
    if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
+   if (ATmatch(Label.term, "(<term>)", &Label.term)) {
       if (ofp_traverse_Label(Label.term, &Label)) {
          // MATCHED Label
+         EndMpSubprogramStmt->setLabel(Label.newLabel());
       } else return ATfalse;
+   }
    }
 
    if (ATmatch(ProcedureName.term, "Some(<term>)", &ProcedureName.term)) {
    if (ATmatch(ProcedureName.term, "(Some(<term>))", &ProcedureName.term)) {
       if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
          // MATCHED ProcedureName
+         EndMpSubprogramStmt->setProcedureName(ProcedureName.newProcedureName());
       } else return ATfalse;
    }
    }
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
          // MATCHED EOS
+         EndMpSubprogramStmt->setEOS(EOS.newEOS());
       } else return ATfalse;
+
+   ast->build_EndMpSubprogramStmt(EndMpSubprogramStmt);
 
    return ATtrue;
  }
