@@ -15,10 +15,28 @@ class ASTBuilder
    ASTBuilder()            {}
    virtual ~ASTBuilder()   {}
 
+   // Programs
+   //
    virtual void build_Program(Program * program) = 0;
    virtual void build_MainProgram(MainProgram * program) = 0;
    virtual void build_ProgramStmt(ProgramStmt * programStmt) = 0;
    virtual void build_EndProgramStmt(EndProgramStmt * endProgramStmt) = 0;
+
+   // Modules
+   //
+   virtual void build_Module(Module* module) = 0;
+   virtual void build_ModuleStmt(ModuleStmt* moduleStmt) = 0;
+   virtual void build_EndModuleStmt(EndModuleStmt* endModuleStmt) = 0;
+   virtual void build_ModuleSubprogramPart(ModuleSubprogramPart* moduleSubprogramPart) = 0;
+   virtual void build_SeparateModuleSubprogram(SeparateModuleSubprogram* separateModuleSubprogram) = 0;
+   virtual void build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStmt) = 0;
+   virtual void build_EndMpSubprogramStmt(EndMpSubprogramStmt* endMpSubprogramStmt) = 0;
+
+   // Functions
+   //
+   virtual void build_FunctionSubprogram(FunctionSubprogram* functionSubprogram) = 0;
+   virtual void build_FunctionStmt(FunctionStmt* functionStmt) = 0;
+   virtual void build_EndFunctionStmt(EndFunctionStmt* endFunctionStmt) = 0;
 
    virtual void build_SpecificationPart(SpecificationPart * specificationPart) = 0;
    virtual void build_ImplicitPart(ImplicitPart * implicitPart) = 0;
