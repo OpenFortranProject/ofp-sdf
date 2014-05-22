@@ -174,7 +174,7 @@ sorts
   Initialization                      %% R505
   NullInit                            %% R506
 
-  EntityDeclList OptAttrSpecList
+  EntityDeclList OptAttrSpecList OptArraySpec OptCoarraySpec OptCharLength
 
 %% 5.3 Attributes
 
@@ -198,6 +198,7 @@ sorts
   IntentSpec                          %% R523
 
   CoboundsEntry
+  LanguageBindingName
 
   AssumedShapeSpecList AttrSpecList DeferredCoshapeSpecList
   DeferredShapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
@@ -246,6 +247,7 @@ sorts
   AccessIdList AllocatableDeclList BindEntityList CodimensionDeclList
   DataIDoObjectList DataStmtObjectList DataStmtSetList DataStmtValueList
   DummyArgNameList NamedConstantDefList PointerDeclList SavedEntityList TargetDeclList
+  OptDummyArgNameList
 
 %% 5.5 Implicit statement
 
@@ -323,7 +325,7 @@ sorts
   Stride                              %% R622
   VectorSubscript                     %% R623
 
-  SectionSubscriptList
+  SectionSubscriptList OptSectionSubscriptList
 
 %% 6.6 Image selectors
 
@@ -764,12 +766,12 @@ context-free syntax
   NamedConstant                         -> Constant         {reject} %% can't tell name is constant
 
 %%R305
-  IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_ILC")}
-  RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_RLC")}
-  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_CXLC")}
-  LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant_LLC")}
-  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant_CRLC")}
-  BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant_BLC")}
+  IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
+  RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
+  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
+  LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
+  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
+  BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
 
 %%R306
   Name                                  -> NamedConstant    {cons("NamedConstant")}
@@ -803,44 +805,45 @@ context-free syntax
 %%
 
 %%R402
-  IntrinsicTypeSpec                       -> TypeSpec             {cons("TypeSpec_ITS")}
-  DerivedTypeSpec                         -> TypeSpec             {cons("TypeSpec_DTS")}
+  IntrinsicTypeSpec                       -> TypeSpec             {cons("TypeSpec")}
+  DerivedTypeSpec                         -> TypeSpec             {cons("TypeSpec")}
 
 %%R403
-  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_ITS")}
-  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_ITS")}
-  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_DTS")}
-  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_C_DTS")}
-  'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_C_STAR")}
+  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec")}
+  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec")}
+  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("Type")}
+  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("Class")}
+  'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("AssumedClass")}
 %%TR29113
-  'TYPE'  '(' '*'               ')'       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec_T_STAR")}
+  'TYPE'  '(' '*'               ')'       -> DeclarationTypeSpec  {cons("AssumedType")}
 
 
 %% 4.4 Intrinsic types
 %%
 
 %%R404
-  'INTEGER'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_INT")}
-  'REAL'      KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_REAL")}
-  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DBL_PREC")}
-  'COMPLEX'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_CMPLX")}
-  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_CHAR")}
-  'LOGICAL'   KindSelector?             -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_LOGICAL")}
-  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("IntrinsicTypeSpec_DBL_CMPLX")}
+  'INTEGER'   KindSelector?             -> IntrinsicTypeSpec    {cons("INTEGER")}
+  'REAL'      KindSelector?             -> IntrinsicTypeSpec    {cons("REAL")}
+  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
+  'COMPLEX'   KindSelector?             -> IntrinsicTypeSpec    {cons("COMPLEX")}
+  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("CHARACTER")}
+  'LOGICAL'   KindSelector?             -> IntrinsicTypeSpec    {cons("LOGICAL")}
+  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
 %%       NONSTANDARD: e.g., integer*8 complex*8 complex*16
 %%
-  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("KindSelector_E")}
-  '('            Expr ')'               -> KindSelector  {cons("KindSelector_E")}
+  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("KindSelector")}
+  '('            Expr ')'               -> KindSelector  {cons("KindSelector")}
   '*' Icon                              -> KindSelector  {cons("KindSelector_STAR")}
 
 %%406
   Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
-  DigitString ('_' KindParam)?          -> IntLiteralConstant  {cons("IntLiteralConstant")}
+  DigitString                           -> IntLiteralConstant  {cons("IntLiteralConstant")}
+  DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
 
 %%R408
   DigitString                           -> KindParam          {cons("KindParam_DS")}
@@ -1214,34 +1217,38 @@ context-free syntax
 
 
 %%R502
-   AccessSpec                                             -> AttrSpec     {cons("AttrSpec_AS")}
-  'ALLOCATABLE'                                           -> AttrSpec     {cons("AttrSpec_ALLOCATABLE")}
-  'ASYNCHRONOUS'                                          -> AttrSpec     {cons("AttrSpec_ASYNC")}
-  'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("AttrSpec_CODIMENSION")}
-  'CONTIGUOUS'                                            -> AttrSpec     {cons("AttrSpec_CONTIGUOUS")}
-  'DIMENSION' '(' ArraySpec ')'                           -> AttrSpec     {cons("AttrSpec_DIMENSION")}
-  'EXTERNAL'                                              -> AttrSpec     {cons("AttrSpec_EXTERNAL")}
-  'INTENT' '(' IntentSpec ')'                             -> AttrSpec     {cons("AttrSpec_INTENT")}
-  'INTRINSIC'                                             -> AttrSpec     {cons("AttrSpec_INTRINSIC")}
-   LanguageBindingSpec                                    -> AttrSpec     {cons("AttrSpec_LBS")}
-  'OPTIONAL'                                              -> AttrSpec     {cons("AttrSpec_OPTIONAL")}
-  'PARAMETER'                                             -> AttrSpec     {cons("AttrSpec_PARAMETER")}
-  'POINTER'                                               -> AttrSpec     {cons("AttrSpec_POINTER")}
-  'PROTECTED'                                             -> AttrSpec     {cons("AttrSpec_PROTECTED")}
-  'SAVE'                                                  -> AttrSpec     {cons("AttrSpec_SAVE")}
-  'TARGET'                                                -> AttrSpec     {cons("AttrSpec_TARGET")}
-  'VALUE'                                                 -> AttrSpec     {cons("AttrSpec_VALUE")}
-  'VOLATILE'                                              -> AttrSpec     {cons("AttrSpec_VOLATILE")}
+   AccessSpec                                             -> AttrSpec     {cons("AttrSpec")}
+  'ALLOCATABLE'                                           -> AttrSpec     {cons("ALLOCATABLE")}
+  'ASYNCHRONOUS'                                          -> AttrSpec     {cons("ASYNCHRONOUS")}
+  'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("AttrSpec")}
+  'CONTIGUOUS'                                            -> AttrSpec     {cons("CONTIGUOUS")}
+  'DIMENSION' '(' ArraySpec ')'                           -> AttrSpec     {cons("AttrSpec")}
+  'EXTERNAL'                                              -> AttrSpec     {cons("EXTERNAL")}
+  'INTENT' '(' IntentSpec ')'                             -> AttrSpec     {cons("AttrSpec")}
+  'INTRINSIC'                                             -> AttrSpec     {cons("INTRINSIC")}
+   LanguageBindingSpec                                    -> AttrSpec     {cons("AttrSpec")}
+  'OPTIONAL'                                              -> AttrSpec     {cons("OPTIONAL")}
+  'PARAMETER'                                             -> AttrSpec     {cons("PARAMETER")}
+  'POINTER'                                               -> AttrSpec     {cons("POINTER")}
+  'PROTECTED'                                             -> AttrSpec     {cons("PROTECTED")}
+  'SAVE'                                                  -> AttrSpec     {cons("SAVE")}
+  'TARGET'                                                -> AttrSpec     {cons("TARGET")}
+  'VALUE'                                                 -> AttrSpec     {cons("VALUE")}
+  'VOLATILE'                                              -> AttrSpec     {cons("VOLATILE")}
   {AttrSpec ','}+                                         -> AttrSpecList {cons("AttrSpecList")}
 
 %%R503
-  ObjectName    ( '(' ArraySpec ')'   )?
-                ( '[' CoarraySpec ']' )?
-                ( '*' CharLength      )?
-                   Initialization?                      -> EntityDecl     {cons("EntityDecl")}
+  ObjectName OptArraySpec?
+             OptCoarraySpec?
+             OptCharLength?
+             Initialization?                            -> EntityDecl     {cons("EntityDecl")}
 %%| FunctionName( '*' CharLength      )?  %%Ambiguous with object-name
 %%
-{EntityDecl ','}+                                       -> EntityDeclList {cons("EntityDeclList")}
+
+  '(' ArraySpec   ')'                                   -> OptArraySpec   {cons("OptArraySpec")}
+  '[' CoarraySpec ']'                                   -> OptCoarraySpec {cons("OptCoarraySpec")}
+  '*' CharLength                                        -> OptCharLength  {cons("OptCharLength")}
+  {EntityDecl ','}+                                     -> EntityDeclList {cons("EntityDeclList")}
 
 %%R504
 %%Name - lex
@@ -1259,13 +1266,14 @@ context-free syntax
 %%
 
 %%R507
-  'PUBLIC'                                              -> AccessSpec      {cons("AccessSpec_PUBLIC")}
-  'PRIVATE'                                             -> AccessSpec      {cons("AccessSpec_PRIVATE")}
+  'PUBLIC'                                              -> AccessSpec      {cons("PUBLIC")}
+  'PRIVATE'                                             -> AccessSpec      {cons("PRIVATE")}
 
 %%R508
 %%       Scon substituted for scalar-default-char-constant-expr
 %%
-  'BIND' '(' 'C' (',' 'NAME' '=' Scon)? ')'    -> LanguageBindingSpec      {cons("LanguageBindingSpec")}
+  'BIND' '(' 'C' LanguageBindingName? ')'               -> LanguageBindingSpec  {cons("LanguageBindingSpec")}
+  ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("LanguageBindingName")}
 
 %%R509
   DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec_DCSL")}
@@ -1291,12 +1299,12 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("DimensionSpec")}
 
 %%R515
-  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec_ESSL")}
-  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec_ASSL")}
-  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec_DSSL")}
-  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec_ASS")}
-  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec_ISSL")}
-  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec_ARS")}
+  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
+  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
+  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
+  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec")}
+  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
+  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
 
 %%R516
   (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
@@ -1325,7 +1333,8 @@ context-free syntax
   '..'                                          -> AssumedRankSpec      {cons("AssumedRankSpec")}
 
 %%R522
-  (LowerBound ':')? '*'                         -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
+                 '*'                            -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
+  LowerBound ':' '*'                            -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
   {ImpliedShapeSpec ','}+                       -> ImpliedShapeSpecList {cons("ImpliedShapeSpecList")}
 
 %%R523
@@ -1604,8 +1613,8 @@ context-free syntax
 
 %%  ObjectName
 %%  CoindexedNamedObject
-  DataRef                              -> Designator   {cons("Designator_DR_AMB")}
-  Substring                            -> Designator   {cons("Designator_S_AMB")}
+  DataRef                              -> Designator   {cons("Designator_AMB")}
+  Substring                            -> Designator   {cons("Designator_AMB")}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -1679,17 +1688,12 @@ context-free syntax
 %%R611
   {PartRef '%'}+                                         -> DataRef   {cons("DataRef")}
 
-%%R612 part-ref
-%%REMOVE PartName                                  ImageSelector?     -> PartRef   {cons("PartRef")}
-%%REMOVE PartName   '(' SectionSubscriptList ')'
-%%REMOVE         ( '(' SubstringRange       ')' )? ImageSelector?     -> PartRef   {cons("PartRef")}
-
 %%R612
-  PartName ( '(' SectionSubscriptList ')' )?
-           (     ImageSelector            )?             -> PartRef   {cons("PartRef")}
+  PartName OptSectionSubscriptList? ImageSelector?       -> PartRef   {cons("PartRef")}
+  '(' SectionSubscriptList ')'                           -> OptSectionSubscriptList   {cons("OptSectionSubscriptList")}
 
 %%R613
-  DataRef                                                -> StructureComponent  {cons("StructureComponent")}
+  DataRef                                                -> StructureComponent   {cons("StructureComponent")}
 
 %%R614
   DataRef                                                -> CoindexedNamedObject {cons("CoindexedNamedObject")}
@@ -1870,8 +1874,8 @@ context-free syntax
 
 %%R701
 %%TODO-AMB
-  Constant                      -> Primary          {cons("Primary_C_AMB")}
-  Designator                    -> Primary          {cons("Primary_D_AMB")}
+  Constant                      -> Primary          {cons("Primary_AMB")}
+  Designator                    -> Primary          {cons("Primary_AMB")}
   ArrayConstructor              -> Primary          {cons("Primary_AC_AMB")}
   StructureConstructor          -> Primary          {cons("Primary_SC_AMB")}
   FunctionReference             -> Primary          {cons("Primary_FR_AMB")}
@@ -1963,7 +1967,7 @@ context-free syntax
 %%R722
 %%TODO-short circuit the expr nonsense and make it more sensible
 %%( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("Expr")}
-Primary                                    -> Expr            {cons("Expr_P")}
+Primary                                    -> Expr            {cons("Expr")}
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("DefinedBinaryOp")}
@@ -3029,15 +3033,15 @@ context-free syntax
   StartCommentBlock?  ProgramUnit+       -> Program             {cons("Program")}
 
 %%R202
-  MainProgram                            -> ProgramUnit         {cons("ProgramUnit_MP")}
-  ExternalSubprogram                     -> ProgramUnit         {cons("ProgramUnit_ES")}
-  Module                                 -> ProgramUnit         {cons("ProgramUnit_M")}
-  Submodule                              -> ProgramUnit         {cons("ProgramUnit_S")}
-  BlockData                              -> ProgramUnit         {cons("ProgramUnit_BD")}
+  MainProgram                            -> ProgramUnit         {cons("ProgramUnit")}
+  ExternalSubprogram                     -> ProgramUnit         {cons("ProgramUnit")}
+  Module                                 -> ProgramUnit         {cons("ProgramUnit")}
+  Submodule                              -> ProgramUnit         {cons("ProgramUnit")}
+  BlockData                              -> ProgramUnit         {cons("ProgramUnit")}
 
 %%R203
-  FunctionSubprogram                     -> ExternalSubprogram  {cons("ExternalSubprogram_FS")}
-  SubroutineSubprogram                   -> ExternalSubprogram  {cons("ExternalSubprogram_SS")}
+  FunctionSubprogram                     -> ExternalSubprogram  {cons("ExternalSubprogram")}
+  SubroutineSubprogram                   -> ExternalSubprogram  {cons("ExternalSubprogram")}
   
 %%R204
   UseStmt*
@@ -3049,22 +3053,22 @@ context-free syntax
   ImplicitPartStmt* ImplicitStmt         -> ImplicitPart        {cons("ImplicitPart")}
 
 %%R206
-  ImplicitStmt                           -> ImplicitPartStmt    {cons("ImplicitPartStmt_IS")}
-  ParameterStmt                          -> ImplicitPartStmt    {cons("ImplicitPartStmt_PS")}
-  FormatStmt                             -> ImplicitPartStmt    {cons("ImplicitPartStmt_FS")}
-  EntryStmt                              -> ImplicitPartStmt    {cons("ImplicitPartStmt_ES")}
+  ImplicitStmt                           -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
+  ParameterStmt                          -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
+  FormatStmt                             -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
+  EntryStmt                              -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
 
 %%R207
-  DerivedTypeDef                         -> DeclarationConstruct    {cons("DeclarationConstruct_DTD")}
-  EntryStmt                              -> DeclarationConstruct    {cons("DeclarationConstruct_ES")}
-  EnumDef                                -> DeclarationConstruct    {cons("DeclarationConstruct_ED")}
-  FormatStmt                             -> DeclarationConstruct    {cons("DeclarationConstruct_FS")}
-  InterfaceBlock                         -> DeclarationConstruct    {cons("DeclarationConstruct_IB")}
-  ParameterStmt                          -> DeclarationConstruct    {cons("DeclarationConstruct_PS")}
-  ProcedureDeclarationStmt               -> DeclarationConstruct    {cons("DeclarationConstruct_PDS")}
-  OtherSpecificationStmt                 -> DeclarationConstruct    {cons("DeclarationConstruct_OSS")}
-  TypeDeclarationStmt                    -> DeclarationConstruct    {cons("DeclarationConstruct_TDS")}
-  StmtFunctionStmt                       -> DeclarationConstruct    {cons("DeclarationConstruct_SFS")}
+  DerivedTypeDef                         -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  EntryStmt                              -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  EnumDef                                -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  FormatStmt                             -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  InterfaceBlock                         -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  ParameterStmt                          -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  ProcedureDeclarationStmt               -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  OtherSpecificationStmt                 -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  TypeDeclarationStmt                    -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  StmtFunctionStmt                       -> DeclarationConstruct    {cons("DeclarationConstruct")}
 
 %%R208
 %%     WARNING-MODIFICATION:
@@ -3180,16 +3184,6 @@ context-free syntax
   Name                                 -> Keyword     {cons("Keyword")}
 
 %%R1101
-%%TODO-REMOVE  ProgramStmt? MainRange                       -> MainProgram      {cons("Mainprogram")}
-%%TODO-REMOVE  BodyConstruct+         EndProgramStmt        -> MainRange        {cons("MainRange")}
-%%TODO-REMOVE  InternalSubprogramPart EndProgramStmt        -> MainRange        {cons("MainRange")}
-%%TODO-REMOVE  EndProgramStmt                               -> MainRange        {cons("MainRange")}
-
-%%TODO-REMOVE  SpecificationPart                            -> BodyConstruct
-%%TODO-REMOVE  ExecutableConstruct                          -> BodyConstruct
-%%TODO-REMOVE  BodyConstruct+                               -> Body
-
-%%R1101
 %%     WARNING-MODIFICATION: 
 %%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
@@ -3205,7 +3199,9 @@ context-free syntax
   Label? 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
-  Label? 'END' ('PROGRAM' ProgramName?)?   EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END'                             EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END' 'PROGRAM'                   EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END' 'PROGRAM' ProgramName       EOS -> EndProgramStmt   {cons("EndProgramStmt")}
 
 %%R1104
 %%     WARNING-MODIFICATION: 
@@ -3221,7 +3217,8 @@ context-free syntax
   Label? 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("ModuleStmt")}
 
 %%R1106
-  Label? 'END' ('MODULE' ModuleName?)?     EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+  Label? 'END'                             EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+  Label? 'END' 'MODULE' ModuleName?        EOS -> EndModuleStmt    {cons("EndModuleStmt")}
 
 %%TODO-DELETE  SpecificationPartConstruct                   -> ModuleBody
 %%TODO-DELETE  ModuleSubprogramPartConstruct                -> ModuleBody
@@ -3338,13 +3335,13 @@ context-free syntax
   EndInterfaceStmt                -> InterfaceBlock          {cons("InterfaceBlock")}
 
 %%R1202
-  InterfaceBody                   -> InterfaceSpecification  {cons("InterfaceSpecification_IB")}
-  ProcedureStmt                   -> InterfaceSpecification  {cons("InterfaceSpecification_PS")}
+  InterfaceBody                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
+  ProcedureStmt                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
 
 
 %%R1203
-  Label? 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt     {cons("InterfaceStmt_GS")}
-  Label? 'ABSTRACT' 'INTERFACE'                    EOS -> InterfaceStmt     {cons("InterfaceStmt_AB")}
+  Label? 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  Label? 'ABSTRACT' 'INTERFACE'                    EOS -> InterfaceStmt     {cons("InterfaceStmt")}
       
 %%R1204
   Label? 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
@@ -3354,8 +3351,8 @@ context-free syntax
 %%       The optional SpecificationPart is ambiguous.  The lack of a SpecificationPart
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%
-  FunctionStmt   SpecificationPart EndFunctionStmt     -> InterfaceBody  {cons("InterfaceBody_FS")}
-  SubroutineStmt SpecificationPart EndSubroutineStmt   -> InterfaceBody  {cons("InterfaceBody_SS")}
+  FunctionStmt   SpecificationPart EndFunctionStmt     -> InterfaceBody  {cons("InterfaceBody")}
+  SubroutineStmt SpecificationPart EndSubroutineStmt   -> InterfaceBody  {cons("InterfaceBody")}
 
 %%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
 %%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
@@ -3474,12 +3471,12 @@ context-free syntax
   PrefixSpec+                                         -> Prefix              {cons("Prefix")}
 
 %%1226
-  DeclarationTypeSpec                                 -> PrefixSpec          {cons("PrefixSpec_DTS")}
-  'ELEMENTAL'                                         -> PrefixSpec          {cons("PrefixSpec_ELEMENTAL")}
-  'IMPURE'                                            -> PrefixSpec          {cons("PrefixSpec_IMPURE")}
-  'MODULE'                                            -> PrefixSpec          {cons("PrefixSpec_MODULE")}
-  'PURE'                                              -> PrefixSpec          {cons("PrefixSpec_PURE")}
-  'RECURSIVE'                                         -> PrefixSpec          {cons("PrefixSpec_RECURSIVE")}
+  DeclarationTypeSpec                                 -> PrefixSpec          {cons("PrefixSpec")}
+  'ELEMENTAL'                                         -> PrefixSpec          {cons("ELEMENTAL")}
+  'IMPURE'                                            -> PrefixSpec          {cons("IMPURE")}
+  'MODULE'                                            -> PrefixSpec          {cons("MODULE")}
+  'PURE'                                              -> PrefixSpec          {cons("PURE")}
+  'RECURSIVE'                                         -> PrefixSpec          {cons("RECURSIVE")}
 
 %%R1227
 %%     WARNING-MODIFICATION: 
@@ -3495,7 +3492,10 @@ context-free syntax
 
 %%R1228
   Label? Prefix? 'FUNCTION' FunctionName
-              '(' DummyArgNameList? ')' Suffix?    EOS -> FunctionStmt        {cons("FunctionStmt")}
+              '(' OptDummyArgNameList ')' Suffix?  EOS -> FunctionStmt        {cons("FunctionStmt")}
+
+  {DummyArgName ','}*                                  -> OptDummyArgNameList {cons("OptDummyArgNameList")}
+
 
 %%R1229
   LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("ProcLanguageBindingSpec")}
@@ -3504,11 +3504,14 @@ context-free syntax
   Ident                                                -> DummyArgName     {cons("DummyArgName")}
 
 %%R1231
-  ProcLanguageBindingSpec ('RESULT' '(' ResultName ')')?   -> Suffix       {cons("Suffix_PR")}
-  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec?     -> Suffix       {cons("Suffix_RP")}
+  ProcLanguageBindingSpec                              -> Suffix           {cons("Suffix")}
+  ProcLanguageBindingSpec 'RESULT' '(' ResultName ')'  -> Suffix           {cons("Suffix")}
+  'RESULT' '(' ResultName ')'                          -> Suffix           {cons("Suffix")}
+  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec  -> Suffix           {cons("Suffix")}
 
 %%R1232
-  Label? 'END' ('FUNCTION' FunctionName?)?         EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
+  Label? 'END'                                     EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
+  Label? 'END' 'FUNCTION' FunctionName?            EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
 
 %%R1233
 %%     WARNING-MODIFICATION: 
@@ -3525,16 +3528,17 @@ context-free syntax
 %%R1234
   Label? Prefix? 'SUBROUTINE' SubroutineName
             '(' DummyArgList? ')'
-             ProcLanguageBindingSpec?        EOS -> SubroutineStmt       {cons("SubroutineStmt_DAL")}
-  Label? Prefix? 'SUBROUTINE' SubroutineName EOS -> SubroutineStmt       {cons("SubroutineStmt_0")}
+             ProcLanguageBindingSpec?        EOS -> SubroutineStmt       {cons("SubroutineStmt")}
+  Label? Prefix? 'SUBROUTINE' SubroutineName EOS -> SubroutineStmt       {cons("SubroutineStmt")}
 
 %%R1235
-  DummyArgName                                   -> DummyArg             {cons("DummyArg_DAN")}
+  DummyArgName                                   -> DummyArg             {cons("DummyArg")}
   '*'                                            -> DummyArg             {cons("DummyArg_STAR")}
   {DummyArg ','}+                                -> DummyArgList         {cons("DummyArgList")}
 
 %%R1236
-  Label? 'END' ('SUBROUTINE' SubroutineName?)? EOS -> EndSubroutineStmt {cons("EndSubroutineStmt")}
+  Label? 'END'                               EOS -> EndSubroutineStmt    {cons("EndSubroutineStmt")}
+  Label? 'END' 'SUBROUTINE' SubroutineName?  EOS -> EndSubroutineStmt    {cons("EndSubroutineStmt")}
 
 %%R1237
 %%     WARNING-MODIFICATION: 
