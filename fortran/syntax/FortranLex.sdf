@@ -59,11 +59,11 @@ lexical syntax
 
 %% Number as label: max 5 digits with space in 6th pos
 %%
-  [0-9][0-9][0-9][0-9][0-9]             -> Label
-  [0-9][0-9][0-9][0-9]                  -> Label
-  [0-9][0-9][0-9]                       -> Label   
-  [0-9][0-9]                            -> Label
-  [0-9]                                 -> Label
+  [0-9][0-9][0-9][0-9][0-9]             -> LblDef
+  [0-9][0-9][0-9][0-9]                  -> LblDef
+  [0-9][0-9][0-9]                       -> LblDef   
+  [0-9][0-9]                            -> LblDef
+  [0-9]                                 -> LblDef
 
 %%3.1.2
 %%
@@ -154,5 +154,5 @@ context-free restrictions
 
 context-free syntax
 
-  Label  -> LblDef                        {cons("Label")}
-  Label  -> LblRef                        {cons("LblRef")}
+  LblDef  -> Label                         {cons("Label")}
+  LblDef  -> LblRef                        {cons("LblRef")}
