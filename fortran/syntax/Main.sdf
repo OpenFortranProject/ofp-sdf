@@ -200,7 +200,7 @@ sorts
   CoboundsEntry
   LanguageBindingName
 
-  AssumedShapeSpecList AttrSpecList DeferredCoshapeSpecList
+  AssumedShapeSpecList AssumedSizeSpecList AttrSpecList DeferredCoshapeSpecList
   DeferredShapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
 
 %% 5.4 Attribute specification statements
@@ -1307,7 +1307,8 @@ context-free syntax
   AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
 
 %%R516
-  (LowerBound ':')? UpperBound                  -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
+                 UpperBound                     -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
+  LowerBound ':' UpperBound                     -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
   {ExplicitShapeSpec ','}+                      -> ExplicitShapeSpecList {cons("ExplicitShapeSpecList")}
 
 %%R517
@@ -1328,6 +1329,9 @@ context-free syntax
 %%AMB: explicit-shape-spec list made non-empty to remove ambiguity with implied-shape-spec-list
 %%
   (ExplicitShapeSpec ',')+ (LowerBound ':')? '*'  -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
+%%  {ExplicitShapeSpec ','}+                '*'        -> AssumedSizeSpec      {cons("AssumedSizeSpec")}
+%%  {ExplicitShapeSpec ','}+ LowerBound ':' '*'        -> AssumedSizeSpec      {cons("AssumedSizeSpec")}
+%%  {ExplicitShapeSpec ','}+                      -> AssumedSizeSpecList  {cons("AssumedSizeSpecList")}
 
 %%R522a
   '..'                                          -> AssumedRankSpec      {cons("AssumedRankSpec")}
@@ -3078,40 +3082,40 @@ context-free syntax
   ExecutionPartConstruct*                -> ExecutionPart           {cons("ExecutionPart")}
 
 %%R209
-  ExecutableConstruct                    -> ExecutionPartConstruct  {cons("ExecutionPartConstruct_EC")}
-  FormatStmt                             -> ExecutionPartConstruct  {cons("ExecutionPartConstruct_FS")}
-  EntryStmt                              -> ExecutionPartConstruct  {cons("ExecutionPartConstruct_ES")}
-  DataStmt                               -> ExecutionPartConstruct  {cons("ExecutionPartConstruct_DS")}
+  ExecutableConstruct                    -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
+  FormatStmt                             -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
+  EntryStmt                              -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
+  DataStmt                               -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
 
 %%R210
   ContainsStmt InternalSubprogram*       -> InternalSubprogramPart  {cons("InternalSubprogramPart")}
 
 %%R211
-  FunctionSubprogram                     -> InternalSubprogram      {cons("InternalSubprogram_FS")}
-  SubroutineSubprogram                   -> InternalSubprogram      {cons("InternalSubprogram_SS")}
+  FunctionSubprogram                     -> InternalSubprogram      {cons("InternalSubprogram")}
+  SubroutineSubprogram                   -> InternalSubprogram      {cons("InternalSubprogram")}
 
 %%R212
-  AccessStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_AS1")}
-  AllocatableStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_AS2")}
-  AsynchronousStmt                       -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_AS3")}
-  BindStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_BS")}
-  CodimensionStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_CS1")}
-  ContiguousStmt                         -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_CS2")}
-  CommonStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_CS3")}
-  DataStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_DS1")}
-  DimensionStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_DS2")}
-  EquivalenceStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_ES1")}
-  ExternalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_ES2")}
-  IntentStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_IS1")}
-  IntrinsicStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_IS2")}
-  NamelistStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_NS")}
-  OptionalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_OS")}
-  PointerStmt                            -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_PS1")}
-  ProtectedStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_PS2")}
-  SaveStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_SS")}
-  TargetStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_TS")}
-  VolatileStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_VS1")}
-  ValueStmt                              -> OtherSpecificationStmt  {cons("OtherSpecificationStmt_VS2")}
+  AccessStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  AllocatableStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  AsynchronousStmt                       -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  BindStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  CodimensionStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  ContiguousStmt                         -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  CommonStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  DataStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  DimensionStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  EquivalenceStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  ExternalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  IntentStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  IntrinsicStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  NamelistStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  OptionalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  PointerStmt                            -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  ProtectedStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  SaveStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  TargetStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  VolatileStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  ValueStmt                              -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
 
 %%R213
 %%     WARNING-MODIFICATION:
@@ -3119,66 +3123,66 @@ context-free syntax
 %%          not necessarily an end-do-stmt.  Replace by do-stmt and end-do-stmt and
 %%          resolve the construct end at a latter stage.
 %%
-  ActionStmt                             -> ExecutableConstruct     {cons("ExecutableConstruct_AS")}
-  AssociateConstruct                     -> ExecutableConstruct     {cons("ExecutableConstruct_AC")}
-  BlockConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct_BC")}
-  CaseConstruct                          -> ExecutableConstruct     {cons("ExecutableConstruct_CC1")}
-  CriticalConstruct                      -> ExecutableConstruct     {cons("ExecutableConstruct_CC2")}
+  ActionStmt                             -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  AssociateConstruct                     -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  BlockConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  CaseConstruct                          -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  CriticalConstruct                      -> ExecutableConstruct     {cons("ExecutableConstruct")}
 %%DoConstruct          %% Ambiguous - placed related statements in action-stmt
-  ForallConstruct                        -> ExecutableConstruct     {cons("ExecutableConstruct_FC")}
-  IfConstruct                            -> ExecutableConstruct     {cons("ExecutableConstruct_IC")}
-  SelectTypeConstruct                    -> ExecutableConstruct     {cons("ExecutableConstruct_STC")}
-  WhereConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct_WC")}
+  ForallConstruct                        -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  IfConstruct                            -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  SelectTypeConstruct                    -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  WhereConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct")}
 
 %%R214
 %%TODO-REMOVE  AssignStmt
 %%TODO-REMOVE  AssignedGotoStmt
 %%TODO-REMOVE  StmtFunctionStmt  %% see R1226 comment
 %%TODO-REMOVE  AllstopStmt
-  AllocateStmt                           -> ActionStmt  {cons("ActionStmt_AS1")}
-  AssignmentStmt                         -> ActionStmt  {cons("ActionStmt_AS2")}
-  BackspaceStmt                          -> ActionStmt  {cons("ActionStmt_BS")}
-  CallStmt                               -> ActionStmt  {cons("ActionStmt_CS1")}
-  CloseStmt                              -> ActionStmt  {cons("ActionStmt_CS2")}
-  ContinueStmt                           -> ActionStmt  {cons("ActionStmt_CS3")}
-  CycleStmt                              -> ActionStmt  {cons("ActionStmt_CS4")}
-  DeallocateStmt                         -> ActionStmt  {cons("ActionStmt_DS")}
-  EndFunctionStmt                        -> ActionStmt  {cons("ActionStmt_EFS")}
-  EndMpSubprogramStmt                    -> ActionStmt  {cons("ActionStmt_EMSS")}
-  EndProgramStmt                         -> ActionStmt  {cons("ActionStmt_EPS")}
-  EndSubroutineStmt                      -> ActionStmt  {cons("ActionStmt_ESS1")}
-  EndfileStmt                            -> ActionStmt  {cons("ActionStmt_ES1")}
-  ErrorStopStmt                          -> ActionStmt  {cons("ActionStmt_ESS2")}
-  ExitStmt                               -> ActionStmt  {cons("ActionStmt_ES2")}
-  FlushStmt                              -> ActionStmt  {cons("ActionStmt_FS1")}
-  ForallStmt                             -> ActionStmt  {cons("ActionStmt_FS2")}
-  GotoStmt                               -> ActionStmt  {cons("ActionStmt_GS")}
-  IfStmt                                 -> ActionStmt  {cons("ActionStmt_IS1")}
-  InquireStmt                            -> ActionStmt  {cons("ActionStmt_IS2")}
-  LockStmt                               -> ActionStmt  {cons("ActionStmt_LS")}
-  NullifyStmt                            -> ActionStmt  {cons("ActionStmt_NS")}
-  OpenStmt                               -> ActionStmt  {cons("ActionStmt_OS")}
-  PointerAssignmentStmt                  -> ActionStmt  {cons("ActionStmt_PAS")}
-  PrintStmt                              -> ActionStmt  {cons("ActionStmt_PS1")}
-  ReadStmt                               -> ActionStmt  {cons("ActionStmt_RS1")}
-  ReturnStmt                             -> ActionStmt  {cons("ActionStmt_RS2")}
-  RewindStmt                             -> ActionStmt  {cons("ActionStmt_RS3")}
-  StopStmt                               -> ActionStmt  {cons("ActionStmt_SS")}
-  SyncAllStmt                            -> ActionStmt  {cons("ActionStmt_SAS")}
-  SyncImagesStmt                         -> ActionStmt  {cons("ActionStmt_SIS")}
-  SyncMemoryStmt                         -> ActionStmt  {cons("ActionStmt_SMS")}
-  UnlockStmt                             -> ActionStmt  {cons("ActionStmt_US")}
-  WaitStmt                               -> ActionStmt  {cons("ActionStmt_WS1")}
-  WhereStmt                              -> ActionStmt  {cons("ActionStmt_WS2")}
-  WriteStmt                              -> ActionStmt  {cons("ActionStmt_WS3")}
-  ArithmeticIfStmt                       -> ActionStmt  {cons("ActionStmt_AIS")}
-  ComputedGotoStmt                       -> ActionStmt  {cons("ActionStmt_CGS")}
+  AllocateStmt                           -> ActionStmt  {cons("ActionStmt")}
+  AssignmentStmt                         -> ActionStmt  {cons("ActionStmt")}
+  BackspaceStmt                          -> ActionStmt  {cons("ActionStmt")}
+  CallStmt                               -> ActionStmt  {cons("ActionStmt")}
+  CloseStmt                              -> ActionStmt  {cons("ActionStmt")}
+  ContinueStmt                           -> ActionStmt  {cons("ActionStmt")}
+  CycleStmt                              -> ActionStmt  {cons("ActionStmt")}
+  DeallocateStmt                         -> ActionStmt  {cons("ActionStmt")}
+  EndFunctionStmt                        -> ActionStmt  {cons("ActionStmt")}
+  EndMpSubprogramStmt                    -> ActionStmt  {cons("ActionStmt")}
+  EndProgramStmt                         -> ActionStmt  {cons("ActionStmt")}
+  EndSubroutineStmt                      -> ActionStmt  {cons("ActionStmt")}
+  EndfileStmt                            -> ActionStmt  {cons("ActionStmt")}
+  ErrorStopStmt                          -> ActionStmt  {cons("ActionStmt")}
+  ExitStmt                               -> ActionStmt  {cons("ActionStmt")}
+  FlushStmt                              -> ActionStmt  {cons("ActionStmt")}
+  ForallStmt                             -> ActionStmt  {cons("ActionStmt")}
+  GotoStmt                               -> ActionStmt  {cons("ActionStmt")}
+  IfStmt                                 -> ActionStmt  {cons("ActionStmt")}
+  InquireStmt                            -> ActionStmt  {cons("ActionStmt")}
+  LockStmt                               -> ActionStmt  {cons("ActionStmt")}
+  NullifyStmt                            -> ActionStmt  {cons("ActionStmt")}
+  OpenStmt                               -> ActionStmt  {cons("ActionStmt")}
+  PointerAssignmentStmt                  -> ActionStmt  {cons("ActionStmt")}
+  PrintStmt                              -> ActionStmt  {cons("ActionStmt")}
+  ReadStmt                               -> ActionStmt  {cons("ActionStmt")}
+  ReturnStmt                             -> ActionStmt  {cons("ActionStmt")}
+  RewindStmt                             -> ActionStmt  {cons("ActionStmt")}
+  StopStmt                               -> ActionStmt  {cons("ActionStmt")}
+  SyncAllStmt                            -> ActionStmt  {cons("ActionStmt")}
+  SyncImagesStmt                         -> ActionStmt  {cons("ActionStmt")}
+  SyncMemoryStmt                         -> ActionStmt  {cons("ActionStmt")}
+  UnlockStmt                             -> ActionStmt  {cons("ActionStmt")}
+  WaitStmt                               -> ActionStmt  {cons("ActionStmt")}
+  WhereStmt                              -> ActionStmt  {cons("ActionStmt")}
+  WriteStmt                              -> ActionStmt  {cons("ActionStmt")}
+  ArithmeticIfStmt                       -> ActionStmt  {cons("ActionStmt")}
+  ComputedGotoStmt                       -> ActionStmt  {cons("ActionStmt")}
 %% Following added as replacement for DoConstruct (because ambiguous)
-  LabelDoStmt                            -> ActionStmt  {cons("ActionStmt_LDS")}
-  NonlabelDoStmt                         -> ActionStmt  {cons("ActionStmt_NDS")}
-  EndDoStmt                              -> ActionStmt  {cons("ActionStmt_EDS")}
+  LabelDoStmt                            -> ActionStmt  {cons("ActionStmt")}
+  NonlabelDoStmt                         -> ActionStmt  {cons("ActionStmt")}
+  EndDoStmt                              -> ActionStmt  {cons("ActionStmt")}
 %% Deleted features
-  PauseStmt                              -> ActionStmt  {cons("ActionStmt_PS2")}
+  PauseStmt                              -> ActionStmt  {cons("ActionStmt")}
 
 %%215
   Name                                 -> Keyword     {cons("Keyword")}
@@ -3220,18 +3224,13 @@ context-free syntax
   Label? 'END'                             EOS -> EndModuleStmt    {cons("EndModuleStmt")}
   Label? 'END' 'MODULE' ModuleName?        EOS -> EndModuleStmt    {cons("EndModuleStmt")}
 
-%%TODO-DELETE  SpecificationPartConstruct                   -> ModuleBody
-%%TODO-DELETE  ModuleSubprogramPartConstruct                -> ModuleBody
-%%TODO-DELETE  ModuleBody SpecificationPartConstruct        -> ModuleBody
-%%TODO-DELETE  ModuleBody ModuleSubprogramPartConstruct     -> ModuleBody
-
 %%R1107
   ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("ModuleSubprogramPart")}
 
 %%R1108
-  FunctionSubprogram                           -> ModuleSubprogram      {cons("ModuleSubprogram_FS")}
-  SubroutineSubprogram                         -> ModuleSubprogram      {cons("ModuleSubprogram_SS")}
-  SeparateModuleSubprogram                     -> ModuleSubprogram      {cons("ModuleSubprogram_SMS")}
+  FunctionSubprogram                           -> ModuleSubprogram      {cons("ModuleSubprogram")}
+  SubroutineSubprogram                         -> ModuleSubprogram      {cons("ModuleSubprogram")}
+  SeparateModuleSubprogram                     -> ModuleSubprogram      {cons("ModuleSubprogram")}
 
 %%R1109
   Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
