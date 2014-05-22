@@ -1,0 +1,28 @@
+Program(
+  [ IfElse(
+      Equ(
+        Mul(
+          Var("x")
+        , Parenthetical(Add(Var("y"), Int("10")))
+        )
+      , Int("34")
+      )
+    , [ Assign(
+          "x"
+        , Div(
+            Var("x")
+          , Parenthetical(Sub(Var("y"), Int("1")))
+          )
+        )
+      ]
+    , [ Assign(
+          "x"
+        , Mul(
+            Var("x")
+          , Parenthetical(Div(Var("y"), Int("3")))
+          )
+        )
+      ]
+    )
+  ]
+)

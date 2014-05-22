@@ -1,0 +1,299 @@
+module til-parenthesize
+
+imports
+  libstratego-lib
+  TIL
+
+
+strategies
+  io-til-parenthesize =
+    io-wrap(parenthesize-TIL)
+
+  parenthesize-TIL =
+    innermost(TILParenthesize)
+
+
+rules
+
+  TILParenthesize :
+    Sub(t_0, t_1) -> Sub(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Sub(t_0, t_1) -> Sub(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Sub(_, _)
+            + ?Add(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Add(t_0, t_1) -> Add(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Add(t_0, t_1) -> Add(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Add(_, _)
+            + ?Sub(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Div(t_0, t_1) -> Div(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Sub(_, _)
+            + ?Add(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Div(t_0, t_1) -> Div(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Sub(_, _)
+            + ?Add(_, _)
+            + ?Div(_, _)
+            + ?Mul(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Mul(t_0, t_1) -> Mul(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Sub(_, _)
+            + ?Add(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Mul(t_0, t_1) -> Mul(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + ?Sub(_, _)
+            + ?Add(_, _)
+            + ?Mul(_, _)
+            + ?Div(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Neq(t_0, t_1) -> Neq(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Neq(t_0, t_1) -> Neq(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Equ(t_0, t_1) -> Equ(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Equ(_, _)
+            + ?Neq(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Equ(t_0, t_1) -> Equ(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Equ(_, _)
+            + ?Neq(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Geq(t_0, t_1) -> Geq(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Geq(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Geq(t_0, t_1) -> Geq(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Geq(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Leq(t_0, t_1) -> Leq(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Leq(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Leq(t_0, t_1) -> Leq(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Leq(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Gt(_, _)
+            + ?Lt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Gt(t_0, t_1) -> Gt(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Gt(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Lt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Gt(t_0, t_1) -> Gt(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Gt(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Lt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Lt(t_0, t_1) -> Lt(Parenthetical(t_0), t_1)
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Lt(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + fail)> t_0
+
+  TILParenthesize :
+    Lt(t_0, t_1) -> Lt(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + ?Lt(_, _)
+            + ?Neq(_, _)
+            + ?Equ(_, _)
+            + ?Geq(_, _)
+            + ?Leq(_, _)
+            + ?Gt(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    And(t_0, t_1) -> And(Parenthetical(t_0), t_1)
+    where <(?Or(_, _) + fail)> t_0
+
+  TILParenthesize :
+    And(t_0, t_1) -> And(t_0, Parenthetical(t_1))
+    where <(?Or(_, _)
+            + ?And(_, _)
+            + fail)> t_1
+
+  TILParenthesize :
+    Or(t_0, t_1) -> Or(t_0, Parenthetical(t_1))
+    where <(?Or(_, _) + fail)> t_1
+
+  TILParenthesize :
+    Mod(t_0, t_1) -> Mod(Parenthetical(t_0), t_1)
+    where <(?Mod(_, _) + fail)> t_0
+
+  TILParenthesize :
+    Mod(t_0, t_1) -> Mod(t_0, Parenthetical(t_1))
+    where <(?Mod(_, _) + fail)> t_1
+
+
+signature
+  constructors
+    Parenthetical : Unknown -> Unknown

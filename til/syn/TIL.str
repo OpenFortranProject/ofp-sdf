@@ -1,0 +1,50 @@
+module TIL
+
+signature
+  constructors
+    Program          : List(Stat) -> Program
+    ProcCall         : Id * List(Exp) -> Stat
+    For              : Id * Exp * Exp * List(Stat) -> Stat
+    While            : Exp * List(Stat) -> Stat
+    IfElse           : Exp * List(Stat) * List(Stat) -> Stat
+    IfThen           : Exp * List(Stat) -> Stat
+    Block            : List(Stat) -> Stat
+    Assign           : Id * Exp -> Stat
+    DeclarationTyped : Id * Type -> Stat
+    Declaration      : Id -> Stat
+    TypeName         : Id -> Type
+    FunCall          : Id * List(Exp) -> Exp
+    Or               : Exp * Exp -> Exp
+    And              : Exp * Exp -> Exp
+    Neq              : Exp * Exp -> Exp
+    Equ              : Exp * Exp -> Exp
+    Geq              : Exp * Exp -> Exp
+    Leq              : Exp * Exp -> Exp
+    Gt               : Exp * Exp -> Exp
+    Lt               : Exp * Exp -> Exp
+    Sub              : Exp * Exp -> Exp
+    Add              : Exp * Exp -> Exp
+    Mod              : Exp * Exp -> Exp
+    Div              : Exp * Exp -> Exp
+    Mul              : Exp * Exp -> Exp
+    String           : String -> Exp
+    Int              : Int -> Exp
+    Var              : Id -> Exp
+    False            : Exp
+    True             : Exp
+                     : String -> String
+                     : String -> Int
+                     : String -> Id
+
+
+signature
+  constructors
+    Some : a -> Option(a)
+    None : Option(a)
+
+
+signature
+  constructors
+    Cons : a * List(a) -> List(a)
+    Nil  : List(a)
+    Conc : List(a) * List(a) -> List(a)
