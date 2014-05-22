@@ -51,9 +51,19 @@ signature
 
    ofpLanguage          : LanguageBindingSpec                      -> ofpLanguage               // R508
 
+   ofpExplicitShape     : List(ofpDimSpec)                         -> ofpExplicitShape          // R516
+
+   ofpDimSpec           : Option(lower) * Option(upper)            -> ofpDimSpec                // R517-R518
+
+   ofpImpliedShape      : List(ofpDimSpec)                         -> ofpImpliedShape           // R522
+
    ofpImplicitStmt      : Option(Label) * List(ImplicitSpec)       -> ofpImplicitStmt           // R560
 
+   ofpVarDef            : ofpName                                  -> ofpVarDef                 // R602
+
    ofpVarRef            : ofpName                                  -> ofpVarRef                 // R612
+
+   ofpAssignmentStmt    : Option(Label) * ofpVarDef * ofpVarRef    -> ofpAssignmentStmt         // R732
 
    ofpMainProgram       : Option(ofpName)  * ofpScope              -> ofpMainProgram            // R1101
    ofpProgramStmt       : Option(ofpLabel) * ofpName               -> ofpProgramStmt            // R1102
@@ -98,7 +108,6 @@ signature
 
    ofpArgList           : List(args)                               -> ofpArgList
 
-
    ofpContainsStmt      : Option(Label)                            -> ofpContainsStmt          // R1242
 
 
@@ -130,23 +139,47 @@ rules
   ofp-to-ast:  SubroutineName(str)       -> ofpName(str)
 
 //R201
-  ofp-to-ast:  Program(Some(str),[ProgramUnit]) -> ofpProgram(None(),[ProgramUnit]) {Comment(str)}
-  ofp-to-ast:  Program(None(),   [ProgramUnit]) -> ofpProgram(None(),[ProgramUnit])
+  ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> ofpProgram(None(),[ProgramUnit]) {Comment(str)}
+  ofp-to-ast:  Program(None(),   [ProgramUnit])  -> ofpProgram(None(),[ProgramUnit])
 
 //R202
-  ofp-to-ast:  ProgramUnit(program_unit)        -> program_unit
+  ofp-to-ast:  ProgramUnit(program_unit)         -> program_unit
 
 //R203
-  ofp-to-ast:  ExternalSubprogram(subprogram)   -> subprogram
+  ofp-to-ast:  ExternalSubprogram(subprogram)    -> subprogram
+
+//R204
+  ofp-to-ast:
+    SpecificationPart(l1, l2, None(), l4)                     -> ofpSpecPart(<conc> (l1, l2, l4))
+  ofp-to-ast:
+    SpecificationPart(l1, l2, Some(tmpImplicitPart(l3)), l4)  -> ofpSpecPart(<conc> (l1, l2, l3, l4))
 
 //R207
-  ofp-to-ast:  DeclarationConstruct(construct)  -> construct
+  ofp-to-ast:  DeclarationConstruct(construct)   -> construct
+
+//R205
+  ofp-to-ast:  ImplicitPart(l, stmt)             -> tmpImplicitPart(<conc> (l, [stmt]))
+
+//R208
+  ofp-to-ast:  ExecutionPart(stmts)              -> ofpExecPart(stmts)
+
+//R209
+  ofp-to-ast:  ExecutionPartConstruct(construct) -> construct
+
+//R211
+  ofp-to-ast:  InternalSubprogram(subprogram)    -> subprogram
+
+//R213
+  ofp-to-ast:  ExecutableConstruct(construct)    -> construct
+
+//R214
+  ofp-to-ast:  ActionStmt(stmt)                  -> stmt
 
 //R304
-  ofp-to-ast:  Constant_AMB(LiteralConstant)    -> LiteralConstant
+  ofp-to-ast:  Constant_AMB(LiteralConstant)     -> LiteralConstant
 
 //R305
-  ofp-to-ast:  LiteralConstant(constant)                -> constant
+  ofp-to-ast:  LiteralConstant(constant)         -> constant
 
 //R403
   ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> ofpType(DOUBLEPRECISION(), None())
@@ -191,6 +224,11 @@ rules
 //R515
   ofp-to-ast:  ArraySpec(spec)                  -> spec
 
+//R516
+  ofp-to-ast:  ExplicitShapeSpec(upper)         -> ofpDimSpec(None(),Some(upper))
+  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> ofpDimSpec(Some(lower),Some(upper))
+  ofp-to-ast:  ExplicitShapeSpecList(list)      -> ofpExplicitShape(list)
+
 /*
   ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
   AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
@@ -200,6 +238,17 @@ rules
   AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
 */
 
+//R517
+  ofp-to-ast:  LowerBound(expr)                 -> expr
+
+//R518
+  ofp-to-ast:  UpperBound(expr)                 -> expr
+
+//R522
+  ofp-to-ast:  ImpliedShapeSpec()               -> ofpDimSpec(None(),None())
+  ofp-to-ast:  ImpliedShapeSpec(lower)          -> ofpDimSpec(Some(lower),None())
+  ofp-to-ast:  ImpliedShapeSpecList(list)       -> ofpImpliedShape(list)
+
 //R560
   ofp-to-ast:  ImplicitStmt_NONE(label,eos) -> ofpImplicitStmt(label, []) {Comment(eos)}
 
@@ -207,7 +256,7 @@ rules
   ofp-to-ast:  Designator_AMB(expr)      -> expr
 
 //R602
-//  ofp-to-ast:  Variable(ofpVarRef(expr)) -> ofpVarDef(expr)
+  ofp-to-ast:  Variable(ofpVarRef(expr)) -> ofpVarDef(expr)
 
 //R611
 //TODO ofpArrayRef, make sure multiple partrefs works
@@ -226,32 +275,31 @@ rules
 //R722
   ofp-to-ast:  Expr(ofpVarRef)              -> ofpVarRef
 
+//R726
+  ofp-to-ast:  IntExpr(expr)                -> expr
+
 //R728
   ofp-to-ast:  SpecificationExpr(IntExpr)   -> IntExpr
 
+//R732
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)           -> ofpAssignmentStmt(label,var,expr)  {Comment(eos)}
+
 //R1101
-  ofp-to-ast:  MainProgram(None(),spec,exec,None(),end)
-                  -> ofpMainProgram(None(), ofpScope(spec,exec,ofpFuncPart([]),None(),None(),Some(end)))
-  ofp-to-ast:  MainProgram(Some(begin),spec,exec,None(),end)
+  ofp-to-ast:
+    MainProgram(None(),spec,exec,None(),end)
+                  -> ofpMainProgram(None(),ofpScope(spec,exec,ofpFuncPart([]),None(),None(),Some(end)))
+  ofp-to-ast:
+    MainProgram(Some(begin),spec,exec,None(),end)
                   -> ofpMainProgram(Some(<ofp-extract-name>begin),
                                     ofpScope(spec,exec,ofpFuncPart([]),Some(begin),None(),Some(end)))
 
-//                -> ofpMainProgram(<ofp-extract-name>begin, ofpScope(spec,exec,ofpFuncPart([]),begin,None(),end))
-/*
   ofp-to-ast:
-    MainProgram(ps,l1,l2,None(),end_ps) -> ofpMainProgram(ps,end_ps,l1,l2,ofpFuncPart([]))
-*/
-
+    MainProgram(None(),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
+                  -> ofpMainProgram(None(),ofpScope(spec,exec,ofpFuncPart(funcs),None(),Some(contains),Some(end)))
   ofp-to-ast:
-    SpecificationPart(l1, l2, None(), l4)                     -> ofpSpecPart(<conc> (l1, l2, l4))
-  ofp-to-ast:
-    SpecificationPart(l1, l2, Some(tmpImplicitPart(l3)), l4)  -> ofpSpecPart(<conc> (l1, l2, l3, l4))
-
-  ofp-to-ast:
-    ImplicitPart(l, stmt)    -> tmpImplicitPart(<conc> (l, [stmt]))
-
-  ofp-to-ast:
-    ExecutionPart(stmts)     -> ofpExecPart(stmts)
+    MainProgram(Some(begin),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
+                  -> ofpMainProgram(Some(<ofp-extract-name>begin),
+                                    ofpScope(spec,exec,ofpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
 
 //R1102
   ofp-to-ast:
