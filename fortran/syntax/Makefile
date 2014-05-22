@@ -14,7 +14,7 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl FortranFixed.tbl
+all : Fortran.tbl Main.str
 
 Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
@@ -31,11 +31,14 @@ FortranFixed.tbl : FortranFixed.def
 Fortran.def : Fortran.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
 
-Main.rtg : Main.def
+Main.rtg : Main.def Fortran.tbl
 	sdf2rtg -i Main.def -m Main -o Main.rtg --ignore-missing-cons
 
 Main.sig : Main.rtg
 	rtg2sig -i Main.rtg -o Main.sig
+
+Main.str : Main.sig
+	cp Main.sig Main.str
 
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
@@ -66,7 +69,7 @@ junk.ast-info.pp : junk.f90 Fortran.tbl
 	sglr -i junk.f90 -p Fortran.tbl | addPosInfo -p ./junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
-	rm -f *.def *.tbl *.rtg *.sig
+	rm -f *.def *.tbl *.rtg *.sig *.str
 	rm -f *.ast *.pp
 	rm -f *.o *.mod
 	rm -f $(TEST_DIR)/*.ast $(TEST_DIR)/*.ast.pp
