@@ -1,0 +1,71 @@
+module ofp-to-rose
+
+imports
+   libstratego-lib
+   Main
+   ofp-simplify
+
+signature
+  constructors
+
+    SgUntypedFile : A -> B
+
+    SgUntypedInitializedName : A -> B
+
+
+    /* program units */
+    SgUntypedProgramHeaderDeclaration : A * B * C * D * E -> F
+
+    /* scopes */
+    SgUntypedScope : A * B * C -> D
+    SgUntypedGlobalScope : A * B * C -> D
+    SgUntypedDeclarationList         : A -> B
+    SgUntypedStatementList           : A -> B
+    SgUntypedFunctionDeclarationList : A -> B
+
+    /* statements */
+
+    SgUntypedNamedStatement : A * B -> C
+
+    SgUntypedImplicitDeclaration : A * B -> C
+
+
+strategies
+  io-ofp-to-rose =
+    io-wrap(ofp-to-rose)
+
+  ofp-to-rose =
+    innermost(ast-to-rose)
+
+
+rules
+
+  ast-to-rose:
+    astProgram(program_units) -> SgUntypedFile(program_units)
+
+  ast-to-rose:
+    astMainProgram(ps,end_ps,l1,l2,l3) -> SgUntypedProgramHeaderDeclaration(ps,end_ps,l1,l2,l3)
+
+  ast-to-rose:
+    astSpecPart(decls) -> SgUntypedDeclarationList(decls)
+
+  ast-to-rose:
+    astExecPart(stmts) -> SgUntypedStatementList(stmts)
+
+  ast-to-rose:
+    astFuncPart(decls) -> SgUntypedFunctionDeclarationList(decls)
+
+  /* statements */
+
+  ast-to-rose:
+    astProgramStmt(label,name)    -> SgUntypedNamedStatement(label,name)
+
+  ast-to-rose:
+    astEndProgramStmt(label,name) -> SgUntypedNamedStatement(label,name)
+
+  ast-to-rose:
+    astImplicitStmt(label,spec_list) -> SgUntypedImplicitDeclaration(label,spec_list)
+
+  /* names */
+  ast-to-rose:
+    astName(str)       -> SgUntypedInitializedName(str)
