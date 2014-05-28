@@ -1,0 +1,36 @@
+ofpProgram(
+  None()
+, [ ofpMainProgram(
+      Some(ofpName("my_prog"))
+    , ofpScope(
+        ofpSpecPart(
+          [ ofpTypeDeclarationStmt(
+              None()
+            , ofpType(REAL(), None())
+            , []
+            , [ofpEntityDecl(ofpName("a"), None(), None(), None(), None())]
+            ){Comment("
+")}
+          ]
+        )
+      , ofpExecPart([])
+      , ofpFuncPart([])
+      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+  ")})
+      , None()
+      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+")})
+      )
+    )
+  ]
+){Comment("! R1101d.f90 - test of R1101 main-program
+!
+!   main-program is [ program-stmt ] [
+!      specification-part ] [ execution-part ] [
+!      internal-subprogram-part ] end-program-stmt program-stmt is
+!      PROGRAM program-name end-program-stmt is END [ PROGRAM [
+!      program-name ] ] Not tested here: specification-part,
+!      execution-part, and internal-subprogram-part.
+
+! Add an optional specification-part
+")}

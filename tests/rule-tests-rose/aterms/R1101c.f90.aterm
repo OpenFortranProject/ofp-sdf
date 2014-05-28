@@ -1,0 +1,28 @@
+ofpProgram(
+  None()
+, [ ofpMainProgram(
+      Some(ofpName("my_program"))
+    , ofpScope(
+        ofpSpecPart([])
+      , ofpExecPart([])
+      , ofpFuncPart([])
+      , Some(ofpProgramStmt(Some(Label("13")), ofpName("my_program")){Comment("
+")})
+      , None()
+      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_program"))){Comment("
+")})
+      )
+    )
+  ]
+){Comment("! R1101c.f90 - test of R1101 main-program
+!
+!   main-program is [ program-stmt ] [
+!      specification-part ] [ execution-part ] [
+!      internal-subprogram-part ] end-program-stmt program-stmt is
+!      PROGRAM program-name end-program-stmt is END [ PROGRAM [
+!      program-name ] ] Not tested here: specification-part,
+!      execution-part, and internal-subprogram-part.
+
+! To include the optional name in end-program-stmt requires (by C1102) 
+! the program-stmt with the optional name.
+")}
