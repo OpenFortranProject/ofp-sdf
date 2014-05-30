@@ -21,9 +21,9 @@ END INTERFACE
 INTERFACE foo
 END INTERFACE foo
 
-! Try an abstract interface
-!TODO-F08 abstract INTERFACE
-!TODO-F08 END INTERFACE
+! abstract interface-stmt
+ABSTRACT INTERFACE
+END INTERFACE
 
 ! Include an optional interface-specification
 INTERFACE
@@ -33,7 +33,7 @@ END INTERFACE
 
 ! Include multiple optional interface-specification
 INTERFACE
-   SUBROUTINE bub()
+   SUBROUTINE bub
    END SUBROUTINE bub
    FUNCTION foo()
    END FUNCTION foo
