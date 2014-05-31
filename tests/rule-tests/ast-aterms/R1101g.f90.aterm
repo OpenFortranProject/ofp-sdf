@@ -1,0 +1,74 @@
+ofpProgram(
+  None()
+, [ ofpMainProgram(
+      Some(ofpName("my_prog"))
+    , ofpScope(
+        ofpSpecPart(
+          [ ofpTypeDeclarationStmt(
+              None()
+            , ofpType(REAL(), None())
+            , []
+            , [ofpEntityDecl(ofpName("i"), None(), None(), None(), None())]
+            ){Comment("
+  ")}
+          ]
+        )
+      , ofpExecPart(
+          [ ofpAssignmentStmt(
+              None()
+            , ofpVarDef(ofpName("i"))
+            , ofpLiteral("1", ofpType(INTEGER(), None()))
+            ){Comment("
+")}
+          ]
+        )
+      , ofpFuncPart(
+          [ ofpSubroutine(
+              ofpName("sub")
+            , ofpScope(
+                ofpSpecPart([])
+              , ofpExecPart([])
+              , ofpFuncPart([])
+              , Some(
+                  ofpSubroutineStmt(
+                    None()
+                  , ofpName("sub")
+                  , ofpArgList([])
+                  , ofpPrefix([])
+                  , ofpSuffix([])
+                  ){Comment("
+  ")}
+                )
+              , None()
+              , Some(ofpEndSubroutineStmt(None(), Some(ofpName("sub"))){Comment("
+")})
+              )
+            )
+          ]
+        )
+      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+  ")})
+      , Some(ofpContainsStmt(None()){Comment("
+  ")})
+      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+")})
+      )
+    )
+  ]
+){Comment("! Test main-program
+!
+!      main-program  is  [ program-stmt ]
+!                          [ specification-part ]
+!                          [ execution-part ]
+!                          [ internal-subprogram-part ]
+!                        end-program-stmt
+!
+!      program-stmt  is  PROGRAM program-name
+!
+!      end-program-stmt  is  END [ PROGRAM [ program-name ] ]
+!
+! Not tested here: specification-part, execution-part, and 
+! internal-subprogram-part.
+
+! Add all of the optionals together.
+")}

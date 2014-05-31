@@ -1,0 +1,133 @@
+ofpProgram(
+  None()
+, [ ofpMainProgram(
+      None()
+    , ofpScope(
+        ofpSpecPart(
+          [ ofpInterfaceBlock(
+              ofpInterfaceStmt(None(), None(), None()){Comment("
+")}
+            , ofpEndInterfaceStmt(None(), None()){Comment("
+
+! Include a generic-spec in the interface-stmt and end-interface-stmt
+")}
+            , []
+            )
+          , ofpInterfaceBlock(
+              ofpInterfaceStmt(None(), None(), Some(ofpName("foo"))){Comment("
+")}
+            , ofpEndInterfaceStmt(None(), Some(ofpName("foo"))){Comment("
+
+! abstract interface-stmt
+")}
+            , []
+            )
+          , ofpInterfaceBlock(
+              ofpInterfaceStmt(None(), Some("ABSTRACT"), None()){Comment("
+")}
+            , ofpEndInterfaceStmt(None(), None()){Comment("
+
+! Include an optional interface-specification
+")}
+            , []
+            )
+          , ofpInterfaceBlock(
+              ofpInterfaceStmt(None(), None(), None()){Comment("
+   ")}
+            , ofpEndInterfaceStmt(None(), None()){Comment("
+
+! Include multiple optional interface-specification
+")}
+            , [ ofpScope(
+                  ofpSpecPart([])
+                , ofpExecPart([])
+                , ofpFuncPart([])
+                , Some(
+                    ofpSubroutineStmt(
+                      None()
+                    , ofpName("sub")
+                    , None()
+                    , ofpPrefix([])
+                    , ofpSuffix([])
+                    ){Comment("
+   ")}
+                  )
+                , None()
+                , Some(ofpEndSubroutineStmt(None(), Some(ofpName("sub"))){Comment("
+")})
+                )
+              ]
+            )
+          , ofpInterfaceBlock(
+              ofpInterfaceStmt(None(), None(), None()){Comment("
+   ")}
+            , ofpEndInterfaceStmt(None(), None()){Comment("
+
+")}
+            , [ ofpScope(
+                  ofpSpecPart([])
+                , ofpExecPart([])
+                , ofpFuncPart([])
+                , Some(
+                    ofpSubroutineStmt(
+                      None()
+                    , ofpName("bub")
+                    , ofpArgList([])
+                    , ofpPrefix([])
+                    , ofpSuffix([])
+                    ){Comment("
+   ")}
+                  )
+                , None()
+                , Some(ofpEndSubroutineStmt(None(), Some(ofpName("bub"))){Comment("
+   ")})
+                )
+              , ofpScope(
+                  ofpSpecPart([])
+                , ofpExecPart([])
+                , ofpFuncPart([])
+                , Some(
+                    ofpFunctionStmt(
+                      None()
+                    , ofpName("foo")
+                    , ofpArgList([])
+                    , ofpPrefix([])
+                    , ofpSuffix([])
+                    ){Comment("
+   ")}
+                  )
+                , None()
+                , Some(ofpEndFunctionStmt(None(), Some(ofpName("foo"))){Comment("
+")})
+                )
+              ]
+            )
+          ]
+        )
+      , ofpExecPart([])
+      , ofpFuncPart([])
+      , None()
+      , None()
+      , Some(ofpEndProgramStmt(None(), None()){Comment("
+
+")})
+      )
+    )
+  ]
+){Comment("! Test interface-block
+!      interface-block  is  interface-stmt
+!                             [ interface-specificiation ] ...
+!                           end-interface-stmt
+!
+!      interface-specification  is  interface-body
+!                               or  procedure-stmt
+!
+!      interface-stmt  is  INTERFACE [ generic-spec ]
+!                      or  ABSTRACT INTERFACE
+!
+!      end-interface-stmt  is  END INTERFACE [ generic-spec ]
+!
+! Not tested here: interface-body, procedure-stmt, and generic-spec.
+
+! Include none of the optional parts.
+")}

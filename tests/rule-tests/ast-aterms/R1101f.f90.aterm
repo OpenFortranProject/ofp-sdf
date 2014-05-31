@@ -1,0 +1,57 @@
+ofpProgram(
+  None()
+, [ ofpMainProgram(
+      Some(ofpName("my_prog"))
+    , ofpScope(
+        ofpSpecPart([])
+      , ofpExecPart([])
+      , ofpFuncPart(
+          [ ofpSubroutine(
+              ofpName("sub")
+            , ofpScope(
+                ofpSpecPart([])
+              , ofpExecPart([])
+              , ofpFuncPart([])
+              , Some(
+                  ofpSubroutineStmt(
+                    None()
+                  , ofpName("sub")
+                  , ofpArgList([])
+                  , ofpPrefix([])
+                  , ofpSuffix([])
+                  ){Comment("
+  ")}
+                )
+              , None()
+              , Some(ofpEndSubroutineStmt(None(), Some(ofpName("sub"))){Comment("
+")})
+              )
+            )
+          ]
+        )
+      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+")})
+      , Some(ofpContainsStmt(None()){Comment("
+  ")})
+      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+")})
+      )
+    )
+  ]
+){Comment("! Test main-program
+!
+!      main-program  is  [ program-stmt ]
+!                          [ specification-part ]
+!                          [ execution-part ]
+!                          [ internal-subprogram-part ]
+!                        end-program-stmt
+!
+!      program-stmt  is  PROGRAM program-name
+!
+!      end-program-stmt  is  END [ PROGRAM [ program-name ] ]
+!
+! Not tested here: specification-part, execution-part, and 
+! internal-subprogram-part.
+
+! Add an optional internal-subprogram-part
+")}
