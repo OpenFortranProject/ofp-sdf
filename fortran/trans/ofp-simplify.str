@@ -53,9 +53,12 @@ signature
 
    ofpExplicitShape     : List(ofpDimSpec)                         -> ofpExplicitShape          // R516
 
-   ofpDimSpec           : Option(lower) * Option(upper)            -> ofpDimSpec                // R517-R518
+   ofpDimSpec           : Option(lower) * upper                    -> ofpDimSpec                // R517-R518
 
-   ofpImpliedShape      : List(ofpDimSpec)                         -> ofpImpliedShape           // R522
+   ofpAssumedOrDeferredShape    : List(ofpDimSpec)                 -> ofpAssumedOrDeferredShape // R519-R520
+   ofpAssumedSize               : List(ofpDimSpec)                 -> ofpAssumedSize            // R521
+   ofpImpliedShape              : List(ofpDimSpec)                 -> ofpImpliedShape           // R522
+   ofpAssumedRank               : List(ofpDimSpec)                 -> ofpAssumedRank            // R522a
 
    ofpImplicitStmt      : Option(Label) * List(ImplicitSpec)       -> ofpImplicitStmt           // R560
 
@@ -125,12 +128,13 @@ rules
   ofp-extract-name:  ofpSubroutineStmt(label,name,args,prefix,suffix) -> name
   ofp-extract-name:  ofpFunctionStmt  (label,name,args,prefix,suffix) -> name
 
-  ofp-extract-contains:  ofpModuleStmt    (label,name)                    -> name
+  ofp-extract-contains:  ofpModuleStmt(label,name)                    -> name
 
   ofp-to-ast:  LanguageBindingName(str)  -> ofpString(str)
 
   ofp-to-ast:  DummyArgName(str)         -> ofpName(str)
   ofp-to-ast:  FunctionName(str)         -> ofpName(str)
+  ofp-to-ast:  GenericName(str)          -> ofpName(str)
   ofp-to-ast:  ModuleName(str)           -> ofpName(str)
   ofp-to-ast:  ObjectName(str)           -> ofpName(str)
   ofp-to-ast:  PartName(str)             -> ofpName(str)
@@ -225,18 +229,9 @@ rules
   ofp-to-ast:  ArraySpec(spec)                  -> spec
 
 //R516
-  ofp-to-ast:  ExplicitShapeSpec(upper)         -> ofpDimSpec(None(),Some(upper))
-  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> ofpDimSpec(Some(lower),Some(upper))
+  ofp-to-ast:  ExplicitShapeSpec(upper)         -> ofpDimSpec(None(),upper)
+  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> ofpDimSpec(Some(lower),upper)
   ofp-to-ast:  ExplicitShapeSpecList(list)      -> ofpExplicitShape(list)
-
-/*
-  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec")}
-  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
-*/
 
 //R517
   ofp-to-ast:  LowerBound(expr)                 -> expr
@@ -244,10 +239,35 @@ rules
 //R518
   ofp-to-ast:  UpperBound(expr)                 -> expr
 
+//R519
+  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> ofpDimSpec(None(),":")
+  ofp-to-ast:  AssumedShapeSpec(lower)                        -> ofpDimSpec(Some(lower),":")
+  ofp-to-ast:  AssumedShapeSpecList(list)                     -> ofpAssumedOrDeferredShape(list)
+
+//R521
+  ofp-to-ast:  AssumedSizeSpec(ofpExplicitShape(list), lower)
+                            -> ofpAssumedSize(<concat>[list, [ofpDimSpec(Some(lower),"*")]])
+  ofp-to-ast:  AssumedSizeSpec(ofpExplicitShape(list))
+                            -> ofpAssumedSize(<concat>[list, [ofpDimSpec(None(),"*")]])
+
 //R522
-  ofp-to-ast:  ImpliedShapeSpec()               -> ofpDimSpec(None(),None())
-  ofp-to-ast:  ImpliedShapeSpec(lower)          -> ofpDimSpec(Some(lower),None())
-  ofp-to-ast:  ImpliedShapeSpecList(list)       -> ofpImpliedShape(list)
+  ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> ofpImpliedShape(<concat>[[spec],list])
+
+//R522a
+  ofp-to-ast:  AssumedRankSpec()                  -> ofpAssumedRank([ofpDimSpec(None(),Some(".."))])
+
+// assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
+//    - The following four rules remove the ambiguity by choosing assumed-size over
+//      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
+//
+  ofp-to-ast:  AssumedOrImpliedSpec()
+                            -> ofpAssumedSize([ofpDimSpec(None(),"*")])
+  ofp-to-ast:  AssumedOrImpliedSpec(lower)
+                            -> ofpAssumedSize([ofpDimSpec(Some(lower),"*")])
+
+  rm-assumed-size: ofpAssumedSize([l]) -> l
+
+  ofp-to-ast:  ofpImpliedShape(l1) -> ofpImpliedShape( <map(rm-assumed-size)>l1 )
 
 //R560
   ofp-to-ast:  ImplicitStmt_NONE(label,eos) -> ofpImplicitStmt(label, []) {Comment(eos)}
@@ -343,6 +363,13 @@ rules
 
 //R1205
   ofp-to-ast:  InterfaceBody(begin,spec,end) -> ofpScope(spec,ofpExecPart([]),ofpFuncPart([]),Some(begin),None(),Some(end))
+
+//R1207
+  ofp-to-ast:  GenericSpec(ofpName(name))    -> ofpName(name)
+//TODO  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
+//TODO  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
+//TODO  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
+
 
 //R1225
   ofp-to-ast:  Prefix(l) -> ofpPrefix(l)
