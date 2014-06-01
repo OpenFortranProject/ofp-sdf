@@ -1,4 +1,5 @@
 SYNTAX = ../../fortran/syntax
+TRANS  = ../../fortran/trans
 
 all : check
 
@@ -15,9 +16,8 @@ check : $(SYNTAX)/Fortran.tbl
            pp-aterm -i $$file.ast -o $$file.ast.aterm; \
         done;
 
-junk :
-	sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 -o junk.f90.ast
-	pp-aterm -i junk.f90.ast -o junk.f90.aterm
+junk : $(SYNTAX)/Fortran.tbl  $(TRANS)/ofp-simplify
+	sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 | $(TRANS)/ofp-simplify | pp-aterm
 
 clean :
 	rm -f *.ast *.ast.aterm
