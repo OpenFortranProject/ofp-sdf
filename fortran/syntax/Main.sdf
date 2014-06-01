@@ -191,17 +191,18 @@ sorts
   LowerBound                          %% R517
   UpperBound                          %% R518
   AssumedShapeSpec                    %% R519
-  DeferredShapeSpec                   %% R520
+%%DeferredShapeSpec                   %% R520  AMBIGUOUS with R519
+  AssumedOrDeferredShapeSpec
   AssumedSizeSpec                     %% R521
   AssumedRankSpec                     %% R522a TR 29113
-  ImpliedShapeSpec                    %% R522
+%%ImpliedShapeSpec                    %% R522  AMBIGUOUS with R521
   IntentSpec                          %% R523
 
   CoboundsEntry
   LanguageBindingName
 
-  AssumedShapeSpecList AssumedSizeSpecList AttrSpecList DeferredCoshapeSpecList
-  DeferredShapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
+  AssumedShapeSpecList AssumedOrDeferredShapeSpecList AssumedOrImpliedSpec AttrSpecList
+  DeferredCoshapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
 
 %% 5.4 Attribute specification statements
 
@@ -1001,8 +1002,8 @@ context-free syntax
   {ComponentDecl ','}+                                        -> ComponentDeclList {cons("ComponentDeclList")}
 
 %%R439
-  ExplicitShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec_ESSL")}
-  DeferredShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec_DSSL")}
+  ExplicitShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec")}
+  AssumedOrDeferredShapeSpecList              -> ComponentArraySpec        {cons("ComponentArraySpec")}
 
 %%R440
   Label? 'PROCEDURE'
@@ -1301,8 +1302,9 @@ context-free syntax
 %%R515
   ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
   AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
+%%DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
   AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec")}
+  AssumedOrImpliedSpec                 -> ArraySpec            {cons("ArraySpec")}
   ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
   AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
 
@@ -1318,28 +1320,32 @@ context-free syntax
   SpecificationExpr                             -> UpperBound            {cons("UpperBound")}
 
 %%R519
-  LowerBound? ':'                               -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
+%%AMB deferred-shape-spec is ambiguous with assumed-shape-spec 
+%%AMB        ':'                                -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
+  AssumedOrDeferredShapeSpec                    -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
+  LowerBound ':'                                -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
   {AssumedShapeSpec ','}+                       -> AssumedShapeSpecList  {cons("AssumedShapeSpecList")}
 
 %%R520
-  ':'                                           -> DeferredShapeSpec     {cons("DeferredShapeSpec")}
-  {DeferredShapeSpec ','}+                      -> DeferredShapeSpecList {cons("DeferredShapeSpecList")}
+%%AMB deferred-shape-spec is ambiguous with assumed-shape-spec 
+  ':'                                           -> AssumedOrDeferredShapeSpec     {cons("AssumedOrDeferredShapeSpec")}
+  {AssumedOrDeferredShapeSpec ','}+             -> AssumedOrDeferredShapeSpecList {cons("AssumedOrDeferredShapeSpecList")}
 
 %%R521
 %%AMB: explicit-shape-spec list made non-empty to remove ambiguity with implied-shape-spec-list
 %%
-  (ExplicitShapeSpec ',')+ (LowerBound ':')? '*'  -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
-%%  {ExplicitShapeSpec ','}+                '*'        -> AssumedSizeSpec      {cons("AssumedSizeSpec")}
-%%  {ExplicitShapeSpec ','}+ LowerBound ':' '*'        -> AssumedSizeSpec      {cons("AssumedSizeSpec")}
-%%  {ExplicitShapeSpec ','}+                      -> AssumedSizeSpecList  {cons("AssumedSizeSpecList")}
+  ExplicitShapeSpecList ',' '*'                 -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
+  ExplicitShapeSpecList ',' LowerBound ':' '*'  -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
 
 %%R522a
   '..'                                          -> AssumedRankSpec      {cons("AssumedRankSpec")}
 
 %%R522
-                 '*'                            -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
-  LowerBound ':' '*'                            -> ImpliedShapeSpec     {cons("ImpliedShapeSpec")}
-  {ImpliedShapeSpec ','}+                       -> ImpliedShapeSpecList {cons("ImpliedShapeSpecList")}
+  AssumedOrImpliedSpec
+    ',' {AssumedOrImpliedSpec ','}+             -> ImpliedShapeSpecList {cons("ImpliedShapeSpecList")}
+
+                 '*'                            -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
+  LowerBound ':' '*'                            -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
 
 %%R523
   'IN'                                          -> IntentSpec  {cons("IntentSpec_IN")}
@@ -1485,7 +1491,7 @@ context-free syntax
   Label? 'POINTER'      PointerDeclList                    EOS -> PointerStmt     {cons("PointerStmt")}
 
 %%R551
-  ObjectName ( '(' DeferredShapeSpecList ')' )?                -> PointerDecl     {cons("PointerDecl_ON")}
+  ObjectName ( '(' AssumedOrDeferredShapeSpecList ')' )?       -> PointerDecl     {cons("PointerDecl_ON")}
   ProcEntityName                                               -> PointerDecl     {cons("PointerDecl_PEN")}
   {PointerDecl ','}+                                           -> PointerDeclList {cons("PointerDeclList")}
 
@@ -3376,10 +3382,10 @@ context-free syntax
   {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNameList")}
 
 %%R1207
-  GenericName                                   -> GenericSpec           {cons("GenericSpec_GN")}
-  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec_OP")}
-  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec_AS")}
-  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec_DIGS")}
+  GenericName                                   -> GenericSpec           {cons("GenericSpec")}
+  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
+  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
+  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
 
 %%R1208
   'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RF")}
