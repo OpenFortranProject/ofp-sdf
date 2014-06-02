@@ -3,30 +3,32 @@ module ofp-simplify
 imports
    libstratego-lib
    Main
+   AST
 
 signature
   constructors
 
     Comment   : A -> B            /* comments are put in annotations */
-    ofpName   : A -> B            /* node for a name string */                                  // R303
-    ofpString : A -> B            /* node for a string literal */
+    OfpName   : A -> B            /* node for a name string */                                  // R303
+    OfpString : A -> B            /* node for a string literal */
 
     tmpImplicitPart : A -> B    /* to combine all to a list */
 
 
-   ofpScope    : ofpSpecPart * ofpExecPart * ofpFuncPart
-                             * Option(ofpStmt)  /* begin stmt    */
-                             * Option(ofpStmt)  /* contains stmt */
-                             * Option(ofpStmt)  /* end stmt      */    -> ofpScope
-  
-   ofpStmt     : ofpStmt
-   ofpDecl     : ofpDecl
+/***
+   OfpScope    : OfpSpecPart * OfpExecPart * OfpFuncPart
+                             * Option(OfpBeginStmt)
+                             * Option(OfpContainsStmt)
+                             * Option(OfpEndStmt)                -> OfpScope
 
-   ofpProgram  : Option(File) * List(ProgramUnit) -> ofpProgram                                 // R201
+   OfpStmt     : OfpStmt
+   OfpDecl     : OfpDecl
 
-   ofpSpecPart : List(ofpDecl)     -> ofpSpecPart                                               // R204
-   ofpExecPart : List(ofpStmt)     -> ofpExecPart                                               // R208
-   ofpFuncPart : List(ofpDecl)     -> ofpFuncPart
+   OfpProgram  : Option(OfpFile) * List(OfpProgramUnit) -> OfpProgram                           // R201
+
+   OfpSpecPart : List(OfpDecl)     -> OfpSpecPart                                               // R204
+   OfpExecPart : List(OfpStmt)     -> OfpExecPart                                               // R208
+   OfpFuncPart : List(OfpDecl)     -> OfpFuncPart
 
    INTEGER          : INTEGER                                                                   // R404
    REAL             : REAL
@@ -36,83 +38,87 @@ signature
    LOGICAL          : LOGICAL
    DOUBLECOMPLEX    : DOUBLECOMPLEX
 
-   ofpType          : Type * Selector   -> ofpType
+   OfpType          : Type * Selector   -> OfpType
 
-   ofpLiteral       : value * ofpType   -> ofpLiteral
+   OfpLiteral       : value * OfpType   -> OfpLiteral
+***/  
 
-   ofpTypeDeclarationStmt : Option(Label) * ofpType
-                                          * List(ofpAttrSpec)
-                                          * List(ofpEntiyDecl)     -> ofpTypeDeclarationStmt    // R501
+   OfpTypeDeclarationStmt : Option(Label) * OfpType
+                                          * List(OfpAttrSpec)
+                                          * List(OfpEntiyDecl)     -> OfpTypeDeclarationStmt    // R501
 
-   ofpEntityDecl        : ofpName * Option(ArraySpec)
+   OfpEntityDecl        : OfpName * Option(ArraySpec)
                                   * Option(CoarraySpec)
                                   * Option(CharLength)
-                                  * Option(Initialization)         -> ofpEntityDecl             // R503
+                                  * Option(Initialization)         -> OfpEntityDecl             // R503
 
-   ofpLanguage          : LanguageBindingSpec                      -> ofpLanguage               // R508
+   OfpLanguage          : LanguageBindingSpec                      -> OfpLanguage               // R508
 
-   ofpExplicitShape     : List(ofpDimSpec)                         -> ofpExplicitShape          // R516
+   OfpExplicitShape     : List(OfpDimSpec)                         -> OfpExplicitShape          // R516
 
-   ofpDimSpec           : Option(lower) * upper                    -> ofpDimSpec                // R517-R518
+   OfpDimSpec           : Option(lower) * upper                    -> OfpDimSpec                // R517-R518
 
-   ofpAssumedOrDeferredShape    : List(ofpDimSpec)                 -> ofpAssumedOrDeferredShape // R519-R520
-   ofpAssumedSize               : List(ofpDimSpec)                 -> ofpAssumedSize            // R521
-   ofpImpliedShape              : List(ofpDimSpec)                 -> ofpImpliedShape           // R522
-   ofpAssumedRank               : List(ofpDimSpec)                 -> ofpAssumedRank            // R522a
+   OfpAssumedOrDeferredShape    : List(OfpDimSpec)                 -> OfpAssumedOrDeferredShape // R519-R520
+   OfpAssumedSize               : List(OfpDimSpec)                 -> OfpAssumedSize            // R521
+   OfpImpliedShape              : List(OfpDimSpec)                 -> OfpImpliedShape           // R522
+   OfpAssumedRank               : List(OfpDimSpec)                 -> OfpAssumedRank            // R522a
 
-   ofpImplicitStmt      : Option(Label) * List(ImplicitSpec)       -> ofpImplicitStmt           // R560
+/***
+   OfpImplicitStmt      : Option(Label) * List(ImplicitSpec)       -> OfpImplicitStmt           // R560
 
-   ofpVarDef            : ofpName                                  -> ofpVarDef                 // R602
+   OfpVarDef            : OfpName                                  -> OfpVarDef                 // R602
 
-   ofpVarRef            : ofpName                                  -> ofpVarRef                 // R612
+   OfpVarRef            : OfpName                                  -> OfpVarRef                 // R612
 
-   ofpAssignmentStmt    : Option(Label) * ofpVarDef * ofpVarRef    -> ofpAssignmentStmt         // R732
+   OfpAssignmentStmt    : Option(Label) * OfpVarDef * OfpVarRef    -> OfpAssignmentStmt         // R732
 
-   ofpMainProgram       : Option(ofpName)  * ofpScope              -> ofpMainProgram            // R1101
-   ofpProgramStmt       : Option(ofpLabel) * ofpName               -> ofpProgramStmt            // R1102
-   ofpEndProgramStmt    : Option(ofpLabel) * Option(ofpName)       -> ofpEndProgramStmt         // R1103
+   OfpMainProgram       : Option(OfpName)  * OfpScope              -> OfpMainProgram            // R1101
+   OfpProgramStmt       : Option(OfpLabel) * OfpName               -> OfpProgramStmt            // R1102
+   OfpEndProgramStmt    : Option(OfpLabel) * Option(OfpName)       -> OfpEndProgramStmt         // R1103
 
-   ofpModule            : Option(ofpName) * ofpScope               -> ofpModule                 // R1104
-   ofpModuleStmt        : Option(Label)   * ofpName                -> ofpModuleStmt             // R1105
-   ofpEndModuleStmt     : Option(Label)   * Option(ofpName)        -> ofpEndModuleStmt          // R1106
+   OfpModule            : Option(OfpName) * OfpScope               -> OfpModule                 // R1104
+   OfpModuleStmt        : Option(Label)   * OfpName                -> OfpModuleStmt             // R1105
+   OfpEndModuleStmt     : Option(Label)   * Option(OfpName)        -> OfpEndModuleStmt          // R1106
+***/
 
-   ofpInterfaceBlock    : ofpInterfaceStmt * ofpEndInterfaceStmt
-                                    * List(InterfaceSpecification) -> ofpInterfaceBlock         // R1201
-
-//TODO - GenericSpec
-   ofpInterfaceStmt     : Option(Label) * Option(abstract)
-                                        * Option(GenericSpec)      -> ofpInterfaceStmt         // R1203
+   OfpInterfaceBlock    : OfpInterfaceStmt * OfpEndInterfaceStmt
+                                    * List(InterfaceSpecification) -> OfpInterfaceBlock         // R1201
 
 //TODO - GenericSpec
-   ofpEndInterfaceStmt  : Option(Label) * Option(GenericSpec)      -> ofpEndInterfaceStmt      // R1204
+   OfpInterfaceStmt     : Option(Label) * Option(abstract)
+                                        * Option(GenericSpec)      -> OfpInterfaceStmt         // R1203
 
-   ofpPrefix            : List(prefix_elements)                    -> ofpPrefix                // R1225
+//TODO - GenericSpec
+   OfpEndInterfaceStmt  : Option(Label) * Option(GenericSpec)      -> OfpEndInterfaceStmt      // R1204
 
-   ofpFunction          : ofpName * ofpScope                       -> ofpFunction              // R1227
+   OfpPrefix            : List(prefix_elements)                    -> OfpPrefix                // R1225
 
-   ofpFunctionStmt      : Option(Label) * ofpName 
-                                        * ofpArgList
-                                        * ofpPrefix
-                                        * ofpSuffix                -> ofpFunctionStmt          // R1228
+   OfpFunction          : OfpName * OfpScope                       -> OfpFunction              // R1227
 
-   ofpSuffix            : List(suffix_elements)                    -> ofpSuffix                // R1231
+   OfpFunctionStmt      : Option(Label) * OfpName 
+                                        * OfpArgList
+                                        * OfpPrefix
+                                        * OfpSuffix                -> OfpFunctionStmt          // R1228
+
+   OfpSuffix            : List(suffix_elements)                    -> OfpSuffix                // R1231
 
 
-   ofpEndFunctionStmt   : Option(Label) * Option(ofpName)          -> ofpEndFunctionStmt       // R1232
+   OfpEndFunctionStmt   : Option(Label) * Option(OfpName)          -> OfpEndFunctionStmt       // R1232
 
-   ofpSubroutine        : ofpName * ofpScope                       -> ofpSubroutine            // R1233
+   OfpSubroutine        : OfpName * OfpScope                       -> OfpSubroutine            // R1233
 
-   ofpSubroutineStmt    : Option(Label) * ofpName 
-                                        * ofpArgList
-                                        * ofpPrefix
-                                        * ofpSuffix                -> ofpSubroutineStmt        // R1234
+   OfpSubroutineStmt    : Option(Label) * OfpName 
+                                        * OfpArgList
+                                        * OfpPrefix
+                                        * OfpSuffix                -> OfpSubroutineStmt        // R1234
    STAR                 : STAR                                                                 // R1235
-   ofpEndSubroutineStmt : Option(Label) * Option(ofpName)          -> ofpEndSubroutineStmt     // R1236
+   OfpEndSubroutineStmt : Option(Label) * Option(OfpName)          -> OfpEndSubroutineStmt     // R1236
 
-   ofpArgList           : List(args)                               -> ofpArgList
+   OfpArgList           : List(args)                               -> OfpArgList
 
-   ofpContainsStmt      : Option(Label)                            -> ofpContainsStmt          // R1242
-
+/***
+   OfpContainsStmt      : Option(Label)                            -> OfpContainsStmt          // R1242
+***/
 
 strategies
   io-ofp-simplify =
@@ -123,28 +129,28 @@ strategies
 
 rules
 
-  ofp-extract-name:  ofpModuleStmt    (label,name)                    -> name
-  ofp-extract-name:  ofpProgramStmt   (label,name)                    -> name
-  ofp-extract-name:  ofpSubroutineStmt(label,name,args,prefix,suffix) -> name
-  ofp-extract-name:  ofpFunctionStmt  (label,name,args,prefix,suffix) -> name
+  ofp-extract-name:  OfpModuleStmt    (label,name)                    -> name
+  ofp-extract-name:  OfpProgramStmt   (label,name)                    -> name
+  ofp-extract-name:  OfpSubroutineStmt(label,name,args,prefix,suffix) -> name
+  ofp-extract-name:  OfpFunctionStmt  (label,name,args,prefix,suffix) -> name
 
-  ofp-extract-contains:  ofpModuleStmt(label,name)                    -> name
+  ofp-extract-contains:  OfpModuleStmt(label,name)                    -> name
 
-  ofp-to-ast:  LanguageBindingName(str)  -> ofpString(str)
+  ofp-to-ast:  LanguageBindingName(str)  -> OfpString(str)
 
-  ofp-to-ast:  DummyArgName(str)         -> ofpName(str)
-  ofp-to-ast:  FunctionName(str)         -> ofpName(str)
-  ofp-to-ast:  GenericName(str)          -> ofpName(str)
-  ofp-to-ast:  ModuleName(str)           -> ofpName(str)
-  ofp-to-ast:  ObjectName(str)           -> ofpName(str)
-  ofp-to-ast:  PartName(str)             -> ofpName(str)
-  ofp-to-ast:  ProgramName(str)          -> ofpName(str)
-  ofp-to-ast:  ResultName(str)           -> ofpName(str)
-  ofp-to-ast:  SubroutineName(str)       -> ofpName(str)
+  ofp-to-ast:  DummyArgName(str)         -> OfpName(str)
+  ofp-to-ast:  FunctionName(str)         -> OfpName(str)
+  ofp-to-ast:  GenericName(str)          -> OfpName(str)
+  ofp-to-ast:  ModuleName(str)           -> OfpName(str)
+  ofp-to-ast:  ObjectName(str)           -> OfpName(str)
+  ofp-to-ast:  PartName(str)             -> OfpName(str)
+  ofp-to-ast:  ProgramName(str)          -> OfpName(str)
+  ofp-to-ast:  ResultName(str)           -> OfpName(str)
+  ofp-to-ast:  SubroutineName(str)       -> OfpName(str)
 
 //R201
-  ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> ofpProgram(None(),[ProgramUnit]) {Comment(str)}
-  ofp-to-ast:  Program(None(),   [ProgramUnit])  -> ofpProgram(None(),[ProgramUnit])
+  ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
+  ofp-to-ast:  Program(None(),   [ProgramUnit])  -> OfpProgram(None(),[ProgramUnit])
 
 //R202
   ofp-to-ast:  ProgramUnit(program_unit)         -> program_unit
@@ -154,9 +160,9 @@ rules
 
 //R204
   ofp-to-ast:
-    SpecificationPart(l1, l2, None(), l4)                     -> ofpSpecPart(<conc> (l1, l2, l4))
+    SpecificationPart(l1, l2, None(), l4)                     -> OfpSpecPart(<conc> (l1, l2, l4))
   ofp-to-ast:
-    SpecificationPart(l1, l2, Some(tmpImplicitPart(l3)), l4)  -> ofpSpecPart(<conc> (l1, l2, l3, l4))
+    SpecificationPart(l1, l2, Some(tmpImplicitPart(l3)), l4)  -> OfpSpecPart(<conc> (l1, l2, l3, l4))
 
 //R207
   ofp-to-ast:  DeclarationConstruct(construct)   -> construct
@@ -165,7 +171,7 @@ rules
   ofp-to-ast:  ImplicitPart(l, stmt)             -> tmpImplicitPart(<conc> (l, [stmt]))
 
 //R208
-  ofp-to-ast:  ExecutionPart(stmts)              -> ofpExecPart(stmts)
+  ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
 
 //R209
   ofp-to-ast:  ExecutionPartConstruct(construct) -> construct
@@ -186,30 +192,34 @@ rules
   ofp-to-ast:  LiteralConstant(constant)         -> constant
 
 //R403
-  ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> ofpType(DOUBLEPRECISION(), None())
-  ofp-to-ast:  DeclarationTypeSpec(DOUBLECOMPLEX())     -> ofpType(DOUBLECOMPLEX(), None())
+  ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> OfpType(DOUBLEPRECISION(), None())
+  ofp-to-ast:  DeclarationTypeSpec(DOUBLECOMPLEX())     -> OfpType(DOUBLECOMPLEX(), None())
   ofp-to-ast:  DeclarationTypeSpec(type)                -> type
 
 //R404
 //TODO - move these to R403?
-  ofp-to-ast:  INTEGER   (kind)  -> ofpType(INTEGER(),  kind)
-  ofp-to-ast:  REAL      (kind)  -> ofpType(REAL(),     kind)
-  ofp-to-ast:  COMPLEX   (kind)  -> ofpType(COMPLEX(),  kind)
-  ofp-to-ast:  LOGICAL   (kind)  -> ofpType(LOGICAL(),  kind)
-  ofp-to-ast:  CHARACTER (char)  -> ofpType(CHARACTER(),char)
+  ofp-to-ast:  INTEGER   (kind)  -> OfpType(INTEGER(),  kind)
+  ofp-to-ast:  REAL      (kind)  -> OfpType(REAL(),     kind)
+  ofp-to-ast:  COMPLEX   (kind)  -> OfpType(COMPLEX(),  kind)
+  ofp-to-ast:  LOGICAL   (kind)  -> OfpType(LOGICAL(),  kind)
+  ofp-to-ast:  CHARACTER (char)  -> OfpType(CHARACTER(),char)
 
 //R407
-  ofp-to-ast:  IntLiteralConstant(str)                 -> ofpLiteral(str, ofpType(INTEGER(), None()))
-  ofp-to-ast:  IntLiteralConstant(str, kind)           -> ofpLiteral(str, ofpType(INTEGER(), Some(kind)))
+  ofp-to-ast:  IntLiteralConstant(str)                 -> OfpLiteral(str, OfpType(INTEGER(), None()))
+  ofp-to-ast:  IntLiteralConstant(str, kind)           -> OfpLiteral(str, OfpType(INTEGER(), Some(kind)))
 
 //R410
   ofp-to-ast:  DigitString(str)                        -> str
 
+//R413
+  ofp-to-ast:  RealLiteralConstant(str)                -> OfpLiteral(str, OfpType(REAL(), None()))
+  ofp-to-ast:  RealLiteralConstant(str, kind)          -> OfpLiteral(str, OfpType(REAL(), Some(kind)))
+
 //R501
   ofp-to-ast:
-    TypeDeclarationStmt(label,type,None(),entities,eos) -> ofpTypeDeclarationStmt(label,type,[],   entities) {Comment(eos)}
+    TypeDeclarationStmt(label,type,None(),entities,eos) -> OfpTypeDeclarationStmt(label,type,[],   entities) {Comment(eos)}
   ofp-to-ast:
-    TypeDeclarationStmt(label,type,attrs, entities,eos) -> ofpTypeDeclarationStmt(label,type,attrs,entities) {Comment(eos)}
+    TypeDeclarationStmt(label,type,attrs, entities,eos) -> OfpTypeDeclarationStmt(label,type,attrs,entities) {Comment(eos)}
 
 //R502
   ofp-to-ast:  AttrSpec(spec)                           -> spec
@@ -218,20 +228,20 @@ rules
   ofp-to-ast:  AttrSpecList(attributes)                 -> attributes
 
 //R503
-  ofp-to-ast:  EntityDecl(name, aspec, cospec, charlen, init) -> ofpEntityDecl(name, aspec, cospec, charlen, init)
+  ofp-to-ast:  EntityDecl(name, aspec, cospec, charlen, init) -> OfpEntityDecl(name, aspec, cospec, charlen, init)
   ofp-to-ast:  OptArraySpec(ArraySpec)                        -> ArraySpec
   ofp-to-ast:  EntityDeclList(EntityDecls)                    -> EntityDecls
     
 //R508
-  ofp-to-ast:  LanguageBindingSpec(opt_name)    -> ofpLanguage(opt_name)
+  ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguage(opt_name)
 
 //R515
   ofp-to-ast:  ArraySpec(spec)                  -> spec
 
 //R516
-  ofp-to-ast:  ExplicitShapeSpec(upper)         -> ofpDimSpec(None(),upper)
-  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> ofpDimSpec(Some(lower),upper)
-  ofp-to-ast:  ExplicitShapeSpecList(list)      -> ofpExplicitShape(list)
+  ofp-to-ast:  ExplicitShapeSpec(upper)         -> OfpDimSpec(None(),upper)
+  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> OfpDimSpec(Some(lower),upper)
+  ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
 
 //R517
   ofp-to-ast:  LowerBound(expr)                 -> expr
@@ -240,60 +250,64 @@ rules
   ofp-to-ast:  UpperBound(expr)                 -> expr
 
 //R519
-  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> ofpDimSpec(None(),":")
-  ofp-to-ast:  AssumedShapeSpec(lower)                        -> ofpDimSpec(Some(lower),":")
-  ofp-to-ast:  AssumedShapeSpecList(list)                     -> ofpAssumedOrDeferredShape(list)
+  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> OfpDimSpec(None(),":")
+  ofp-to-ast:  AssumedShapeSpec(lower)                        -> OfpDimSpec(Some(lower),":")
+  ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
 
 //R521
-  ofp-to-ast:  AssumedSizeSpec(ofpExplicitShape(list), lower)
-                            -> ofpAssumedSize(<concat>[list, [ofpDimSpec(Some(lower),"*")]])
-  ofp-to-ast:  AssumedSizeSpec(ofpExplicitShape(list))
-                            -> ofpAssumedSize(<concat>[list, [ofpDimSpec(None(),"*")]])
+  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
+                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(Some(lower),"*")]])
+  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
+                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(None(),"*")]])
 
 //R522
-  ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> ofpImpliedShape(<concat>[[spec],list])
+  ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
-  ofp-to-ast:  AssumedRankSpec()                  -> ofpAssumedRank([ofpDimSpec(None(),Some(".."))])
+  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([OfpDimSpec(None(),Some(".."))])
 
 // assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
 //    - The following four rules remove the ambiguity by choosing assumed-size over
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
 //
   ofp-to-ast:  AssumedOrImpliedSpec()
-                            -> ofpAssumedSize([ofpDimSpec(None(),"*")])
+                            -> OfpAssumedSize([OfpDimSpec(None(),"*")])
   ofp-to-ast:  AssumedOrImpliedSpec(lower)
-                            -> ofpAssumedSize([ofpDimSpec(Some(lower),"*")])
+                            -> OfpAssumedSize([OfpDimSpec(Some(lower),"*")])
 
-  rm-assumed-size: ofpAssumedSize([l]) -> l
+  rm-assumed-size: OfpAssumedSize([l]) -> l
 
-  ofp-to-ast:  ofpImpliedShape(l1) -> ofpImpliedShape( <map(rm-assumed-size)>l1 )
+  ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
 //R560
-  ofp-to-ast:  ImplicitStmt_NONE(label,eos) -> ofpImplicitStmt(label, []) {Comment(eos)}
+  ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(label, []) {Comment(eos)}
 
 //R601
   ofp-to-ast:  Designator_AMB(expr)      -> expr
 
 //R602
-  ofp-to-ast:  Variable(ofpVarRef(expr)) -> ofpVarDef(expr)
+  ofp-to-ast:  Variable(OfpVarRef(expr)) -> OfpVarDef(expr)
 
 //R611
-//TODO ofpArrayRef, make sure multiple partrefs works
-  ofp-to-ast:  DataRef([ofpVarRef])                        -> ofpVarRef
+//TODO OfpArrayRef, make sure multiple partrefs works
+  ofp-to-ast:  DataRef([OfpVarRef])                        -> OfpVarRef
   ofp-to-ast:  DataRef(list)                               -> list
 
 //R612
 //TODO
-  ofp-to-ast:  PartRef(name,None(),None())                 -> ofpVarRef(name)
+  ofp-to-ast:  PartRef(name,None(),None())                 -> OfpVarRef(name)
 
 //  PartName OptSectionSubscriptList? ImageSelector?       -> PartRef   {cons("PartRef")}
 
 //R701
   ofp-to-ast:  Primary_AMB(expr)            -> expr
 
+// Operators...
+
+  ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
+
 //R722
-  ofp-to-ast:  Expr(ofpVarRef)              -> ofpVarRef
+  ofp-to-ast:  Expr(OfpVarRef)              -> OfpVarRef
 
 //R726
   ofp-to-ast:  IntExpr(expr)                -> expr
@@ -302,148 +316,148 @@ rules
   ofp-to-ast:  SpecificationExpr(IntExpr)   -> IntExpr
 
 //R732
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)           -> ofpAssignmentStmt(label,var,expr)  {Comment(eos)}
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)           -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
 
 //R1101
   ofp-to-ast:
     MainProgram(None(),spec,exec,None(),end)
-                  -> ofpMainProgram(None(),ofpScope(spec,exec,ofpFuncPart([]),None(),None(),Some(end)))
+                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart([]),None(),None(),Some(end)))
   ofp-to-ast:
     MainProgram(Some(begin),spec,exec,None(),end)
-                  -> ofpMainProgram(Some(<ofp-extract-name>begin),
-                                    ofpScope(spec,exec,ofpFuncPart([]),Some(begin),None(),Some(end)))
+                  -> OfpMainProgram(Some(<ofp-extract-name>begin),
+                                    OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
 
   ofp-to-ast:
     MainProgram(None(),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
-                  -> ofpMainProgram(None(),ofpScope(spec,exec,ofpFuncPart(funcs),None(),Some(contains),Some(end)))
+                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart(funcs),None(),Some(contains),Some(end)))
   ofp-to-ast:
     MainProgram(Some(begin),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
-                  -> ofpMainProgram(Some(<ofp-extract-name>begin),
-                                    ofpScope(spec,exec,ofpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
+                  -> OfpMainProgram(Some(<ofp-extract-name>begin),
+                                    OfpScope(spec,exec,OfpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
 
 //R1102
   ofp-to-ast:
-    ProgramStmt(label,name,eos)    -> ofpProgramStmt(label,name)          {Comment(eos)}
+    ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,name)          {Comment(eos)}
 
 //R1103
   ofp-to-ast:
-    EndProgramStmt(label,eos)      -> ofpEndProgramStmt(label,None())     {Comment(eos)}
+    EndProgramStmt(label,eos)      -> OfpEndProgramStmt(label,None())     {Comment(eos)}
   ofp-to-ast:
-    EndProgramStmt(label,name,eos) -> ofpEndProgramStmt(label,Some(name)) {Comment(eos)}
+    EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,Some(name)) {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
-                 -> ofpModule(<ofp-extract-name>begin,
-                    ofpScope(spec,ofpExecPart([]),ofpFuncPart([]),Some(begin),None(),Some(end)))
+                 -> OfpModule(<ofp-extract-name>begin,
+                    OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end)))
   ofp-to-ast:  Module(begin,spec,Some(ModuleSubprogramPart(contains,l)),end)
-                 -> ofpModule(<ofp-extract-name>begin,
-                    ofpScope(spec,ofpExecPart([]),ofpFuncPart(l),Some(begin),Some(contains),Some(end)))
+                 -> OfpModule(<ofp-extract-name>begin,
+                    OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),Some(begin),Some(contains),Some(end)))
 
 //R1105
-  ofp-to-ast:  ModuleStmt(label,name,eos)    -> ofpModuleStmt(label,name)        {Comment(eos)}
+  ofp-to-ast:  ModuleStmt(label,name,eos)    -> OfpModuleStmt(label,name)        {Comment(eos)}
 
 //R1106
-  ofp-to-ast:  EndModuleStmt(label,eos)      -> ofpEndModuleStmt(label,None())   {Comment(eos)}
-  ofp-to-ast:  EndModuleStmt(label,name,eos) -> ofpEndModuleStmt(label,name)     {Comment(eos)}
+  ofp-to-ast:  EndModuleStmt(label,eos)      -> OfpEndModuleStmt(label,None())   {Comment(eos)}
+  ofp-to-ast:  EndModuleStmt(label,name,eos) -> OfpEndModuleStmt(label,name)     {Comment(eos)}
 
 //R1201
-  ofp-to-ast:  InterfaceBlock(stmt,l,end)    -> ofpInterfaceBlock(stmt,end,l)
+  ofp-to-ast:  InterfaceBlock(stmt,l,end)    -> OfpInterfaceBlock(stmt,end,l)
 
 //R1202
   ofp-to-ast:  InterfaceSpecification(spec)  -> spec
 
 //R1203
   ofp-to-ast:
-    InterfaceStmt(label,spec,eos) -> ofpInterfaceStmt(label,None(), spec)             {Comment(eos)}
+    InterfaceStmt(label,spec,eos) -> OfpInterfaceStmt(label,None(), spec)             {Comment(eos)}
   ofp-to-ast:
-    InterfaceStmt(label,eos)      -> ofpInterfaceStmt(label,Some("ABSTRACT"),None())  {Comment(eos)}
+    InterfaceStmt(label,eos)      -> OfpInterfaceStmt(label,Some("ABSTRACT"),None())  {Comment(eos)}
 
 //R1204
-  ofp-to-ast:  EndInterfaceStmt(label,spec,eos) -> ofpEndInterfaceStmt(label,spec)    {Comment(eos)}
+  ofp-to-ast:  EndInterfaceStmt(label,spec,eos) -> OfpEndInterfaceStmt(label,spec)    {Comment(eos)}
 
 //R1205
-  ofp-to-ast:  InterfaceBody(begin,spec,end) -> ofpScope(spec,ofpExecPart([]),ofpFuncPart([]),Some(begin),None(),Some(end))
+  ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
 
 //R1207
-  ofp-to-ast:  GenericSpec(ofpName(name))    -> ofpName(name)
+  ofp-to-ast:  GenericSpec(OfpName(name))    -> OfpName(name)
 //TODO  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
 //TODO  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
 //TODO  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
 
 
 //R1225
-  ofp-to-ast:  Prefix(l) -> ofpPrefix(l)
+  ofp-to-ast:  Prefix(l) -> OfpPrefix(l)
 
 //R1226
   ofp-to-ast:  PrefixSpec(DeclarationTypeSpec) -> DeclarationTypeSpec
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,None(),end)
-                   -> ofpFunction(<ofp-extract-name>begin,
-                                  ofpScope(spec,exec,ofpFuncPart([]),Some(begin),None(),Some(end)))
+                   -> OfpFunction(<ofp-extract-name>begin,
+                                  OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,func,end)
-                   -> ofpFunction(<ofp-extract-name>begin,
-                                  ofpScope(spec,exec,func,Some(begin),None(),Some(end)))
+                   -> OfpFunction(<ofp-extract-name>begin,
+                                  OfpScope(spec,exec,func,Some(begin),None(),Some(end)))
 
 //R1228
   ofp-to-ast:  FunctionStmt(label,None(),name,args,None(),eos)
-                       -> ofpFunctionStmt(label,name,args,ofpPrefix([]),ofpSuffix([]))             {Comment(eos)}
+                       -> OfpFunctionStmt(label,name,args,OfpPrefix([]),OfpSuffix([]))             {Comment(eos)}
   ofp-to-ast:  FunctionStmt(label,Some(prefix),name,args,None(),eos)
-                       -> ofpFunctionStmt(label,name,args,prefix,ofpSuffix([]))                    {Comment(eos)}
+                       -> OfpFunctionStmt(label,name,args,prefix,OfpSuffix([]))                    {Comment(eos)}
   ofp-to-ast:  FunctionStmt(label,None(),name,args,suffix,eos)
-                       -> ofpFunctionStmt(label,name,args,ofpPrefix([]),suffix)                    {Comment(eos)}
+                       -> OfpFunctionStmt(label,name,args,OfpPrefix([]),suffix)                    {Comment(eos)}
   ofp-to-ast:  FunctionStmt(label,Some(prefix),name,args,suffix,eos)
-                       -> ofpFunctionStmt(label,name,args,prefix,suffix)                           {Comment(eos)}
+                       -> OfpFunctionStmt(label,name,args,prefix,suffix)                           {Comment(eos)}
 
-  ofp-to-ast:  OptDummyArgNameList(args)        -> ofpArgList(args)
+  ofp-to-ast:  OptDummyArgNameList(args)        -> OfpArgList(args)
 
 //R1229
   ofp-to-ast:  ProcLanguageBindingSpec(binding) -> binding
 
 //R1231
-  ofp-to-ast:  Some(Suffix(a))                  -> ofpSuffix([a])
-  ofp-to-ast:  Some(Suffix(a,b))                -> ofpSuffix([a,b])
+  ofp-to-ast:  Some(Suffix(a))                  -> OfpSuffix([a])
+  ofp-to-ast:  Some(Suffix(a,b))                -> OfpSuffix([a,b])
 
 //R1232
   ofp-to-ast:
-    EndFunctionStmt(label,eos)                  -> ofpEndFunctionStmt(label,None())                 {Comment(eos)}
+    EndFunctionStmt(label,eos)                  -> OfpEndFunctionStmt(label,None())                 {Comment(eos)}
   ofp-to-ast:
-    EndFunctionStmt(label,name,eos)             -> ofpEndFunctionStmt(label,name)                   {Comment(eos)}
+    EndFunctionStmt(label,name,eos)             -> OfpEndFunctionStmt(label,name)                   {Comment(eos)}
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,None(),end)
-                   -> ofpSubroutine(<ofp-extract-name>begin,
-                                    ofpScope(spec,exec,ofpFuncPart([]),Some(begin),None(),Some(end)))
+                   -> OfpSubroutine(<ofp-extract-name>begin,
+                                    OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,func,end)
-                   -> ofpSubroutine(<ofp-extract-name>begin,
-                                    ofpScope(spec,exec,func,Some(begin),None(),Some(end)))
+                   -> OfpSubroutine(<ofp-extract-name>begin,
+                                    OfpScope(spec,exec,func,Some(begin),None(),Some(end)))
 
 //R1234 
   ofp-to-ast:  SubroutineStmt(label,None(),name,args,None(),eos)
-                       -> ofpSubroutineStmt(label,name,args,ofpPrefix([]),ofpSuffix([]))            {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,args,OfpPrefix([]),OfpSuffix([]))            {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,eos)
-                       -> ofpSubroutineStmt(label,name,ofpArgList([]),prefix,ofpSuffix([]))         {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,OfpArgList([]),prefix,OfpSuffix([]))         {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,None(),name,eos)
-                       -> ofpSubroutineStmt(label,name,ofpArgList([]),ofpPrefix([]),ofpSuffix([]))  {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,OfpArgList([]),OfpPrefix([]),OfpSuffix([]))  {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,Some(binding),eos)
-                       -> ofpSubroutineStmt(label,name,args,prefix,ofpSuffix([binding]))            {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([binding]))            {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,None(),name,args,Some(binding),eos)
-                       -> ofpSubroutineStmt(label,name,args,ofpPrefix([]),ofpSuffix([binding]))     {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,args,OfpPrefix([]),OfpSuffix([binding]))     {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,None(),eos)
-                       -> ofpSubroutineStmt(label,name,args,prefix,ofpSuffix([]))                   {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([]))                   {Comment(eos)}
 
 //R1235
   ofp-to-ast:  DummyArg(arg)              -> arg
   ofp-to-ast:  DummyArg_STAR()            -> STAR()
-  ofp-to-ast:  Some(DummyArgList(args))   -> ofpArgList(args)
+  ofp-to-ast:  Some(DummyArgList(args))   -> OfpArgList(args)
 
 //R1236
   ofp-to-ast:
-    EndSubroutineStmt(label,eos)          -> ofpEndSubroutineStmt(label,None())        {Comment(eos)}
+    EndSubroutineStmt(label,eos)          -> OfpEndSubroutineStmt(label,None())        {Comment(eos)}
   ofp-to-ast:
-    EndSubroutineStmt(label,name,eos)     -> ofpEndSubroutineStmt(label,name)          {Comment(eos)}
+    EndSubroutineStmt(label,name,eos)     -> OfpEndSubroutineStmt(label,name)          {Comment(eos)}
 
 //R1242
   ofp-to-ast:
-    ContainsStmt(label,eos) -> ofpContainsStmt(label) {Comment(eos)}
+    ContainsStmt(label,eos) -> OfpContainsStmt(label) {Comment(eos)}
 
