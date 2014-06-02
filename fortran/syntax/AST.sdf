@@ -1,0 +1,147 @@
+module AST
+
+exports 
+
+  context-free start-symbols OfpProgram
+
+  sorts
+
+    String StrChar
+
+    OfpLabel
+    OfpLiteral
+    OfpName
+
+    OfpScope
+    OfpSpecPart
+    OfpExecPart
+    OfpFuncPart
+
+    OfpDecl
+    OfpStmt
+    OfpBeginStmt
+    OfpEndStmt
+
+    OfpProgram
+    OfpFile
+    OfpProgramUnit
+
+    INTEGER                  %% R404
+    REAL
+    DOUBLEPRECISION
+    COMPLEX
+    CHARACTER
+    LOGICAL
+    DOUBLECOMPLEX
+
+    OfpType
+
+    OfpImplicitStmt          %% R560
+
+    OfpVarDef                %% R602
+    OfpVarRef                %% R612
+
+    OfpAssignmentStmt        %% R732
+
+    OfpMainProgram           %% R1101
+    OfpProgramStmt           %% R1102
+    OfpEndProgramStmt        %% R1103
+
+    OfpModule                %% R1104
+    OfpModuleStmt            %% R1105
+    OfpEndModuleStmt         %% R1106
+
+    OfpContainsStmt
+
+%% Clause 7, Expressions and assignment
+
+    OfpExpr
+
+  lexical syntax
+
+    "\"" StrChar* "\""   -> String
+    ~[\"\\\n]            -> StrChar
+    [\\][\"\\n]          -> StrChar
+
+
+  context-free syntax
+
+  String    -> OfpLabel   {cons("OfpLabel")}
+  String    -> OfpName    {cons("OfpName")}
+
+%% TEMPORARY
+
+  String -> OfpLiteral       {cons("OfpLiteral")}
+
+%% Additional (new) syntax rules for AST nodes
+
+  String    -> OfpFile      {cons("OfpFile")}
+
+  OfpSpecPart OfpExecPart OfpFuncPart
+     OfpBeginStmt? OfpContainsStmt? OfpEndStmt?   -> OfpScope     {cons("OfpScope")}
+
+  OfpDecl*  -> OfpSpecPart  {cons("OfpSpecPart")}
+  OfpStmt*  -> OfpExecPart  {cons("OfpExecPart")}
+  OfpDecl*  -> OfpFuncPart  {cons("OfpFuncPart")}
+
+%%R201
+  OfpFile? OfpProgramUnit+    -> OfpProgram      {cons("OfpProgram")}
+
+%%R202
+  OfpMainProgram              -> OfpProgramUnit
+  OfpModule                   -> OfpProgramUnit
+
+
+%% 4.4 Intrinsic types
+%%
+
+                              -> INTEGER          {cons("INTEGER")}                %% R404
+                              -> REAL             {cons("REAL")}
+                              -> DOUBLEPRECISION  {cons("DOUBLEPRECISION")}
+                              -> COMPLEX          {cons("COMPLEX")}
+                              -> CHARACTER        {cons("CHARACTER")}
+                              -> LOGICAL          {cons("LOGICAL")}
+                              -> DOUBLECOMPLEX    {cons("DOUBLECOMPLEX")}
+
+  INTEGER         OfpExpr?    -> OfpType          {cons("OfpType")}
+  REAL            OfpExpr?    -> OfpType          {cons("OfpType")}
+  DOUBLEPRECISION OfpExpr?    -> OfpType          {cons("OfpType")}
+  COMPLEX         OfpExpr?    -> OfpType          {cons("OfpType")}
+  CHARACTER       OfpExpr?    -> OfpType          {cons("OfpType")}
+  LOGICAL         OfpExpr?    -> OfpType          {cons("OfpType")}
+  DOUBLECOMPLEX   OfpExpr?    -> OfpType          {cons("OfpType")}
+
+  String OfpType              -> OfpLiteral       {cons("OfpLiteral")}             %% R406
+
+  OfpLabel? OfpType*          -> OfpImplicitStmt  {cons("OfpImplicitStmt")}        %% R560
+  OfpImplicitStmt             -> OfpDecl
+
+  OfpName                     -> OfpVarDef  {cons("OfpVarDef")}                    %% R602
+  OfpName                     -> OfpVarRef  {cons("OfpVarRef")}                    %% R612
+
+
+%%%%%%%%%%
+%% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
+%%%%%%%%%%
+
+  OfpLiteral                  -> OfpExpr            {cons("OfpExpr")}
+  OfpVarRef                   -> OfpExpr            {cons("OfpExpr")}
+
+  OfpExpr OfpExpr             -> OfpExpr            {cons("OfpPlusExpr")}
+
+  OfpLabel? OfpVarDef OfpExpr -> OfpAssignmentStmt {cons("OfpAssignmentStmt")}     %% R732
+  OfpAssignmentStmt           -> OfpStmt
+
+  OfpName?  OfpScope          -> OfpMainProgram     {cons("OfpMainProgram")}       %% R1101
+  OfpLabel? OfpName           -> OfpProgramStmt     {cons("OfpProgramStmt")}       %% R1102
+  OfpLabel? OfpName?          -> OfpEndProgramStmt  {cons("OfpEndProgramStmt")}    %% R1103
+  OfpProgramStmt              -> OfpBeginStmt
+  OfpEndProgramStmt           -> OfpEndStmt
+
+  OfpName?  OfpScope          -> OfpModule          {cons("OfpModule")}            %% R1104
+  OfpLabel? OfpName           -> OfpModuleStmt      {cons("OfpModuleStmt")}        %% R1105
+  OfpLabel? OfpName?          -> OfpEndModuleStmt   {cons("OfpEndModuleStmt ")}    %% R1106
+  OfpModuleStmt               -> OfpBeginStmt
+  OfpEndModuleStmt            -> OfpEndStmt
+
+  OfpLabel?                   -> OfpContainsStmt    {cons("OfpContainsStmt")}      %% R1242
