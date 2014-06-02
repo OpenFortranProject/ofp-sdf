@@ -864,7 +864,8 @@ context-free syntax
   Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
-  Rcon ('_' KindParam)?                 -> RealLiteralConstant        {cons("RealLiteralConstant")}
+  Rcon                                  -> RealLiteralConstant        {cons("RealLiteralConstant")}
+  Rcon '_' KindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
 
 %%R414 significand     - lex
 
@@ -1537,8 +1538,8 @@ context-free syntax
 %%
 
 %%R560
-  Label? 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("ImplicitStmt_ISL")}
-  Label? 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("ImplicitStmt_NONE")}
+  Label? 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  Label? 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("ImplicitStmt")}
 
 %%R561
   DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec    {cons("ImplicitSpec")}
