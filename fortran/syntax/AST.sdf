@@ -9,7 +9,6 @@ exports
     String StrChar
 
     OfpLabel
-    OfpLiteral
     OfpName
 
     OfpScope
@@ -35,6 +34,28 @@ exports
     DOUBLECOMPLEX
 
     OfpType
+    OfpLiteral                        %% R406
+
+    OfpCharLength                     %% R422
+
+
+    OfpTypeDeclarationStmt            %% R501
+    OfpAttrSpec                       %% R502
+    OfpEntityDecl                     %% R503
+                                      %% R504  ObjectName - lex
+    OfpInitialization                 %% R505
+
+    OfpLanguageBinding                %% R508
+    OfpCoarraySpec                    %% R509
+
+    OfpArraySpec                      %% R515  
+    OfpExplicitShape                  %% R516
+    OfpDimSpec                        %% R517-R518
+    OfpAssumedOrDeferredShape         %% R519-R520
+    OfpAssumedSize                    %% R521
+    OfpImpliedShape                   %% R522
+    OfpAssumedRank                    %% R522a
+
 
     OfpImplicitStmt          %% R560
 
@@ -51,7 +72,30 @@ exports
     OfpModuleStmt            %% R1105
     OfpEndModuleStmt         %% R1106
 
-    OfpContainsStmt
+    OfpPrefix                %% R1225
+    OfpPrefixSpec            %% R1226
+    ELEMENTAL
+    IMPURE
+    MODULE
+    PURE
+    RECURSIVE
+
+    OfpSuffix                %% R1231
+    OfpSuffixSpec
+    OfpResultName
+
+    OfpSubroutine            %% R1233
+    OfpSubroutineStmt        %% R1234
+    OfpDummyArg              %% R1235
+    OfpArgList
+    STAR
+    OfpEndSubroutineStmt     %% R1236
+
+    OfpMpSubprogram          %% R1237
+    OfpMpSubprogramStmt      %% R1238
+    OfpEndMpSubprogramStmt   %% R1239
+
+    OfpContainsStmt          %% R1242
 
 %% Clause 7, Expressions and assignment
 
@@ -63,6 +107,13 @@ exports
     ~[\"\\\n]            -> StrChar
     [\\][\"\\n]          -> StrChar
 
+    "ELEMENTAL"          -> ELEMENTAL
+    "IMPURE"             -> IMPURE
+    "MODULE"             -> MODULE
+    "PURE"               -> PURE
+    "RECURSIVE"          -> RECURSIVE
+
+    "*"                  -> STAR
 
   context-free syntax
 
@@ -90,6 +141,7 @@ exports
 %%R202
   OfpMainProgram              -> OfpProgramUnit
   OfpModule                   -> OfpProgramUnit
+  OfpSubroutine               -> OfpProgramUnit
 
 
 %% 4.4 Intrinsic types
@@ -112,6 +164,44 @@ exports
   DOUBLECOMPLEX   OfpExpr?    -> OfpType          {cons("OfpType")}
 
   String OfpType              -> OfpLiteral       {cons("OfpLiteral")}             %% R406
+
+  OfpLabel? OfpType
+            OfpAttrSpec*
+            OfpEntityDecl+    -> OfpTypeDeclarationStmt {cons(" OfpTypeDeclarationStmt")} %% R501
+  OfpTypeDeclarationStmt      -> OfpDecl
+
+  "ALLOCATABLE"               -> OfpAttrSpec      {cons("ALLOCATABLE")}            %% R502
+
+  OfpName OfpArraySpec?
+          OfpCoarraySpec?
+          OfpCharLength?
+          OfpInitialization?  -> OfpEntityDecl    {cons("OfpEntityDecl")}          %% R503
+
+%%TODO
+  String -> OfpArraySpec
+  String -> OfpCoarraySpec
+  String -> OfpCharLength
+  String -> OfpInitialization
+
+%%R502  OfpAttrSpec
+%%TODO remove? or stuff allocable in it
+
+%%  OfpName ArraySpec?
+%%          CoarraySpec?
+%%          CharLength?
+%%          Initialization?     -> OfpEntityDecl    {cons("OfpEntityDecl")}          %% R503
+
+  OfpName?                    -> OfpLanguageBinding {cons("OfpLanguageBinding")}     %% R508
+
+  OfpDimSpec+                 -> OfpExplicitShape {cons("OfpExplicitShape")}       %% R516
+
+  OfpExpr OfpExpr             -> OfpDimSpec       {cons("OfpDimSpec")}             %% R517-R518
+  OfpExpr String              -> OfpDimSpec       {cons("OfpDimSpec")}
+
+  OfpDimSpec+     -> OfpAssumedOrDeferredShape {cons("OfpAssumedOrDeferredShape")} %% R519-R520
+  OfpDimSpec+     -> OfpAssumedSize            {cons("OfpAssumedSize")}            %% R521
+  OfpDimSpec+     -> OfpImpliedShape           {cons("OfpImpliedShape")}           %% R522
+  OfpDimSpec+     -> OfpAssumedRank            {cons("OfpAssumedRank")}            %% R522a
 
   OfpLabel? OfpType*          -> OfpImplicitStmt  {cons("OfpImplicitStmt")}        %% R560
   OfpImplicitStmt             -> OfpDecl
@@ -140,8 +230,40 @@ exports
 
   OfpName?  OfpScope          -> OfpModule          {cons("OfpModule")}            %% R1104
   OfpLabel? OfpName           -> OfpModuleStmt      {cons("OfpModuleStmt")}        %% R1105
-  OfpLabel? OfpName?          -> OfpEndModuleStmt   {cons("OfpEndModuleStmt ")}    %% R1106
+  OfpLabel? OfpName?          -> OfpEndModuleStmt   {cons("OfpEndModuleStmt")}     %% R1106
   OfpModuleStmt               -> OfpBeginStmt
   OfpEndModuleStmt            -> OfpEndStmt
+
+  OfpPrefixSpec*              -> OfpPrefix          {cons("OfpPrefix")}            %% R1225
+%%TODO declaration-type-spec  -> OfpPrefixSpec
+  ELEMENTAL                   -> OfpPrefixSpec      {cons("ELEMENTAL")}
+  IMPURE                      -> OfpPrefixSpec      {cons("IMPURE")}
+  MODULE                      -> OfpPrefixSpec      {cons("MODULE")}
+  PURE                        -> OfpPrefixSpec      {cons("PURE")}
+  RECURSIVE                   -> OfpPrefixSpec      {cons("RECURSIVE")}
+  
+  OfpLanguageBinding          -> OfpSuffixSpec      {cons("OfpLanguageBinding")}        %% R1229
+  OfpResultName               -> OfpSuffixSpec      {cons("OfpResultName")}
+  OfpName                     -> OfpResultName      {cons("OfpResultName")}
+
+  OfpSuffixSpec*              -> OfpSuffix              {cons("OfpSuffix")}             %% R1231
+
+  OfpName OfpScope            -> OfpSubroutine          {cons("OfpSubroutine")}         %% R1233
+  OfpLabel? OfpName OfpArgList
+                    OfpPrefix
+                    OfpSuffix -> OfpSubroutineStmt      {cons("OfpSubroutineStmt")}      %% R1234
+  OfpName                     -> OfpDummyArg                                             %% R1235
+  STAR                        -> OfpDummyArg            {cons("STAR")}
+  OfpDummyArg*                -> OfpArgList             {cons("OfpArgList")}
+  OfpLabel? OfpName?          -> OfpEndSubroutineStmt   {cons("OfpEndSubroutineStmt")}   %% R1236
+  OfpSubroutineStmt           -> OfpBeginStmt
+  OfpEndSubroutineStmt        -> OfpEndStmt
+
+  OfpName?  OfpScope          -> OfpMpSubprogram        {cons("OfpMpSubprogram")}        %% R1237
+  OfpLabel? OfpName           -> OfpMpSubprogramStmt    {cons("OfpMpSubprogramStmt")}    %% R1238
+  OfpLabel? OfpName?          -> OfpEndMpSubprogramStmt {cons("OfpEndMpSubprogramStmt")} %% R1239
+  OfpMpSubprogramStmt         -> OfpBeginStmt
+  OfpEndMpSubprogramStmt      -> OfpEndStmt
+  OfpMpSubprogram             -> OfpDecl
 
   OfpLabel?                   -> OfpContainsStmt    {cons("OfpContainsStmt")}      %% R1242
