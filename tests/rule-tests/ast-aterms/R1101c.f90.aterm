@@ -1,15 +1,15 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
-      Some(ofpName("my_program"))
-    , ofpScope(
-        ofpSpecPart([])
-      , ofpExecPart([])
-      , ofpFuncPart([])
-      , Some(ofpProgramStmt(Some(Label("13")), ofpName("my_program")){Comment("
+, [ OfpMainProgram(
+      Some(OfpName("my_program"))
+    , OfpScope(
+        OfpSpecPart([])
+      , OfpExecPart([])
+      , OfpFuncPart([])
+      , Some(OfpProgramStmt(Some(Label("13")), OfpName("my_program")){Comment("
 ")})
       , None()
-      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_program"))){Comment("
+      , Some(OfpEndProgramStmt(None(), Some(OfpName("my_program"))){Comment("
 ")})
       )
     )

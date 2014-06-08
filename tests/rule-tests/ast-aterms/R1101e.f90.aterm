@@ -1,23 +1,23 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
-      Some(ofpName("my_prog"))
-    , ofpScope(
-        ofpSpecPart([])
-      , ofpExecPart(
-          [ ofpAssignmentStmt(
+, [ OfpMainProgram(
+      Some(OfpName("my_prog"))
+    , OfpScope(
+        OfpSpecPart([])
+      , OfpExecPart(
+          [ OfpAssignmentStmt(
               None()
-            , ofpVarDef(ofpName("i"))
-            , ofpLiteral("1", ofpType(INTEGER(), None()))
+            , OfpVarDef(OfpName("i"))
+            , OfpLiteral("1", OfpType(INTEGER(), None()))
             ){Comment("
 ")}
           ]
         )
-      , ofpFuncPart([])
-      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+      , OfpFuncPart([])
+      , Some(OfpProgramStmt(None(), OfpName("my_prog")){Comment("
   ")})
       , None()
-      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+      , Some(OfpEndProgramStmt(None(), Some(OfpName("my_prog"))){Comment("
 ")})
       )
     )

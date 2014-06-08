@@ -1,114 +1,114 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
+, [ OfpMainProgram(
       None()
-    , ofpScope(
-        ofpSpecPart(
-          [ ofpInterfaceBlock(
-              ofpInterfaceStmt(None(), None(), None()){Comment("
+    , OfpScope(
+        OfpSpecPart(
+          [ OfpInterfaceBlock(
+              OfpInterfaceStmt(None(), None(), None()){Comment("
 ")}
-            , ofpEndInterfaceStmt(None(), None()){Comment("
+            , OfpEndInterfaceStmt(None(), None()){Comment("
 
 ! Include a generic-spec in the interface-stmt and end-interface-stmt
 ")}
             , []
             )
-          , ofpInterfaceBlock(
-              ofpInterfaceStmt(None(), None(), Some(ofpName("foo"))){Comment("
+          , OfpInterfaceBlock(
+              OfpInterfaceStmt(None(), None(), Some(OfpName("foo"))){Comment("
 ")}
-            , ofpEndInterfaceStmt(None(), Some(ofpName("foo"))){Comment("
+            , OfpEndInterfaceStmt(None(), Some(OfpName("foo"))){Comment("
 
 ! abstract interface-stmt
 ")}
             , []
             )
-          , ofpInterfaceBlock(
-              ofpInterfaceStmt(None(), Some("ABSTRACT"), None()){Comment("
+          , OfpInterfaceBlock(
+              OfpInterfaceStmt(None(), Some("ABSTRACT"), None()){Comment("
 ")}
-            , ofpEndInterfaceStmt(None(), None()){Comment("
+            , OfpEndInterfaceStmt(None(), None()){Comment("
 
 ! Include an optional interface-specification
 ")}
             , []
             )
-          , ofpInterfaceBlock(
-              ofpInterfaceStmt(None(), None(), None()){Comment("
+          , OfpInterfaceBlock(
+              OfpInterfaceStmt(None(), None(), None()){Comment("
    ")}
-            , ofpEndInterfaceStmt(None(), None()){Comment("
+            , OfpEndInterfaceStmt(None(), None()){Comment("
 
 ! Include multiple optional interface-specification
 ")}
-            , [ ofpScope(
-                  ofpSpecPart([])
-                , ofpExecPart([])
-                , ofpFuncPart([])
+            , [ OfpScope(
+                  OfpSpecPart([])
+                , OfpExecPart([])
+                , OfpFuncPart([])
                 , Some(
-                    ofpSubroutineStmt(
+                    OfpSubroutineStmt(
                       None()
-                    , ofpName("sub")
+                    , OfpName("sub")
                     , None()
-                    , ofpPrefix([])
-                    , ofpSuffix([])
+                    , OfpPrefix([])
+                    , OfpSuffix([])
                     ){Comment("
    ")}
                   )
                 , None()
-                , Some(ofpEndSubroutineStmt(None(), Some(ofpName("sub"))){Comment("
+                , Some(OfpEndSubroutineStmt(None(), Some(OfpName("sub"))){Comment("
 ")})
                 )
               ]
             )
-          , ofpInterfaceBlock(
-              ofpInterfaceStmt(None(), None(), None()){Comment("
+          , OfpInterfaceBlock(
+              OfpInterfaceStmt(None(), None(), None()){Comment("
    ")}
-            , ofpEndInterfaceStmt(None(), None()){Comment("
+            , OfpEndInterfaceStmt(None(), None()){Comment("
 
 ")}
-            , [ ofpScope(
-                  ofpSpecPart([])
-                , ofpExecPart([])
-                , ofpFuncPart([])
+            , [ OfpScope(
+                  OfpSpecPart([])
+                , OfpExecPart([])
+                , OfpFuncPart([])
                 , Some(
-                    ofpSubroutineStmt(
+                    OfpSubroutineStmt(
                       None()
-                    , ofpName("bub")
-                    , ofpArgList([])
-                    , ofpPrefix([])
-                    , ofpSuffix([])
+                    , OfpName("bub")
+                    , OfpArgList([])
+                    , OfpPrefix([])
+                    , OfpSuffix([])
                     ){Comment("
    ")}
                   )
                 , None()
-                , Some(ofpEndSubroutineStmt(None(), Some(ofpName("bub"))){Comment("
+                , Some(OfpEndSubroutineStmt(None(), Some(OfpName("bub"))){Comment("
    ")})
                 )
-              , ofpScope(
-                  ofpSpecPart([])
-                , ofpExecPart([])
-                , ofpFuncPart([])
+              , OfpScope(
+                  OfpSpecPart([])
+                , OfpExecPart([])
+                , OfpFuncPart([])
                 , Some(
-                    ofpFunctionStmt(
+                    OfpFunctionStmt(
                       None()
-                    , ofpName("foo")
-                    , ofpArgList([])
-                    , ofpPrefix([])
-                    , ofpSuffix([])
+                    , OfpName("foo")
+                    , OfpArgList([])
+                    , OfpPrefix([])
+                    , OfpSuffix([])
                     ){Comment("
    ")}
                   )
                 , None()
-                , Some(ofpEndFunctionStmt(None(), Some(ofpName("foo"))){Comment("
+                , Some(OfpEndFunctionStmt(None(), Some(OfpName("foo"))){Comment("
 ")})
                 )
               ]
             )
           ]
         )
-      , ofpExecPart([])
-      , ofpFuncPart([])
+      , OfpExecPart([])
+      , OfpFuncPart([])
       , None()
       , None()
-      , Some(ofpEndProgramStmt(None(), None()){Comment("
+      , Some(OfpEndProgramStmt(None(), None()){Comment("
 
 ")})
       )

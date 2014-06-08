@@ -1,24 +1,24 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
-      Some(ofpName("my_prog"))
-    , ofpScope(
-        ofpSpecPart(
-          [ ofpTypeDeclarationStmt(
+, [ OfpMainProgram(
+      Some(OfpName("my_prog"))
+    , OfpScope(
+        OfpSpecPart(
+          [ OfpTypeDeclarationStmt(
               None()
-            , ofpType(REAL(), None())
+            , OfpType(REAL(), None())
             , []
-            , [ofpEntityDecl(ofpName("a"), None(), None(), None(), None())]
+            , [OfpEntityDecl(OfpName("a"), None(), None(), None(), None())]
             ){Comment("
 ")}
           ]
         )
-      , ofpExecPart([])
-      , ofpFuncPart([])
-      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+      , OfpExecPart([])
+      , OfpFuncPart([])
+      , Some(OfpProgramStmt(None(), OfpName("my_prog")){Comment("
   ")})
       , None()
-      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+      , Some(OfpEndProgramStmt(None(), Some(OfpName("my_prog"))){Comment("
 ")})
       )
     )

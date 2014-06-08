@@ -1,14 +1,14 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
+, [ OfpMainProgram(
       None()
-    , ofpScope(
-        ofpSpecPart([])
-      , ofpExecPart([])
-      , ofpFuncPart([])
+    , OfpScope(
+        OfpSpecPart([])
+      , OfpExecPart([])
+      , OfpFuncPart([])
       , None()
       , None()
-      , Some(ofpEndProgramStmt(Some(Label("13")), None()){Comment("
+      , Some(OfpEndProgramStmt(Some(Label("13")), None()){Comment("
 ")})
       )
     )

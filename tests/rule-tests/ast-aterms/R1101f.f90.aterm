@@ -1,39 +1,39 @@
-ofpProgram(
+OfpProgram(
   None()
-, [ ofpMainProgram(
-      Some(ofpName("my_prog"))
-    , ofpScope(
-        ofpSpecPart([])
-      , ofpExecPart([])
-      , ofpFuncPart(
-          [ ofpSubroutine(
-              ofpName("sub")
-            , ofpScope(
-                ofpSpecPart([])
-              , ofpExecPart([])
-              , ofpFuncPart([])
+, [ OfpMainProgram(
+      Some(OfpName("my_prog"))
+    , OfpScope(
+        OfpSpecPart([])
+      , OfpExecPart([])
+      , OfpFuncPart(
+          [ OfpSubroutine(
+              OfpName("sub")
+            , OfpScope(
+                OfpSpecPart([])
+              , OfpExecPart([])
+              , OfpFuncPart([])
               , Some(
-                  ofpSubroutineStmt(
+                  OfpSubroutineStmt(
                     None()
-                  , ofpName("sub")
-                  , ofpArgList([])
-                  , ofpPrefix([])
-                  , ofpSuffix([])
+                  , OfpName("sub")
+                  , OfpArgList([])
+                  , OfpPrefix([])
+                  , OfpSuffix([])
                   ){Comment("
   ")}
                 )
               , None()
-              , Some(ofpEndSubroutineStmt(None(), Some(ofpName("sub"))){Comment("
+              , Some(OfpEndSubroutineStmt(None(), Some(OfpName("sub"))){Comment("
 ")})
               )
             )
           ]
         )
-      , Some(ofpProgramStmt(None(), ofpName("my_prog")){Comment("
+      , Some(OfpProgramStmt(None(), OfpName("my_prog")){Comment("
 ")})
-      , Some(ofpContainsStmt(None()){Comment("
+      , Some(OfpContainsStmt(None()){Comment("
   ")})
-      , Some(ofpEndProgramStmt(None(), Some(ofpName("my_prog"))){Comment("
+      , Some(OfpEndProgramStmt(None(), Some(OfpName("my_prog"))){Comment("
 ")})
       )
     )
