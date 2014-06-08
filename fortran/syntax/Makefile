@@ -14,7 +14,20 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl Main.str
+all : Fortran.tbl Main.str AST.str
+
+AST.def : AST.sdf
+	pack-sdf -i $< -o $@
+
+AST.rtg : AST.def
+	sdf2rtg -i AST.def -m AST -o AST.rtg --ignore-missing-cons
+
+AST.sig : AST.rtg
+	rtg2sig -i AST.rtg -o AST.sig
+
+AST.str : AST.sig
+	cp AST.sig AST.str
+
 
 Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
