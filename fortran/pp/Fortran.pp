@@ -6,51 +6,75 @@
    INTEGER                       -- KW["INTEGER ::"],
 
    #R201 --,
-   ofpProgram                    -- _1 _2,
-   ofpProgram.1:opt              -- ,
+   OfpProgram                    -- _1 _2,
+   OfpProgram.1:opt              -- ,
 
    #R204 --,
-   ofpSpecPart                   -- H hs=0[_1],
+   OfpSpecPart                   -- H hs=0[_1],
 
    #R208 --,
-   ofpExecPart                   -- H hs=0[_1],
-   ofpFuncPart                   -- H hs=0[_1],
+   OfpExecPart                   -- H hs=0[_1],
+   OfpFuncPart                   -- H hs=0[_1],
 
    #R303 --,
-   ofpName                       -- H hs=1[_1],
-   ofpEndProgramStmt             -- H hs=1[_1 "END PROGRAM"  _2],
+   OfpName                       -- H hs=1[_1],
+   OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
 
    #R404 --,
-   ofpType                       -- H hs=1[_1 _2],
+   OfpType                       -- H hs=1[_1 _2],
 
    #R407 --,
-   ofpLiteral                    -- H hs=1[_1 _2],
+   OfpLiteral                    -- H hs=1[_1 _2],
 
    #R501 --,
-   ofpTypeDeclarationStmt        -- H hs=1[H hs=3[_1] _2 _3 _4],
+   OfpTypeDeclarationStmt        -- H hs=1[H hs=3[_1] _2 _3 _4],
 
    #R502 --,
    Some                          -- _1,
    Some                          -- _1 _2,
    
    #R503 --,
-   ofpEntityDecl                 -- _1 _2 _3 _4 _5,
+   OfpEntityDecl                 -- _1 _2 _3 _4 _5,
 
    #R602 --,
-   ofpVarDef                     -- _1,
+   OfpVarDef                     -- _1,
 
    #R732 --,
-   ofpAssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3],
-   ofpAssignmentStmt.2:op        -- ,
+   OfpAssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3],
+   OfpAssignmentStmt.2:opt       -- ,
 
    #R1101 --,
-   ofpMainProgram                -- V[H[_1] _2],
-   ofpMainProgram.1:opt          -- ,
+   OfpMainProgram                -- V[H[_1] _2],
+   OfpMainProgram.1:opt          -- ,
 
    #R1102 --,
-   ofpProgramStmt                --  _1 KW["PROGRAM"] _2,
+   OfpProgramStmt                --  _1 KW["PROGRAM"] _2,
    
    #R1205 --,
-   ofpScope                      -- V vs=1 is=0[H hs=1[_4] _1 _2 _3 _5 _6]
+   OfpScope                      -- V vs=1 is=0[H hs=1[_4] _1 _2 _3 _5 _6],
+
+
+   OfpPrefix                           -- _1,
+   OfpPrefix.1:iter-star               -- _1,
+
+   ELEMENTAL                           -- "ELEMENTAL",
+   IMPURE                              -- "IMPURE",
+   MODULE                              -- "MODULE",
+   PURE                                -- "PURE",
+   RECURSIVE                           -- "RECURSIVE",
+
+   OfpLanguageBinding                  -- "BIND(C" _1 ")",
+   OfpResultName                       -- "RESULT" _1,
+   OfpSuffix                           -- _1,
+   OfpSuffix.1:iter-star               -- _1,
+
+   #R1233 --,
+   OfpSubroutine                       -- _2 "!" _1,
+   OfpSubroutineStmt                   -- _1 _4 "SUBROUTINE" _2 "(" _3 ")" _5,
+   OfpEndSubroutineStmt                -- H hs=1[_1 "END SUBROUTINE" _2],
+
+   STAR                                -- "*",
+   OfpArgList                          -- _1,
+   OfpArgList.1:iter-star-sep          -- _1 ","
 
 ]
