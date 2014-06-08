@@ -3562,7 +3562,9 @@ context-free syntax
   Label? 'MODULE' 'PROCEDURE' ProcedureName  EOS -> MpSubprogramStmt         {cons("MpSubprogramStmt")}
 
 %%R1239
-  Label? 'END' ('PROCEDURE' ProcedureName?)? EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  Label? 'END'                               EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  Label? 'END' 'PROCEDURE'                   EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  Label? 'END' 'PROCEDURE' ProcedureName     EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
 
 %%R1240
   Label? 'ENTRY' EntryName '(' DummyArgList? ')' Suffix?  EOS -> EntryStmt   {cons("EntryStmt_DAL")}
