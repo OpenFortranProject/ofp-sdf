@@ -26,6 +26,13 @@ elim-main-range : elim-main-range.str
 check : ofp-simplify
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm
 
+unparse : ofp-simplify
+	@echo "------------"
+	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm | ast2text -p ../pp/Fortran.pp
+
+test : ofp-simplify
+	sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm
+
 rose : ofp-to-rose ofp-simplify
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | ofp-to-rose | pp-aterm
 
