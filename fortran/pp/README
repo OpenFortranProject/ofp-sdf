@@ -1,1 +1,5 @@
 A directory for pretty printing rules (unparsing).
+
+#
+#
+ppgen -i ../syntax/AST.def -o AST.pp
