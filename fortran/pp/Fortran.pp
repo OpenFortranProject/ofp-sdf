@@ -18,7 +18,6 @@
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
-   OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
 
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
@@ -47,11 +46,16 @@
    OfpMainProgram                -- V[H[_1] _2],
    OfpMainProgram.1:opt          -- ,
 
-   #R1102 --,
    OfpProgramStmt                --  _1 KW["PROGRAM"] _2,
+   OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
+
+   #R1201 --,
+   OfpInterfaceBlock             -- V vs=0 [_1 _3 _2],
+   OfpInterfaceStmt              -- V vs=0 [H hs=1[_2 _1 KW["INTERFACE"] _3]],
+   OfpEndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2],
    
    #R1205 --,
-   OfpScope                      -- V vs=1 is=0[H hs=1[_4] _1 _2 _5 _3 _6],
+   OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 _5 _3 _6],
 
 
    OfpPrefix                           -- _1,
@@ -67,6 +71,11 @@
    OfpResultName                       -- "RESULT" _1,
    OfpSuffix                           -- _1,
    OfpSuffix.1:iter-star               -- _1,
+
+   #R1217 --,
+   OfpFunction                         -- _2 "!" _1,
+   OfpFunctionStmt                     -- _1 KW["FUNCTION"] _2 _3 _4 _5,
+   OfpEndFunctionStmt                  -- _1 KW["END FUNCTION"] _2,
 
    #R1233 --,
    OfpSubroutine                       -- _2 "!" _1,
