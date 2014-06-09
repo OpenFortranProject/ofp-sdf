@@ -51,7 +51,7 @@
    OfpProgramStmt                --  _1 KW["PROGRAM"] _2,
    
    #R1205 --,
-   OfpScope                      -- V vs=1 is=0[H hs=1[_4] _1 _2 _3 _5 _6],
+   OfpScope                      -- V vs=1 is=0[H hs=1[_4] _1 _2 _5 _3 _6],
 
 
    OfpPrefix                           -- _1,
@@ -75,6 +75,10 @@
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
-   OfpArgList.1:iter-star-sep          -- _1 ","
+   OfpArgList.1:iter-star-sep          -- _1 ",",
+
+   #R1242 --,
+   OfpContainsStmt                     -- _1 KW["CONTAINS"]
+
 
 ]
