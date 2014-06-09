@@ -1,0 +1,58 @@
+OfpProgram(
+  None()
+, [ OfpModule(
+      OfpName("mod")
+    , OfpScope(
+        OfpSpecPart([])
+      , OfpExecPart([])
+      , OfpFuncPart(
+          [ OfpMpSubprogram(
+              OfpName("modproc")
+            , OfpScope(
+                OfpSpecPart(
+                  [ OfpTypeDeclarationStmt(
+                      None()
+                    , OfpType(INTEGER(), None())
+                    , []
+                    , [OfpEntityDecl(OfpName("i"), None(), None(), None(), None())]
+                    ){Comment("
+      ")}
+                  ]
+                )
+              , OfpExecPart(
+                  [ OfpAssignmentStmt(
+                      None()
+                    , OfpVarDef(OfpName("i"))
+                    , OfpLiteral("3", OfpType(INTEGER(), None()))
+                    ){Comment("
+   ")}
+                  ]
+                )
+              , OfpFuncPart([])
+              , Some(OfpMpSubprogramStmt(None(), OfpName("modproc")){Comment("
+      ")})
+              , None()
+              , Some(OfpEndMpSubprogramStmt(None(), OfpName("modproc")){Comment("
+")})
+              )
+            )
+          ]
+        )
+      , Some(OfpModuleStmt(None(), OfpName("mod")){Comment("
+")})
+      , Some(OfpContainsStmt(None()){Comment("
+   ")})
+      , Some(OfpEndModuleStmt(None(), Some(OfpName("mod"))){Comment("
+
+")})
+      )
+    )
+  ]
+){Comment("!! R1237 separate-module-subprogram
+!     is mp-subprogram-stmt
+!           [ specification-part ]
+!           [ execution-part ]
+!           [ internal-subprogram-part ]
+!        end-mp-subprogram-stmt
+!
+")}
