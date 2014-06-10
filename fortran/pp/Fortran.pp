@@ -6,11 +6,11 @@
    INTEGER                       -- KW["INTEGER ::"],
 
    #R201 --,
-   OfpProgram                    -- _1 _2,
+   OfpProgram                    -- V vs=0 is=0 [_1 _2],
    OfpProgram.1:opt              -- ,
 
    #R204 --,
-   OfpSpecPart                   -- H hs=0[_1],
+   OfpSpecPart                   -- V vs=1[_1],
 
    #R208 --,
    OfpExecPart                   -- H hs=0[_1],
@@ -43,15 +43,15 @@
    OfpAssignmentStmt.2:opt       -- ,
 
    #R1101 --,
-   OfpMainProgram                -- V[H[_1] _2],
-   OfpMainProgram.1:opt          -- ,
+   PpMainProgram                -- V vs=0 [H[_1]],
+   PpMainProgram.1:opt          -- ,
 
-   OfpProgramStmt                --  _1 KW["PROGRAM"] _2,
+   OfpProgramStmt                -- _1 KW["PROGRAM"] _2,
    OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
 
    #R1201 --,
    OfpInterfaceBlock             -- V vs=0 [_1 _3 _2],
-   OfpInterfaceStmt              -- V vs=0 [H hs=1[_2 _1 KW["INTERFACE"] _3]],
+   OfpInterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
    OfpEndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2],
    
    #R1205 --,
@@ -73,14 +73,14 @@
    OfpSuffix.1:iter-star               -- _1,
 
    #R1217 --,
-   OfpFunction                         -- _2 "!" _1,
-   OfpFunctionStmt                     -- _1 KW["FUNCTION"] _2 _3 _4 _5,
-   OfpEndFunctionStmt                  -- _1 KW["END FUNCTION"] _2,
+   PpFunction                          -- _1,
+   OfpFunctionStmt                     -- _1 _4 KW["FUNCTION"] _2 _3 _5,
+   OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
 
    #R1233 --,
-   OfpSubroutine                       -- _2 "!" _1,
-   OfpSubroutineStmt                   -- _1 _4 "SUBROUTINE" _2 "(" _3 ")" _5,
-   OfpEndSubroutineStmt                -- H hs=1[_1 "END SUBROUTINE" _2],
+   PpSubroutine                        --  _1,
+   OfpSubroutineStmt                    -- _1 _4 "SUBROUTINE" _2 "(" _3 ")" _5,
+   OfpEndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
