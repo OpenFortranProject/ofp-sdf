@@ -1,6 +1,9 @@
-SYNTAX = ../../../fortran/syntax
-TBL    = $(SYNTAX)/Fortran.tbl
-TRANS  = ../../../fortran/trans/ofp-simplify
+SYNTAX_DIR = ../../../fortran/syntax
+TRANS_DIR  = ../../../fortran/trans
+
+TBL    = $(SYNTAX_DIR)/Fortran.tbl
+TO_AST = $(TRANS_DIR)/ofp-simplify
+TO_PP  = $(TRANS_DIR)/ast2pp
 PP     = ../../../fortran/pp/Fortran.pp
 
 all : check
@@ -11,7 +14,7 @@ $(TBL) :
 check : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TRANS) | ast2text -p $(PP) -o tmp/$$file; \
+	   sglri -p $(TBL) -i $$file | $(TO_AST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
