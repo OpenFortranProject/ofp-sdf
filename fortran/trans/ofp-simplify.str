@@ -46,19 +46,20 @@ signature
                                           * List(OfpAttrSpec)
                                           * List(OfpEntiyDecl)     -> OfpTypeDeclarationStmt    // R501
 
-***/  
 
    OfpEntityDecl        : OfpName * Option(ArraySpec)
                                   * Option(CoarraySpec)
                                   * Option(CharLength)
                                   * Option(Initialization)         -> OfpEntityDecl             // R503
 
-   OfpLanguage          : LanguageBindingSpec                      -> OfpLanguage               // R508
+   OfpLanguageBinding   : LanguageBindingSpec                      -> OfpLanguageBinding        // R508
+***/
 
    OfpExplicitShape     : List(OfpDimSpec)                         -> OfpExplicitShape          // R516
 
    OfpDimSpec           : Option(lower) * upper                    -> OfpDimSpec                // R517-R518
 
+/***
    OfpAssumedOrDeferredShape    : List(OfpDimSpec)                 -> OfpAssumedOrDeferredShape // R519-R520
    OfpAssumedSize               : List(OfpDimSpec)                 -> OfpAssumedSize            // R521
    OfpImpliedShape              : List(OfpDimSpec)                 -> OfpImpliedShape           // R522
@@ -82,12 +83,14 @@ signature
 
    OfpInterfaceBlock    : OfpInterfaceStmt * OfpEndInterfaceStmt
                                     * List(InterfaceSpecification) -> OfpInterfaceBlock         // R1201
+***/
 
 //TODO - GenericSpec
+
+/***
    OfpInterfaceStmt     : Option(Label) * Option(abstract)
                                         * Option(GenericSpec)      -> OfpInterfaceStmt         // R1203
 
-//TODO - GenericSpec
    OfpEndInterfaceStmt  : Option(Label) * Option(GenericSpec)      -> OfpEndInterfaceStmt      // R1204
 
    OfpPrefix            : List(prefix_elements)                    -> OfpPrefix                // R1225
@@ -103,6 +106,7 @@ signature
 
 
    OfpEndFunctionStmt   : Option(Label) * Option(OfpName)          -> OfpEndFunctionStmt       // R1232
+***/
 
    STAR                 : STAR                                                                 // R1235
 
@@ -137,7 +141,7 @@ rules
   ofp-extract-name:  OfpSubroutineStmt   (label,name,args,prefix,suffix) -> name
   ofp-extract-name:  OfpFunctionStmt     (label,name,args,prefix,suffix) -> name
 
-  ofp-to-ast:  LanguageBindingName(str)  -> OfpString(str)
+  ofp-to-ast:  LanguageBindingName(str)  -> str
 
   ofp-to-ast:  DummyArgName(str)         -> OfpName(str)
   ofp-to-ast:  FunctionName(str)         -> OfpName(str)
@@ -147,7 +151,6 @@ rules
   ofp-to-ast:  PartName(str)             -> OfpName(str)
   ofp-to-ast:  ProcedureName(str)        -> OfpName(str)
   ofp-to-ast:  ProgramName(str)          -> OfpName(str)
-  ofp-to-ast:  ResultName(str)           -> OfpName(str)
   ofp-to-ast:  SubroutineName(str)       -> OfpName(str)
 
 //R201
@@ -235,7 +238,7 @@ rules
   ofp-to-ast:  EntityDeclList(EntityDecls)                    -> EntityDecls
     
 //R508
-  ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguage(opt_name)
+  ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
 
 //R515
   ofp-to-ast:  ArraySpec(spec)                  -> spec
@@ -420,6 +423,7 @@ rules
   ofp-to-ast:  ProcLanguageBindingSpec(binding) -> binding
 
 //R1231
+  ofp-to-ast:  ResultName(str)                  -> OfpResultName(str)
   ofp-to-ast:  Some(Suffix(a))                  -> OfpSuffix([a])
   ofp-to-ast:  Some(Suffix(a,b))                -> OfpSuffix([a,b])
 
