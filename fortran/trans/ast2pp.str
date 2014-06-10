@@ -1,0 +1,37 @@
+module ast2pp
+
+imports
+   libstratego-lib
+   AST
+
+signature
+  constructors
+
+    PpMainProgram  : OfpMainProgram  -> PpMainProgram
+    PpModule       : OfpModule       -> PpModule
+    PpFunction     : OfpFunction     -> PpFunction
+    PpSubroutine   : OfpSubroutine   -> PpSubroutine
+    PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
+
+strategies
+
+  io-ast2pp = io-wrap(ast2pp)
+
+  ast2pp = outermost(ast-to-pp)
+
+rules
+
+//R1101
+  ast-to-pp:  OfpMainProgram(name, scope)  -> PpMainProgram(scope)
+
+//R1104
+  ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
+
+//R1227
+  ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
+
+//R1233
+  ast-to-pp:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
+
+//R1237
+  ast-to-pp:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
