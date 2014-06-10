@@ -1,12 +1,13 @@
-#include elim-main-range.dep
-
 CFLAGS = -Xcc -m32 -I ../syntax
 LDFLAGS = -Xlinker -m32 -la stratego-lib
 
-all : ofp-simplify
+all : ofp-simplify ast2pp
 
 ofp-simplify : ofp-simplify.str
 	strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
+
+ast2pp : ast2pp.str
+	strc -i ast2pp.str $(CFLAGS) $(LDFLAGS) --main io-ast2pp
 
 ofp-to-rose : ofp-to-rose.str
 	strc -i ofp-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-ofp-to-rose
