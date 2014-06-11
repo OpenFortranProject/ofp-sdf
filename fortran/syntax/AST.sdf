@@ -9,8 +9,8 @@ exports
     String StrChar
 
     OfpLabel
-    OfpName
 
+    OfpName                           %% R303
     OfpScope
     OfpSpecPart
     OfpExecPart
@@ -131,6 +131,8 @@ exports
   context-free syntax
 
   String    -> OfpLabel   {cons("OfpLabel")}
+
+%%R303
   String    -> OfpName    {cons("OfpName")}
 
 %% TEMPORARY
@@ -200,11 +202,6 @@ exports
 %%R502  OfpAttrSpec
 %%TODO remove? or stuff allocable in it
 
-%%  OfpName ArraySpec?
-%%          CoarraySpec?
-%%          CharLength?
-%%          Initialization?     -> OfpEntityDecl    {cons("OfpEntityDecl")}          %% R503
-
   OfpName?                    -> OfpLanguageBinding {cons("OfpLanguageBinding")}   %% R508
 
   OfpDimSpec+                 -> OfpExplicitShape {cons("OfpExplicitShape")}       %% R516
@@ -221,6 +218,7 @@ exports
   %%
   OfpAssumedOrDeferredShape   -> OfpExpr
   OfpAssumedSize              -> OfpExpr
+  OfpExplicitShape            -> OfpExpr
   OfpImpliedShape             -> OfpExpr
   OfpAssumedRank              -> OfpExpr
 
