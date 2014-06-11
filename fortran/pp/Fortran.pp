@@ -23,7 +23,7 @@
    OfpType                       -- H hs=1[_1 _2],
 
    #R407 --,
-   OfpLiteral                    -- H hs=1[_1 _2],
+   PpLiteral                    -- H hs=1[_1],
 
    #R501 --,
    OfpTypeDeclarationStmt        -- H hs=1[H hs=3[_1] _2 _3 _4],
@@ -78,7 +78,7 @@
    OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
 
    #R1233 --,
-   PpSubroutine                        --  _1,
+   PpSubroutine                         -- _1,
    OfpSubroutineStmt                    -- _1 _4 "SUBROUTINE" _2 "(" _3 ")" _5,
    OfpEndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2],
 
