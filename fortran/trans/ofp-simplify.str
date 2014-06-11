@@ -9,120 +9,13 @@ signature
   constructors
 
     Comment   : A -> B            /* comments are put in annotations */
-    OfpName   : A -> B            /* node for a name string */                                  // R303
     OfpString : A -> B            /* node for a string literal */
 
     tmpImplicitPart : A -> B    /* to combine all to a list */
 
-
-   OfpScope    : OfpSpecPart * OfpExecPart * OfpFuncPart
-                             * Option(OfpBeginStmt)
-                             * Option(OfpContainsStmt)
-                             * Option(OfpEndStmt)                -> OfpScope
-
-   OfpStmt     : OfpStmt
-   OfpDecl     : OfpDecl
-
-   OfpProgram  : Option(OfpFile) * List(OfpProgramUnit) -> OfpProgram                           // R201
-
-   OfpSpecPart : List(OfpDecl)     -> OfpSpecPart                                               // R204
-   OfpExecPart : List(OfpStmt)     -> OfpExecPart                                               // R208
-   OfpFuncPart : List(OfpDecl)     -> OfpFuncPart
-
-/***
-   INTEGER          : INTEGER                                                                   // R404
-   REAL             : REAL
-   DOUBLEPRECISION  : DOUBLEPRECISION
-   COMPLEX          : COMPLEX
-   CHARACTER        : CHARACTER
-   LOGICAL          : LOGICAL
-   DOUBLECOMPLEX    : DOUBLECOMPLEX
-
-   OfpType          : Type * Selector   -> OfpType
-
-   OfpLiteral       : value * OfpType   -> OfpLiteral
-
-   OfpTypeDeclarationStmt : Option(Label) * OfpType
-                                          * List(OfpAttrSpec)
-                                          * List(OfpEntiyDecl)     -> OfpTypeDeclarationStmt    // R501
-
-
-   OfpEntityDecl        : OfpName * Option(ArraySpec)
-                                  * Option(CoarraySpec)
-                                  * Option(CharLength)
-                                  * Option(Initialization)         -> OfpEntityDecl             // R503
-
-   OfpLanguageBinding   : LanguageBindingSpec                      -> OfpLanguageBinding        // R508
-***/
-
-   OfpExplicitShape     : List(OfpDimSpec)                         -> OfpExplicitShape          // R516
-
-   OfpDimSpec           : Option(lower) * upper                    -> OfpDimSpec                // R517-R518
-
-/***
-   OfpAssumedOrDeferredShape    : List(OfpDimSpec)                 -> OfpAssumedOrDeferredShape // R519-R520
-   OfpAssumedSize               : List(OfpDimSpec)                 -> OfpAssumedSize            // R521
-   OfpImpliedShape              : List(OfpDimSpec)                 -> OfpImpliedShape           // R522
-   OfpAssumedRank               : List(OfpDimSpec)                 -> OfpAssumedRank            // R522a
-
-   OfpImplicitStmt      : Option(Label) * List(ImplicitSpec)       -> OfpImplicitStmt           // R560
-
-   OfpVarDef            : OfpName                                  -> OfpVarDef                 // R602
-
-   OfpVarRef            : OfpName                                  -> OfpVarRef                 // R612
-
-   OfpAssignmentStmt    : Option(Label) * OfpVarDef * OfpVarRef    -> OfpAssignmentStmt         // R732
-
-   OfpMainProgram       : Option(OfpName)  * OfpScope              -> OfpMainProgram            // R1101
-   OfpProgramStmt       : Option(OfpLabel) * OfpName               -> OfpProgramStmt            // R1102
-   OfpEndProgramStmt    : Option(OfpLabel) * Option(OfpName)       -> OfpEndProgramStmt         // R1103
-
-   OfpModule            : Option(OfpName) * OfpScope               -> OfpModule                 // R1104
-   OfpModuleStmt        : Option(Label)   * OfpName                -> OfpModuleStmt             // R1105
-   OfpEndModuleStmt     : Option(Label)   * Option(OfpName)        -> OfpEndModuleStmt          // R1106
-
-   OfpInterfaceBlock    : OfpInterfaceStmt * OfpEndInterfaceStmt
-                                    * List(InterfaceSpecification) -> OfpInterfaceBlock         // R1201
-***/
-
 //TODO - GenericSpec
 
-/***
-   OfpInterfaceStmt     : Option(Label) * Option(abstract)
-                                        * Option(GenericSpec)      -> OfpInterfaceStmt         // R1203
-
-   OfpEndInterfaceStmt  : Option(Label) * Option(GenericSpec)      -> OfpEndInterfaceStmt      // R1204
-
-   OfpPrefix            : List(prefix_elements)                    -> OfpPrefix                // R1225
-
-   OfpFunction          : OfpName * OfpScope                       -> OfpFunction              // R1227
-
-   OfpFunctionStmt      : Option(Label) * OfpName 
-                                        * OfpArgList
-                                        * OfpPrefix
-                                        * OfpSuffix                -> OfpFunctionStmt          // R1228
-
-   OfpSuffix            : List(suffix_elements)                    -> OfpSuffix                // R1231
-
-
-   OfpEndFunctionStmt   : Option(Label) * Option(OfpName)          -> OfpEndFunctionStmt       // R1232
-***/
-
    STAR                 : STAR                                                                 // R1235
-
-/***
-   OfpSubroutine        : OfpName * OfpScope                       -> OfpSubroutine            // R1233
-
-   OfpSubroutineStmt    : Option(Label) * OfpName 
-                                        * OfpArgList
-                                        * OfpPrefix
-                                        * OfpSuffix                -> OfpSubroutineStmt        // R1234
-   OfpEndSubroutineStmt : Option(Label) * Option(OfpName)          -> OfpEndSubroutineStmt     // R1236
-
-   OfpArgList           : List(args)                               -> OfpArgList
-
-   OfpContainsStmt      : Option(Label)                            -> OfpContainsStmt          // R1242
-***/
 
 strategies
   io-ofp-simplify =
