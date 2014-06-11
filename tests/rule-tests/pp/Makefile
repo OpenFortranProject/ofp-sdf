@@ -25,5 +25,8 @@ check : $(TBL)
            fi; \
         done;
 
+junk :
+	sglri -p $(TBL) -i junk.f90 | $(TO_AST) | $(TO_PP) | ast2text -p $(PP)
+
 clean :
 	rm -f tmp/*.f90 tmp/*.o
