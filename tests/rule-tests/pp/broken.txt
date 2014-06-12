@@ -1,5 +1,11 @@
-R1101e.f90       i=1 INTEGER ::    ->      i=1
-
-R1101f.f90       sub!! sub         ->      sub
-
 R1201            look at OfpFunction
+
+R1203.f90            END      ->     END PROGRAM
+
+R1206.f90        added 1,PpModule, then asked for 3,ProcedureStmt_P
+
+R1207.f90        asks for GenericSpec      -> need OfpGenericSpec
+
+R1210.f90        asks for OtherSpecificationStmt     -> can not find this in AST.sdr
+
+R1220.f90        asks for CallStmt         -> can not find this in AST.sdr
