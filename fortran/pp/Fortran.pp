@@ -49,13 +49,16 @@
    OfpProgramStmt                -- _1 KW["PROGRAM"] _2,
    OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
 
+   #R1104 --,
+   PpModule                      -- _1,
+
    #R1201 --,
    OfpInterfaceBlock             -- V vs=0 [_1 _3 _2],
    OfpInterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
    OfpEndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2],
    
    #R1205 --,
-   OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 _5 _3 _6],
+   OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 V vs=1 [_5 _3 _6]],
 
 
    OfpPrefix                           -- _1,
@@ -74,12 +77,12 @@
 
    #R1217 --,
    PpFunction                          -- _1,
-   OfpFunctionStmt                     -- _1 _4 KW["FUNCTION"] _2 _3 _5,
+   OfpFunctionStmt                     -- _1 _4 KW["FUNCTION"] _2 "(" _3 ")" _5,
    OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
 
    #R1233 --,
    PpSubroutine                         -- _1,
-   OfpSubroutineStmt                    -- _1 _4 "SUBROUTINE" _2 "(" _3 ")" _5,
+   OfpSubroutineStmt                    -- _1 _4 "SUBROUTINE" H hs=0[ _2 "(" _3 ")"] _5,
    OfpEndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2],
 
    STAR                                -- "*",
