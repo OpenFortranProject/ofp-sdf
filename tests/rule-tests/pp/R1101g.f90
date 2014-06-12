@@ -1,0 +1,9 @@
+PROGRAM my_prog
+ REAL :: i
+ i = 1
+CONTAINS
+
+SUBROUTINE sub()
+END SUBROUTINE sub
+
+END PROGRAM my_prog
