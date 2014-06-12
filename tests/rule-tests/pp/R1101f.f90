@@ -1,5 +1,7 @@
 PROGRAM my_prog
 CONTAINS
-SUBROUTINE sub ( )
+
+SUBROUTINE sub()
 END SUBROUTINE sub
+
 END PROGRAM my_prog
