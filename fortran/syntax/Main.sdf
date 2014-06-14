@@ -1865,20 +1865,20 @@ context-free syntax
   Ident   -> ProcedureComponentName    {cons("ProcedureComponentName")}
 
 %%R309
-  PowerOp                       -> IntrinsicOperator     {cons("IntrinsicOperator_PO")}
-  MultOp                        -> IntrinsicOperator     {cons("IntrinsicOperator_MO")}
-  AddOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_AO1")}
-  ConcatOp                      -> IntrinsicOperator     {cons("IntrinsicOperator_CO")}
-  RelOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_RO")}
-  NotOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_NO")}
-  AndOp                         -> IntrinsicOperator     {cons("IntrinsicOperator_AO2")}
-  OrOp                          -> IntrinsicOperator     {cons("IntrinsicOperator_OO")}
-  EquivOp                       -> IntrinsicOperator     {cons("IntrinsicOperator_EO")}
+  PowerOp                       -> IntrinsicOperator     {cons("PowerOp")}
+  MultOp                        -> IntrinsicOperator     {cons("MultOp")}
+  AddOp                         -> IntrinsicOperator     {cons("AddOp")}
+  ConcatOp                      -> IntrinsicOperator     {cons("ConcatOp")}
+  RelOp                         -> IntrinsicOperator     {cons("RelOp")}
+  NotOp                         -> IntrinsicOperator     {cons("NotOp")}
+  AndOp                         -> IntrinsicOperator     {cons("AndOp")}
+  OrOp                          -> IntrinsicOperator     {cons("OrOp")}
+  EquivOp                       -> IntrinsicOperator     {cons("EquivOp")}
 
 %%R310
-  DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator_DUO")}
-  DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator_DBO")}
-  ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator_EIO")}
+  DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator")}
+  DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator")}
+  ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator")}
 
 %%R311
   IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("ExtendedIntrinsicOp")}
@@ -3377,15 +3377,15 @@ context-free syntax
 %%R1206
   Label? 'MODULE' 'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
   Label? 'MODULE' 'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
-  Label?          'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_P")}
-  Label?          'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_P")}
+  Label?          'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt")}
+  Label?          'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt")}
 
   {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNameList")}
 
 %%R1207
   GenericName                                   -> GenericSpec           {cons("GenericSpec")}
   'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
-  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
+  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec_AE")}
   DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
 
 %%R1208
