@@ -8,14 +8,10 @@ imports
 signature
   constructors
 
-    Comment   : A -> B            /* comments are put in annotations */
-    OfpString : A -> B            /* node for a string literal */
+   Comment   : A -> B            /* comments are put in annotations */
+   OfpString : A -> B            /* node for a string literal */
 
-    tmpImplicitPart : A -> B    /* to combine all to a list */
-
-//TODO - GenericSpec
-
-   STAR                 : STAR                                                                 // R1235
+   tmpImplicitPart : A -> B    /* to combine all to a list */
 
 strategies
   io-ofp-simplify =
@@ -88,6 +84,12 @@ rules
 
 //R305
   ofp-to-ast:  LiteralConstant(constant)         -> constant
+
+//R310
+  ofp-to-ast:  DefinedOperator(op)               -> op
+
+//R311
+  ofp-to-ast:  ExtendedIntrinsicOp(op)           -> op
 
 //R403
   ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> OfpType(DOUBLEPRECISION(), None())
@@ -202,6 +204,15 @@ rules
 
 // Operators...
 
+//R713
+  ofp-to-ast:  RelOp(op)                    -> op
+  ofp-to-ast:  RelOp_EQ()                   -> OfpOp(EQ())
+  ofp-to-ast:  RelOp_NE()                   -> OfpOp(NE())
+  ofp-to-ast:  RelOp_LT()                   -> OfpOp(LT())
+  ofp-to-ast:  RelOp_LE()                   -> OfpOp(LE())
+  ofp-to-ast:  RelOp_GT()                   -> OfpOp(GT())
+  ofp-to-ast:  RelOp_GE()                   -> OfpOp(GE())
+
   ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
 
 //R722
@@ -279,12 +290,21 @@ rules
 //R1205
   ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
 
-//R1207
-  ofp-to-ast:  GenericSpec(OfpName(name))    -> OfpName(name)
-//TODO  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
-//TODO  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec")}
-//TODO  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
+//R1206
+  ofp-to-ast:  ProcedureStmt   (label,names,eos) -> OfpProcedureStmt(label,None(),  names)  {Comment(eos)}
+  ofp-to-ast:  ProcedureStmt_MP(label,names,eos) -> OfpProcedureStmt(label,MODULE(),names)  {Comment(eos)}
+  ofp-to-ast:  ProcedureNameList(names)          -> names
 
+//R1207
+  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
+  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
+  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
+
+//R1208
+  ofp-to-ast:  DefinedIoGenericSpec_RF()      -> READFORMATTED()
+  ofp-to-ast:  DefinedIoGenericSpec_RU()      -> READUNFORMATTED()
+  ofp-to-ast:  DefinedIoGenericSpec_WF()      -> WRITEFORMATTED()
+  ofp-to-ast:  DefinedIoGenericSpec_WU()      -> WRITEUNFORMATTED()
 
 //R1225
   ofp-to-ast:  Prefix(l) -> OfpPrefix(l)
