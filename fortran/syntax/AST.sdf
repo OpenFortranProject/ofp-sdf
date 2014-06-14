@@ -11,6 +11,9 @@ exports
     OfpLabel
 
     OfpName                           %% R303
+    OfpLiteral                        %% R305
+    OfpOp                             %% R309
+
     OfpScope
     OfpSpecPart
     OfpExecPart
@@ -34,7 +37,6 @@ exports
     DOUBLECOMPLEX
 
     OfpType
-    OfpLiteral                        %% R406
 
     OfpCharLength                     %% R422
 
@@ -62,6 +64,13 @@ exports
     OfpVarDef                %% R602
     OfpVarRef                %% R612
 
+    EQ                       %% R713
+    NE
+    LT
+    LE
+    GT
+    GE
+
     OfpAssignmentStmt        %% R732
 
     OfpMainProgram           %% R1101
@@ -77,7 +86,13 @@ exports
     OfpInterfaceStmt         %% R1203
     OfpEndInterfaceStmt      %% R1204
 
+    OfpProcedureStmt         %% R1206
     OfpGenericSpec           %% R1207
+    ASSIGNMENT
+    READFORMATTED            %% R1208
+    READUNFORMATTED
+    WRITEFORMATTED
+    WRITEUNFORMATTED
 
     OfpPrefix                %% R1225
     OfpPrefixSpec            %% R1226
@@ -119,7 +134,10 @@ exports
     ~[\"\\\n]            -> StrChar
     [\\][\"\\n]          -> StrChar
 
+%% Keywords
+
     "ABSTRACT"           -> ABSTRACT
+    "ASSIGNMENT"         -> ASSIGNMENT
     "ELEMENTAL"          -> ELEMENTAL
     "IMPURE"             -> IMPURE
     "MODULE"             -> MODULE
@@ -159,6 +177,9 @@ exports
   OfpSubroutine               -> OfpProgramUnit
   OfpFunction                 -> OfpProgramUnit
 
+  String OfpType              -> OfpLiteral       {cons("OfpLiteral")}             %% R305
+
+  String                      -> OfpOp            {cons("OfpOp")}                  %% R309
 
 %% 4.4 Intrinsic types
 %%
@@ -178,8 +199,6 @@ exports
   CHARACTER       OfpExpr?    -> OfpType          {cons("OfpType")}
   LOGICAL         OfpExpr?    -> OfpType          {cons("OfpType")}
   DOUBLECOMPLEX   OfpExpr?    -> OfpType          {cons("OfpType")}
-
-  String OfpType              -> OfpLiteral       {cons("OfpLiteral")}             %% R406
 
   OfpLabel? OfpType
             OfpAttrSpec*
@@ -233,6 +252,19 @@ exports
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
 %%%%%%%%%%
 
+                              -> EQ                 {cons("EQ")}                   %% R713
+                              -> NE                 {cons("NE")}
+                              -> LT                 {cons("LT")}
+                              -> LE                 {cons("LE")}
+                              -> GT                 {cons("GT")}
+                              -> GE                 {cons("GE")}
+  EQ                          -> OfpOp
+  NE                          -> OfpOp
+  LT                          -> OfpOp
+  LE                          -> OfpOp
+  GT                          -> OfpOp
+  GE                          -> OfpOp
+
   OfpLiteral                  -> OfpExpr            {cons("OfpExpr")}
   OfpVarRef                   -> OfpExpr            {cons("OfpExpr")}
 
@@ -263,8 +295,22 @@ exports
   OfpInterfaceStmt            -> OfpBeginStmt
   OfpEndInterfaceStmt         -> OfpEndStmt
 
+  OfpLabel? MODULE? OfpName+  -> OfpProcedureStmt    {cons("OfpProcedureStmt")}    %% R1206
+  OfpProcedureStmt            -> OfpBeginStmt
+
   OfpName                     -> OfpGenericSpec      {cons("OfpGenericSpec")}      %% R1207
-%%TODO other options to R1207
+  OfpOp                       -> OfpGenericSpec      {cons("OfpOp")}
+  ASSIGNMENT                  -> OfpGenericSpec      {cons("ASSIGNMENT")}
+                              -> ASSIGNMENT          {cons("ASSIGNMENT")}
+  READFORMATTED               -> OfpGenericSpec      {cons("READFORMATTED")}
+  READUNFORMATTED             -> OfpGenericSpec      {cons("READUNFORMATTED")}
+  WRITEFORMATTED              -> OfpGenericSpec      {cons("WRITEFORMATTED")}
+  WRITEUNFORMATTED            -> OfpGenericSpec      {cons("WRITEUNFORMATTED")}
+                              -> READFORMATTED       {cons("READFORMATTED")}       %% R1208
+                              -> READUNFORMATTED     {cons("READUNFORMATTED")}
+                              -> WRITEFORMATTED      {cons("WRITEFORMATTED")}
+                              -> WRITEUNFORMATTED    {cons("WRITEUNFORMATTED")}
+
 
   OfpPrefixSpec*              -> OfpPrefix          {cons("OfpPrefix")}            %% R1225
 %%TODO declaration-type-spec  -> OfpPrefixSpec
@@ -296,6 +342,7 @@ exports
                     OfpSuffix -> OfpSubroutineStmt      {cons("OfpSubroutineStmt")}      %% R1234
   OfpName                     -> OfpDummyArg                                             %% R1235
   STAR                        -> OfpDummyArg            {cons("STAR")}
+                              -> STAR                   {cons("STAR")}
   OfpDummyArg*                -> OfpArgList             {cons("OfpArgList")}
   OfpLabel? OfpName?          -> OfpEndSubroutineStmt   {cons("OfpEndSubroutineStmt")}   %% R1236
   OfpSubroutineStmt           -> OfpBeginStmt
