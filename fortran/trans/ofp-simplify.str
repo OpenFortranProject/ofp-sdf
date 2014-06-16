@@ -8,19 +8,31 @@ imports
 signature
   constructors
 
+// Ambiguities
+
+   amb : list -> choice
+
    Comment   : A -> B            /* comments are put in annotations */
    OfpString : A -> B            /* node for a string literal */
 
    tmpImplicitPart : A -> B    /* to combine all to a list */
+
 
 strategies
   io-ofp-simplify =
     io-wrap(ofp-simplify)
 
   ofp-simplify =
-    innermost(ofp-to-ast)
+    outermost(ofp-disamb); innermost(ofp-to-ast)
+
 
 rules
+
+  // Disambiguation rules
+  //
+
+  //R703,R723
+  ofp-disamb: amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
 
   ofp-extract-contains:  OfpModuleStmt   (label,name)                    -> name
 
@@ -32,15 +44,13 @@ rules
 
   ofp-to-ast:  LanguageBindingName(str)  -> str
 
-  ofp-to-ast:  DummyArgName(str)         -> OfpName(str)
-  ofp-to-ast:  FunctionName(str)         -> OfpName(str)
+  ofp-to-ast:  ExternalName(str)         -> OfpName(str)
   ofp-to-ast:  GenericName(str)          -> OfpName(str)
   ofp-to-ast:  ModuleName(str)           -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
   ofp-to-ast:  PartName(str)             -> OfpName(str)
   ofp-to-ast:  ProcedureName(str)        -> OfpName(str)
   ofp-to-ast:  ProgramName(str)          -> OfpName(str)
-  ofp-to-ast:  SubroutineName(str)       -> OfpName(str)
 
 //R201
   ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
@@ -73,11 +83,17 @@ rules
 //R211
   ofp-to-ast:  InternalSubprogram(subprogram)    -> subprogram
 
+//R212
+  ofp-to-ast:  OtherSpecificationStmt(stmt)      -> stmt
+
 //R213
   ofp-to-ast:  ExecutableConstruct(construct)    -> construct
 
 //R214
   ofp-to-ast:  ActionStmt(stmt)                  -> stmt
+
+//R215
+  ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
 
 //R304
   ofp-to-ast:  Constant_AMB(LiteralConstant)     -> LiteralConstant
@@ -87,6 +103,16 @@ rules
 
 //R310
   ofp-to-ast:  DefinedOperator(op)               -> op
+
+  ofp-to-ast:  PowerOp(op)                       -> OfpOp(op)
+  ofp-to-ast:  MultOp(op)                        -> OfpOp(op)
+  ofp-to-ast:  AddOp(op)                         -> OfpOp(op)
+  ofp-to-ast:  ConcatOp(op)                      -> OfpOp(op)
+  ofp-to-ast:  RelOp(op)                         -> OfpOp(op)
+  ofp-to-ast:  NotOp(op)                         -> OfpOp(op)
+  ofp-to-ast:  AndOp(op)                         -> OfpOp(op)
+  ofp-to-ast:  OrOp(op)                          -> OfpOp(op)
+  ofp-to-ast:  EquivOp(op)                       -> OfpOp(op)
 
 //R311
   ofp-to-ast:  ExtendedIntrinsicOp(op)           -> op
@@ -204,14 +230,16 @@ rules
 
 // Operators...
 
+//R703
+  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
+
 //R713
-  ofp-to-ast:  RelOp(op)                    -> op
-  ofp-to-ast:  RelOp_EQ()                   -> OfpOp(EQ())
-  ofp-to-ast:  RelOp_NE()                   -> OfpOp(NE())
-  ofp-to-ast:  RelOp_LT()                   -> OfpOp(LT())
-  ofp-to-ast:  RelOp_LE()                   -> OfpOp(LE())
-  ofp-to-ast:  RelOp_GT()                   -> OfpOp(GT())
-  ofp-to-ast:  RelOp_GE()                   -> OfpOp(GE())
+  ofp-to-ast:  RelOp_EQ()                   -> EQ()
+  ofp-to-ast:  RelOp_NE()                   -> NE()
+  ofp-to-ast:  RelOp_LT()                   -> LT()
+  ofp-to-ast:  RelOp_LE()                   -> LE()
+  ofp-to-ast:  RelOp_GT()                   -> GT()
+  ofp-to-ast:  RelOp_GE()                   -> GE()
 
   ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
 
@@ -220,6 +248,9 @@ rules
 
 //R726
   ofp-to-ast:  IntExpr(expr)                -> expr
+
+//R723
+  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R728
   ofp-to-ast:  SpecificationExpr(IntExpr)   -> IntExpr
@@ -296,6 +327,7 @@ rules
   ofp-to-ast:  ProcedureNameList(names)          -> names
 
 //R1207
+
   ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
   ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
   ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
@@ -305,6 +337,25 @@ rules
   ofp-to-ast:  DefinedIoGenericSpec_RU()      -> READUNFORMATTED()
   ofp-to-ast:  DefinedIoGenericSpec_WF()      -> WRITEFORMATTED()
   ofp-to-ast:  DefinedIoGenericSpec_WU()      -> WRITEUNFORMATTED()
+
+//R1210
+  ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(label,list)               {Comment(eos)}
+  ofp-to-ast:  ExternalNameList(names)        -> names
+
+//R1220
+  ofp-to-ast:  CallStmt(label,name,eos)       -> OfpCallStmt(label,name,[])                {Comment(eos)}
+  ofp-to-ast:  CallStmt(label,name,args,eos)  -> OfpCallStmt(label,name,args)              {Comment(eos)}
+
+//R1221
+  ofp-to-ast:  ProcedureDesignator(proc)      -> OfpProcRef(proc)
+
+//R1222
+  ofp-to-ast:  ActualArgSpec(arg)             -> OfpArg(arg)
+  ofp-to-ast:  ActualArgSpec(keyword,arg)     -> OfpArg(arg,keyword)
+  ofp-to-ast:  ActualArgSpecList(args)        -> args
+
+//R1223
+  ofp-to-ast:  ActualArg(arg)                 -> arg
 
 //R1225
   ofp-to-ast:  Prefix(l) -> OfpPrefix(l)
@@ -330,7 +381,8 @@ rules
   ofp-to-ast:  FunctionStmt(label,Some(prefix),name,args,suffix,eos)
                        -> OfpFunctionStmt(label,name,args,prefix,suffix)                           {Comment(eos)}
 
-  ofp-to-ast:  OptDummyArgNameList(args)        -> OfpArgList(args)
+  ofp-to-ast:  FunctionName(str)                -> OfpFunctionName(str)
+  ofp-to-ast:  OptDummyArgNameList(args)        -> args
 
 //R1229
   ofp-to-ast:  ProcLanguageBindingSpec(binding) -> binding
@@ -358,9 +410,9 @@ rules
   ofp-to-ast:  SubroutineStmt(label,None(),name,args,None(),eos)
                        -> OfpSubroutineStmt(label,name,args,OfpPrefix([]),OfpSuffix([]))            {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,eos)
-                       -> OfpSubroutineStmt(label,name,OfpArgList([]),prefix,OfpSuffix([]))         {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,[],prefix,OfpSuffix([]))                     {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,None(),name,eos)
-                       -> OfpSubroutineStmt(label,name,OfpArgList([]),OfpPrefix([]),OfpSuffix([]))  {Comment(eos)}
+                       -> OfpSubroutineStmt(label,name,[],OfpPrefix([]),OfpSuffix([]))  {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,Some(binding),eos)
                        -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([binding]))            {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,None(),name,args,Some(binding),eos)
@@ -368,10 +420,14 @@ rules
   ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,None(),eos)
                        -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([]))                   {Comment(eos)}
 
+  ofp-to-ast:  SubroutineName(str)       -> OfpSubroutineName(str)
+
 //R1235
+  ofp-to-ast:  DummyArgName(str)          -> OfpDummyArg(str)
+  ofp-to-ast:  DummyArg_STAR()            -> OfpDummyArg(STAR())
   ofp-to-ast:  DummyArg(arg)              -> arg
-  ofp-to-ast:  DummyArg_STAR()            -> STAR()
-  ofp-to-ast:  Some(DummyArgList(args))   -> OfpArgList(args)
+  ofp-to-ast:  Some(DummyArgList(args))   -> args
+
 
 //R1236
   ofp-to-ast:
