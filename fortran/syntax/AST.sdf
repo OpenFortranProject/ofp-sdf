@@ -10,6 +10,8 @@ exports
 
     OfpLabel
 
+    OfpKeyword                        %% R215
+
     OfpName                           %% R303
     OfpLiteral                        %% R305
     OfpOp                             %% R309
@@ -64,6 +66,8 @@ exports
     OfpVarDef                %% R602
     OfpVarRef                %% R612
 
+    OfpDefinedOp             %% R703,R723
+
     EQ                       %% R713
     NE
     LT
@@ -94,10 +98,16 @@ exports
     WRITEFORMATTED
     WRITEUNFORMATTED
 
+    OfpExternalStmt          %% R1210
+
+    OfpCallStmt              %% R1220
+    OfpProcRef               %% R1221
+    OfpArg                   %% R1222
     OfpPrefix                %% R1225
     OfpPrefixSpec            %% R1226
     OfpFunction              %% R1227
     OfpFunctionStmt          %% R1228
+    OfpFunctionName
 
     ELEMENTAL
     IMPURE
@@ -113,8 +123,8 @@ exports
 
     OfpSubroutine            %% R1233
     OfpSubroutineStmt        %% R1234
+    OfpSubroutineName
     OfpDummyArg              %% R1235
-    OfpArgList
     STAR
     OfpEndSubroutineStmt     %% R1236
 
@@ -149,6 +159,9 @@ exports
   context-free syntax
 
   String    -> OfpLabel   {cons("OfpLabel")}
+
+%%R215
+  String    -> OfpKeyword {cons("OfpKeyword")}
 
 %%R303
   String    -> OfpName    {cons("OfpName")}
@@ -252,6 +265,8 @@ exports
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
 %%%%%%%%%%
 
+  String                      -> OfpDefinedOp       {cons("OfpDefinedOp")}         %% R703,R723
+
                               -> EQ                 {cons("EQ")}                   %% R713
                               -> NE                 {cons("NE")}
                               -> LT                 {cons("LT")}
@@ -300,6 +315,7 @@ exports
 
   OfpName                     -> OfpGenericSpec      {cons("OfpGenericSpec")}      %% R1207
   OfpOp                       -> OfpGenericSpec      {cons("OfpOp")}
+  OfpDefinedOp                -> OfpGenericSpec      {cons("OfpDefinedOp")}
   ASSIGNMENT                  -> OfpGenericSpec      {cons("ASSIGNMENT")}
                               -> ASSIGNMENT          {cons("ASSIGNMENT")}
   READFORMATTED               -> OfpGenericSpec      {cons("READFORMATTED")}
@@ -311,20 +327,32 @@ exports
                               -> WRITEFORMATTED      {cons("WRITEFORMATTED")}
                               -> WRITEUNFORMATTED    {cons("WRITEUNFORMATTED")}
 
+  OfpLabel? OfpName+          -> OfpExternalStmt     {cons("OfpExternalStmt")}     %% R1210
+  OfpExternalStmt             -> OfpDecl
 
-  OfpPrefixSpec*              -> OfpPrefix          {cons("OfpPrefix")}            %% R1225
+  OfpLabel? OfpProcRef OfpArg+ -> OfpCallStmt        {cons("OfpCallStmt")}               %% R1220
+  OfpCallStmt                  -> OfpStmt
+
+  OfpExpr                      -> OfpProcRef         {cons("OfpProcRef")}                %% R1221
+
+  OfpExpr                     -> OfpArg              {cons("OfpArg")}                    %% R1222
+  OfpExpr OfpKeyword          -> OfpArg              {cons("OfpArg")}
+
+  OfpPrefixSpec*              -> OfpPrefix           {cons("OfpPrefix")}                 %% R1225
 %%TODO declaration-type-spec  -> OfpPrefixSpec
-  ELEMENTAL                   -> OfpPrefixSpec      {cons("ELEMENTAL")}
-  IMPURE                      -> OfpPrefixSpec      {cons("IMPURE")}
-  MODULE                      -> OfpPrefixSpec      {cons("MODULE")}
-  PURE                        -> OfpPrefixSpec      {cons("PURE")}
-  RECURSIVE                   -> OfpPrefixSpec      {cons("RECURSIVE")}
+  ELEMENTAL                   -> OfpPrefixSpec       {cons("ELEMENTAL")}
+  IMPURE                      -> OfpPrefixSpec       {cons("IMPURE")}
+  MODULE                      -> OfpPrefixSpec       {cons("MODULE")}
+  PURE                        -> OfpPrefixSpec       {cons("PURE")}
+  RECURSIVE                   -> OfpPrefixSpec       {cons("RECURSIVE")}
   
   OfpName OfpScope            -> OfpFunction            {cons("OfpFunction")}            %% R1227
 
-  OfpLabel? OfpName OfpArgList
-                    OfpPrefix
+  OfpLabel? OfpFunctionName
+        OfpDummyArg* OfpPrefix
                     OfpSuffix -> OfpFunctionStmt        {cons("OfpFunctionStmt")}        %% R1228
+
+  String                      -> OfpFunctionName        {cons("OfpFunctionName")}
 
   OfpLanguageBinding          -> OfpSuffixSpec          {cons("OfpLanguageBinding")}     %% R1229
   OfpResultName               -> OfpSuffixSpec          {cons("OfpResultName")}
@@ -337,13 +365,13 @@ exports
   OfpEndFunctionStmt          -> OfpEndStmt
 
   OfpName OfpScope            -> OfpSubroutine          {cons("OfpSubroutine")}          %% R1233
-  OfpLabel? OfpName OfpArgList
-                    OfpPrefix
+  OfpLabel? OfpSubroutineName
+       OfpDummyArg* OfpPrefix
                     OfpSuffix -> OfpSubroutineStmt      {cons("OfpSubroutineStmt")}      %% R1234
-  OfpName                     -> OfpDummyArg                                             %% R1235
+  String                      -> OfpSubroutineName      {cons("OfpSubroutineName")}
+  String                      -> OfpDummyArg            {cons("OfpDummyArg")}            %% R1235
   STAR                        -> OfpDummyArg            {cons("STAR")}
                               -> STAR                   {cons("STAR")}
-  OfpDummyArg*                -> OfpArgList             {cons("OfpArgList")}
   OfpLabel? OfpName?          -> OfpEndSubroutineStmt   {cons("OfpEndSubroutineStmt")}   %% R1236
   OfpSubroutineStmt           -> OfpBeginStmt
   OfpEndSubroutineStmt        -> OfpEndStmt
