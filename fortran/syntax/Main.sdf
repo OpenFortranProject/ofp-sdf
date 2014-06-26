@@ -1920,12 +1920,12 @@ context-free syntax
   '**'                                     -> PowerOp         {cons("PowerOp")}
 
 %%R708
-  '*'                                      -> MultOp          {cons("MultOp_TIMES")}
-  '/'                                      -> MultOp          {cons("MultOp_DIV")}
+  '*'                                      -> MultOp          {cons("TIMES")}
+  '/'                                      -> MultOp          {cons("DIV")}
 
 %%R709
-  '+'                                      -> AddOp           {cons("AddOp_PLUS")}
-  '-'                                      -> AddOp           {cons("AddOp_MINUS")}
+  '+'                                      -> AddOp           {cons("PLUS")}
+  '-'                                      -> AddOp           {cons("MINUS")}
 
 %%R710
   (Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("Level3Expr")}
@@ -3451,24 +3451,27 @@ context-free syntax
   ProcedureDesignator '(' ActualArgSpecList? ')'      -> FunctionReference   {cons("FunctionReference")}
 
 %%R1220
+  Label? 'CALL' ProcedureDesignator               EOS -> CallStmt            {cons("CallStmt")}
+  Label? 'CALL' ProcedureDesignator '(' ')'       EOS -> CallStmt            {cons("CallStmt")}
   Label? 'CALL' ProcedureDesignator
-                ( '(' ActualArgSpecList? ')' )?   EOS -> CallStmt            {cons("CallStmt")}
+                  '(' ActualArgSpecList ')'       EOS -> CallStmt            {cons("CallStmt")}
 
 %%R1221
-  ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator_PN")}
+  ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
 %%ProcComponentRef   %% AMB with alt3
-  DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator_AMB")}
+  DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator")}
 
 %%R1222
-  ( Keyword '=' )? ActualArg                          -> ActualArgSpec       {cons("ActualArgSpec")}
+  ActualArg                                           -> ActualArgSpec       {cons("ActualArgSpec")}
+  Keyword '=' ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
   {ActualArgSpec ','}+                                -> ActualArgSpecList   {cons("ActualArgSpecList")}
 
 %%R1223
-  Expr                                                -> ActualArg           {cons("ActualArg_AMB")}
+  Expr                                                -> ActualArg           {cons("ActualArg")}
 %%Variable           %% AMB with alt1
 %%ProcedureName      %% AMB with alt1
 %%ProcComponentRef   %% AMB with alt1
-  AltReturnSpec                                       -> ActualArg           {cons("ActualArg_ARS")}
+  AltReturnSpec                                       -> ActualArg           {cons("ActualArg")}
 
 %%1224
   '*' Label                                           -> AltReturnSpec       {cons("AltReturnSpec")}
