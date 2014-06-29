@@ -59,7 +59,10 @@ exports
     OfpAssumedSize                    %% R521
     OfpImpliedShape                   %% R522
     OfpAssumedRank                    %% R522a
-
+    OfpIntent                         %% R523
+    IN
+    OUT
+    INOUT
 
     OfpImplicitStmt          %% R560
 
@@ -219,6 +222,7 @@ exports
   OfpTypeDeclarationStmt      -> OfpDecl
 
   "ALLOCATABLE"               -> OfpAttrSpec      {cons("ALLOCATABLE")}            %% R502
+  OfpIntent                   -> OfpAttrSpec      {cons("OfpIntent")}
 
   OfpName OfpArraySpec?
           OfpCoarraySpec?
@@ -245,6 +249,15 @@ exports
   OfpDimSpec+     -> OfpAssumedSize            {cons("OfpAssumedSize")}            %% R521
   OfpDimSpec+     -> OfpImpliedShape           {cons("OfpImpliedShape")}           %% R522
   OfpDimSpec+     -> OfpAssumedRank            {cons("OfpAssumedRank")}            %% R522a
+
+  String          -> OfpIntent                 {cons("OfpIntent")}                 %% R523
+                  -> IN                        {cons("IN")}
+                  -> OUT                       {cons("OUT")}
+                  -> INOUT                     {cons("INOUT")}
+
+  IN              -> OfpIntent
+  OUT             -> OfpIntent
+  INOUT           -> OfpIntent
 
   %% These are kind of like expressions and need some place to merge them into AST grammar
   %%
