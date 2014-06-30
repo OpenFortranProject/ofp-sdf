@@ -663,7 +663,8 @@ sorts
   BlockDataStmt                       %% R1121
   EndBlockDataStmt                    %% R1122
 
-  OnlyList RenameList
+  OnlyList OptOnlyList OptModuleNature
+  RenameList OptRenameList
 
 %% Identifier aliases
 
@@ -3240,28 +3241,34 @@ context-free syntax
   SeparateModuleSubprogram                     -> ModuleSubprogram      {cons("ModuleSubprogram")}
 
 %%R1109
-  Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
-           (','            RenameList   )?              EOS -> UseStmt  {cons("UseStmt_RL")}
-  Label? 'USE' ((',' ModuleNature)? '::')? ModuleName
-            ',' 'ONLY' ':' OnlyList?                    EOS -> UseStmt  {cons("UseStmt_OL")}
+  Label? 'USE'                       ModuleName               EOS -> UseStmt {cons("UseStmt")}
+  Label? 'USE'                       ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  Label? 'USE'                       ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+  Label? 'USE' OptModuleNature? '::' ModuleName               EOS -> UseStmt {cons("UseStmt")}
+  Label? 'USE' OptModuleNature? '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  Label? 'USE' OptModuleNature? '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+
+  ',' ModuleNature                             -> OptModuleNature {cons("OptModuleNature")}
+  ',' RenameList                               -> OptRenameList   {cons("OptRenameList")}
+  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("OptOnlyList")}
 
 %%R1110
-  'INTRINSIC'                                  -> ModuleNature  {cons("ModuleNature_INTRINSIC")}
-  'NON_INTRINSIC'                              -> ModuleNature  {cons("ModuleNature_NON_INTRINSIC")}
+  'INTRINSIC'                                  -> ModuleNature    {cons("ModuleNature_INTRINSIC")}
+  'NON_INTRINSIC'                              -> ModuleNature    {cons("ModuleNature_NON_INTRINSIC")}
 
 %%R1111
   LocalName
-     '=>' UseName                              -> Rename      {cons("Rename_LN")}
+     '=>' UseName                              -> Rename      {cons("Rename")}
   'OPERATOR' '(' LocalDefinedOperator ')'
      '=>'
-  'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("Rename_OP")}
+  'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("Rename")}
   {Rename ','}+                                -> RenameList  {cons("RenameList")}
 
 %%R1112
 %%AMB-TODO-F08 PUTBACK    GenericSpec
-  OnlyUseName                                  -> Only        {cons("Only_OUN")}
-  Rename                                       -> Only        {cons("Only_R")}
-  {Only ','}+                                  -> OnlyList    {cons("OnlyList")}
+  OnlyUseName                                  -> Only        {cons("Only")}
+  Rename                                       -> Only        {cons("Only")}
+  {Only ','}*                                  -> OnlyList    {cons("OnlyList")}
 
 %%R1113
   Ident                                        -> OnlyUseName {cons("OnlyUseName")}
