@@ -88,6 +88,13 @@ exports
     OfpModuleStmt            %% R1105
     OfpEndModuleStmt         %% R1106
 
+    OfpUseStmt               %% R1109
+    OfpModuleNature          %% R1110
+    INTRINSIC
+    NONINTRINSIC
+    OfpRename OfpRenameList  %% R1111
+    OfpOnly OfpOnlyList      %% R1112
+
     ABSTRACT
     OfpInterfaceBlock        %% R1201
     OfpInterfaceStmt         %% R1203
@@ -312,6 +319,25 @@ exports
   OfpLabel? OfpName?          -> OfpEndModuleStmt   {cons("OfpEndModuleStmt")}     %% R1106
   OfpModuleStmt               -> OfpBeginStmt
   OfpEndModuleStmt            -> OfpEndStmt
+
+  OfpLabel? OfpName
+            OfpModuleNature?
+            OfpRenameList
+            OfpOnlyList       -> OfpUseStmt         {cons("OfpUseStmt")}           %% R1109
+  OfpUseStmt                  -> OfpStmt
+
+  INTRINSIC                   -> OfpModuleNature    {cons("INTRINSIC")}            %% R1110
+  NONINTRINSIC                -> OfpModuleNature    {cons("NONINTRINSIC")}
+                              -> INTRINSIC          {cons("INTRINSIC")}
+                              -> NONINTRINSIC       {cons("NONINTRINSIC")}
+
+  OfpName OfpName             -> OfpRename          {cons("OfpRename")}            %% R1111
+  OfpRename*                  -> OfpRenameList      {cons("OfpRenameList")}
+
+  OfpGenericSpec              -> OfpOnly            {cons("OfpOnly")}              %% R1112
+  OfpName                     -> OfpOnly            {cons("OfpOnly")}
+  OfpRename                   -> OfpOnly            {cons("OfpOnly")}
+  OfpOnly*                    -> OfpOnlyList        {cons("OfpOnlyList")}
 
   OfpInterfaceStmt
   OfpEndInterfaceStmt OfpScope* -> OfpInterfaceBlock {cons("OfpInterfaceBlock")}   %% R1201
