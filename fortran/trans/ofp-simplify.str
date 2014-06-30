@@ -46,11 +46,14 @@ rules
 
   ofp-to-ast:  ExternalName(str)         -> OfpName(str)
   ofp-to-ast:  GenericName(str)          -> OfpName(str)
+  ofp-to-ast:  LocalName(str)            -> OfpName(str)
   ofp-to-ast:  ModuleName(str)           -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
+  ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
   ofp-to-ast:  PartName(str)             -> OfpName(str)
   ofp-to-ast:  ProcedureName(str)        -> OfpName(str)
   ofp-to-ast:  ProgramName(str)          -> OfpName(str)
+  ofp-to-ast:  UseName(str)              -> OfpName(str)
 
 //R201
   ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
@@ -307,6 +310,33 @@ rules
 
 //R1108
   ofp-to-ast:  ModuleSubprogram(subprogram)  -> subprogram
+
+//R1109
+  ofp-to-ast:  UseStmt(label,name,eos)
+                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
+  ofp-to-ast:  UseStmt(label,name,OptRenameList(list),eos)
+                  -> OfpUseStmt(label,name,None(),list,OfpOnlyList([]))               {Comment(eos)}
+  ofp-to-ast:  UseStmt(label,name,OptOnlyList(list),eos)
+                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),list)             {Comment(eos)}
+  ofp-to-ast:  UseStmt(label,nature,name,eos)
+                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
+  ofp-to-ast:  UseStmt(label,nature,name,OptRenameList(list),eos)
+                  -> OfpUseStmt(label,name,nature,list,OfpOnlyList([]))               {Comment(eos)}
+  ofp-to-ast:  UseStmt(label,nature,name,OptOnlyList(list),eos)
+                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),list)             {Comment(eos)}
+
+//R1110
+  ofp-to-ast:  OptModuleNature(nature)       -> nature
+  ofp-to-ast:  ModuleNature_INTRINSIC()      -> INTRINSIC()
+  ofp-to-ast:  ModuleNature_NON_INTRINSIC()  -> NONINTRINSIC()
+
+//R1111
+  ofp-to-ast:  Rename(local_name,use_name)   -> OfpRename(local_name,use_name)
+  ofp-to-ast:  RenameList(list)              -> OfpRenameList(list)
+
+//R1112
+  ofp-to-ast:  Only(item)                    -> OfpOnly(item)
+  ofp-to-ast:  OnlyList(list)                -> OfpOnlyList(list)
 
 //R1201
   ofp-to-ast:  InterfaceBlock(stmt,l,end)    -> OfpInterfaceBlock(stmt,end,l)
