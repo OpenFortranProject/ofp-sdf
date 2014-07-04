@@ -66,10 +66,16 @@ exports
     OUT
     INOUT
 
-    OfpImplicitStmt          %% R560
+    OfpImplicitStmt                   %% R560
 
-    OfpVarDef                %% R602
-    OfpVarRef                %% R612
+    OfpVarDef                         %% R602
+    OfpVarRef                         %% R612
+
+    OfpAllocateStmt                   %% R626
+
+    OfpAllocOpt                       %% R627
+    OfpAllocation                     %% R631
+
 
     OfpDefinedOp             %% R703,R723
 
@@ -285,6 +291,14 @@ exports
   OfpName                     -> OfpVarDef  {cons("OfpVarDef")}                    %% R602
   OfpName                     -> OfpVarRef  {cons("OfpVarRef")}                    %% R612
 
+  OfpLabel? OfpType?
+            OfpAllocation+
+            OfpAllocOpt*      -> OfpAllocateStmt    {cons("OfpAllocateStmt")}      %%R626
+  OfpAllocateStmt             -> OfpStmt
+
+  OfpExpr                     -> OfpAllocOpt                                       %%R627
+
+  OfpVarRef                   -> OfpAllocation                                     %%R631
 
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
