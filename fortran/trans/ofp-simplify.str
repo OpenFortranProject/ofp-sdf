@@ -159,10 +159,17 @@ rules
 //R503
   ofp-to-ast:  EntityDecl(name, aspec, cospec, charlen, init) -> OfpEntityDecl(name, aspec, cospec, charlen, init)
   ofp-to-ast:  OptArraySpec(ArraySpec)                        -> ArraySpec
+  ofp-to-ast:  OptCoarraySpec(CoarraySpec)                    -> CoarraySpec
   ofp-to-ast:  EntityDeclList(EntityDecls)                    -> EntityDecls
     
 //R508
   ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
+
+//R509
+  ofp-to-ast:  CoarraySpec(spec)                -> spec
+
+//R511
+  ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
 
 //R515
   ofp-to-ast:  ArraySpec(spec)                  -> spec
