@@ -1770,19 +1770,20 @@ context-free syntax
 %%
 
 %%R626
-  Label? 'ALLOCATE'
-           '(' (TypeSpec '::')?
-                    AllocationList
-               (',' AllocOptList )?
-           ')'                                       EOS -> AllocateStmt         {cons("AllocateStmt")}
+  Label? 'ALLOCATE' '('               AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
+  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
+  Label? 'ALLOCATE' '('               AllocationList
+                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
+  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList
+                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
 
 %%R627
 %%      expr substituted for source-expr
 %%
-  'ERRMSG' '=' ErrmsgVariable                            -> AllocOpt             {cons("AllocOpt_ERR")}
-  'MOLD'   '=' Expr                                      -> AllocOpt             {cons("AllocOpt_MOLD")}
-  'SOURCE' '=' Expr                                      -> AllocOpt             {cons("AllocOpt_SRC")}
-  'STAT'   '=' StatVariable                              -> AllocOpt             {cons("AllocOpt_STAT")}
+  'ERRMSG' '=' ErrmsgVariable                            -> AllocOpt             {cons("ERRMSG")}
+  'MOLD'   '=' Expr                                      -> AllocOpt             {cons("MOLD")}
+  'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
+  'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
   {AllocOpt ','}+                                        -> AllocOptList         {cons("AllocOptList")}
 
 %%R628
@@ -1799,19 +1800,22 @@ context-free syntax
 %% SourceExpr
 
 %%R631
-   AllocateObject
-        ( '(' AllocateShapeSpecList ')'    )?
-        ( '[' AllocateCoarraySpec      ']' )?            -> Allocation           {cons("Allocation")}
+   AllocateObject                                        -> Allocation           {cons("Allocation")}
+   AllocateObject '(' AllocateShapeSpecList ')'          -> Allocation           {cons("Allocation")}
+   AllocateObject '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
+   AllocateObject '(' AllocateShapeSpecList ')'
+                  '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
   {Allocation ','}+                                      -> AllocationList       {cons("AllocationList")}
 
 %%R632
 %% VariableName         %% AMB with alt2
 %% StructureComponent
-  StructureComponent                                     -> AllocateObject       {cons("AllocateObject_AMB")}
+  StructureComponent                                     -> AllocateObject       {cons("AllocateObject")}
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
-  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
+                     UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
+  LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("AllocateShapeSpecList")}
 
 %%R634
