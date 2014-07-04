@@ -120,6 +120,9 @@ rules
 //R311
   ofp-to-ast:  ExtendedIntrinsicOp(op)           -> op
 
+//R402
+  ofp-to-ast:  TypeSpec(type)                    -> type
+
 //R403
   ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> OfpType(DOUBLEPRECISION(), None())
   ofp-to-ast:  DeclarationTypeSpec(DOUBLECOMPLEX())     -> OfpType(DOUBLECOMPLEX(), None())
@@ -239,6 +242,28 @@ rules
   ofp-to-ast:  PartRef(name,None(),None())                 -> OfpVarRef(name)
 
 //  PartName OptSectionSubscriptList? ImageSelector?       -> PartRef   {cons("PartRef")}
+
+//R613
+  ofp-to-ast:  StructureComponent(OfpVarRef(name))         -> OfpVarRef(name)
+
+//R626
+  ofp-to-ast:  AllocateStmt(label,AllocationList(list),eos)
+                                            -> OfpAllocateStmt(label,None(),[],list)       {Comment(eos)}
+  ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),eos)
+                                            -> OfpAllocateStmt(label,Some(type),[],list)   {Comment(eos)}
+  ofp-to-ast:  AllocateStmt(label,AllocationList(list),opts,eos)
+                                            -> OfpAllocateStmt(label,None(),opts,list)     {Comment(eos)}
+  ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),opts,eos)
+                                            -> OfpAllocateStmt(label,Some(type),opts,list) {Comment(eos)}
+
+//R627
+  ofp-to-ast:  AllocOptList(list)           -> list
+
+//R631
+  ofp-to-ast:  Allocation(object)           -> object
+
+//R632
+  ofp-to-ast:  AllocateObject(var_or_comp)  -> var_or_comp
 
 //R701
   ofp-to-ast:  Primary_AMB(expr)            -> expr
