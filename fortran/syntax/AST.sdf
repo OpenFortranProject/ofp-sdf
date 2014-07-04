@@ -52,6 +52,8 @@ exports
     OfpLanguageBinding                %% R508
     OfpCoarraySpec                    %% R509
 
+    OfpExplicitCoshape                %% R511
+
     OfpArraySpec                      %% R515  
     OfpExplicitShape                  %% R516
     OfpDimSpec                        %% R517-R518
@@ -247,6 +249,8 @@ exports
 
   OfpName?                    -> OfpLanguageBinding {cons("OfpLanguageBinding")}   %% R508
 
+  OfpDimSpec+                 -> OfpExplicitCoshape {cons("OfpExplicitCoshape")}   %% R511
+
   OfpDimSpec+                 -> OfpExplicitShape {cons("OfpExplicitShape")}       %% R516
 
   OfpExpr OfpExpr             -> OfpDimSpec       {cons("OfpDimSpec")}             %% R517-R518
@@ -270,6 +274,7 @@ exports
   %%
   OfpAssumedOrDeferredShape   -> OfpExpr
   OfpAssumedSize              -> OfpExpr
+  OfpExplicitCoshape          -> OfpExpr
   OfpExplicitShape            -> OfpExpr
   OfpImpliedShape             -> OfpExpr
   OfpAssumedRank              -> OfpExpr
