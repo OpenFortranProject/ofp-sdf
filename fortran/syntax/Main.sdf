@@ -1279,18 +1279,19 @@ context-free syntax
   ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("LanguageBindingName")}
 
 %%R509
-  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec_DCSL")}
-  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec_ECS")}
+  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec")}
+  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec")}
 
 %%R510
   ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshapeSpec")}
   {DeferredCoshapeSpec ','}+           -> DeferredCoshapeSpecList {cons("DeferredCoshapeSpecList")}
 
 %%511
-  CoboundsEntry*
-  (LowerCobound ':')?  '*'             -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
+  CoboundsEntry*                  '*'  -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
+  CoboundsEntry* LowerCobound ':' '*'  -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
 
-  (LowerCobound ':')? UpperCobound ',' -> CoboundsEntry        {cons("CoboundsEntry")}
+                   UpperCobound ','    -> CoboundsEntry        {cons("CoboundsEntry")}
+  LowerCobound ':' UpperCobound ','    -> CoboundsEntry        {cons("CoboundsEntry")}
 
 %%R512
   SpecificationExpr                    -> LowerCobound         {cons("LowerCobound")}
