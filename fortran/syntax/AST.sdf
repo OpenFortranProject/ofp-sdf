@@ -72,12 +72,13 @@ exports
     OfpVarRef                         %% R612
 
     OfpAllocateStmt                   %% R626
-
     OfpAllocOpt                       %% R627
+
     OfpAllocation                     %% R631
+    OfpShape                          %% R633
+    OfpCoshape                        %% R634
 
-
-    OfpDefinedOp             %% R703,R723
+    OfpDefinedOp                      %% R703,R723
 
     EQ                       %% R713
     NE
@@ -296,9 +297,14 @@ exports
             OfpAllocOpt*      -> OfpAllocateStmt    {cons("OfpAllocateStmt")}      %%R626
   OfpAllocateStmt             -> OfpStmt
 
-  OfpExpr                     -> OfpAllocOpt                                       %%R627
+  OfpExpr                     -> OfpAllocOpt                                       %% R627
 
-  OfpVarRef                   -> OfpAllocation                                     %%R631
+  OfpVarRef OfpShape?
+            OfpCoshape?       -> OfpAllocation      {cons("OfpAllocation")}        %% R631
+
+  OfpDimSpec+                 -> OfpShape           {cons("OfpShape")}             %% R633
+
+  OfpDimSpec+                 -> OfpCoshape         {cons("OfpCoshape")}           %% R636
 
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
