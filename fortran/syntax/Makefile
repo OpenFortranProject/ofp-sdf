@@ -20,7 +20,7 @@ AST.def : AST.sdf
 	pack-sdf -i $< -o $@
 
 AST.rtg : AST.def
-	sdf2rtg -i AST.def -m AST -o AST.rtg --ignore-missing-cons
+	sdf2rtg -i AST.def -m AST -o AST.rtg
 
 AST.sig : AST.rtg
 	rtg2sig -i AST.rtg -o AST.sig
