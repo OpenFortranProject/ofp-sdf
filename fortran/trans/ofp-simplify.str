@@ -260,15 +260,25 @@ rules
   ofp-to-ast:  AllocOptList(list)           -> list
 
 //R631
-  ofp-to-ast:  Allocation(obj)                           -> OfpAllocation(obj,None(),None())
-  ofp-to-ast:  Allocation(obj,AllocateCoarraySpec(list)) -> OfpAllocation(obj,None(),Some(OfpCoshape(list)))
+  ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
+  ofp-to-ast:  Allocation(obj,coshape)      -> OfpAllocation(obj,None(),Some(coshape))
 
 //R632
-  ofp-to-ast:  AllocateObject(var_or_comp)               -> var_or_comp
+  ofp-to-ast:  AllocateObject(var_or_comp)  -> var_or_comp
 
 //R636
-  ofp-to-ast:  AllocateCoarraySpec()                     -> AllocateCoarraySpec([OfpDimSpec(None(),  "*")])
-  ofp-to-ast:  AllocateCoarraySpec(LowerBoundExpr(expr)) -> AllocateCoarraySpec([OfpDimSpec(Some(expr),"*")])
+  ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
+  ofp-to-ast:  AllocateCoarraySpec(LowerBoundExpr(lb))
+                                            -> OfpCoshape([OfpDimSpec(Some(lb),"*")])
+  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
+                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(None(),"*")]])
+  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),LowerBoundExpr(lb))
+                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
+
+//R637
+  ofp-to-ast:  AllocateCoshapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
+  ofp-to-ast:  AllocateCoshapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
+
 
 //R701
   ofp-to-ast:  Primary_AMB(expr)            -> expr
