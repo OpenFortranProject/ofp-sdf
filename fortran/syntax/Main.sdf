@@ -1735,8 +1735,8 @@ context-free syntax
   IntExpr                                                -> Subscript            {cons("Subscript")}
 
 %%R620
-  Subscript                                              -> SectionSubscript     {cons("SectionSubscript_S")}
-  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript_ST")}
+  Subscript                                              -> SectionSubscript     {cons("SectionSubscript")}
+  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
 %%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
 
   {SectionSubscript ','}+                                -> SectionSubscriptList {cons("SectionSubscriptList")}
@@ -1808,8 +1808,7 @@ context-free syntax
   {Allocation ','}+                                      -> AllocationList       {cons("AllocationList")}
 
 %%R632
-%% VariableName         %% AMB with alt2
-%% StructureComponent
+%%VariableName          %% AMB with StructureComponent
   StructureComponent                                     -> AllocateObject       {cons("AllocateObject")}
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
@@ -1829,11 +1828,14 @@ context-free syntax
   IntExpr                                                -> UpperBoundExpr       {cons("UpperBoundExpr")}
 
 %%R636
-  ( AllocateCoshapeSpecList ','    )?
-  ( LowerBoundExpr ':'             )?  '*'               -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+                                                 '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+                              LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  AllocateCoshapeSpecList ','                    '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  AllocateCoshapeSpecList ',' LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
 
 %%R637
-  ( LowerBoundExpr ':' )? UpperBoundExpr                 -> AllocateCoshapeSpec     {cons("AllocateCoshapeSpec")}
+                     UpperBoundExpr                      -> AllocateCoshapeSpec     {cons("AllocateCoshapeSpec")}
+  LowerBoundExpr ':' UpperBoundExpr                      -> AllocateCoshapeSpec     {cons("AllocateCoshapeSpec")}
   {AllocateCoshapeSpec ','}+                             -> AllocateCoshapeSpecList {cons("AllocateCoshapeSpecList")}
 
 %%R638
