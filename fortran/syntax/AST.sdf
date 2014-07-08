@@ -76,7 +76,7 @@ exports
 
     OfpAllocation                     %% R631
     OfpShape                          %% R633
-    OfpCoshape                        %% R634
+    OfpCoshape                        %% R636
 
     OfpDefinedOp                      %% R703,R723
 
