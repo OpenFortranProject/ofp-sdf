@@ -1,4 +1,4 @@
-module ofp-simplify
+module ofp2fast
 
 imports
    libstratego-lib
@@ -19,10 +19,10 @@ signature
 
 
 strategies
-  io-ofp-simplify =
-    io-wrap(ofp-simplify)
+  io-ofp2fast =
+    io-wrap(ofp2fast)
 
-  ofp-simplify =
+  ofp2fast =
     outermost(ofp-disamb); innermost(ofp-to-ast)
 
 
@@ -265,10 +265,17 @@ rules
 
 //R631
   ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
-  ofp-to-ast:  Allocation(obj,coshape)      -> OfpAllocation(obj,None(),Some(coshape))
+  ofp-to-ast:  Allocation(obj,coshp)        -> OfpAllocation(obj,None(),Some(coshp))
+  ofp-to-ast:  Allocation(obj,shp)          -> OfpAllocation(obj,Some(shp),None())
+  ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(obj,Some(shp),Some(coshp))
 
 //R632
   ofp-to-ast:  AllocateObject(var_or_comp)  -> var_or_comp
+
+//R633
+  ofp-to-ast:  AllocateShapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
+  ofp-to-ast:  AllocateShapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
+  ofp-to-ast:  AllocateShapeSpecList(list)                              -> OfpShape(list)
 
 //R636
   ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
