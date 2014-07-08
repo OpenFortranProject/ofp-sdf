@@ -1,13 +1,13 @@
+#include elim-main-range.dep
+
 CFLAGS = -Xcc -m32 -I ../syntax
+#CFLAGS = -Xcc -m32 -Wno-parentheses-equality -I ../syntax
 LDFLAGS = -Xlinker -m32 -la stratego-lib
 
-all : ofp-simplify ast2pp
+all : ofp2fast
 
-ofp-simplify : ofp-simplify.str
-	strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
-
-ast2pp : ast2pp.str
-	strc -i ast2pp.str $(CFLAGS) $(LDFLAGS) --main io-ast2pp
+ofp2fast : ofp2fast.str
+	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS) --main io-ofp2fast
 
 ofp-to-rose : ofp-to-rose.str
 	strc -i ofp-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-ofp-to-rose
@@ -24,20 +24,23 @@ term-to-adot : term-to-adot.str
 elim-main-range : elim-main-range.str
 	strc --main elim-main-range -i elim-main-range.str $(CFLAGS) $(LDFLAGS)
 
-check : ofp-simplify
-	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm
+check : ofp2fast
+	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
-unparse : ofp-simplify
+unparse : ofp2fast
 	@echo "------------"
-	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm | ast2text -p ../pp/Fortran.pp
+	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm | ast2text -p ../pp/Fortran.pp
 
-test : ofp-simplify
-	sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm
+test : ofp2fast
+	sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
-rose : ofp-to-rose ofp-simplify
-	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | ofp-to-rose | pp-aterm
+cafe : ofp2fast
+	sglri -i cafe.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
+
+rose : ofp-to-rose ofp2fast
+	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | ofp-to-rose | pp-aterm
 
 clean :
-	rm -f ofp-simplify ofp-simplify.c ofp-simplify.dep
+	rm -f ofp2fast ofp2fast.c ofp2fast.dep
 	rm -f ofp-to-rose ofp-to-rose.c ofp-to-rose.dep
 	rm -f *.o *.lo
