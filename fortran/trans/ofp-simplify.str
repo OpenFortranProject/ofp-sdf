@@ -32,7 +32,11 @@ rules
   //
 
   //R703,R723
-  ofp-disamb: amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
+  ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
+
+  //R631 : C633 ... AllocateShapeSpecList shall appear
+  ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
+  ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
   ofp-extract-contains:  OfpModuleStmt   (label,name)                    -> name
 
