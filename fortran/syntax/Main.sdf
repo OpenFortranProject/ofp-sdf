@@ -3078,16 +3078,16 @@ context-free syntax
   EntryStmt                              -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
 
 %%R207
-  DerivedTypeDef                         -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  EntryStmt                              -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  EnumDef                                -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  FormatStmt                             -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  InterfaceBlock                         -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  ParameterStmt                          -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  ProcedureDeclarationStmt               -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  OtherSpecificationStmt                 -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  TypeDeclarationStmt                    -> DeclarationConstruct    {cons("DeclarationConstruct")}
-  StmtFunctionStmt                       -> DeclarationConstruct    {cons("DeclarationConstruct")}
+  DerivedTypeDef                         -> DeclarationConstruct
+  EntryStmt                              -> DeclarationConstruct
+  EnumDef                                -> DeclarationConstruct
+  FormatStmt                             -> DeclarationConstruct
+  InterfaceBlock                         -> DeclarationConstruct
+  ParameterStmt                          -> DeclarationConstruct
+  ProcedureDeclarationStmt               -> DeclarationConstruct
+  OtherSpecificationStmt                 -> DeclarationConstruct
+  TypeDeclarationStmt                    -> DeclarationConstruct
+  StmtFunctionStmt                       -> DeclarationConstruct
 
 %%R208
 %%     WARNING-MODIFICATION:
