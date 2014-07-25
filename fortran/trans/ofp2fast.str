@@ -56,7 +56,6 @@ rules
   ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
   ofp-to-ast:  PartName(str)             -> OfpName(str)
   ofp-to-ast:  ProcedureName(str)        -> OfpName(str)
-  ofp-to-ast:  ProgramName(str)          -> OfpName(str)
   ofp-to-ast:  UseName(str)              -> OfpName(str)
 
 //R201
@@ -155,10 +154,8 @@ rules
     TypeDeclarationStmt(label,type,attrs, entities,eos) -> OfpTypeDeclarationStmt(label,type,attrs,entities) {Comment(eos)}
 
 //R502
-  ofp-to-ast:  AttrSpec(spec)                           -> spec
-  ofp-to-ast:  Some(OptAttrSpecList(None()))            -> []
-  ofp-to-ast:  Some(OptAttrSpecList(Some(tuplelist)))   -> <conc>tuplelist
-  ofp-to-ast:  AttrSpecList(attributes)                 -> attributes
+  ofp-to-ast:  attr-specs(attributes)                   -> attributes
+  ofp-to-ast:  no-attr-specs()                          -> []
 
 //R503
   ofp-to-ast:  EntityDecl(name, aspec, cospec, charlen, init) -> OfpEntityDecl(name, aspec, cospec, charlen, init)
@@ -323,30 +320,28 @@ rules
 
 //R1101
   ofp-to-ast:
-    MainProgram(None(),spec,exec,None(),end)
+    MainProgram(no-program-stmt(),spec,exec,None(),end)
                   -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart([]),None(),None(),Some(end)))
   ofp-to-ast:
-    MainProgram(Some(begin),spec,exec,None(),end)
+    MainProgram(begin,spec,exec,None(),end)
                   -> OfpMainProgram(Some(<ofp-extract-name>begin),
                                     OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
 
   ofp-to-ast:
-    MainProgram(None(),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
+    MainProgram(no-program-stmt(),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
                   -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart(funcs),None(),Some(contains),Some(end)))
   ofp-to-ast:
-    MainProgram(Some(begin),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
+    MainProgram(begin,spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
                   -> OfpMainProgram(Some(<ofp-extract-name>begin),
                                     OfpScope(spec,exec,OfpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
 
+  ofp-to-ast:  no-program-name()              -> None()
+
 //R1102
-  ofp-to-ast:
-    ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,name)          {Comment(eos)}
+  ofp-to-ast:  ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,name)      {Comment(eos)}
 
 //R1103
-  ofp-to-ast:
-    EndProgramStmt(label,eos)      -> OfpEndProgramStmt(label,None())     {Comment(eos)}
-  ofp-to-ast:
-    EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,Some(name)) {Comment(eos)}
+  ofp-to-ast:  EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,name)   {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
