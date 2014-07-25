@@ -174,7 +174,8 @@ sorts
   Initialization                      %% R505
   NullInit                            %% R506
 
-  EntityDeclList OptAttrSpecList OptArraySpec OptCoarraySpec OptCharLength
+  AttrSpecList EntityDeclList NoDoubleColonPartTDS
+  OptAttrSpecList OptArraySpec OptCoarraySpec OptCharLength
 
 %% 5.3 Attributes
 
@@ -201,7 +202,7 @@ sorts
   CoboundsEntry
   LanguageBindingName
 
-  AssumedShapeSpecList AssumedOrDeferredShapeSpecList AssumedOrImpliedSpec AttrSpecList
+  AssumedShapeSpecList AssumedOrDeferredShapeSpecList AssumedOrImpliedSpec
   DeferredCoshapeSpecList ExplicitShapeSpecList ImpliedShapeSpecList
 
 %% 5.4 Attribute specification statements
@@ -663,8 +664,8 @@ sorts
   BlockDataStmt                       %% R1121
   EndBlockDataStmt                    %% R1122
 
-  OnlyList OptOnlyList OptModuleNature
-  RenameList OptRenameList
+  OnlyList ProgramName NoProgramName OptProgramName
+  OptProgramStmt OptOnlyList OptModuleNature RenameList OptRenameList
 
 %% Identifier aliases
 
@@ -728,7 +729,7 @@ sorts
 
   EntryName ExternalName FunctionName
   GenericName ImportName IntrinsicProcedureName
-  ProcedureEntityName ProgramName ResultName
+  ProcedureEntityName ResultName
   SubroutineName
 
 context-free syntax
@@ -1213,14 +1214,17 @@ context-free syntax
 %%
 
 %%R501
-  Label? DeclarationTypeSpec OptAttrSpecList?
-                             EntityDeclList           EOS -> TypeDeclarationStmt {cons("TypeDeclarationStmt")}
+  Label? DeclarationTypeSpec
+      NoDoubleColonPartTDS EntityDeclList             EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
+  Label? DeclarationTypeSpec
+      OptAttrSpecList '::' EntityDeclList             EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
 
-  (',' AttrSpecList)? '::'                                -> OptAttrSpecList     {cons("OptAttrSpecList")}
-
+  % empty %                                               -> NoDoubleColonPartTDS  {cons("no-attr-specs")}
+  % empty %                                               -> OptAttrSpecList       {cons("no-attr-specs")}
+  ',' AttrSpecList                                        -> OptAttrSpecList       {cons("attr-specs")}
 
 %%R502
-   AccessSpec                                             -> AttrSpec     {cons("AttrSpec")}
+   AccessSpec                                             -> AttrSpec
   'ALLOCATABLE'                                           -> AttrSpec     {cons("ALLOCATABLE")}
   'ASYNCHRONOUS'                                          -> AttrSpec     {cons("ASYNCHRONOUS")}
   'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("AttrSpec")}
@@ -1238,7 +1242,7 @@ context-free syntax
   'TARGET'                                                -> AttrSpec     {cons("TARGET")}
   'VALUE'                                                 -> AttrSpec     {cons("VALUE")}
   'VOLATILE'                                              -> AttrSpec     {cons("VOLATILE")}
-  {AttrSpec ','}+                                         -> AttrSpecList {cons("AttrSpecList")}
+  {AttrSpec ','}+                                         -> AttrSpecList
 
 %%R503
   ObjectName OptArraySpec?
@@ -3208,19 +3212,26 @@ context-free syntax
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%       ExecutionPart modified so it can be an empty list, thus it is not optional.
 %%
-  ProgramStmt?
+  OptProgramStmt
     SpecificationPart
     ExecutionPart
     InternalSubprogramPart?
   EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
 
+  ProgramStmt                                  -> OptProgramStmt
+  % empty %                                    -> OptProgramStmt   {cons("no-program-stmt")}
+
 %%R1102
   Label? 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
-  Label? 'END'                             EOS -> EndProgramStmt   {cons("EndProgramStmt")}
-  Label? 'END' 'PROGRAM'                   EOS -> EndProgramStmt   {cons("EndProgramStmt")}
-  Label? 'END' 'PROGRAM' ProgramName       EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END'            NoProgramName    EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  Label? 'END' 'PROGRAM' OptProgramName    EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+
+  Ident                                        -> ProgramName
+  % empty %                                    -> NoProgramName    {cons("no-program-name")}
+  ProgramName                                  -> OptProgramName
+  % empty %                                    -> OptProgramName   {cons("no-program-name")}
 
 %%R1104
 %%     WARNING-MODIFICATION: 
@@ -3344,7 +3355,6 @@ context-free syntax
   Ident   -> ImportName                {cons("ImportName")}
   Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
   Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
-  Ident   -> ProgramName               {cons("ProgramName")}
   Ident   -> ResultName                {cons("ResultName")}
   Ident   -> SubroutineName            {cons("SubroutineName")}
 
