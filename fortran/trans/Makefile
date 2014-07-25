@@ -4,10 +4,13 @@ CFLAGS = -Xcc -m32 -I ../syntax
 #CFLAGS = -Xcc -m32 -Wno-parentheses-equality -I ../syntax
 LDFLAGS = -Xlinker -m32 -la stratego-lib
 
-all : ofp2fast
+all : ofp2fast fast2pp
 
 ofp2fast : ofp2fast.str
 	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS) --main io-ofp2fast
+
+fast2pp : fast2pp.str
+	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS) --main io-fast2pp
 
 ofp-to-rose : ofp-to-rose.str
 	strc -i ofp-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-ofp-to-rose
@@ -29,7 +32,7 @@ check : ofp2fast
 
 unparse : ofp2fast
 	@echo "------------"
-	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm | ast2text -p ../pp/Fortran.pp
+	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2pp | ast2text -p ../pp/Fortran.pp
 
 test : ofp2fast
 	sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
