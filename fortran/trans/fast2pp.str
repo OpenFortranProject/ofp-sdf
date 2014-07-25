@@ -1,4 +1,4 @@
-module ast2pp
+module fast2pp
 
 imports
    libstratego-lib
@@ -16,9 +16,9 @@ signature
 
 strategies
 
-  io-ast2pp = io-wrap(ast2pp)
+  io-fast2pp = io-wrap(fast2pp)
 
-  ast2pp = outermost(ast-to-pp)
+  fast2pp = outermost(ast-to-pp)
 
 rules
 
