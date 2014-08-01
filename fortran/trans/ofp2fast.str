@@ -62,12 +62,6 @@ rules
   ofp-to-ast:  Program(Some(str),[ProgramUnit])  -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
   ofp-to-ast:  Program(None(),   [ProgramUnit])  -> OfpProgram(None(),[ProgramUnit])
 
-//R202
-  ofp-to-ast:  ProgramUnit(program_unit)         -> program_unit
-
-//R203
-  ofp-to-ast:  ExternalSubprogram(subprogram)    -> subprogram
-
 //R204
   ofp-to-ast:
     SpecificationPart(l1, l2, None(), l4)                     -> OfpSpecPart(<conc> (l1, l2, l4))
@@ -80,20 +74,8 @@ rules
 //R208
   ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
 
-//R209
-  ofp-to-ast:  ExecutionPartConstruct(construct) -> construct
-
-//R211
-  ofp-to-ast:  InternalSubprogram(subprogram)    -> subprogram
-
-//R212
-  ofp-to-ast:  OtherSpecificationStmt(stmt)      -> stmt
-
-//R213
-  ofp-to-ast:  ExecutableConstruct(construct)    -> construct
-
-//R214
-  ofp-to-ast:  ActionStmt(stmt)                  -> stmt
+//R210
+  ofp-to-ast:  no-internal-subprograms()         -> OfpFuncPart([])
 
 //R215
   ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
@@ -101,12 +83,7 @@ rules
 //R304
   ofp-to-ast:  Constant_AMB(LiteralConstant)     -> LiteralConstant
 
-//R305
-  ofp-to-ast:  LiteralConstant(constant)         -> constant
-
 //R310
-  ofp-to-ast:  DefinedOperator(op)               -> op
-
   ofp-to-ast:  PowerOp(op)                       -> OfpOp(op)
   ofp-to-ast:  MultOp(op)                        -> OfpOp(op)
   ofp-to-ast:  AddOp(op)                         -> OfpOp(op)
@@ -116,12 +93,6 @@ rules
   ofp-to-ast:  AndOp(op)                         -> OfpOp(op)
   ofp-to-ast:  OrOp(op)                          -> OfpOp(op)
   ofp-to-ast:  EquivOp(op)                       -> OfpOp(op)
-
-//R311
-  ofp-to-ast:  ExtendedIntrinsicOp(op)           -> op
-
-//R402
-  ofp-to-ast:  TypeSpec(type)                    -> type
 
 //R403
   ofp-to-ast:  DeclarationTypeSpec(DOUBLEPRECISION())   -> OfpType(DOUBLEPRECISION(), None())
@@ -166,25 +137,13 @@ rules
 //R508
   ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
 
-//R509
-  ofp-to-ast:  CoarraySpec(spec)                -> spec
-
 //R511
   ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
-
-//R515
-  ofp-to-ast:  ArraySpec(spec)                  -> spec
 
 //R516
   ofp-to-ast:  ExplicitShapeSpec(upper)         -> OfpDimSpec(None(),upper)
   ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> OfpDimSpec(Some(lower),upper)
   ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
-
-//R517
-  ofp-to-ast:  LowerBound(expr)                 -> expr
-
-//R518
-  ofp-to-ast:  UpperBound(expr)                 -> expr
 
 //R519
   ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> OfpDimSpec(None(),":")
@@ -263,9 +222,6 @@ rules
   ofp-to-ast:  Allocation(obj,shp)          -> OfpAllocation(obj,Some(shp),None())
   ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(obj,Some(shp),Some(coshp))
 
-//R632
-  ofp-to-ast:  AllocateObject(var_or_comp)  -> var_or_comp
-
 //R633
   ofp-to-ast:  AllocateShapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
   ofp-to-ast:  AllocateShapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
@@ -312,36 +268,36 @@ rules
 //R723
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
-//R728
-  ofp-to-ast:  SpecificationExpr(IntExpr)   -> IntExpr
-
 //R732
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)           -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)   -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
+
+  ofp-to-ast:  no-program-stmt()            -> None()
 
 //R1101
   ofp-to-ast:
-    MainProgram(no-program-stmt(),spec,exec,None(),end)
-                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart([]),None(),None(),Some(end)))
+    MainProgram(None(),spec,exec,funcs,end)
+                  -> OfpMainProgram(None(),OfpScope(spec,exec,funcs,None(),None(),Some(end)))
   ofp-to-ast:
-    MainProgram(begin,spec,exec,None(),end)
+    MainProgram(begin,spec,exec,funcs,end)
                   -> OfpMainProgram(Some(<ofp-extract-name>begin),
-                                    OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
+                                    OfpScope(spec,exec,funcs,Some(begin),None(),Some(end)))
 
+//  ofp-to-ast:
+//    MainProgram(no-program-stmt(),spec,exec,internal-subprograms(InternalSubprogramPart(contains,funcs)),end)
+//                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart(funcs),None(),Some(contains),Some(end)))
   ofp-to-ast:
-    MainProgram(no-program-stmt(),spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
-                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart(funcs),None(),Some(contains),Some(end)))
-  ofp-to-ast:
-    MainProgram(begin,spec,exec,Some(InternalSubprogramPart(contains,funcs)),end)
+    MainProgram(begin,spec,exec,internal-subprograms(InternalSubprogramPart(contains,funcs)),end)
                   -> OfpMainProgram(Some(<ofp-extract-name>begin),
                                     OfpScope(spec,exec,OfpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
 
-  ofp-to-ast:  no-program-name()              -> None()
+//TODO-delete-me
+  ofp-to-ast:  Some(OfpName(no-program-name()))  -> None()
 
 //R1102
-  ofp-to-ast:  ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,name)      {Comment(eos)}
+  ofp-to-ast:  ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,OfpName(name))           {Comment(eos)}
 
 //R1103
-  ofp-to-ast:  EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,name)   {Comment(eos)}
+  ofp-to-ast:  EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,Some(OfpName(name)))  {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
@@ -357,9 +313,6 @@ rules
 //R1106
   ofp-to-ast:  EndModuleStmt(label,eos)      -> OfpEndModuleStmt(label,None())   {Comment(eos)}
   ofp-to-ast:  EndModuleStmt(label,name,eos) -> OfpEndModuleStmt(label,name)     {Comment(eos)}
-
-//R1108
-  ofp-to-ast:  ModuleSubprogram(subprogram)  -> subprogram
 
 //R1109
   ofp-to-ast:  UseStmt(label,name,eos)
@@ -390,9 +343,6 @@ rules
 
 //R1201
   ofp-to-ast:  InterfaceBlock(stmt,l,end)    -> OfpInterfaceBlock(stmt,end,l)
-
-//R1202
-  ofp-to-ast:  InterfaceSpecification(spec)  -> spec
 
 //R1203
   ofp-to-ast:
@@ -439,14 +389,9 @@ rules
   ofp-to-ast:  ActualArgSpec(keyword,arg)     -> OfpArg(arg,keyword)
   ofp-to-ast:  ActualArgSpecList(args)        -> args
 
-//R1223
-  ofp-to-ast:  ActualArg(arg)                 -> arg
-
 //R1225
-  ofp-to-ast:  Prefix(l) -> OfpPrefix(l)
-
-//R1226
-  ofp-to-ast:  PrefixSpec(DeclarationTypeSpec) -> DeclarationTypeSpec
+  ofp-to-ast:  Prefix(l)   -> OfpPrefix(l)
+  ofp-to-ast:  no-prefix() -> OfpPrefix([])
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,None(),end)
@@ -467,21 +412,15 @@ rules
                        -> OfpFunctionStmt(label,name,args,prefix,suffix)                           {Comment(eos)}
 
   ofp-to-ast:  FunctionName(str)                -> OfpFunctionName(str)
-  ofp-to-ast:  OptDummyArgNameList(args)        -> args
-
-//R1229
-  ofp-to-ast:  ProcLanguageBindingSpec(binding) -> binding
+  ofp-to-ast:  DummyArgNameList(args)           -> args
 
 //R1231
   ofp-to-ast:  ResultName(str)                  -> OfpResultName(str)
-  ofp-to-ast:  Some(Suffix(a))                  -> OfpSuffix([a])
-  ofp-to-ast:  Some(Suffix(a,b))                -> OfpSuffix([a,b])
+  ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
+  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
 
 //R1232
-  ofp-to-ast:
-    EndFunctionStmt(label,eos)                  -> OfpEndFunctionStmt(label,None())                 {Comment(eos)}
-  ofp-to-ast:
-    EndFunctionStmt(label,name,eos)             -> OfpEndFunctionStmt(label,name)                   {Comment(eos)}
+  ofp-to-ast:  EndFunctionStmt(label,name,eos)  -> OfpEndFunctionStmt(label,name)                  {Comment(eos)}
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,None(),end)
@@ -492,31 +431,21 @@ rules
                                     OfpScope(spec,exec,func,Some(begin),None(),Some(end)))
 
 //R1234 
-  ofp-to-ast:  SubroutineStmt(label,None(),name,args,None(),eos)
-                       -> OfpSubroutineStmt(label,name,args,OfpPrefix([]),OfpSuffix([]))            {Comment(eos)}
-  ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,eos)
-                       -> OfpSubroutineStmt(label,name,[],prefix,OfpSuffix([]))                     {Comment(eos)}
-  ofp-to-ast:  SubroutineStmt(label,None(),name,eos)
-                       -> OfpSubroutineStmt(label,name,[],OfpPrefix([]),OfpSuffix([]))  {Comment(eos)}
-  ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,Some(binding),eos)
-                       -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([binding]))            {Comment(eos)}
-  ofp-to-ast:  SubroutineStmt(label,None(),name,args,Some(binding),eos)
-                       -> OfpSubroutineStmt(label,name,args,OfpPrefix([]),OfpSuffix([binding]))     {Comment(eos)}
-  ofp-to-ast:  SubroutineStmt(label,Some(prefix),name,args,None(),eos)
-                       -> OfpSubroutineStmt(label,name,args,prefix,OfpSuffix([]))                   {Comment(eos)}
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,no-language-binding(),eos)
+                       -> OfpSubroutineStmt(label,OfpName(name),args,prefix,OfpSuffix([]))         {Comment(eos)}
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos)
+                       -> OfpSubroutineStmt(label,OfpName(name),args,prefix,OfpSuffix([binding]))  {Comment(eos)}
 
-  ofp-to-ast:  SubroutineName(str)       -> OfpSubroutineName(str)
+  ofp-to-ast:  no-dummy-arg-list()        -> []
 
 //R1235
   ofp-to-ast:  DummyArgName(str)          -> OfpDummyArg(str)
-  ofp-to-ast:  DummyArg_STAR()            -> OfpDummyArg(STAR())
-  ofp-to-ast:  DummyArg(arg)              -> arg
-  ofp-to-ast:  Some(DummyArgList(args))   -> args
+  ofp-to-ast:  STAR()                     -> OfpDummyArg(STAR())
+  ofp-to-ast:  DummyArgList(args)         -> args
 
+  ofp-to-ast:  no-subroutine-name()       -> None()
 
 //R1236
-  ofp-to-ast:
-    EndSubroutineStmt(label,eos)          -> OfpEndSubroutineStmt(label,None())        {Comment(eos)}
   ofp-to-ast:
     EndSubroutineStmt(label,name,eos)     -> OfpEndSubroutineStmt(label,name)          {Comment(eos)}
 
