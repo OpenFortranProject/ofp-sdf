@@ -2,8 +2,8 @@ SYNTAX_DIR = ../../../fortran/syntax
 TRANS_DIR  = ../../../fortran/trans
 
 TBL    = $(SYNTAX_DIR)/Fortran.tbl
-TO_AST = $(TRANS_DIR)/ofp-simplify
-TO_PP  = $(TRANS_DIR)/ast2pp
+TO_AST = $(TRANS_DIR)/ofp2fast
+TO_PP  = $(TRANS_DIR)/fast2pp
 PP     = ../../../fortran/pp/Fortran.pp
 
 all : check
