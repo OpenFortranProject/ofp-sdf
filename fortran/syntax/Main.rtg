@@ -8,14 +8,8 @@ regular tree grammar
     OptLabel0                             -> <none>()
     OptExpr0                              -> <some>(Expr)
     OptExpr0                              -> <none>()
-    OptSuffix0                            -> <some>(Suffix)
-    OptSuffix0                            -> <none>()
     OptDummyArgList0                      -> <some>(DummyArgList)
     OptDummyArgList0                      -> <none>()
-    OptInternalSubprogramPart0            -> <some>(InternalSubprogramPart)
-    OptInternalSubprogramPart0            -> <none>()
-    OptSubroutineName0                    -> <some>(SubroutineName)
-    OptSubroutineName0                    -> <none>()
     ListStarOfDummyArg0                   -> ListPlusOfDummyArg0
     ListStarOfDummyArg0                   -> <nil>()
     ListStarOfDummyArg0                   -> <conc>(ListStarOfDummyArg0,ListStarOfDummyArg0)
@@ -23,12 +17,6 @@ regular tree grammar
     ListPlusOfDummyArg0                   -> <conc>(ListPlusOfDummyArg0,ListStarOfDummyArg0)
     ListPlusOfDummyArg0                   -> <conc>(ListPlusOfDummyArg0,ListPlusOfDummyArg0)
     ListPlusOfDummyArg0                   -> <cons>(DummyArg,ListStarOfDummyArg0)
-    OptPrefix0                            -> <some>(Prefix)
-    OptPrefix0                            -> <none>()
-    OptProcLanguageBindingSpec0           -> <some>(ProcLanguageBindingSpec)
-    OptProcLanguageBindingSpec0           -> <none>()
-    OptFunctionName0                      -> <some>(FunctionName)
-    OptFunctionName0                      -> <none>()
     ListStarOfPrefixSpec0                 -> ListPlusOfPrefixSpec0
     ListStarOfPrefixSpec0                 -> <nil>()
     ListStarOfPrefixSpec0                 -> <conc>(ListStarOfPrefixSpec0,ListStarOfPrefixSpec0)
@@ -144,8 +132,6 @@ regular tree grammar
     ListPlusOfModuleSubprogram0           -> <cons>(ModuleSubprogram,ListStarOfModuleSubprogram0)
     OptModuleName0                        -> <some>(ModuleName)
     OptModuleName0                        -> <none>()
-    OptProgramStmt0                       -> <some>(ProgramStmt)
-    OptProgramStmt0                       -> <none>()
     ListStarOfInternalSubprogram0         -> ListPlusOfInternalSubprogram0
     ListStarOfInternalSubprogram0         -> <nil>()
     ListStarOfInternalSubprogram0         -> <conc>(ListStarOfInternalSubprogram0,ListStarOfInternalSubprogram0)
@@ -840,11 +826,6 @@ regular tree grammar
     ListPlusOfAttrSpec0                   -> <conc>(ListPlusOfAttrSpec0,ListStarOfAttrSpec0)
     ListPlusOfAttrSpec0                   -> <conc>(ListPlusOfAttrSpec0,ListPlusOfAttrSpec0)
     ListPlusOfAttrSpec0                   -> <cons>(AttrSpec,ListStarOfAttrSpec0)
-    AttrSpecList0                         -> <(1)>(AttrSpecList)
-    OptAttrSpecList0                      -> <some>(AttrSpecList0)
-    OptAttrSpecList0                      -> <none>()
-    OptOptAttrSpecList0                   -> <some>(OptAttrSpecList)
-    OptOptAttrSpecList0                   -> <none>()
     ListStarOfAcValue0                    -> ListPlusOfAcValue0
     ListStarOfAcValue0                    -> <nil>()
     ListStarOfAcValue0                    -> <conc>(ListStarOfAcValue0,ListStarOfAcValue0)
@@ -1077,41 +1058,58 @@ regular tree grammar
     ContainsStmt                          -> ContainsStmt(OptLabel0,EOS)
     ReturnStmt                            -> ReturnStmt(OptLabel0,OptExpr0,EOS)
     EntryStmt                             -> EntryStmt_0(OptLabel0,EntryName,EOS)
-    EntryStmt                             -> EntryStmt_DAL(OptLabel0,EntryName,OptDummyArgList0,OptSuffix0,EOS)
+    EntryStmt                             -> EntryStmt_DAL(OptLabel0,EntryName,OptDummyArgList0,OptSuffix,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel0,ProcedureName,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel0,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel0,EOS)
     MpSubprogramStmt                      -> MpSubprogramStmt(OptLabel0,ProcedureName,EOS)
-    SeparateModuleSubprogram              -> SeparateModuleSubprogram(MpSubprogramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart0,EndMpSubprogramStmt)
-    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,OptSubroutineName0,EOS)
-    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,EOS)
+    SeparateModuleSubprogram              -> SeparateModuleSubprogram(MpSubprogramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
+    OptSubroutineName                     -> SubroutineName
+    OptSubroutineName                     -> no-subroutine-name()
+    NoSubroutineName                      -> no-subroutine-name()
+    SubroutineName                        -> Ident
+    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,OptSubroutineName,EOS)
+    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,NoSubroutineName,EOS)
+    NoDummyArgList                        -> no-dummy-arg-list()
+    OptDummyArgList                       -> no-dummy-arg-list()
+    OptDummyArgList                       -> DummyArgList
     DummyArgList                          -> DummyArgList(ListPlusOfDummyArg0)
-    DummyArg                              -> DummyArg_STAR()
-    DummyArg                              -> DummyArg(DummyArgName)
-    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix0,SubroutineName,EOS)
-    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix0,SubroutineName,OptDummyArgList0,OptProcLanguageBindingSpec0,EOS)
-    SubroutineSubprogram                  -> SubroutineSubprogram(SubroutineStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart0,EndSubroutineStmt)
-    EndFunctionStmt                       -> EndFunctionStmt(OptLabel0,OptFunctionName0,EOS)
-    EndFunctionStmt                       -> EndFunctionStmt(OptLabel0,EOS)
+    DummyArg                              -> STAR()
+    DummyArg                              -> DummyArgName
+    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix,SubroutineName,NoDummyArgList,NoProcLanguageBindingSpec,EOS)
+    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix,SubroutineName,OptDummyArgList,OptProcLanguageBindingSpec,EOS)
+    SubroutineSubprogram                  -> SubroutineSubprogram(SubroutineStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndSubroutineStmt)
+    OptFunctionName                       -> SubroutineName
+    OptFunctionName                       -> no-function-name()
+    NoFunctionName                        -> no-function-name()
+    EndFunctionStmt                       -> EndFunctionStmt(OptLabel0,OptFunctionName,EOS)
+    EndFunctionStmt                       -> EndFunctionStmt(OptLabel0,NoFunctionName,EOS)
+    OptSuffix                             -> no-suffix()
+    OptSuffix                             -> Suffix
     Suffix                                -> Suffix(ResultName,ProcLanguageBindingSpec)
-    Suffix                                -> Suffix(ResultName)
+    Suffix                                -> Suffix(ResultName,NoProcLanguageBindingSpec)
     Suffix                                -> Suffix(ProcLanguageBindingSpec,ResultName)
-    Suffix                                -> Suffix(ProcLanguageBindingSpec)
+    Suffix                                -> Suffix(ProcLanguageBindingSpec,NoProcLanguageBindingSpec)
     DummyArgName                          -> DummyArgName(Ident)
-    ProcLanguageBindingSpec               -> ProcLanguageBindingSpec(LanguageBindingSpec)
-    OptDummyArgNameList                   -> OptDummyArgNameList(ListStarOfDummyArgName0)
-    FunctionStmt                          -> FunctionStmt(OptLabel0,OptPrefix0,FunctionName,OptDummyArgNameList,OptSuffix0,EOS)
-    FunctionSubprogram                    -> FunctionSubprogram(FunctionStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart0,EndFunctionStmt)
+    NoProcLanguageBindingSpec             -> no-language-binding()
+    OptProcLanguageBindingSpec            -> no-language-binding()
+    OptProcLanguageBindingSpec            -> ProcLanguageBindingSpec
+    ProcLanguageBindingSpec               -> LanguageBindingSpec
+    OptDummyArgNameList                   -> dummy-args(ListStarOfDummyArgName0)
+    FunctionStmt                          -> FunctionStmt(OptLabel0,OptPrefix,FunctionName,OptDummyArgNameList,OptSuffix,EOS)
+    FunctionSubprogram                    -> FunctionSubprogram(FunctionStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndFunctionStmt)
     PrefixSpec                            -> RECURSIVE()
     PrefixSpec                            -> PURE()
     PrefixSpec                            -> MODULE()
     PrefixSpec                            -> IMPURE()
     PrefixSpec                            -> ELEMENTAL()
-    PrefixSpec                            -> PrefixSpec(DeclarationTypeSpec)
+    PrefixSpec                            -> DeclarationTypeSpec
+    OptPrefix                             -> no-prefix()
+    OptPrefix                             -> Prefix
     Prefix                                -> Prefix(ListPlusOfPrefixSpec0)
     AltReturnSpec                         -> AltReturnSpec(Label)
-    ActualArg                             -> ActualArg(AltReturnSpec)
-    ActualArg                             -> ActualArg(Expr)
+    ActualArg                             -> AltReturnSpec
+    ActualArg                             -> Expr
     ActualArgSpecList                     -> ActualArgSpecList(ListPlusOfActualArgSpec0)
     ActualArgSpec                         -> ActualArgSpec(Keyword,ActualArg)
     ActualArgSpec                         -> ActualArgSpec(ActualArg)
@@ -1135,8 +1133,8 @@ regular tree grammar
     ProcAttrSpec                          -> ProcAttrSpec_POINTER()
     ProcAttrSpec                          -> ProcAttrSpec_OPTIONAL()
     ProcAttrSpec                          -> ProcAttrSpec_INTENT(IntentSpec)
-    ProcAttrSpec                          -> ProcAttrSpec_PLBS(ProcLanguageBindingSpec)
-    ProcAttrSpec                          -> ProcAttrSpec_AS(AccessSpec)
+    ProcAttrSpec                          -> ProcLanguageBindingSpec
+    ProcAttrSpec                          -> AccessSpec
     ProcInterface                         -> ProcInterface_DTS(DeclarationTypeSpec)
     ProcInterface                         -> ProcInterface_IN(InterfaceName)
     ProcedureDeclarationStmt              -> ProcedureDeclarationStmt(OptLabel0,OptProcInterface0,OptOptProcAttrSpecList0,ProcDeclList,EOS)
@@ -1165,12 +1163,10 @@ regular tree grammar
     EndInterfaceStmt                      -> EndInterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
     InterfaceStmt                         -> InterfaceStmt(OptLabel0,EOS)
     InterfaceStmt                         -> InterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
-    InterfaceSpecification                -> InterfaceSpecification(ProcedureStmt)
-    InterfaceSpecification                -> InterfaceSpecification(InterfaceBody)
+    InterfaceSpecification                -> ProcedureStmt
+    InterfaceSpecification                -> InterfaceBody
     InterfaceBlock                        -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)
-    SubroutineName                        -> SubroutineName(Ident)
     ResultName                            -> ResultName(Ident)
-    ProgramName                           -> ProgramName(Ident)
     ProcedureEntityName                   -> ProcedureEntityName(Ident)
     IntrinsicProcedureName                -> IntrinsicProcedureName(Ident)
     ImportName                            -> ImportName(Ident)
@@ -1208,123 +1204,130 @@ regular tree grammar
     UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptOnlyList,EOS)
     UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptRenameList,EOS)
     UseStmt                               -> UseStmt(OptLabel0,ModuleName,EOS)
-    ModuleSubprogram                      -> ModuleSubprogram(SeparateModuleSubprogram)
-    ModuleSubprogram                      -> ModuleSubprogram(SubroutineSubprogram)
-    ModuleSubprogram                      -> ModuleSubprogram(FunctionSubprogram)
+    ModuleSubprogram                      -> SeparateModuleSubprogram
+    ModuleSubprogram                      -> SubroutineSubprogram
+    ModuleSubprogram                      -> FunctionSubprogram
     ModuleSubprogramPart                  -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
     EndModuleStmt                         -> EndModuleStmt(OptLabel0,OptModuleName0,EOS)
     EndModuleStmt                         -> EndModuleStmt(OptLabel0,EOS)
     ModuleStmt                            -> ModuleStmt(OptLabel0,ModuleName,EOS)
     Module                                -> Module(ModuleStmt,SpecificationPart,OptModuleSubprogramPart0,EndModuleStmt)
-    EndProgramStmt                        -> EndProgramStmt(OptLabel0,ProgramName,EOS)
-    EndProgramStmt                        -> EndProgramStmt(OptLabel0,EOS)
-    EndProgramStmt                        -> EndProgramStmt(OptLabel0,EOS)
+    OptProgramName                        -> ProgramName
+    OptProgramName                        -> no-program-name()
+    NoProgramName                         -> no-program-name()
+    ProgramName                           -> Ident
+    EndProgramStmt                        -> EndProgramStmt(OptLabel0,OptProgramName,EOS)
+    EndProgramStmt                        -> EndProgramStmt(OptLabel0,NoProgramName,EOS)
     ProgramStmt                           -> ProgramStmt(OptLabel0,ProgramName,EOS)
-    MainProgram                           -> MainProgram(OptProgramStmt0,SpecificationPart,ExecutionPart,OptInternalSubprogramPart0,EndProgramStmt)
+    OptProgramStmt                        -> no-program-stmt()
+    OptProgramStmt                        -> ProgramStmt
+    MainProgram                           -> MainProgram(OptProgramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndProgramStmt)
     Keyword                               -> Keyword(Name)
-    ActionStmt                            -> ActionStmt(PauseStmt)
-    ActionStmt                            -> ActionStmt(EndDoStmt)
-    ActionStmt                            -> ActionStmt(NonlabelDoStmt)
-    ActionStmt                            -> ActionStmt(LabelDoStmt)
-    ActionStmt                            -> ActionStmt(ComputedGotoStmt)
-    ActionStmt                            -> ActionStmt(ArithmeticIfStmt)
-    ActionStmt                            -> ActionStmt(WriteStmt)
-    ActionStmt                            -> ActionStmt(WhereStmt)
-    ActionStmt                            -> ActionStmt(WaitStmt)
-    ActionStmt                            -> ActionStmt(UnlockStmt)
-    ActionStmt                            -> ActionStmt(SyncMemoryStmt)
-    ActionStmt                            -> ActionStmt(SyncImagesStmt)
-    ActionStmt                            -> ActionStmt(SyncAllStmt)
-    ActionStmt                            -> ActionStmt(StopStmt)
-    ActionStmt                            -> ActionStmt(RewindStmt)
-    ActionStmt                            -> ActionStmt(ReturnStmt)
-    ActionStmt                            -> ActionStmt(ReadStmt)
-    ActionStmt                            -> ActionStmt(PrintStmt)
-    ActionStmt                            -> ActionStmt(PointerAssignmentStmt)
-    ActionStmt                            -> ActionStmt(OpenStmt)
-    ActionStmt                            -> ActionStmt(NullifyStmt)
-    ActionStmt                            -> ActionStmt(LockStmt)
-    ActionStmt                            -> ActionStmt(InquireStmt)
-    ActionStmt                            -> ActionStmt(IfStmt)
-    ActionStmt                            -> ActionStmt(GotoStmt)
-    ActionStmt                            -> ActionStmt(ForallStmt)
-    ActionStmt                            -> ActionStmt(FlushStmt)
-    ActionStmt                            -> ActionStmt(ExitStmt)
-    ActionStmt                            -> ActionStmt(ErrorStopStmt)
-    ActionStmt                            -> ActionStmt(EndfileStmt)
-    ActionStmt                            -> ActionStmt(EndSubroutineStmt)
-    ActionStmt                            -> ActionStmt(EndProgramStmt)
-    ActionStmt                            -> ActionStmt(EndMpSubprogramStmt)
-    ActionStmt                            -> ActionStmt(EndFunctionStmt)
-    ActionStmt                            -> ActionStmt(DeallocateStmt)
-    ActionStmt                            -> ActionStmt(CycleStmt)
-    ActionStmt                            -> ActionStmt(ContinueStmt)
-    ActionStmt                            -> ActionStmt(CloseStmt)
-    ActionStmt                            -> ActionStmt(CallStmt)
-    ActionStmt                            -> ActionStmt(BackspaceStmt)
-    ActionStmt                            -> ActionStmt(AssignmentStmt)
-    ActionStmt                            -> ActionStmt(AllocateStmt)
-    ExecutableConstruct                   -> ExecutableConstruct(WhereConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(SelectTypeConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(IfConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(ForallConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(CriticalConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(CaseConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(BlockConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(AssociateConstruct)
-    ExecutableConstruct                   -> ExecutableConstruct(ActionStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(ValueStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(VolatileStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(TargetStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(SaveStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(ProtectedStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(PointerStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(OptionalStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(NamelistStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(IntrinsicStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(IntentStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(ExternalStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(EquivalenceStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(DimensionStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(DataStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(CommonStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(ContiguousStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(CodimensionStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(BindStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(AsynchronousStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(AllocatableStmt)
-    OtherSpecificationStmt                -> OtherSpecificationStmt(AccessStmt)
-    InternalSubprogram                    -> InternalSubprogram(SubroutineSubprogram)
-    InternalSubprogram                    -> InternalSubprogram(FunctionSubprogram)
+    ActionStmt                            -> PauseStmt
+    ActionStmt                            -> EndDoStmt
+    ActionStmt                            -> NonlabelDoStmt
+    ActionStmt                            -> LabelDoStmt
+    ActionStmt                            -> ComputedGotoStmt
+    ActionStmt                            -> ArithmeticIfStmt
+    ActionStmt                            -> WriteStmt
+    ActionStmt                            -> WhereStmt
+    ActionStmt                            -> WaitStmt
+    ActionStmt                            -> UnlockStmt
+    ActionStmt                            -> SyncMemoryStmt
+    ActionStmt                            -> SyncImagesStmt
+    ActionStmt                            -> SyncAllStmt
+    ActionStmt                            -> StopStmt
+    ActionStmt                            -> RewindStmt
+    ActionStmt                            -> ReturnStmt
+    ActionStmt                            -> ReadStmt
+    ActionStmt                            -> PrintStmt
+    ActionStmt                            -> PointerAssignmentStmt
+    ActionStmt                            -> OpenStmt
+    ActionStmt                            -> NullifyStmt
+    ActionStmt                            -> LockStmt
+    ActionStmt                            -> InquireStmt
+    ActionStmt                            -> IfStmt
+    ActionStmt                            -> GotoStmt
+    ActionStmt                            -> ForallStmt
+    ActionStmt                            -> FlushStmt
+    ActionStmt                            -> ExitStmt
+    ActionStmt                            -> ErrorStopStmt
+    ActionStmt                            -> EndfileStmt
+    ActionStmt                            -> EndSubroutineStmt
+    ActionStmt                            -> EndProgramStmt
+    ActionStmt                            -> EndMpSubprogramStmt
+    ActionStmt                            -> EndFunctionStmt
+    ActionStmt                            -> DeallocateStmt
+    ActionStmt                            -> CycleStmt
+    ActionStmt                            -> ContinueStmt
+    ActionStmt                            -> CloseStmt
+    ActionStmt                            -> CallStmt
+    ActionStmt                            -> BackspaceStmt
+    ActionStmt                            -> AssignmentStmt
+    ActionStmt                            -> AllocateStmt
+    ExecutableConstruct                   -> WhereConstruct
+    ExecutableConstruct                   -> SelectTypeConstruct
+    ExecutableConstruct                   -> IfConstruct
+    ExecutableConstruct                   -> ForallConstruct
+    ExecutableConstruct                   -> CriticalConstruct
+    ExecutableConstruct                   -> CaseConstruct
+    ExecutableConstruct                   -> BlockConstruct
+    ExecutableConstruct                   -> AssociateConstruct
+    ExecutableConstruct                   -> ActionStmt
+    OtherSpecificationStmt                -> ValueStmt
+    OtherSpecificationStmt                -> VolatileStmt
+    OtherSpecificationStmt                -> TargetStmt
+    OtherSpecificationStmt                -> SaveStmt
+    OtherSpecificationStmt                -> ProtectedStmt
+    OtherSpecificationStmt                -> PointerStmt
+    OtherSpecificationStmt                -> OptionalStmt
+    OtherSpecificationStmt                -> NamelistStmt
+    OtherSpecificationStmt                -> IntrinsicStmt
+    OtherSpecificationStmt                -> IntentStmt
+    OtherSpecificationStmt                -> ExternalStmt
+    OtherSpecificationStmt                -> EquivalenceStmt
+    OtherSpecificationStmt                -> DimensionStmt
+    OtherSpecificationStmt                -> DataStmt
+    OtherSpecificationStmt                -> CommonStmt
+    OtherSpecificationStmt                -> ContiguousStmt
+    OtherSpecificationStmt                -> CodimensionStmt
+    OtherSpecificationStmt                -> BindStmt
+    OtherSpecificationStmt                -> AsynchronousStmt
+    OtherSpecificationStmt                -> AllocatableStmt
+    OtherSpecificationStmt                -> AccessStmt
+    InternalSubprogram                    -> SubroutineSubprogram
+    InternalSubprogram                    -> FunctionSubprogram
+    OptInternalSubprogramPart             -> no-internal-subprograms()
+    OptInternalSubprogramPart             -> internal-subprograms(InternalSubprogramPart)
     InternalSubprogramPart                -> InternalSubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
-    ExecutionPartConstruct                -> ExecutionPartConstruct(DataStmt)
-    ExecutionPartConstruct                -> ExecutionPartConstruct(EntryStmt)
-    ExecutionPartConstruct                -> ExecutionPartConstruct(FormatStmt)
-    ExecutionPartConstruct                -> ExecutionPartConstruct(ExecutableConstruct)
+    ExecutionPartConstruct                -> DataStmt
+    ExecutionPartConstruct                -> EntryStmt
+    ExecutionPartConstruct                -> FormatStmt
+    ExecutionPartConstruct                -> ExecutableConstruct
     ExecutionPart                         -> ExecutionPart(ListStarOfExecutionPartConstruct0)
-    DeclarationConstruct                  -> DeclarationConstruct(StmtFunctionStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(TypeDeclarationStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(OtherSpecificationStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(ProcedureDeclarationStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(ParameterStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(InterfaceBlock)
-    DeclarationConstruct                  -> DeclarationConstruct(FormatStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(EnumDef)
-    DeclarationConstruct                  -> DeclarationConstruct(EntryStmt)
-    DeclarationConstruct                  -> DeclarationConstruct(DerivedTypeDef)
+    DeclarationConstruct                  -> StmtFunctionStmt
+    DeclarationConstruct                  -> TypeDeclarationStmt
+    DeclarationConstruct                  -> OtherSpecificationStmt
+    DeclarationConstruct                  -> ProcedureDeclarationStmt
+    DeclarationConstruct                  -> ParameterStmt
+    DeclarationConstruct                  -> InterfaceBlock
+    DeclarationConstruct                  -> FormatStmt
+    DeclarationConstruct                  -> EnumDef
+    DeclarationConstruct                  -> EntryStmt
+    DeclarationConstruct                  -> DerivedTypeDef
     ImplicitPartStmt                      -> ImplicitPartStmt(EntryStmt)
     ImplicitPartStmt                      -> ImplicitPartStmt(FormatStmt)
     ImplicitPartStmt                      -> ImplicitPartStmt(ParameterStmt)
     ImplicitPartStmt                      -> ImplicitPartStmt(ImplicitStmt)
     ImplicitPart                          -> ImplicitPart(ListStarOfImplicitPartStmt0,ImplicitStmt)
     SpecificationPart                     -> SpecificationPart(ListStarOfUseStmt0,ListStarOfImportStmt0,OptImplicitPart0,ListStarOfDeclarationConstruct0)
-    ExternalSubprogram                    -> ExternalSubprogram(SubroutineSubprogram)
-    ExternalSubprogram                    -> ExternalSubprogram(FunctionSubprogram)
-    ProgramUnit                           -> ProgramUnit(BlockData)
-    ProgramUnit                           -> ProgramUnit(Submodule)
-    ProgramUnit                           -> ProgramUnit(Module)
-    ProgramUnit                           -> ProgramUnit(ExternalSubprogram)
-    ProgramUnit                           -> ProgramUnit(MainProgram)
+    ExternalSubprogram                    -> SubroutineSubprogram
+    ExternalSubprogram                    -> FunctionSubprogram
+    ProgramUnit                           -> BlockData
+    ProgramUnit                           -> Submodule
+    ProgramUnit                           -> Module
+    ProgramUnit                           -> ExternalSubprogram
+    ProgramUnit                           -> MainProgram
     Program                               -> Program(OptStartCommentBlock0,ListPlusOfProgramUnit0)
     UseName                               -> UseName(Ident)
     SubmoduleName                         -> SubmoduleName(Ident)
@@ -1685,7 +1688,7 @@ regular tree grammar
     IntConstantExpr                       -> IntConstantExpr(IntExpr)
     DefaultCharConstantExpr               -> DefaultCharConstantExpr(DefaultCharExpr)
     ConstantExpr                          -> ConstantExpr(Expr)
-    SpecificationExpr                     -> SpecificationExpr(IntExpr)
+    SpecificationExpr                     -> IntExpr
     NumericExpr                           -> NumericExpr(Expr)
     IntExpr                               -> IntExpr(Expr)
     DefaultCharExpr                       -> DefaultCharExpr(Expr)
@@ -1733,7 +1736,7 @@ regular tree grammar
     Primary                               -> Primary_AC_AMB(ArrayConstructor)
     Primary                               -> Primary_AMB(Designator)
     Primary                               -> Primary_AMB(Constant)
-    ExtendedIntrinsicOp                   -> ExtendedIntrinsicOp(IntrinsicOperator)
+    ExtendedIntrinsicOp                   -> IntrinsicOperator
     DefinedOperator                       -> DefinedOperator(ExtendedIntrinsicOp)
     DefinedOperator                       -> DefinedOperator(DefinedBinaryOp)
     DefinedOperator                       -> DefinedOperator(DefinedUnaryOp)
@@ -1772,7 +1775,7 @@ regular tree grammar
     AllocateShapeSpec                     -> AllocateShapeSpec(LowerBoundExpr,UpperBoundExpr)
     AllocateShapeSpec                     -> AllocateShapeSpec(UpperBoundExpr)
     AllocateObjectList                    -> AllocateObjectList(ListPlusOfAllocateObject0)
-    AllocateObject                        -> AllocateObject(StructureComponent)
+    AllocateObject                        -> StructureComponent
     AllocationList                        -> AllocationList(ListPlusOfAllocation0)
     Allocation                            -> Allocation(AllocateObject,AllocateShapeSpecList,AllocateCoarraySpec)
     Allocation                            -> Allocation(AllocateObject,AllocateCoarraySpec)
@@ -1951,17 +1954,17 @@ regular tree grammar
     AssumedShapeSpecList                  -> AssumedShapeSpecList(ListPlusOfAssumedShapeSpec0)
     AssumedShapeSpec                      -> AssumedShapeSpec(LowerBound)
     AssumedShapeSpec                      -> AssumedShapeSpec(AssumedOrDeferredShapeSpec)
-    UpperBound                            -> UpperBound(SpecificationExpr)
-    LowerBound                            -> LowerBound(SpecificationExpr)
+    UpperBound                            -> SpecificationExpr
+    LowerBound                            -> SpecificationExpr
     ExplicitShapeSpecList                 -> ExplicitShapeSpecList(ListPlusOfExplicitShapeSpec0)
     ExplicitShapeSpec                     -> ExplicitShapeSpec(LowerBound,UpperBound)
     ExplicitShapeSpec                     -> ExplicitShapeSpec(UpperBound)
-    ArraySpec                             -> ArraySpec(AssumedRankSpec)
-    ArraySpec                             -> ArraySpec(ImpliedShapeSpecList)
-    ArraySpec                             -> ArraySpec(AssumedOrImpliedSpec)
-    ArraySpec                             -> ArraySpec(AssumedSizeSpec)
-    ArraySpec                             -> ArraySpec(AssumedShapeSpecList)
-    ArraySpec                             -> ArraySpec(ExplicitShapeSpecList)
+    ArraySpec                             -> AssumedRankSpec
+    ArraySpec                             -> ImpliedShapeSpecList
+    ArraySpec                             -> AssumedOrImpliedSpec
+    ArraySpec                             -> AssumedSizeSpec
+    ArraySpec                             -> AssumedShapeSpecList
+    ArraySpec                             -> ExplicitShapeSpecList
     DimensionSpec                         -> DimensionSpec(ArraySpec)
     UpperCobound                          -> UpperCobound(SpecificationExpr)
     LowerCobound                          -> LowerCobound(SpecificationExpr)
@@ -1971,8 +1974,8 @@ regular tree grammar
     ExplicitCoshapeSpec                   -> ExplicitCoshapeSpec(ListStarOfCoboundsEntry0)
     DeferredCoshapeSpecList               -> DeferredCoshapeSpecList(ListPlusOfDeferredCoshapeSpec0)
     DeferredCoshapeSpec                   -> DeferredCoshapeSpec()
-    CoarraySpec                           -> CoarraySpec(ExplicitCoshapeSpec)
-    CoarraySpec                           -> CoarraySpec(DeferredCoshapeSpecList)
+    CoarraySpec                           -> ExplicitCoshapeSpec
+    CoarraySpec                           -> DeferredCoshapeSpecList
     LanguageBindingName                   -> LanguageBindingName(Scon)
     LanguageBindingSpec                   -> LanguageBindingSpec(OptLanguageBindingName0)
     AccessSpec                            -> PRIVATE()
@@ -1986,7 +1989,7 @@ regular tree grammar
     OptCoarraySpec                        -> OptCoarraySpec(CoarraySpec)
     OptArraySpec                          -> OptArraySpec(ArraySpec)
     EntityDecl                            -> EntityDecl(ObjectName,OptOptArraySpec0,OptOptCoarraySpec0,OptOptCharLength0,OptInitialization0)
-    AttrSpecList                          -> AttrSpecList(ListPlusOfAttrSpec0)
+    AttrSpecList                          -> ListPlusOfAttrSpec0
     AttrSpec                              -> VOLATILE()
     AttrSpec                              -> VALUE()
     AttrSpec                              -> TARGET()
@@ -1995,7 +1998,7 @@ regular tree grammar
     AttrSpec                              -> POINTER()
     AttrSpec                              -> PARAMETER()
     AttrSpec                              -> OPTIONAL()
-    AttrSpec                              -> AttrSpec(LanguageBindingSpec)
+    AttrSpec                              -> LanguageBindingSpec
     AttrSpec                              -> INTRINSIC()
     AttrSpec                              -> AttrSpec(IntentSpec)
     AttrSpec                              -> EXTERNAL()
@@ -2004,9 +2007,12 @@ regular tree grammar
     AttrSpec                              -> AttrSpec(CoarraySpec)
     AttrSpec                              -> ASYNCHRONOUS()
     AttrSpec                              -> ALLOCATABLE()
-    AttrSpec                              -> AttrSpec(AccessSpec)
-    OptAttrSpecList                       -> OptAttrSpecList(OptAttrSpecList0)
-    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel0,DeclarationTypeSpec,OptOptAttrSpecList0,EntityDeclList,EOS)
+    AttrSpec                              -> AccessSpec
+    OptAttrSpecList                       -> attr-specs(AttrSpecList)
+    OptAttrSpecList                       -> no-attr-specs()
+    NoDoubleColonPartTDS                  -> no-attr-specs()
+    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel0,DeclarationTypeSpec,OptAttrSpecList,EntityDeclList,EOS)
+    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel0,DeclarationTypeSpec,NoDoubleColonPartTDS,EntityDeclList,EOS)
     ProcEntityName                        -> ProcEntityName(Ident)
     ObjectName                            -> ObjectName(Ident)
     NamelistGroupName                     -> NamelistGroupName(Ident)
@@ -2159,20 +2165,20 @@ regular tree grammar
     DeclarationTypeSpec                   -> Type(DerivedTypeSpec)
     DeclarationTypeSpec                   -> DeclarationTypeSpec(IntrinsicTypeSpec)
     DeclarationTypeSpec                   -> DeclarationTypeSpec(IntrinsicTypeSpec)
-    TypeSpec                              -> TypeSpec(DerivedTypeSpec)
-    TypeSpec                              -> TypeSpec(IntrinsicTypeSpec)
+    TypeSpec                              -> DerivedTypeSpec
+    TypeSpec                              -> IntrinsicTypeSpec
     TypeParamValue                        -> TypeParamValue_COLON()
     TypeParamValue                        -> TypeParamValue_STAR()
     TypeParamValue                        -> TypeParamValue_E(Expr)
     CharConstant                          -> CharConstant(Constant)
     IntConstant                           -> IntConstant(Constant)
     NamedConstant                         -> NamedConstant(Name)
-    LiteralConstant                       -> LiteralConstant(BozLiteralConstant)
-    LiteralConstant                       -> LiteralConstant(CharLiteralConstant)
-    LiteralConstant                       -> LiteralConstant(LogicalLiteralConstant)
-    LiteralConstant                       -> LiteralConstant(ComplexLiteralConstant)
-    LiteralConstant                       -> LiteralConstant(RealLiteralConstant)
-    LiteralConstant                       -> LiteralConstant(IntLiteralConstant)
+    LiteralConstant                       -> BozLiteralConstant
+    LiteralConstant                       -> CharLiteralConstant
+    LiteralConstant                       -> LogicalLiteralConstant
+    LiteralConstant                       -> ComplexLiteralConstant
+    LiteralConstant                       -> RealLiteralConstant
+    LiteralConstant                       -> IntLiteralConstant
     Constant                              -> Constant_AMB(LiteralConstant)
     TypeParamName                         -> TypeParamName(Ident)
     TypeName                              -> TypeName(Ident)

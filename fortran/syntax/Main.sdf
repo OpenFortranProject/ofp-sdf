@@ -39,6 +39,8 @@ sorts
   ExecutableConstruct                 %% R213
   ActionStmt                          %% R214
 
+  OptInternalSubprogramPart
+
 %% 2.5 Fundamental concepts
 
   Keyword                             %% R215
@@ -722,15 +724,17 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList ExternalNameList ImportNameList
-  IntrinsicProcedureNameList ProcAttrSpecList ProcedureNameList
+  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
+  ExternalNameList ImportNameList IntrinsicProcedureNameList OptPrefix
+  NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
+  ProcedureNameList OptSuffix
 
 %% Identifier aliases
 
-  EntryName ExternalName FunctionName
+  EntryName ExternalName FunctionName NoFunctionName OptFunctionName
   GenericName ImportName IntrinsicProcedureName
   ProcedureEntityName ResultName
-  SubroutineName
+  SubroutineName NoSubroutineName OptSubroutineName
 
 context-free syntax
 
@@ -769,12 +773,12 @@ context-free syntax
   NamedConstant                         -> Constant         {reject} %% can't tell name is constant
 
 %%R305
-  IntLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
-  RealLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
-  ComplexLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
-  LogicalLiteralConstant                -> LiteralConstant  {cons("LiteralConstant")}
-  CharLiteralConstant                   -> LiteralConstant  {cons("LiteralConstant")}
-  BozLiteralConstant                    -> LiteralConstant  {cons("LiteralConstant")}
+  IntLiteralConstant                    -> LiteralConstant
+  RealLiteralConstant                   -> LiteralConstant
+  ComplexLiteralConstant                -> LiteralConstant
+  LogicalLiteralConstant                -> LiteralConstant
+  CharLiteralConstant                   -> LiteralConstant
+  BozLiteralConstant                    -> LiteralConstant
 
 %%R306
   Name                                  -> NamedConstant    {cons("NamedConstant")}
@@ -808,8 +812,8 @@ context-free syntax
 %%
 
 %%R402
-  IntrinsicTypeSpec                       -> TypeSpec             {cons("TypeSpec")}
-  DerivedTypeSpec                         -> TypeSpec             {cons("TypeSpec")}
+  IntrinsicTypeSpec                       -> TypeSpec
+  DerivedTypeSpec                         -> TypeSpec
 
 %%R403
   IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("DeclarationTypeSpec")}
@@ -1233,7 +1237,7 @@ context-free syntax
   'EXTERNAL'                                              -> AttrSpec     {cons("EXTERNAL")}
   'INTENT' '(' IntentSpec ')'                             -> AttrSpec     {cons("AttrSpec")}
   'INTRINSIC'                                             -> AttrSpec     {cons("INTRINSIC")}
-   LanguageBindingSpec                                    -> AttrSpec     {cons("AttrSpec")}
+   LanguageBindingSpec                                    -> AttrSpec
   'OPTIONAL'                                              -> AttrSpec     {cons("OPTIONAL")}
   'PARAMETER'                                             -> AttrSpec     {cons("PARAMETER")}
   'POINTER'                                               -> AttrSpec     {cons("POINTER")}
@@ -1283,8 +1287,8 @@ context-free syntax
   ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("LanguageBindingName")}
 
 %%R509
-  DeferredCoshapeSpecList              -> CoarraySpec             {cons("CoarraySpec")}
-  ExplicitCoshapeSpec                  -> CoarraySpec             {cons("CoarraySpec")}
+  DeferredCoshapeSpecList              -> CoarraySpec
+  ExplicitCoshapeSpec                  -> CoarraySpec
 
 %%R510
   ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshapeSpec")}
@@ -1307,13 +1311,13 @@ context-free syntax
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("DimensionSpec")}
 
 %%R515
-  ExplicitShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-%%DeferredShapeSpecList                -> ArraySpec            {cons("ArraySpec")}
-  AssumedSizeSpec                      -> ArraySpec            {cons("ArraySpec")}
-  AssumedOrImpliedSpec                 -> ArraySpec            {cons("ArraySpec")}
-  ImpliedShapeSpecList                 -> ArraySpec            {cons("ArraySpec")}
-  AssumedRankSpec                      -> ArraySpec            {cons("ArraySpec")}
+  ExplicitShapeSpecList                -> ArraySpec
+  AssumedShapeSpecList                 -> ArraySpec
+%%DeferredShapeSpecList                -> ArraySpec
+  AssumedSizeSpec                      -> ArraySpec
+  AssumedOrImpliedSpec                 -> ArraySpec
+  ImpliedShapeSpecList                 -> ArraySpec
+  AssumedRankSpec                      -> ArraySpec
 
 %%R516
                  UpperBound                     -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
@@ -1321,10 +1325,10 @@ context-free syntax
   {ExplicitShapeSpec ','}+                      -> ExplicitShapeSpecList {cons("ExplicitShapeSpecList")}
 
 %%R517
-  SpecificationExpr                             -> LowerBound            {cons("LowerBound")}
+  SpecificationExpr                             -> LowerBound
 
 %%R518
-  SpecificationExpr                             -> UpperBound            {cons("UpperBound")}
+  SpecificationExpr                             -> UpperBound
 
 %%R519
 %%AMB deferred-shape-spec is ambiguous with assumed-shape-spec 
@@ -1813,7 +1817,7 @@ context-free syntax
 
 %%R632
 %%VariableName          %% AMB with StructureComponent
-  StructureComponent                                     -> AllocateObject       {cons("AllocateObject")}
+  StructureComponent                                     -> AllocateObject
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
@@ -1888,12 +1892,14 @@ context-free syntax
   EquivOp                       -> IntrinsicOperator     {cons("EquivOp")}
 
 %%R310
+%% Keep for now for disambiguation
+%%
   DefinedUnaryOp                -> DefinedOperator       {cons("DefinedOperator")}
   DefinedBinaryOp               -> DefinedOperator       {cons("DefinedOperator")}
   ExtendedIntrinsicOp           -> DefinedOperator       {cons("DefinedOperator")}
 
 %%R311
-  IntrinsicOperator             -> ExtendedIntrinsicOp   {cons("ExtendedIntrinsicOp")}
+  IntrinsicOperator             -> ExtendedIntrinsicOp
 
 %%R701
 %%TODO-AMB
@@ -2013,7 +2019,7 @@ Primary                                    -> Expr            {cons("Expr")}
 %%R728
 %%       scalar-int-expr replaced by int-expr
 %%
-  IntExpr                                  -> SpecificationExpr  {cons("SpecificationExpr")}
+  IntExpr                                  -> SpecificationExpr
 
 %%R729
   Expr                                     -> ConstantExpr    {cons("ConstantExpr")}
@@ -3056,15 +3062,15 @@ context-free syntax
   StartCommentBlock?  ProgramUnit+       -> Program             {cons("Program")}
 
 %%R202
-  MainProgram                            -> ProgramUnit         {cons("ProgramUnit")}
-  ExternalSubprogram                     -> ProgramUnit         {cons("ProgramUnit")}
-  Module                                 -> ProgramUnit         {cons("ProgramUnit")}
-  Submodule                              -> ProgramUnit         {cons("ProgramUnit")}
-  BlockData                              -> ProgramUnit         {cons("ProgramUnit")}
+  MainProgram                            -> ProgramUnit
+  ExternalSubprogram                     -> ProgramUnit
+  Module                                 -> ProgramUnit
+  Submodule                              -> ProgramUnit
+  BlockData                              -> ProgramUnit
 
 %%R203
-  FunctionSubprogram                     -> ExternalSubprogram  {cons("ExternalSubprogram")}
-  SubroutineSubprogram                   -> ExternalSubprogram  {cons("ExternalSubprogram")}
+  FunctionSubprogram                     -> ExternalSubprogram
+  SubroutineSubprogram                   -> ExternalSubprogram
   
 %%R204
   UseStmt*
@@ -3098,43 +3104,46 @@ context-free syntax
 %%       Removed the leading ExecutableConstruct to allow an empty list to
 %%       be an ExecutionPart.  Check order of statements in a separate stage.
 %%
-  ExecutionPartConstruct*                -> ExecutionPart           {cons("ExecutionPart")}
+  ExecutionPartConstruct*                -> ExecutionPart             {cons("ExecutionPart")}
 
 %%R209
-  ExecutableConstruct                    -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
-  FormatStmt                             -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
-  EntryStmt                              -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
-  DataStmt                               -> ExecutionPartConstruct  {cons("ExecutionPartConstruct")}
+  ExecutableConstruct                    -> ExecutionPartConstruct
+  FormatStmt                             -> ExecutionPartConstruct
+  EntryStmt                              -> ExecutionPartConstruct
+  DataStmt                               -> ExecutionPartConstruct
 
 %%R210
-  ContainsStmt InternalSubprogram*       -> InternalSubprogramPart  {cons("InternalSubprogramPart")}
+  ContainsStmt InternalSubprogram*       -> InternalSubprogramPart    {cons("InternalSubprogramPart")}
+
+  InternalSubprogramPart                 -> OptInternalSubprogramPart {cons("internal-subprograms")}
+  % empty %                              -> OptInternalSubprogramPart {cons("no-internal-subprograms")}
 
 %%R211
-  FunctionSubprogram                     -> InternalSubprogram      {cons("InternalSubprogram")}
-  SubroutineSubprogram                   -> InternalSubprogram      {cons("InternalSubprogram")}
+  FunctionSubprogram                     -> InternalSubprogram
+  SubroutineSubprogram                   -> InternalSubprogram
 
 %%R212
-  AccessStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  AllocatableStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  AsynchronousStmt                       -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  BindStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  CodimensionStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  ContiguousStmt                         -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  CommonStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  DataStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  DimensionStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  EquivalenceStmt                        -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  ExternalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  IntentStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  IntrinsicStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  NamelistStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  OptionalStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  PointerStmt                            -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  ProtectedStmt                          -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  SaveStmt                               -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  TargetStmt                             -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  VolatileStmt                           -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
-  ValueStmt                              -> OtherSpecificationStmt  {cons("OtherSpecificationStmt")}
+  AccessStmt                             -> OtherSpecificationStmt
+  AllocatableStmt                        -> OtherSpecificationStmt
+  AsynchronousStmt                       -> OtherSpecificationStmt
+  BindStmt                               -> OtherSpecificationStmt
+  CodimensionStmt                        -> OtherSpecificationStmt
+  ContiguousStmt                         -> OtherSpecificationStmt
+  CommonStmt                             -> OtherSpecificationStmt
+  DataStmt                               -> OtherSpecificationStmt
+  DimensionStmt                          -> OtherSpecificationStmt
+  EquivalenceStmt                        -> OtherSpecificationStmt
+  ExternalStmt                           -> OtherSpecificationStmt
+  IntentStmt                             -> OtherSpecificationStmt
+  IntrinsicStmt                          -> OtherSpecificationStmt
+  NamelistStmt                           -> OtherSpecificationStmt
+  OptionalStmt                           -> OtherSpecificationStmt
+  PointerStmt                            -> OtherSpecificationStmt
+  ProtectedStmt                          -> OtherSpecificationStmt
+  SaveStmt                               -> OtherSpecificationStmt
+  TargetStmt                             -> OtherSpecificationStmt
+  VolatileStmt                           -> OtherSpecificationStmt
+  ValueStmt                              -> OtherSpecificationStmt
 
 %%R213
 %%     WARNING-MODIFICATION:
@@ -3142,66 +3151,66 @@ context-free syntax
 %%          not necessarily an end-do-stmt.  Replace by do-stmt and end-do-stmt and
 %%          resolve the construct end at a latter stage.
 %%
-  ActionStmt                             -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  AssociateConstruct                     -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  BlockConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  CaseConstruct                          -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  CriticalConstruct                      -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  ActionStmt                             -> ExecutableConstruct
+  AssociateConstruct                     -> ExecutableConstruct
+  BlockConstruct                         -> ExecutableConstruct
+  CaseConstruct                          -> ExecutableConstruct
+  CriticalConstruct                      -> ExecutableConstruct
 %%DoConstruct          %% Ambiguous - placed related statements in action-stmt
-  ForallConstruct                        -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  IfConstruct                            -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  SelectTypeConstruct                    -> ExecutableConstruct     {cons("ExecutableConstruct")}
-  WhereConstruct                         -> ExecutableConstruct     {cons("ExecutableConstruct")}
+  ForallConstruct                        -> ExecutableConstruct
+  IfConstruct                            -> ExecutableConstruct
+  SelectTypeConstruct                    -> ExecutableConstruct
+  WhereConstruct                         -> ExecutableConstruct
 
 %%R214
 %%TODO-REMOVE  AssignStmt
 %%TODO-REMOVE  AssignedGotoStmt
 %%TODO-REMOVE  StmtFunctionStmt  %% see R1226 comment
 %%TODO-REMOVE  AllstopStmt
-  AllocateStmt                           -> ActionStmt  {cons("ActionStmt")}
-  AssignmentStmt                         -> ActionStmt  {cons("ActionStmt")}
-  BackspaceStmt                          -> ActionStmt  {cons("ActionStmt")}
-  CallStmt                               -> ActionStmt  {cons("ActionStmt")}
-  CloseStmt                              -> ActionStmt  {cons("ActionStmt")}
-  ContinueStmt                           -> ActionStmt  {cons("ActionStmt")}
-  CycleStmt                              -> ActionStmt  {cons("ActionStmt")}
-  DeallocateStmt                         -> ActionStmt  {cons("ActionStmt")}
-  EndFunctionStmt                        -> ActionStmt  {cons("ActionStmt")}
-  EndMpSubprogramStmt                    -> ActionStmt  {cons("ActionStmt")}
-  EndProgramStmt                         -> ActionStmt  {cons("ActionStmt")}
-  EndSubroutineStmt                      -> ActionStmt  {cons("ActionStmt")}
-  EndfileStmt                            -> ActionStmt  {cons("ActionStmt")}
-  ErrorStopStmt                          -> ActionStmt  {cons("ActionStmt")}
-  ExitStmt                               -> ActionStmt  {cons("ActionStmt")}
-  FlushStmt                              -> ActionStmt  {cons("ActionStmt")}
-  ForallStmt                             -> ActionStmt  {cons("ActionStmt")}
-  GotoStmt                               -> ActionStmt  {cons("ActionStmt")}
-  IfStmt                                 -> ActionStmt  {cons("ActionStmt")}
-  InquireStmt                            -> ActionStmt  {cons("ActionStmt")}
-  LockStmt                               -> ActionStmt  {cons("ActionStmt")}
-  NullifyStmt                            -> ActionStmt  {cons("ActionStmt")}
-  OpenStmt                               -> ActionStmt  {cons("ActionStmt")}
-  PointerAssignmentStmt                  -> ActionStmt  {cons("ActionStmt")}
-  PrintStmt                              -> ActionStmt  {cons("ActionStmt")}
-  ReadStmt                               -> ActionStmt  {cons("ActionStmt")}
-  ReturnStmt                             -> ActionStmt  {cons("ActionStmt")}
-  RewindStmt                             -> ActionStmt  {cons("ActionStmt")}
-  StopStmt                               -> ActionStmt  {cons("ActionStmt")}
-  SyncAllStmt                            -> ActionStmt  {cons("ActionStmt")}
-  SyncImagesStmt                         -> ActionStmt  {cons("ActionStmt")}
-  SyncMemoryStmt                         -> ActionStmt  {cons("ActionStmt")}
-  UnlockStmt                             -> ActionStmt  {cons("ActionStmt")}
-  WaitStmt                               -> ActionStmt  {cons("ActionStmt")}
-  WhereStmt                              -> ActionStmt  {cons("ActionStmt")}
-  WriteStmt                              -> ActionStmt  {cons("ActionStmt")}
-  ArithmeticIfStmt                       -> ActionStmt  {cons("ActionStmt")}
-  ComputedGotoStmt                       -> ActionStmt  {cons("ActionStmt")}
+  AllocateStmt                           -> ActionStmt
+  AssignmentStmt                         -> ActionStmt
+  BackspaceStmt                          -> ActionStmt
+  CallStmt                               -> ActionStmt
+  CloseStmt                              -> ActionStmt
+  ContinueStmt                           -> ActionStmt
+  CycleStmt                              -> ActionStmt
+  DeallocateStmt                         -> ActionStmt
+  EndFunctionStmt                        -> ActionStmt
+  EndMpSubprogramStmt                    -> ActionStmt
+  EndProgramStmt                         -> ActionStmt
+  EndSubroutineStmt                      -> ActionStmt
+  EndfileStmt                            -> ActionStmt
+  ErrorStopStmt                          -> ActionStmt
+  ExitStmt                               -> ActionStmt
+  FlushStmt                              -> ActionStmt
+  ForallStmt                             -> ActionStmt
+  GotoStmt                               -> ActionStmt
+  IfStmt                                 -> ActionStmt
+  InquireStmt                            -> ActionStmt
+  LockStmt                               -> ActionStmt
+  NullifyStmt                            -> ActionStmt
+  OpenStmt                               -> ActionStmt
+  PointerAssignmentStmt                  -> ActionStmt
+  PrintStmt                              -> ActionStmt
+  ReadStmt                               -> ActionStmt
+  ReturnStmt                             -> ActionStmt
+  RewindStmt                             -> ActionStmt
+  StopStmt                               -> ActionStmt
+  SyncAllStmt                            -> ActionStmt
+  SyncImagesStmt                         -> ActionStmt
+  SyncMemoryStmt                         -> ActionStmt
+  UnlockStmt                             -> ActionStmt
+  WaitStmt                               -> ActionStmt
+  WhereStmt                              -> ActionStmt
+  WriteStmt                              -> ActionStmt
+  ArithmeticIfStmt                       -> ActionStmt
+  ComputedGotoStmt                       -> ActionStmt
 %% Following added as replacement for DoConstruct (because ambiguous)
-  LabelDoStmt                            -> ActionStmt  {cons("ActionStmt")}
-  NonlabelDoStmt                         -> ActionStmt  {cons("ActionStmt")}
-  EndDoStmt                              -> ActionStmt  {cons("ActionStmt")}
+  LabelDoStmt                            -> ActionStmt
+  NonlabelDoStmt                         -> ActionStmt
+  EndDoStmt                              -> ActionStmt
 %% Deleted features
-  PauseStmt                              -> ActionStmt  {cons("ActionStmt")}
+  PauseStmt                              -> ActionStmt
 
 %%215
   Name                                 -> Keyword     {cons("Keyword")}
@@ -3215,14 +3224,14 @@ context-free syntax
   OptProgramStmt
     SpecificationPart
     ExecutionPart
-    InternalSubprogramPart?
+    OptInternalSubprogramPart
   EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
 
   ProgramStmt                                  -> OptProgramStmt
   % empty %                                    -> OptProgramStmt   {cons("no-program-stmt")}
 
 %%R1102
-  Label? 'PROGRAM'       ProgramName       EOS -> ProgramStmt      {cons("ProgramStmt")}
+  Label? 'PROGRAM' ProgramName             EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
   Label? 'END'            NoProgramName    EOS -> EndProgramStmt   {cons("EndProgramStmt")}
@@ -3230,8 +3239,8 @@ context-free syntax
 
   Ident                                        -> ProgramName
   % empty %                                    -> NoProgramName    {cons("no-program-name")}
-  ProgramName                                  -> OptProgramName
   % empty %                                    -> OptProgramName   {cons("no-program-name")}
+  ProgramName                                  -> OptProgramName
 
 %%R1104
 %%     WARNING-MODIFICATION: 
@@ -3254,9 +3263,9 @@ context-free syntax
   ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("ModuleSubprogramPart")}
 
 %%R1108
-  FunctionSubprogram                           -> ModuleSubprogram      {cons("ModuleSubprogram")}
-  SubroutineSubprogram                         -> ModuleSubprogram      {cons("ModuleSubprogram")}
-  SeparateModuleSubprogram                     -> ModuleSubprogram      {cons("ModuleSubprogram")}
+  FunctionSubprogram                           -> ModuleSubprogram
+  SubroutineSubprogram                         -> ModuleSubprogram
+  SeparateModuleSubprogram                     -> ModuleSubprogram
 
 %%R1109
   Label? 'USE'                       ModuleName               EOS -> UseStmt {cons("UseStmt")}
@@ -3356,7 +3365,6 @@ context-free syntax
   Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
   Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
   Ident   -> ResultName                {cons("ResultName")}
-  Ident   -> SubroutineName            {cons("SubroutineName")}
 
 
 %%R1201
@@ -3365,8 +3373,8 @@ context-free syntax
   EndInterfaceStmt                -> InterfaceBlock          {cons("InterfaceBlock")}
 
 %%R1202
-  InterfaceBody                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
-  ProcedureStmt                   -> InterfaceSpecification  {cons("InterfaceSpecification")}
+  InterfaceBody                   -> InterfaceSpecification
+  ProcedureStmt                   -> InterfaceSpecification
 
 
 %%R1203
@@ -3383,20 +3391,6 @@ context-free syntax
 %%
   FunctionStmt   SpecificationPart EndFunctionStmt     -> InterfaceBody  {cons("InterfaceBody")}
   SubroutineStmt SpecificationPart EndSubroutineStmt   -> InterfaceBody  {cons("InterfaceBody")}
-
-%%REMOVE-F08  LblDef FunctionPrefix FunctionName FunctionInterfaceRange           -> InterfaceBody
-%%REMOVE-F08  LblDef 'SUBROUTINE' SubroutineName SubroutineInterfaceRange         -> InterfaceBody
-
-%%REMOVE-F08  FunctionParList      EOS  SubprogramInterfaceBody EndFunctionStmt   -> FunctionInterfaceRange
-%%REMOVE-F08  FunctionParList      EOS  EndFunctionStmt                           -> FunctionInterfaceRange
-
-%%REMOVE-F08  SubroutineParList? ProcLanguageBindingSpec?
-%%REMOVE-F08                       EOS  SubprogramInterfaceBody EndSubroutineStmt -> SubroutineInterfaceRange
-%%REMOVE-F08  SubroutineParList? ProcLanguageBindingSpec?
-%%REMOVE-F08                       EOS  EndSubroutineStmt                         -> SubroutineInterfaceRange
-
-%%REMOVE-F08  SpecificationPartConstruct                                -> SubprogramInterfaceBody
-%%REMOVE-F08  SubprogramInterfaceBody SpecificationPartConstruct        -> SubprogramInterfaceBody
 
 %%R1206
   Label? 'MODULE' 'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
@@ -3443,8 +3437,8 @@ context-free syntax
   DeclarationTypeSpec                                 -> ProcInterface    {cons("ProcInterface_DTS")}
 
 %%R1213
-  AccessSpec                                          -> ProcAttrSpec     {cons("ProcAttrSpec_AS")}
-  ProcLanguageBindingSpec                             -> ProcAttrSpec     {cons("ProcAttrSpec_PLBS")}
+  AccessSpec                                          -> ProcAttrSpec
+  ProcLanguageBindingSpec                             -> ProcAttrSpec
   'INTENT' '(' IntentSpec ')'                         -> ProcAttrSpec     {cons("ProcAttrSpec_INTENT")}
   'OPTIONAL'                                          -> ProcAttrSpec     {cons("ProcAttrSpec_OPTIONAL")}
   'POINTER'                                           -> ProcAttrSpec     {cons("ProcAttrSpec_POINTER")}
@@ -3491,11 +3485,11 @@ context-free syntax
   {ActualArgSpec ','}+                                -> ActualArgSpecList   {cons("ActualArgSpecList")}
 
 %%R1223
-  Expr                                                -> ActualArg           {cons("ActualArg")}
+  Expr                                                -> ActualArg
 %%Variable           %% AMB with alt1
 %%ProcedureName      %% AMB with alt1
 %%ProcComponentRef   %% AMB with alt1
-  AltReturnSpec                                       -> ActualArg           {cons("ActualArg")}
+  AltReturnSpec                                       -> ActualArg
 
 %%1224
   '*' Label                                           -> AltReturnSpec       {cons("AltReturnSpec")}
@@ -3503,8 +3497,11 @@ context-free syntax
 %%1225
   PrefixSpec+                                         -> Prefix              {cons("Prefix")}
 
+  Prefix                                              -> OptPrefix
+  % empty %                                           -> OptPrefix           {cons("no-prefix")}
+
 %%1226
-  DeclarationTypeSpec                                 -> PrefixSpec          {cons("PrefixSpec")}
+  DeclarationTypeSpec                                 -> PrefixSpec
   'ELEMENTAL'                                         -> PrefixSpec          {cons("ELEMENTAL")}
   'IMPURE'                                            -> PrefixSpec          {cons("IMPURE")}
   'MODULE'                                            -> PrefixSpec          {cons("MODULE")}
@@ -3520,31 +3517,44 @@ context-free syntax
   FunctionStmt
     SpecificationPart
     ExecutionPart
-    InternalSubprogramPart?
-  EndFunctionStmt                                      -> FunctionSubprogram  {cons("FunctionSubprogram")}
+    OptInternalSubprogramPart
+  EndFunctionStmt                                   -> FunctionSubprogram {cons("FunctionSubprogram")}
 
 %%R1228
-  Label? Prefix? 'FUNCTION' FunctionName
-              '(' OptDummyArgNameList ')' Suffix?  EOS -> FunctionStmt        {cons("FunctionStmt")}
+  Label? OptPrefix 'FUNCTION' FunctionName
+        '(' OptDummyArgNameList ')' OptSuffix EOS   -> FunctionStmt       {cons("FunctionStmt")}
 
-  {DummyArgName ','}*                                  -> OptDummyArgNameList {cons("OptDummyArgNameList")}
+  {DummyArgName ','}*                  -> OptDummyArgNameList             {cons("dummy-args")}
 
 
 %%R1229
-  LanguageBindingSpec                                  -> ProcLanguageBindingSpec  {cons("ProcLanguageBindingSpec")}
+  LanguageBindingSpec                  -> ProcLanguageBindingSpec
+
+  ProcLanguageBindingSpec              -> OptProcLanguageBindingSpec
+  % empty %                            -> OptProcLanguageBindingSpec   {cons("no-language-binding")}
+  % empty %                            -> NoProcLanguageBindingSpec    {cons("no-language-binding")}
 
 %%R1230
-  Ident                                                -> DummyArgName     {cons("DummyArgName")}
+  Ident                                -> DummyArgName                 {cons("DummyArgName")}
 
 %%R1231
-  ProcLanguageBindingSpec                              -> Suffix           {cons("Suffix")}
-  ProcLanguageBindingSpec 'RESULT' '(' ResultName ')'  -> Suffix           {cons("Suffix")}
-  'RESULT' '(' ResultName ')'                          -> Suffix           {cons("Suffix")}
-  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec  -> Suffix           {cons("Suffix")}
+  ProcLanguageBindingSpec NoProcLanguageBindingSpec     -> Suffix      {cons("Suffix")}
+  ProcLanguageBindingSpec 'RESULT' '(' ResultName ')'   -> Suffix      {cons("Suffix")}
+  'RESULT' '(' ResultName ')' NoProcLanguageBindingSpec -> Suffix      {cons("Suffix")}
+  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec   -> Suffix      {cons("Suffix")}
+
+  Suffix                                                -> OptSuffix
+  % empty %                                             -> OptSuffix   {cons("no-suffix")}
 
 %%R1232
-  Label? 'END'                                     EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
-  Label? 'END' 'FUNCTION' FunctionName?            EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
+  Label? 'END'            NoFunctionName            EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
+  Label? 'END' 'FUNCTION' OptFunctionName           EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
+
+  Ident                                                 -> FunctionName
+  % empty %                                             -> NoFunctionName   {cons("no-function-name")}
+  % empty %                                             -> OptFunctionName  {cons("no-function-name")}
+  SubroutineName                                        -> OptFunctionName
+
 
 %%R1233
 %%     WARNING-MODIFICATION: 
@@ -3555,23 +3565,34 @@ context-free syntax
   SubroutineStmt
     SpecificationPart
     ExecutionPart
-    InternalSubprogramPart?
+    OptInternalSubprogramPart
   EndSubroutineStmt                              -> SubroutineSubprogram {cons("SubroutineSubprogram")}
 
 %%R1234
-  Label? Prefix? 'SUBROUTINE' SubroutineName
-            '(' DummyArgList? ')'
-             ProcLanguageBindingSpec?        EOS -> SubroutineStmt       {cons("SubroutineStmt")}
-  Label? Prefix? 'SUBROUTINE' SubroutineName EOS -> SubroutineStmt       {cons("SubroutineStmt")}
+  Label? OptPrefix 'SUBROUTINE' SubroutineName
+            '(' OptDummyArgList ')'
+             OptProcLanguageBindingSpec        EOS -> SubroutineStmt     {cons("SubroutineStmt")}
+  Label? OptPrefix 'SUBROUTINE' SubroutineName
+             NoDummyArgList
+             NoProcLanguageBindingSpec         EOS -> SubroutineStmt     {cons("SubroutineStmt")}
 
 %%R1235
-  DummyArgName                                   -> DummyArg             {cons("DummyArg")}
-  '*'                                            -> DummyArg             {cons("DummyArg_STAR")}
-  {DummyArg ','}+                                -> DummyArgList         {cons("DummyArgList")}
+  DummyArgName                                     -> DummyArg
+  '*'                                              -> DummyArg           {cons("STAR")}
+  {DummyArg ','}+                                  -> DummyArgList       {cons("DummyArgList")}
+
+  DummyArgList                                     -> OptDummyArgList
+  % empty %                                        -> OptDummyArgList    {cons("no-dummy-arg-list")}
+  % empty %                                        -> NoDummyArgList     {cons("no-dummy-arg-list")}
 
 %%R1236
-  Label? 'END'                               EOS -> EndSubroutineStmt    {cons("EndSubroutineStmt")}
-  Label? 'END' 'SUBROUTINE' SubroutineName?  EOS -> EndSubroutineStmt    {cons("EndSubroutineStmt")}
+  Label? 'END'              NoSubroutineName   EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
+  Label? 'END' 'SUBROUTINE' OptSubroutineName  EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
+
+  Ident                                            -> SubroutineName
+  % empty %                                        -> NoSubroutineName   {cons("no-subroutine-name")}
+  % empty %                                        -> OptSubroutineName  {cons("no-subroutine-name")}
+  SubroutineName                                   -> OptSubroutineName
 
 %%R1237
 %%     WARNING-MODIFICATION: 
@@ -3582,7 +3603,7 @@ context-free syntax
   MpSubprogramStmt
     SpecificationPart
     ExecutionPart
-    InternalSubprogramPart?
+    OptInternalSubprogramPart
   EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("SeparateModuleSubprogram")}
 
 %%R1238
@@ -3594,8 +3615,8 @@ context-free syntax
   Label? 'END' 'PROCEDURE' ProcedureName     EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
 
 %%R1240
-  Label? 'ENTRY' EntryName '(' DummyArgList? ')' Suffix?  EOS -> EntryStmt   {cons("EntryStmt_DAL")}
-  Label? 'ENTRY' EntryName                                EOS -> EntryStmt   {cons("EntryStmt_0")}
+  Label? 'ENTRY' EntryName '(' DummyArgList? ')' OptSuffix EOS -> EntryStmt  {cons("EntryStmt_DAL")}
+  Label? 'ENTRY' EntryName                                 EOS -> EntryStmt  {cons("EntryStmt_0")}
 
 %%R1241
 %%       expr substituted for scalar-int-expr
