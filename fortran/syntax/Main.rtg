@@ -1297,9 +1297,9 @@ regular tree grammar
     OtherSpecificationStmt                -> AccessStmt
     InternalSubprogram                    -> SubroutineSubprogram
     InternalSubprogram                    -> FunctionSubprogram
-    OptInternalSubprogramPart             -> no-internal-subprograms()
-    OptInternalSubprogramPart             -> internal-subprograms(InternalSubprogramPart)
-    InternalSubprogramPart                -> InternalSubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
+    OptInternalSubprogramPart             -> no-subprogram-part()
+    OptInternalSubprogramPart             -> InternalSubprogramPart
+    InternalSubprogramPart                -> subprogram-part(ContainsStmt,ListStarOfInternalSubprogram0)
     ExecutionPartConstruct                -> DataStmt
     ExecutionPartConstruct                -> EntryStmt
     ExecutionPartConstruct                -> FormatStmt
