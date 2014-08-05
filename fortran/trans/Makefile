@@ -1,7 +1,7 @@
 #include elim-main-range.dep
 
-CFLAGS = -Xcc -m32 -I ../syntax
-#CFLAGS = -Xcc -m32 -Wno-parentheses-equality -I ../syntax
+CFLAGS = -I ../syntax -Xcc -m32 
+CFLAGS += -Xcc -Wno-parentheses-equality
 LDFLAGS = -Xlinker -m32 -la stratego-lib
 
 all : ofp2fast fast2pp
