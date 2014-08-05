@@ -15,8 +15,6 @@ signature
    Comment   : A -> B            /* comments are put in annotations */
    OfpString : A -> B            /* node for a string literal */
 
-   tmpImplicitPart : A -> B    /* to combine all to a list */
-
 strategies //=================START OF STRATEGIES============================
 
   io-ofp2fast =
@@ -52,6 +50,13 @@ rules //========================START OF RULES===============================
   ofp-extract-contains:  no-subprogram-part()               -> None()
   ofp-extract-contains:  subprogram-part(contains,_)        -> Some(contains)
 
+  ofp-label:  no-label()                 -> None()
+  ofp-label:  str                        -> Some(OfpLabel(str))
+
+  ofp-name:      str                     -> OfpName(str)
+  ofp-opt-name:  None()                  -> None()
+  ofp-opt-name:  str                     -> Some(OfpName(str))
+
   ofp-fixup-scope:
       OfpScope(spec,exec,funcs,begin,_,end)
          -> OfpScope(spec,exec,<ofp-extract-subprograms>funcs,
@@ -77,12 +82,9 @@ rules //========================START OF RULES===============================
 
 //R204
   ofp-to-ast:
-    SpecificationPart(l1, l2, None(), l4)                     -> OfpSpecPart(<conc> (l1, l2, l4))
+    SpecificationPart(l1, l2, no-implicit-part(), l4)     -> OfpSpecPart(<conc> (l1, l2, l4))
   ofp-to-ast:
-    SpecificationPart(l1, l2, Some(tmpImplicitPart(l3)), l4)  -> OfpSpecPart(<conc> (l1, l2, l3, l4))
-
-//R205
-  ofp-to-ast:  ImplicitPart(l, stmt)             -> tmpImplicitPart(<conc> (l, [stmt]))
+    SpecificationPart(l1, l2, ImplicitPart(l3,stmt), l4)  -> OfpSpecPart(<conc> (l1, l2, l3, [stmt], l4))
 
 //R208
   ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
@@ -191,7 +193,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
 //R560
-  ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(label, []) {Comment(eos)}
+  ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(<ofp-label>label, []) {Comment(eos)}
 
 //R601
   ofp-to-ast:  Designator_AMB(expr)      -> expr
@@ -279,7 +281,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)   -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)  -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
 
   ofp-to-ast:  no-program-stmt()            -> None()
 
@@ -288,14 +290,15 @@ rules //========================START OF RULES===============================
                   -> OfpMainProgram(<ofp-extract-name>begin,
                                     <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
 
-//TODO-delete-me
-  ofp-to-ast:  Some(OfpName(no-program-name()))  -> None()
+  ofp-to-ast:  no-program-name()            -> None()
 
 //R1102
-  ofp-to-ast:  ProgramStmt(label,name,eos)    -> OfpProgramStmt(label,OfpName(name))           {Comment(eos)}
+  ofp-to-ast:  ProgramStmt(label,name,eos)
+                  -> OfpProgramStmt(<ofp-label>label,<ofp-name>name)         {Comment(eos)}
 
 //R1103
-  ofp-to-ast:  EndProgramStmt(label,name,eos) -> OfpEndProgramStmt(label,Some(OfpName(name)))  {Comment(eos)}
+  ofp-to-ast:  EndProgramStmt(label,name,eos)
+                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-opt-name>name)  {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
@@ -427,9 +430,9 @@ rules //========================START OF RULES===============================
 
 //R1234 
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,no-language-binding(),eos)
-                       -> OfpSubroutineStmt(label,OfpName(name),args,prefix,OfpSuffix([]))         {Comment(eos)}
+                   -> OfpSubroutineStmt(<ofp-label>label,OfpName(name),args,prefix,OfpSuffix([]))         {Comment(eos)}
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos)
-                       -> OfpSubroutineStmt(label,OfpName(name),args,prefix,OfpSuffix([binding]))  {Comment(eos)}
+                   -> OfpSubroutineStmt(<ofp-label>label,OfpName(name),args,prefix,OfpSuffix([binding]))  {Comment(eos)}
 
   ofp-to-ast:  no-dummy-arg-list()        -> []
 
@@ -439,8 +442,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DummyArgList(args)         -> args
 
 //R1236
-  ofp-to-ast:
-    EndSubroutineStmt(label,name,eos)     -> OfpEndSubroutineStmt(label,Some(OfpName(name)))       {Comment(eos)}
+  ofp-to-ast:  EndSubroutineStmt(label,name,eos) 
+                   -> OfpEndSubroutineStmt(<ofp-label>label,Some(OfpName(name)))  {Comment(eos)}
 
   ofp-to-ast:  no-subroutine-name()       -> None()
 
