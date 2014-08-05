@@ -39,7 +39,7 @@ sorts
   ExecutableConstruct                 %% R213
   ActionStmt                          %% R214
 
-  OptInternalSubprogramPart
+  OptImplicitPart OptInternalSubprogramPart
 
 %% 2.5 Fundamental concepts
 
@@ -53,6 +53,8 @@ sorts
   IntConstant                         %% R307
   CharConstant                        %% R308
   LblRef                              %% R312
+
+  OptLabel
 
 %% 4.2 Type parameters
 
@@ -792,6 +794,10 @@ context-free syntax
 %%R308
   Constant                              -> CharConstant     {cons("CharConstant")}
 
+%%R312
+  LblDef                                -> Label            %%TODO-DELETE
+  LblDef                                -> OptLabel
+  % empty %                             -> OptLabel         {cons("no-label")}
 
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 4xx DataTypes
@@ -1548,8 +1554,8 @@ context-free syntax
 %%
 
 %%R560
-  Label? 'IMPLICIT' ImplicitSpecList               EOS -> ImplicitStmt    {cons("ImplicitStmt")}
-  Label? 'IMPLICIT' 'NONE'                         EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  OptLabel 'IMPLICIT' ImplicitSpecList             EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  OptLabel 'IMPLICIT' 'NONE'                       EOS -> ImplicitStmt    {cons("ImplicitStmt")}
 
 %%R561
   DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec    {cons("ImplicitSpec")}
@@ -3075,17 +3081,20 @@ context-free syntax
 %%R204
   UseStmt*
   ImportStmt*
-  ImplicitPart?
+  OptImplicitPart
   DeclarationConstruct*                  -> SpecificationPart   {cons("SpecificationPart")}
 
 %%R205
   ImplicitPartStmt* ImplicitStmt         -> ImplicitPart        {cons("ImplicitPart")}
 
+  ImplicitPart                           -> OptImplicitPart
+  % empty %                              -> OptImplicitPart     {cons("no-implicit-part")}
+
 %%R206
-  ImplicitStmt                           -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
-  ParameterStmt                          -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
-  FormatStmt                             -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
-  EntryStmt                              -> ImplicitPartStmt    {cons("ImplicitPartStmt")}
+  ImplicitStmt                           -> ImplicitPartStmt
+  ParameterStmt                          -> ImplicitPartStmt
+  FormatStmt                             -> ImplicitPartStmt
+  EntryStmt                              -> ImplicitPartStmt
 
 %%R207
   DerivedTypeDef                         -> DeclarationConstruct
@@ -3231,11 +3240,11 @@ context-free syntax
   % empty %                                    -> OptProgramStmt   {cons("no-program-stmt")}
 
 %%R1102
-  Label? 'PROGRAM' ProgramName             EOS -> ProgramStmt      {cons("ProgramStmt")}
+  OptLabel 'PROGRAM' ProgramName           EOS -> ProgramStmt      {cons("ProgramStmt")}
 
 %%R1103
-  Label? 'END'            NoProgramName    EOS -> EndProgramStmt   {cons("EndProgramStmt")}
-  Label? 'END' 'PROGRAM' OptProgramName    EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  OptLabel 'END'            NoProgramName  EOS -> EndProgramStmt   {cons("EndProgramStmt")}
+  OptLabel 'END' 'PROGRAM' OptProgramName  EOS -> EndProgramStmt   {cons("EndProgramStmt")}
 
   Ident                                        -> ProgramName
   % empty %                                    -> NoProgramName    {cons("no-program-name")}
@@ -3566,33 +3575,33 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     OptInternalSubprogramPart
-  EndSubroutineStmt                              -> SubroutineSubprogram {cons("SubroutineSubprogram")}
+  EndSubroutineStmt                                -> SubroutineSubprogram {cons("SubroutineSubprogram")}
 
 %%R1234
-  Label? OptPrefix 'SUBROUTINE' SubroutineName
+  OptLabel OptPrefix 'SUBROUTINE' SubroutineName
             '(' OptDummyArgList ')'
-             OptProcLanguageBindingSpec        EOS -> SubroutineStmt     {cons("SubroutineStmt")}
-  Label? OptPrefix 'SUBROUTINE' SubroutineName
+             OptProcLanguageBindingSpec          EOS -> SubroutineStmt     {cons("SubroutineStmt")}
+  OptLabel OptPrefix 'SUBROUTINE' SubroutineName
              NoDummyArgList
-             NoProcLanguageBindingSpec         EOS -> SubroutineStmt     {cons("SubroutineStmt")}
+             NoProcLanguageBindingSpec           EOS -> SubroutineStmt     {cons("SubroutineStmt")}
 
 %%R1235
-  DummyArgName                                     -> DummyArg
-  '*'                                              -> DummyArg           {cons("STAR")}
-  {DummyArg ','}+                                  -> DummyArgList       {cons("DummyArgList")}
+  DummyArgName                                       -> DummyArg
+  '*'                                                -> DummyArg           {cons("STAR")}
+  {DummyArg ','}+                                    -> DummyArgList       {cons("DummyArgList")}
 
-  DummyArgList                                     -> OptDummyArgList
-  % empty %                                        -> OptDummyArgList    {cons("no-dummy-arg-list")}
-  % empty %                                        -> NoDummyArgList     {cons("no-dummy-arg-list")}
+  DummyArgList                                       -> OptDummyArgList
+  % empty %                                          -> OptDummyArgList    {cons("no-dummy-arg-list")}
+  % empty %                                          -> NoDummyArgList     {cons("no-dummy-arg-list")}
 
 %%R1236
-  Label? 'END'              NoSubroutineName   EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
-  Label? 'END' 'SUBROUTINE' OptSubroutineName  EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
+  OptLabel 'END'              NoSubroutineName   EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
+  OptLabel 'END' 'SUBROUTINE' OptSubroutineName  EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
 
-  Ident                                            -> SubroutineName
-  % empty %                                        -> NoSubroutineName   {cons("no-subroutine-name")}
-  % empty %                                        -> OptSubroutineName  {cons("no-subroutine-name")}
-  SubroutineName                                   -> OptSubroutineName
+  Ident                                              -> SubroutineName
+  % empty %                                          -> NoSubroutineName   {cons("no-subroutine-name")}
+  % empty %                                          -> OptSubroutineName  {cons("no-subroutine-name")}
+  SubroutineName                                     -> OptSubroutineName
 
 %%R1237
 %%     WARNING-MODIFICATION: 

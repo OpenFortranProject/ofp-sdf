@@ -160,8 +160,6 @@ regular tree grammar
     ListPlusOfDeclarationConstruct0       -> <conc>(ListPlusOfDeclarationConstruct0,ListStarOfDeclarationConstruct0)
     ListPlusOfDeclarationConstruct0       -> <conc>(ListPlusOfDeclarationConstruct0,ListPlusOfDeclarationConstruct0)
     ListPlusOfDeclarationConstruct0       -> <cons>(DeclarationConstruct,ListStarOfDeclarationConstruct0)
-    OptImplicitPart0                      -> <some>(ImplicitPart)
-    OptImplicitPart0                      -> <none>()
     ListStarOfImportStmt0                 -> ListPlusOfImportStmt0
     ListStarOfImportStmt0                 -> <nil>()
     ListStarOfImportStmt0                 -> <conc>(ListStarOfImportStmt0,ListStarOfImportStmt0)
@@ -1068,16 +1066,16 @@ regular tree grammar
     OptSubroutineName                     -> no-subroutine-name()
     NoSubroutineName                      -> no-subroutine-name()
     SubroutineName                        -> Ident
-    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,OptSubroutineName,EOS)
-    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel0,NoSubroutineName,EOS)
+    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel,OptSubroutineName,EOS)
+    EndSubroutineStmt                     -> EndSubroutineStmt(OptLabel,NoSubroutineName,EOS)
     NoDummyArgList                        -> no-dummy-arg-list()
     OptDummyArgList                       -> no-dummy-arg-list()
     OptDummyArgList                       -> DummyArgList
     DummyArgList                          -> DummyArgList(ListPlusOfDummyArg0)
     DummyArg                              -> STAR()
     DummyArg                              -> DummyArgName
-    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix,SubroutineName,NoDummyArgList,NoProcLanguageBindingSpec,EOS)
-    SubroutineStmt                        -> SubroutineStmt(OptLabel0,OptPrefix,SubroutineName,OptDummyArgList,OptProcLanguageBindingSpec,EOS)
+    SubroutineStmt                        -> SubroutineStmt(OptLabel,OptPrefix,SubroutineName,NoDummyArgList,NoProcLanguageBindingSpec,EOS)
+    SubroutineStmt                        -> SubroutineStmt(OptLabel,OptPrefix,SubroutineName,OptDummyArgList,OptProcLanguageBindingSpec,EOS)
     SubroutineSubprogram                  -> SubroutineSubprogram(SubroutineStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndSubroutineStmt)
     OptFunctionName                       -> SubroutineName
     OptFunctionName                       -> no-function-name()
@@ -1216,9 +1214,9 @@ regular tree grammar
     OptProgramName                        -> no-program-name()
     NoProgramName                         -> no-program-name()
     ProgramName                           -> Ident
-    EndProgramStmt                        -> EndProgramStmt(OptLabel0,OptProgramName,EOS)
-    EndProgramStmt                        -> EndProgramStmt(OptLabel0,NoProgramName,EOS)
-    ProgramStmt                           -> ProgramStmt(OptLabel0,ProgramName,EOS)
+    EndProgramStmt                        -> EndProgramStmt(OptLabel,OptProgramName,EOS)
+    EndProgramStmt                        -> EndProgramStmt(OptLabel,NoProgramName,EOS)
+    ProgramStmt                           -> ProgramStmt(OptLabel,ProgramName,EOS)
     OptProgramStmt                        -> no-program-stmt()
     OptProgramStmt                        -> ProgramStmt
     MainProgram                           -> MainProgram(OptProgramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndProgramStmt)
@@ -1315,12 +1313,14 @@ regular tree grammar
     DeclarationConstruct                  -> EnumDef
     DeclarationConstruct                  -> EntryStmt
     DeclarationConstruct                  -> DerivedTypeDef
-    ImplicitPartStmt                      -> ImplicitPartStmt(EntryStmt)
-    ImplicitPartStmt                      -> ImplicitPartStmt(FormatStmt)
-    ImplicitPartStmt                      -> ImplicitPartStmt(ParameterStmt)
-    ImplicitPartStmt                      -> ImplicitPartStmt(ImplicitStmt)
+    ImplicitPartStmt                      -> EntryStmt
+    ImplicitPartStmt                      -> FormatStmt
+    ImplicitPartStmt                      -> ParameterStmt
+    ImplicitPartStmt                      -> ImplicitStmt
+    OptImplicitPart                       -> no-implicit-part()
+    OptImplicitPart                       -> ImplicitPart
     ImplicitPart                          -> ImplicitPart(ListStarOfImplicitPartStmt0,ImplicitStmt)
-    SpecificationPart                     -> SpecificationPart(ListStarOfUseStmt0,ListStarOfImportStmt0,OptImplicitPart0,ListStarOfDeclarationConstruct0)
+    SpecificationPart                     -> SpecificationPart(ListStarOfUseStmt0,ListStarOfImportStmt0,OptImplicitPart,ListStarOfDeclarationConstruct0)
     ExternalSubprogram                    -> SubroutineSubprogram
     ExternalSubprogram                    -> FunctionSubprogram
     ProgramUnit                           -> BlockData
@@ -1853,8 +1853,8 @@ regular tree grammar
     LetterSpec                            -> LetterSpec(Letter,OptLetter0)
     ImplicitSpecList                      -> ImplicitSpecList(ListPlusOfImplicitSpec0)
     ImplicitSpec                          -> ImplicitSpec(DeclarationTypeSpec,LetterSpecList)
-    ImplicitStmt                          -> ImplicitStmt(OptLabel0,EOS)
-    ImplicitStmt                          -> ImplicitStmt(OptLabel0,ImplicitSpecList,EOS)
+    ImplicitStmt                          -> ImplicitStmt(OptLabel,EOS)
+    ImplicitStmt                          -> ImplicitStmt(OptLabel,ImplicitSpecList,EOS)
     VolatileStmt                          -> VolatileStmt(OptLabel0,ObjectNameList,EOS)
     VolatileStmt                          -> VolatileStmt(OptLabel0,ObjectNameList,EOS)
     ValueStmt                             -> ValueStmt(OptLabel0,DummyArgNameList,EOS)
@@ -2170,6 +2170,9 @@ regular tree grammar
     TypeParamValue                        -> TypeParamValue_COLON()
     TypeParamValue                        -> TypeParamValue_STAR()
     TypeParamValue                        -> TypeParamValue_E(Expr)
+    OptLabel                              -> no-label()
+    OptLabel                              -> LblDef
+    Label                                 -> LblDef
     CharConstant                          -> CharConstant(Constant)
     IntConstant                           -> IntConstant(Constant)
     NamedConstant                         -> NamedConstant(Name)
@@ -2193,7 +2196,6 @@ regular tree grammar
     ArgName                               -> ArgName(Ident)
     Continuation                          -> <string>
     LblRef                                -> LblRef(LblDef)
-    Label                                 -> Label(LblDef)
     Dop                                   -> <string>
     ScalarIntLiteralConstant              -> <string>
     HexConstant                           -> <string>
