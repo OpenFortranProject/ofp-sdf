@@ -3113,10 +3113,10 @@ context-free syntax
   DataStmt                               -> ExecutionPartConstruct
 
 %%R210
-  ContainsStmt InternalSubprogram*       -> InternalSubprogramPart    {cons("InternalSubprogramPart")}
+  ContainsStmt InternalSubprogram*       -> InternalSubprogramPart    {cons("subprogram-part")}
 
-  InternalSubprogramPart                 -> OptInternalSubprogramPart {cons("internal-subprograms")}
-  % empty %                              -> OptInternalSubprogramPart {cons("no-internal-subprograms")}
+  InternalSubprogramPart                 -> OptInternalSubprogramPart
+  % empty %                              -> OptInternalSubprogramPart {cons("no-subprogram-part")}
 
 %%R211
   FunctionSubprogram                     -> InternalSubprogram
