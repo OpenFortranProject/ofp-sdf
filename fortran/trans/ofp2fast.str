@@ -17,16 +17,17 @@ signature
 
    tmpImplicitPart : A -> B    /* to combine all to a list */
 
+strategies //=================START OF STRATEGIES============================
 
-strategies
   io-ofp2fast =
     io-wrap(ofp2fast)
 
   ofp2fast =
     outermost(ofp-disamb); innermost(ofp-to-ast)
 
+  ofp-add-some = ?None() < id + !Some(<id>)
 
-rules
+rules //========================START OF RULES===============================
 
   // Disambiguation rules
   //
@@ -38,13 +39,25 @@ rules
   ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
   ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
-  ofp-extract-contains:  OfpModuleStmt   (label,name)                    -> name
+  ofp-extract-name:  None()                              -> None()
+  ofp-extract-name:  OfpModuleStmt       (_,name)        -> name
+  ofp-extract-name:  OfpProgramStmt      (_,name)        -> Some(name)
+  ofp-extract-name:  OfpMpSubprogramStmt (_,name)        -> name
+  ofp-extract-name:  OfpSubroutineStmt   (_,name,_,_,_)  -> name
+  ofp-extract-name:  OfpFunctionStmt     (_,name,_,_,_)  -> name
 
-  ofp-extract-name:  OfpModuleStmt       (label,name)                    -> name
-  ofp-extract-name:  OfpProgramStmt      (label,name)                    -> name
-  ofp-extract-name:  OfpMpSubprogramStmt (label,name)                    -> name
-  ofp-extract-name:  OfpSubroutineStmt   (label,name,args,prefix,suffix) -> name
-  ofp-extract-name:  OfpFunctionStmt     (label,name,args,prefix,suffix) -> name
+  ofp-extract-subprograms:  no-subprogram-part()            -> OfpFuncPart([])
+  ofp-extract-subprograms:  subprogram-part(_,subprograms)  -> OfpFuncPart(subprograms)
+
+  ofp-extract-contains:  no-subprogram-part()               -> None()
+  ofp-extract-contains:  subprogram-part(contains,_)        -> Some(contains)
+
+  ofp-fixup-scope:
+      OfpScope(spec,exec,funcs,begin,_,end)
+         -> OfpScope(spec,exec,<ofp-extract-subprograms>funcs,
+                               <ofp-add-some>begin,
+                               <ofp-extract-contains>funcs,
+                               <ofp-add-some>end)
 
   ofp-to-ast:  LanguageBindingName(str)  -> str
 
@@ -73,9 +86,6 @@ rules
 
 //R208
   ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
-
-//R210
-  ofp-to-ast:  no-internal-subprograms()         -> OfpFuncPart([])
 
 //R215
   ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
@@ -274,21 +284,9 @@ rules
   ofp-to-ast:  no-program-stmt()            -> None()
 
 //R1101
-  ofp-to-ast:
-    MainProgram(None(),spec,exec,funcs,end)
-                  -> OfpMainProgram(None(),OfpScope(spec,exec,funcs,None(),None(),Some(end)))
-  ofp-to-ast:
-    MainProgram(begin,spec,exec,funcs,end)
-                  -> OfpMainProgram(Some(<ofp-extract-name>begin),
-                                    OfpScope(spec,exec,funcs,Some(begin),None(),Some(end)))
-
-//  ofp-to-ast:
-//    MainProgram(no-program-stmt(),spec,exec,internal-subprograms(InternalSubprogramPart(contains,funcs)),end)
-//                  -> OfpMainProgram(None(),OfpScope(spec,exec,OfpFuncPart(funcs),None(),Some(contains),Some(end)))
-  ofp-to-ast:
-    MainProgram(begin,spec,exec,internal-subprograms(InternalSubprogramPart(contains,funcs)),end)
-                  -> OfpMainProgram(Some(<ofp-extract-name>begin),
-                                    OfpScope(spec,exec,OfpFuncPart(funcs),Some(begin),Some(contains),Some(end)))
+  ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
+                  -> OfpMainProgram(<ofp-extract-name>begin,
+                                    <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
 
 //TODO-delete-me
   ofp-to-ast:  Some(OfpName(no-program-name()))  -> None()
@@ -423,12 +421,9 @@ rules
   ofp-to-ast:  EndFunctionStmt(label,name,eos)  -> OfpEndFunctionStmt(label,name)                  {Comment(eos)}
 
 //R1233
-  ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,None(),end)
-                   -> OfpSubroutine(<ofp-extract-name>begin,
-                                    OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,func,end)
                    -> OfpSubroutine(<ofp-extract-name>begin,
-                                    OfpScope(spec,exec,func,Some(begin),None(),Some(end)))
+                                    <ofp-fixup-scope>OfpScope(spec,exec,func,begin,None(),end))
 
 //R1234 
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,no-language-binding(),eos)
@@ -443,11 +438,11 @@ rules
   ofp-to-ast:  STAR()                     -> OfpDummyArg(STAR())
   ofp-to-ast:  DummyArgList(args)         -> args
 
-  ofp-to-ast:  no-subroutine-name()       -> None()
-
 //R1236
   ofp-to-ast:
-    EndSubroutineStmt(label,name,eos)     -> OfpEndSubroutineStmt(label,name)          {Comment(eos)}
+    EndSubroutineStmt(label,name,eos)     -> OfpEndSubroutineStmt(label,Some(OfpName(name)))       {Comment(eos)}
+
+  ofp-to-ast:  no-subroutine-name()       -> None()
 
 //R1237
   ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,None(),end)
