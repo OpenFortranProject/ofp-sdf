@@ -1,0 +1,26 @@
+module ofp-simplify
+
+imports
+   libstratego-lib
+   Main
+
+signature
+  constructors
+
+   SpecificationPart : A -> B
+
+strategies //=================START OF STRATEGIES============================
+
+  io-ofp-simplify =
+    io-wrap(ofp-simplify)
+
+  ofp-simplify =
+    innermost(ofp-simplify-ast)
+
+rules //========================START OF RULES===============================
+
+ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
+
+ofp-simplify-ast:  no-implicit-part()             -> []
+
+ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
