@@ -4,7 +4,10 @@ CFLAGS = -I ../syntax -Xcc -m32
 CFLAGS += -Xcc -Wno-parentheses-equality
 LDFLAGS = -Xlinker -m32 -la stratego-lib
 
-all : ofp2fast fast2pp
+all : ofp-simplify ofp2fast fast2pp
+
+ofp-simplify : ofp-simplify.str
+	strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
 
 ofp2fast : ofp2fast.str
 	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS) --main io-ofp2fast
