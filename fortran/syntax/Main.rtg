@@ -1974,7 +1974,8 @@ regular tree grammar
     CoarraySpec                           -> DeferredCoshapeSpecList
     OptLanguageBindingName                -> no-binding-name()
     OptLanguageBindingName                -> LanguageBindingName
-    LanguageBindingName                   -> LanguageBindingName(Scon)
+    LanguageBindingName                   -> LanguageBindingName(Ident)
+    LanguageBindingName                   -> LanguageBindingName(Ident)
     LanguageBindingSpec                   -> LanguageBindingSpec(OptLanguageBindingName)
     AccessSpec                            -> PRIVATE()
     AccessSpec                            -> PUBLIC()

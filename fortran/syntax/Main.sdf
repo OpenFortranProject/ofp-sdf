@@ -1292,10 +1292,11 @@ context-free syntax
   'PRIVATE'                                             -> AccessSpec      {cons("PRIVATE")}
 
 %%R508
-%%       Scon substituted for scalar-default-char-constant-expr
+%%       Ident with quotes substituted for scalar-default-char-constant-expr
 %%
   'BIND' '(' 'C' OptLanguageBindingName ')'             -> LanguageBindingSpec  {cons("LanguageBindingSpec")}
-  ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("LanguageBindingName")}
+  ',' 'NAME' '=' '"' Ident '"'                          -> LanguageBindingName  {cons("LanguageBindingName")}
+  ',' 'NAME' '=' "'" Ident "'"                          -> LanguageBindingName  {cons("LanguageBindingName")}
 
   LanguageBindingName                                   -> OptLanguageBindingName
   % empty %                                             -> OptLanguageBindingName {cons("no-binding-name")}

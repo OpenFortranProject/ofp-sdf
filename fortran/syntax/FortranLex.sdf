@@ -17,7 +17,7 @@ sorts
   Icon Ident Label LblDef LblRef
   Letter OctalConstant
   Rcon ScalarIntLiteralConstant Scon
-  SconDouble SconSingle 
+  SconDouble SconSingle
 
 %%TODO-DELETE  SignedIntLiteralConstant            %% R406
 %%TODO-DELETE  IntLiteralConstant                  %% R407
