@@ -29,12 +29,11 @@ strategies //=================START OF STRATEGIES============================
   ofp-some-name  = is-string < !Some(OfpName (<id>)) + !None()
   ofp-label      = is-string < !Some(OfpLabel(<id>)) + !None()
 
-  ofp-type = id
-  ofp-kind = id
+  ofp-char-select = ofp-add-some; id
+  ofp-kind = ofp-add-some; id
   ofp-args = !OfpArgList(<id>)
 
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
-//  ofp-suffix = is-list < !OfpSuffix(<id>) + !OfpSuffix([])
   ofp-suffix = id
 
 rules //========================START OF RULES===============================
@@ -68,8 +67,6 @@ rules //========================START OF RULES===============================
                                <ofp-add-some>begin,
                                <ofp-extract-contains>funcs,
                                <ofp-add-some>end)
-
-  ofp-to-ast:  LanguageBindingName(str)  -> str
 
   ofp-to-ast:  ExternalName(str)         -> OfpName(str)
   ofp-to-ast:  GenericName(str)          -> OfpName(str)
@@ -111,7 +108,13 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  EquivOp(op)                       -> OfpOp(op)
 
 //R403
-  ofp-to-ast:  Type(type)                        -> OfpType(<ofp-type>type, <ofp-kind>type)
+  ofp-to-ast:  Type(INTEGER(kind))               -> OfpType(INTEGER(),         <ofp-kind>kind)
+  ofp-to-ast:  Type(REAL(kind))                  -> OfpType(REAL(),            <ofp-kind>kind)
+  ofp-to-ast:  Type(DOUBLEPRECISION())           -> OfpType(DOUBLEPRECISION(), None())
+  ofp-to-ast:  Type(COMPLEX(kind))               -> OfpType(COMPLEX(),         <ofp-kind>kind)
+  ofp-to-ast:  Type(CHARACTER(char))             -> OfpType(CHARACTER(),       <ofp-char-select>char)
+  ofp-to-ast:  Type(LOGICAL(kind))               -> OfpType(LOGICAL(),         <ofp-kind>kind)
+  ofp-to-ast:  Type(DOUBLECOMPLEX())             -> OfpType(DOUBLECOMPLEX(),   None())
 
 //R407
   ofp-to-ast:  IntLiteralConstant(str)                 -> OfpLiteral(str, OfpType(INTEGER(), None()))
@@ -141,6 +144,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  EntityDeclList(EntityDecls)                    -> EntityDecls
     
 //R508
+  ofp-to-ast:  LanguageBindingName(str)         -> str
   ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
 
 //R511
@@ -393,9 +397,9 @@ rules //========================START OF RULES===============================
                                       <ofp-prefix>prefix,<ofp-suffix>suffix)   {Comment(eos)}
 
 //R1231
-  ofp-to-ast:  ResultName(str)                  -> OfpResultName(str)
   ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
-//  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
+  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
+  ofp-to-ast:  no-result-name()                 -> None()
 
 //R1232
   ofp-to-ast:  EndFunctionStmt(label,name,eos)
