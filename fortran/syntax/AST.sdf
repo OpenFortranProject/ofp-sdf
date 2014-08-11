@@ -143,6 +143,7 @@ exports
     OfpSubroutine            %% R1233
     OfpSubroutineStmt        %% R1234
     OfpDummyArg              %% R1235
+    OfpArgList
     STAR
     OfpEndSubroutineStmt     %% R1236
 
@@ -412,7 +413,7 @@ exports
   OfpName OfpScope            -> OfpFunction            {cons("OfpFunction")}            %% R1227
 
   OfpLabel? OfpFunctionName
-        OfpDummyArg* OfpPrefix
+         OfpArgList OfpPrefix
                     OfpSuffix -> OfpFunctionStmt        {cons("OfpFunctionStmt")}        %% R1228
 
   String                      -> OfpFunctionName        {cons("OfpFunctionName")}
@@ -429,11 +430,13 @@ exports
 
   OfpName OfpScope            -> OfpSubroutine          {cons("OfpSubroutine")}          %% R1233
   OfpLabel? OfpName
-       OfpDummyArg* OfpPrefix
+         OfpArgList OfpPrefix
                     OfpSuffix -> OfpSubroutineStmt      {cons("OfpSubroutineStmt")}      %% R1234
   String                      -> OfpDummyArg            {cons("OfpDummyArg")}            %% R1235
   STAR                        -> OfpDummyArg            {cons("STAR")}
                               -> STAR                   {cons("STAR")}
+  OfpDummyArg*                -> OfpArgList             {cons("OfpArgList")}
+
   OfpLabel? OfpName?          -> OfpEndSubroutineStmt   {cons("OfpEndSubroutineStmt")}   %% R1236
   OfpSubroutineStmt           -> OfpBeginStmt
   OfpEndSubroutineStmt        -> OfpEndStmt
