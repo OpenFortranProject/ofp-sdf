@@ -1,7 +1,6 @@
 [
    Comment                       -- _1,
    None                          -- ,
-   Label                         -- _1,
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER ::"],
 
@@ -18,6 +17,9 @@
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
+
+   #R312 --,
+   OfpLabel                      -- _1,
 
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
