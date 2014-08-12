@@ -14,7 +14,7 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	sdf2table -i $< -o $@
 
-all : Fortran.tbl Main.str AST.str
+all : Fortran.tbl AST.str
 
 AST.def : AST.sdf
 	pack-sdf -i $< -o $@
@@ -22,12 +22,8 @@ AST.def : AST.sdf
 AST.rtg : AST.def
 	sdf2rtg -i AST.def -m AST -o AST.rtg
 
-AST.sig : AST.rtg
-	rtg2sig -i AST.rtg -o AST.sig
-
-AST.str : AST.sig
-	cp AST.sig AST.str
-
+AST.str : AST.rtg
+	rtg2sig -i AST.rtg -o AST.str
 
 Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
@@ -47,11 +43,8 @@ Fortran.def : Fortran.sdf FortranLex.sdf FortranLexFree.sdf
 Main.rtg : Main.def Fortran.tbl
 	sdf2rtg -i Main.def -m Main -o Main.rtg --ignore-missing-cons
 
-Main.sig : Main.rtg
-	rtg2sig -i Main.rtg -o Main.sig
-
-Main.str : Main.sig
-	cp Main.sig Main.str
+Main.str : Main.rtg
+	rtg2sig -i Main.rtg -o Main.str
 
 check : Fortran.tbl
 	@for File in $(TestFiles) ;\
@@ -82,7 +75,7 @@ junk.ast-info.pp : junk.f90 Fortran.tbl
 	sglr -i junk.f90 -p Fortran.tbl | addPosInfo -p ./junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
-	rm -f *.def *.tbl *.rtg *.sig *.str
+	rm -f *.def *.tbl Main.sig AST.rtg AST.sig AST.str
 	rm -f *.ast *.pp
 	rm -f *.o *.mod
 	rm -f $(TEST_DIR)/*.ast $(TEST_DIR)/*.ast.pp
