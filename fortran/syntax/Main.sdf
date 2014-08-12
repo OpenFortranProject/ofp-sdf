@@ -333,14 +333,14 @@ sorts
   Stride                              %% R622
   VectorSubscript                     %% R623
 
-  SectionSubscriptList OptSectionSubscriptList
+  SectionSubscriptList OptSectionSubscripts
 
 %% 6.6 Image selectors
 
   ImageSelector                       %% R624
   Cosubscript                         %% R625
 
-  CosubscriptList
+  CosubscriptList OptImageSelector
 
 %% 6.7 Dynamic association
 
@@ -773,8 +773,8 @@ context-free syntax
 %%
 
 %%R304
-  LiteralConstant                       -> Constant         {cons("Constant_AMB")}
-  NamedConstant                         -> Constant         {reject} %% can't tell name is constant
+  LiteralConstant                       -> Constant
+  NamedConstant                         -> Constant  {reject}  %% AMBIGUOUS - can't tell name is constant
 
 %%R305
   IntLiteralConstant                    -> LiteralConstant
@@ -785,7 +785,7 @@ context-free syntax
   BozLiteralConstant                    -> LiteralConstant
 
 %%R306
-  Name                                  -> NamedConstant    {cons("NamedConstant")}
+  Name                                  -> NamedConstant
 
 %%TODO-AMBIGUOUS
 %%TODO-F08 the following rules look way ambiguous
@@ -1108,9 +1108,9 @@ context-free syntax
   ( Keyword '=' )? ComponentDataSource             -> ComponentSpec           {cons("ComponentSpec")}
 
 %%R457
-  Expr                                             -> ComponentDataSource     {cons("ComponentDataSource_E")}  
-  DataTarget                                       -> ComponentDataSource     {cons("ComponentDataSource_DT")}  
-  ProcTarget                                       -> ComponentDataSource     {cons("ComponentDataSource_PT")}  
+  Expr                                             -> ComponentDataSource
+  DataTarget                                       -> ComponentDataSource     {reject}
+  ProcTarget                                       -> ComponentDataSource     {reject}
 
 
 %% 4.6 Enumerations and enumerators
@@ -1629,7 +1629,6 @@ context-free syntax
 %% Identifier aliases
 %%
 
-  Ident   -> PartName                  {cons("PartName")}
   Ident   -> ScalarVariableName        {cons("ScalarVariableName")}
 
 %% 6.1 Designator
@@ -1649,8 +1648,8 @@ context-free syntax
 
 %%  ObjectName
 %%  CoindexedNamedObject
-  DataRef                              -> Designator   {cons("Designator_AMB")}
-  Substring                            -> Designator   {cons("Designator_AMB")}
+  DataRef                              -> Designator
+  Substring                            -> Designator
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -1662,8 +1661,8 @@ context-free syntax
 %%
 
 %%R602
-  Designator                           -> Variable  {cons("Variable")}
-%%AMB Expr                             -> Variable  %% expr shall be a func ref with pointer result
+  Designator                           -> Variable
+%%Expr                                 -> Variable  {reject}  %% expr shall be a func ref with pointer result
 
 %%R602
 %%TODO-AMB   VariableName | ArrayElement                                   -> ScalarVariable
@@ -1696,14 +1695,15 @@ context-free syntax
   ParentString '(' SubstringRange ')'  -> Substring        {cons("Substring")}
 
 %%609
+%% AMBIGUOUS
 %%      constant substituted for scalar-constant
 %%      structure-component substituted for scalar-structure-component
 %%
-  ScalarVariableName                   -> ParentString     {cons("ParentString_SVN")}
-  ArrayElement                         -> ParentString     {cons("ParentString_AE")}
-  CoindexedNamedObject                 -> ParentString     {cons("ParentString_CNO")}
-  StructureComponent                   -> ParentString     {cons("ParentString_SC")}
-  Constant                             -> ParentString     {cons("ParentString_C")}
+  ScalarVariableName                   -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
+  ArrayElement                         -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
+  CoindexedNamedObject                 -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
+  StructureComponent                   -> ParentString
+  Constant                             -> ParentString
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -1711,22 +1711,15 @@ context-free syntax
   IntExpr? ':' IntExpr?                -> SubstringRange   {cons("SubstringRange")}
 
 %%R611
-%%TODO - is the following still true?
-%%AMBibuous with part-ref ambiguous with name
-%%{PartRef "%"}+                                                -> DataRef   {cons("DataRef")}
-%%Name                                                          -> DataRef   {reject}
-%%
-%%REMOVE  PartName '%' PartName                                         -> DataRef   {cons("DataRef")}
-%%REMOVE  DataRef  '%' PartName                                         -> DataRef   {cons("DataRef")}
-%%REMOVE  PartName ArraySelector                                        -> DataRef   {cons("DataRef")}
-%%REMOVE  DataRef  ArraySelector                                        -> DataRef   {cons("DataRef")}
-
-%%R611
   {PartRef '%'}+                                         -> DataRef   {cons("DataRef")}
 
 %%R612
-  PartName OptSectionSubscriptList? ImageSelector?       -> PartRef   {cons("PartRef")}
-  '(' SectionSubscriptList ')'                           -> OptSectionSubscriptList   {cons("OptSectionSubscriptList")}
+  PartName OptSectionSubscripts OptImageSelector         -> PartRef   {cons("PartRef")}
+
+  % empty %                                              -> OptSectionSubscripts  {cons("no-section-subscripts")}
+  '(' SectionSubscriptList ')'                           -> OptSectionSubscripts  {cons("opt-section-subscripts")}
+
+  Ident                                                  -> PartName
 
 %%R613
   DataRef                                                -> StructureComponent   {cons("StructureComponent")}
@@ -1781,11 +1774,13 @@ context-free syntax
 
 %%R624
   '[' CosubscriptList ']'                                -> ImageSelector        {cons("ImageSelector")}
+  ImageSelector                                          -> OptImageSelector
+  % empty %                                              -> OptImageSelector     {cons("no-image-selector")}
 
 %%625
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> Cosubscript          {cons("Cosubscript")}
+  IntExpr                                                -> Cosubscript
   {Cosubscript ','}+                                     -> CosubscriptList      {cons("CosubscriptList")}
 
 
@@ -1917,15 +1912,14 @@ context-free syntax
   IntrinsicOperator             -> ExtendedIntrinsicOp
 
 %%R701
-%%TODO-AMB
-  Constant                      -> Primary          {cons("Primary_AMB")}
-  Designator                    -> Primary          {cons("Primary_AMB")}
-  ArrayConstructor              -> Primary          {cons("Primary_AC_AMB")}
-  StructureConstructor          -> Primary          {cons("Primary_SC_AMB")}
-  FunctionReference             -> Primary          {cons("Primary_FR_AMB")}
-  TypeParamInquiry              -> Primary          {cons("Primary_TPI_AMB")}
-%%TypeParamName                 -> Primary          {reject}                %% > Designator
-  '(' Expr ')'                  -> Primary          {cons("Primary_E_AMB")}
+  Constant                      -> Primary
+  Designator                    -> Primary
+  ArrayConstructor              -> Primary
+  StructureConstructor          -> Primary
+  FunctionReference             -> Primary
+  TypeParamInquiry              -> Primary
+%%TypeParamName                 -> Primary  {reject}        %% AMBIGUOUS > Designator
+  '(' Expr ')'                  -> Primary  {cons("Primary")}
 
 %%TODO-DELETE   Scon                          -> Primary          {cons("PrimaryScon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("ConstExpr")}
@@ -2011,7 +2005,7 @@ context-free syntax
 %%R722
 %%TODO-short circuit the expr nonsense and make it more sensible
 %%( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("Expr")}
-Primary                                    -> Expr            {cons("Expr")}
+Primary                                    -> Expr
 
 %%R723
   Dop                                      -> DefinedBinaryOp {cons("DefinedBinaryOp")}
@@ -2046,7 +2040,7 @@ Primary                                    -> Expr            {cons("Expr")}
   IntExpr                                  -> IntConstantExpr {cons("IntConstantExpr")}
 
 %%R732
-  Label? Variable '=' Expr             EOS -> AssignmentStmt  {cons("AssignmentStmt")}
+  OptLabel Variable '=' Expr           EOS -> AssignmentStmt  {cons("AssignmentStmt")}
 
 %% todo: check. Original ISO: assignmentStatement is variable '=' expression
 %%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
@@ -2103,9 +2097,9 @@ Primary                                    -> Expr            {cons("Expr")}
   Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("ProcComponentRef")}
 
 %%R740
-  Expr                                                 -> ProcTarget        {cons("ProcTarget_E")}
-  ProcedureName                                        -> ProcTarget        {cons("ProcTarget_PN")}
-  ProcComponentRef                                     -> ProcTarget        {cons("ProcTarget_PCR")}
+  Expr                                                 -> ProcTarget
+  ProcedureName                                        -> ProcTarget
+  ProcComponentRef                                     -> ProcTarget
 
 %%R741
   Label? 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("WhereStmt")}

@@ -568,10 +568,6 @@ regular tree grammar
     SubstringRange0                       -> <(1)>(SubstringRange)
     OptSubstringRange0                    -> <some>(SubstringRange0)
     OptSubstringRange0                    -> <none>()
-    OptImageSelector0                     -> <some>(ImageSelector)
-    OptImageSelector0                     -> <none>()
-    OptOptSectionSubscriptList0           -> <some>(OptSectionSubscriptList)
-    OptOptSectionSubscriptList0           -> <none>()
     ListStarOfPartRef0                    -> ListPlusOfPartRef0
     ListStarOfPartRef0                    -> <nil>()
     ListStarOfPartRef0                    -> <conc>(ListStarOfPartRef0,ListStarOfPartRef0)
@@ -1664,9 +1660,9 @@ regular tree grammar
     MaskedElsewhereClause                 -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct0)
     WhereConstruct                        -> WhereConstruct(WhereConstructStmt,ListStarOfWhereBodyConstruct0,ListStarOfMaskedElsewhereClause0,OptElsewhereClause0,EndWhereStmt)
     WhereStmt                             -> WhereStmt(OptLabel0,MaskExpr,WhereAssignmentStmt)
-    ProcTarget                            -> ProcTarget_PCR(ProcComponentRef)
-    ProcTarget                            -> ProcTarget_PN(ProcedureName)
-    ProcTarget                            -> ProcTarget_E(Expr)
+    ProcTarget                            -> ProcComponentRef
+    ProcTarget                            -> ProcedureName
+    ProcTarget                            -> Expr
     ProcComponentRef                      -> ProcComponentRef(Variable,ProcedureComponentName)
     ProcPointerObject                     -> ProcPointerObject_PCR(ProcComponentRef)
     ProcPointerObject                     -> ProcPointerObject_PPN(ProcPointerName)
@@ -1680,7 +1676,7 @@ regular tree grammar
     PointerAssignmentStmt                 -> PointerAssignmentStmt_PPO(OptLabel0,ProcPointerObject,ProcTarget,EOS)
     PointerAssignmentStmt                 -> PointerAssignmentStmt_DPO2(OptLabel0,DataPointerObject,BoundsRemappingList,DataTarget,EOS)
     PointerAssignmentStmt                 -> PointerAssignmentStmt_DPO1(OptLabel0,DataPointerObject,OptBoundsSpecList0,DataTarget,EOS)
-    AssignmentStmt                        -> AssignmentStmt(OptLabel0,Variable,Expr,EOS)
+    AssignmentStmt                        -> AssignmentStmt(OptLabel,Variable,Expr,EOS)
     IntConstantExpr                       -> IntConstantExpr(IntExpr)
     DefaultCharConstantExpr               -> DefaultCharConstantExpr(DefaultCharExpr)
     ConstantExpr                          -> ConstantExpr(Expr)
@@ -1690,7 +1686,7 @@ regular tree grammar
     DefaultCharExpr                       -> DefaultCharExpr(Expr)
     LogicalExpr                           -> LogicalExpr(Expr)
     DefinedBinaryOp                       -> DefinedBinaryOp(Dop)
-    Expr                                  -> Expr(Primary)
+    Expr                                  -> Primary
     EquivOp                               -> EquivOp_NEQV()
     EquivOp                               -> EquivOp_EQV()
     OrOp                                  -> OrOp()
@@ -1725,13 +1721,13 @@ regular tree grammar
     MultOperand                           -> MultOperand(Level1Expr,OptPowerOp_MultOperand0)
     DefinedUnaryOp                        -> DefinedUnaryOp(Dop)
     Level1Expr                            -> Level1Expr(OptDefinedUnaryOp0,Primary)
-    Primary                               -> Primary_E_AMB(Expr)
-    Primary                               -> Primary_TPI_AMB(TypeParamInquiry)
-    Primary                               -> Primary_FR_AMB(FunctionReference)
-    Primary                               -> Primary_SC_AMB(StructureConstructor)
-    Primary                               -> Primary_AC_AMB(ArrayConstructor)
-    Primary                               -> Primary_AMB(Designator)
-    Primary                               -> Primary_AMB(Constant)
+    Primary                               -> Primary(Expr)
+    Primary                               -> TypeParamInquiry
+    Primary                               -> FunctionReference
+    Primary                               -> StructureConstructor
+    Primary                               -> ArrayConstructor
+    Primary                               -> Designator
+    Primary                               -> Constant
     ExtendedIntrinsicOp                   -> IntrinsicOperator
     DefinedOperator                       -> DefinedOperator(ExtendedIntrinsicOp)
     DefinedOperator                       -> DefinedOperator(DefinedBinaryOp)
@@ -1789,7 +1785,9 @@ regular tree grammar
     AllocateStmt                          -> AllocateStmt(OptLabel0,TypeSpec,AllocationList,EOS)
     AllocateStmt                          -> AllocateStmt(OptLabel0,AllocationList,EOS)
     CosubscriptList                       -> CosubscriptList(ListPlusOfCosubscript0)
-    Cosubscript                           -> Cosubscript(IntExpr)
+    Cosubscript                           -> IntExpr
+    OptImageSelector                      -> no-image-selector()
+    OptImageSelector                      -> ImageSelector
     ImageSelector                         -> ImageSelector(CosubscriptList)
     VectorSubscript                       -> VectorSubscript(IntExpr)
     Stride                                -> Stride(IntExpr)
@@ -1806,26 +1804,24 @@ regular tree grammar
     ComplexPartDesignator                 -> ComplexPartDesignator_RE(Designator)
     CoindexedNamedObject                  -> CoindexedNamedObject(DataRef)
     StructureComponent                    -> StructureComponent(DataRef)
-    OptSectionSubscriptList               -> OptSectionSubscriptList(SectionSubscriptList)
-    PartRef                               -> PartRef(PartName,OptOptSectionSubscriptList0,OptImageSelector0)
+    PartName                              -> Ident
+    OptSectionSubscripts                  -> opt-section-subscripts(SectionSubscriptList)
+    OptSectionSubscripts                  -> no-section-subscripts()
+    PartRef                               -> PartRef(PartName,OptSectionSubscripts,OptImageSelector)
     DataRef                               -> DataRef(ListPlusOfPartRef0)
     SubstringRange                        -> SubstringRange(OptIntExpr1,OptIntExpr1)
-    ParentString                          -> ParentString_C(Constant)
-    ParentString                          -> ParentString_SC(StructureComponent)
-    ParentString                          -> ParentString_CNO(CoindexedNamedObject)
-    ParentString                          -> ParentString_AE(ArrayElement)
-    ParentString                          -> ParentString_SVN(ScalarVariableName)
+    ParentString                          -> Constant
+    ParentString                          -> StructureComponent
     Substring                             -> Substring(ParentString,SubstringRange)
     IntVariable                           -> IntVariable(Variable)
     DefaultCharVariable                   -> DefaultCharVariable(Variable)
     CharVariable                          -> CharVariable(Variable)
     LogicalVariable                       -> LogicalVariable(Variable)
     VariableName                          -> VariableName(Ident)
-    Variable                              -> Variable(Designator)
-    Designator                            -> Designator_AMB(Substring)
-    Designator                            -> Designator_AMB(DataRef)
+    Variable                              -> Designator
+    Designator                            -> Substring
+    Designator                            -> DataRef
     ScalarVariableName                    -> ScalarVariableName(Ident)
-    PartName                              -> PartName(Ident)
     CommonBlockObjectList                 -> CommonBlockObjectList(ListPlusOfCommonBlockObject0)
     CommonBlockObject                     -> CommonBlockObject(VariableName,OptArraySpec0)
     CommonBlockEntry                      -> CBE(OptCommonBlockName0,CommonBlockObjectList)
@@ -2039,9 +2035,7 @@ regular tree grammar
     EnumeratorDefStmt                     -> EnumeratorDefStmt(OptLabel0,EnumeratorList,EOS)
     EnumDefStmt                           -> EnumDefStmt(OptLabel0,EOS)
     EnumDef                               -> EnumDef(EnumDefStmt,ListPlusOfEnumeratorDefStmt0,EndEnumStmt)
-    ComponentDataSource                   -> ComponentDataSource_PT(ProcTarget)
-    ComponentDataSource                   -> ComponentDataSource_DT(DataTarget)
-    ComponentDataSource                   -> ComponentDataSource_E(Expr)
+    ComponentDataSource                   -> Expr
     ComponentSpec                         -> ComponentSpec(OptKeyword0,ComponentDataSource)
     StructureConstructor                  -> StructureConstructor(DerivedTypeSpec,ListStarOfComponentSpec0)
     TypeParamSpecList                     -> TypeParamSpecList(ListPlusOfTypeParamSpec0)
@@ -2176,14 +2170,14 @@ regular tree grammar
     Label                                 -> LblDef
     CharConstant                          -> CharConstant(Constant)
     IntConstant                           -> IntConstant(Constant)
-    NamedConstant                         -> NamedConstant(Name)
+    NamedConstant                         -> Name
     LiteralConstant                       -> BozLiteralConstant
     LiteralConstant                       -> CharLiteralConstant
     LiteralConstant                       -> LogicalLiteralConstant
     LiteralConstant                       -> ComplexLiteralConstant
     LiteralConstant                       -> RealLiteralConstant
     LiteralConstant                       -> IntLiteralConstant
-    Constant                              -> Constant_AMB(LiteralConstant)
+    Constant                              -> LiteralConstant
     TypeParamName                         -> TypeParamName(Ident)
     TypeName                              -> TypeName(Ident)
     ScalarIntConstantName                 -> ScalarIntConstantName(Ident)
