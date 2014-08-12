@@ -189,9 +189,6 @@ rules //========================START OF RULES===============================
 //R560
   ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(<ofp-label>label, []) {Comment(eos)}
 
-//R602
-  ofp-to-ast:  Variable(OfpVarRef(expr)) -> OfpVarDef(expr)
-
 //R611
 //TODO OfpArrayRef, make sure multiple partrefs works
   ofp-to-ast:  DataRef([OfpVarRef])                        -> OfpVarRef
@@ -257,9 +254,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  RelOp_GE()                   -> GE()
 
   ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
-
-//R722
-  ofp-to-ast:  Expr(OfpVarRef)              -> OfpVarRef
 
 //R726
   ofp-to-ast:  IntExpr(expr)                -> expr
