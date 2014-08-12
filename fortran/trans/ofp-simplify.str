@@ -9,18 +9,50 @@ signature
 
    SpecificationPart : A -> B
 
+   // For ambiguities
+   amb : list -> choice
+
+
 strategies //=================START OF STRATEGIES============================
 
   io-ofp-simplify =
     io-wrap(ofp-simplify)
 
   ofp-simplify =
-    innermost(ofp-simplify-ast)
+    outermost(ofp-disamb); innermost(ofp-simplify-ast)
 
 rules //========================START OF RULES===============================
+
+// Disambiguation rules
+//
+
+//R703,R723
+ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
+
+//R631 : C633 ... AllocateShapeSpecList shall appear
+ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
+ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
+
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
 ofp-simplify-ast:  no-implicit-part()             -> []
 
 ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
+
+//R612
+ofp-simplify-ast:  opt-section-subscripts(list)   -> list
+
+//R620
+ofp-simplify-ast:  SectionSubscriptList(list)     -> list
+
+//R624
+ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list ']' to list
+
+//R625
+ofp-simplify-ast:  CosubscriptList(list)          -> list
+
+//R701
+ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
+
+//ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj

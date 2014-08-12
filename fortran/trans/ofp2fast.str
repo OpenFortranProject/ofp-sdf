@@ -74,7 +74,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ModuleName(str)           -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
   ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
-  ofp-to-ast:  PartName(str)             -> OfpName(str)
   ofp-to-ast:  UseName(str)              -> OfpName(str)
 
 //R201
@@ -92,9 +91,6 @@ rules //========================START OF RULES===============================
 
 //R215
   ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
-
-//R304
-  ofp-to-ast:  Constant_AMB(LiteralConstant)     -> LiteralConstant
 
 //R310
   ofp-to-ast:  PowerOp(op)                       -> OfpOp(op)
@@ -193,9 +189,6 @@ rules //========================START OF RULES===============================
 //R560
   ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(<ofp-label>label, []) {Comment(eos)}
 
-//R601
-  ofp-to-ast:  Designator_AMB(expr)      -> expr
-
 //R602
   ofp-to-ast:  Variable(OfpVarRef(expr)) -> OfpVarDef(expr)
 
@@ -250,10 +243,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  AllocateCoshapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
   ofp-to-ast:  AllocateCoshapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
 
-
-//R701
-  ofp-to-ast:  Primary_AMB(expr)            -> expr
-
 // Operators...
 
 //R703
@@ -279,7 +268,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)  -> OfpAssignmentStmt(label,var,expr)  {Comment(eos)}
+  ofp-to-ast:
+    AssignmentStmt(label,var,expr,eos)      -> OfpAssignmentStmt(<ofp-label>label,var,expr)  {Comment(eos)}
 
   ofp-to-ast:  no-program-stmt()            -> None()
 
