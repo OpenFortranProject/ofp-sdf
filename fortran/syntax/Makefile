@@ -41,7 +41,7 @@ Fortran.def : Fortran.sdf FortranLex.sdf FortranLexFree.sdf
 	pack-sdf -i $< -o $@
 
 Main.rtg : Main.def Fortran.tbl
-	sdf2rtg -i Main.def -m Main -o Main.rtg --ignore-missing-cons
+	sdf2rtg -i Main.def -m Main -o Main.rtg
 
 Main.str : Main.rtg
 	rtg2sig -i Main.rtg -o Main.str
