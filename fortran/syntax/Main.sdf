@@ -676,8 +676,8 @@ sorts
 %% Identifier aliases
 
   AncestorModuleName BlockDataName LocalName
-  ModuleName ParentSubmoduleName SubmoduleName
-  UseName
+  ModuleName NoModuleName OptModuleName
+  ParentSubmoduleName SubmoduleName UseName
 
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section 12xx Procedures section
@@ -3059,7 +3059,6 @@ context-free syntax
   Ident   -> AncestorModuleName        {cons("AncestorModuleName")}
   Ident   -> BlockDataName             {cons("BlockDataName")}
   Ident   -> LocalName                 {cons("LocalName")}
-  Ident   -> ModuleName                {cons("ModuleName")}
   Ident   -> ParentSubmoduleName       {cons("ParentSubmoduleName")}
   Ident   -> SubmoduleName             {cons("SubmoduleName")}
   Ident   -> UseName                   {cons("UseName")}
@@ -3268,11 +3267,16 @@ context-free syntax
   EndModuleStmt                                -> Module           {cons("Module")}
 
 %%R1105
-  Label? 'MODULE' ModuleName               EOS -> ModuleStmt       {cons("ModuleStmt")}
+  OptLabel 'MODULE' ModuleName             EOS -> ModuleStmt       {cons("ModuleStmt")}
 
 %%R1106
-  Label? 'END'                             EOS -> EndModuleStmt    {cons("EndModuleStmt")}
-  Label? 'END' 'MODULE' ModuleName?        EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+  OptLabel 'END'           NoModuleName    EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+  OptLabel 'END' 'MODULE' OptModuleName    EOS -> EndModuleStmt    {cons("EndModuleStmt")}
+
+  Ident                                        -> ModuleName
+  % empty %                                    -> NoModuleName     {cons("no-module-name")}
+  % empty %                                    -> OptModuleName    {cons("no-module-name")}
+  ModuleName                                   -> OptModuleName
 
 %%R1107
   ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("ModuleSubprogramPart")}
@@ -3623,15 +3627,15 @@ context-free syntax
     SpecificationPart
     ExecutionPart
     OptInternalSubprogramPart
-  EndMpSubprogramStmt                            -> SeparateModuleSubprogram {cons("SeparateModuleSubprogram")}
+  EndMpSubprogramStmt                             -> SeparateModuleSubprogram {cons("SeparateModuleSubprogram")}
 
 %%R1238
-  Label? 'MODULE' 'PROCEDURE' ProcedureName  EOS -> MpSubprogramStmt         {cons("MpSubprogramStmt")}
+  OptLabel 'MODULE' 'PROCEDURE' ProcedureName EOS -> MpSubprogramStmt         {cons("MpSubprogramStmt")}
 
 %%R1239
-  OptLabel 'END'             NoProcedureName EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
-  OptLabel 'END' 'PROCEDURE' NoProcedureName EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
-  OptLabel 'END' 'PROCEDURE'   ProcedureName EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  OptLabel 'END'             NoProcedureName  EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  OptLabel 'END' 'PROCEDURE' NoProcedureName  EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
+  OptLabel 'END' 'PROCEDURE'   ProcedureName  EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
 
 %%R1240
   OptLabel 'ENTRY' EntryName '(' OptDummyArgList ')' OptSuffix EOS -> EntryStmt  {cons("EntryStmt_DAL")}
