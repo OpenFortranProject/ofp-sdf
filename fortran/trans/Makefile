@@ -1,8 +1,10 @@
-#include elim-main-range.dep
+CFLAGS = -I ../syntax
+LDFLAGS = -la stratego-lib
 
-CFLAGS = -I ../syntax -Xcc -m32 
-CFLAGS += -Xcc -Wno-parentheses-equality
-LDFLAGS = -Xlinker -m32 -la stratego-lib
+## add these flags for the clang compiler (Mac OS X)
+#CFLAGS  += -Xcc -m32 -Xcc -Wno-parentheses-equality
+#LDFLAGS += -Xlinker -m32 -la stratego-lib
+
 
 all : ofp-simplify ofp2fast fast2pp
 
@@ -14,21 +16,6 @@ ofp2fast : ofp2fast.str
 
 fast2pp : fast2pp.str
 	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS) --main io-fast2pp
-
-ofp-to-rose : ofp-to-rose.str
-	strc -i ofp-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-ofp-to-rose
-
-generate : generate.str
-	strc -i generate.str $(CFLAGS) $(LDFLAGS)
-
-term-to-python : term-to-python.str
-	strc -i term-to-python.str $(CFLAGS) $(LDFLAGS)
-
-term-to-adot : term-to-adot.str
-	strc -i term-to-adot.str $(CFLAGS) $(LDFLAGS)
-
-elim-main-range : elim-main-range.str
-	strc --main elim-main-range -i elim-main-range.str $(CFLAGS) $(LDFLAGS)
 
 check : ofp2fast
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
@@ -43,10 +30,7 @@ test : ofp2fast
 cafe : ofp2fast
 	sglri -i cafe.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
-rose : ofp-to-rose ofp2fast
-	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | ofp-to-rose | pp-aterm
-
 clean :
-	rm -f ofp2fast ofp2fast.c ofp2fast.dep
-	rm -f ofp-to-rose ofp-to-rose.c ofp-to-rose.dep
-	rm -f *.o *.lo
+	rm -f ofp2fast ofp2fast.c
+	rm -f ofp-simplify ofp-simplify.c
+	rm -f *.o *.lo *.dep
