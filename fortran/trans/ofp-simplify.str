@@ -56,3 +56,6 @@ ofp-simplify-ast:  CosubscriptList(list)          -> list
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
+
+//R1235
+ofp-simplify-ast:  no-dummy-args()                -> []
