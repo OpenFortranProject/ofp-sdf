@@ -1,0 +1,9 @@
+*.f90
+*.c
+*.o
+*.lo
+*.dep
+fast2pp
+ofp-simplify
+ofp2fast
+
