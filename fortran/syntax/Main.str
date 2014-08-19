@@ -59,7 +59,7 @@ signature
     EntryStmt_DAL                  : OptLabel * EntryName * OptDummyArgList * OptSuffix * EOS -> EntryStmt
     EndMpSubprogramStmt            : OptLabel * ProcedureName * EOS -> EndMpSubprogramStmt
     EndMpSubprogramStmt            : OptLabel * NoProcedureName * EOS -> EndMpSubprogramStmt
-    MpSubprogramStmt               : Option(Label) * ProcedureName * EOS -> MpSubprogramStmt
+    MpSubprogramStmt               : OptLabel * ProcedureName * EOS -> MpSubprogramStmt
     SeparateModuleSubprogram       : MpSubprogramStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndMpSubprogramStmt -> SeparateModuleSubprogram
                                    : SubroutineName -> OptSubroutineName
     no-subroutine-name             : OptSubroutineName
@@ -203,9 +203,13 @@ signature
                                    : SubroutineSubprogram -> ModuleSubprogram
                                    : FunctionSubprogram -> ModuleSubprogram
     ModuleSubprogramPart           : ContainsStmt * List(ModuleSubprogram) -> ModuleSubprogramPart
-    EndModuleStmt                  : Option(Label) * Option(ModuleName) * EOS -> EndModuleStmt
-    EndModuleStmt                  : Option(Label) * EOS -> EndModuleStmt
-    ModuleStmt                     : Option(Label) * ModuleName * EOS -> ModuleStmt
+                                   : ModuleName -> OptModuleName
+    no-module-name                 : OptModuleName
+    no-module-name                 : NoModuleName
+                                   : Ident -> ModuleName
+    EndModuleStmt                  : OptLabel * OptModuleName * EOS -> EndModuleStmt
+    EndModuleStmt                  : OptLabel * NoModuleName * EOS -> EndModuleStmt
+    ModuleStmt                     : OptLabel * ModuleName * EOS -> ModuleStmt
     Module                         : ModuleStmt * SpecificationPart * Option(ModuleSubprogramPart) * EndModuleStmt -> Module
                                    : ProgramName -> OptProgramName
     no-program-name                : OptProgramName
@@ -294,7 +298,7 @@ signature
                                    : FunctionSubprogram -> InternalSubprogram
     no-subprogram-part             : OptInternalSubprogramPart
                                    : InternalSubprogramPart -> OptInternalSubprogramPart
-    subprogram-part                : ContainsStmt * List(InternalSubprogram) -> InternalSubprogramPart
+    SubprogramPart                 : ContainsStmt * List(InternalSubprogram) -> InternalSubprogramPart
                                    : DataStmt -> ExecutionPartConstruct
                                    : EntryStmt -> ExecutionPartConstruct
                                    : FormatStmt -> ExecutionPartConstruct
@@ -331,7 +335,6 @@ signature
     UseName                        : Ident -> UseName
     SubmoduleName                  : Ident -> SubmoduleName
     ParentSubmoduleName            : Ident -> ParentSubmoduleName
-    ModuleName                     : Ident -> ModuleName
     LocalName                      : Ident -> LocalName
     BlockDataName                  : Ident -> BlockDataName
     AncestorModuleName             : Ident -> AncestorModuleName
@@ -527,7 +530,7 @@ signature
     IoUnit_STAR                    : IoUnit
     IoUnit_FUN                     : IntExpr -> IoUnit
     PauseStmt                      : Option(Label) * Option(StopCode) * EOS -> PauseStmt
-    LockVariable                   : Variable -> LockVariable
+                                   : Variable -> LockVariable
     UnlockStmt                     : Option(Label) * LockVariable * Option(SyncStatList0) * EOS -> UnlockStmt
     LockStatList                   : List(LockStat) -> LockStatList
     LockStat_SS                    : SyncStat -> LockStat
@@ -1085,7 +1088,7 @@ signature
     SignedRealLiteralConstant      : Option(Sign) * RealLiteralConstant -> SignedRealLiteralConstant
     Sign_MINUS                     : Sign
     Sign_PLUS                      : Sign
-    DigitString                    : Icon -> DigitString
+                                   : Icon -> DigitString
     KindParam_SICN                 : ScalarIntConstantName -> KindParam
     KindParam_DS                   : DigitString -> KindParam
     IntLiteralConstant             : DigitString * KindParam -> IntLiteralConstant

@@ -4,8 +4,6 @@ regular tree grammar
   productions
     OptExpr0                              -> <some>(Expr)
     OptExpr0                              -> <none>()
-    OptLabel0                             -> <some>(Label)
-    OptLabel0                             -> <none>()
     ListStarOfDummyArg0                   -> ListPlusOfDummyArg0
     ListStarOfDummyArg0                   -> <nil>()
     ListStarOfDummyArg0                   -> <conc>(ListStarOfDummyArg0,ListStarOfDummyArg0)
@@ -27,6 +25,8 @@ regular tree grammar
     ListPlusOfActualArgSpec0              -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
     ListPlusOfActualArgSpec0              -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
     ListPlusOfActualArgSpec0              -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
+    OptLabel0                             -> <some>(Label)
+    OptLabel0                             -> <none>()
     OptActualArgSpecList0                 -> <some>(ActualArgSpecList)
     OptActualArgSpecList0                 -> <none>()
     ListStarOfIntrinsicProcedureName0     -> ListPlusOfIntrinsicProcedureName0
@@ -126,8 +126,6 @@ regular tree grammar
     ListPlusOfModuleSubprogram0           -> <conc>(ListPlusOfModuleSubprogram0,ListStarOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0           -> <conc>(ListPlusOfModuleSubprogram0,ListPlusOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0           -> <cons>(ModuleSubprogram,ListStarOfModuleSubprogram0)
-    OptModuleName0                        -> <some>(ModuleName)
-    OptModuleName0                        -> <none>()
     ListStarOfInternalSubprogram0         -> ListPlusOfInternalSubprogram0
     ListStarOfInternalSubprogram0         -> <nil>()
     ListStarOfInternalSubprogram0         -> <conc>(ListStarOfInternalSubprogram0,ListStarOfInternalSubprogram0)
@@ -1046,7 +1044,7 @@ regular tree grammar
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,ProcedureName,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,NoProcedureName,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,NoProcedureName,EOS)
-    MpSubprogramStmt                      -> MpSubprogramStmt(OptLabel0,ProcedureName,EOS)
+    MpSubprogramStmt                      -> MpSubprogramStmt(OptLabel,ProcedureName,EOS)
     SeparateModuleSubprogram              -> SeparateModuleSubprogram(MpSubprogramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
     OptSubroutineName                     -> SubroutineName
     OptSubroutineName                     -> no-subroutine-name()
@@ -1196,9 +1194,13 @@ regular tree grammar
     ModuleSubprogram                      -> SubroutineSubprogram
     ModuleSubprogram                      -> FunctionSubprogram
     ModuleSubprogramPart                  -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
-    EndModuleStmt                         -> EndModuleStmt(OptLabel0,OptModuleName0,EOS)
-    EndModuleStmt                         -> EndModuleStmt(OptLabel0,EOS)
-    ModuleStmt                            -> ModuleStmt(OptLabel0,ModuleName,EOS)
+    OptModuleName                         -> ModuleName
+    OptModuleName                         -> no-module-name()
+    NoModuleName                          -> no-module-name()
+    ModuleName                            -> Ident
+    EndModuleStmt                         -> EndModuleStmt(OptLabel,OptModuleName,EOS)
+    EndModuleStmt                         -> EndModuleStmt(OptLabel,NoModuleName,EOS)
+    ModuleStmt                            -> ModuleStmt(OptLabel,ModuleName,EOS)
     Module                                -> Module(ModuleStmt,SpecificationPart,OptModuleSubprogramPart0,EndModuleStmt)
     OptProgramName                        -> ProgramName
     OptProgramName                        -> no-program-name()
@@ -1287,7 +1289,7 @@ regular tree grammar
     InternalSubprogram                    -> FunctionSubprogram
     OptInternalSubprogramPart             -> no-subprogram-part()
     OptInternalSubprogramPart             -> InternalSubprogramPart
-    InternalSubprogramPart                -> subprogram-part(ContainsStmt,ListStarOfInternalSubprogram0)
+    InternalSubprogramPart                -> SubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
     ExecutionPartConstruct                -> DataStmt
     ExecutionPartConstruct                -> EntryStmt
     ExecutionPartConstruct                -> FormatStmt
@@ -1324,7 +1326,6 @@ regular tree grammar
     UseName                               -> UseName(Ident)
     SubmoduleName                         -> SubmoduleName(Ident)
     ParentSubmoduleName                   -> ParentSubmoduleName(Ident)
-    ModuleName                            -> ModuleName(Ident)
     LocalName                             -> LocalName(Ident)
     BlockDataName                         -> BlockDataName(Ident)
     AncestorModuleName                    -> AncestorModuleName(Ident)
@@ -1540,7 +1541,7 @@ regular tree grammar
     IoUnit                                -> IoUnit_STAR()
     IoUnit                                -> IoUnit_FUN(IntExpr)
     PauseStmt                             -> PauseStmt(OptLabel0,OptStopCode0,EOS)
-    LockVariable                          -> LockVariable(Variable)
+    LockVariable                          -> Variable
     UnlockStmt                            -> UnlockStmt(OptLabel0,LockVariable,OptSyncStatList0,EOS)
     LockStatList                          -> LockStatList(ListPlusOfLockStat0)
     LockStat                              -> LockStat_SS(SyncStat)
@@ -2135,7 +2136,7 @@ regular tree grammar
     SignedRealLiteralConstant             -> SignedRealLiteralConstant(OptSign0,RealLiteralConstant)
     Sign                                  -> Sign_MINUS()
     Sign                                  -> Sign_PLUS()
-    DigitString                           -> DigitString(Icon)
+    DigitString                           -> Icon
     SignedDigitString                     -> SignedDigitString(OptSign0,DigitString)
     KindParam                             -> KindParam_SICN(ScalarIntConstantName)
     KindParam                             -> KindParam_DS(DigitString)
