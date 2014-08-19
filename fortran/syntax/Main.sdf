@@ -871,7 +871,7 @@ context-free syntax
   Sign? DigitString                     -> SignedDigitString  {cons("SignedDigitString")}
 
 %%R410
-  Icon                                  -> DigitString        {cons("DigitString")}
+  Icon                                  -> DigitString
 
 %%R411
   '+'                                   -> Sign               {cons("Sign_PLUS")}
@@ -2638,7 +2638,7 @@ context-free syntax
 %%R866
 %%          variable substituted for scalar-variable
 %%
-  Variable                                              -> LockVariable         {cons("LockVariable")}
+  Variable                                              -> LockVariable
 
 
 %% Deleted Statements
