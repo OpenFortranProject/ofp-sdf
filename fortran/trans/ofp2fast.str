@@ -36,7 +36,7 @@ strategies //=================START OF STRATEGIES============================
   ofp-args = !OfpArgList(<id>)
 
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
-  ofp-suffix = id
+  ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
   var-ref-to-def = ?OfpVarRef(expr); !OfpVarDef(expr)
 
@@ -60,10 +60,10 @@ rules //========================START OF RULES===============================
   ofp-extract-name:  OfpFunctionStmt     (_,name,_,_,_)  -> name
 
   ofp-extract-subprograms:  no-subprogram-part()            -> OfpFuncPart([])
-  ofp-extract-subprograms:  subprogram-part(_,subprograms)  -> OfpFuncPart(subprograms)
+  ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> OfpFuncPart(subprograms)
 
   ofp-extract-contains:  no-subprogram-part()               -> None()
-  ofp-extract-contains:  subprogram-part(contains,_)        -> Some(contains)
+  ofp-extract-contains:  SubprogramPart(contains,_)         -> Some(contains)
 
   ofp-fixup-scope:
       OfpScope(spec,exec,funcs,begin,_,end)
@@ -75,7 +75,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ExternalName(str)         -> OfpName(str)
   ofp-to-ast:  GenericName(str)          -> OfpName(str)
   ofp-to-ast:  LocalName(str)            -> OfpName(str)
-  ofp-to-ast:  ModuleName(str)           -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
   ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
   ofp-to-ast:  UseName(str)              -> OfpName(str)
