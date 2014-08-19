@@ -32,7 +32,7 @@ OfpProgram(
               , Some(OfpMpSubprogramStmt(None(), OfpName("modproc")){Comment("
       ")})
               , None()
-              , Some(OfpEndMpSubprogramStmt(None(), OfpName("modproc")){Comment("
+              , Some(OfpEndMpSubprogramStmt(None(), Some(OfpName("modproc"))){Comment("
 ")})
               )
             )
