@@ -4,6 +4,7 @@ imports
    libstratego-lib
    Main
    AST
+   ofp-simplify
 
 signature
   constructors
@@ -17,11 +18,12 @@ signature
 
 strategies //=================START OF STRATEGIES============================
 
-  io-ofp2fast =
-    io-wrap(ofp2fast)
+  main = io-wrap(ofp2fast)
 
   ofp2fast =
-    outermost(ofp-disamb); innermost(ofp-to-ast)
+    ofp-simplify;
+    outermost(ofp-disamb);
+    innermost(ofp-to-ast)
 
   ofp-add-some = ?None() < id + !Some(<id>)
 
@@ -35,6 +37,8 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
   ofp-suffix = id
+
+  var-ref-to-def = ?OfpVarRef(expr); !OfpVarDef(expr)
 
 rules //========================START OF RULES===============================
 
@@ -82,9 +86,7 @@ rules //========================START OF RULES===============================
 
 //R204
   ofp-to-ast:
-    SpecificationPart(l1, l2, no-implicit-part(), l4)     -> OfpSpecPart(<conc> (l1, l2, l4))
-  ofp-to-ast:
-    SpecificationPart(l1, l2, ImplicitPart(l3,stmt), l4)  -> OfpSpecPart(<conc> (l1, l2, l3, [stmt], l4))
+    SpecificationPart(l1)                        -> OfpSpecPart(l1)
 
 //R208
   ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
@@ -112,12 +114,12 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  Type(LOGICAL(kind))               -> OfpType(LOGICAL(),         <ofp-kind>kind)
   ofp-to-ast:  Type(DOUBLECOMPLEX())             -> OfpType(DOUBLECOMPLEX(),   None())
 
+//R405
+  ofp-to-ast:  no-kind()                         -> None()
+
 //R407
   ofp-to-ast:  IntLiteralConstant(str)                 -> OfpLiteral(str, OfpType(INTEGER(), None()))
   ofp-to-ast:  IntLiteralConstant(str, kind)           -> OfpLiteral(str, OfpType(INTEGER(), Some(kind)))
-
-//R410
-  ofp-to-ast:  DigitString(str)                        -> str
 
 //R413
   ofp-to-ast:  RealLiteralConstant(str)                -> OfpLiteral(str, OfpType(REAL(), None()))
@@ -195,10 +197,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DataRef(list)                               -> list
 
 //R612
-//TODO
-  ofp-to-ast:  PartRef(name,None(),None())                 -> OfpVarRef(name)
-
-//  PartName OptSectionSubscriptList? ImageSelector?       -> PartRef   {cons("PartRef")}
+  ofp-to-ast:  PartRef(name,no-section-subscripts(),
+                            no-image-selector())           -> OfpVarRef(OfpName(name))
 
 //R613
   ofp-to-ast:  StructureComponent(OfpVarRef(name))         -> OfpVarRef(name)
@@ -262,8 +262,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-  ofp-to-ast:
-    AssignmentStmt(label,var,expr,eos)      -> OfpAssignmentStmt(<ofp-label>label,var,expr)  {Comment(eos)}
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos)
+                  -> OfpAssignmentStmt(<ofp-label>label,<var-ref-to-def>var,expr)  {Comment(eos)}
 
   ofp-to-ast:  no-program-stmt()            -> None()
 
@@ -274,26 +274,27 @@ rules //========================START OF RULES===============================
 
 //R1102
   ofp-to-ast:  ProgramStmt(label,name,eos)
-                  -> OfpProgramStmt(<ofp-label>label,<ofp-name>name)         {Comment(eos)}
+                  -> OfpProgramStmt(<ofp-label>label,<ofp-name>name)          {Comment(eos)}
 
 //R1103
   ofp-to-ast:  EndProgramStmt(label,name,eos)
-                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-name>name)      {Comment(eos)}
+                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
-                 -> OfpModule(<ofp-extract-name>begin,
-                    OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end)))
+                  -> OfpModule(<ofp-extract-name>begin,
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end)))
   ofp-to-ast:  Module(begin,spec,Some(ModuleSubprogramPart(contains,l)),end)
-                 -> OfpModule(<ofp-extract-name>begin,
-                    OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),Some(begin),Some(contains),Some(end)))
+                  -> OfpModule(<ofp-extract-name>begin,
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),Some(begin),Some(contains),Some(end)))
 
 //R1105
-  ofp-to-ast:  ModuleStmt(label,name,eos)    -> OfpModuleStmt(label,name)        {Comment(eos)}
+  ofp-to-ast:  ModuleStmt(label,name,eos)
+                  -> OfpModuleStmt(<ofp-label>label,<ofp-name>name)             {Comment(eos)}
 
 //R1106
-  ofp-to-ast:  EndModuleStmt(label,eos)      -> OfpEndModuleStmt(label,None())   {Comment(eos)}
-  ofp-to-ast:  EndModuleStmt(label,name,eos) -> OfpEndModuleStmt(label,name)     {Comment(eos)}
+  ofp-to-ast:  EndModuleStmt(label,name,eos)
+                  -> OfpEndModuleStmt(<ofp-label>label,<ofp-some-name>name)     {Comment(eos)}
 
 //R1109
   ofp-to-ast:  UseStmt(label,name,eos)
@@ -371,9 +372,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ActualArgSpecList(args)        -> args
 
 //R1227
-  ofp-to-ast:  FunctionSubprogram(begin,spec,exec,func,end)
+  ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
                    -> OfpFunction(<ofp-extract-name>begin,
-                                  OfpScope(spec,exec,func,Some(begin),None(),Some(end)))
+                                  OfpScope(spec,exec,funcs,Some(begin),None(),Some(end)))
 
 //R1228
   ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
@@ -390,31 +391,31 @@ rules //========================START OF RULES===============================
                    -> OfpEndFunctionStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
 
 //R1233
-  ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,func,end)
+  ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
                    -> OfpSubroutine(<ofp-extract-name>begin,
-                                    <ofp-fixup-scope>OfpScope(spec,exec,func,begin,None(),end))
+                                    <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
 
 //R1234 
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos)
                    -> OfpSubroutineStmt(<ofp-label>label,<ofp-name>name,<ofp-args>args,
-                                        <ofp-prefix>prefix,<ofp-suffix>binding)  {Comment(eos)}
+                                        <ofp-prefix>prefix,<ofp-suffix>binding)   {Comment(eos)}
 
 //R1236
   ofp-to-ast:  EndSubroutineStmt(label,name,eos) 
                    -> OfpEndSubroutineStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
 
 //R1237
-  ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,None(),end)
+  ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
                    -> OfpMpSubprogram(<ofp-extract-name>begin,
-                                    OfpScope(spec,exec,OfpFuncPart([]),Some(begin),None(),Some(end)))
+                                      <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
 
 //R1238
-  ofp-to-ast:
-    MpSubprogramStmt(label,name,eos) -> OfpMpSubprogramStmt(label,name)            {Comment(eos)}
+  ofp-to-ast:  MpSubprogramStmt(label,name,eos)
+                   -> OfpMpSubprogramStmt(<ofp-label>label,<ofp-name>name)         {Comment(eos)}
 
 //R1239
   ofp-to-ast:  EndMpSubprogramStmt(label,name,eos)
-                  -> OfpEndMpSubprogramStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
+                   -> OfpEndMpSubprogramStmt(<ofp-label>label,<ofp-some-name>name) {Comment(eos)}
 
 //R1242
   ofp-to-ast:
