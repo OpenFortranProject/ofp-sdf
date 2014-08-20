@@ -729,8 +729,8 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
-  ExternalNameList ImportNameList IntrinsicProcedureNameList OptPrefix
+  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList ExternalNameList
+  OptGenericSpec ImportNameList IntrinsicProcedureNameList OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
   NoProcedureName ProcedureNameList NoSuffix OptSuffix
   OptStartCommentBlock
@@ -3403,11 +3403,14 @@ context-free syntax
 
 
 %%R1203
-  Label? 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt     {cons("InterfaceStmt")}
-  Label? 'ABSTRACT' 'INTERFACE'                    EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  OptLabel 'INTERFACE' OptGenericSpec              EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  OptLabel 'ABSTRACT' 'INTERFACE'                  EOS -> InterfaceStmt     {cons("AbstractInterfaceStmt")}
       
 %%R1204
-  Label? 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
+  OptLabel 'END' 'INTERFACE' OptGenericSpec        EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
+
+  GenericSpec                                          -> OptGenericSpec
+  % empty %                                            -> OptGenericSpec    {cons("no-generic-spec")}
 
 %%R1205
 %%     WARNING-MODIFICATION: 
@@ -3436,10 +3439,10 @@ context-free syntax
   Ident                                         -> GenericName
 
 %%R1208
-  'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RF")}
-  'READ'  '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RU")}
-  'WRITE' '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WF")}
-  'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WU")}
+  'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("READ_FORMATTED")}
+  'READ'  '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("READ_UNFORMATTED")}
+  'WRITE' '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("WRITE_FORMATTED")}
+  'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("WRITE_UNFORMATTED")}
 
 %%R1209
   Label? 'IMPORT' '::' ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}

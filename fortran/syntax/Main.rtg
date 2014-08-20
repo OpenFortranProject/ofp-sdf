@@ -82,8 +82,6 @@ regular tree grammar
     ListPlusOfProcedureName0              -> <conc>(ListPlusOfProcedureName0,ListStarOfProcedureName0)
     ListPlusOfProcedureName0              -> <conc>(ListPlusOfProcedureName0,ListPlusOfProcedureName0)
     ListPlusOfProcedureName0              -> <cons>(ProcedureName,ListStarOfProcedureName0)
-    OptGenericSpec0                       -> <some>(GenericSpec)
-    OptGenericSpec0                       -> <none>()
     ListStarOfInterfaceSpecification0     -> ListPlusOfInterfaceSpecification0
     ListStarOfInterfaceSpecification0     -> <nil>()
     ListStarOfInterfaceSpecification0     -> <conc>(ListStarOfInterfaceSpecification0,ListStarOfInterfaceSpecification0)
@@ -1129,10 +1127,10 @@ regular tree grammar
     ImportStmt                            -> ImportStmt_0(OptLabel0,EOS)
     ImportStmt                            -> ImportStmt_INL(OptLabel0,ImportNameList,EOS)
     ImportStmt                            -> ImportStmt_INL(OptLabel0,ImportNameList,EOS)
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_WU()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_WF()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RU()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RF()
+    DefinedIoGenericSpec                  -> WRITE_UNFORMATTED()
+    DefinedIoGenericSpec                  -> WRITE_FORMATTED()
+    DefinedIoGenericSpec                  -> READ_UNFORMATTED()
+    DefinedIoGenericSpec                  -> READ_FORMATTED()
     GenericName                           -> Ident
     GenericSpec                           -> DefinedIoGenericSpec
     GenericSpec                           -> ASSIGNMENT()
@@ -1147,9 +1145,11 @@ regular tree grammar
     ProcedureStmt                         -> ProcedureStmt_MP(OptLabel0,ProcedureNameList,EOS)
     InterfaceBody                         -> InterfaceBody(SubroutineStmt,SpecificationPart,EndSubroutineStmt)
     InterfaceBody                         -> InterfaceBody(FunctionStmt,SpecificationPart,EndFunctionStmt)
-    EndInterfaceStmt                      -> EndInterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
-    InterfaceStmt                         -> InterfaceStmt(OptLabel0,EOS)
-    InterfaceStmt                         -> InterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
+    OptGenericSpec                        -> no-generic-spec()
+    OptGenericSpec                        -> GenericSpec
+    EndInterfaceStmt                      -> EndInterfaceStmt(OptLabel,OptGenericSpec,EOS)
+    InterfaceStmt                         -> AbstractInterfaceStmt(OptLabel,EOS)
+    InterfaceStmt                         -> InterfaceStmt(OptLabel,OptGenericSpec,EOS)
     InterfaceSpecification                -> ProcedureStmt
     InterfaceSpecification                -> InterfaceBody
     InterfaceBlock                        -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)

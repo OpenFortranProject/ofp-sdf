@@ -142,10 +142,10 @@ signature
     ImportNameList                 : List(ImportName) -> ImportNameList
     ImportStmt_0                   : Option(Label) * EOS -> ImportStmt
     ImportStmt_INL                 : Option(Label) * ImportNameList * EOS -> ImportStmt
-    DefinedIoGenericSpec_WU        : DefinedIoGenericSpec
-    DefinedIoGenericSpec_WF        : DefinedIoGenericSpec
-    DefinedIoGenericSpec_RU        : DefinedIoGenericSpec
-    DefinedIoGenericSpec_RF        : DefinedIoGenericSpec
+    WRITE_UNFORMATTED              : DefinedIoGenericSpec
+    WRITE_FORMATTED                : DefinedIoGenericSpec
+    READ_UNFORMATTED               : DefinedIoGenericSpec
+    READ_FORMATTED                 : DefinedIoGenericSpec
                                    : Ident -> GenericName
                                    : DefinedIoGenericSpec -> GenericSpec
     ASSIGNMENT                     : GenericSpec
@@ -158,9 +158,11 @@ signature
     ProcedureStmt_MP               : Option(Label) * ProcedureNameList * EOS -> ProcedureStmt
     InterfaceBody                  : SubroutineStmt * SpecificationPart * EndSubroutineStmt -> InterfaceBody
     InterfaceBody                  : FunctionStmt * SpecificationPart * EndFunctionStmt -> InterfaceBody
-    EndInterfaceStmt               : Option(Label) * Option(GenericSpec) * EOS -> EndInterfaceStmt
-    InterfaceStmt                  : Option(Label) * EOS -> InterfaceStmt
-    InterfaceStmt                  : Option(Label) * Option(GenericSpec) * EOS -> InterfaceStmt
+    no-generic-spec                : OptGenericSpec
+                                   : GenericSpec -> OptGenericSpec
+    EndInterfaceStmt               : OptLabel * OptGenericSpec * EOS -> EndInterfaceStmt
+    AbstractInterfaceStmt          : OptLabel * EOS -> InterfaceStmt
+    InterfaceStmt                  : OptLabel * OptGenericSpec * EOS -> InterfaceStmt
                                    : ProcedureStmt -> InterfaceSpecification
                                    : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                 : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
