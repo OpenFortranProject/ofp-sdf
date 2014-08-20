@@ -31,6 +31,8 @@ strategies //=================START OF STRATEGIES============================
   ofp-some-name  = is-string < !Some(OfpName (<id>)) + !None()
   ofp-label      = is-string < !Some(OfpLabel(<id>)) + !None()
 
+  ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
+
   ofp-char-select = ofp-add-some; id
   ofp-kind = ofp-add-some; id
   ofp-args = !OfpArgList(<id>)
@@ -310,12 +312,13 @@ rules //========================START OF RULES===============================
 
 //R1203
   ofp-to-ast:
-    InterfaceStmt(label,spec,eos) -> OfpInterfaceStmt(label,None(), spec)             {Comment(eos)}
+    InterfaceStmt(label,spec,eos)      -> OfpInterfaceStmt(<ofp-label>label,None(),<ofp-spec>spec)    {Comment(eos)}
   ofp-to-ast:
-    InterfaceStmt(label,eos)      -> OfpInterfaceStmt(label,Some("ABSTRACT"),None())  {Comment(eos)}
+    AbstractInterfaceStmt(label,eos)   -> OfpInterfaceStmt(<ofp-label>label,Some("ABSTRACT"),None())  {Comment(eos)}
 
 //R1204
-  ofp-to-ast:  EndInterfaceStmt(label,spec,eos) -> OfpEndInterfaceStmt(label,spec)    {Comment(eos)}
+  ofp-to-ast:
+    EndInterfaceStmt(label,spec,eos)   -> OfpEndInterfaceStmt(<ofp-label>label,<ofp-spec>spec)        {Comment(eos)}
 
 //R1205
   ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
