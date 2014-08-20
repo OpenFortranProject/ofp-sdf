@@ -330,12 +330,6 @@ rules //========================START OF RULES===============================
 //  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
-//R1208
-  ofp-to-ast:  DefinedIoGenericSpec_RF()      -> READFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_RU()      -> READUNFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_WF()      -> WRITEFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_WU()      -> WRITEUNFORMATTED()
-
 //R1210
   ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(label,list)               {Comment(eos)}
   ofp-to-ast:  ExternalNameList(names)        -> names
