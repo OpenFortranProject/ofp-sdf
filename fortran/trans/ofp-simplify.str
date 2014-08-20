@@ -57,5 +57,16 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
 
+//R1109
+//ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
+//                      -> UseStmt(label,nature,name,list,OnlyList([]),eos)
+//ofp-simplify-ast:  UseStmt(label,nature,name,opt-only-list(list),eos)
+//                      -> UseStmt(label,nature,name,RenameList([]),list,eos)
+
+ofp-simplify-ast:  no-rename-list()               -> RenameList([])
+ofp-simplify-ast:  opt-rename-list(list)          -> list
+ofp-simplify-ast:  opt-only-list(list)            -> list
+ofp-simplify-ast:  opt-module-nature(nature)      -> nature
+
 //R1235
 ofp-simplify-ast:  no-dummy-args()                -> []

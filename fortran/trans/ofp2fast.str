@@ -73,11 +73,7 @@ rules //========================START OF RULES===============================
                                <ofp-add-some>end)
 
   ofp-to-ast:  ExternalName(str)         -> OfpName(str)
-  ofp-to-ast:  GenericName(str)          -> OfpName(str)
-  ofp-to-ast:  LocalName(str)            -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
-  ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
-  ofp-to-ast:  UseName(str)              -> OfpName(str)
 
 //R201
   ofp-to-ast:  Program(str,           [ProgramUnit]) -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
@@ -295,31 +291,18 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  EndModuleStmt(label,name,eos)
                   -> OfpEndModuleStmt(<ofp-label>label,<ofp-some-name>name)     {Comment(eos)}
 
-//R1109
-  ofp-to-ast:  UseStmt(label,name,eos)
-                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,name,OptRenameList(list),eos)
-                  -> OfpUseStmt(label,name,None(),list,OfpOnlyList([]))               {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,name,OptOnlyList(list),eos)
-                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),list)             {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,eos)
-                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,OptRenameList(list),eos)
-                  -> OfpUseStmt(label,name,nature,list,OfpOnlyList([]))               {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,OptOnlyList(list),eos)
-                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),list)             {Comment(eos)}
+  ofp-to-ast:  no-module-nature()           -> None()
 
-//R1110
-  ofp-to-ast:  OptModuleNature(nature)       -> nature
-  ofp-to-ast:  ModuleNature_INTRINSIC()      -> INTRINSIC()
-  ofp-to-ast:  ModuleNature_NON_INTRINSIC()  -> NONINTRINSIC()
+//R1109
+  ofp-to-ast:  UseStmt(label,nature,name,rename_only,eos)
+                  -> OfpUseStmt(<ofp-label>label,<ofp-add-some>nature,
+                                <ofp-name>name,rename_only)                     {Comment(eos)}
 
 //R1111
   ofp-to-ast:  Rename(local_name,use_name)   -> OfpRename(local_name,use_name)
   ofp-to-ast:  RenameList(list)              -> OfpRenameList(list)
 
 //R1112
-  ofp-to-ast:  Only(item)                    -> OfpOnly(item)
   ofp-to-ast:  OnlyList(list)                -> OfpOnlyList(list)
 
 //R1201
@@ -343,10 +326,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ProcedureNames(names)             -> names
 
 //R1207
-
-  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
-  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
-  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
+//  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
+//  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
+//  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
 //R1208
   ofp-to-ast:  DefinedIoGenericSpec_RF()      -> READFORMATTED()
