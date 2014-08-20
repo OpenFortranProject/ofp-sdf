@@ -671,7 +671,8 @@ sorts
   EndBlockDataStmt                    %% R1122
 
   OnlyList ProgramName NoProgramName OptProgramName
-  OptProgramStmt OptOnlyList OptModuleNature RenameList OptRenameList
+  OptProgramStmt OptOnlyList OptModuleNature NoModuleNature
+  RenameList NoRenameList OptRenameList
 
 %% Identifier aliases
 
@@ -3058,10 +3059,8 @@ context-free syntax
 
   Ident   -> AncestorModuleName        {cons("AncestorModuleName")}
   Ident   -> BlockDataName             {cons("BlockDataName")}
-  Ident   -> LocalName                 {cons("LocalName")}
   Ident   -> ParentSubmoduleName       {cons("ParentSubmoduleName")}
   Ident   -> SubmoduleName             {cons("SubmoduleName")}
-  Ident   -> UseName                   {cons("UseName")}
 
 %%R201 JD: the optional StartCommentBlock is needed to parse comment lines in 1st lines of a file.
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram
@@ -3287,20 +3286,27 @@ context-free syntax
   SeparateModuleSubprogram                     -> ModuleSubprogram
 
 %%R1109
-  Label? 'USE'                       ModuleName               EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE'                       ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE'                       ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName               EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+%% Note: ofp-simplify strategy used to combine the rename and only list combinations
+%%
+  OptLabel 'USE'  NoModuleNature      ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE'  NoModuleNature      ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE'  NoModuleNature      ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
 
-  ',' ModuleNature                             -> OptModuleNature {cons("OptModuleNature")}
-  ',' RenameList                               -> OptRenameList   {cons("OptRenameList")}
-  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("OptOnlyList")}
+  ',' ModuleNature                             -> OptModuleNature {cons("opt-module-nature")}
+  NoModuleNature                               -> OptModuleNature
+  % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
+
+  % empty %                                    -> NoRenameList    {cons("no-rename-list")}
+  ',' RenameList                               -> OptRenameList   {cons("opt-rename-list")}
+  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("opt-only-list")}
+
 
 %%R1110
-  'INTRINSIC'                                  -> ModuleNature    {cons("ModuleNature_INTRINSIC")}
-  'NON_INTRINSIC'                              -> ModuleNature    {cons("ModuleNature_NON_INTRINSIC")}
+  'INTRINSIC'                                  -> ModuleNature    {cons("INTRINSIC")}
+  'NON_INTRINSIC'                              -> ModuleNature    {cons("NON_INTRINSIC")}
 
 %%R1111
   LocalName
@@ -3310,10 +3316,13 @@ context-free syntax
   'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("Rename")}
   {Rename ','}+                                -> RenameList  {cons("RenameList")}
 
+  Ident                                        -> UseName
+  Ident                                        -> LocalName
+
 %%R1112
-%%AMB-TODO-F08 PUTBACK    GenericSpec
-  OnlyUseName                                  -> Only        {cons("Only")}
-  Rename                                       -> Only        {cons("Only")}
+  GenericSpec                                  -> Only
+%%OnlyUseName                                  -> Only %AMBIGUOUS with GenericName in GenericSpec
+  Rename                                       -> Only
   {Only ','}*                                  -> OnlyList    {cons("OnlyList")}
 
 %%R1113
@@ -3378,7 +3387,6 @@ context-free syntax
 
   Ident   -> EntryName                 {cons("EntryName")}
   Ident   -> ExternalName              {cons("ExternalName")}
-  Ident   -> GenericName               {cons("GenericName")}
   Ident   -> ImportName                {cons("ImportName")}
   Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
   Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
@@ -3420,10 +3428,12 @@ context-free syntax
   {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNames")}
 
 %%R1207
-  GenericName                                   -> GenericSpec           {cons("GenericSpec")}
-  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
-  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec_AE")}
-  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
+  GenericName                                   -> GenericSpec
+  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("OPERATOR")}
+  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("ASSIGNMENT")}
+  DefinedIoGenericSpec                          -> GenericSpec
+
+  Ident                                         -> GenericName
 
 %%R1208
   'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RF")}

@@ -117,8 +117,6 @@ regular tree grammar
     ListPlusOfRename0                     -> <conc>(ListPlusOfRename0,ListStarOfRename0)
     ListPlusOfRename0                     -> <conc>(ListPlusOfRename0,ListPlusOfRename0)
     ListPlusOfRename0                     -> <cons>(Rename,ListStarOfRename0)
-    OptOptModuleNature0                   -> <some>(OptModuleNature)
-    OptOptModuleNature0                   -> <none>()
     ListStarOfModuleSubprogram0           -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0           -> <nil>()
     ListStarOfModuleSubprogram0           -> <conc>(ListStarOfModuleSubprogram0,ListStarOfModuleSubprogram0)
@@ -1135,10 +1133,11 @@ regular tree grammar
     DefinedIoGenericSpec                  -> DefinedIoGenericSpec_WF()
     DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RU()
     DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RF()
-    GenericSpec                           -> GenericSpec(DefinedIoGenericSpec)
-    GenericSpec                           -> GenericSpec_AE()
-    GenericSpec                           -> GenericSpec(DefinedOperator)
-    GenericSpec                           -> GenericSpec(GenericName)
+    GenericName                           -> Ident
+    GenericSpec                           -> DefinedIoGenericSpec
+    GenericSpec                           -> ASSIGNMENT()
+    GenericSpec                           -> OPERATOR(DefinedOperator)
+    GenericSpec                           -> GenericName
     ProcedureNameList                     -> ProcedureNames(ListPlusOfProcedureName0)
     NoProcedureName                       -> no-procedure-name()
     ProcedureName                         -> Ident
@@ -1157,7 +1156,6 @@ regular tree grammar
     ProcedureEntityName                   -> ProcedureEntityName(Ident)
     IntrinsicProcedureName                -> IntrinsicProcedureName(Ident)
     ImportName                            -> ImportName(Ident)
-    GenericName                           -> GenericName(Ident)
     ExternalName                          -> ExternalName(Ident)
     EntryName                             -> EntryName(Ident)
     EndBlockDataStmt                      -> EndBlockDataStmt_0(OptLabel0,EOS)
@@ -1174,22 +1172,27 @@ regular tree grammar
     LocalDefinedOperator                  -> LocalDefinedOperator_DUO(DefinedUnaryOp)
     OnlyUseName                           -> OnlyUseName(Ident)
     OnlyList                              -> OnlyList(ListStarOfOnly0)
-    Only                                  -> Only(Rename)
-    Only                                  -> Only(OnlyUseName)
+    Only                                  -> Rename
+    Only                                  -> GenericSpec
+    LocalName                             -> Ident
+    UseName                               -> Ident
     RenameList                            -> RenameList(ListPlusOfRename0)
     Rename                                -> Rename(LocalDefinedOperator,UseDefinedOperator)
     Rename                                -> Rename(LocalName,UseName)
-    ModuleNature                          -> ModuleNature_NON_INTRINSIC()
-    ModuleNature                          -> ModuleNature_INTRINSIC()
-    OptOnlyList                           -> OptOnlyList(OnlyList)
-    OptRenameList                         -> OptRenameList(RenameList)
-    OptModuleNature                       -> OptModuleNature(ModuleNature)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,OptOnlyList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,OptRenameList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptOnlyList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptRenameList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,EOS)
+    ModuleNature                          -> NON_INTRINSIC()
+    ModuleNature                          -> INTRINSIC()
+    OptOnlyList                           -> opt-only-list(OnlyList)
+    OptRenameList                         -> opt-rename-list(RenameList)
+    NoRenameList                          -> no-rename-list()
+    NoModuleNature                        -> no-module-nature()
+    OptModuleNature                       -> NoModuleNature
+    OptModuleNature                       -> opt-module-nature(ModuleNature)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,OptOnlyList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,OptRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,NoRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,OptOnlyList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,OptRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,NoRenameList,EOS)
     ModuleSubprogram                      -> SeparateModuleSubprogram
     ModuleSubprogram                      -> SubroutineSubprogram
     ModuleSubprogram                      -> FunctionSubprogram
@@ -1323,10 +1326,8 @@ regular tree grammar
     OptStartCommentBlock                  -> no-comments()
     OptStartCommentBlock                  -> StartCommentBlock
     Program                               -> Program(OptStartCommentBlock,ListPlusOfProgramUnit0)
-    UseName                               -> UseName(Ident)
     SubmoduleName                         -> SubmoduleName(Ident)
     ParentSubmoduleName                   -> ParentSubmoduleName(Ident)
-    LocalName                             -> LocalName(Ident)
     BlockDataName                         -> BlockDataName(Ident)
     AncestorModuleName                    -> AncestorModuleName(Ident)
     CharStringEditDesc                    -> CharStringEditDesc(Scon)

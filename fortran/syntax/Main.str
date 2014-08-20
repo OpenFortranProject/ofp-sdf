@@ -146,10 +146,11 @@ signature
     DefinedIoGenericSpec_WF        : DefinedIoGenericSpec
     DefinedIoGenericSpec_RU        : DefinedIoGenericSpec
     DefinedIoGenericSpec_RF        : DefinedIoGenericSpec
-    GenericSpec                    : DefinedIoGenericSpec -> GenericSpec
-    GenericSpec_AE                 : GenericSpec
-    GenericSpec                    : DefinedOperator -> GenericSpec
-    GenericSpec                    : GenericName -> GenericSpec
+                                   : Ident -> GenericName
+                                   : DefinedIoGenericSpec -> GenericSpec
+    ASSIGNMENT                     : GenericSpec
+    OPERATOR                       : DefinedOperator -> GenericSpec
+                                   : GenericName -> GenericSpec
     ProcedureNames                 : List(ProcedureName) -> ProcedureNameList
     no-procedure-name              : NoProcedureName
                                    : Ident -> ProcedureName
@@ -166,7 +167,6 @@ signature
     ProcedureEntityName            : Ident -> ProcedureEntityName
     IntrinsicProcedureName         : Ident -> IntrinsicProcedureName
     ImportName                     : Ident -> ImportName
-    GenericName                    : Ident -> GenericName
     ExternalName                   : Ident -> ExternalName
     EntryName                      : Ident -> EntryName
     EndBlockDataStmt_0             : Option(Label) * EOS -> EndBlockDataStmt
@@ -181,24 +181,28 @@ signature
     UseDefinedOperator_DUO         : DefinedUnaryOp -> UseDefinedOperator
     LocalDefinedOperator_DBO       : DefinedBinaryOp -> LocalDefinedOperator
     LocalDefinedOperator_DUO       : DefinedUnaryOp -> LocalDefinedOperator
-    OnlyUseName                    : Ident -> OnlyUseName
     OnlyList                       : List(Only) -> OnlyList
-    Only                           : Rename -> Only
-    Only                           : OnlyUseName -> Only
+                                   : Rename -> Only
+                                   : GenericSpec -> Only
+                                   : Ident -> LocalName
+                                   : Ident -> UseName
     RenameList                     : List(Rename) -> RenameList
     Rename                         : LocalDefinedOperator * UseDefinedOperator -> Rename
     Rename                         : LocalName * UseName -> Rename
-    ModuleNature_NON_INTRINSIC     : ModuleNature
-    ModuleNature_INTRINSIC         : ModuleNature
-    OptOnlyList                    : OnlyList -> OptOnlyList
-    OptRenameList                  : RenameList -> OptRenameList
-    OptModuleNature                : ModuleNature -> OptModuleNature
-    UseStmt                        : Option(Label) * Option(OptModuleNature) * ModuleName * OptOnlyList * EOS -> UseStmt
-    UseStmt                        : Option(Label) * Option(OptModuleNature) * ModuleName * OptRenameList * EOS -> UseStmt
-    UseStmt                        : Option(Label) * Option(OptModuleNature) * ModuleName * EOS -> UseStmt
-    UseStmt                        : Option(Label) * ModuleName * OptOnlyList * EOS -> UseStmt
-    UseStmt                        : Option(Label) * ModuleName * OptRenameList * EOS -> UseStmt
-    UseStmt                        : Option(Label) * ModuleName * EOS -> UseStmt
+    NON_INTRINSIC                  : ModuleNature
+    INTRINSIC                      : ModuleNature
+    opt-only-list                  : OnlyList -> OptOnlyList
+    opt-rename-list                : RenameList -> OptRenameList
+    no-rename-list                 : NoRenameList
+    no-module-nature               : NoModuleNature
+                                   : NoModuleNature -> OptModuleNature
+    opt-module-nature              : ModuleNature -> OptModuleNature
+    UseStmt                        : OptLabel * OptModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
+    UseStmt                        : OptLabel * OptModuleNature * ModuleName * OptRenameList * EOS -> UseStmt
+    UseStmt                        : OptLabel * OptModuleNature * ModuleName * NoRenameList * EOS -> UseStmt
+    UseStmt                        : OptLabel * NoModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
+    UseStmt                        : OptLabel * NoModuleNature * ModuleName * OptRenameList * EOS -> UseStmt
+    UseStmt                        : OptLabel * NoModuleNature * ModuleName * NoRenameList * EOS -> UseStmt
                                    : SeparateModuleSubprogram -> ModuleSubprogram
                                    : SubroutineSubprogram -> ModuleSubprogram
                                    : FunctionSubprogram -> ModuleSubprogram
@@ -332,10 +336,8 @@ signature
     no-comments                    : OptStartCommentBlock
                                    : StartCommentBlock -> OptStartCommentBlock
     Program                        : OptStartCommentBlock * List(ProgramUnit) -> Program
-    UseName                        : Ident -> UseName
     SubmoduleName                  : Ident -> SubmoduleName
     ParentSubmoduleName            : Ident -> ParentSubmoduleName
-    LocalName                      : Ident -> LocalName
     BlockDataName                  : Ident -> BlockDataName
     AncestorModuleName             : Ident -> AncestorModuleName
     DecimalEditDesc_DP             : DecimalEditDesc
