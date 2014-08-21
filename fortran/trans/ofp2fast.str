@@ -15,6 +15,7 @@ signature
 
    Comment   : A -> B            /* comments are put in annotations */
    OfpString : A -> B            /* node for a string literal */
+   ERROR     : A -> B            /* error reporting for a node */
 
 strategies //=================START OF STRATEGIES============================
 
@@ -39,7 +40,7 @@ strategies //=================START OF STRATEGIES============================
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
   ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
-  var-ref-to-def = ?OfpVarRef(expr); !OfpVarDef(expr)
+  ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
 
 rules //========================START OF RULES===============================
 
@@ -102,12 +103,13 @@ rules //========================START OF RULES===============================
 
 //R405
   ofp-to-ast:  no-kind()                         -> None()
+  ofp-to-ast:  no-kind-param()                   -> None()
 
 //R407
-  ofp-to-ast:  IntLiteralConstant(str, kind)           -> OfpLiteral(str, OfpType(INTEGER(), Some(kind)))
+  ofp-to-ast:  IntLiteralConstant(str, kind)     -> OfpLiteral(str, OfpType(INTEGER(), <ofp-kind>kind))
 
 //R413
-  ofp-to-ast:  RealLiteralConstant(str, kind)          -> OfpLiteral(str, OfpType(REAL(), Some(kind)))
+  ofp-to-ast:  RealLiteralConstant(str, kind)          -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
 
 //R501
   ofp-to-ast:
@@ -231,7 +233,7 @@ rules //========================START OF RULES===============================
 
 //R732
   ofp-to-ast:  AssignmentStmt(label,var,expr,eos)
-                  -> OfpAssignmentStmt(<ofp-label>label,<var-ref-to-def>var,expr)  {Comment(eos)}
+                  -> OfpAssignmentStmt(<ofp-label>label,<ofp-var-def>var,expr)  {Comment(eos)}
 
   ofp-to-ast:  no-program-stmt()            -> None()
 
