@@ -1682,7 +1682,7 @@ context-free syntax
 %%TODO-AMB   Expr                                                          -> Subscript
 
 %%R603
-  Ident              -> VariableName                       {cons("VariableName")}
+  Ident              -> VariableName
 
 %%R604
   Variable           -> LogicalVariable                    {cons("LogicalVariable")}
@@ -1708,9 +1708,9 @@ context-free syntax
 %%      constant substituted for scalar-constant
 %%      structure-component substituted for scalar-structure-component
 %%
-  ScalarVariableName                   -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
-  ArrayElement                         -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
-  CoindexedNamedObject                 -> ParentString     {reject}  %% AMBIGUOUS with SturctureComponent
+  ScalarVariableName                   -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
+  ArrayElement                         -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
+  CoindexedNamedObject                 -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
   StructureComponent                   -> ParentString
   Constant                             -> ParentString
 
@@ -1731,7 +1731,7 @@ context-free syntax
   Ident                                                  -> PartName
 
 %%R613
-  DataRef                                                -> StructureComponent   {cons("StructureComponent")}
+  DataRef                                                -> StructureComponent
 
 %%R614
   DataRef                                                -> CoindexedNamedObject {cons("CoindexedNamedObject")}
@@ -1829,7 +1829,7 @@ context-free syntax
 %% SourceExpr
 
 %%R631
-   AllocateObject                                        -> Allocation           {cons("Allocation")}
+   AllocateObject                                        -> Allocation           {cons("Allocation"),avoid}
    AllocateObject '(' AllocateShapeSpecList ')'          -> Allocation           {cons("Allocation")}
    AllocateObject '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
    AllocateObject '(' AllocateShapeSpecList ')'
@@ -1837,14 +1837,14 @@ context-free syntax
   {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
 
 %%R632
-%%VariableName          %% AMB with StructureComponent
-  StructureComponent                                     -> AllocateObject
+  VariableName                                           -> AllocateObject
+  StructureComponent                                     -> AllocateObject       {avoid}
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
   NoLowerBoundExpr   UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
-  {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("AllocateShapeSpecList")}
+  {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("allocate-shape-spec-list")}
 
   % empty %                                              -> NoLowerBoundExpr     {cons("no-lower-bound")}
 
@@ -1870,13 +1870,13 @@ context-free syntax
   {AllocateCoshapeSpec ','}+                             -> AllocateCoshapeSpecList {cons("AllocateCoshapeSpecList")}
 
 %%R638
-  Label? 'NULLIFY' '(' PointerObjectList ')'         EOS -> NullifyStmt          {cons("NullifyStmt")}
+  OptLabel 'NULLIFY' '(' PointerObjectList ')'       EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
-  VariableName                                           -> PointerObject        {cons("PointerObject_VN")}
-  StructureComponent                                     -> PointerObject        {cons("PointerObject_SC")}
-  ProcPointerName                                        -> PointerObject        {cons("PointerObject_PPN")}
-  {PointerObject ','}+                                   -> PointerObjectList    {cons("PointerObjectList")}
+  VariableName                                           -> PointerObject
+  StructureComponent                                     -> PointerObject        {avoid}
+  ProcPointerName                                        -> PointerObject        {reject}
+  {PointerObject ','}+                                   -> PointerObjectList    {cons("pointer-object-list")}
 
 %%R640
   Label? 'DEALLOCATE'
@@ -2033,7 +2033,7 @@ Primary                                    -> Expr
   Expr                                     -> DefaultCharExpr {cons("DefaultCharExpr")}
 
 %%R726
-  Expr                                     -> IntExpr         {cons("IntExpr")}
+  Expr                                     -> IntExpr
 
 %%R727
   Expr                                     -> NumericExpr     {cons("NumericExpr")}

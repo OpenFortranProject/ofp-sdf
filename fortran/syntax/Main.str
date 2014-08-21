@@ -666,7 +666,7 @@ signature
     IntConstantExpr                : IntExpr -> IntConstantExpr
     ConstantExpr                   : Expr -> ConstantExpr
                                    : IntExpr -> SpecificationExpr
-    IntExpr                        : Expr -> IntExpr
+                                   : Expr -> IntExpr
     DefaultCharExpr                : Expr -> DefaultCharExpr
     LogicalExpr                    : Expr -> LogicalExpr
     DefinedBinaryOp                : Dop -> DefinedBinaryOp
@@ -738,11 +738,10 @@ signature
     DeallocOpt_ERR                 : ErrmsgVariable -> DeallocOpt
     DeallocOpt_STAT                : StatVariable -> DeallocOpt
     DeallocateStmt                 : Option(Label) * AllocateObjectList * Option(DeallocOptList0) * EOS -> DeallocateStmt
-    PointerObjectList              : List(PointerObject) -> PointerObjectList
-    PointerObject_PPN              : ProcPointerName -> PointerObject
-    PointerObject_SC               : StructureComponent -> PointerObject
-    PointerObject_VN               : VariableName -> PointerObject
-    NullifyStmt                    : Option(Label) * PointerObjectList * EOS -> NullifyStmt
+    pointer-object-list            : List(PointerObject) -> PointerObjectList
+                                   : StructureComponent -> PointerObject
+                                   : VariableName -> PointerObject
+    NullifyStmt                    : OptLabel * PointerObjectList * EOS -> NullifyStmt
     AllocateCoshapeSpecList        : List(AllocateCoshapeSpec) -> AllocateCoshapeSpecList
     AllocateCoshapeSpec            : LowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
     AllocateCoshapeSpec            : UpperBoundExpr -> AllocateCoshapeSpec
@@ -753,11 +752,12 @@ signature
                                    : IntExpr -> UpperBoundExpr
                                    : IntExpr -> LowerBoundExpr
     no-lower-bound                 : NoLowerBoundExpr
-    AllocateShapeSpecList          : List(AllocateShapeSpec) -> AllocateShapeSpecList
+    allocate-shape-spec-list       : List(AllocateShapeSpec) -> AllocateShapeSpecList
     AllocateShapeSpec              : LowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateObjectList             : List(AllocateObject) -> AllocateObjectList
                                    : StructureComponent -> AllocateObject
+                                   : VariableName -> AllocateObject
     allocation-list                : List(Allocation) -> AllocationList
     Allocation                     : AllocateObject * AllocateShapeSpecList * AllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * AllocateCoarraySpec -> Allocation
@@ -787,7 +787,7 @@ signature
     Subscript                      : IntExpr -> Subscript
     ArrayElement                   : DataRef -> ArrayElement
     TypeParamInquiry               : Designator * TypeParamName -> TypeParamInquiry
-    StructureComponent             : DataRef -> StructureComponent
+                                   : DataRef -> StructureComponent
                                    : Ident -> PartName
     opt-section-subscripts         : SectionSubscriptList -> OptSectionSubscripts
     no-section-subscripts          : OptSectionSubscripts
@@ -801,7 +801,7 @@ signature
                                    : Variable -> DefaultCharVariable
     CharVariable                   : Variable -> CharVariable
     LogicalVariable                : Variable -> LogicalVariable
-    VariableName                   : Ident -> VariableName
+                                   : Ident -> VariableName
                                    : Designator -> Variable
                                    : Substring -> Designator
                                    : DataRef -> Designator

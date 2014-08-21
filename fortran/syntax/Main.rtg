@@ -1678,7 +1678,7 @@ regular tree grammar
     ConstantExpr                          -> ConstantExpr(Expr)
     SpecificationExpr                     -> IntExpr
     NumericExpr                           -> NumericExpr(Expr)
-    IntExpr                               -> IntExpr(Expr)
+    IntExpr                               -> Expr
     DefaultCharExpr                       -> DefaultCharExpr(Expr)
     LogicalExpr                           -> LogicalExpr(Expr)
     DefinedBinaryOp                       -> DefinedBinaryOp(Dop)
@@ -1745,11 +1745,10 @@ regular tree grammar
     DeallocOpt                            -> DeallocOpt_ERR(ErrmsgVariable)
     DeallocOpt                            -> DeallocOpt_STAT(StatVariable)
     DeallocateStmt                        -> DeallocateStmt(OptLabel0,AllocateObjectList,OptDeallocOptList0,EOS)
-    PointerObjectList                     -> PointerObjectList(ListPlusOfPointerObject0)
-    PointerObject                         -> PointerObject_PPN(ProcPointerName)
-    PointerObject                         -> PointerObject_SC(StructureComponent)
-    PointerObject                         -> PointerObject_VN(VariableName)
-    NullifyStmt                           -> NullifyStmt(OptLabel0,PointerObjectList,EOS)
+    PointerObjectList                     -> pointer-object-list(ListPlusOfPointerObject0)
+    PointerObject                         -> StructureComponent
+    PointerObject                         -> VariableName
+    NullifyStmt                           -> NullifyStmt(OptLabel,PointerObjectList,EOS)
     AllocateCoshapeSpecList               -> AllocateCoshapeSpecList(ListPlusOfAllocateCoshapeSpec0)
     AllocateCoshapeSpec                   -> AllocateCoshapeSpec(LowerBoundExpr,UpperBoundExpr)
     AllocateCoshapeSpec                   -> AllocateCoshapeSpec(UpperBoundExpr)
@@ -1760,11 +1759,12 @@ regular tree grammar
     UpperBoundExpr                        -> IntExpr
     LowerBoundExpr                        -> IntExpr
     NoLowerBoundExpr                      -> no-lower-bound()
-    AllocateShapeSpecList                 -> AllocateShapeSpecList(ListPlusOfAllocateShapeSpec0)
+    AllocateShapeSpecList                 -> allocate-shape-spec-list(ListPlusOfAllocateShapeSpec0)
     AllocateShapeSpec                     -> AllocateShapeSpec(LowerBoundExpr,UpperBoundExpr)
     AllocateShapeSpec                     -> AllocateShapeSpec(NoLowerBoundExpr,UpperBoundExpr)
     AllocateObjectList                    -> AllocateObjectList(ListPlusOfAllocateObject0)
     AllocateObject                        -> StructureComponent
+    AllocateObject                        -> VariableName
     AllocationList                        -> allocation-list(ListPlusOfAllocation0)
     Allocation                            -> Allocation(AllocateObject,AllocateShapeSpecList,AllocateCoarraySpec)
     Allocation                            -> Allocation(AllocateObject,AllocateCoarraySpec)
@@ -1800,7 +1800,7 @@ regular tree grammar
     ComplexPartDesignator                 -> ComplexPartDesignator_IM(Designator)
     ComplexPartDesignator                 -> ComplexPartDesignator_RE(Designator)
     CoindexedNamedObject                  -> CoindexedNamedObject(DataRef)
-    StructureComponent                    -> StructureComponent(DataRef)
+    StructureComponent                    -> DataRef
     PartName                              -> Ident
     OptSectionSubscripts                  -> opt-section-subscripts(SectionSubscriptList)
     OptSectionSubscripts                  -> no-section-subscripts()
@@ -1814,7 +1814,7 @@ regular tree grammar
     DefaultCharVariable                   -> Variable
     CharVariable                          -> CharVariable(Variable)
     LogicalVariable                       -> LogicalVariable(Variable)
-    VariableName                          -> VariableName(Ident)
+    VariableName                          -> Ident
     Variable                              -> Designator
     Designator                            -> Substring
     Designator                            -> DataRef
