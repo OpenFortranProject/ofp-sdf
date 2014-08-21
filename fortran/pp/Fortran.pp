@@ -33,9 +33,20 @@
    #R502 --,
    Some                          -- _1,
    Some                          -- _1 _2,
+   ALLOCATABLE                   -- KW["ALLOCATABLE ::"],
+
    
    #R503 --,
    OfpEntityDecl                 -- _1 _2 _3 _4 _5,
+
+   #R511 --,
+   OfpExplicitCoshape            -- _1,
+
+   #R517 --,
+   OfpDimSpec                    -- _1 _2,
+
+   #R519 --,
+   OfpAssumedOrDeferredShape     -- _1,
 
    #R602 --,
    OfpVarDef                     -- _1,
@@ -76,6 +87,9 @@
    OfpResultName                       -- "RESULT" _1,
    OfpSuffix                           -- _1,
    OfpSuffix.1:iter-star               -- _1,
+
+   #R1207 --,
+   OfpGenericSpec                      -- _1,
 
    #R1217 --,
    PpFunction                          -- _1,
