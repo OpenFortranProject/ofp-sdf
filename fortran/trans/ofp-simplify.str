@@ -52,6 +52,9 @@ ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list '
 //R625
 ofp-simplify-ast:  cosubscript-list(list)         -> list
 
+//R627
+ofp-simplify-ast:  alloc-opt-list(list)           -> list
+
 //R631
 ofp-simplify-ast:  allocation-list(list)          -> list
 
