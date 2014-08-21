@@ -88,12 +88,12 @@
    OfpSuffix                           -- _1,
    OfpSuffix.1:iter-star               -- _1,
 
-   #R1207 --,
+    #R1207 --,
    OfpGenericSpec                      -- _1,
 
    #R1217 --,
    PpFunction                          -- _1,
-   OfpFunctionStmt                     -- _1 _4 KW["FUNCTION"] _2 "(" _3 ")" _5,
+   OfpFunctionStmt                     -- _1 _4 "FUNCTION" H hs=0[ _2 "(" _3 ")"] _5,
    OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
 
    #R1233 --,
