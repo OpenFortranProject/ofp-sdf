@@ -19,19 +19,21 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(ofp-simplify)
 
   ofp-simplify =
-    outermost(ofp-disamb); innermost(ofp-simplify-ast)
+      outermost(ofp-disamb)
+    ; innermost(ofp-simplify-ast)
 
 rules //========================START OF RULES===============================
 
 // Disambiguation rules
 //
 
+//R631 : C633 ... AllocateShapeSpecList shall appear
+// TODO - remove: solved by adding {avoid} to Allocation with arity 1
+//ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
+//ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
+
 //R703,R723
 ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
-
-//R631 : C633 ... AllocateShapeSpecList shall appear
-ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
-ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
@@ -40,7 +42,13 @@ ofp-simplify-ast:  no-implicit-part()             -> []
 
 ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
 
+//R611
+ofp-simplify-ast:  DataRef([str])                 -> str
+
 //R612
+ofp-simplify-ast:
+  PartRef(name,no-section-subscripts(),
+               no-image-selector())               -> name
 ofp-simplify-ast:  opt-section-subscripts(list)   -> list
 
 //R620
@@ -57,6 +65,12 @@ ofp-simplify-ast:  alloc-opt-list(list)           -> list
 
 //R631
 ofp-simplify-ast:  allocation-list(list)          -> list
+
+//R633
+ofp-simplify-ast:  allocate-shape-spec-list(list) -> list
+
+//R639
+ofp-simplify-ast:  pointer-object-list(list)      -> list
 
 //R701
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
