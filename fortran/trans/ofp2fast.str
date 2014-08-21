@@ -31,12 +31,14 @@ strategies //=================START OF STRATEGIES============================
   ofp-some-name  = is-string < !Some(OfpName (<id>)) + !None()
   ofp-label      = is-string < !Some(OfpLabel(<id>)) + !None()
 
+  ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
+
   ofp-char-select = ofp-add-some; id
   ofp-kind = ofp-add-some; id
   ofp-args = !OfpArgList(<id>)
 
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
-  ofp-suffix = id
+  ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
   var-ref-to-def = ?OfpVarRef(expr); !OfpVarDef(expr)
 
@@ -60,10 +62,10 @@ rules //========================START OF RULES===============================
   ofp-extract-name:  OfpFunctionStmt     (_,name,_,_,_)  -> name
 
   ofp-extract-subprograms:  no-subprogram-part()            -> OfpFuncPart([])
-  ofp-extract-subprograms:  subprogram-part(_,subprograms)  -> OfpFuncPart(subprograms)
+  ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> OfpFuncPart(subprograms)
 
   ofp-extract-contains:  no-subprogram-part()               -> None()
-  ofp-extract-contains:  subprogram-part(contains,_)        -> Some(contains)
+  ofp-extract-contains:  SubprogramPart(contains,_)         -> Some(contains)
 
   ofp-fixup-scope:
       OfpScope(spec,exec,funcs,begin,_,end)
@@ -73,12 +75,7 @@ rules //========================START OF RULES===============================
                                <ofp-add-some>end)
 
   ofp-to-ast:  ExternalName(str)         -> OfpName(str)
-  ofp-to-ast:  GenericName(str)          -> OfpName(str)
-  ofp-to-ast:  LocalName(str)            -> OfpName(str)
-  ofp-to-ast:  ModuleName(str)           -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
-  ofp-to-ast:  OnlyUseName(str)          -> OfpName(str)
-  ofp-to-ast:  UseName(str)              -> OfpName(str)
 
 //R201
   ofp-to-ast:  Program(str,           [ProgramUnit]) -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
@@ -204,6 +201,13 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  StructureComponent(OfpVarRef(name))         -> OfpVarRef(name)
 
 //R626
+  ofp-to-ast:  AllocateStmt(label,type,list,opts,eos)
+                  -> OfpAllocateStmt(<ofp-label>label,type,list,opts) {Comment(eos)}
+
+  ofp-to-ast:  no-type-spec()                             -> None()
+  ofp-to-ast:  no-alloc-opt-list()                        -> []
+
+/******
   ofp-to-ast:  AllocateStmt(label,AllocationList(list),eos)
                                             -> OfpAllocateStmt(label,None(),[],list)       {Comment(eos)}
   ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),eos)
@@ -212,9 +216,7 @@ rules //========================START OF RULES===============================
                                             -> OfpAllocateStmt(label,None(),opts,list)     {Comment(eos)}
   ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),opts,eos)
                                             -> OfpAllocateStmt(label,Some(type),opts,list) {Comment(eos)}
-
-//R627
-  ofp-to-ast:  AllocOptList(list)           -> list
+*****/
 
 //R631
   ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
@@ -296,31 +298,18 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  EndModuleStmt(label,name,eos)
                   -> OfpEndModuleStmt(<ofp-label>label,<ofp-some-name>name)     {Comment(eos)}
 
-//R1109
-  ofp-to-ast:  UseStmt(label,name,eos)
-                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,name,OptRenameList(list),eos)
-                  -> OfpUseStmt(label,name,None(),list,OfpOnlyList([]))               {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,name,OptOnlyList(list),eos)
-                  -> OfpUseStmt(label,name,None(),OfpRenameList([]),list)             {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,eos)
-                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),OfpOnlyList([]))  {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,OptRenameList(list),eos)
-                  -> OfpUseStmt(label,name,nature,list,OfpOnlyList([]))               {Comment(eos)}
-  ofp-to-ast:  UseStmt(label,nature,name,OptOnlyList(list),eos)
-                  -> OfpUseStmt(label,name,nature,OfpRenameList([]),list)             {Comment(eos)}
+  ofp-to-ast:  no-module-nature()           -> None()
 
-//R1110
-  ofp-to-ast:  OptModuleNature(nature)       -> nature
-  ofp-to-ast:  ModuleNature_INTRINSIC()      -> INTRINSIC()
-  ofp-to-ast:  ModuleNature_NON_INTRINSIC()  -> NONINTRINSIC()
+//R1109
+  ofp-to-ast:  UseStmt(label,nature,name,rename_only,eos)
+                  -> OfpUseStmt(<ofp-label>label,<ofp-add-some>nature,
+                                <ofp-name>name,rename_only)                     {Comment(eos)}
 
 //R1111
   ofp-to-ast:  Rename(local_name,use_name)   -> OfpRename(local_name,use_name)
   ofp-to-ast:  RenameList(list)              -> OfpRenameList(list)
 
 //R1112
-  ofp-to-ast:  Only(item)                    -> OfpOnly(item)
   ofp-to-ast:  OnlyList(list)                -> OfpOnlyList(list)
 
 //R1201
@@ -328,12 +317,13 @@ rules //========================START OF RULES===============================
 
 //R1203
   ofp-to-ast:
-    InterfaceStmt(label,spec,eos) -> OfpInterfaceStmt(label,None(), spec)             {Comment(eos)}
+    InterfaceStmt(label,spec,eos)      -> OfpInterfaceStmt(<ofp-label>label,None(),<ofp-spec>spec)    {Comment(eos)}
   ofp-to-ast:
-    InterfaceStmt(label,eos)      -> OfpInterfaceStmt(label,Some("ABSTRACT"),None())  {Comment(eos)}
+    AbstractInterfaceStmt(label,eos)   -> OfpInterfaceStmt(<ofp-label>label,Some("ABSTRACT"),None())  {Comment(eos)}
 
 //R1204
-  ofp-to-ast:  EndInterfaceStmt(label,spec,eos) -> OfpEndInterfaceStmt(label,spec)    {Comment(eos)}
+  ofp-to-ast:
+    EndInterfaceStmt(label,spec,eos)   -> OfpEndInterfaceStmt(<ofp-label>label,<ofp-spec>spec)        {Comment(eos)}
 
 //R1205
   ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
@@ -344,16 +334,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ProcedureNames(names)             -> names
 
 //R1207
-
-  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
-  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
-  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
-
-//R1208
-  ofp-to-ast:  DefinedIoGenericSpec_RF()      -> READFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_RU()      -> READUNFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_WF()      -> WRITEFORMATTED()
-  ofp-to-ast:  DefinedIoGenericSpec_WU()      -> WRITEUNFORMATTED()
+//  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
+//  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
+//  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
 //R1210
   ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(label,list)               {Comment(eos)}

@@ -345,9 +345,11 @@ exports
   OfpModuleStmt               -> OfpBeginStmt
   OfpEndModuleStmt            -> OfpEndStmt
 
-  OfpLabel? OfpName
-            OfpModuleNature?
-            OfpRenameList
+  OfpLabel? OfpModuleNature?
+            OfpName
+            OfpRenameList     -> OfpUseStmt         {cons("OfpUseStmt")}           %% R1109
+  OfpLabel? OfpModuleNature?
+            OfpName
             OfpOnlyList       -> OfpUseStmt         {cons("OfpUseStmt")}           %% R1109
   OfpUseStmt                  -> OfpStmt
 

@@ -4,8 +4,6 @@ regular tree grammar
   productions
     OptExpr0                              -> <some>(Expr)
     OptExpr0                              -> <none>()
-    OptLabel0                             -> <some>(Label)
-    OptLabel0                             -> <none>()
     ListStarOfDummyArg0                   -> ListPlusOfDummyArg0
     ListStarOfDummyArg0                   -> <nil>()
     ListStarOfDummyArg0                   -> <conc>(ListStarOfDummyArg0,ListStarOfDummyArg0)
@@ -27,6 +25,8 @@ regular tree grammar
     ListPlusOfActualArgSpec0              -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
     ListPlusOfActualArgSpec0              -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
     ListPlusOfActualArgSpec0              -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
+    OptLabel0                             -> <some>(Label)
+    OptLabel0                             -> <none>()
     OptActualArgSpecList0                 -> <some>(ActualArgSpecList)
     OptActualArgSpecList0                 -> <none>()
     ListStarOfIntrinsicProcedureName0     -> ListPlusOfIntrinsicProcedureName0
@@ -82,8 +82,6 @@ regular tree grammar
     ListPlusOfProcedureName0              -> <conc>(ListPlusOfProcedureName0,ListStarOfProcedureName0)
     ListPlusOfProcedureName0              -> <conc>(ListPlusOfProcedureName0,ListPlusOfProcedureName0)
     ListPlusOfProcedureName0              -> <cons>(ProcedureName,ListStarOfProcedureName0)
-    OptGenericSpec0                       -> <some>(GenericSpec)
-    OptGenericSpec0                       -> <none>()
     ListStarOfInterfaceSpecification0     -> ListPlusOfInterfaceSpecification0
     ListStarOfInterfaceSpecification0     -> <nil>()
     ListStarOfInterfaceSpecification0     -> <conc>(ListStarOfInterfaceSpecification0,ListStarOfInterfaceSpecification0)
@@ -117,8 +115,6 @@ regular tree grammar
     ListPlusOfRename0                     -> <conc>(ListPlusOfRename0,ListStarOfRename0)
     ListPlusOfRename0                     -> <conc>(ListPlusOfRename0,ListPlusOfRename0)
     ListPlusOfRename0                     -> <cons>(Rename,ListStarOfRename0)
-    OptOptModuleNature0                   -> <some>(OptModuleNature)
-    OptOptModuleNature0                   -> <none>()
     ListStarOfModuleSubprogram0           -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0           -> <nil>()
     ListStarOfModuleSubprogram0           -> <conc>(ListStarOfModuleSubprogram0,ListStarOfModuleSubprogram0)
@@ -126,8 +122,6 @@ regular tree grammar
     ListPlusOfModuleSubprogram0           -> <conc>(ListPlusOfModuleSubprogram0,ListStarOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0           -> <conc>(ListPlusOfModuleSubprogram0,ListPlusOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0           -> <cons>(ModuleSubprogram,ListStarOfModuleSubprogram0)
-    OptModuleName0                        -> <some>(ModuleName)
-    OptModuleName0                        -> <none>()
     ListStarOfInternalSubprogram0         -> ListPlusOfInternalSubprogram0
     ListStarOfInternalSubprogram0         -> <nil>()
     ListStarOfInternalSubprogram0         -> <conc>(ListStarOfInternalSubprogram0,ListStarOfInternalSubprogram0)
@@ -997,12 +991,6 @@ regular tree grammar
     ListPlusOfTypeParamDefStmt0           -> <conc>(ListPlusOfTypeParamDefStmt0,ListStarOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0           -> <conc>(ListPlusOfTypeParamDefStmt0,ListPlusOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0           -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt0)
-    KindParam0                            -> <(1)>(KindParam)
-    OptKindParam0                         -> <some>(KindParam0)
-    OptKindParam0                         -> <none>()
-    KindParam1                            -> <(1)>(KindParam)
-    OptKindParam1                         -> <some>(KindParam1)
-    OptKindParam1                         -> <none>()
     OptSign0                              -> <some>(Sign)
     OptSign0                              -> <none>()
     OptCharSelector0                      -> <some>(CharSelector)
@@ -1046,7 +1034,7 @@ regular tree grammar
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,ProcedureName,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,NoProcedureName,EOS)
     EndMpSubprogramStmt                   -> EndMpSubprogramStmt(OptLabel,NoProcedureName,EOS)
-    MpSubprogramStmt                      -> MpSubprogramStmt(OptLabel0,ProcedureName,EOS)
+    MpSubprogramStmt                      -> MpSubprogramStmt(OptLabel,ProcedureName,EOS)
     SeparateModuleSubprogram              -> SeparateModuleSubprogram(MpSubprogramStmt,SpecificationPart,ExecutionPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
     OptSubroutineName                     -> SubroutineName
     OptSubroutineName                     -> no-subroutine-name()
@@ -1133,14 +1121,15 @@ regular tree grammar
     ImportStmt                            -> ImportStmt_0(OptLabel0,EOS)
     ImportStmt                            -> ImportStmt_INL(OptLabel0,ImportNameList,EOS)
     ImportStmt                            -> ImportStmt_INL(OptLabel0,ImportNameList,EOS)
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_WU()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_WF()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RU()
-    DefinedIoGenericSpec                  -> DefinedIoGenericSpec_RF()
-    GenericSpec                           -> GenericSpec(DefinedIoGenericSpec)
-    GenericSpec                           -> GenericSpec_AE()
-    GenericSpec                           -> GenericSpec(DefinedOperator)
-    GenericSpec                           -> GenericSpec(GenericName)
+    DefinedIoGenericSpec                  -> WRITE_UNFORMATTED()
+    DefinedIoGenericSpec                  -> WRITE_FORMATTED()
+    DefinedIoGenericSpec                  -> READ_UNFORMATTED()
+    DefinedIoGenericSpec                  -> READ_FORMATTED()
+    GenericName                           -> Ident
+    GenericSpec                           -> DefinedIoGenericSpec
+    GenericSpec                           -> ASSIGNMENT()
+    GenericSpec                           -> OPERATOR(DefinedOperator)
+    GenericSpec                           -> GenericName
     ProcedureNameList                     -> ProcedureNames(ListPlusOfProcedureName0)
     NoProcedureName                       -> no-procedure-name()
     ProcedureName                         -> Ident
@@ -1150,16 +1139,17 @@ regular tree grammar
     ProcedureStmt                         -> ProcedureStmt_MP(OptLabel0,ProcedureNameList,EOS)
     InterfaceBody                         -> InterfaceBody(SubroutineStmt,SpecificationPart,EndSubroutineStmt)
     InterfaceBody                         -> InterfaceBody(FunctionStmt,SpecificationPart,EndFunctionStmt)
-    EndInterfaceStmt                      -> EndInterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
-    InterfaceStmt                         -> InterfaceStmt(OptLabel0,EOS)
-    InterfaceStmt                         -> InterfaceStmt(OptLabel0,OptGenericSpec0,EOS)
+    OptGenericSpec                        -> no-generic-spec()
+    OptGenericSpec                        -> GenericSpec
+    EndInterfaceStmt                      -> EndInterfaceStmt(OptLabel,OptGenericSpec,EOS)
+    InterfaceStmt                         -> AbstractInterfaceStmt(OptLabel,EOS)
+    InterfaceStmt                         -> InterfaceStmt(OptLabel,OptGenericSpec,EOS)
     InterfaceSpecification                -> ProcedureStmt
     InterfaceSpecification                -> InterfaceBody
     InterfaceBlock                        -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)
     ProcedureEntityName                   -> ProcedureEntityName(Ident)
     IntrinsicProcedureName                -> IntrinsicProcedureName(Ident)
     ImportName                            -> ImportName(Ident)
-    GenericName                           -> GenericName(Ident)
     ExternalName                          -> ExternalName(Ident)
     EntryName                             -> EntryName(Ident)
     EndBlockDataStmt                      -> EndBlockDataStmt_0(OptLabel0,EOS)
@@ -1176,29 +1166,38 @@ regular tree grammar
     LocalDefinedOperator                  -> LocalDefinedOperator_DUO(DefinedUnaryOp)
     OnlyUseName                           -> OnlyUseName(Ident)
     OnlyList                              -> OnlyList(ListStarOfOnly0)
-    Only                                  -> Only(Rename)
-    Only                                  -> Only(OnlyUseName)
+    Only                                  -> Rename
+    Only                                  -> GenericSpec
+    LocalName                             -> Ident
+    UseName                               -> Ident
     RenameList                            -> RenameList(ListPlusOfRename0)
     Rename                                -> Rename(LocalDefinedOperator,UseDefinedOperator)
     Rename                                -> Rename(LocalName,UseName)
-    ModuleNature                          -> ModuleNature_NON_INTRINSIC()
-    ModuleNature                          -> ModuleNature_INTRINSIC()
-    OptOnlyList                           -> OptOnlyList(OnlyList)
-    OptRenameList                         -> OptRenameList(RenameList)
-    OptModuleNature                       -> OptModuleNature(ModuleNature)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,OptOnlyList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,OptRenameList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,OptOptModuleNature0,ModuleName,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptOnlyList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,OptRenameList,EOS)
-    UseStmt                               -> UseStmt(OptLabel0,ModuleName,EOS)
+    ModuleNature                          -> NON_INTRINSIC()
+    ModuleNature                          -> INTRINSIC()
+    OptOnlyList                           -> opt-only-list(OnlyList)
+    OptRenameList                         -> opt-rename-list(RenameList)
+    NoRenameList                          -> no-rename-list()
+    NoModuleNature                        -> no-module-nature()
+    OptModuleNature                       -> NoModuleNature
+    OptModuleNature                       -> opt-module-nature(ModuleNature)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,OptOnlyList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,OptRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,OptModuleNature,ModuleName,NoRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,OptOnlyList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,OptRenameList,EOS)
+    UseStmt                               -> UseStmt(OptLabel,NoModuleNature,ModuleName,NoRenameList,EOS)
     ModuleSubprogram                      -> SeparateModuleSubprogram
     ModuleSubprogram                      -> SubroutineSubprogram
     ModuleSubprogram                      -> FunctionSubprogram
     ModuleSubprogramPart                  -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
-    EndModuleStmt                         -> EndModuleStmt(OptLabel0,OptModuleName0,EOS)
-    EndModuleStmt                         -> EndModuleStmt(OptLabel0,EOS)
-    ModuleStmt                            -> ModuleStmt(OptLabel0,ModuleName,EOS)
+    OptModuleName                         -> ModuleName
+    OptModuleName                         -> no-module-name()
+    NoModuleName                          -> no-module-name()
+    ModuleName                            -> Ident
+    EndModuleStmt                         -> EndModuleStmt(OptLabel,OptModuleName,EOS)
+    EndModuleStmt                         -> EndModuleStmt(OptLabel,NoModuleName,EOS)
+    ModuleStmt                            -> ModuleStmt(OptLabel,ModuleName,EOS)
     Module                                -> Module(ModuleStmt,SpecificationPart,OptModuleSubprogramPart0,EndModuleStmt)
     OptProgramName                        -> ProgramName
     OptProgramName                        -> no-program-name()
@@ -1287,7 +1286,7 @@ regular tree grammar
     InternalSubprogram                    -> FunctionSubprogram
     OptInternalSubprogramPart             -> no-subprogram-part()
     OptInternalSubprogramPart             -> InternalSubprogramPart
-    InternalSubprogramPart                -> subprogram-part(ContainsStmt,ListStarOfInternalSubprogram0)
+    InternalSubprogramPart                -> SubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
     ExecutionPartConstruct                -> DataStmt
     ExecutionPartConstruct                -> EntryStmt
     ExecutionPartConstruct                -> FormatStmt
@@ -1321,11 +1320,8 @@ regular tree grammar
     OptStartCommentBlock                  -> no-comments()
     OptStartCommentBlock                  -> StartCommentBlock
     Program                               -> Program(OptStartCommentBlock,ListPlusOfProgramUnit0)
-    UseName                               -> UseName(Ident)
     SubmoduleName                         -> SubmoduleName(Ident)
     ParentSubmoduleName                   -> ParentSubmoduleName(Ident)
-    ModuleName                            -> ModuleName(Ident)
-    LocalName                             -> LocalName(Ident)
     BlockDataName                         -> BlockDataName(Ident)
     AncestorModuleName                    -> AncestorModuleName(Ident)
     CharStringEditDesc                    -> CharStringEditDesc(Scon)
@@ -1540,7 +1536,7 @@ regular tree grammar
     IoUnit                                -> IoUnit_STAR()
     IoUnit                                -> IoUnit_FUN(IntExpr)
     PauseStmt                             -> PauseStmt(OptLabel0,OptStopCode0,EOS)
-    LockVariable                          -> LockVariable(Variable)
+    LockVariable                          -> Variable
     UnlockStmt                            -> UnlockStmt(OptLabel0,LockVariable,OptSyncStatList0,EOS)
     LockStatList                          -> LockStatList(ListPlusOfLockStat0)
     LockStat                              -> LockStat_SS(SyncStat)
@@ -1761,30 +1757,31 @@ regular tree grammar
     AllocateCoarraySpec                   -> AllocateCoarraySpec(AllocateCoshapeSpecList)
     AllocateCoarraySpec                   -> AllocateCoarraySpec(LowerBoundExpr)
     AllocateCoarraySpec                   -> AllocateCoarraySpec()
-    UpperBoundExpr                        -> UpperBoundExpr(IntExpr)
-    LowerBoundExpr                        -> LowerBoundExpr(IntExpr)
+    UpperBoundExpr                        -> IntExpr
+    LowerBoundExpr                        -> IntExpr
+    NoLowerBoundExpr                      -> no-lower-bound()
     AllocateShapeSpecList                 -> AllocateShapeSpecList(ListPlusOfAllocateShapeSpec0)
     AllocateShapeSpec                     -> AllocateShapeSpec(LowerBoundExpr,UpperBoundExpr)
-    AllocateShapeSpec                     -> AllocateShapeSpec(UpperBoundExpr)
+    AllocateShapeSpec                     -> AllocateShapeSpec(NoLowerBoundExpr,UpperBoundExpr)
     AllocateObjectList                    -> AllocateObjectList(ListPlusOfAllocateObject0)
     AllocateObject                        -> StructureComponent
-    AllocationList                        -> AllocationList(ListPlusOfAllocation0)
+    AllocationList                        -> allocation-list(ListPlusOfAllocation0)
     Allocation                            -> Allocation(AllocateObject,AllocateShapeSpecList,AllocateCoarraySpec)
     Allocation                            -> Allocation(AllocateObject,AllocateCoarraySpec)
     Allocation                            -> Allocation(AllocateObject,AllocateShapeSpecList)
     Allocation                            -> Allocation(AllocateObject)
-    ErrmsgVariable                        -> ErrmsgVariable(DefaultCharVariable)
-    StatVariable                          -> StatVariable(IntVariable)
-    AllocOptList                          -> AllocOptList(ListPlusOfAllocOpt0)
+    ErrmsgVariable                        -> DefaultCharVariable
+    StatVariable                          -> IntVariable
+    OptAllocOptList                       -> no-alloc-opt-list()
+    OptAllocOptList                       -> alloc-opt-list(ListPlusOfAllocOpt0)
     AllocOpt                              -> STAT(StatVariable)
     AllocOpt                              -> SOURCE(Expr)
     AllocOpt                              -> MOLD(Expr)
     AllocOpt                              -> ERRMSG(ErrmsgVariable)
-    AllocateStmt                          -> AllocateStmt(OptLabel0,TypeSpec,AllocationList,AllocOptList,EOS)
-    AllocateStmt                          -> AllocateStmt(OptLabel0,AllocationList,AllocOptList,EOS)
-    AllocateStmt                          -> AllocateStmt(OptLabel0,TypeSpec,AllocationList,EOS)
-    AllocateStmt                          -> AllocateStmt(OptLabel0,AllocationList,EOS)
-    CosubscriptList                       -> CosubscriptList(ListPlusOfCosubscript0)
+    NoTypeSpec                            -> no-type-spec()
+    AllocateStmt                          -> AllocateStmt(OptLabel,TypeSpec,AllocationList,OptAllocOptList,EOS)
+    AllocateStmt                          -> AllocateStmt(OptLabel,NoTypeSpec,AllocationList,OptAllocOptList,EOS)
+    CosubscriptList                       -> cosubscript-list(ListPlusOfCosubscript0)
     Cosubscript                           -> IntExpr
     OptImageSelector                      -> no-image-selector()
     OptImageSelector                      -> ImageSelector
@@ -1792,7 +1789,7 @@ regular tree grammar
     VectorSubscript                       -> VectorSubscript(IntExpr)
     Stride                                -> Stride(IntExpr)
     SubscriptTriplet                      -> SubscriptTriplet(OptSubscript0,OptSubscript0,OptStride0)
-    SectionSubscriptList                  -> SectionSubscriptList(ListPlusOfSectionSubscript0)
+    SectionSubscriptList                  -> section-subscript-list(ListPlusOfSectionSubscript0)
     SectionSubscript                      -> SectionSubscript(SubscriptTriplet)
     SectionSubscript                      -> SectionSubscript(Subscript)
     Subscript                             -> Subscript(IntExpr)
@@ -1813,8 +1810,8 @@ regular tree grammar
     ParentString                          -> Constant
     ParentString                          -> StructureComponent
     Substring                             -> Substring(ParentString,SubstringRange)
-    IntVariable                           -> IntVariable(Variable)
-    DefaultCharVariable                   -> DefaultCharVariable(Variable)
+    IntVariable                           -> Variable
+    DefaultCharVariable                   -> Variable
     CharVariable                          -> CharVariable(Variable)
     LogicalVariable                       -> LogicalVariable(Variable)
     VariableName                          -> VariableName(Ident)
@@ -2108,9 +2105,12 @@ regular tree grammar
     OptTypeAttrSpecList                   -> OptTASL(OptTypeAttrSpecList0)
     DerivedTypeStmt                       -> DerivedTypeStmt(OptLabel0,OptOptTypeAttrSpecList0,TypeName,OptOptTypeParamNameList0,EOS)
     DerivedTypeDef                        -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt0,ListStarOfPrivateOrSequence0,OptComponentPart0,OptTypeBoundProcedurePart0,EndTypeStmt)
-    LogicalLiteralConstant                -> LogicalLiteralConstant_FALSE(OptKindParam0)
-    LogicalLiteralConstant                -> LogicalLiteralConstant_TRUE(OptKindParam0)
-    CharLiteralConstant                   -> CharLiteralConstant(OptKindParam1,Scon)
+    OptKindParam                          -> no-kind-param()
+    OptKindParam                          -> opt-kind-param(KindParam)
+    LogicalLiteralConstant                -> LogicalLiteralConstant_FALSE(OptKindParam)
+    LogicalLiteralConstant                -> LogicalLiteralConstant_TRUE(OptKindParam)
+    CharLiteralConstant                   -> CharLiteralConstant(NoKindParam,Scon)
+    CharLiteralConstant                   -> CharLiteralConstant(KindParam,Scon)
     CharLength                            -> CharLength_I(Icon)
     CharLength                            -> CharLength_TPV(TypeParamValue)
     LengthSelector                        -> LengthSelector_STAR(CharLength)
@@ -2131,16 +2131,17 @@ regular tree grammar
     RealPart                              -> RealPart_SILC(SignedIntLiteralConstant)
     ComplexLiteralConstant                -> ComplexLiteralConstant(RealPart,ImagPart)
     RealLiteralConstant                   -> RealLiteralConstant(Rcon,KindParam)
-    RealLiteralConstant                   -> RealLiteralConstant(Rcon)
+    RealLiteralConstant                   -> RealLiteralConstant(Rcon,NoKindParam)
     SignedRealLiteralConstant             -> SignedRealLiteralConstant(OptSign0,RealLiteralConstant)
     Sign                                  -> Sign_MINUS()
     Sign                                  -> Sign_PLUS()
-    DigitString                           -> DigitString(Icon)
+    DigitString                           -> Icon
     SignedDigitString                     -> SignedDigitString(OptSign0,DigitString)
     KindParam                             -> KindParam_SICN(ScalarIntConstantName)
     KindParam                             -> KindParam_DS(DigitString)
+    NoKindParam                           -> no-kind-param()
     IntLiteralConstant                    -> IntLiteralConstant(DigitString,KindParam)
-    IntLiteralConstant                    -> IntLiteralConstant(DigitString)
+    IntLiteralConstant                    -> IntLiteralConstant(DigitString,NoKindParam)
     SignedIntLiteralConstant              -> SignedIntLiteralConstant(OptSign0,IntLiteralConstant)
     OptKindSelector                       -> no-kind()
     OptKindSelector                       -> KindSelector

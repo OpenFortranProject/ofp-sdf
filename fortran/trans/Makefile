@@ -16,17 +16,17 @@ ofp2fast : ofp2fast.str
 fast2pp : fast2pp.str
 	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS) --main io-fast2pp
 
-check : ofp2fast
+check : ofp-simplify ofp2fast
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
-unparse : ofp2fast
+unparse : ofp-simplify ofp2fast
 	@echo "------------"
 	@sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2pp | ast2text -p ../pp/Fortran.pp
 
-test : ofp2fast
+test : ofp-simplify ofp2fast
 	sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
-cafe : ofp2fast
+cafe : ofp-simplify ofp2fast
 	sglri -i cafe.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
 clean :

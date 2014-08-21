@@ -65,6 +65,8 @@ sorts
   TypeSpec                            %% R402
   DeclarationTypeSpec                 %% R403
 
+  NoTypeSpec
+
 %% 4.4 Intrinsic types
 
   IntrinsicTypeSpec                   %% R404
@@ -89,7 +91,7 @@ sorts
   CharLiteralConstant                 %% R423
   LogicalLiteralConstant              %% R424
 
-  OptKindSelector
+  NoKindParam OptKindParam OptKindSelector
 
 %% 4.5 Derived types
 
@@ -362,7 +364,8 @@ sorts
   DeallocOpt                          %% R641
 
   AllocateCoshapeSpecList AllocateObjectList AllocateShapeSpecList
-  AllocationList AllocOptList DeallocOptList PointerObjectList
+  AllocationList OptAllocOptList DeallocOptList
+  NoLowerBoundExpr PointerObjectList
 
 %% Identifier aliases
 
@@ -671,7 +674,8 @@ sorts
   EndBlockDataStmt                    %% R1122
 
   OnlyList ProgramName NoProgramName OptProgramName
-  OptProgramStmt OptOnlyList OptModuleNature RenameList OptRenameList
+  OptProgramStmt OptOnlyList OptModuleNature NoModuleNature
+  RenameList NoRenameList OptRenameList
 
 %% Identifier aliases
 
@@ -728,8 +732,8 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
-  ExternalNameList ImportNameList IntrinsicProcedureNameList OptPrefix
+  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList ExternalNameList
+  OptGenericSpec ImportNameList IntrinsicProcedureNameList OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
   NoProcedureName ProcedureNameList NoSuffix OptSuffix
   OptStartCommentBlock
@@ -860,8 +864,10 @@ context-free syntax
   Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
-  DigitString                           -> IntLiteralConstant  {cons("IntLiteralConstant")}
+  DigitString   NoKindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
   DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
+
+  % empty %                             -> NoKindParam         {cons("no-kind-param")}
 
 %%R408
   DigitString                           -> KindParam          {cons("KindParam_DS")}
@@ -881,7 +887,7 @@ context-free syntax
   Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
-  Rcon                                  -> RealLiteralConstant        {cons("RealLiteralConstant")}
+  Rcon   NoKindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
   Rcon '_' KindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
 
 %%R414 significand     - lex
@@ -924,12 +930,15 @@ context-free syntax
   Icon                                                         -> CharLength      {cons("CharLength_I")}
 
 %%R423
-  (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("CharLiteralConstant")}
+  KindParam '_' Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
+  NoKindParam   Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
 
 %%R424
-  '.TRUE.'  ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
-  '.FALSE.' ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
+  '.TRUE.'  OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
+  '.FALSE.' OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
 
+  '_' KindParam                         -> OptKindParam            {cons("opt-kind-param")}
+  % empty %                             -> OptKindParam            {cons("no-kind-param")}
 
 %% 4.5 Derived types
 %%
@@ -1682,10 +1691,10 @@ context-free syntax
   Variable           -> CharVariable                       {cons("CharVariable")}
 
 %%R606
-  Variable           -> DefaultCharVariable                {cons("DefaultCharVariable")}
+  Variable           -> DefaultCharVariable
 
 %%607
-  Variable           -> IntVariable                         {cons("IntVariable")}
+  Variable           -> IntVariable
 
 
 %% 6.4 Scalars
@@ -1755,7 +1764,7 @@ context-free syntax
   SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
 %%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
 
-  {SectionSubscript ','}+                                -> SectionSubscriptList {cons("SectionSubscriptList")}
+  {SectionSubscript ','}+                                -> SectionSubscriptList {cons("section-subscript-list")}
 
 %%R621
   Subscript? ':' Subscript? (':' Stride)?                -> SubscriptTriplet     {cons("SubscriptTriplet")}
@@ -1781,19 +1790,19 @@ context-free syntax
 %%      int-expr substituted for scalar-int-expr
 %%
   IntExpr                                                -> Cosubscript
-  {Cosubscript ','}+                                     -> CosubscriptList      {cons("CosubscriptList")}
+  {Cosubscript ','}+                                     -> CosubscriptList      {cons("cosubscript-list")}
 
 
 %% 6.7 Dynamic association
 %%
 
 %%R626
-  Label? 'ALLOCATE' '('               AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '('               AllocationList
-                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList
-                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE' '(' NoTypeSpec    
+                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE' '(' TypeSpec '::'
+                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+
+  % empty %                                              -> NoTypeSpec           {cons("no-type-spec")}
 
 %%R627
 %%      expr substituted for source-expr
@@ -1802,17 +1811,19 @@ context-free syntax
   'MOLD'   '=' Expr                                      -> AllocOpt             {cons("MOLD")}
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
-  {AllocOpt ','}+                                        -> AllocOptList         {cons("AllocOptList")}
+
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("alloc-opt-list")}
+  % empty %                                              -> OptAllocOptList      {cons("no-alloc-opt-list")}
 
 %%R628
 %%     int-variable substituted for scalar-int-variable
 %%
-  IntVariable                                            -> StatVariable         {cons("StatVariable")}
+  IntVariable                                            -> StatVariable
 
 %%R629
 %%     default-char-variable substituted for scalar-default-char-variable
 %%
-  DefaultCharVariable                                    -> ErrmsgVariable       {cons("ErrmsgVariable")}
+  DefaultCharVariable                                    -> ErrmsgVariable
 
 %%R630
 %% SourceExpr
@@ -1823,7 +1834,7 @@ context-free syntax
    AllocateObject '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
    AllocateObject '(' AllocateShapeSpecList ')'
                   '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
-  {Allocation ','}+                                      -> AllocationList       {cons("AllocationList")}
+  {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
 
 %%R632
 %%VariableName          %% AMB with StructureComponent
@@ -1831,19 +1842,21 @@ context-free syntax
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
-                     UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
+  NoLowerBoundExpr   UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("AllocateShapeSpecList")}
+
+  % empty %                                              -> NoLowerBoundExpr     {cons("no-lower-bound")}
 
 %%R634
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> LowerBoundExpr       {cons("LowerBoundExpr")}
+  IntExpr                                                -> LowerBoundExpr
 
 %%R635
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> UpperBoundExpr       {cons("UpperBoundExpr")}
+  IntExpr                                                -> UpperBoundExpr
 
 %%R636
                                                  '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
@@ -3058,10 +3071,8 @@ context-free syntax
 
   Ident   -> AncestorModuleName        {cons("AncestorModuleName")}
   Ident   -> BlockDataName             {cons("BlockDataName")}
-  Ident   -> LocalName                 {cons("LocalName")}
   Ident   -> ParentSubmoduleName       {cons("ParentSubmoduleName")}
   Ident   -> SubmoduleName             {cons("SubmoduleName")}
-  Ident   -> UseName                   {cons("UseName")}
 
 %%R201 JD: the optional StartCommentBlock is needed to parse comment lines in 1st lines of a file.
 %% original: ExecutableProgram ProgramUnit -> ExecutableProgram
@@ -3287,20 +3298,27 @@ context-free syntax
   SeparateModuleSubprogram                     -> ModuleSubprogram
 
 %%R1109
-  Label? 'USE'                       ModuleName               EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE'                       ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE'                       ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName               EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  Label? 'USE' OptModuleNature? '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+%% Note: ofp-simplify strategy used to combine the rename and only list combinations
+%%
+  OptLabel 'USE'  NoModuleNature      ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE'  NoModuleNature      ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE'  NoModuleNature      ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
 
-  ',' ModuleNature                             -> OptModuleNature {cons("OptModuleNature")}
-  ',' RenameList                               -> OptRenameList   {cons("OptRenameList")}
-  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("OptOnlyList")}
+  ',' ModuleNature                             -> OptModuleNature {cons("opt-module-nature")}
+  NoModuleNature                               -> OptModuleNature
+  % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
+
+  % empty %                                    -> NoRenameList    {cons("no-rename-list")}
+  ',' RenameList                               -> OptRenameList   {cons("opt-rename-list")}
+  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("opt-only-list")}
+
 
 %%R1110
-  'INTRINSIC'                                  -> ModuleNature    {cons("ModuleNature_INTRINSIC")}
-  'NON_INTRINSIC'                              -> ModuleNature    {cons("ModuleNature_NON_INTRINSIC")}
+  'INTRINSIC'                                  -> ModuleNature    {cons("INTRINSIC")}
+  'NON_INTRINSIC'                              -> ModuleNature    {cons("NON_INTRINSIC")}
 
 %%R1111
   LocalName
@@ -3310,10 +3328,13 @@ context-free syntax
   'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("Rename")}
   {Rename ','}+                                -> RenameList  {cons("RenameList")}
 
+  Ident                                        -> UseName
+  Ident                                        -> LocalName
+
 %%R1112
-%%AMB-TODO-F08 PUTBACK    GenericSpec
-  OnlyUseName                                  -> Only        {cons("Only")}
-  Rename                                       -> Only        {cons("Only")}
+  GenericSpec                                  -> Only
+%%OnlyUseName                                  -> Only %AMBIGUOUS with GenericName in GenericSpec
+  Rename                                       -> Only
   {Only ','}*                                  -> OnlyList    {cons("OnlyList")}
 
 %%R1113
@@ -3378,7 +3399,6 @@ context-free syntax
 
   Ident   -> EntryName                 {cons("EntryName")}
   Ident   -> ExternalName              {cons("ExternalName")}
-  Ident   -> GenericName               {cons("GenericName")}
   Ident   -> ImportName                {cons("ImportName")}
   Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
   Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
@@ -3395,11 +3415,14 @@ context-free syntax
 
 
 %%R1203
-  Label? 'INTERFACE' GenericSpec?                  EOS -> InterfaceStmt     {cons("InterfaceStmt")}
-  Label? 'ABSTRACT' 'INTERFACE'                    EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  OptLabel 'INTERFACE' OptGenericSpec              EOS -> InterfaceStmt     {cons("InterfaceStmt")}
+  OptLabel 'ABSTRACT' 'INTERFACE'                  EOS -> InterfaceStmt     {cons("AbstractInterfaceStmt")}
       
 %%R1204
-  Label? 'END' 'INTERFACE' GenericSpec?            EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
+  OptLabel 'END' 'INTERFACE' OptGenericSpec        EOS -> EndInterfaceStmt  {cons("EndInterfaceStmt")}
+
+  GenericSpec                                          -> OptGenericSpec
+  % empty %                                            -> OptGenericSpec    {cons("no-generic-spec")}
 
 %%R1205
 %%     WARNING-MODIFICATION: 
@@ -3420,16 +3443,18 @@ context-free syntax
   {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNames")}
 
 %%R1207
-  GenericName                                   -> GenericSpec           {cons("GenericSpec")}
-  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("GenericSpec")}
-  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("GenericSpec_AE")}
-  DefinedIoGenericSpec                          -> GenericSpec           {cons("GenericSpec")}
+  GenericName                                   -> GenericSpec
+  'OPERATOR'   '(' DefinedOperator ')'          -> GenericSpec           {cons("OPERATOR")}
+  'ASSIGNMENT' '(' '='             ')'          -> GenericSpec           {cons("ASSIGNMENT")}
+  DefinedIoGenericSpec                          -> GenericSpec
+
+  Ident                                         -> GenericName
 
 %%R1208
-  'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RF")}
-  'READ'  '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_RU")}
-  'WRITE' '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WF")}
-  'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("DefinedIoGenericSpec_WU")}
+  'READ'  '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("READ_FORMATTED")}
+  'READ'  '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("READ_UNFORMATTED")}
+  'WRITE' '(' 'FORMATTED'   ')'                 -> DefinedIoGenericSpec   {cons("WRITE_FORMATTED")}
+  'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("WRITE_UNFORMATTED")}
 
 %%R1209
   Label? 'IMPORT' '::' ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}

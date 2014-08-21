@@ -44,15 +44,35 @@ ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1
 ofp-simplify-ast:  opt-section-subscripts(list)   -> list
 
 //R620
-ofp-simplify-ast:  SectionSubscriptList(list)     -> list
+ofp-simplify-ast:  section-subscript-list(list)   -> list
 
 //R624
 ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list ']' to list
 
 //R625
-ofp-simplify-ast:  CosubscriptList(list)          -> list
+ofp-simplify-ast:  cosubscript-list(list)         -> list
+
+//R627
+ofp-simplify-ast:  alloc-opt-list(list)           -> list
+
+//R631
+ofp-simplify-ast:  allocation-list(list)          -> list
 
 //R701
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
+
+//R1109
+//ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
+//                      -> UseStmt(label,nature,name,list,OnlyList([]),eos)
+//ofp-simplify-ast:  UseStmt(label,nature,name,opt-only-list(list),eos)
+//                      -> UseStmt(label,nature,name,RenameList([]),list,eos)
+
+ofp-simplify-ast:  no-rename-list()               -> RenameList([])
+ofp-simplify-ast:  opt-rename-list(list)          -> list
+ofp-simplify-ast:  opt-only-list(list)            -> list
+ofp-simplify-ast:  opt-module-nature(nature)      -> nature
+
+//R1235
+ofp-simplify-ast:  no-dummy-args()                -> []
