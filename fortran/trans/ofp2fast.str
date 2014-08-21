@@ -218,9 +218,6 @@ rules //========================START OF RULES===============================
                                             -> OfpAllocateStmt(label,Some(type),opts,list) {Comment(eos)}
 *****/
 
-//R627
-  ofp-to-ast:  AllocOptList(list)           -> list
-
 //R631
   ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
   ofp-to-ast:  Allocation(obj,coshp)        -> OfpAllocation(obj,None(),Some(coshp))
