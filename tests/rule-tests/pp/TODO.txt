@@ -1,8 +1,30 @@
 To Do List
 
-No pp entry found for: (5,["MainProgram"])
+
+R1237.f90            08.21.14
+No pp entry found for: (1,["PpMpSubprogram"])
+
+
+R626.f90             08.21.14
+No pp entry found for: (4,["OfpAllocateStmt"])
+    could not find OfpAllocateStmt in syntax/AST.sdf
+
+
+R1101e.f90           08.21.14
+R1101g.f90
+    both say No pp entry found for: (4,["AssignmentStmt"])
+
+
+R1206.f90            08.21.14
+No pp entry found for: (3,["OfpProcedureStmt"])
 
 
 
-R1201.f90
+
+
+____________________________________________
+Resolved
+
+
+R1201.f90 - resolved 08.21.14
 need to fix GenericSpec name
