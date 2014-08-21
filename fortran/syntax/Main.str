@@ -766,7 +766,7 @@ signature
                                    : DefaultCharVariable -> ErrmsgVariable
                                    : IntVariable -> StatVariable
     no-alloc-opt-list              : OptAllocOptList
-    AllocOptList                   : List(AllocOpt) -> OptAllocOptList
+    alloc-opt-list                 : List(AllocOpt) -> OptAllocOptList
     STAT                           : StatVariable -> AllocOpt
     SOURCE                         : Expr -> AllocOpt
     MOLD                           : Expr -> AllocOpt
@@ -774,14 +774,14 @@ signature
     no-type-spec                   : NoTypeSpec
     AllocateStmt                   : OptLabel * TypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
     AllocateStmt                   : OptLabel * NoTypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
-    CosubscriptList                : List(Cosubscript) -> CosubscriptList
+    cosubscript-list               : List(Cosubscript) -> CosubscriptList
                                    : IntExpr -> Cosubscript
     no-image-selector              : OptImageSelector
                                    : ImageSelector -> OptImageSelector
     ImageSelector                  : CosubscriptList -> ImageSelector
     Stride                         : IntExpr -> Stride
     SubscriptTriplet               : Option(Subscript) * Option(Subscript) * Option(Stride0) -> SubscriptTriplet
-    SectionSubscriptList           : List(SectionSubscript) -> SectionSubscriptList
+    section-subscript-list         : List(SectionSubscript) -> SectionSubscriptList
     SectionSubscript               : SubscriptTriplet -> SectionSubscript
     SectionSubscript               : Subscript -> SectionSubscript
     Subscript                      : IntExpr -> Subscript

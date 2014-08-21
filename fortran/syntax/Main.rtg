@@ -1773,7 +1773,7 @@ regular tree grammar
     ErrmsgVariable                        -> DefaultCharVariable
     StatVariable                          -> IntVariable
     OptAllocOptList                       -> no-alloc-opt-list()
-    OptAllocOptList                       -> AllocOptList(ListPlusOfAllocOpt0)
+    OptAllocOptList                       -> alloc-opt-list(ListPlusOfAllocOpt0)
     AllocOpt                              -> STAT(StatVariable)
     AllocOpt                              -> SOURCE(Expr)
     AllocOpt                              -> MOLD(Expr)
@@ -1781,7 +1781,7 @@ regular tree grammar
     NoTypeSpec                            -> no-type-spec()
     AllocateStmt                          -> AllocateStmt(OptLabel,TypeSpec,AllocationList,OptAllocOptList,EOS)
     AllocateStmt                          -> AllocateStmt(OptLabel,NoTypeSpec,AllocationList,OptAllocOptList,EOS)
-    CosubscriptList                       -> CosubscriptList(ListPlusOfCosubscript0)
+    CosubscriptList                       -> cosubscript-list(ListPlusOfCosubscript0)
     Cosubscript                           -> IntExpr
     OptImageSelector                      -> no-image-selector()
     OptImageSelector                      -> ImageSelector
@@ -1789,7 +1789,7 @@ regular tree grammar
     VectorSubscript                       -> VectorSubscript(IntExpr)
     Stride                                -> Stride(IntExpr)
     SubscriptTriplet                      -> SubscriptTriplet(OptSubscript0,OptSubscript0,OptStride0)
-    SectionSubscriptList                  -> SectionSubscriptList(ListPlusOfSectionSubscript0)
+    SectionSubscriptList                  -> section-subscript-list(ListPlusOfSectionSubscript0)
     SectionSubscript                      -> SectionSubscript(SubscriptTriplet)
     SectionSubscript                      -> SectionSubscript(Subscript)
     Subscript                             -> Subscript(IntExpr)
