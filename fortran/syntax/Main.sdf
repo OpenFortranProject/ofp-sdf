@@ -1812,7 +1812,7 @@ context-free syntax
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
 
-  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("AllocOptList")}
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("alloc-opt-list")}
   % empty %                                              -> OptAllocOptList      {cons("no-alloc-opt-list")}
 
 %%R628
