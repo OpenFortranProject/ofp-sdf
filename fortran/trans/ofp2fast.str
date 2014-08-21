@@ -21,9 +21,8 @@ strategies //=================START OF STRATEGIES============================
   main = io-wrap(ofp2fast)
 
   ofp2fast =
-    ofp-simplify;
-    outermost(ofp-disamb);
-    innermost(ofp-to-ast)
+      ofp-simplify
+    ; innermost(ofp-to-ast)
 
   ofp-add-some = ?None() < id + !Some(<id>)
 
@@ -43,16 +42,6 @@ strategies //=================START OF STRATEGIES============================
   var-ref-to-def = ?OfpVarRef(expr); !OfpVarDef(expr)
 
 rules //========================START OF RULES===============================
-
-  // Disambiguation rules
-  //
-
-  //R703,R723
-  ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
-
-  //R631 : C633 ... AllocateShapeSpecList shall appear
-  ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
-  ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
   ofp-extract-name:  None()                              -> None()
   ofp-extract-name:  OfpModuleStmt       (_,name)        -> name
@@ -115,11 +104,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  no-kind()                         -> None()
 
 //R407
-  ofp-to-ast:  IntLiteralConstant(str)                 -> OfpLiteral(str, OfpType(INTEGER(), None()))
   ofp-to-ast:  IntLiteralConstant(str, kind)           -> OfpLiteral(str, OfpType(INTEGER(), Some(kind)))
 
 //R413
-  ofp-to-ast:  RealLiteralConstant(str)                -> OfpLiteral(str, OfpType(REAL(), None()))
   ofp-to-ast:  RealLiteralConstant(str, kind)          -> OfpLiteral(str, OfpType(REAL(), Some(kind)))
 
 //R501
@@ -197,26 +184,12 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  PartRef(name,no-section-subscripts(),
                             no-image-selector())           -> OfpVarRef(OfpName(name))
 
-//R613
-  ofp-to-ast:  StructureComponent(OfpVarRef(name))         -> OfpVarRef(name)
-
 //R626
   ofp-to-ast:  AllocateStmt(label,type,list,opts,eos)
                   -> OfpAllocateStmt(<ofp-label>label,type,list,opts) {Comment(eos)}
 
   ofp-to-ast:  no-type-spec()                             -> None()
   ofp-to-ast:  no-alloc-opt-list()                        -> []
-
-/******
-  ofp-to-ast:  AllocateStmt(label,AllocationList(list),eos)
-                                            -> OfpAllocateStmt(label,None(),[],list)       {Comment(eos)}
-  ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),eos)
-                                            -> OfpAllocateStmt(label,Some(type),[],list)   {Comment(eos)}
-  ofp-to-ast:  AllocateStmt(label,AllocationList(list),opts,eos)
-                                            -> OfpAllocateStmt(label,None(),opts,list)     {Comment(eos)}
-  ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),opts,eos)
-                                            -> OfpAllocateStmt(label,Some(type),opts,list) {Comment(eos)}
-*****/
 
 //R631
   ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
@@ -225,22 +198,18 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(obj,Some(shp),Some(coshp))
 
 //R633
-  ofp-to-ast:  AllocateShapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
-  ofp-to-ast:  AllocateShapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
-  ofp-to-ast:  AllocateShapeSpecList(list)                              -> OfpShape(list)
+  ofp-to-ast:  AllocateShapeSpec(lb,ub)       -> OfpDimSpec(Some(lb),ub)
 
 //R636
   ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
-  ofp-to-ast:  AllocateCoarraySpec(LowerBoundExpr(lb))
-                                            -> OfpCoshape([OfpDimSpec(Some(lb),"*")])
+  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([OfpDimSpec(Some(lb),"*")])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
                                             -> OfpCoshape(<concat>[list,[OfpDimSpec(None(),"*")]])
-  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),LowerBoundExpr(lb))
+  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),lb)
                                             -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
 
 //R637
-  ofp-to-ast:  AllocateCoshapeSpec(UpperBoundExpr(ub))                    -> OfpDimSpec(None(),ub)
-  ofp-to-ast:  AllocateCoshapeSpec(LowerBoundExpr(lb),UpperBoundExpr(ub)) -> OfpDimSpec(Some(lb),ub)
+  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> OfpDimSpec(Some(lb),ub)
 
 // Operators...
 
@@ -256,9 +225,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  RelOp_GE()                   -> GE()
 
   ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
-
-//R726
-  ofp-to-ast:  IntExpr(expr)                -> expr
 
 //R723
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
