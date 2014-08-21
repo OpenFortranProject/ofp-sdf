@@ -201,6 +201,13 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  StructureComponent(OfpVarRef(name))         -> OfpVarRef(name)
 
 //R626
+  ofp-to-ast:  AllocateStmt(label,type,list,opts,eos)
+                  -> OfpAllocateStmt(<ofp-label>label,type,list,opts) {Comment(eos)}
+
+  ofp-to-ast:  no-type-spec()                             -> None()
+  ofp-to-ast:  no-alloc-opt-list()                        -> []
+
+/******
   ofp-to-ast:  AllocateStmt(label,AllocationList(list),eos)
                                             -> OfpAllocateStmt(label,None(),[],list)       {Comment(eos)}
   ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),eos)
@@ -209,6 +216,7 @@ rules //========================START OF RULES===============================
                                             -> OfpAllocateStmt(label,None(),opts,list)     {Comment(eos)}
   ofp-to-ast:  AllocateStmt(label,type,AllocationList(list),opts,eos)
                                             -> OfpAllocateStmt(label,Some(type),opts,list) {Comment(eos)}
+*****/
 
 //R627
   ofp-to-ast:  AllocOptList(list)           -> list
