@@ -65,6 +65,8 @@ sorts
   TypeSpec                            %% R402
   DeclarationTypeSpec                 %% R403
 
+  NoTypeSpec
+
 %% 4.4 Intrinsic types
 
   IntrinsicTypeSpec                   %% R404
@@ -89,7 +91,7 @@ sorts
   CharLiteralConstant                 %% R423
   LogicalLiteralConstant              %% R424
 
-  OptKindSelector
+  NoKindParam OptKindParam OptKindSelector
 
 %% 4.5 Derived types
 
@@ -362,7 +364,8 @@ sorts
   DeallocOpt                          %% R641
 
   AllocateCoshapeSpecList AllocateObjectList AllocateShapeSpecList
-  AllocationList AllocOptList DeallocOptList PointerObjectList
+  AllocationList OptAllocOptList DeallocOptList
+  NoLowerBoundExpr PointerObjectList
 
 %% Identifier aliases
 
@@ -861,8 +864,10 @@ context-free syntax
   Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
-  DigitString                           -> IntLiteralConstant  {cons("IntLiteralConstant")}
+  DigitString   NoKindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
   DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
+
+  % empty %                             -> NoKindParam         {cons("no-kind-param")}
 
 %%R408
   DigitString                           -> KindParam          {cons("KindParam_DS")}
@@ -882,7 +887,7 @@ context-free syntax
   Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
-  Rcon                                  -> RealLiteralConstant        {cons("RealLiteralConstant")}
+  Rcon   NoKindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
   Rcon '_' KindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
 
 %%R414 significand     - lex
@@ -925,12 +930,15 @@ context-free syntax
   Icon                                                         -> CharLength      {cons("CharLength_I")}
 
 %%R423
-  (KindParam '_')? Scon                 -> CharLiteralConstant     {cons("CharLiteralConstant")}
+  KindParam '_' Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
+  NoKindParam   Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
 
 %%R424
-  '.TRUE.'  ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
-  '.FALSE.' ('_' KindParam)?            -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
+  '.TRUE.'  OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
+  '.FALSE.' OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
 
+  '_' KindParam                         -> OptKindParam            {cons("opt-kind-param")}
+  % empty %                             -> OptKindParam            {cons("no-kind-param")}
 
 %% 4.5 Derived types
 %%
@@ -1683,10 +1691,10 @@ context-free syntax
   Variable           -> CharVariable                       {cons("CharVariable")}
 
 %%R606
-  Variable           -> DefaultCharVariable                {cons("DefaultCharVariable")}
+  Variable           -> DefaultCharVariable
 
 %%607
-  Variable           -> IntVariable                         {cons("IntVariable")}
+  Variable           -> IntVariable
 
 
 %% 6.4 Scalars
@@ -1756,7 +1764,7 @@ context-free syntax
   SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
 %%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
 
-  {SectionSubscript ','}+                                -> SectionSubscriptList {cons("SectionSubscriptList")}
+  {SectionSubscript ','}+                                -> SectionSubscriptList {cons("section-subscript-list")}
 
 %%R621
   Subscript? ':' Subscript? (':' Stride)?                -> SubscriptTriplet     {cons("SubscriptTriplet")}
@@ -1782,19 +1790,19 @@ context-free syntax
 %%      int-expr substituted for scalar-int-expr
 %%
   IntExpr                                                -> Cosubscript
-  {Cosubscript ','}+                                     -> CosubscriptList      {cons("CosubscriptList")}
+  {Cosubscript ','}+                                     -> CosubscriptList      {cons("cosubscript-list")}
 
 
 %% 6.7 Dynamic association
 %%
 
 %%R626
-  Label? 'ALLOCATE' '('               AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '('               AllocationList
-                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
-  Label? 'ALLOCATE' '(' TypeSpec '::' AllocationList
-                                  ',' AllocOptList   ')'  EOS -> AllocateStmt    {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE' '(' NoTypeSpec    
+                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE' '(' TypeSpec '::'
+                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+
+  % empty %                                              -> NoTypeSpec           {cons("no-type-spec")}
 
 %%R627
 %%      expr substituted for source-expr
@@ -1803,17 +1811,19 @@ context-free syntax
   'MOLD'   '=' Expr                                      -> AllocOpt             {cons("MOLD")}
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
-  {AllocOpt ','}+                                        -> AllocOptList         {cons("AllocOptList")}
+
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("AllocOptList")}
+  % empty %                                              -> OptAllocOptList      {cons("no-alloc-opt-list")}
 
 %%R628
 %%     int-variable substituted for scalar-int-variable
 %%
-  IntVariable                                            -> StatVariable         {cons("StatVariable")}
+  IntVariable                                            -> StatVariable
 
 %%R629
 %%     default-char-variable substituted for scalar-default-char-variable
 %%
-  DefaultCharVariable                                    -> ErrmsgVariable       {cons("ErrmsgVariable")}
+  DefaultCharVariable                                    -> ErrmsgVariable
 
 %%R630
 %% SourceExpr
@@ -1824,7 +1834,7 @@ context-free syntax
    AllocateObject '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
    AllocateObject '(' AllocateShapeSpecList ')'
                   '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
-  {Allocation ','}+                                      -> AllocationList       {cons("AllocationList")}
+  {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
 
 %%R632
 %%VariableName          %% AMB with StructureComponent
@@ -1832,19 +1842,21 @@ context-free syntax
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
 
 %%R633
-                     UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
+  NoLowerBoundExpr   UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("AllocateShapeSpecList")}
+
+  % empty %                                              -> NoLowerBoundExpr     {cons("no-lower-bound")}
 
 %%R634
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> LowerBoundExpr       {cons("LowerBoundExpr")}
+  IntExpr                                                -> LowerBoundExpr
 
 %%R635
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> UpperBoundExpr       {cons("UpperBoundExpr")}
+  IntExpr                                                -> UpperBoundExpr
 
 %%R636
                                                  '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}

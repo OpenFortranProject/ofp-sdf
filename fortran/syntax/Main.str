@@ -50,8 +50,6 @@ signature
                                    : ComponentAttrSpecList -> ComponentAttrSpecList0
                                    : Expr -> Expr1
                                    : TypeAttrSpecList -> TypeAttrSpecList0
-                                   : KindParam -> KindParam0
-                                   : KindParam -> KindParam1
     StmtFunctionStmt               : OptLabel * FunctionName * OptDummyArgNameList * Expr * EOS -> StmtFunctionStmt
     ContainsStmt                   : OptLabel * EOS -> ContainsStmt
     ReturnStmt                     : OptLabel * Option(Expr) * EOS -> ReturnStmt
@@ -752,29 +750,30 @@ signature
     AllocateCoarraySpec            : AllocateCoshapeSpecList -> AllocateCoarraySpec
     AllocateCoarraySpec            : LowerBoundExpr -> AllocateCoarraySpec
     AllocateCoarraySpec            : AllocateCoarraySpec
-    UpperBoundExpr                 : IntExpr -> UpperBoundExpr
-    LowerBoundExpr                 : IntExpr -> LowerBoundExpr
+                                   : IntExpr -> UpperBoundExpr
+                                   : IntExpr -> LowerBoundExpr
+    no-lower-bound                 : NoLowerBoundExpr
     AllocateShapeSpecList          : List(AllocateShapeSpec) -> AllocateShapeSpecList
     AllocateShapeSpec              : LowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
-    AllocateShapeSpec              : UpperBoundExpr -> AllocateShapeSpec
+    AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateObjectList             : List(AllocateObject) -> AllocateObjectList
                                    : StructureComponent -> AllocateObject
-    AllocationList                 : List(Allocation) -> AllocationList
+    allocation-list                : List(Allocation) -> AllocationList
     Allocation                     : AllocateObject * AllocateShapeSpecList * AllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * AllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * AllocateShapeSpecList -> Allocation
     Allocation                     : AllocateObject -> Allocation
-    ErrmsgVariable                 : DefaultCharVariable -> ErrmsgVariable
-    StatVariable                   : IntVariable -> StatVariable
-    AllocOptList                   : List(AllocOpt) -> AllocOptList
+                                   : DefaultCharVariable -> ErrmsgVariable
+                                   : IntVariable -> StatVariable
+    no-alloc-opt-list              : OptAllocOptList
+    AllocOptList                   : List(AllocOpt) -> OptAllocOptList
     STAT                           : StatVariable -> AllocOpt
     SOURCE                         : Expr -> AllocOpt
     MOLD                           : Expr -> AllocOpt
     ERRMSG                         : ErrmsgVariable -> AllocOpt
-    AllocateStmt                   : Option(Label) * TypeSpec * AllocationList * AllocOptList * EOS -> AllocateStmt
-    AllocateStmt                   : Option(Label) * AllocationList * AllocOptList * EOS -> AllocateStmt
-    AllocateStmt                   : Option(Label) * TypeSpec * AllocationList * EOS -> AllocateStmt
-    AllocateStmt                   : Option(Label) * AllocationList * EOS -> AllocateStmt
+    no-type-spec                   : NoTypeSpec
+    AllocateStmt                   : OptLabel * TypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
+    AllocateStmt                   : OptLabel * NoTypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
     CosubscriptList                : List(Cosubscript) -> CosubscriptList
                                    : IntExpr -> Cosubscript
     no-image-selector              : OptImageSelector
@@ -798,8 +797,8 @@ signature
                                    : Constant -> ParentString
                                    : StructureComponent -> ParentString
     Substring                      : ParentString * SubstringRange -> Substring
-    IntVariable                    : Variable -> IntVariable
-    DefaultCharVariable            : Variable -> DefaultCharVariable
+                                   : Variable -> IntVariable
+                                   : Variable -> DefaultCharVariable
     CharVariable                   : Variable -> CharVariable
     LogicalVariable                : Variable -> LogicalVariable
     VariableName                   : Ident -> VariableName
@@ -1069,9 +1068,12 @@ signature
     OptTASL                        : Option(TypeAttrSpecList0) -> OptTypeAttrSpecList
     DerivedTypeStmt                : Option(Label) * Option(OptTypeAttrSpecList) * TypeName * Option(OptTypeParamNameList) * EOS -> DerivedTypeStmt
     DerivedTypeDef                 : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * Option(ComponentPart) * Option(TypeBoundProcedurePart) * EndTypeStmt -> DerivedTypeDef
-    LogicalLiteralConstant_FALSE   : Option(KindParam0) -> LogicalLiteralConstant
-    LogicalLiteralConstant_TRUE    : Option(KindParam0) -> LogicalLiteralConstant
-    CharLiteralConstant            : Option(KindParam1) * Scon -> CharLiteralConstant
+    no-kind-param                  : OptKindParam
+    opt-kind-param                 : KindParam -> OptKindParam
+    LogicalLiteralConstant_FALSE   : OptKindParam -> LogicalLiteralConstant
+    LogicalLiteralConstant_TRUE    : OptKindParam -> LogicalLiteralConstant
+    CharLiteralConstant            : NoKindParam * Scon -> CharLiteralConstant
+    CharLiteralConstant            : KindParam * Scon -> CharLiteralConstant
     CharLength_I                   : Icon -> CharLength
     CharLength_TPV                 : TypeParamValue -> CharLength
     LengthSelector_STAR            : CharLength -> LengthSelector
@@ -1088,15 +1090,16 @@ signature
     RealPart_SILC                  : SignedIntLiteralConstant -> RealPart
     ComplexLiteralConstant         : RealPart * ImagPart -> ComplexLiteralConstant
     RealLiteralConstant            : Rcon * KindParam -> RealLiteralConstant
-    RealLiteralConstant            : Rcon -> RealLiteralConstant
+    RealLiteralConstant            : Rcon * NoKindParam -> RealLiteralConstant
     SignedRealLiteralConstant      : Option(Sign) * RealLiteralConstant -> SignedRealLiteralConstant
     Sign_MINUS                     : Sign
     Sign_PLUS                      : Sign
                                    : Icon -> DigitString
     KindParam_SICN                 : ScalarIntConstantName -> KindParam
     KindParam_DS                   : DigitString -> KindParam
+    no-kind-param                  : NoKindParam
     IntLiteralConstant             : DigitString * KindParam -> IntLiteralConstant
-    IntLiteralConstant             : DigitString -> IntLiteralConstant
+    IntLiteralConstant             : DigitString * NoKindParam -> IntLiteralConstant
     SignedIntLiteralConstant       : Option(Sign) * IntLiteralConstant -> SignedIntLiteralConstant
     no-kind                        : OptKindSelector
                                    : KindSelector -> OptKindSelector
