@@ -363,8 +363,9 @@ sorts
   DeallocateStmt                      %% R640
   DeallocOpt                          %% R641
 
-  AllocateCoshapeSpecList AllocateObjectList AllocateShapeSpecList
-  AllocationList OptAllocOptList DeallocOptList
+  AllocateCoshapeSpecList NoAllocateCoshapeSpecList NoAllocateCoarraySpec
+  AllocateObjectList AllocateShapeSpecList NoAllocateShapeSpecList
+  AllocationList OptAllocOptList DeallocOptList OptDeallocOptList
   NoLowerBoundExpr PointerObjectList
 
 %% Identifier aliases
@@ -1829,24 +1830,29 @@ context-free syntax
 %% SourceExpr
 
 %%R631
-   AllocateObject                                        -> Allocation           {cons("Allocation"),avoid}
-   AllocateObject '(' AllocateShapeSpecList ')'          -> Allocation           {cons("Allocation")}
-   AllocateObject '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
-   AllocateObject '(' AllocateShapeSpecList ')'
-                  '[' AllocateCoarraySpec   ']'          -> Allocation           {cons("Allocation")}
+   AllocateObject     NoAllocateShapeSpecList
+                      NoAllocateCoarraySpec              -> Allocation           {cons("Allocation"),avoid}
+   AllocateObject '(' AllocateShapeSpecList   ')'
+                      NoAllocateCoarraySpec              -> Allocation           {cons("Allocation")}
+   AllocateObject     NoAllocateShapeSpecList
+                  '[' AllocateCoarraySpec     ']'        -> Allocation           {cons("Allocation")}
+   AllocateObject '(' AllocateShapeSpecList   ')'
+                  '[' AllocateCoarraySpec     ']'        -> Allocation           {cons("Allocation")}
   {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
 
 %%R632
   VariableName                                           -> AllocateObject
   StructureComponent                                     -> AllocateObject       {avoid}
-  {AllocateObject ','}+                                  -> AllocateObjectList   {cons("AllocateObjectList")}
+  {AllocateObject ','}+                                  -> AllocateObjectList   {cons("allocate-object-list")}
 
 %%R633
   NoLowerBoundExpr   UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("allocate-shape-spec-list")}
 
-  % empty %                                              -> NoLowerBoundExpr     {cons("no-lower-bound")}
+  % empty %                                           -> NoAllocateShapeSpecList {cons("no-shape-specs")}
+  % empty %                                           -> NoAllocateCoarraySpec   {cons("no-coshape-specs")}
+  % empty %                                           -> NoLowerBoundExpr        {cons("no-lower-bound")}
 
 %%R634
 %%      int-expr substituted for scalar-int-expr
@@ -1859,15 +1865,16 @@ context-free syntax
   IntExpr                                                -> UpperBoundExpr
 
 %%R636
-                                                 '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
-                              LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
-  AllocateCoshapeSpecList ','                    '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  NoAllocateCoshapeSpecList   NoLowerBoundExpr   '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  NoAllocateCoshapeSpecList   LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  AllocateCoshapeSpecList ',' NoLowerBoundExpr   '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
   AllocateCoshapeSpecList ',' LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
 
 %%R637
-                     UpperBoundExpr                      -> AllocateCoshapeSpec     {cons("AllocateCoshapeSpec")}
-  LowerBoundExpr ':' UpperBoundExpr                      -> AllocateCoshapeSpec     {cons("AllocateCoshapeSpec")}
-  {AllocateCoshapeSpec ','}+                             -> AllocateCoshapeSpecList {cons("AllocateCoshapeSpecList")}
+  NoLowerBoundExpr   UpperBoundExpr              -> AllocateCoshapeSpec       {cons("AllocateCoshapeSpec")}
+  LowerBoundExpr ':' UpperBoundExpr              -> AllocateCoshapeSpec       {cons("AllocateCoshapeSpec")}
+  {AllocateCoshapeSpec ','}+                     -> AllocateCoshapeSpecList   {cons("allocate-coshape-spec-list")}
+  % empty %                                      -> NoAllocateCoshapeSpecList {cons("no-allocate-coshape-spec-list")}
 
 %%R638
   OptLabel 'NULLIFY' '(' PointerObjectList ')'       EOS -> NullifyStmt          {cons("NullifyStmt")}
@@ -1879,16 +1886,16 @@ context-free syntax
   {PointerObject ','}+                                   -> PointerObjectList    {cons("pointer-object-list")}
 
 %%R640
-  Label? 'DEALLOCATE'
-            '('
-                       AllocateObjectList
-                  (',' DeallocOptList     )?
-            ')'                                      EOS -> DeallocateStmt       {cons("DeallocateStmt")}
+  OptLabel 'DEALLOCATE'
+       '(' AllocateObjectList OptDeallocOptList ')'  EOS -> DeallocateStmt       {cons("DeallocateStmt")}
+
+  ',' DeallocOptList                                     -> OptDeallocOptList    {cons("opt-dealloc-opt-list")}
+  % empty %                                              -> OptDeallocOptList    {cons("no-dealloc-opt-list")}
 
 %%641
-  'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("DeallocOpt_STAT")}
-  'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("DeallocOpt_ERR")}
-  {DeallocOpt ','}+                                      -> DeallocOptList       {cons("DeallocOptList")}
+  'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("STAT")}
+  'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("ERRMSG")}
+  {DeallocOpt ','}+                                      -> DeallocOptList       {cons("dealloc-opt-list")}
 
 
 %%%%%%%%%%

@@ -31,7 +31,6 @@ signature
                                    : ForallConstructName -> ForallConstructName0
                                    : Ident -> Ident0
                                    : BoundsSpecList -> BoundsSpecList0
-                                   : DeallocOptList -> DeallocOptList0
                                    : Stride -> Stride0
                                    : ArraySpec -> ArraySpec0
                                    : Letter -> Letter0
@@ -734,35 +733,40 @@ signature
     IndexName                      : Ident -> IndexName
     ForallConstructName            : Ident -> ForallConstructName
     DataPointerComponentName       : Ident -> DataPointerComponentName
-    DeallocOptList                 : List(DeallocOpt) -> DeallocOptList
-    DeallocOpt_ERR                 : ErrmsgVariable -> DeallocOpt
-    DeallocOpt_STAT                : StatVariable -> DeallocOpt
-    DeallocateStmt                 : Option(Label) * AllocateObjectList * Option(DeallocOptList0) * EOS -> DeallocateStmt
+    dealloc-opt-list               : List(DeallocOpt) -> DeallocOptList
+    ERRMSG                         : ErrmsgVariable -> DeallocOpt
+    STAT                           : StatVariable -> DeallocOpt
+    no-dealloc-opt-list            : OptDeallocOptList
+    opt-dealloc-opt-list           : DeallocOptList -> OptDeallocOptList
+    DeallocateStmt                 : OptLabel * AllocateObjectList * OptDeallocOptList * EOS -> DeallocateStmt
     pointer-object-list            : List(PointerObject) -> PointerObjectList
                                    : StructureComponent -> PointerObject
                                    : VariableName -> PointerObject
     NullifyStmt                    : OptLabel * PointerObjectList * EOS -> NullifyStmt
-    AllocateCoshapeSpecList        : List(AllocateCoshapeSpec) -> AllocateCoshapeSpecList
+    no-allocate-coshape-spec-list  : NoAllocateCoshapeSpecList
+    allocate-coshape-spec-list     : List(AllocateCoshapeSpec) -> AllocateCoshapeSpecList
     AllocateCoshapeSpec            : LowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
-    AllocateCoshapeSpec            : UpperBoundExpr -> AllocateCoshapeSpec
+    AllocateCoshapeSpec            : NoLowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
     AllocateCoarraySpec            : AllocateCoshapeSpecList * LowerBoundExpr -> AllocateCoarraySpec
-    AllocateCoarraySpec            : AllocateCoshapeSpecList -> AllocateCoarraySpec
-    AllocateCoarraySpec            : LowerBoundExpr -> AllocateCoarraySpec
-    AllocateCoarraySpec            : AllocateCoarraySpec
+    AllocateCoarraySpec            : AllocateCoshapeSpecList * NoLowerBoundExpr -> AllocateCoarraySpec
+    AllocateCoarraySpec            : NoAllocateCoshapeSpecList * LowerBoundExpr -> AllocateCoarraySpec
+    AllocateCoarraySpec            : NoAllocateCoshapeSpecList * NoLowerBoundExpr -> AllocateCoarraySpec
                                    : IntExpr -> UpperBoundExpr
                                    : IntExpr -> LowerBoundExpr
     no-lower-bound                 : NoLowerBoundExpr
+    no-coshape-specs               : NoAllocateCoarraySpec
+    no-shape-specs                 : NoAllocateShapeSpecList
     allocate-shape-spec-list       : List(AllocateShapeSpec) -> AllocateShapeSpecList
     AllocateShapeSpec              : LowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
-    AllocateObjectList             : List(AllocateObject) -> AllocateObjectList
+    allocate-object-list           : List(AllocateObject) -> AllocateObjectList
                                    : StructureComponent -> AllocateObject
                                    : VariableName -> AllocateObject
     allocation-list                : List(Allocation) -> AllocationList
     Allocation                     : AllocateObject * AllocateShapeSpecList * AllocateCoarraySpec -> Allocation
-    Allocation                     : AllocateObject * AllocateCoarraySpec -> Allocation
-    Allocation                     : AllocateObject * AllocateShapeSpecList -> Allocation
-    Allocation                     : AllocateObject -> Allocation
+    Allocation                     : AllocateObject * NoAllocateShapeSpecList * AllocateCoarraySpec -> Allocation
+    Allocation                     : AllocateObject * AllocateShapeSpecList * NoAllocateCoarraySpec -> Allocation
+    Allocation                     : AllocateObject * NoAllocateShapeSpecList * NoAllocateCoarraySpec -> Allocation
                                    : DefaultCharVariable -> ErrmsgVariable
                                    : IntVariable -> StatVariable
     no-alloc-opt-list              : OptAllocOptList
