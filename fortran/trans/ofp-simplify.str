@@ -69,6 +69,10 @@ ofp-simplify-ast:  allocation-list(list)          -> list
 //R633
 ofp-simplify-ast:  allocate-shape-spec-list(list) -> list
 
+//R637
+ofp-simplify-ast:  allocate-coshape-spec-list(list)  -> list
+ofp-simplify-ast:  no-allocate-coshape-spec-list()   -> []
+
 //R639
 ofp-simplify-ast:  pointer-object-list(list)      -> list
 

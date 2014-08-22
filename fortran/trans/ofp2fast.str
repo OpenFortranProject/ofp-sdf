@@ -41,6 +41,7 @@ strategies //=================START OF STRATEGIES============================
   ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
   ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
+  ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
 
 rules //========================START OF RULES===============================
 
@@ -194,21 +195,25 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  no-alloc-opt-list()                        -> []
 
 //R631
-  ofp-to-ast:  Allocation(obj)              -> OfpAllocation(obj,None(),None())
-  ofp-to-ast:  Allocation(obj,coshp)        -> OfpAllocation(obj,None(),Some(coshp))
-  ofp-to-ast:  Allocation(obj,shp)          -> OfpAllocation(obj,Some(shp),None())
-  ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(obj,Some(shp),Some(coshp))
+  ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(<ofp-var-ref>obj,shp,coshp)
 
 //R633
-  ofp-to-ast:  AllocateShapeSpec(lb,ub)       -> OfpDimSpec(Some(lb),ub)
+  ofp-to-ast:  AllocateShapeSpec(lb,ub)     -> OfpDimSpec(<ofp-var-ref>lb,<ofp-var-ref>ub)
+  ofp-to-ast:  no-shape-specs()             -> None()
+  ofp-to-ast:  no-coshape-specs()           -> None()
+  ofp-to-ast:  no-lower-bound()             -> None()
 
 //R636
+  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
+
+/*****
   ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
   ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([OfpDimSpec(Some(lb),"*")])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
                                             -> OfpCoshape(<concat>[list,[OfpDimSpec(None(),"*")]])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),lb)
                                             -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
+*****/
 
 //R637
   ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> OfpDimSpec(Some(lb),ub)
