@@ -5,18 +5,61 @@ R1237.f90            08.21.14
 No pp entry found for: (1,["PpMpSubprogram"])
 
 
-R626.f90             08.21.14
-No pp entry found for: (4,["OfpAllocateStmt"])
-    could not find OfpAllocateStmt in syntax/AST.sdf
+R1207.f90            08.22.14
+Opendiff - INTERFACE OPERATOR becomes INTERFACE
+           INTERFACE ASSIGNMENT not seen at all
+
+More Opendiff notes
+R1204 -	   looks fine to me, only diff is END and then END PROGRAM
+R1205 -	   differences are indentations (probably fine) and  SUBROUTINE sub becomes SUBROUTINE sub () and indentations
+R1208 -	   quite different INTERFACE READ (UNFORMATTED) becomes INTERFACE
+R1211 -	   no problem with difference, just has lots of notes, maybe not done yet
+R1214 -	   no problem with  difference, just has some notes, maybe not done	 yet
 
 
-R1101e.f90           08.21.14
+
+R1101d.f90          08.22.14
 R1101g.f90
-    both say No pp entry found for: (4,["AssignmentStmt"])
+R1207.f90
+   All say No pp entry found for: (1,["Type"])
 
 
-R1206.f90            08.21.14
-No pp entry found for: (3,["OfpProcedureStmt"])
+R1218.f90           08.22.14
+No pp entry found for: (3,["IntrinsicStmt"])
+
+R1219.f90           08.22.14
+R1221.f90
+R1235.f90
+R1240.f90
+No pp entry found for: (1,["amb"])
+
+
+R1220.f90           08.22.14
+said No pp entry found for: (1,["OfpArg"])      so I put in this argument, but after putting it in, it says No pp entry found for: (2,["OfpArg"])   so change it to have two arguments and then it says No pp entry found for: (1,["OfpArg"]) 
+
+
+R1222.f90           08.22.14
+No pp entry found for: (2,["FunctionReference"])
+
+
+R1228.f90           08.22.14
+R1232.f90
+R1234.f90
+R1236.f90
+No pp entry found for: (2,["Program"])
+
+
+
+R1241.f90            08.22.14
+No pp entry found for: (3,["ReturnStmt"])
+
+
+
+
+R626.f90             08.22.14
+     if put in first two lines, fine.
+     if put in just last line, No pp entry found for: (1,["amb"])
+     if put in whole thing, No pp entry found for: (1,["STAT"]
 
 
 
@@ -28,3 +71,16 @@ Resolved
 
 R1201.f90 - resolved 08.21.14
 need to fix GenericSpec name
+
+R626.f90             08.21.14 resolved 08.22.14
+No pp entry found for: (4,["OfpAllocateStmt"])
+    could not find OfpAllocateStmt in syntax/AST.sdf
+
+
+R1101e.f90           08.21.14 resolved 08.22.14
+R1101g.f90
+    both say No pp entry found for: (4,["AssignmentStmt"])
+
+
+R1206.f90            08.21.14 resolved 08.22.14
+No pp entry found for: (3,["OfpProcedureStmt"])
