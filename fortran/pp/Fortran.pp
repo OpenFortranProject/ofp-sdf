@@ -51,6 +51,15 @@
    #R602 --,
    OfpVarDef                     -- _1,
 
+   #R612 --,
+   OfpVarRef                     -- _1,
+
+   #R626 --,
+   OfpAllocateStmt               -- _1 _2 _3 _4,
+
+   #R631 --,
+   OfpAllocation                 -- _1 _2 _3,
+
    #R732 --,
    OfpAssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3],
    OfpAssignmentStmt.2:opt       -- ,
@@ -88,13 +97,28 @@
    OfpSuffix                           -- _1,
    OfpSuffix.1:iter-star               -- _1,
 
+   #R1206 --,
+   OfpProcedureStmt,                   -- _1 _2 _3,
+
     #R1207 --,
    OfpGenericSpec                      -- _1,
+
+   #R1210 --,
+   OfpExternalStmt                     -- _1 _2,
 
    #R1217 --,
    PpFunction                          -- _1,
    OfpFunctionStmt                     -- _1 _4 "FUNCTION" H hs=0[ _2 "(" _3 ")"] _5,
    OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
+
+   #R1220 --,
+   OfpCallStmt                         -- _1 _2 _3,
+
+   #R1221 --,
+   OfpProcRef                          -- _1,
+
+   #R1222 --,
+   OfpArg                              -- _1 _2,
 
    #R1233 --,
    PpSubroutine                         -- _1,
