@@ -1,28 +1,16 @@
 To Do List
 
 
-R1237.f90            08.21.14
+R1237.f90 - 08.21.14
 No pp entry found for: (1,["PpMpSubprogram"])
 
 
-R1207.f90            08.22.14
-Opendiff - INTERFACE OPERATOR becomes INTERFACE
-           INTERFACE ASSIGNMENT not seen at all
+R1207.f90 - 08.22.14
+ - INTERFACE OPERATOR becomes INTERFACE
+ - INTERFACE ASSIGNMENT not seen at all
 
-More Opendiff notes
-R1204 -	   looks fine to me, only diff is END and then END PROGRAM
-R1205 -	   differences are indentations (probably fine) and  SUBROUTINE sub becomes SUBROUTINE sub () and indentations
-R1208 -	   quite different INTERFACE READ (UNFORMATTED) becomes INTERFACE
-R1211 -	   no problem with difference, just has lots of notes, maybe not done yet
-R1214 -	   no problem with  difference, just has some notes, maybe not done	 yet
-
-
-
-R1101d.f90          08.22.14
-R1101g.f90
-R1207.f90
-   All say No pp entry found for: (1,["Type"])
-
+R1208.f90 - 08.22.14
+ - quite different INTERFACE READ (UNFORMATTED) becomes INTERFACE
 
 R1218.f90           08.22.14
 No pp entry found for: (3,["IntrinsicStmt"])
@@ -67,6 +55,22 @@ R626.f90             08.22.14
 
 ____________________________________________
 Resolved
+
+
+R1211.f90 - 08.22.14 - resolved 08.22.14
+  - no problem with difference, just has lots of notes, maybe not done yet
+  - (Craig) has TODO-F2008 issues
+
+R1214.f90 - 08.22.14 - resolved 08.22.14
+  - no problem with difference, just has some notes, maybe not done yet
+  - (Craig) has TODO-F2008 issues
+
+R1204.f90 - resolved 08.22.14
+  - looks fine to me, only diff is END and then END PROGRAM
+  - (Craig) has TODO-F2008 issues
+
+R1205.f90
+  - differences are indentations (probably fine) and  SUBROUTINE sub becomes SUBROUTINE sub () and indentations
 
 
 R1201.f90 - resolved 08.21.14
