@@ -42,6 +42,9 @@ ofp-simplify-ast:  no-implicit-part()             -> []
 
 ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
 
+//R403
+ofp-simplify-ast:  intrinsic-type-spec(type)      -> type
+
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
 
@@ -91,6 +94,13 @@ ofp-simplify-ast:  no-rename-list()               -> RenameList([])
 ofp-simplify-ast:  opt-rename-list(list)          -> list
 ofp-simplify-ast:  opt-only-list(list)            -> list
 ofp-simplify-ast:  opt-module-nature(nature)      -> nature
+
+//R1210
+ofp-simplify-ast:  external-name-list(list)       -> list
+
+//R1218
+ofp-simplify-ast:
+  intrinsic-procedure-name-list(list)             -> list
 
 //R1235
 ofp-simplify-ast:  no-dummy-args()                -> []
