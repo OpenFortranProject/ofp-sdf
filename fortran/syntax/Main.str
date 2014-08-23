@@ -116,8 +116,9 @@ signature
     CallStmt                       : Option(Label) * ProcedureDesignator * ActualArgSpecList * EOS -> CallStmt
     CallStmt                       : Option(Label) * ProcedureDesignator * EOS -> CallStmt
     FunctionReference              : ProcedureDesignator * Option(ActualArgSpecList) -> FunctionReference
-    IntrinsicProcedureNameList     : List(IntrinsicProcedureName) -> IntrinsicProcedureNameList
-    IntrinsicStmt                  : Option(Label) * IntrinsicProcedureNameList * EOS -> IntrinsicStmt
+    intrinsic-procedure-name-list  : List(IntrinsicProcedureName) -> IntrinsicProcedureNameList
+                                   : Ident -> IntrinsicProcedureName
+    IntrinsicStmt                  : OptLabel * IntrinsicProcedureNameList * EOS -> IntrinsicStmt
     InitialProcTarget              : ProcedureName -> InitialProcTarget
     ProcPointerInit_IPT            : InitialProcTarget -> ProcPointerInit
     ProcPointerInit_NI             : NullInit -> ProcPointerInit
@@ -134,8 +135,9 @@ signature
     ProcInterface_DTS              : DeclarationTypeSpec -> ProcInterface
     ProcInterface_IN               : InterfaceName -> ProcInterface
     ProcedureDeclarationStmt       : Option(Label) * Option(ProcInterface) * Option(OptProcAttrSpecList1) * ProcDeclList * EOS -> ProcedureDeclarationStmt
-    ExternalNameList               : List(ExternalName) -> ExternalNameList
-    ExternalStmt                   : Option(Label) * ExternalNameList * EOS -> ExternalStmt
+    external-name-list             : List(ExternalName) -> ExternalNameList
+                                   : Ident -> ExternalName
+    ExternalStmt                   : OptLabel * ExternalNameList * EOS -> ExternalStmt
     ImportNameList                 : List(ImportName) -> ImportNameList
     ImportStmt_0                   : Option(Label) * EOS -> ImportStmt
     ImportStmt_INL                 : Option(Label) * ImportNameList * EOS -> ImportStmt
@@ -164,9 +166,7 @@ signature
                                    : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                 : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
     ProcedureEntityName            : Ident -> ProcedureEntityName
-    IntrinsicProcedureName         : Ident -> IntrinsicProcedureName
     ImportName                     : Ident -> ImportName
-    ExternalName                   : Ident -> ExternalName
     EntryName                      : Ident -> EntryName
     EndBlockDataStmt_0             : Option(Label) * EOS -> EndBlockDataStmt
     EndBlockDataStmt_BDN           : Option(Label) * Option(BlockDataName) * EOS -> EndBlockDataStmt
@@ -670,25 +670,25 @@ signature
     LogicalExpr                    : Expr -> LogicalExpr
     DefinedBinaryOp                : Dop -> DefinedBinaryOp
     DefBinExpr                     : Expr * DefinedBinaryOp * Expr -> Expr
-    NotEqvExpr                     : Expr * Expr -> Expr
-    EqvExpr                        : Expr * Expr -> Expr
-    OrExpr                         : Expr * Expr -> Expr
-    AndExpr                        : Expr * Expr -> Expr
-    NotExpr                        : Expr -> Expr
-    GE_Expr                        : Expr * Expr -> Expr
-    GT_Expr                        : Expr * Expr -> Expr
-    LE_Expr                        : Expr * Expr -> Expr
-    LT_Expr                        : Expr * Expr -> Expr
-    NE_Expr                        : Expr * Expr -> Expr
-    EQ_Expr                        : Expr * Expr -> Expr
-    ConcatExpr                     : Expr * Expr -> Expr
-    MinusExpr                      : Expr * Expr -> Expr
-    PlusExpr                       : Expr * Expr -> Expr
-    UnaryMinusExpr                 : Expr -> Expr
-    UnaryPlusExpr                  : Expr -> Expr
-    DivExpr                        : Expr * Expr -> Expr
-    MultExpr                       : Expr * Expr -> Expr
-    PowerExpr                      : Expr * Expr -> Expr
+    NEQV                           : Expr * Expr -> Expr
+    EQV                            : Expr * Expr -> Expr
+    OR                             : Expr * Expr -> Expr
+    AND                            : Expr * Expr -> Expr
+    NOT                            : Expr -> Expr
+    GE                             : Expr * Expr -> Expr
+    GT                             : Expr * Expr -> Expr
+    LE                             : Expr * Expr -> Expr
+    LT                             : Expr * Expr -> Expr
+    NE                             : Expr * Expr -> Expr
+    EQ                             : Expr * Expr -> Expr
+    Concat                         : Expr * Expr -> Expr
+    Minus                          : Expr * Expr -> Expr
+    Plus                           : Expr * Expr -> Expr
+    Minus                          : Expr -> Expr
+    Plus                           : Expr -> Expr
+    Div                            : Expr * Expr -> Expr
+    Mult                           : Expr * Expr -> Expr
+    Power                          : Expr * Expr -> Expr
     DefUnaryExpr                   : DefinedUnaryOp * Expr -> Expr
                                    : Primary -> Expr
     EquivOp_NEQV                   : EquivOp
@@ -761,7 +761,6 @@ signature
     AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     allocate-object-list           : List(AllocateObject) -> AllocateObjectList
                                    : StructureComponent -> AllocateObject
-                                   : VariableName -> AllocateObject
     allocation-list                : List(Allocation) -> AllocationList
     Allocation                     : AllocateObject * AllocateShapeSpecList * AllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * NoAllocateShapeSpecList * AllocateCoarraySpec -> Allocation
@@ -1082,6 +1081,8 @@ signature
     CharLength_TPV                 : TypeParamValue -> CharLength
     LengthSelector_STAR            : CharLength -> LengthSelector
     LengthSelector_LEN             : TypeParamValue -> LengthSelector
+    no-char-selector               : OptCharSelector
+                                   : CharSelector -> OptCharSelector
     CharSelector_KIND              : Expr -> CharSelector
     CharSelector_KIND_LEN          : Expr * TypeParamValue -> CharSelector
     CharSelector_LEN_KIND          : TypeParamValue * Expr -> CharSelector
@@ -1105,22 +1106,23 @@ signature
     IntLiteralConstant             : DigitString * KindParam -> IntLiteralConstant
     IntLiteralConstant             : DigitString * NoKindParam -> IntLiteralConstant
     SignedIntLiteralConstant       : Option(Sign) * IntLiteralConstant -> SignedIntLiteralConstant
+    no-kind                        : NoKindSelector
     no-kind                        : OptKindSelector
                                    : KindSelector -> OptKindSelector
     KindSelector_STAR              : Icon -> KindSelector
     KindSelector                   : Expr -> KindSelector
-    DOUBLECOMPLEX                  : IntrinsicTypeSpec
+    DOUBLECOMPLEX                  : NoKindSelector -> IntrinsicTypeSpec
     LOGICAL                        : OptKindSelector -> IntrinsicTypeSpec
-    CHARACTER                      : Option(CharSelector) -> IntrinsicTypeSpec
+    CHARACTER                      : OptCharSelector -> IntrinsicTypeSpec
     COMPLEX                        : OptKindSelector -> IntrinsicTypeSpec
-    DOUBLEPRECISION                : IntrinsicTypeSpec
+    DOUBLEPRECISION                : NoKindSelector -> IntrinsicTypeSpec
     REAL                           : OptKindSelector -> IntrinsicTypeSpec
     INTEGER                        : OptKindSelector -> IntrinsicTypeSpec
     AssumedType                    : DeclarationTypeSpec
     AssumedClass                   : DeclarationTypeSpec
     Class                          : DerivedTypeSpec -> DeclarationTypeSpec
     DerivedType                    : DerivedTypeSpec -> DeclarationTypeSpec
-    Type                           : IntrinsicTypeSpec -> DeclarationTypeSpec
+    intrinsic-type-spec            : IntrinsicTypeSpec -> DeclarationTypeSpec
                                    : DerivedTypeSpec -> TypeSpec
                                    : IntrinsicTypeSpec -> TypeSpec
     TypeParamValue_COLON           : TypeParamValue
