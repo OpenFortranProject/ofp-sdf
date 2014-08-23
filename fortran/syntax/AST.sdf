@@ -118,6 +118,7 @@ exports
     WRITEUNFORMATTED
 
     OfpExternalStmt          %% R1210
+    OfpIntrinsicStmt         %% R1218
 
     OfpCallStmt              %% R1220
     OfpProcRef               %% R1221
@@ -395,6 +396,9 @@ exports
 
   OfpLabel? OfpName+          -> OfpExternalStmt     {cons("OfpExternalStmt")}     %% R1210
   OfpExternalStmt             -> OfpDecl
+
+  OfpLabel? OfpName+          -> OfpIntrinsicStmt    {cons("OfpIntrinsicStmt")}    %% R1218
+  OfpIntrinsicStmt            -> OfpDecl
 
   OfpLabel? OfpProcRef OfpArg+ -> OfpCallStmt        {cons("OfpCallStmt")}               %% R1220
   OfpCallStmt                  -> OfpStmt
