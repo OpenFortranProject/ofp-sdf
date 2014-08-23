@@ -28,7 +28,9 @@ strategies //=================START OF STRATEGIES============================
   ofp-add-some = ?None() < id + !Some(<id>)
 
   ofp-name       = is-string < !OfpName (<id>)       + !None()
-  ofp-some-name  = is-string < !Some(OfpName (<id>)) + !None()
+  ofp-name-some  = is-string < !Some(OfpName (<id>)) + !None()
+  ofp-name-fail  = is-string ; !OfpName (<id>)
+
   ofp-label      = is-string < !Some(OfpLabel(<id>)) + !None()
 
   ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
@@ -42,6 +44,7 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
   ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
+
 
 rules //========================START OF RULES===============================
 
@@ -65,7 +68,6 @@ rules //========================START OF RULES===============================
                                <ofp-extract-contains>funcs,
                                <ofp-add-some>end)
 
-  ofp-to-ast:  ExternalName(str)         -> OfpName(str)
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
 
 //R201
@@ -189,9 +191,17 @@ rules //========================START OF RULES===============================
 
 //R626
   ofp-to-ast:  AllocateStmt(label,type,list,opts,eos)
-                  -> OfpAllocateStmt(<ofp-label>label,type,list,opts) {Comment(eos)}
+                  -> OfpAllocateStmt(<ofp-label>label,type,list,<map(alloc-opt)>opts) {Comment(eos)}
 
   ofp-to-ast:  no-type-spec()                             -> None()
+
+//R627
+//TODO - these may not all be simple ids (check for arrays, ...)
+  alloc-opt:  ERRMSG(str)                                 -> ERRMSG(<ofp-name-fail>str)
+  alloc-opt:  MOLD  (str)                                 -> MOLD  (<ofp-name-fail>str)
+  alloc-opt:  SOURCE(str)                                 -> SOURCE(<ofp-name-fail>str)
+  alloc-opt:  STAT  (str)                                 -> STAT  (<ofp-name-fail>str)
+
   ofp-to-ast:  no-alloc-opt-list()                        -> []
 
 //R631
@@ -253,7 +263,7 @@ rules //========================START OF RULES===============================
 
 //R1103
   ofp-to-ast:  EndProgramStmt(label,name,eos)
-                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
+                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
@@ -269,7 +279,7 @@ rules //========================START OF RULES===============================
 
 //R1106
   ofp-to-ast:  EndModuleStmt(label,name,eos)
-                  -> OfpEndModuleStmt(<ofp-label>label,<ofp-some-name>name)     {Comment(eos)}
+                  -> OfpEndModuleStmt(<ofp-label>label,<ofp-name-some>name)     {Comment(eos)}
 
   ofp-to-ast:  no-module-nature()           -> None()
 
@@ -312,9 +322,11 @@ rules //========================START OF RULES===============================
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
 //R1210
-  ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(label,list)               {Comment(eos)}
-  ofp-to-ast:  ExternalNameList(names)        -> names
-
+  ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(<ofp-label>label,
+                                                                 <map(ofp-name)>list)      {Comment(eos)}
+//R1218
+  ofp-to-ast:  IntrinsicStmt(label,list,eos)  -> OfpIntrinsicStmt(<ofp-label>label,
+                                                                  <map(ofp-name)>list)     {Comment(eos)}
 //R1220
   ofp-to-ast:  CallStmt(label,name,eos)       -> OfpCallStmt(label,name,[])                {Comment(eos)}
   ofp-to-ast:  CallStmt(label,name,args,eos)  -> OfpCallStmt(label,name,args)              {Comment(eos)}
@@ -344,7 +356,7 @@ rules //========================START OF RULES===============================
 
 //R1232
   ofp-to-ast:  EndFunctionStmt(label,name,eos)
-                   -> OfpEndFunctionStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
+                   -> OfpEndFunctionStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
@@ -358,7 +370,7 @@ rules //========================START OF RULES===============================
 
 //R1236
   ofp-to-ast:  EndSubroutineStmt(label,name,eos) 
-                   -> OfpEndSubroutineStmt(<ofp-label>label,<ofp-some-name>name)  {Comment(eos)}
+                   -> OfpEndSubroutineStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
 
 //R1237
   ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
@@ -371,9 +383,8 @@ rules //========================START OF RULES===============================
 
 //R1239
   ofp-to-ast:  EndMpSubprogramStmt(label,name,eos)
-                   -> OfpEndMpSubprogramStmt(<ofp-label>label,<ofp-some-name>name) {Comment(eos)}
+                   -> OfpEndMpSubprogramStmt(<ofp-label>label,<ofp-name-some>name) {Comment(eos)}
 
 //R1242
   ofp-to-ast:
     ContainsStmt(label,eos) -> OfpContainsStmt(<ofp-label>label)                   {Comment(eos)}
-
