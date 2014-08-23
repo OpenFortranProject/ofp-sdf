@@ -92,6 +92,7 @@ sorts
   LogicalLiteralConstant              %% R424
 
   NoKindParam OptKindParam OptKindSelector
+  NoKindSelector OptCharSelector
 
 %% 4.5 Derived types
 
@@ -829,8 +830,8 @@ context-free syntax
   DerivedTypeSpec                         -> TypeSpec
 
 %%R403
-  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("Type")}
-  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("Type")}
+  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("intrinsic-type-spec")}
+  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("intrinsic-type-spec")}
   'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DerivedType")}
   'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("Class")}
   'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("AssumedClass")}
@@ -842,13 +843,13 @@ context-free syntax
 %%
 
 %%R404
-  'INTEGER'   OptKindSelector           -> IntrinsicTypeSpec    {cons("INTEGER")}
-  'REAL'      OptKindSelector           -> IntrinsicTypeSpec    {cons("REAL")}
-  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
-  'COMPLEX'   OptKindSelector           -> IntrinsicTypeSpec    {cons("COMPLEX")}
-  'CHARACTER' CharSelector?             -> IntrinsicTypeSpec    {cons("CHARACTER")}
-  'LOGICAL'   OptKindSelector           -> IntrinsicTypeSpec    {cons("LOGICAL")}
-  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
+  'INTEGER'            OptKindSelector  -> IntrinsicTypeSpec    {cons("INTEGER")}
+  'REAL'               OptKindSelector  -> IntrinsicTypeSpec    {cons("REAL")}
+  'DOUBLE' 'PRECISION'  NoKindSelector  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
+  'COMPLEX'            OptKindSelector  -> IntrinsicTypeSpec    {cons("COMPLEX")}
+  'CHARACTER'          OptCharSelector  -> IntrinsicTypeSpec    {cons("CHARACTER")}
+  'LOGICAL'            OptKindSelector  -> IntrinsicTypeSpec    {cons("LOGICAL")}
+  'DOUBLE' 'COMPLEX'    NoKindSelector  -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
@@ -860,6 +861,7 @@ context-free syntax
 
   KindSelector                          -> OptKindSelector
   % empty %                             -> OptKindSelector  {cons("no-kind")}
+  % empty %                             -> NoKindSelector   {cons("no-kind")}
 
 %%406
   Sign? IntLiteralConstant              -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
@@ -919,6 +921,9 @@ context-free syntax
   '('            TypeParamValue ','             Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
   '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue   ')'       -> CharSelector    {cons("CharSelector_KIND_LEN")}
   '(' 'KIND' '=' Expr                                ')'       -> CharSelector    {cons("CharSelector_KIND")}
+
+  CharSelector                                                 -> OptCharSelector
+  % empty %                                                    -> OptCharSelector {cons("no-char-selector")}
 
 %%R421
   '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector_LEN")}
@@ -1841,8 +1846,8 @@ context-free syntax
   {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
 
 %%R632
-  VariableName                                           -> AllocateObject
-  StructureComponent                                     -> AllocateObject       {avoid}
+%%VariableName                                           -> AllocateObject %% AMBIGUOUS with StructureComponent
+  StructureComponent                                     -> AllocateObject
   {AllocateObject ','}+                                  -> AllocateObjectList   {cons("allocate-object-list")}
 
 %%R633
@@ -2271,45 +2276,45 @@ context-free priorities
 %%
     DefinedUnaryOp Expr   -> Expr {cons("DefUnaryExpr")}
   >
-    Expr '**' Expr        -> Expr {cons("PowerExpr"), right}
+    Expr '**' Expr        -> Expr {cons("Power"), right}
   >
   { left:
-    Expr '*' Expr       -> Expr {cons("MultExpr"), left}
-    Expr '/' Expr       -> Expr {cons("DivExpr"),  left}
+    Expr '*' Expr       -> Expr {cons("Mult"), left}
+    Expr '/' Expr       -> Expr {cons("Div"),  left}
   }
   >
   {
-    '+' Expr            -> Expr {cons("UnaryPlusExpr")}
-    '-' Expr            -> Expr {cons("UnaryMinusExpr")}
+    '+' Expr            -> Expr {cons("Plus")}
+    '-' Expr            -> Expr {cons("Minus")}
   }
   >
   { left:
-    Expr '+'  Expr      -> Expr {cons("PlusExpr"),  left}
-    Expr '-'  Expr      -> Expr {cons("MinusExpr"), left}
+    Expr '+'  Expr      -> Expr {cons("Plus"),  left}
+    Expr '-'  Expr      -> Expr {cons("Minus"), left}
   }
-  > Expr '//' Expr      -> Expr {cons("ConcatExpr"), left}
+  > Expr '//' Expr      -> Expr {cons("Concat"), left}
   >
   { left:
-    Expr '.EQ.' Expr    -> Expr {cons("EQ_Expr"), left}
-    Expr '.NE.' Expr    -> Expr {cons("NE_Expr"), left}
-    Expr '.LT.' Expr    -> Expr {cons("LT_Expr"), left}
-    Expr '.LE.' Expr    -> Expr {cons("LE_Expr"), left}
-    Expr '.GT.' Expr    -> Expr {cons("GT_Expr"), left}
-    Expr '.GE.' Expr    -> Expr {cons("GE_Expr"), left}
-    Expr '=='   Expr    -> Expr {cons("EQ_Expr"), left}
-    Expr '/='   Expr    -> Expr {cons("NE_Expr"), left}
-    Expr '<'    Expr    -> Expr {cons("LT_Expr"), left}
-    Expr '<='   Expr    -> Expr {cons("LE_Expr"), left}
-    Expr '>'    Expr    -> Expr {cons("GT_Expr"), left}
-    Expr '>='   Expr    -> Expr {cons("GE_Expr"), left}
+    Expr '.EQ.' Expr    -> Expr {cons("EQ"), left}
+    Expr '.NE.' Expr    -> Expr {cons("NE"), left}
+    Expr '.LT.' Expr    -> Expr {cons("LT"), left}
+    Expr '.LE.' Expr    -> Expr {cons("LE"), left}
+    Expr '.GT.' Expr    -> Expr {cons("GT"), left}
+    Expr '.GE.' Expr    -> Expr {cons("GE"), left}
+    Expr '=='   Expr    -> Expr {cons("EQ"), left}
+    Expr '/='   Expr    -> Expr {cons("NE"), left}
+    Expr '<'    Expr    -> Expr {cons("LT"), left}
+    Expr '<='   Expr    -> Expr {cons("LE"), left}
+    Expr '>'    Expr    -> Expr {cons("GT"), left}
+    Expr '>='   Expr    -> Expr {cons("GE"), left}
   }
-  >      '.NOT.' Expr   -> Expr {cons("NotExpr")}
-  > Expr '.AND.' Expr   -> Expr {cons("AndExpr"), left}
-  > Expr '.OR.'  Expr   -> Expr {cons("OrExpr"),  left}
+  >      '.NOT.' Expr   -> Expr {cons("NOT")}
+  > Expr '.AND.' Expr   -> Expr {cons("AND"), left}
+  > Expr '.OR.'  Expr   -> Expr {cons("OR"),  left}
   >
   { left:
-    Expr '.EQV.'  Expr  -> Expr {cons("EqvExpr"),    left}
-    Expr '.NEQV.' Expr  -> Expr {cons("NotEqvExpr"), left}
+    Expr '.EQV.'  Expr  -> Expr {cons("EQV"),    left}
+    Expr '.NEQV.' Expr  -> Expr {cons("NEQV"), left}
   }
 %%
 %% defined-binary-op has lowest priority
@@ -3405,9 +3410,7 @@ context-free syntax
 %%
 
   Ident   -> EntryName                 {cons("EntryName")}
-  Ident   -> ExternalName              {cons("ExternalName")}
   Ident   -> ImportName                {cons("ImportName")}
-  Ident   -> IntrinsicProcedureName    {cons("IntrinsicProcedureName")}
   Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
 
 
@@ -3471,10 +3474,11 @@ context-free syntax
   {ImportName ','}+                                   -> ImportNameList   {cons("ImportNameList")}
 
 %%R1210
-  Label? 'EXTERNAL' '::' ExternalNameList         EOS -> ExternalStmt     {cons("ExternalStmt")}
-  Label? 'EXTERNAL'      ExternalNameList         EOS -> ExternalStmt     {cons("ExternalStmt")}
+  OptLabel 'EXTERNAL' '::' ExternalNameList       EOS -> ExternalStmt     {cons("ExternalStmt")}
+  OptLabel 'EXTERNAL'      ExternalNameList       EOS -> ExternalStmt     {cons("ExternalStmt")}
 
-  {ExternalName ','}+                                 -> ExternalNameList {cons("ExternalNameList")}
+  Ident                                               -> ExternalName
+  {ExternalName ','}+                                 -> ExternalNameList {cons("external-name-list")}
 
 %%R1211
   Label? 'PROCEDURE'
@@ -3511,10 +3515,11 @@ context-free syntax
   ProcedureName                                       -> InitialProcTarget  {cons("InitialProcTarget")}
 
 %%R1218
-  Label? 'INTRINSIC' '::' IntrinsicProcedureNameList   EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
-  Label? 'INTRINSIC'      IntrinsicProcedureNameList   EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  OptLabel 'INTRINSIC' '::' IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  OptLabel 'INTRINSIC'      IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
 
-  {IntrinsicProcedureName ','}+                            -> IntrinsicProcedureNameList {cons("IntrinsicProcedureNameList")}
+  Ident                                        -> IntrinsicProcedureName
+  {IntrinsicProcedureName ','}+                -> IntrinsicProcedureNameList {cons("intrinsic-procedure-name-list")}
 
 %%R1219
   ProcedureDesignator '(' ActualArgSpecList? ')'      -> FunctionReference   {cons("FunctionReference")}
