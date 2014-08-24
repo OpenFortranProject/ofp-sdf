@@ -2,9 +2,6 @@ module Main
 
 signature
   constructors
-                                   : ProcPointerInit -> ProcPointerInit0
-                                   : ProcAttrSpecList -> ProcAttrSpecList0
-                                   : Option(ProcAttrSpecList0) -> OptProcAttrSpecList1
                                    : Option(SubmoduleName) -> OptSubmoduleName1
                                    : ParentSubmoduleName -> ParentSubmoduleName0
                                    : VEditDescList -> VEditDescList0
@@ -119,22 +116,30 @@ signature
     intrinsic-procedure-name-list  : List(IntrinsicProcedureName) -> IntrinsicProcedureNameList
                                    : Ident -> IntrinsicProcedureName
     IntrinsicStmt                  : OptLabel * IntrinsicProcedureNameList * EOS -> IntrinsicStmt
-    InitialProcTarget              : ProcedureName -> InitialProcTarget
-    ProcPointerInit_IPT            : InitialProcTarget -> ProcPointerInit
-    ProcPointerInit_NI             : NullInit -> ProcPointerInit
-    InterfaceName                  : Ident -> InterfaceName
-    ProcDeclList                   : List(ProcDecl) -> ProcDeclList
-    ProcDecl                       : ProcedureEntityName * Option(ProcPointerInit0) -> ProcDecl
-    ProcAttrSpecList               : List(ProcAttrSpec) -> ProcAttrSpecList
-    ProcAttrSpec_SAVE              : ProcAttrSpec
-    ProcAttrSpec_POINTER           : ProcAttrSpec
-    ProcAttrSpec_OPTIONAL          : ProcAttrSpec
-    ProcAttrSpec_INTENT            : IntentSpec -> ProcAttrSpec
+                                   : ProcedureName -> InitialProcTarget
+    no-init                        : NoProcPointerInit
+                                   : InitialProcTarget -> ProcPointerInit
+                                   : NullInit -> ProcPointerInit
+                                   : Ident -> InterfaceName
+                                   : Ident -> ProcedureEntityName
+    ProcDecl                       : ProcedureEntityName * ProcPointerInit -> ProcDecl
+    ProcDecl                       : ProcedureEntityName * NoProcPointerInit -> ProcDecl
+    no-list                        : NoProcAttrSpecList
+    no-list                        : OptProcAttrSpecList
+    opt-list                       : ProcAttrSpecList -> OptProcAttrSpecList
+    proc-attr-spec-list            : List(ProcAttrSpec) -> ProcAttrSpecList
+    SAVE                           : ProcAttrSpec
+    POINTER                        : ProcAttrSpec
+    OPTIONAL                       : ProcAttrSpec
+    INTENT                         : IntentSpec -> ProcAttrSpec
                                    : ProcLanguageBindingSpec -> ProcAttrSpec
                                    : AccessSpec -> ProcAttrSpec
-    ProcInterface_DTS              : DeclarationTypeSpec -> ProcInterface
-    ProcInterface_IN               : InterfaceName -> ProcInterface
-    ProcedureDeclarationStmt       : Option(Label) * Option(ProcInterface) * Option(OptProcAttrSpecList1) * ProcDeclList * EOS -> ProcedureDeclarationStmt
+    no-proc-interface              : OptProcInterface
+                                   : ProcInterface -> OptProcInterface
+                                   : DeclarationTypeSpec -> ProcInterface
+                                   : InterfaceName -> ProcInterface
+    ProcedureDeclarationStmt       : OptLabel * OptProcInterface * OptProcAttrSpecList * List(ProcDecl) * EOS -> ProcedureDeclarationStmt
+    ProcedureDeclarationStmt       : OptLabel * OptProcInterface * NoProcAttrSpecList * List(ProcDecl) * EOS -> ProcedureDeclarationStmt
     external-name-list             : List(ExternalName) -> ExternalNameList
                                    : Ident -> ExternalName
     ExternalStmt                   : OptLabel * ExternalNameList * EOS -> ExternalStmt
@@ -165,7 +170,6 @@ signature
                                    : ProcedureStmt -> InterfaceSpecification
                                    : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                 : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
-    ProcedureEntityName            : Ident -> ProcedureEntityName
     ImportName                     : Ident -> ImportName
     EntryName                      : Ident -> EntryName
     EndBlockDataStmt_0             : Option(Label) * EOS -> EndBlockDataStmt
@@ -1035,7 +1039,7 @@ signature
     ProcComponentAttrSpec_NOPASS   : ProcComponentAttrSpec
     ProcComponentAttrSpec_PASS     : ProcComponentAttrSpec
     ProcComponentAttrSpec_POINTER  : ProcComponentAttrSpec
-    ProcComponentDefStmt           : Option(Label) * Option(ProcInterface) * ProcComponentAttrSpecList * ProcDeclList * EOS -> ProcComponentDefStmt
+    ProcComponentDefStmt           : Option(Label) * Option(ProcInterface) * ProcComponentAttrSpecList * List(ProcDecl) * EOS -> ProcComponentDefStmt
     ComponentArraySpec             : AssumedOrDeferredShapeSpecList -> ComponentArraySpec
     ComponentArraySpec             : ExplicitShapeSpecList -> ComponentArraySpec
     ComponentDeclList              : List(ComponentDecl) -> ComponentDeclList

@@ -36,16 +36,6 @@ regular tree grammar
     ListPlusOfIntrinsicProcedureName0     -> <conc>(ListPlusOfIntrinsicProcedureName0,ListStarOfIntrinsicProcedureName0)
     ListPlusOfIntrinsicProcedureName0     -> <conc>(ListPlusOfIntrinsicProcedureName0,ListPlusOfIntrinsicProcedureName0)
     ListPlusOfIntrinsicProcedureName0     -> <cons>(IntrinsicProcedureName,ListStarOfIntrinsicProcedureName0)
-    ListStarOfProcDecl0                   -> ListPlusOfProcDecl0
-    ListStarOfProcDecl0                   -> <nil>()
-    ListStarOfProcDecl0                   -> <conc>(ListStarOfProcDecl0,ListStarOfProcDecl0)
-    ListPlusOfProcDecl0                   -> <conc>(ListStarOfProcDecl0,ListPlusOfProcDecl0)
-    ListPlusOfProcDecl0                   -> <conc>(ListPlusOfProcDecl0,ListStarOfProcDecl0)
-    ListPlusOfProcDecl0                   -> <conc>(ListPlusOfProcDecl0,ListPlusOfProcDecl0)
-    ListPlusOfProcDecl0                   -> <cons>(ProcDecl,ListStarOfProcDecl0)
-    ProcPointerInit0                      -> <(1)>(ProcPointerInit)
-    OptProcPointerInit0                   -> <some>(ProcPointerInit0)
-    OptProcPointerInit0                   -> <none>()
     ListStarOfProcAttrSpec0               -> ListPlusOfProcAttrSpec0
     ListStarOfProcAttrSpec0               -> <nil>()
     ListStarOfProcAttrSpec0               -> <conc>(ListStarOfProcAttrSpec0,ListStarOfProcAttrSpec0)
@@ -53,14 +43,13 @@ regular tree grammar
     ListPlusOfProcAttrSpec0               -> <conc>(ListPlusOfProcAttrSpec0,ListStarOfProcAttrSpec0)
     ListPlusOfProcAttrSpec0               -> <conc>(ListPlusOfProcAttrSpec0,ListPlusOfProcAttrSpec0)
     ListPlusOfProcAttrSpec0               -> <cons>(ProcAttrSpec,ListStarOfProcAttrSpec0)
-    ProcAttrSpecList0                     -> <(1)>(ProcAttrSpecList)
-    OptProcAttrSpecList0                  -> <some>(ProcAttrSpecList0)
-    OptProcAttrSpecList0                  -> <none>()
-    OptProcAttrSpecList1                  -> <(1)>(OptProcAttrSpecList0)
-    OptOptProcAttrSpecList0               -> <some>(OptProcAttrSpecList1)
-    OptOptProcAttrSpecList0               -> <none>()
-    OptProcInterface0                     -> <some>(ProcInterface)
-    OptProcInterface0                     -> <none>()
+    ListStarOfProcDecl0                   -> ListPlusOfProcDecl0
+    ListStarOfProcDecl0                   -> <nil>()
+    ListStarOfProcDecl0                   -> <conc>(ListStarOfProcDecl0,ListStarOfProcDecl0)
+    ListPlusOfProcDecl0                   -> <conc>(ListStarOfProcDecl0,ListPlusOfProcDecl0)
+    ListPlusOfProcDecl0                   -> <conc>(ListPlusOfProcDecl0,ListStarOfProcDecl0)
+    ListPlusOfProcDecl0                   -> <conc>(ListPlusOfProcDecl0,ListPlusOfProcDecl0)
+    ListPlusOfProcDecl0                   -> <cons>(ProcDecl,ListStarOfProcDecl0)
     ListStarOfExternalName0               -> ListPlusOfExternalName0
     ListStarOfExternalName0               -> <nil>()
     ListStarOfExternalName0               -> <conc>(ListStarOfExternalName0,ListStarOfExternalName0)
@@ -903,6 +892,8 @@ regular tree grammar
     ListPlusOfProcComponentAttrSpec0      -> <conc>(ListPlusOfProcComponentAttrSpec0,ListStarOfProcComponentAttrSpec0)
     ListPlusOfProcComponentAttrSpec0      -> <conc>(ListPlusOfProcComponentAttrSpec0,ListPlusOfProcComponentAttrSpec0)
     ListPlusOfProcComponentAttrSpec0      -> <cons>(ProcComponentAttrSpec,ListStarOfProcComponentAttrSpec0)
+    OptProcInterface0                     -> <some>(ProcInterface)
+    OptProcInterface0                     -> <none>()
     ListStarOfComponentDecl0              -> ListPlusOfComponentDecl0
     ListStarOfComponentDecl0              -> <nil>()
     ListStarOfComponentDecl0              -> <conc>(ListStarOfComponentDecl0,ListStarOfComponentDecl0)
@@ -1094,22 +1085,30 @@ regular tree grammar
     IntrinsicProcedureName                -> Ident
     IntrinsicStmt                         -> IntrinsicStmt(OptLabel,IntrinsicProcedureNameList,EOS)
     IntrinsicStmt                         -> IntrinsicStmt(OptLabel,IntrinsicProcedureNameList,EOS)
-    InitialProcTarget                     -> InitialProcTarget(ProcedureName)
-    ProcPointerInit                       -> ProcPointerInit_IPT(InitialProcTarget)
-    ProcPointerInit                       -> ProcPointerInit_NI(NullInit)
-    InterfaceName                         -> InterfaceName(Ident)
-    ProcDeclList                          -> ProcDeclList(ListPlusOfProcDecl0)
-    ProcDecl                              -> ProcDecl(ProcedureEntityName,OptProcPointerInit0)
-    ProcAttrSpecList                      -> ProcAttrSpecList(ListPlusOfProcAttrSpec0)
-    ProcAttrSpec                          -> ProcAttrSpec_SAVE()
-    ProcAttrSpec                          -> ProcAttrSpec_POINTER()
-    ProcAttrSpec                          -> ProcAttrSpec_OPTIONAL()
-    ProcAttrSpec                          -> ProcAttrSpec_INTENT(IntentSpec)
+    InitialProcTarget                     -> ProcedureName
+    NoProcPointerInit                     -> no-init()
+    ProcPointerInit                       -> InitialProcTarget
+    ProcPointerInit                       -> NullInit
+    InterfaceName                         -> Ident
+    ProcedureEntityName                   -> Ident
+    ProcDecl                              -> ProcDecl(ProcedureEntityName,ProcPointerInit)
+    ProcDecl                              -> ProcDecl(ProcedureEntityName,NoProcPointerInit)
+    NoProcAttrSpecList                    -> no-list()
+    OptProcAttrSpecList                   -> no-list()
+    OptProcAttrSpecList                   -> opt-list(ProcAttrSpecList)
+    ProcAttrSpecList                      -> proc-attr-spec-list(ListPlusOfProcAttrSpec0)
+    ProcAttrSpec                          -> SAVE()
+    ProcAttrSpec                          -> POINTER()
+    ProcAttrSpec                          -> OPTIONAL()
+    ProcAttrSpec                          -> INTENT(IntentSpec)
     ProcAttrSpec                          -> ProcLanguageBindingSpec
     ProcAttrSpec                          -> AccessSpec
-    ProcInterface                         -> ProcInterface_DTS(DeclarationTypeSpec)
-    ProcInterface                         -> ProcInterface_IN(InterfaceName)
-    ProcedureDeclarationStmt              -> ProcedureDeclarationStmt(OptLabel0,OptProcInterface0,OptOptProcAttrSpecList0,ProcDeclList,EOS)
+    OptProcInterface                      -> no-proc-interface()
+    OptProcInterface                      -> ProcInterface
+    ProcInterface                         -> DeclarationTypeSpec
+    ProcInterface                         -> InterfaceName
+    ProcedureDeclarationStmt              -> ProcedureDeclarationStmt(OptLabel,OptProcInterface,OptProcAttrSpecList,ListPlusOfProcDecl0,EOS)
+    ProcedureDeclarationStmt              -> ProcedureDeclarationStmt(OptLabel,OptProcInterface,NoProcAttrSpecList,ListPlusOfProcDecl0,EOS)
     ExternalNameList                      -> external-name-list(ListPlusOfExternalName0)
     ExternalName                          -> Ident
     ExternalStmt                          -> ExternalStmt(OptLabel,ExternalNameList,EOS)
@@ -1144,7 +1143,6 @@ regular tree grammar
     InterfaceSpecification                -> ProcedureStmt
     InterfaceSpecification                -> InterfaceBody
     InterfaceBlock                        -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)
-    ProcedureEntityName                   -> ProcedureEntityName(Ident)
     ImportName                            -> ImportName(Ident)
     EntryName                             -> EntryName(Ident)
     EndBlockDataStmt                      -> EndBlockDataStmt_0(OptLabel0,EOS)
@@ -2068,7 +2066,7 @@ regular tree grammar
     ProcComponentAttrSpec                 -> ProcComponentAttrSpec_NOPASS()
     ProcComponentAttrSpec                 -> ProcComponentAttrSpec_PASS()
     ProcComponentAttrSpec                 -> ProcComponentAttrSpec_POINTER()
-    ProcComponentDefStmt                  -> ProcComponentDefStmt(OptLabel0,OptProcInterface0,ProcComponentAttrSpecList,ProcDeclList,EOS)
+    ProcComponentDefStmt                  -> ProcComponentDefStmt(OptLabel0,OptProcInterface0,ProcComponentAttrSpecList,ListPlusOfProcDecl0,EOS)
     ComponentArraySpec                    -> ComponentArraySpec(AssumedOrDeferredShapeSpecList)
     ComponentArraySpec                    -> ComponentArraySpec(ExplicitShapeSpecList)
     ComponentDeclList                     -> ComponentDeclList(ListPlusOfComponentDecl0)

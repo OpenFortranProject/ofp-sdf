@@ -703,7 +703,6 @@ sorts
   ProcInterface                       %% R1212
   ProcAttrSpec                        %% R1213
   ProcDecl                            %% R1214
-  ProcDeclList
   InterfaceName                       %% R1215
   ProcPointerInit                     %% R1216
   InitialProcTarget                   %% R1217
@@ -737,6 +736,7 @@ sorts
   ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList ExternalNameList
   OptGenericSpec ImportNameList IntrinsicProcedureNameList OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
+  NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
   NoProcedureName ProcedureNameList NoSuffix OptSuffix
   OptStartCommentBlock
 
@@ -1042,7 +1042,7 @@ context-free syntax
   Label? 'PROCEDURE'
            '('  ProcInterface? ')' ','
                 ProcComponentAttrSpecList
-           '::' ProcDeclList             EOS  -> ProcComponentDefStmt      {cons("ProcComponentDefStmt")}
+          '::' {ProcDecl ','}+           EOS  -> ProcComponentDefStmt      {cons("ProcComponentDefStmt")}
 
 %%R441
   'POINTER'                                   -> ProcComponentAttrSpec     {cons("ProcComponentAttrSpec_POINTER")}
@@ -3411,7 +3411,6 @@ context-free syntax
 
   Ident   -> EntryName                 {cons("EntryName")}
   Ident   -> ImportName                {cons("ImportName")}
-  Ident   -> ProcedureEntityName       {cons("ProcedureEntityName")}
 
 
 %%R1201
@@ -3481,38 +3480,49 @@ context-free syntax
   {ExternalName ','}+                                 -> ExternalNameList {cons("external-name-list")}
 
 %%R1211
-  Label? 'PROCEDURE'
-             '(' ProcInterface? ')'
-             (( ',' ProcAttrSpecList )? '::')?
-                                    ProcDeclList  EOS -> ProcedureDeclarationStmt
-                                                                          {cons("ProcedureDeclarationStmt")}
+  OptLabel 'PROCEDURE' '(' OptProcInterface ')'
+                           NoProcAttrSpecList
+                           {ProcDecl ','}+ EOS -> ProcedureDeclarationStmt {cons("ProcedureDeclarationStmt")}
+  OptLabel 'PROCEDURE' '(' OptProcInterface ')'
+                           OptProcAttrSpecList
+                      '::' {ProcDecl ','}+ EOS -> ProcedureDeclarationStmt {cons("ProcedureDeclarationStmt")}
 
 %%R1212
-  InterfaceName                                       -> ProcInterface    {cons("ProcInterface_IN")}
-  DeclarationTypeSpec                                 -> ProcInterface    {cons("ProcInterface_DTS")}
+  InterfaceName                                -> ProcInterface
+  DeclarationTypeSpec                          -> ProcInterface
+
+  ProcInterface                                -> OptProcInterface
+  % empty %                                    -> OptProcInterface        {cons("no-proc-interface")}
 
 %%R1213
-  AccessSpec                                          -> ProcAttrSpec
-  ProcLanguageBindingSpec                             -> ProcAttrSpec
-  'INTENT' '(' IntentSpec ')'                         -> ProcAttrSpec     {cons("ProcAttrSpec_INTENT")}
-  'OPTIONAL'                                          -> ProcAttrSpec     {cons("ProcAttrSpec_OPTIONAL")}
-  'POINTER'                                           -> ProcAttrSpec     {cons("ProcAttrSpec_POINTER")}
-  'SAVE'                                              -> ProcAttrSpec     {cons("ProcAttrSpec_SAVE")}
-  {ProcAttrSpec ','}+                                 -> ProcAttrSpecList {cons("ProcAttrSpecList")}
+  AccessSpec                                   -> ProcAttrSpec
+  ProcLanguageBindingSpec                      -> ProcAttrSpec
+  'INTENT' '(' IntentSpec ')'                  -> ProcAttrSpec            {cons("INTENT")}
+  'OPTIONAL'                                   -> ProcAttrSpec            {cons("OPTIONAL")}
+  'POINTER'                                    -> ProcAttrSpec            {cons("POINTER")}
+  'SAVE'                                       -> ProcAttrSpec            {cons("SAVE")}
+  {ProcAttrSpec ','}+                          -> ProcAttrSpecList        {cons("proc-attr-spec-list")}
+
+  ',' ProcAttrSpecList                         -> OptProcAttrSpecList     {cons("opt-list")}
+  % empty %                                    -> OptProcAttrSpecList     {cons("no-list")}
+  % empty %                                    -> NoProcAttrSpecList      {cons("no-list")}
 
 %%R1214
-  ProcedureEntityName ( '=>' ProcPointerInit )?       -> ProcDecl      {cons("ProcDecl")}
-  {ProcDecl ','}+                                     -> ProcDeclList  {cons("ProcDeclList")}
+  ProcedureEntityName      NoProcPointerInit   -> ProcDecl                {cons("ProcDecl")}
+  ProcedureEntityName '=>' ProcPointerInit     -> ProcDecl                {cons("ProcDecl")}
+  Ident                                        -> ProcedureEntityName
 
 %%R1215
-  Ident                                               -> InterfaceName      {cons("InterfaceName")}
+  Ident                                        -> InterfaceName
 
 %%R1216
-  NullInit                                            -> ProcPointerInit    {cons("ProcPointerInit_NI")}
-  InitialProcTarget                                   -> ProcPointerInit    {cons("ProcPointerInit_IPT")}
+  NullInit                                     -> ProcPointerInit
+  InitialProcTarget                            -> ProcPointerInit
+
+  % empty %                                    -> NoProcPointerInit       {cons("no-init")}
 
 %%R1217
-  ProcedureName                                       -> InitialProcTarget  {cons("InitialProcTarget")}
+  ProcedureName                                -> InitialProcTarget
 
 %%R1218
   OptLabel 'INTRINSIC' '::' IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
