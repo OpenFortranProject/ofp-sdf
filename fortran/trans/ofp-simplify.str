@@ -36,6 +36,11 @@ rules //========================START OF RULES===============================
 ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
 
 
+// General catch-all rules
+//
+
+ofp-simplify-ast:  no-list()                      -> []
+
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
 ofp-simplify-ast:  no-implicit-part()             -> []
