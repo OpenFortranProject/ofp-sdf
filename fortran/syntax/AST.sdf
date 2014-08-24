@@ -1,5 +1,7 @@
 module AST
 
+imports Main
+
 exports 
 
   context-free start-symbols OfpProgram
@@ -117,8 +119,9 @@ exports
     WRITEFORMATTED
     WRITEUNFORMATTED
 
-    OfpExternalStmt          %% R1210
-    OfpIntrinsicStmt         %% R1218
+    OfpExternalStmt              %% R1210
+    OfpProcedureDeclarationStmt  %% R1211
+    OfpIntrinsicStmt             %% R1218
 
     OfpCallStmt              %% R1220
     OfpProcRef               %% R1221
@@ -396,6 +399,13 @@ exports
 
   OfpLabel? OfpName+          -> OfpExternalStmt     {cons("OfpExternalStmt")}     %% R1210
   OfpExternalStmt             -> OfpDecl
+
+  OfpLabel? ProcInterface?                                                         %% R1211
+            ProcAttrSpec*
+            ProcDecl+         -> OfpProcedureDeclarationStmt  {cons("OfpProcedureDeclarationStmt")}
+  OfpProcedureDeclarationStmt -> OfpDecl
+
+%%  AccessSpec                  -> ProcAttrSpec                                      %%R1213
 
   OfpLabel? OfpName+          -> OfpIntrinsicStmt    {cons("OfpIntrinsicStmt")}    %% R1218
   OfpIntrinsicStmt            -> OfpDecl
