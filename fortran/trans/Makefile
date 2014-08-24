@@ -10,7 +10,7 @@ all : ofp-simplify ofp2fast fast2pp
 ofp-simplify : ofp-simplify.str
 	strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
 
-ofp2fast : ofp2fast.str
+ofp2fast : ofp2fast.str ofp-simplify
 	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS)
 
 fast2pp : fast2pp.str
