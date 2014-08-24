@@ -241,7 +241,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  RelOp_GT()                   -> GT()
   ofp-to-ast:  RelOp_GE()                   -> GE()
 
-  ofp-to-ast:  PlusExpr(left,right)         -> OfpPlusExpr(left,right)
+  ofp-to-ast:  Plus(left,right)             -> OfpPlusExpr(left,right)
 
 //R723
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
@@ -324,6 +324,16 @@ rules //========================START OF RULES===============================
 //R1210
   ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(<ofp-label>label,
                                                                  <map(ofp-name)>list)      {Comment(eos)}
+//R1211
+ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
+              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)            {Comment(eos)}
+
+//R1212
+ofp-to-ast:  no-proc-interface()              -> None()
+
+//R1214
+ofp-to-ast:  no-init()                        -> None()
+
 //R1218
   ofp-to-ast:  IntrinsicStmt(label,list,eos)  -> OfpIntrinsicStmt(<ofp-label>label,
                                                                   <map(ofp-name)>list)     {Comment(eos)}
