@@ -3,6 +3,7 @@ module fast2pp
 imports
    libstratego-lib
    AST
+   no-to-none
 
 signature
   constructors
@@ -16,9 +17,12 @@ signature
 
 strategies
 
-  io-fast2pp = io-wrap(fast2pp)
+  main =
+    io-wrap(fast2pp)
 
-  fast2pp = outermost(ast-to-pp)
+  fast2pp =
+      outermost(ast-to-pp)
+    ; outermost(no-to-none)
 
 rules
 
