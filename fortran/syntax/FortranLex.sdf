@@ -13,7 +13,7 @@ exports
 sorts
 
   BinaryConstant Character Comma Comment StartCommentBlock
-  Dop EOL EOLOrSemicolon EOS HexConstant
+  Dop EOL EOLOrSemicolon EOS EOStmt HexConstant
   Icon Ident Label LblDef LblRef
   Letter OctalConstant
   Rcon ScalarIntLiteralConstant Scon
@@ -47,11 +47,11 @@ lexical syntax
   "!" ~[\n\r]*                          -> Comment
   "#" ~[\n\r]*                          -> Comment
 
-  (Comment? EOLOrSemicolon [\ \t]* )+   -> EOS
+  (Comment? EOLOrSemicolon [\ \t]* )+   -> EOStmt
 
 %% Comment lines at the start of a file/program are handled separately
 %%
-  EOS                                   -> StartCommentBlock
+  EOStmt                                -> StartCommentBlock
 
 %% Layout does NOT have a \n since that's part of EOS
 %%
@@ -140,7 +140,7 @@ lexical restrictions
 
 %% If (Comment "\n" [\ \t]* )+ -> EOS, then to prevent ambig with layout:
 %%
-  EOS -/- [\ \t]
+  EOStmt -/- [\ \t]
 
 context-free restrictions
 
@@ -155,3 +155,5 @@ context-free restrictions
 context-free syntax
 
   LblDef  -> LblRef                        {cons("LblRef")}
+
+  EOStmt  -> EOS                           {cons("eos")}
