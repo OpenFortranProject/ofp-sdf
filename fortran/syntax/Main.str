@@ -939,12 +939,16 @@ signature
     Initialization_IDT             : InitialDataTarget -> Initialization
     Initialization_NI              : NullInit -> Initialization
     Initialization_CE              : ConstantExpr -> Initialization
-    EntityDeclList                 : List(EntityDecl) -> EntityDeclList
-    OptCharLength                  : CharLength -> OptCharLength
-    OptCoarraySpec                 : CoarraySpec -> OptCoarraySpec
-    OptArraySpec                   : ArraySpec -> OptArraySpec
-    EntityDecl                     : ObjectName * Option(OptArraySpec) * Option(OptCoarraySpec) * Option(OptCharLength) * Option(Initialization) -> EntityDecl
-                                   : List(AttrSpec) -> AttrSpecList
+    no-initialization              : OptInitialization
+                                   : Initialization -> OptInitialization
+    no-char-length                 : OptCharLength
+    opt-char-length                : CharLength -> OptCharLength
+    no-coarray-spec                : OptCoarraySpec
+    opt-coarray-spec               : CoarraySpec -> OptCoarraySpec
+    no-array-spec                  : OptArraySpec
+    opt-array-spec                 : ArraySpec -> OptArraySpec
+                                   : Ident -> ObjectName
+    EntityDecl                     : ObjectName * OptArraySpec * OptCoarraySpec * OptCharLength * OptInitialization -> EntityDecl
     VOLATILE                       : AttrSpec
     VALUE                          : AttrSpec
     TARGET                         : AttrSpec
@@ -963,13 +967,12 @@ signature
     ASYNCHRONOUS                   : AttrSpec
     ALLOCATABLE                    : AttrSpec
                                    : AccessSpec -> AttrSpec
-    attr-specs                     : AttrSpecList -> OptAttrSpecList
-    no-attr-specs                  : OptAttrSpecList
-    no-attr-specs                  : NoDoubleColonPartTDS
-    TypeDeclarationStmt            : Option(Label) * DeclarationTypeSpec * OptAttrSpecList * EntityDeclList * EOS -> TypeDeclarationStmt
-    TypeDeclarationStmt            : Option(Label) * DeclarationTypeSpec * NoDoubleColonPartTDS * EntityDeclList * EOS -> TypeDeclarationStmt
+    opt-attr-spec-list             : List(AttrSpec) -> OptAttrSpecList
+    no-list                        : OptAttrSpecList
+    no-list                        : NoAttrSpecList
+    TypeDeclarationStmt            : OptLabel * DeclarationTypeSpec * OptAttrSpecList * List(EntityDecl) * EOS -> TypeDeclarationStmt
+    TypeDeclarationStmt            : OptLabel * DeclarationTypeSpec * NoAttrSpecList * List(EntityDecl) * EOS -> TypeDeclarationStmt
     ProcEntityName                 : Ident -> ProcEntityName
-    ObjectName                     : Ident -> ObjectName
     NamelistGroupName              : Ident -> NamelistGroupName
     EntityName                     : Ident -> EntityName
     CoarrayName                    : Ident -> CoarrayName
@@ -1145,6 +1148,7 @@ signature
     FinalSubroutineName            : Ident -> FinalSubroutineName
     BindingName                    : Ident -> BindingName
     ArgName                        : Ident -> ArgName
+    eos                            : EOStmt -> EOS
     LblRef                         : LblDef -> LblRef
                                    : String -> Dop
                                    : String -> HexConstant
@@ -1157,7 +1161,7 @@ signature
                                    : String -> Letter
                                    : String -> LblDef
                                    : String -> StartCommentBlock
-                                   : String -> EOS
+                                   : String -> EOStmt
 
 
 signature

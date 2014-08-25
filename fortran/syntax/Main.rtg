@@ -765,21 +765,6 @@ regular tree grammar
     ListPlusOfDeferredCoshapeSpec0        -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListStarOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0        -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListPlusOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0        -> <cons>(DeferredCoshapeSpec,ListStarOfDeferredCoshapeSpec0)
-    ListStarOfEntityDecl0                 -> ListPlusOfEntityDecl0
-    ListStarOfEntityDecl0                 -> <nil>()
-    ListStarOfEntityDecl0                 -> <conc>(ListStarOfEntityDecl0,ListStarOfEntityDecl0)
-    ListPlusOfEntityDecl0                 -> <conc>(ListStarOfEntityDecl0,ListPlusOfEntityDecl0)
-    ListPlusOfEntityDecl0                 -> <conc>(ListPlusOfEntityDecl0,ListStarOfEntityDecl0)
-    ListPlusOfEntityDecl0                 -> <conc>(ListPlusOfEntityDecl0,ListPlusOfEntityDecl0)
-    ListPlusOfEntityDecl0                 -> <cons>(EntityDecl,ListStarOfEntityDecl0)
-    OptInitialization0                    -> <some>(Initialization)
-    OptInitialization0                    -> <none>()
-    OptOptCharLength0                     -> <some>(OptCharLength)
-    OptOptCharLength0                     -> <none>()
-    OptOptCoarraySpec0                    -> <some>(OptCoarraySpec)
-    OptOptCoarraySpec0                    -> <none>()
-    OptOptArraySpec0                      -> <some>(OptArraySpec)
-    OptOptArraySpec0                      -> <none>()
     ListStarOfAttrSpec0                   -> ListPlusOfAttrSpec0
     ListStarOfAttrSpec0                   -> <nil>()
     ListStarOfAttrSpec0                   -> <conc>(ListStarOfAttrSpec0,ListStarOfAttrSpec0)
@@ -787,6 +772,13 @@ regular tree grammar
     ListPlusOfAttrSpec0                   -> <conc>(ListPlusOfAttrSpec0,ListStarOfAttrSpec0)
     ListPlusOfAttrSpec0                   -> <conc>(ListPlusOfAttrSpec0,ListPlusOfAttrSpec0)
     ListPlusOfAttrSpec0                   -> <cons>(AttrSpec,ListStarOfAttrSpec0)
+    ListStarOfEntityDecl0                 -> ListPlusOfEntityDecl0
+    ListStarOfEntityDecl0                 -> <nil>()
+    ListStarOfEntityDecl0                 -> <conc>(ListStarOfEntityDecl0,ListStarOfEntityDecl0)
+    ListPlusOfEntityDecl0                 -> <conc>(ListStarOfEntityDecl0,ListPlusOfEntityDecl0)
+    ListPlusOfEntityDecl0                 -> <conc>(ListPlusOfEntityDecl0,ListStarOfEntityDecl0)
+    ListPlusOfEntityDecl0                 -> <conc>(ListPlusOfEntityDecl0,ListPlusOfEntityDecl0)
+    ListPlusOfEntityDecl0                 -> <cons>(EntityDecl,ListStarOfEntityDecl0)
     ListStarOfAcValue0                    -> ListPlusOfAcValue0
     ListStarOfAcValue0                    -> <nil>()
     ListStarOfAcValue0                    -> <conc>(ListStarOfAcValue0,ListStarOfAcValue0)
@@ -1942,12 +1934,16 @@ regular tree grammar
     Initialization                        -> Initialization_IDT(InitialDataTarget)
     Initialization                        -> Initialization_NI(NullInit)
     Initialization                        -> Initialization_CE(ConstantExpr)
-    EntityDeclList                        -> EntityDeclList(ListPlusOfEntityDecl0)
-    OptCharLength                         -> OptCharLength(CharLength)
-    OptCoarraySpec                        -> OptCoarraySpec(CoarraySpec)
-    OptArraySpec                          -> OptArraySpec(ArraySpec)
-    EntityDecl                            -> EntityDecl(ObjectName,OptOptArraySpec0,OptOptCoarraySpec0,OptOptCharLength0,OptInitialization0)
-    AttrSpecList                          -> ListPlusOfAttrSpec0
+    OptInitialization                     -> no-initialization()
+    OptCharLength                         -> no-char-length()
+    OptCoarraySpec                        -> no-coarray-spec()
+    OptArraySpec                          -> no-array-spec()
+    OptInitialization                     -> Initialization
+    OptCharLength                         -> opt-char-length(CharLength)
+    OptCoarraySpec                        -> opt-coarray-spec(CoarraySpec)
+    OptArraySpec                          -> opt-array-spec(ArraySpec)
+    ObjectName                            -> Ident
+    EntityDecl                            -> EntityDecl(ObjectName,OptArraySpec,OptCoarraySpec,OptCharLength,OptInitialization)
     AttrSpec                              -> VOLATILE()
     AttrSpec                              -> VALUE()
     AttrSpec                              -> TARGET()
@@ -1966,13 +1962,12 @@ regular tree grammar
     AttrSpec                              -> ASYNCHRONOUS()
     AttrSpec                              -> ALLOCATABLE()
     AttrSpec                              -> AccessSpec
-    OptAttrSpecList                       -> attr-specs(AttrSpecList)
-    OptAttrSpecList                       -> no-attr-specs()
-    NoDoubleColonPartTDS                  -> no-attr-specs()
-    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel0,DeclarationTypeSpec,OptAttrSpecList,EntityDeclList,EOS)
-    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel0,DeclarationTypeSpec,NoDoubleColonPartTDS,EntityDeclList,EOS)
+    OptAttrSpecList                       -> opt-attr-spec-list(ListPlusOfAttrSpec0)
+    OptAttrSpecList                       -> no-list()
+    NoAttrSpecList                        -> no-list()
+    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,OptAttrSpecList,ListPlusOfEntityDecl0,EOS)
+    TypeDeclarationStmt                   -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,NoAttrSpecList,ListPlusOfEntityDecl0,EOS)
     ProcEntityName                        -> ProcEntityName(Ident)
-    ObjectName                            -> ObjectName(Ident)
     NamelistGroupName                     -> NamelistGroupName(Ident)
     EntityName                            -> EntityName(Ident)
     CoarrayName                           -> CoarrayName(Ident)
@@ -2163,6 +2158,7 @@ regular tree grammar
     BindingName                           -> BindingName(Ident)
     ArgName                               -> ArgName(Ident)
     Continuation                          -> <string>
+    EOS                                   -> eos(EOStmt)
     LblRef                                -> LblRef(LblDef)
     Dop                                   -> <string>
     ScalarIntLiteralConstant              -> <string>
@@ -2179,7 +2175,7 @@ regular tree grammar
     Letter                                -> <string>
     LblDef                                -> <string>
     StartCommentBlock                     -> <string>
-    EOS                                   -> <string>
+    EOStmt                                -> <string>
     Comment                               -> <string>
     EOLOrSemicolon                        -> <string>
     EOL                                   -> <string>
