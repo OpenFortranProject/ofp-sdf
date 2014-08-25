@@ -13,11 +13,11 @@ ofp-simplify : ofp-simplify.str
 no-to-none : no-to-none.str
 	strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
 
-ofp2fast : ofp2fast.str ofp-simplify
+ofp2fast : ofp2fast.str ofp-simplify no-to-none
 	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS)
 
 fast2pp : fast2pp.str no-to-none
-	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS) --main io-fast2pp
+	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
 
 check : ofp-simplify ofp2fast
 	sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
