@@ -130,11 +130,11 @@ sorts
   ComponentSpec                       %% R456
   ComponentDataSource                 %% R457
 
-  BindingAttrList ComponentAttrSpecList ComponentDeclList
-  ProcComponentAttrSpecList TypeAttrSpecList TypeBoundProcDeclList
+  BindingAttrList OptComponentAttrSpecList
+  ProcComponentAttrSpecList TypeBoundProcDeclList OptTypeBoundProcedurePart
   TypeParamDeclList TypeParamSpecList
 
-  OptComponentAttrSpecList OptTypeAttrSpecList OptTypeParamNameList
+  OptTypeAttrSpecList OptTypeParamNameList
 
 %% 4.6 Enumerations and enumerators
 
@@ -165,14 +165,14 @@ sorts
   AcImpliedDoControl                  %% R474
   AcDoVariable                        %% R475
 
-  AcValueList BindingNameList FinalSubroutineNameList TypeParamNameList
+  AcValueList BindingNameList FinalSubroutineNameList
 
 %% Identifier aliases
 
   ArgName BindingName ComponentName
   FinalSubroutineName ImpliedDoVariable
   Name ParentTypeName ProcedureName
-  ScalarIntConstantName TypeName TypeParamName
+  ScalarIntConstantName TypeName OptTypeName TypeParamName
 
 %% 5.2 Type declaration statements
 
@@ -336,14 +336,14 @@ sorts
   Stride                              %% R622
   VectorSubscript                     %% R623
 
-  SectionSubscriptList OptSectionSubscripts
+  OptSectionSubscripts OptStride OptSubscript
 
 %% 6.6 Image selectors
 
   ImageSelector                       %% R624
   Cosubscript                         %% R625
 
-  CosubscriptList OptImageSelector
+  OptImageSelector
 
 %% 6.7 Dynamic association
 
@@ -364,10 +364,10 @@ sorts
   DeallocateStmt                      %% R640
   DeallocOpt                          %% R641
 
-  AllocateCoshapeSpecList NoAllocateCoshapeSpecList NoAllocateCoarraySpec
-  AllocateObjectList AllocateShapeSpecList NoAllocateShapeSpecList
-  AllocationList OptAllocOptList DeallocOptList OptDeallocOptList
-  NoLowerBoundExpr PointerObjectList
+  NoAllocateCoshapeSpecList NoAllocateCoarraySpec
+  NoAllocateShapeSpecList
+  OptAllocOptList DeallocOptList OptDeallocOptList
+  NoLowerBoundExpr
 
 %% Identifier aliases
 
@@ -733,11 +733,11 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList ExternalNameList
-  OptGenericSpec ImportNameList IntrinsicProcedureNameList OptPrefix
+  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
+  OptGenericSpec  OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
   NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
-  NoProcedureName ProcedureNameList NoSuffix OptSuffix
+  NoProcedureName NoSuffix OptSuffix
   OptStartCommentBlock
 
 %% Identifier aliases
@@ -754,13 +754,11 @@ context-free syntax
 
   Ident   -> ArgName                   {cons("ArgName")}
   Ident   -> BindingName               {cons("BindingName")}
-  Ident   -> ComponentName             {cons("ComponentName")}
   Ident   -> FinalSubroutineName       {cons("FinalSubroutineName")}
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
   Ident   -> Name                      {cons("Name")}
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
-  Ident   -> TypeName                  {cons("TypeName")}
   Ident   -> TypeParamName             {cons("TypeParamName")}
 
 %%R305
@@ -953,17 +951,19 @@ context-free syntax
   DerivedTypeStmt
     TypeParamDefStmt*
     PrivateOrSequence*
-    ComponentPart?
-    TypeBoundProcedurePart?
+    ComponentPart                                                  %% a list so no need for optional
+    OptTypeBoundProcedurePart
   EndTypeStmt                           -> DerivedTypeDef          {cons("DerivedTypeDef")}
 
 %%R426
-  Label? 'TYPE'    OptTypeAttrSpecList? 
-         TypeName  OptTypeParamNameList?                   EOS -> DerivedTypeStmt  {cons("DerivedTypeStmt")}
+  OptLabel 'TYPE'  OptTypeAttrSpecList
+         TypeName  OptTypeParamNameList          EOS -> DerivedTypeStmt      {cons("DerivedTypeStmt")}
 
-  (',' TypeAttrSpecList   )?     '::'                          -> OptTypeAttrSpecList  {cons("OptTASL")}
-  '('  TypeParamNameList ')'                                   -> OptTypeParamNameList {cons("OptTPNL")}
-  {    TypeParamName ','  }+                                   -> TypeParamNameList    {cons("TypeParamNameList")}
+  ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("opt-type-attr-spec-list")}
+  % empty %                                          -> OptTypeAttrSpecList  {cons("no-list")}
+
+  '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("opt-type-param-name-list")}
+  % empty %                                          -> OptTypeParamNameList {cons("no-list")}
 
   'INTEGER'                                                    -> TypeName  {reject}
   'REAL'                                                       -> TypeName  {reject}
@@ -973,22 +973,25 @@ context-free syntax
   'LOGICAL'                                                    -> TypeName  {reject}
   'DOUBLECOMPLEX'                                              -> TypeName  {reject}
 
+  Ident                                                        -> TypeName
+  TypeName                                                     -> OptTypeName
+  % empty %                                                    -> OptTypeName      {cons("no-type-name")}
+
 %%R427
   'ABSTRACT'                                                   -> TypeAttrSpec     {cons("TypeAttrSpec_ABSTRACT")}
    AccessSpec                                                  -> TypeAttrSpec     {cons("TypeAttrSpec_AS")}
   'BIND'     '(' 'C'            ')'                            -> TypeAttrSpec     {cons("TypeAttrSpec_BIND")}
   'EXTENDS'  '(' ParentTypeName ')'                            -> TypeAttrSpec     {cons("TypeAttrSpec_EXTENDS")}
-  {TypeAttrSpec ','}+                                          -> TypeAttrSpecList {cons("TypeAttrSpecList")}
 
 %%R428
-  PrivateComponentsStmt                                        -> PrivateOrSequence  {cons("PrivateOrSequence_PCS")}
-  SequenceStmt                                                 -> PrivateOrSequence  {cons("PrivateOrSequence_SS")}
+  PrivateComponentsStmt                                        -> PrivateOrSequence
+  SequenceStmt                                                 -> PrivateOrSequence
 
 %%R429
-  Label? 'END' 'TYPE' TypeName?                            EOS -> EndTypeStmt      {cons("EndTypeStmt")}
+  OptLabel 'END' 'TYPE' OptTypeName                        EOS -> EndTypeStmt      {cons("EndTypeStmt")}
 
 %%R430
-  Label? 'SEQUENCE'                                        EOS -> SequenceStmt     {cons("SequenceStmt")}
+  OptLabel 'SEQUENCE'                                      EOS -> SequenceStmt     {cons("SequenceStmt")}
 
 %%R431
   Label? 'INTEGER' OptKindSelector ','   TypeParamAttrSpec
@@ -1005,18 +1008,20 @@ context-free syntax
   'LEN'                                     -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_LEN")}
 
 %%R434
-  ComponentDefStmt*                         -> ComponentPart      {cons("ComponentPart")}
+  ComponentDefStmt*                         -> ComponentPart
 
 %%R435
-  DataComponentDefStmt                      -> ComponentDefStmt   {cons("ComponentDefStmt_DCDS")}
-  ProcComponentDefStmt                      -> ComponentDefStmt   {cons("ComponentDefStmt_PCDS")}
+  DataComponentDefStmt                      -> ComponentDefStmt
+  ProcComponentDefStmt                      -> ComponentDefStmt
 
 %%R436
-  Label? DeclarationTypeSpec
-           OptComponentAttrSpecList?
-                  ComponentDeclList    EOS  -> DataComponentDefStmt     {cons("DataComponentDefStmt")}
+  OptLabel DeclarationTypeSpec
+           OptComponentAttrSpecList
+             {ComponentDecl ','}+      EOS  -> DataComponentDefStmt     {cons("DataComponentDefStmt")}
 
-  (',' ComponentAttrSpecList )? '::'        -> OptComponentAttrSpecList {cons("OptCASL")}
+  ',' {ComponentAttrSpec ','}+ '::'         -> OptComponentAttrSpecList {cons("opt-component-attr-spec-list")}
+                               '::'         -> OptComponentAttrSpecList {cons("no-list")}
+  % empty %                                 -> OptComponentAttrSpecList {cons("no-list")}
 
 
 %%R437
@@ -1026,13 +1031,13 @@ context-free syntax
   'CONTIGUOUS'                              -> ComponentAttrSpec     {cons("ComponentAttrSpec_CONTIGUOUS")}
   'DIMENSION' '(' ComponentArraySpec ')'    -> ComponentAttrSpec     {cons("ComponentAttrSpec_DIMENSION")}
   'POINTER'                                 -> ComponentAttrSpec     {cons("ComponentAttrSpec_POINTER")}
-  {ComponentAttrSpec ','}+                  -> ComponentAttrSpecList {cons("ComponentAttrSpecList")}
 
 %%R438
   ComponentName ( '(' ComponentArraySpec ')' )?
                 ( '[' CoarraySpec        ']' )?
                 ( '*' CharLength )? ComponentInitialization?  -> ComponentDecl     {cons("ComponentDecl")}
-  {ComponentDecl ','}+                                        -> ComponentDeclList {cons("ComponentDeclList")}
+
+  Ident                                       -> ComponentName
 
 %%R439
   ExplicitShapeSpecList                       -> ComponentArraySpec        {cons("ComponentArraySpec")}
@@ -1058,23 +1063,26 @@ context-free syntax
 
 %%R443
 %%ABIGUITY Replace designator by variable?
-  Designator                                       -> InitialDataTarget      {cons("InitialDataTarget")}
+  Designator                                  -> InitialDataTarget      {cons("InitialDataTarget")}
 
 %%R444
-  Label? 'PRIVATE'                             EOS -> PrivateComponentsStmt  {cons("PrivateComponentsStmt")}
+  OptLabel 'PRIVATE'                      EOS -> PrivateComponentsStmt  {cons("PrivateComponentsStmt")}
 
 %%R445
   ContainsStmt
     BindingPrivateStmt?
-    TypeBoundProcBinding*                          -> TypeBoundProcedurePart {cons("TypeBoundProcedurePart")}
+    TypeBoundProcBinding*                     -> TypeBoundProcedurePart      {cons("TypeBoundProcedurePart")}
+
+  TypeBoundProcedurePart                      -> OptTypeBoundProcedurePart
+  % empty %                                   -> OptTypeBoundProcedurePart   {cons("no-type-bound-procedure-part")}
 
 %%R446
-  Label? 'PRIVATE'                             EOS -> BindingPrivateStmt     {cons("BindingPrivateStmt")}
+  OptLabel 'PRIVATE'                      EOS -> BindingPrivateStmt          {cons("BindingPrivateStmt")}
 
 %%R447
-  TypeBoundProcedureStmt                           -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_TBPS")}
-  TypeBoundGenericStmt                             -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_TBGS")}
-  FinalProcedureStmt                               -> TypeBoundProcBinding   {cons("TypeBoundProcBinding_FPS")}
+  TypeBoundProcedureStmt                      -> TypeBoundProcBinding
+  TypeBoundGenericStmt                        -> TypeBoundProcBinding
+  FinalProcedureStmt                          -> TypeBoundProcBinding
 
 %%R448
   Label? 'PROCEDURE' TypeBoundProcDeclList     EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_1")}
@@ -1732,7 +1740,7 @@ context-free syntax
   PartName OptSectionSubscripts OptImageSelector         -> PartRef   {cons("PartRef")}
 
   % empty %                                              -> OptSectionSubscripts  {cons("no-section-subscripts")}
-  '(' SectionSubscriptList ')'                           -> OptSectionSubscripts  {cons("opt-section-subscripts")}
+  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("opt-section-subscripts")}
 
   Ident                                                  -> PartName
 
@@ -1763,32 +1771,36 @@ context-free syntax
 %%R619
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> Subscript            {cons("Subscript")}
+  IntExpr                                                -> Subscript
+
+  Subscript                                              -> OptSubscript
+  % empty %                                              -> OptSubscript         {cons("no-subscript")}
 
 %%R620
-  Subscript                                              -> SectionSubscript     {cons("SectionSubscript")}
-  SubscriptTriplet                                       -> SectionSubscript     {cons("SectionSubscript")}
-%%VectorSubscript     %%AMB with subscript               -> SectionSubscript     {cons("SectionSubscript")}
-
-  {SectionSubscript ','}+                                -> SectionSubscriptList {cons("section-subscript-list")}
+  Subscript                                              -> SectionSubscript
+  SubscriptTriplet                                       -> SectionSubscript
+%%VectorSubscript                                        -> SectionSubscript     %%AMBIGUOUS with Subscript
 
 %%R621
-  Subscript? ':' Subscript? (':' Stride)?                -> SubscriptTriplet     {cons("SubscriptTriplet")}
+  OptSubscript ':' OptSubscript OptStride                -> SubscriptTriplet     {cons("SubscriptTriplet")}
 
 %%R622
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                                -> Stride               {cons("Stride")}
+  IntExpr                                                -> Stride
+
+  ':' Stride                                             -> OptStride            {cons("opt-stride")}
+  % empty %                                              -> OptStride            {cons("no-stride")}
 
 %%R623
-  IntExpr                                                -> VectorSubscript      {cons("VectorSubscript")}
+  IntExpr                                                -> VectorSubscript
 
 
 %% 6.6 Image selectors
 %%
 
 %%R624
-  '[' CosubscriptList ']'                                -> ImageSelector        {cons("ImageSelector")}
+  '[' {Cosubscript ','}+ ']'                             -> ImageSelector        {cons("ImageSelector")}
   ImageSelector                                          -> OptImageSelector
   % empty %                                              -> OptImageSelector     {cons("no-image-selector")}
 
@@ -1796,17 +1808,16 @@ context-free syntax
 %%      int-expr substituted for scalar-int-expr
 %%
   IntExpr                                                -> Cosubscript
-  {Cosubscript ','}+                                     -> CosubscriptList      {cons("cosubscript-list")}
 
 
 %% 6.7 Dynamic association
 %%
 
 %%R626
-  OptLabel 'ALLOCATE' '(' NoTypeSpec    
-                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
-  OptLabel 'ALLOCATE' '(' TypeSpec '::'
-                          AllocationList OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE'
+     '(' NoTypeSpec    {Allocation ','}+ OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
+  OptLabel 'ALLOCATE'
+     '(' TypeSpec '::' {Allocation ','}+ OptAllocOptList ')' EOS -> AllocateStmt {cons("AllocateStmt")}
 
   % empty %                                              -> NoTypeSpec           {cons("no-type-spec")}
 
@@ -1818,8 +1829,8 @@ context-free syntax
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
 
-  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("alloc-opt-list")}
-  % empty %                                              -> OptAllocOptList      {cons("no-alloc-opt-list")}
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("opt-alloc-opt-list")}
+  % empty %                                              -> OptAllocOptList      {cons("no-list")}
 
 %%R628
 %%     int-variable substituted for scalar-int-variable
@@ -1837,23 +1848,20 @@ context-free syntax
 %%R631
    AllocateObject     NoAllocateShapeSpecList
                       NoAllocateCoarraySpec              -> Allocation           {cons("Allocation"),avoid}
-   AllocateObject '(' AllocateShapeSpecList   ')'
+   AllocateObject '(' {AllocateShapeSpec ','}+ ')'
                       NoAllocateCoarraySpec              -> Allocation           {cons("Allocation")}
    AllocateObject     NoAllocateShapeSpecList
-                  '[' AllocateCoarraySpec     ']'        -> Allocation           {cons("Allocation")}
-   AllocateObject '(' AllocateShapeSpecList   ')'
-                  '[' AllocateCoarraySpec     ']'        -> Allocation           {cons("Allocation")}
-  {Allocation ','}+                                      -> AllocationList       {cons("allocation-list")}
+                  '[' AllocateCoarraySpec      ']'       -> Allocation           {cons("Allocation")}
+   AllocateObject '(' {AllocateShapeSpec ','}+ ')'
+                  '[' AllocateCoarraySpec      ']'       -> Allocation           {cons("Allocation")}
 
 %%R632
 %%VariableName                                           -> AllocateObject %% AMBIGUOUS with StructureComponent
   StructureComponent                                     -> AllocateObject
-  {AllocateObject ','}+                                  -> AllocateObjectList   {cons("allocate-object-list")}
 
 %%R633
   NoLowerBoundExpr   UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr                      -> AllocateShapeSpec    {cons("AllocateShapeSpec")}
-  {AllocateShapeSpec ','}+                               -> AllocateShapeSpecList{cons("allocate-shape-spec-list")}
 
   % empty %                                           -> NoAllocateShapeSpecList {cons("no-shape-specs")}
   % empty %                                           -> NoAllocateCoarraySpec   {cons("no-coshape-specs")}
@@ -1870,29 +1878,27 @@ context-free syntax
   IntExpr                                                -> UpperBoundExpr
 
 %%R636
-  NoAllocateCoshapeSpecList   NoLowerBoundExpr   '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
-  NoAllocateCoshapeSpecList   LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
-  AllocateCoshapeSpecList ',' NoLowerBoundExpr   '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
-  AllocateCoshapeSpecList ',' LowerBoundExpr ':' '*'     -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  NoAllocateCoshapeSpecList      NoLowerBoundExpr   '*'  -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  NoAllocateCoshapeSpecList      LowerBoundExpr ':' '*'  -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  {AllocateCoshapeSpec ','}+ ',' NoLowerBoundExpr   '*'  -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
+  {AllocateCoshapeSpec ','}+ ',' LowerBoundExpr ':' '*'  -> AllocateCoarraySpec  {cons("AllocateCoarraySpec")}
 
 %%R637
   NoLowerBoundExpr   UpperBoundExpr              -> AllocateCoshapeSpec       {cons("AllocateCoshapeSpec")}
   LowerBoundExpr ':' UpperBoundExpr              -> AllocateCoshapeSpec       {cons("AllocateCoshapeSpec")}
-  {AllocateCoshapeSpec ','}+                     -> AllocateCoshapeSpecList   {cons("allocate-coshape-spec-list")}
-  % empty %                                      -> NoAllocateCoshapeSpecList {cons("no-allocate-coshape-spec-list")}
+  % empty %                                      -> NoAllocateCoshapeSpecList {cons("no-list")}
 
 %%R638
-  OptLabel 'NULLIFY' '(' PointerObjectList ')'       EOS -> NullifyStmt          {cons("NullifyStmt")}
+  OptLabel 'NULLIFY' '(' {PointerObject ','}+ ')'    EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
   VariableName                                           -> PointerObject
   StructureComponent                                     -> PointerObject        {avoid}
   ProcPointerName                                        -> PointerObject        {reject}
-  {PointerObject ','}+                                   -> PointerObjectList    {cons("pointer-object-list")}
 
 %%R640
   OptLabel 'DEALLOCATE'
-       '(' AllocateObjectList OptDeallocOptList ')'  EOS -> DeallocateStmt       {cons("DeallocateStmt")}
+     '(' {AllocateObject ','}+ OptDeallocOptList ')' EOS -> DeallocateStmt       {cons("DeallocateStmt")}
 
   ',' DeallocOptList                                     -> OptDeallocOptList    {cons("opt-dealloc-opt-list")}
   % empty %                                              -> OptDeallocOptList    {cons("no-dealloc-opt-list")}
@@ -3406,13 +3412,6 @@ context-free syntax
 %% Fortran ISO/IEC 1539:1991 section 12xx Procedures section
 %%%%%%%%%%
 
-%% Identifier aliases
-%%
-
-  Ident   -> EntryName                 {cons("EntryName")}
-  Ident   -> ImportName                {cons("ImportName")}
-
-
 %%R1201
   InterfaceStmt
     InterfaceSpecification*
@@ -3442,14 +3441,13 @@ context-free syntax
   SubroutineStmt SpecificationPart EndSubroutineStmt   -> InterfaceBody  {cons("InterfaceBody")}
 
 %%R1206
-  Label? 'MODULE' 'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
-  Label? 'MODULE' 'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt_MP")}
-  Label?          'PROCEDURE' '::' ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt")}
-  Label?          'PROCEDURE'      ProcedureNameList   EOS -> ProcedureStmt     {cons("ProcedureStmt")}
+  OptLabel 'MODULE' 'PROCEDURE' '::' {ProcedureName ','}+ EOS -> ProcedureStmt  {cons("ModuleProcedureStmt")}
+  OptLabel 'MODULE' 'PROCEDURE'      {ProcedureName ','}+ EOS -> ProcedureStmt  {cons("ModuleProcedureStmt")}
+  OptLabel          'PROCEDURE' '::' {ProcedureName ','}+ EOS -> ProcedureStmt  {cons("ProcedureStmt")}
+  OptLabel          'PROCEDURE'      {ProcedureName ','}+ EOS -> ProcedureStmt  {cons("ProcedureStmt")}
 
-  Ident                                                    -> ProcedureName
-  % empty %                                                -> NoProcedureName   {cons("no-procedure-name")}
-  {ProcedureName ','}+                                     -> ProcedureNameList {cons("ProcedureNames")}
+  Ident                            -> ProcedureName
+  % empty %                        -> NoProcedureName  {cons("no-procedure-name")}
 
 %%R1207
   GenericName                                   -> GenericSpec
@@ -3466,18 +3464,16 @@ context-free syntax
   'WRITE' '(' 'UNFORMATTED' ')'                 -> DefinedIoGenericSpec   {cons("WRITE_UNFORMATTED")}
 
 %%R1209
-  Label? 'IMPORT' '::' ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
-  Label? 'IMPORT'      ImportNameList             EOS -> ImportStmt       {cons("ImportStmt_INL")}
-  Label? 'IMPORT'                                 EOS -> ImportStmt       {cons("ImportStmt_0")}
+  OptLabel 'IMPORT' '::' {ImportName ','}+  EOS -> ImportStmt        {cons("ImportStmt")}
+  OptLabel 'IMPORT'      {ImportName ','}*  EOS -> ImportStmt        {cons("ImportStmt")}
 
-  {ImportName ','}+                                   -> ImportNameList   {cons("ImportNameList")}
+  Ident                                         -> ImportName
 
 %%R1210
-  OptLabel 'EXTERNAL' '::' ExternalNameList       EOS -> ExternalStmt     {cons("ExternalStmt")}
-  OptLabel 'EXTERNAL'      ExternalNameList       EOS -> ExternalStmt     {cons("ExternalStmt")}
+  OptLabel 'EXTERNAL' '::' {ExternalName ','}+  EOS -> ExternalStmt  {cons("ExternalStmt")}
+  OptLabel 'EXTERNAL'      {ExternalName ','}+  EOS -> ExternalStmt  {cons("ExternalStmt")}
 
-  Ident                                               -> ExternalName
-  {ExternalName ','}+                                 -> ExternalNameList {cons("external-name-list")}
+  Ident                                             -> ExternalName
 
 %%R1211
   OptLabel 'PROCEDURE' '(' OptProcInterface ')'
@@ -3525,11 +3521,10 @@ context-free syntax
   ProcedureName                                -> InitialProcTarget
 
 %%R1218
-  OptLabel 'INTRINSIC' '::' IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
-  OptLabel 'INTRINSIC'      IntrinsicProcedureNameList  EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  OptLabel 'INTRINSIC' '::' {IntrinsicProcedureName ','}+ EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
+  OptLabel 'INTRINSIC'      {IntrinsicProcedureName ','}+ EOS -> IntrinsicStmt  {cons("IntrinsicStmt")}
 
   Ident                                        -> IntrinsicProcedureName
-  {IntrinsicProcedureName ','}+                -> IntrinsicProcedureNameList {cons("intrinsic-procedure-name-list")}
 
 %%R1219
   ProcedureDesignator '(' ActualArgSpecList? ')'      -> FunctionReference   {cons("FunctionReference")}
@@ -3652,8 +3647,8 @@ context-free syntax
   {DummyArg ','}+                                    -> DummyArgList
 
   DummyArgList                                       -> OptDummyArgList
-  % empty %                                          -> OptDummyArgList    {cons("no-dummy-args")}
-  % empty %                                          -> NoDummyArgList     {cons("no-dummy-args")}
+  % empty %                                          -> OptDummyArgList    {cons("no-list")}
+  % empty %                                          -> NoDummyArgList     {cons("no-list")}
 
 %%R1236
   OptLabel 'END'              NoSubroutineName   EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
@@ -3685,8 +3680,9 @@ context-free syntax
   OptLabel 'END' 'PROCEDURE'   ProcedureName  EOS -> EndMpSubprogramStmt      {cons("EndMpSubprogramStmt")}
 
 %%R1240
-  OptLabel 'ENTRY' EntryName '(' OptDummyArgList ')' OptSuffix EOS -> EntryStmt  {cons("EntryStmt_DAL")}
-  OptLabel 'ENTRY' EntryName                          NoSuffix EOS -> EntryStmt  {cons("EntryStmt_0")}
+  OptLabel 'ENTRY' EntryName '(' OptDummyArgList ')' OptSuffix EOS -> EntryStmt  {cons("EntryStmt")}
+  OptLabel 'ENTRY' EntryName      NoDummyArgList      NoSuffix EOS -> EntryStmt  {cons("EntryStmt")}
+  Ident                                                            -> EntryName
 
 %%R1241
 %%       expr substituted for scalar-int-expr

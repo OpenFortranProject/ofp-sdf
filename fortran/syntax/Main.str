@@ -28,7 +28,6 @@ signature
                                    : ForallConstructName -> ForallConstructName0
                                    : Ident -> Ident0
                                    : BoundsSpecList -> BoundsSpecList0
-                                   : Stride -> Stride0
                                    : ArraySpec -> ArraySpec0
                                    : Letter -> Letter0
                                    : CoarraySpec -> CoarraySpec0
@@ -43,14 +42,13 @@ signature
                                    : BindingAttrList -> BindingAttrList0
                                    : CharLength -> CharLength0
                                    : ComponentArraySpec -> ComponentArraySpec0
-                                   : ComponentAttrSpecList -> ComponentAttrSpecList0
                                    : Expr -> Expr1
-                                   : TypeAttrSpecList -> TypeAttrSpecList0
     StmtFunctionStmt               : OptLabel * FunctionName * OptDummyArgNameList * Expr * EOS -> StmtFunctionStmt
     ContainsStmt                   : OptLabel * EOS -> ContainsStmt
     ReturnStmt                     : OptLabel * Option(Expr) * EOS -> ReturnStmt
-    EntryStmt_0                    : OptLabel * EntryName * NoSuffix * EOS -> EntryStmt
-    EntryStmt_DAL                  : OptLabel * EntryName * OptDummyArgList * OptSuffix * EOS -> EntryStmt
+                                   : Ident -> EntryName
+    EntryStmt                      : OptLabel * EntryName * NoDummyArgList * NoSuffix * EOS -> EntryStmt
+    EntryStmt                      : OptLabel * EntryName * OptDummyArgList * OptSuffix * EOS -> EntryStmt
     EndMpSubprogramStmt            : OptLabel * ProcedureName * EOS -> EndMpSubprogramStmt
     EndMpSubprogramStmt            : OptLabel * NoProcedureName * EOS -> EndMpSubprogramStmt
     MpSubprogramStmt               : OptLabel * ProcedureName * EOS -> MpSubprogramStmt
@@ -61,8 +59,8 @@ signature
                                    : Ident -> SubroutineName
     EndSubroutineStmt              : OptLabel * OptSubroutineName * EOS -> EndSubroutineStmt
     EndSubroutineStmt              : OptLabel * NoSubroutineName * EOS -> EndSubroutineStmt
-    no-dummy-args                  : NoDummyArgList
-    no-dummy-args                  : OptDummyArgList
+    no-list                        : NoDummyArgList
+    no-list                        : OptDummyArgList
                                    : DummyArgList -> OptDummyArgList
                                    : List(DummyArg) -> DummyArgList
     STAR                           : DummyArg
@@ -113,9 +111,8 @@ signature
     CallStmt                       : Option(Label) * ProcedureDesignator * ActualArgSpecList * EOS -> CallStmt
     CallStmt                       : Option(Label) * ProcedureDesignator * EOS -> CallStmt
     FunctionReference              : ProcedureDesignator * Option(ActualArgSpecList) -> FunctionReference
-    intrinsic-procedure-name-list  : List(IntrinsicProcedureName) -> IntrinsicProcedureNameList
                                    : Ident -> IntrinsicProcedureName
-    IntrinsicStmt                  : OptLabel * IntrinsicProcedureNameList * EOS -> IntrinsicStmt
+    IntrinsicStmt                  : OptLabel * List(IntrinsicProcedureName) * EOS -> IntrinsicStmt
                                    : ProcedureName -> InitialProcTarget
     no-init                        : NoProcPointerInit
                                    : InitialProcTarget -> ProcPointerInit
@@ -140,12 +137,11 @@ signature
                                    : InterfaceName -> ProcInterface
     ProcedureDeclarationStmt       : OptLabel * OptProcInterface * OptProcAttrSpecList * List(ProcDecl) * EOS -> ProcedureDeclarationStmt
     ProcedureDeclarationStmt       : OptLabel * OptProcInterface * NoProcAttrSpecList * List(ProcDecl) * EOS -> ProcedureDeclarationStmt
-    external-name-list             : List(ExternalName) -> ExternalNameList
                                    : Ident -> ExternalName
-    ExternalStmt                   : OptLabel * ExternalNameList * EOS -> ExternalStmt
-    ImportNameList                 : List(ImportName) -> ImportNameList
-    ImportStmt_0                   : Option(Label) * EOS -> ImportStmt
-    ImportStmt_INL                 : Option(Label) * ImportNameList * EOS -> ImportStmt
+    ExternalStmt                   : OptLabel * List(ExternalName) * EOS -> ExternalStmt
+                                   : Ident -> ImportName
+    ImportStmt                     : OptLabel * List(ImportName) * EOS -> ImportStmt
+    ImportStmt                     : OptLabel * List(ImportName) * EOS -> ImportStmt
     WRITE_UNFORMATTED              : DefinedIoGenericSpec
     WRITE_FORMATTED                : DefinedIoGenericSpec
     READ_UNFORMATTED               : DefinedIoGenericSpec
@@ -155,11 +151,10 @@ signature
     ASSIGNMENT                     : GenericSpec
     OPERATOR                       : DefinedOperator -> GenericSpec
                                    : GenericName -> GenericSpec
-    ProcedureNames                 : List(ProcedureName) -> ProcedureNameList
     no-procedure-name              : NoProcedureName
                                    : Ident -> ProcedureName
-    ProcedureStmt                  : Option(Label) * ProcedureNameList * EOS -> ProcedureStmt
-    ProcedureStmt_MP               : Option(Label) * ProcedureNameList * EOS -> ProcedureStmt
+    ProcedureStmt                  : OptLabel * List(ProcedureName) * EOS -> ProcedureStmt
+    ModuleProcedureStmt            : OptLabel * List(ProcedureName) * EOS -> ProcedureStmt
     InterfaceBody                  : SubroutineStmt * SpecificationPart * EndSubroutineStmt -> InterfaceBody
     InterfaceBody                  : FunctionStmt * SpecificationPart * EndFunctionStmt -> InterfaceBody
     no-generic-spec                : OptGenericSpec
@@ -170,8 +165,6 @@ signature
                                    : ProcedureStmt -> InterfaceSpecification
                                    : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                 : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
-    ImportName                     : Ident -> ImportName
-    EntryName                      : Ident -> EntryName
     EndBlockDataStmt_0             : Option(Label) * EOS -> EndBlockDataStmt
     EndBlockDataStmt_BDN           : Option(Label) * Option(BlockDataName) * EOS -> EndBlockDataStmt
     BlockDataStmt                  : Option(Label) * Option(BlockDataName) * EOS -> BlockDataStmt
@@ -742,17 +735,15 @@ signature
     STAT                           : StatVariable -> DeallocOpt
     no-dealloc-opt-list            : OptDeallocOptList
     opt-dealloc-opt-list           : DeallocOptList -> OptDeallocOptList
-    DeallocateStmt                 : OptLabel * AllocateObjectList * OptDeallocOptList * EOS -> DeallocateStmt
-    pointer-object-list            : List(PointerObject) -> PointerObjectList
+    DeallocateStmt                 : OptLabel * List(AllocateObject) * OptDeallocOptList * EOS -> DeallocateStmt
                                    : StructureComponent -> PointerObject
                                    : VariableName -> PointerObject
-    NullifyStmt                    : OptLabel * PointerObjectList * EOS -> NullifyStmt
-    no-allocate-coshape-spec-list  : NoAllocateCoshapeSpecList
-    allocate-coshape-spec-list     : List(AllocateCoshapeSpec) -> AllocateCoshapeSpecList
+    NullifyStmt                    : OptLabel * List(PointerObject) * EOS -> NullifyStmt
+    no-list                        : NoAllocateCoshapeSpecList
     AllocateCoshapeSpec            : LowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
     AllocateCoshapeSpec            : NoLowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
-    AllocateCoarraySpec            : AllocateCoshapeSpecList * LowerBoundExpr -> AllocateCoarraySpec
-    AllocateCoarraySpec            : AllocateCoshapeSpecList * NoLowerBoundExpr -> AllocateCoarraySpec
+    AllocateCoarraySpec            : List(AllocateCoshapeSpec) * LowerBoundExpr -> AllocateCoarraySpec
+    AllocateCoarraySpec            : List(AllocateCoshapeSpec) * NoLowerBoundExpr -> AllocateCoarraySpec
     AllocateCoarraySpec            : NoAllocateCoshapeSpecList * LowerBoundExpr -> AllocateCoarraySpec
     AllocateCoarraySpec            : NoAllocateCoshapeSpecList * NoLowerBoundExpr -> AllocateCoarraySpec
                                    : IntExpr -> UpperBoundExpr
@@ -760,43 +751,42 @@ signature
     no-lower-bound                 : NoLowerBoundExpr
     no-coshape-specs               : NoAllocateCoarraySpec
     no-shape-specs                 : NoAllocateShapeSpecList
-    allocate-shape-spec-list       : List(AllocateShapeSpec) -> AllocateShapeSpecList
     AllocateShapeSpec              : LowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
-    allocate-object-list           : List(AllocateObject) -> AllocateObjectList
                                    : StructureComponent -> AllocateObject
-    allocation-list                : List(Allocation) -> AllocationList
-    Allocation                     : AllocateObject * AllocateShapeSpecList * AllocateCoarraySpec -> Allocation
+    Allocation                     : AllocateObject * List(AllocateShapeSpec) * AllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * NoAllocateShapeSpecList * AllocateCoarraySpec -> Allocation
-    Allocation                     : AllocateObject * AllocateShapeSpecList * NoAllocateCoarraySpec -> Allocation
+    Allocation                     : AllocateObject * List(AllocateShapeSpec) * NoAllocateCoarraySpec -> Allocation
     Allocation                     : AllocateObject * NoAllocateShapeSpecList * NoAllocateCoarraySpec -> Allocation
                                    : DefaultCharVariable -> ErrmsgVariable
                                    : IntVariable -> StatVariable
-    no-alloc-opt-list              : OptAllocOptList
-    alloc-opt-list                 : List(AllocOpt) -> OptAllocOptList
+    no-list                        : OptAllocOptList
+    opt-alloc-opt-list             : List(AllocOpt) -> OptAllocOptList
     STAT                           : StatVariable -> AllocOpt
     SOURCE                         : Expr -> AllocOpt
     MOLD                           : Expr -> AllocOpt
     ERRMSG                         : ErrmsgVariable -> AllocOpt
     no-type-spec                   : NoTypeSpec
-    AllocateStmt                   : OptLabel * TypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
-    AllocateStmt                   : OptLabel * NoTypeSpec * AllocationList * OptAllocOptList * EOS -> AllocateStmt
-    cosubscript-list               : List(Cosubscript) -> CosubscriptList
+    AllocateStmt                   : OptLabel * TypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
+    AllocateStmt                   : OptLabel * NoTypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
                                    : IntExpr -> Cosubscript
     no-image-selector              : OptImageSelector
                                    : ImageSelector -> OptImageSelector
-    ImageSelector                  : CosubscriptList -> ImageSelector
-    Stride                         : IntExpr -> Stride
-    SubscriptTriplet               : Option(Subscript) * Option(Subscript) * Option(Stride0) -> SubscriptTriplet
-    section-subscript-list         : List(SectionSubscript) -> SectionSubscriptList
-    SectionSubscript               : SubscriptTriplet -> SectionSubscript
-    SectionSubscript               : Subscript -> SectionSubscript
-    Subscript                      : IntExpr -> Subscript
+    ImageSelector                  : List(Cosubscript) -> ImageSelector
+    no-stride                      : OptStride
+    opt-stride                     : Stride -> OptStride
+                                   : IntExpr -> Stride
+    SubscriptTriplet               : OptSubscript * OptSubscript * OptStride -> SubscriptTriplet
+                                   : SubscriptTriplet -> SectionSubscript
+                                   : Subscript -> SectionSubscript
+    no-subscript                   : OptSubscript
+                                   : Subscript -> OptSubscript
+                                   : IntExpr -> Subscript
     ArrayElement                   : DataRef -> ArrayElement
     TypeParamInquiry               : Designator * TypeParamName -> TypeParamInquiry
                                    : DataRef -> StructureComponent
                                    : Ident -> PartName
-    opt-section-subscripts         : SectionSubscriptList -> OptSectionSubscripts
+    opt-section-subscripts         : List(SectionSubscript) -> OptSectionSubscripts
     no-section-subscripts          : OptSectionSubscripts
     PartRef                        : PartName * OptSectionSubscripts * OptImageSelector -> PartRef
     DataRef                        : List(PartRef) -> DataRef
@@ -1024,12 +1014,14 @@ signature
     TypeBoundProcedureStmt_3       : Option(Label) * InterfaceName * BindingAttrList * BindingNameList * EOS -> TypeBoundProcedureStmt
     TypeBoundProcedureStmt_2       : Option(Label) * Option(BindingAttrList0) * TypeBoundProcDeclList * EOS -> TypeBoundProcedureStmt
     TypeBoundProcedureStmt_1       : Option(Label) * TypeBoundProcDeclList * EOS -> TypeBoundProcedureStmt
-    TypeBoundProcBinding_FPS       : FinalProcedureStmt -> TypeBoundProcBinding
-    TypeBoundProcBinding_TBGS      : TypeBoundGenericStmt -> TypeBoundProcBinding
-    TypeBoundProcBinding_TBPS      : TypeBoundProcedureStmt -> TypeBoundProcBinding
-    BindingPrivateStmt             : Option(Label) * EOS -> BindingPrivateStmt
+                                   : FinalProcedureStmt -> TypeBoundProcBinding
+                                   : TypeBoundGenericStmt -> TypeBoundProcBinding
+                                   : TypeBoundProcedureStmt -> TypeBoundProcBinding
+    BindingPrivateStmt             : OptLabel * EOS -> BindingPrivateStmt
+    no-type-bound-procedure-part   : OptTypeBoundProcedurePart
+                                   : TypeBoundProcedurePart -> OptTypeBoundProcedurePart
     TypeBoundProcedurePart         : ContainsStmt * Option(BindingPrivateStmt) * List(TypeBoundProcBinding) -> TypeBoundProcedurePart
-    PrivateComponentsStmt          : Option(Label) * EOS -> PrivateComponentsStmt
+    PrivateComponentsStmt          : OptLabel * EOS -> PrivateComponentsStmt
     InitialDataTarget              : Designator -> InitialDataTarget
     ComponentInitialization_IDT    : InitialDataTarget -> ComponentInitialization
     ComponentInitialization_NI     : NullInit -> ComponentInitialization
@@ -1042,39 +1034,42 @@ signature
     ProcComponentDefStmt           : Option(Label) * Option(ProcInterface) * ProcComponentAttrSpecList * List(ProcDecl) * EOS -> ProcComponentDefStmt
     ComponentArraySpec             : AssumedOrDeferredShapeSpecList -> ComponentArraySpec
     ComponentArraySpec             : ExplicitShapeSpecList -> ComponentArraySpec
-    ComponentDeclList              : List(ComponentDecl) -> ComponentDeclList
+                                   : Ident -> ComponentName
     ComponentDecl                  : ComponentName * Option(ComponentArraySpec0) * Option(CoarraySpec0) * Option(CharLength0) * Option(ComponentInitialization) -> ComponentDecl
-    ComponentAttrSpecList          : List(ComponentAttrSpec) -> ComponentAttrSpecList
     ComponentAttrSpec_POINTER      : ComponentAttrSpec
     ComponentAttrSpec_DIMENSION    : ComponentArraySpec -> ComponentAttrSpec
     ComponentAttrSpec_CONTIGUOUS   : ComponentAttrSpec
     ComponentAttrSpec_CODIMENSION  : CoarraySpec -> ComponentAttrSpec
     ComponentAttrSpec_ALLOCATABLE  : ComponentAttrSpec
     ComponentAttrSpec_AS           : AccessSpec -> ComponentAttrSpec
-    OptCASL                        : Option(ComponentAttrSpecList0) -> OptComponentAttrSpecList
-    DataComponentDefStmt           : Option(Label) * DeclarationTypeSpec * Option(OptComponentAttrSpecList) * ComponentDeclList * EOS -> DataComponentDefStmt
-    ComponentDefStmt_PCDS          : ProcComponentDefStmt -> ComponentDefStmt
-    ComponentDefStmt_DCDS          : DataComponentDefStmt -> ComponentDefStmt
-    ComponentPart                  : List(ComponentDefStmt) -> ComponentPart
+    no-list                        : OptComponentAttrSpecList
+    opt-component-attr-spec-list   : List(ComponentAttrSpec) -> OptComponentAttrSpecList
+    DataComponentDefStmt           : OptLabel * DeclarationTypeSpec * OptComponentAttrSpecList * List(ComponentDecl) * EOS -> DataComponentDefStmt
+                                   : ProcComponentDefStmt -> ComponentDefStmt
+                                   : DataComponentDefStmt -> ComponentDefStmt
+                                   : List(ComponentDefStmt) -> ComponentPart
     TypeParamAttrSpec_LEN          : TypeParamAttrSpec
     TypeParamAttrSpec_KIND         : TypeParamAttrSpec
     TypeParamDeclList              : List(TypeParamDecl) -> TypeParamDeclList
     TypeParamDecl                  : TypeParamName * Option(Expr1) -> TypeParamDecl
     TypeParamDefStmt               : Option(Label) * OptKindSelector * TypeParamAttrSpec * TypeParamDeclList * EOS -> TypeParamDefStmt
-    SequenceStmt                   : Option(Label) * EOS -> SequenceStmt
-    EndTypeStmt                    : Option(Label) * Option(TypeName) * EOS -> EndTypeStmt
-    PrivateOrSequence_SS           : SequenceStmt -> PrivateOrSequence
-    PrivateOrSequence_PCS          : PrivateComponentsStmt -> PrivateOrSequence
-    TypeAttrSpecList               : List(TypeAttrSpec) -> TypeAttrSpecList
+    SequenceStmt                   : OptLabel * EOS -> SequenceStmt
+    EndTypeStmt                    : OptLabel * OptTypeName * EOS -> EndTypeStmt
+                                   : SequenceStmt -> PrivateOrSequence
+                                   : PrivateComponentsStmt -> PrivateOrSequence
     TypeAttrSpec_EXTENDS           : ParentTypeName -> TypeAttrSpec
     TypeAttrSpec_BIND              : TypeAttrSpec
     TypeAttrSpec_AS                : AccessSpec -> TypeAttrSpec
     TypeAttrSpec_ABSTRACT          : TypeAttrSpec
-    TypeParamNameList              : List(TypeParamName) -> TypeParamNameList
-    OptTPNL                        : TypeParamNameList -> OptTypeParamNameList
-    OptTASL                        : Option(TypeAttrSpecList0) -> OptTypeAttrSpecList
-    DerivedTypeStmt                : Option(Label) * Option(OptTypeAttrSpecList) * TypeName * Option(OptTypeParamNameList) * EOS -> DerivedTypeStmt
-    DerivedTypeDef                 : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * Option(ComponentPart) * Option(TypeBoundProcedurePart) * EndTypeStmt -> DerivedTypeDef
+    no-type-name                   : OptTypeName
+                                   : TypeName -> OptTypeName
+                                   : Ident -> TypeName
+    no-list                        : OptTypeParamNameList
+    opt-type-param-name-list       : List(TypeParamName) -> OptTypeParamNameList
+    no-list                        : OptTypeAttrSpecList
+    opt-type-attr-spec-list        : List(TypeAttrSpec) -> OptTypeAttrSpecList
+    DerivedTypeStmt                : OptLabel * OptTypeAttrSpecList * TypeName * OptTypeParamNameList * EOS -> DerivedTypeStmt
+    DerivedTypeDef                 : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * ComponentPart * OptTypeBoundProcedurePart * EndTypeStmt -> DerivedTypeDef
     no-kind-param                  : OptKindParam
     opt-kind-param                 : KindParam -> OptKindParam
     LogicalLiteralConstant_FALSE   : OptKindParam -> LogicalLiteralConstant
@@ -1144,12 +1139,10 @@ signature
                                    : IntLiteralConstant -> LiteralConstant
                                    : LiteralConstant -> Constant
     TypeParamName                  : Ident -> TypeParamName
-    TypeName                       : Ident -> TypeName
     ScalarIntConstantName          : Ident -> ScalarIntConstantName
     ParentTypeName                 : Ident -> ParentTypeName
     Name                           : Ident -> Name
     FinalSubroutineName            : Ident -> FinalSubroutineName
-    ComponentName                  : Ident -> ComponentName
     BindingName                    : Ident -> BindingName
     ArgName                        : Ident -> ArgName
     LblRef                         : LblDef -> LblRef
