@@ -58,6 +58,11 @@ ofp-simplify-ast:  opt-type-param-name-list(list) -> list
 ofp-simplify-ast:
   opt-component-attr-spec-list(list)              -> list
 
+//R503
+ofp-simplify-ast:  opt-array-spec(spec)           -> spec
+ofp-simplify-ast:  opt-coarray-spec(spec)         -> spec
+ofp-simplify-ast:  opt-char-length(length)        -> length
+
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
 
