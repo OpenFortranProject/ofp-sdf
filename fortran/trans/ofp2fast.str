@@ -48,12 +48,12 @@ strategies //=================START OF STRATEGIES============================
 
 rules //========================START OF RULES===============================
 
-  ofp-extract-name:  None()                               -> None()
-  ofp-extract-name:  OfpModuleStmt       (_,name)         -> name
-  ofp-extract-name:  ProgramStmt         (_,name,_)       -> name
-  ofp-extract-name:  OfpMpSubprogramStmt (_,name)         -> name
-  ofp-extract-name:  SubroutineStmt      (_,name,_,_,_,_) -> name
-  ofp-extract-name:  OfpFunctionStmt     (_,name,_,_,_)   -> name
+  ofp-extract-name:  None()                                 -> None()
+  ofp-extract-name:  ModuleStmt       (_,name,_)            -> name
+  ofp-extract-name:  ProgramStmt      (_,name,_)            -> name
+  ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
+  ofp-extract-name:  SubroutineStmt   (_,_,name,_,_,_)      -> name
+  ofp-extract-name:  FunctionStmt     (_,_,name,_,_,_)      -> name
 
   ofp-extract-subprograms:  no-subprogram-part()            -> OfpFuncPart([])
   ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> OfpFuncPart(subprograms)
@@ -71,8 +71,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ObjectName(str)           -> OfpName(str)
 
 //R201
-  ofp-to-ast:  Program(str,           [ProgramUnit]) -> OfpProgram(None(),[ProgramUnit]) {Comment(str)}
-  ofp-to-ast:  Program(no-comments(), [ProgramUnit]) -> OfpProgram(None(),[ProgramUnit])
+  ofp-to-ast:  Program(no-comments(), ProgramUnits) -> OfpProgram(None(),ProgramUnits)
+  ofp-to-ast:  Program(str,           ProgramUnits) -> OfpProgram(None(),ProgramUnits) {Comment(str)}
 
 //R204
   ofp-to-ast:
@@ -113,10 +113,6 @@ rules //========================START OF RULES===============================
 
 //R413
   ofp-to-ast:  RealLiteralConstant(str, kind)    -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
-
-//R508
-  ofp-to-ast:  LanguageBindingName(str)         -> str
-  ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
 
 //R511
   ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
@@ -240,16 +236,6 @@ rules //========================START OF RULES===============================
                   -> OfpModule(<ofp-extract-name>begin,
                      OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
 
-//R1105
-  ofp-to-ast:  ModuleStmt(label,name,eos)
-                  -> OfpModuleStmt(<ofp-label>label,<ofp-name>name)             {Comment(eos)}
-
-//R1106
-  ofp-to-ast:  EndModuleStmt(label,name,eos)
-                  -> OfpEndModuleStmt(<ofp-label>label,<ofp-name-some>name)     {Comment(eos)}
-
-  ofp-to-ast:  no-module-nature()           -> None()
-
 //R1109
   ofp-to-ast:  UseStmt(label,nature,name,rename_only,eos)
                   -> OfpUseStmt(<ofp-label>label,<ofp-add-some>nature,
@@ -320,19 +306,10 @@ ofp-to-ast:  no-init()                        -> None()
                    -> OfpFunction(<ofp-extract-name>begin,
                                   OfpScope(spec,exec,funcs,<ofp-add-some>begin,None(),<ofp-add-some>end))
 
-//R1228
-  ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
-                   -> OfpFunctionStmt(<ofp-label>label,<ofp-name>name,<ofp-args>args,
-                                      <ofp-prefix>prefix,<ofp-suffix>suffix)   {Comment(eos)}
-
 //R1231
   ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
   ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
   ofp-to-ast:  no-result-name()                 -> None()
-
-//R1232
-  ofp-to-ast:  EndFunctionStmt(label,name,eos)
-                   -> OfpEndFunctionStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
@@ -343,11 +320,3 @@ ofp-to-ast:  no-init()                        -> None()
   ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
                    -> OfpMpSubprogram(<ofp-extract-name>begin,
                                       <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
-
-//R1238
-  ofp-to-ast:  MpSubprogramStmt(label,name,eos)
-                   -> OfpMpSubprogramStmt(<ofp-label>label,<ofp-name>name)         {Comment(eos)}
-
-//R1239
-  ofp-to-ast:  EndMpSubprogramStmt(label,name,eos)
-                   -> OfpEndMpSubprogramStmt(<ofp-label>label,<ofp-name-some>name) {Comment(eos)}
