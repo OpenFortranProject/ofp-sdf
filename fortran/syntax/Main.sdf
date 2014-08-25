@@ -258,7 +258,6 @@ sorts
   AccessIdList AllocatableDeclList BindEntityList CodimensionDeclList
   DataIDoObjectList DataStmtObjectList DataStmtSetList DataStmtValueList
   DummyArgNameList NamedConstantDefList PointerDeclList SavedEntityList TargetDeclList
-  OptDummyArgNameList
 
 %% 5.5 Implicit statement
 
@@ -443,7 +442,7 @@ sorts
   EndForallStmt                       %% R758
   ForallStmt                          %% R759
 
-  ElsewhereClause MaskedElsewhereClause
+  ElsewhereClause MaskedElsewhereClause OptExpr
 
   BoundsRemappingList BoundsSpecList ForallTripletSpecList
 
@@ -675,7 +674,7 @@ sorts
   BlockDataStmt                       %% R1121
   EndBlockDataStmt                    %% R1122
 
-  OnlyList ProgramName NoProgramName OptProgramName
+  OptModuleSubprogramPart OnlyList ProgramName NoProgramName OptProgramName
   OptProgramStmt OptOnlyList OptModuleNature NoModuleNature
   RenameList NoRenameList OptRenameList
 
@@ -1323,8 +1322,8 @@ context-free syntax
 %%       Ident with quotes substituted for scalar-default-char-constant-expr
 %%
   'BIND' '(' 'C' OptLanguageBindingName ')'             -> LanguageBindingSpec  {cons("LanguageBindingSpec")}
-  ',' 'NAME' '=' '"' Ident '"'                          -> LanguageBindingName  {cons("LanguageBindingName")}
-  ',' 'NAME' '=' "'" Ident "'"                          -> LanguageBindingName  {cons("LanguageBindingName")}
+  ',' 'NAME' '=' '"' Ident '"'                          -> LanguageBindingName  {cons("language-binding-name")}
+  ',' 'NAME' '=' "'" Ident "'"                          -> LanguageBindingName  {cons("language-binding-name")}
 
   LanguageBindingName                                   -> OptLanguageBindingName
   % empty %                                             -> OptLanguageBindingName {cons("no-binding-name")}
@@ -3297,7 +3296,7 @@ context-free syntax
 %%
   ModuleStmt
     SpecificationPart
-    ModuleSubprogramPart?
+    OptModuleSubprogramPart
   EndModuleStmt                                -> Module           {cons("Module")}
 
 %%R1105
@@ -3313,7 +3312,10 @@ context-free syntax
   ModuleName                                   -> OptModuleName
 
 %%R1107
-  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart  {cons("ModuleSubprogramPart")}
+  ContainsStmt ModuleSubprogram*               -> ModuleSubprogramPart     {cons("ModuleSubprogramPart")}
+
+  ModuleSubprogramPart                         -> OptModuleSubprogramPart
+  % empty %                                    -> OptModuleSubprogramPart  {cons("no-module-subprogram-part")}
 
 %%R1108
   FunctionSubprogram                           -> ModuleSubprogram
@@ -3588,10 +3590,7 @@ context-free syntax
 
 %%R1228
   OptLabel OptPrefix 'FUNCTION' FunctionName
-        '(' OptDummyArgNameList ')' OptSuffix EOS   -> FunctionStmt       {cons("FunctionStmt")}
-
-  {DummyArgName ','}*                  -> OptDummyArgNameList
-
+        '(' {DummyArgName ','}* ')' OptSuffix EOS   -> FunctionStmt       {cons("FunctionStmt")}
 
 %%R1229
   LanguageBindingSpec                  -> ProcLanguageBindingSpec
@@ -3692,7 +3691,10 @@ context-free syntax
 %%R1241
 %%       expr substituted for scalar-int-expr
 %%
-  OptLabel 'RETURN' Expr?                   EOS -> ReturnStmt     {cons("ReturnStmt")}
+  OptLabel 'RETURN' OptExpr                 EOS -> ReturnStmt     {cons("ReturnStmt")}
+
+  Expr                                          -> OptExpr
+  % empty %                                     -> OptExpr        {cons("no-expr")}
 
 %%R1242
   OptLabel 'CONTAINS'                       EOS -> ContainsStmt   {cons("ContainsStmt")}
@@ -3700,4 +3702,4 @@ context-free syntax
 %%R1243
 %%          scalar-expr replaced by expr
 %%
-  OptLabel FunctionName '(' OptDummyArgNameList ')' '=' Expr  EOS -> StmtFunctionStmt {cons("StmtFunctionStmt")}
+  OptLabel FunctionName '(' {DummyArgName ','}* ')' '=' Expr  EOS -> StmtFunctionStmt {cons("StmtFunctionStmt")}
