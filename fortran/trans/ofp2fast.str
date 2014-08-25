@@ -10,12 +10,11 @@ signature
   constructors
 
 // Ambiguities
+  amb : list -> choice
 
-   amb : list -> choice
-
-   Comment   : A -> B            /* comments are put in annotations */
-   OfpString : A -> B            /* node for a string literal */
-   ERROR     : A -> B            /* error reporting for a node */
+  Comment   : A -> B            /* comments are put in annotations */
+  OfpString : A -> B            /* node for a string literal */
+  ERROR     : A -> B            /* error reporting for a node */
 
 strategies //=================START OF STRATEGIES============================
 
@@ -25,13 +24,15 @@ strategies //=================START OF STRATEGIES============================
       ofp-simplify
     ; innermost(ofp-to-ast)
 
-  ofp-add-some = ?None() < id + !Some(<id>)
+// Try to remove usage of Some()
+//ofp-add-some = ?None() < id + !Some(<id>)
+  ofp-add-some = id
 
   ofp-name       = is-string < !OfpName (<id>)       + !None()
   ofp-name-some  = is-string < !Some(OfpName (<id>)) + !None()
   ofp-name-fail  = is-string ; !OfpName (<id>)
 
-  ofp-label      = is-string < !Some(OfpLabel(<id>)) + !None()
+  ofp-label      = is-string < !Label(<id>) + !None()
 
   ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
 
@@ -44,7 +45,6 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
   ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
-
 
 rules //========================START OF RULES===============================
 
@@ -112,7 +112,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  IntLiteralConstant(str, kind)     -> OfpLiteral(str, OfpType(INTEGER(), <ofp-kind>kind))
 
 //R413
-  ofp-to-ast:  RealLiteralConstant(str, kind)          -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
+  ofp-to-ast:  RealLiteralConstant(str, kind)    -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
 
 //R501
   ofp-to-ast:
@@ -202,8 +202,6 @@ rules //========================START OF RULES===============================
   alloc-opt:  SOURCE(str)                                 -> SOURCE(<ofp-name-fail>str)
   alloc-opt:  STAT  (str)                                 -> STAT  (<ofp-name-fail>str)
 
-  ofp-to-ast:  no-alloc-opt-list()                        -> []
-
 //R631
   ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(<ofp-var-ref>obj,shp,coshp)
 
@@ -262,8 +260,8 @@ rules //========================START OF RULES===============================
                   -> OfpProgramStmt(<ofp-label>label,<ofp-name>name)          {Comment(eos)}
 
 //R1103
-  ofp-to-ast:  EndProgramStmt(label,name,eos)
-                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
+//  ofp-to-ast:  EndProgramStmt(label,name,eos)
+//                  -> OfpEndProgramStmt(<ofp-label>label,<ofp-name-some>name)  {Comment(eos)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
@@ -312,9 +310,8 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
 
 //R1206
-  ofp-to-ast:  ProcedureStmt   (label,names,eos) -> OfpProcedureStmt(label,None(),  names)  {Comment(eos)}
-  ofp-to-ast:  ProcedureStmt_MP(label,names,eos) -> OfpProcedureStmt(label,MODULE(),names)  {Comment(eos)}
-  ofp-to-ast:  ProcedureNames(names)             -> names
+  ofp-to-ast:  ProcedureStmt(label,names,eos)       -> OfpProcedureStmt(label,None(),  names)  {Comment(eos)}
+  ofp-to-ast:  ModuleProcedureStmt(label,names,eos) -> OfpProcedureStmt(label,MODULE(),names)  {Comment(eos)}
 
 //R1207
 //  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
