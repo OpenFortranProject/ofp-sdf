@@ -36,8 +36,8 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
 
-  ofp-char-select = ofp-add-some; id
-  ofp-kind = ofp-add-some; id
+  ofp-char-select = id
+  ofp-kind = id
   ofp-args = !OfpArgList(<id>)
 
   ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
@@ -59,7 +59,7 @@ rules //========================START OF RULES===============================
   ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> OfpFuncPart(subprograms)
 
   ofp-extract-contains:  no-subprogram-part()               -> None()
-  ofp-extract-contains:  SubprogramPart(contains,_)         -> Some(contains)
+  ofp-extract-contains:  SubprogramPart(contains,_)         -> contains
 
   ofp-fixup-scope:
       OfpScope(spec,exec,funcs,begin,_,end)
@@ -114,22 +114,6 @@ rules //========================START OF RULES===============================
 //R413
   ofp-to-ast:  RealLiteralConstant(str, kind)    -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
 
-//R501
-  ofp-to-ast:
-    TypeDeclarationStmt(label,type,None(),entities,eos) -> OfpTypeDeclarationStmt(label,type,[],   entities) {Comment(eos)}
-  ofp-to-ast:
-    TypeDeclarationStmt(label,type,attrs, entities,eos) -> OfpTypeDeclarationStmt(label,type,attrs,entities) {Comment(eos)}
-
-//R502
-  ofp-to-ast:  attr-specs(attributes)                   -> attributes
-  ofp-to-ast:  no-attr-specs()                          -> []
-
-//R503
-  ofp-to-ast:  EntityDecl(name, aspec, cospec, charlen, init) -> OfpEntityDecl(name, aspec, cospec, charlen, init)
-  ofp-to-ast:  OptArraySpec(ArraySpec)                        -> ArraySpec
-  ofp-to-ast:  OptCoarraySpec(CoarraySpec)                    -> CoarraySpec
-  ofp-to-ast:  EntityDeclList(EntityDecls)                    -> EntityDecls
-    
 //R508
   ofp-to-ast:  LanguageBindingName(str)         -> str
   ofp-to-ast:  LanguageBindingSpec(opt_name)    -> OfpLanguageBinding(opt_name)
@@ -139,17 +123,17 @@ rules //========================START OF RULES===============================
 
 //R516
   ofp-to-ast:  ExplicitShapeSpec(upper)         -> OfpDimSpec(None(),upper)
-  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> OfpDimSpec(Some(lower),upper)
+  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> OfpDimSpec(<ofp-add-some>lower,upper)
   ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
 
 //R519
   ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> OfpDimSpec(None(),":")
-  ofp-to-ast:  AssumedShapeSpec(lower)                        -> OfpDimSpec(Some(lower),":")
+  ofp-to-ast:  AssumedShapeSpec(lower)                        -> OfpDimSpec(<ofp-add-some>lower,":")
   ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
 
 //R521
   ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
-                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(Some(lower),"*")]])
+                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(<ofp-add-some>lower,"*")]])
   ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
                             -> OfpAssumedSize(<concat>[list, [OfpDimSpec(None(),"*")]])
 
@@ -157,7 +141,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
-  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([OfpDimSpec(None(),Some(".."))])
+  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([OfpDimSpec(None(),<ofp-add-some>"..")])
 
 //R523
   ofp-to-ast:  IntentSpec_IN()                    -> OfpIntent(IN())
@@ -171,7 +155,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  AssumedOrImpliedSpec()
                             -> OfpAssumedSize([OfpDimSpec(None(),"*")])
   ofp-to-ast:  AssumedOrImpliedSpec(lower)
-                            -> OfpAssumedSize([OfpDimSpec(Some(lower),"*")])
+                            -> OfpAssumedSize([OfpDimSpec(<ofp-add-some>lower,"*")])
 
   rm-assumed-size: OfpAssumedSize([l]) -> l
 
@@ -219,19 +203,19 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  no-lower-bound()             -> None()
 
 //R636
-  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
+  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[OfpDimSpec(<ofp-add-some>lb,"*")]])
 
 /*****
   ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
-  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([OfpDimSpec(Some(lb),"*")])
+  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([OfpDimSpec(<ofp-add-some>lb,"*")])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
                                             -> OfpCoshape(<concat>[list,[OfpDimSpec(None(),"*")]])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),lb)
-                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(Some(lb),"*")]])
+                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(<ofp-add-some>lb,"*")]])
 *****/
 
 //R637
-  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> OfpDimSpec(Some(lb),ub)
+  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> OfpDimSpec(<ofp-add-some>lb,ub)
 
 // Operators...
 
@@ -264,10 +248,10 @@ rules //========================START OF RULES===============================
 //R1104
   ofp-to-ast:  Module(begin,spec,None(),end)
                   -> OfpModule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end)))
-  ofp-to-ast:  Module(begin,spec,Some(ModuleSubprogramPart(contains,l)),end)
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
+  ofp-to-ast:  Module(begin,spec,ModuleSubprogramPart(contains,l),end)
                   -> OfpModule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),Some(begin),Some(contains),Some(end)))
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
 
 //R1105
   ofp-to-ast:  ModuleStmt(label,name,eos)
@@ -298,14 +282,14 @@ rules //========================START OF RULES===============================
   ofp-to-ast:
     InterfaceStmt(label,spec,eos)      -> OfpInterfaceStmt(<ofp-label>label,None(),<ofp-spec>spec)    {Comment(eos)}
   ofp-to-ast:
-    AbstractInterfaceStmt(label,eos)   -> OfpInterfaceStmt(<ofp-label>label,Some("ABSTRACT"),None())  {Comment(eos)}
+    AbstractInterfaceStmt(label,eos)   -> OfpInterfaceStmt(<ofp-label>label,<ofp-add-some>"ABSTRACT",None())  {Comment(eos)}
 
 //R1204
   ofp-to-ast:
     EndInterfaceStmt(label,spec,eos)   -> OfpEndInterfaceStmt(<ofp-label>label,<ofp-spec>spec)        {Comment(eos)}
 
 //R1205
-  ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),Some(begin),None(),Some(end))
+  ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end)
 
 //R1206
   ofp-to-ast:  ProcedureStmt(label,names,eos)       -> OfpProcedureStmt(label,None(),  names)  {Comment(eos)}
@@ -347,7 +331,7 @@ ofp-to-ast:  no-init()                        -> None()
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
                    -> OfpFunction(<ofp-extract-name>begin,
-                                  OfpScope(spec,exec,funcs,Some(begin),None(),Some(end)))
+                                  OfpScope(spec,exec,funcs,<ofp-add-some>begin,None(),<ofp-add-some>end))
 
 //R1228
   ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
