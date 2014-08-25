@@ -25,6 +25,10 @@ strategies
 
 rules
 
+// Don't print EOS and associated comments
+//
+  ast-to-pp:  eos(_)                       -> None()
+
 //R305
   ast-to-pp:  OfpLiteral(str, type)        -> PpLiteral(str)
 
