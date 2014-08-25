@@ -14,8 +14,6 @@ signature
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
-    nolabel : nolabel
-
 strategies
 
   main =
@@ -47,3 +45,4 @@ rules
 
 
   no-to-none: no-label()                   -> None()
+  no-to-none: no-program-name()            -> None()
