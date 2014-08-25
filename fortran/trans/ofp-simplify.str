@@ -50,6 +50,14 @@ ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1
 //R403
 ofp-simplify-ast:  intrinsic-type-spec(type)      -> type
 
+//R426
+ofp-simplify-ast:  opt-type-attr-spec-list(list)  -> list
+ofp-simplify-ast:  opt-type-param-name-list(list) -> list
+
+//R436
+ofp-simplify-ast:
+  opt-component-attr-spec-list(list)              -> list
+
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
 
@@ -59,30 +67,14 @@ ofp-simplify-ast:
                no-image-selector())               -> name
 ofp-simplify-ast:  opt-section-subscripts(list)   -> list
 
-//R620
-ofp-simplify-ast:  section-subscript-list(list)   -> list
+//R622
+ofp-simplify-ast:  opt-stride(stride)             -> stride
 
 //R624
 ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list ']' to list
 
-//R625
-ofp-simplify-ast:  cosubscript-list(list)         -> list
-
 //R627
-ofp-simplify-ast:  alloc-opt-list(list)           -> list
-
-//R631
-ofp-simplify-ast:  allocation-list(list)          -> list
-
-//R633
-ofp-simplify-ast:  allocate-shape-spec-list(list) -> list
-
-//R637
-ofp-simplify-ast:  allocate-coshape-spec-list(list)  -> list
-ofp-simplify-ast:  no-allocate-coshape-spec-list()   -> []
-
-//R639
-ofp-simplify-ast:  pointer-object-list(list)      -> list
+ofp-simplify-ast:  opt-alloc-opt-list(list)       -> list
 
 //R701
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
@@ -99,13 +91,3 @@ ofp-simplify-ast:  no-rename-list()               -> RenameList([])
 ofp-simplify-ast:  opt-rename-list(list)          -> list
 ofp-simplify-ast:  opt-only-list(list)            -> list
 ofp-simplify-ast:  opt-module-nature(nature)      -> nature
-
-//R1210
-ofp-simplify-ast:  external-name-list(list)       -> list
-
-//R1218
-ofp-simplify-ast:
-  intrinsic-procedure-name-list(list)             -> list
-
-//R1235
-ofp-simplify-ast:  no-dummy-args()                -> []
