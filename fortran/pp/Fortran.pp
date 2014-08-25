@@ -19,13 +19,16 @@
    OfpName                       -- H hs=1[_1],
 
    #R312 --,
-   OfpLabel                      -- _1,
+   Label                         -- _1,
 
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
 
    #R407 --,
    PpLiteral                    -- H hs=1[_1],
+
+   #R449 --,
+   ProcDecl                      -- _1 _2,
 
    #R501 --,
    OfpTypeDeclarationStmt        -- H hs=1[H hs=3[_1] _2 _3 _4],
@@ -57,8 +60,17 @@
    #R626 --,
    OfpAllocateStmt               -- _1 _2 _3 _4,
 
+   #R627 --,
+   ERRMSG                        -- _1,
+   MOLD                          -- _1,
+   SOURCE                        -- _1,
+   STAT                          -- _1,
+
    #R631 --,
    OfpAllocation                 -- _1 _2 _3,
+
+   #Operators --,
+   Minus                         -- _1,   
 
    #R732 --,
    OfpAssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3],
@@ -68,8 +80,8 @@
    PpMainProgram                -- V vs=0 [H[_1]],
    PpMainProgram.1:opt          -- ,
 
-   OfpProgramStmt                -- _1 KW["PROGRAM"] _2,
-   OfpEndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2],
+   ProgramStmt                -- _1 KW["PROGRAM"] _2 _3,
+   EndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2 _3],
 
    #R1104 --,
    PpModule                      -- _1,
@@ -105,6 +117,9 @@
 
    #R1210 --,
    OfpExternalStmt                     -- _1 _2,
+
+   #R1211 --,
+   OfpProcedureDeclarationStmt         -- V vs=0 [H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] _4]],
 
    #R1217 --,
    PpFunction                          -- _1,
