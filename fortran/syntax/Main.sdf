@@ -183,8 +183,8 @@ sorts
   Initialization                      %% R505
   NullInit                            %% R506
 
-  AttrSpecList EntityDeclList NoDoubleColonPartTDS
-  OptAttrSpecList OptArraySpec OptCoarraySpec OptCharLength
+  NoAttrSpecList OptAttrSpecList OptArraySpec OptCoarraySpec
+  OptCharLength OptInitialization
 
 %% 5.3 Attributes
 
@@ -1245,21 +1245,20 @@ context-free syntax
   Ident   -> CoarrayName               {cons("CoarrayName")}
   Ident   -> EntityName                {cons("EntityName")}
   Ident   -> NamelistGroupName         {cons("NamelistGroupName")}
-  Ident   -> ObjectName                {cons("ObjectName")}
   Ident   -> ProcEntityName            {cons("ProcEntityName")}
 
 %% 5.2 Type declaration statements
 %%
 
 %%R501
-  Label? DeclarationTypeSpec
-      NoDoubleColonPartTDS EntityDeclList             EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
-  Label? DeclarationTypeSpec
-      OptAttrSpecList '::' EntityDeclList             EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
+  OptLabel DeclarationTypeSpec
+      NoAttrSpecList       {EntityDecl ','}+          EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
+  OptLabel DeclarationTypeSpec
+      OptAttrSpecList '::' {EntityDecl ','}+          EOS -> TypeDeclarationStmt   {cons("TypeDeclarationStmt")}
 
-  % empty %                                               -> NoDoubleColonPartTDS  {cons("no-attr-specs")}
-  % empty %                                               -> OptAttrSpecList       {cons("no-attr-specs")}
-  ',' AttrSpecList                                        -> OptAttrSpecList       {cons("attr-specs")}
+  % empty %                                               -> NoAttrSpecList        {cons("no-list")}
+  % empty %                                               -> OptAttrSpecList       {cons("no-list")}
+  ',' {AttrSpec ','}+                                     -> OptAttrSpecList       {cons("opt-attr-spec-list")}
 
 %%R502
    AccessSpec                                             -> AttrSpec
@@ -1280,20 +1279,26 @@ context-free syntax
   'TARGET'                                                -> AttrSpec     {cons("TARGET")}
   'VALUE'                                                 -> AttrSpec     {cons("VALUE")}
   'VOLATILE'                                              -> AttrSpec     {cons("VOLATILE")}
-  {AttrSpec ','}+                                         -> AttrSpecList
 
 %%R503
-  ObjectName OptArraySpec?
-             OptCoarraySpec?
-             OptCharLength?
-             Initialization?                            -> EntityDecl     {cons("EntityDecl")}
+  ObjectName OptArraySpec
+             OptCoarraySpec
+             OptCharLength
+             OptInitialization                          -> EntityDecl     {cons("EntityDecl")}
 %%| FunctionName( '*' CharLength      )?  %%Ambiguous with object-name
 %%
 
-  '(' ArraySpec   ')'                                   -> OptArraySpec   {cons("OptArraySpec")}
-  '[' CoarraySpec ']'                                   -> OptCoarraySpec {cons("OptCoarraySpec")}
-  '*' CharLength                                        -> OptCharLength  {cons("OptCharLength")}
-  {EntityDecl ','}+                                     -> EntityDeclList {cons("EntityDeclList")}
+  Ident                                                 -> ObjectName
+
+  '(' ArraySpec   ')'                                   -> OptArraySpec      {cons("opt-array-spec")}
+  '[' CoarraySpec ']'                                   -> OptCoarraySpec    {cons("opt-coarray-spec")}
+  '*' CharLength                                        -> OptCharLength     {cons("opt-char-length")}
+  Initialization                                        -> OptInitialization
+
+  % empty %                                             -> OptArraySpec      {cons("no-array-spec")}
+  % empty %                                             -> OptCoarraySpec    {cons("no-coarray-spec")}
+  % empty %                                             -> OptCharLength     {cons("no-char-length")}
+  % empty %                                             -> OptInitialization {cons("no-initialization")}
 
 %%R504
 %%Name - lex
