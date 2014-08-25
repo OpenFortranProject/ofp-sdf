@@ -5,15 +5,18 @@ LDFLAGS = -la stratego-lib
 #CFLAGS  += -Xcc -m32 -Xcc -Wno-parentheses-equality
 #LDFLAGS += -Xlinker -m32 -la stratego-lib
 
-all : ofp-simplify ofp2fast fast2pp
+all : ofp-simplify ofp2fast fast2pp no-to-none
 
 ofp-simplify : ofp-simplify.str
 	strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
 
+no-to-none : no-to-none.str
+	strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
+
 ofp2fast : ofp2fast.str ofp-simplify
 	strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS)
 
-fast2pp : fast2pp.str
+fast2pp : fast2pp.str no-to-none
 	strc -i fast2pp.str $(CFLAGS) $(LDFLAGS) --main io-fast2pp
 
 check : ofp-simplify ofp2fast
