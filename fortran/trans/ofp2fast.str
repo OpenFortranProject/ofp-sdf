@@ -186,13 +186,6 @@ rules //========================START OF RULES===============================
   alloc-opt:  SOURCE(str)                                 -> SOURCE(<ofp-name-fail>str)
   alloc-opt:  STAT  (str)                                 -> STAT  (<ofp-name-fail>str)
 
-//R627
-//TODO - create a strategy to handle all of these
-  ofp-to-ast: ERRMSG(expr)                               -> ERRMSG(<ofp-var-ref>expr)
-//  'MOLD'   '=' Expr                                      -> AllocOpt             {cons("MOLD")}
-//  'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
-//  'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
-
 //R631
   ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(<ofp-var-ref>obj,shp,coshp)
 
