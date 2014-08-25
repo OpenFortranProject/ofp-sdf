@@ -58,7 +58,8 @@
    OfpVarRef                     -- _1,
 
    #R626 --,
-   OfpAllocateStmt               -- _1 _2 _3 _4,
+   OfpAllocateStmt               -- H hs=1[_1 H hs=0[KW["ALLOCATE"] _2 "("_3")"] _4],
+   OfpAllocateStmt.3:iter-sep    -- _1 ",",
 
    #R627 --,
    ERRMSG                        -- _1,
