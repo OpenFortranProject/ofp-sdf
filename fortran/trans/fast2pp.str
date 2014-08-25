@@ -3,7 +3,6 @@ module fast2pp
 imports
    libstratego-lib
    AST
-   no-to-none
 
 signature
   constructors
@@ -14,6 +13,8 @@ signature
     PpFunction     : OfpFunction     -> PpFunction
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
+
+    nolabel : nolabel
 
 strategies
 
@@ -43,3 +44,6 @@ rules
 
 //R1237
   ast-to-pp:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
+
+
+  no-to-none: no-label()                   -> None()
