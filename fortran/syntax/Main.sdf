@@ -45,6 +45,8 @@ sorts
 
   Keyword                             %% R215
 
+  NoKeyword
+
 %% 3.2 Low-level syntax
 
   Constant                            %% R304
@@ -732,7 +734,7 @@ sorts
   ContainsStmt                        %% R1242
   StmtFunctionStmt                    %% R1243
 
-  ActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
+  NoActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
   OptGenericSpec  OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
   NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
@@ -755,7 +757,7 @@ context-free syntax
   Ident   -> BindingName               {cons("BindingName")}
   Ident   -> FinalSubroutineName       {cons("FinalSubroutineName")}
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
-  Ident   -> Name                      {cons("Name")}
+  Ident   -> Name
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
   Ident   -> TypeParamName             {cons("TypeParamName")}
@@ -1952,7 +1954,7 @@ context-free syntax
   ArrayConstructor              -> Primary
   StructureConstructor          -> Primary
   FunctionReference             -> Primary
-  TypeParamInquiry              -> Primary
+%%TypeParamInquiry              -> Primary  {reject}        %% AMBIGUOUS > Designator
 %%TypeParamName                 -> Primary  {reject}        %% AMBIGUOUS > Designator
   '(' Expr ')'                  -> Primary  {cons("Primary")}
 
@@ -3260,7 +3262,8 @@ context-free syntax
   PauseStmt                              -> ActionStmt
 
 %%215
-  Name                                 -> Keyword     {cons("Keyword")}
+  Name                                   -> Keyword
+  % empty %                              -> NoKeyword   {cons("no-keyword")}
 
 %%R1101
 %%     WARNING-MODIFICATION: 
@@ -3534,13 +3537,15 @@ context-free syntax
   Ident                                        -> IntrinsicProcedureName
 
 %%R1219
-  ProcedureDesignator '(' ActualArgSpecList? ')'      -> FunctionReference   {cons("FunctionReference")}
+  ProcedureDesignator '(' {ActualArgSpec ','}* ')'    -> FunctionReference   {cons("FunctionReference")}
 
 %%R1220
-  Label? 'CALL' ProcedureDesignator               EOS -> CallStmt            {cons("CallStmt")}
-  Label? 'CALL' ProcedureDesignator '(' ')'       EOS -> CallStmt            {cons("CallStmt")}
-  Label? 'CALL' ProcedureDesignator
-                  '(' ActualArgSpecList ')'       EOS -> CallStmt            {cons("CallStmt")}
+  OptLabel 'CALL' ProcedureDesignator
+                     NoActualArgSpecList          EOS -> CallStmt            {cons("CallStmt")}
+  OptLabel 'CALL' ProcedureDesignator
+                  '(' {ActualArgSpec ','}* ')'    EOS -> CallStmt            {cons("CallStmt")}
+
+  % empty %                                           -> NoActualArgSpecList {cons("no-list")}
 
 %%R1221
   ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
@@ -3548,9 +3553,8 @@ context-free syntax
   DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator")}
 
 %%R1222
-  ActualArg                                           -> ActualArgSpec       {cons("ActualArgSpec")}
+  NoKeyword   ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
   Keyword '=' ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
-  {ActualArgSpec ','}+                                -> ActualArgSpecList   {cons("ActualArgSpecList")}
 
 %%R1223
   Expr                                                -> ActualArg
