@@ -48,7 +48,7 @@ strategies //=================START OF STRATEGIES============================
 
 rules //========================START OF RULES===============================
 
-  ofp-extract-name:  None()                                 -> None()
+  ofp-extract-name:  no-program-stmt()                      -> None()
   ofp-extract-name:  ModuleStmt       (_,name,_)            -> name
   ofp-extract-name:  ProgramStmt      (_,name,_)            -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
@@ -147,9 +147,6 @@ rules //========================START OF RULES===============================
 
   ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
-//R560
-  ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(<ofp-label>label, []) {Comment(eos)}
-
 //R612
   ofp-to-ast:  PartRef(name,no-section-subscripts(),
                             no-image-selector())           -> OfpVarRef(OfpName(name))
@@ -213,45 +210,14 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
                   -> OfpMainProgram(<ofp-extract-name>begin,
                                     <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
+
 //R1104
-  ofp-to-ast:  Module(begin,spec,None(),end)
+  ofp-to-ast:  Module(begin,spec,no-module-subprogram-part(),end)
                   -> OfpModule(<ofp-extract-name>begin,
                      OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
   ofp-to-ast:  Module(begin,spec,ModuleSubprogramPart(contains,l),end)
                   -> OfpModule(<ofp-extract-name>begin,
                      OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
-
-//R1109
-  ofp-to-ast:  UseStmt(label,nature,name,rename_only,eos)
-                  -> OfpUseStmt(<ofp-label>label,<ofp-add-some>nature,
-                                <ofp-name>name,rename_only)                     {Comment(eos)}
-
-//R1111
-  ofp-to-ast:  Rename(local_name,use_name)   -> OfpRename(local_name,use_name)
-  ofp-to-ast:  RenameList(list)              -> OfpRenameList(list)
-
-//R1112
-  ofp-to-ast:  OnlyList(list)                -> OfpOnlyList(list)
-
-//R1201
-  ofp-to-ast:  InterfaceBlock(stmt,l,end)    -> OfpInterfaceBlock(stmt,end,l)
-
-//R1203
-  ofp-to-ast:
-    InterfaceStmt(label,spec,eos)      -> OfpInterfaceStmt(<ofp-label>label,None(),<ofp-spec>spec)    {Comment(eos)}
-  ofp-to-ast:
-    AbstractInterfaceStmt(label,eos)   -> OfpInterfaceStmt(<ofp-label>label,<ofp-add-some>"ABSTRACT",None())  {Comment(eos)}
-
-//R1204
-  ofp-to-ast:
-    EndInterfaceStmt(label,spec,eos)   -> OfpEndInterfaceStmt(<ofp-label>label,<ofp-spec>spec)        {Comment(eos)}
-
-//R1205
-  ofp-to-ast:  InterfaceBody(begin,spec,end) -> OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end)
-
-//R1206
-  ofp-to-ast:  ProcedureStmt(label,names,eos)       -> OfpProcedureStmt(label,None(),  names)  {Comment(eos)}
-  ofp-to-ast:  ModuleProcedureStmt(label,names,eos) -> OfpProcedureStmt(label,MODULE(),names)  {Comment(eos)}
 
 //R1207
 //  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
