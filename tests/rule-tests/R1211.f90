@@ -22,21 +22,21 @@
 ! null-init.
 
 ! Test with no optional parts.
-!TODO-F08 PROCEDURE() a1
-!TODO-F08 PROCEDURE() a2, b2
+13 PROCEDURE() a1
+PROCEDURE() a2, b2
 
 ! Test with optional proc-interface.
-!TODO-F08 PROCEDURE(c) a3
-!TODO-F08 PROCEDURE(c) a4, b4
-!TODO-F08 PROCEDURE(INTEGER(4)) a5
+PROCEDURE(c) a3
+PROCEDURE(c) a4, b4
+PROCEDURE(INTEGER(4)) a5
 
 ! Test with optional ::
-!TODO-F08 PROCEDURE(c) :: a6
+PROCEDURE(c) :: a6
 
 ! Test with optional proc-attr-spec
-!TODO-F08 PROCEDURE(c), BIND(C), PUBLIC, POINTER :: a7, b7
+PROCEDURE(c), BIND(C), PUBLIC, POINTER :: a7, b7
 
 ! Test with optional null-init
-!TODO-F08 PROCEDURE(c), POINTER :: func_ptr=>NULL(), b8
+PROCEDURE(c), POINTER :: func_ptr=>NULL(), b8
 
 END
