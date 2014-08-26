@@ -258,22 +258,9 @@ rules //========================START OF RULES===============================
 //  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
-//R1210
-  ofp-to-ast:  ExternalStmt(label,list,eos)   -> OfpExternalStmt(<ofp-label>label,
-                                                                 <map(ofp-name)>list)      {Comment(eos)}
 //R1211
-ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
-              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)            {Comment(eos)}
-
-//R1212
-ofp-to-ast:  no-proc-interface()              -> None()
-
-//R1214
-ofp-to-ast:  no-init()                        -> None()
-
-//R1218
-  ofp-to-ast:  IntrinsicStmt(label,list,eos)  -> OfpIntrinsicStmt(<ofp-label>label,
-                                                                  <map(ofp-name)>list)     {Comment(eos)}
+//ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
+//              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)            {Comment(eos)}
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
@@ -283,7 +270,6 @@ ofp-to-ast:  no-init()                        -> None()
 //R1231
   ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
   ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
-  ofp-to-ast:  no-result-name()                 -> None()
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
