@@ -544,7 +544,7 @@ sorts
   UnlockStmt                          %% R865
   LockVariable                        %% R866
 
-  LockStatList NoSyncStatList
+  LockStatList NoSyncStatList OptSyncStatList
 
 %% Deleted features
 
@@ -2626,11 +2626,10 @@ context-free syntax
   OptLabel 'ERROR' 'STOP' OptStopCode               EOS -> ErrorStopStmt        {cons("ErrorStopStmt")}
 
 %%R857
-%%        Scon substituted for scalar-default-char-constant-expr
-%%        Icon substituted for scalar-int-constant-expr
+%%        Expr substituted for scalar-default-char-constant-expr
+%%        Expr substituted for scalar-int-constant-expr
 %%
-  Scon                                                  -> StopCode
-  Icon                                                  -> StopCode
+  Expr                                                  -> StopCode
 
   StopCode                                              -> OptStopCode
   % empty %                                             -> OptStopCode          {cons("no-stop-code")}
@@ -2672,8 +2671,7 @@ context-free syntax
   {LockStat ','}+                                       -> LockStatList         {cons("LockStatList")}
 
 %%R865
-  Label? 'UNLOCK' '(' LockVariable
-                   (',' SyncStatList )? ')'         EOS -> UnlockStmt           {cons("UnlockStmt")}
+  Label? 'UNLOCK' '(' LockVariable OptSyncStatList  EOS -> UnlockStmt           {cons("UnlockStmt")}
 
 %%R866
 %%          variable substituted for scalar-variable
