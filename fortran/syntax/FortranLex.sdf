@@ -154,6 +154,6 @@ context-free restrictions
 
 context-free syntax
 
-  LblDef  -> LblRef                        {cons("LblRef")}
+  LblDef  -> LblRef
 
   EOStmt  -> EOS                           {cons("eos")}
