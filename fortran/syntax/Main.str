@@ -446,15 +446,14 @@ signature
     EndfileStmt_FUN                : Option(Label) * FileUnitNumber * EOS -> EndfileStmt
     BackspaceStmt_PSL              : Option(Label) * PositionSpecList * EOS -> BackspaceStmt
     BackspaceStmt_FUN              : Option(Label) * FileUnitNumber * EOS -> BackspaceStmt
-    WaitSpecList                   : List(WaitSpec) -> WaitSpecList
-    WaitSpec_IOSTAT                : IntExpr -> WaitSpec
-    WaitSpec_IOMSG                 : IomsgVariable -> WaitSpec
-    WaitSpec_ID                    : IntExpr -> WaitSpec
-    WaitSpec_ERR                   : LblRef -> WaitSpec
-    WaitSpec_EOR                   : LblRef -> WaitSpec
-    WaitSpec_END                   : LblRef -> WaitSpec
-    WaitSpec_UNIT                  : FileUnitNumber -> WaitSpec
-    WaitStmt                       : Option(Label) * WaitSpecList * EOS -> WaitStmt
+    IOSTAT                         : IntExpr -> WaitSpec
+    IOMSG                          : IomsgVariable -> WaitSpec
+    ID                             : IntExpr -> WaitSpec
+    ERR                            : LblRef -> WaitSpec
+    EOR                            : LblRef -> WaitSpec
+    END                            : LblRef -> WaitSpec
+    UNIT                           : FileUnitNumber -> WaitSpec
+    WaitStmt                       : OptLabel * List(WaitSpec) * EOS -> WaitStmt
     IoImpliedDoControl             : DoVariable * IntExpr * IntExpr * Option(IntExpr0) -> IoImpliedDoControl
     IoImpliedDoObjectList          : List(IoImpliedDoObject) -> IoImpliedDoObjectList
     IoImpliedDoObject_OI           : OutputItem -> IoImpliedDoObject
@@ -502,7 +501,7 @@ signature
     CloseSpec_IOSTAT               : IntVariable -> CloseSpec
     CloseSpec_UNIT                 : FileUnitNumber -> CloseSpec
     CloseStmt                      : Option(Label) * CloseSpecList * EOS -> CloseStmt
-    IomsgVariable                  : DefaultCharExpr -> IomsgVariable
+                                   : DefaultCharExpr -> IomsgVariable
     FileNameExpr                   : DefaultCharExpr -> FileNameExpr
     ConnectSpecList                : List(ConnectSpec) -> ConnectSpecList
     ConnectSpec_STATUS             : DefaultCharExpr -> ConnectSpec
@@ -526,7 +525,7 @@ signature
     ConnectSpec_ACCESS             : DefaultCharExpr -> ConnectSpec
     ConnectSpec_UNIT               : FileUnitNumber -> ConnectSpec
     OpenStmt                       : Option(Label) * ConnectSpecList * EOS -> OpenStmt
-    FileUnitNumber                 : IntExpr -> FileUnitNumber
+                                   : IntExpr -> FileUnitNumber
     IoUnit_IFV                     : CharVariable -> IoUnit
     IoUnit_STAR                    : IoUnit
     IoUnit_FUN                     : IntExpr -> IoUnit
@@ -551,7 +550,7 @@ signature
     StopCode_SD                    : Scon -> StopCode
     ErrorStopStmt                  : Option(Label) * Option(StopCode) * EOS -> ErrorStopStmt
     StopStmt                       : Option(Label) * Option(StopCode) * EOS -> StopStmt
-    ContinueStmt                   : Option(Label) * EOS -> ContinueStmt
+    ContinueStmt                   : OptLabel * EOS -> ContinueStmt
     ArithmeticIfStmt               : Option(Label) * Expr * LblRef * LblRef * LblRef * EOS -> ArithmeticIfStmt
     LabelList                      : List(LblRef) -> LabelList
     ComputedGotoStmt               : Option(Label) * LabelList * Expr * EOS -> ComputedGotoStmt
@@ -662,12 +661,12 @@ signature
     PointerAssignmentStmt_DPO2     : Option(Label) * DataPointerObject * BoundsRemappingList * DataTarget * EOS -> PointerAssignmentStmt
     PointerAssignmentStmt_DPO1     : Option(Label) * DataPointerObject * Option(BoundsSpecList0) * DataTarget * EOS -> PointerAssignmentStmt
     AssignmentStmt                 : OptLabel * Variable * Expr * EOS -> AssignmentStmt
-    IntConstantExpr                : IntExpr -> IntConstantExpr
-    ConstantExpr                   : Expr -> ConstantExpr
+                                   : IntExpr -> IntConstantExpr
+                                   : Expr -> ConstantExpr
                                    : IntExpr -> SpecificationExpr
                                    : Expr -> IntExpr
-    DefaultCharExpr                : Expr -> DefaultCharExpr
-    LogicalExpr                    : Expr -> LogicalExpr
+                                   : Expr -> DefaultCharExpr
+                                   : Expr -> LogicalExpr
     DefinedBinaryOp                : Dop -> DefinedBinaryOp
     DefBinExpr                     : Expr * DefinedBinaryOp * Expr -> Expr
     NEQV                           : Expr * Expr -> Expr
@@ -1150,7 +1149,7 @@ signature
     BindingName                    : Ident -> BindingName
     ArgName                        : Ident -> ArgName
     eos                            : EOStmt -> EOS
-    LblRef                         : LblDef -> LblRef
+                                   : LblDef -> LblRef
                                    : String -> Dop
                                    : String -> HexConstant
                                    : String -> OctalConstant

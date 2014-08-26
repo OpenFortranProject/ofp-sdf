@@ -1395,16 +1395,15 @@ regular tree grammar
     EndfileStmt                           -> EndfileStmt_FUN(OptLabel0,FileUnitNumber,EOS)
     BackspaceStmt                         -> BackspaceStmt_PSL(OptLabel0,PositionSpecList,EOS)
     BackspaceStmt                         -> BackspaceStmt_FUN(OptLabel0,FileUnitNumber,EOS)
-    WaitSpecList                          -> WaitSpecList(ListPlusOfWaitSpec0)
-    WaitSpec                              -> WaitSpec_IOSTAT(IntExpr)
-    WaitSpec                              -> WaitSpec_IOMSG(IomsgVariable)
-    WaitSpec                              -> WaitSpec_ID(IntExpr)
-    WaitSpec                              -> WaitSpec_ERR(LblRef)
-    WaitSpec                              -> WaitSpec_EOR(LblRef)
-    WaitSpec                              -> WaitSpec_END(LblRef)
-    WaitSpec                              -> WaitSpec_UNIT(FileUnitNumber)
-    WaitSpec                              -> WaitSpec_UNIT(FileUnitNumber)
-    WaitStmt                              -> WaitStmt(OptLabel0,WaitSpecList,EOS)
+    WaitSpec                              -> IOSTAT(IntExpr)
+    WaitSpec                              -> IOMSG(IomsgVariable)
+    WaitSpec                              -> ID(IntExpr)
+    WaitSpec                              -> ERR(LblRef)
+    WaitSpec                              -> EOR(LblRef)
+    WaitSpec                              -> END(LblRef)
+    WaitSpec                              -> UNIT(FileUnitNumber)
+    WaitSpec                              -> UNIT(FileUnitNumber)
+    WaitStmt                              -> WaitStmt(OptLabel,ListPlusOfWaitSpec0,EOS)
     IoImpliedDoControl                    -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,OptIntExpr0)
     IoImpliedDoObjectList                 -> IoImpliedDoObjectList(ListPlusOfIoImpliedDoObject0)
     IoImpliedDoObject                     -> IoImpliedDoObject_OI(OutputItem)
@@ -1456,7 +1455,7 @@ regular tree grammar
     CloseSpec                             -> CloseSpec_UNIT(FileUnitNumber)
     CloseSpec                             -> CloseSpec_UNIT(FileUnitNumber)
     CloseStmt                             -> CloseStmt(OptLabel0,CloseSpecList,EOS)
-    IomsgVariable                         -> IomsgVariable(DefaultCharExpr)
+    IomsgVariable                         -> DefaultCharExpr
     FileNameExpr                          -> FileNameExpr(DefaultCharExpr)
     ConnectSpecList                       -> ConnectSpecList(ListPlusOfConnectSpec0)
     ConnectSpec                           -> ConnectSpec_STATUS(DefaultCharExpr)
@@ -1481,8 +1480,8 @@ regular tree grammar
     ConnectSpec                           -> ConnectSpec_UNIT(FileUnitNumber)
     ConnectSpec                           -> ConnectSpec_UNIT(FileUnitNumber)
     OpenStmt                              -> OpenStmt(OptLabel0,ConnectSpecList,EOS)
-    InternalFileVariable                  -> InternalFileVariable(CharVariable)
-    FileUnitNumber                        -> FileUnitNumber(IntExpr)
+    InternalFileVariable                  -> CharVariable
+    FileUnitNumber                        -> IntExpr
     IoUnit                                -> IoUnit_IFV(CharVariable)
     IoUnit                                -> IoUnit_STAR()
     IoUnit                                -> IoUnit_FUN(IntExpr)
@@ -1507,7 +1506,7 @@ regular tree grammar
     StopCode                              -> StopCode_SD(Scon)
     ErrorStopStmt                         -> ErrorStopStmt(OptLabel0,OptStopCode0,EOS)
     StopStmt                              -> StopStmt(OptLabel0,OptStopCode0,EOS)
-    ContinueStmt                          -> ContinueStmt(OptLabel0,EOS)
+    ContinueStmt                          -> ContinueStmt(OptLabel,EOS)
     ArithmeticIfStmt                      -> ArithmeticIfStmt(OptLabel0,Expr,LblRef,LblRef,LblRef,EOS)
     LabelList                             -> LabelList(ListPlusOfLblRef0)
     ComputedGotoStmt                      -> ComputedGotoStmt(OptLabel0,LabelList,Expr,EOS)
@@ -1624,14 +1623,14 @@ regular tree grammar
     PointerAssignmentStmt                 -> PointerAssignmentStmt_DPO2(OptLabel0,DataPointerObject,BoundsRemappingList,DataTarget,EOS)
     PointerAssignmentStmt                 -> PointerAssignmentStmt_DPO1(OptLabel0,DataPointerObject,OptBoundsSpecList0,DataTarget,EOS)
     AssignmentStmt                        -> AssignmentStmt(OptLabel,Variable,Expr,EOS)
-    IntConstantExpr                       -> IntConstantExpr(IntExpr)
-    DefaultCharConstantExpr               -> DefaultCharConstantExpr(DefaultCharExpr)
-    ConstantExpr                          -> ConstantExpr(Expr)
+    IntConstantExpr                       -> IntExpr
+    DefaultCharConstantExpr               -> DefaultCharExpr
+    ConstantExpr                          -> Expr
     SpecificationExpr                     -> IntExpr
-    NumericExpr                           -> NumericExpr(Expr)
+    NumericExpr                           -> Expr
     IntExpr                               -> Expr
-    DefaultCharExpr                       -> DefaultCharExpr(Expr)
-    LogicalExpr                           -> LogicalExpr(Expr)
+    DefaultCharExpr                       -> Expr
+    LogicalExpr                           -> Expr
     DefinedBinaryOp                       -> DefinedBinaryOp(Dop)
     Expr                                  -> Primary
     EquivOp                               -> EquivOp_NEQV()
@@ -2152,7 +2151,7 @@ regular tree grammar
     ArgName                               -> ArgName(Ident)
     Continuation                          -> <string>
     EOS                                   -> eos(EOStmt)
-    LblRef                                -> LblRef(LblDef)
+    LblRef                                -> LblDef
     Dop                                   -> <string>
     ScalarIntLiteralConstant              -> <string>
     HexConstant                           -> <string>

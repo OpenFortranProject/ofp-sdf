@@ -595,7 +595,6 @@ sorts
 
   WaitStmt                            %% R922
   WaitSpec                            %% R923
-  WaitSpecList
 
 %% 9.8 File positioning statements
 
@@ -2050,16 +2049,16 @@ Primary                                    -> Expr
 %%R725-R734 chain rule deleted
 
 %%R724
-  Expr                                     -> LogicalExpr     {cons("LogicalExpr")}
+  Expr                                     -> LogicalExpr
 
 %%R725
-  Expr                                     -> DefaultCharExpr {cons("DefaultCharExpr")}
+  Expr                                     -> DefaultCharExpr
 
 %%R726
   Expr                                     -> IntExpr
 
 %%R727
-  Expr                                     -> NumericExpr     {cons("NumericExpr")}
+  Expr                                     -> NumericExpr
 
 %%R728
 %%       scalar-int-expr replaced by int-expr
@@ -2067,13 +2066,13 @@ Primary                                    -> Expr
   IntExpr                                  -> SpecificationExpr
 
 %%R729
-  Expr                                     -> ConstantExpr    {cons("ConstantExpr")}
+  Expr                                     -> ConstantExpr
 
 %%R730
-  DefaultCharExpr                          -> DefaultCharConstantExpr  {cons("DefaultCharConstantExpr")}
+  DefaultCharExpr                          -> DefaultCharConstantExpr
 
 %%R731
-  IntExpr                                  -> IntConstantExpr {cons("IntConstantExpr")}
+  IntExpr                                  -> IntConstantExpr
 
 %%R732
   OptLabel Variable '=' Expr           EOS -> AssignmentStmt  {cons("AssignmentStmt")}
@@ -2614,7 +2613,7 @@ context-free syntax
 %%
 
 %%R854
-  Label? 'CONTINUE'                                 EOS -> ContinueStmt         {cons("ContinueStmt")}
+  OptLabel 'CONTINUE'                               EOS -> ContinueStmt         {cons("ContinueStmt")}
 
 
 %% 8.4 Stop and Error Stop statements
@@ -2705,10 +2704,10 @@ context-free syntax
 %%R902
 %%         int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                        -> FileUnitNumber  {cons("FileUnitNumber")}
+  IntExpr                                        -> FileUnitNumber
 
 %%R903
-  CharVariable                                   -> InternalFileVariable  {cons("InternalFileVariable")}
+  CharVariable                                   -> InternalFileVariable
 
 %%R904
   Label? 'OPEN' '(' ConnectSpecList ')'      EOS -> OpenStmt        {cons("OpenStmt")}
@@ -2748,7 +2747,7 @@ context-free syntax
 
 %%R907
 %%           default-char-expr substituted for scalar-default-char-expr
-  DefaultCharExpr                               -> IomsgVariable  {cons("IomsgVariable")}
+  DefaultCharExpr                               -> IomsgVariable
 
 %%R908
   Label? 'CLOSE' '(' CloseSpecList ')'     EOS -> CloseStmt      {cons("CloseStmt")}
@@ -2845,22 +2844,21 @@ context-free syntax
 %%
 
 %%R922
-  Label? 'WAIT' '(' WaitSpecList ')'                EOS -> WaitStmt       {cons("WaitStmt")}
+  OptLabel 'WAIT' '(' {WaitSpec ','}+ ')'           EOS -> WaitStmt       {cons("WaitStmt")}
 
 %%R923
 %%           int-expr substituted for scalar-int-expr
 %%           int-variable substituted for scalar-int-variable
 %%
 
-                FileUnitNumber                          -> WaitSpec       {cons("WaitSpec_UNIT")}
-  'UNIT'   '='  FileUnitNumber                          -> WaitSpec       {cons("WaitSpec_UNIT")}
-  'END'    '='  LblRef                                  -> WaitSpec       {cons("WaitSpec_END")}
-  'EOR'    '='  LblRef                                  -> WaitSpec       {cons("WaitSpec_EOR")}
-  'ERR'    '='  LblRef                                  -> WaitSpec       {cons("WaitSpec_ERR")}
-  'ID'     '='  IntExpr                                 -> WaitSpec       {cons("WaitSpec_ID")}
-  'IOMSG'  '='  IomsgVariable                           -> WaitSpec       {cons("WaitSpec_IOMSG")}
-  'IOSTAT' '='  IntExpr                                 -> WaitSpec       {cons("WaitSpec_IOSTAT")}
-  {WaitSpec ','}+                                       -> WaitSpecList   {cons("WaitSpecList")}
+                FileUnitNumber                          -> WaitSpec       {cons("UNIT")}
+  'UNIT'   '='  FileUnitNumber                          -> WaitSpec       {cons("UNIT")}
+  'END'    '='  LblRef                                  -> WaitSpec       {cons("END")}
+  'EOR'    '='  LblRef                                  -> WaitSpec       {cons("EOR")}
+  'ERR'    '='  LblRef                                  -> WaitSpec       {cons("ERR")}
+  'ID'     '='  IntExpr                                 -> WaitSpec       {cons("ID")}
+  'IOMSG'  '='  IomsgVariable                           -> WaitSpec       {cons("IOMSG")}
+  'IOSTAT' '='  IntExpr                                 -> WaitSpec       {cons("IOSTAT")}
 
 
 %% 9.8 File positioning statements
