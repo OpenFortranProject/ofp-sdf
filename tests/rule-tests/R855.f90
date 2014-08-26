@@ -6,12 +6,15 @@
 !
 ! Not tested here: scalar-char-constant
 
+integer, parameter :: stop_code = 999
+character, parameter :: char_stop = "stop please"
+
 stop
-stop 'end of program'
+13 stop 'end of program'
 stop 1
-stop 12
+stop stop_code
 stop 123
 stop 1234
-stop 12345
+stop char_stop
 
 end
