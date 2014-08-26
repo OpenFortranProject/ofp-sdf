@@ -28,7 +28,7 @@
 ! Note: defined-binary-op and defined-unary-op are ambiguous to the grammar 
 ! and are both matched as T_DEFINED_OP in the lexer.
 
-!! moduls for preceeding tests
+!! modules for subsequent tests
 !
 MODULE A
   INTEGER :: b, c
@@ -44,8 +44,8 @@ END MODULE
 USE a
 
 ! Include optional module nature
-!TODO-F08 use, intrinsic :: iso_c_binding
-!TODO-F08 use, non_intrinsic :: my_mod
+use, intrinsic :: iso_c_binding
+use, non_intrinsic :: my_mod
 
 ! Include optional rename-list
 USE aa, d=>b, e=>c
