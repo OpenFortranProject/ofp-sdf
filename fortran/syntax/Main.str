@@ -29,7 +29,6 @@ signature
                                    : Ident -> Ident0
                                    : BoundsSpecList -> BoundsSpecList0
                                    : ArraySpec -> ArraySpec0
-                                   : Letter -> Letter0
                                    : CoarraySpec -> CoarraySpec0
                                    : AssumedOrDeferredShapeSpecList -> AssumedOrDeferredShapeSpecList0
                                    : DataStmtRepeat -> DataStmtRepeat0
@@ -124,8 +123,7 @@ signature
     ProcDecl                       : ProcedureEntityName * NoProcPointerInit -> ProcDecl
     no-list                        : NoProcAttrSpecList
     no-list                        : OptProcAttrSpecList
-    opt-list                       : ProcAttrSpecList -> OptProcAttrSpecList
-    proc-attr-spec-list            : List(ProcAttrSpec) -> ProcAttrSpecList
+    opt-list                       : List(ProcAttrSpec) -> OptProcAttrSpecList
     SAVE                           : ProcAttrSpec
     POINTER                        : ProcAttrSpec
     OPTIONAL                       : ProcAttrSpec
@@ -166,9 +164,13 @@ signature
                                    : ProcedureStmt -> InterfaceSpecification
                                    : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                 : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
-    EndBlockDataStmt_0             : Option(Label) * EOS -> EndBlockDataStmt
-    EndBlockDataStmt_BDN           : Option(Label) * Option(BlockDataName) * EOS -> EndBlockDataStmt
-    BlockDataStmt                  : Option(Label) * Option(BlockDataName) * EOS -> BlockDataStmt
+                                   : Ident -> BlockDataName
+    no-block-data-name             : NoBlockDataName
+    no-block-data-name             : OptBlockDataName
+                                   : BlockDataName -> OptBlockDataName
+    EndBlockDataStmt               : OptLabel * NoBlockDataName * EOS -> EndBlockDataStmt
+    EndBlockDataStmt               : OptLabel * OptBlockDataName * EOS -> EndBlockDataStmt
+    BlockDataStmt                  : OptLabel * OptBlockDataName * EOS -> BlockDataStmt
     BlockData                      : BlockDataStmt * SpecificationPart * EndBlockDataStmt -> BlockData
     EndSubmoduleStmt               : Option(Label) * Option(OptSubmoduleName1) * EOS -> EndSubmoduleStmt
     ParentIdentifier               : AncestorModuleName * Option(ParentSubmoduleName0) -> ParentIdentifier
@@ -178,26 +180,24 @@ signature
     UseDefinedOperator_DUO         : DefinedUnaryOp -> UseDefinedOperator
     LocalDefinedOperator_DBO       : DefinedBinaryOp -> LocalDefinedOperator
     LocalDefinedOperator_DUO       : DefinedUnaryOp -> LocalDefinedOperator
-    OnlyList                       : List(Only) -> OnlyList
                                    : Rename -> Only
                                    : GenericSpec -> Only
                                    : Ident -> LocalName
                                    : Ident -> UseName
-    RenameList                     : List(Rename) -> RenameList
-    Rename                         : LocalDefinedOperator * UseDefinedOperator -> Rename
+    RenameOp                       : LocalDefinedOperator * UseDefinedOperator -> Rename
     Rename                         : LocalName * UseName -> Rename
     NON_INTRINSIC                  : ModuleNature
     INTRINSIC                      : ModuleNature
-    opt-list                       : OnlyList -> OptOnlyList
-    opt-list                       : RenameList -> OptRenameList
+    opt-list                       : List(Only) -> OptOnlyList
+    opt-list                       : List(Rename) -> OptRenameList
     no-list                        : NoRenameList
     no-module-nature               : NoModuleNature
                                    : NoModuleNature -> OptModuleNature
     opt-module-nature              : ModuleNature -> OptModuleNature
-    UseStmt                        : OptLabel * OptModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
+    UseOnlyStmt                    : OptLabel * OptModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
+    UseOnlyStmt                    : OptLabel * NoModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
     UseStmt                        : OptLabel * OptModuleNature * ModuleName * OptRenameList * EOS -> UseStmt
     UseStmt                        : OptLabel * OptModuleNature * ModuleName * NoRenameList * EOS -> UseStmt
-    UseStmt                        : OptLabel * NoModuleNature * ModuleName * OptOnlyList * EOS -> UseStmt
     UseStmt                        : OptLabel * NoModuleNature * ModuleName * OptRenameList * EOS -> UseStmt
     UseStmt                        : OptLabel * NoModuleNature * ModuleName * NoRenameList * EOS -> UseStmt
                                    : SeparateModuleSubprogram -> ModuleSubprogram
@@ -338,7 +338,6 @@ signature
     Program                        : OptStartCommentBlock * List(ProgramUnit) -> Program
     SubmoduleName                  : Ident -> SubmoduleName
     ParentSubmoduleName            : Ident -> ParentSubmoduleName
-    BlockDataName                  : Ident -> BlockDataName
     AncestorModuleName             : Ident -> AncestorModuleName
     DecimalEditDesc_DP             : DecimalEditDesc
     DecimalEditDesc_DC             : DecimalEditDesc
@@ -821,12 +820,12 @@ signature
     NamelistEntryList_0            : NamelistEntry -> NamelistEntryList
     NamelistEntry                  : NamelistGroupName * NamelistGroupObjectList -> NamelistEntry
     NamelistStmt                   : Option(Label) * NamelistEntryList * EOS -> NamelistStmt
-    LetterSpecList                 : List(LetterSpec) -> LetterSpecList
-    LetterSpec                     : Letter * Option(Letter0) -> LetterSpec
-    ImplicitSpecList               : List(ImplicitSpec) -> ImplicitSpecList
-    ImplicitSpec                   : DeclarationTypeSpec * LetterSpecList -> ImplicitSpec
-    ImplicitStmt                   : OptLabel * EOS -> ImplicitStmt
-    ImplicitStmt                   : OptLabel * ImplicitSpecList * EOS -> ImplicitStmt
+    no-letter                      : OptLetter2
+    letter                         : Letter -> OptLetter2
+    LetterSpec                     : Letter * OptLetter2 -> LetterSpec
+    ImplicitSpec                   : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
+    ImplicitNoneStmt               : OptLabel * EOS -> ImplicitStmt
+    ImplicitStmt                   : OptLabel * List(ImplicitSpec) * EOS -> ImplicitStmt
     VolatileStmt                   : OptLabel * ObjectNameList * EOS -> VolatileStmt
     ValueStmt                      : OptLabel * DummyArgNameList * EOS -> ValueStmt
     TargetDeclList                 : List(TargetDecl) -> TargetDeclList
@@ -941,7 +940,7 @@ signature
     Initialization_IDT             : InitialDataTarget -> Initialization
     Initialization_NI              : NullInit -> Initialization
     Initialization_CE              : ConstantExpr -> Initialization
-    no-initialization              : OptInitialization
+    no-init                        : OptInitialization
                                    : Initialization -> OptInitialization
     no-char-length                 : OptCharLength
     opt-char-length                : CharLength -> OptCharLength

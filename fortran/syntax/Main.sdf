@@ -267,8 +267,7 @@ sorts
   ImplicitSpec                        %% R561
   LetterSpec                          %% R562
 
-  ImplicitSpecList
-  LetterSpecList
+  OptLetter2
 
 %% 5.6 Namelist statement
 
@@ -676,14 +675,14 @@ sorts
   BlockDataStmt                       %% R1121
   EndBlockDataStmt                    %% R1122
 
-  OptModuleSubprogramPart OnlyList ProgramName NoProgramName OptProgramName
+  OptModuleSubprogramPart ProgramName NoProgramName OptProgramName
   OptProgramStmt OptOnlyList OptModuleNature NoModuleNature
-  RenameList NoRenameList OptRenameList
+  NoRenameList OptRenameList
 
 %% Identifier aliases
 
-  AncestorModuleName BlockDataName LocalName
-  ModuleName NoModuleName OptModuleName
+  AncestorModuleName BlockDataName NoBlockDataName OptBlockDataName
+  LocalName ModuleName NoModuleName OptModuleName
   ParentSubmoduleName SubmoduleName UseName
 
 %%%%%%%%%%
@@ -1299,7 +1298,7 @@ context-free syntax
   % empty %                                             -> OptArraySpec      {cons("no-array-spec")}
   % empty %                                             -> OptCoarraySpec    {cons("no-coarray-spec")}
   % empty %                                             -> OptCharLength     {cons("no-char-length")}
-  % empty %                                             -> OptInitialization {cons("no-initialization")}
+  % empty %                                             -> OptInitialization {cons("no-init")}
 
 %%R504
 %%Name - lex
@@ -1592,17 +1591,17 @@ context-free syntax
 %%
 
 %%R560
-  OptLabel 'IMPLICIT' ImplicitSpecList             EOS -> ImplicitStmt    {cons("ImplicitStmt")}
-  OptLabel 'IMPLICIT' 'NONE'                       EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  OptLabel 'IMPLICIT' {ImplicitSpec ','}+          EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+  OptLabel 'IMPLICIT' 'NONE'                       EOS -> ImplicitStmt    {cons("ImplicitNoneStmt")}
 
 %%R561
-  DeclarationTypeSpec '(' LetterSpecList ')'           -> ImplicitSpec    {cons("ImplicitSpec")}
-  {ImplicitSpec ','}+                                  -> ImplicitSpecList{cons("ImplicitSpecList")}
+  DeclarationTypeSpec '(' {LetterSpec ','}+ ')'        -> ImplicitSpec    {cons("ImplicitSpec")}
 
 %%R562
-  Letter ('-' Letter)?                                 -> LetterSpec      {cons("LetterSpec")}
-  {LetterSpec ','}+                                    -> LetterSpecList  {cons("LetterSpecList")}
+  Letter OptLetter2                                    -> LetterSpec      {cons("LetterSpec")}
 
+  '-' Letter                                           -> OptLetter2      {cons("letter")}
+  % empty %                                            -> OptLetter2      {cons("no-letter")}
 
 %% 5.6 Namelist statement
 %%
@@ -3094,7 +3093,6 @@ context-free syntax
 %%
 
   Ident   -> AncestorModuleName        {cons("AncestorModuleName")}
-  Ident   -> BlockDataName             {cons("BlockDataName")}
   Ident   -> ParentSubmoduleName       {cons("ParentSubmoduleName")}
   Ident   -> SubmoduleName             {cons("SubmoduleName")}
 
@@ -3330,19 +3328,19 @@ context-free syntax
 %%
   OptLabel 'USE'  NoModuleNature      ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
   OptLabel 'USE'  NoModuleNature      ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  OptLabel 'USE'  NoModuleNature      ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
   OptLabel 'USE' OptModuleNature '::' ModuleName NoRenameList  EOS -> UseStmt {cons("UseStmt")}
   OptLabel 'USE' OptModuleNature '::' ModuleName OptRenameList EOS -> UseStmt {cons("UseStmt")}
-  OptLabel 'USE' OptModuleNature '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseStmt")}
+
+  OptLabel 'USE'  NoModuleNature      ModuleName OptOnlyList   EOS -> UseStmt {cons("UseOnlyStmt")}
+  OptLabel 'USE' OptModuleNature '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseOnlyStmt")}
 
   ',' ModuleNature                             -> OptModuleNature {cons("opt-module-nature")}
   NoModuleNature                               -> OptModuleNature
   % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
 
   % empty %                                    -> NoRenameList    {cons("no-list")}
-  ',' RenameList                               -> OptRenameList   {cons("opt-list")}
-  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("opt-list")}
-
+  ',' {Rename ','}+                            -> OptRenameList   {cons("opt-list")}
+  ',' 'ONLY' ':' {Only ','}*                   -> OptOnlyList     {cons("opt-list")}
 
 %%R1110
   'INTRINSIC'                                  -> ModuleNature    {cons("INTRINSIC")}
@@ -3353,8 +3351,7 @@ context-free syntax
      '=>' UseName                              -> Rename      {cons("Rename")}
   'OPERATOR' '(' LocalDefinedOperator ')'
      '=>'
-  'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("Rename")}
-  {Rename ','}+                                -> RenameList  {cons("RenameList")}
+  'OPERATOR' '(' UseDefinedOperator   ')'      -> Rename      {cons("RenameOp")}
 
   Ident                                        -> UseName
   Ident                                        -> LocalName
@@ -3363,7 +3360,6 @@ context-free syntax
   GenericSpec                                  -> Only
 %%OnlyUseName                                  -> Only %AMBIGUOUS with GenericName in GenericSpec
   Rename                                       -> Only
-  {Only ','}*                                  -> OnlyList    {cons("OnlyList")}
 
 %%R1113
   Ident                                        -> OnlyUseName {cons("OnlyUseName")}
@@ -3403,14 +3399,19 @@ context-free syntax
 %%
   BlockDataStmt
     SpecificationPart
-  EndBlockDataStmt                               -> BlockData         {cons("BlockData")}
+  EndBlockDataStmt                                   -> BlockData         {cons("BlockData")}
 
 %%R1121
-  Label? 'BLOCK' 'DATA' BlockDataName?       EOS -> BlockDataStmt     {cons("BlockDataStmt")}
+  OptLabel 'BLOCK' 'DATA' OptBlockDataName       EOS -> BlockDataStmt     {cons("BlockDataStmt")}
 
 %%R1122
-  Label? 'END' 'BLOCK' 'DATA' BlockDataName? EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt_BDN")}
-  Label? 'END'                               EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt_0")}
+  OptLabel 'END' 'BLOCK' 'DATA' OptBlockDataName EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
+  OptLabel 'END'                 NoBlockDataName EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
+
+  BlockDataName                                      -> OptBlockDataName
+  % empty %                                          -> OptBlockDataName  {cons("no-block-data-name")}
+  % empty %                                          ->  NoBlockDataName  {cons("no-block-data-name")}
+  Ident                                              ->    BlockDataName
 
 %%context-free priorities
 %%
@@ -3430,7 +3431,6 @@ context-free syntax
 %%R1202
   InterfaceBody                   -> InterfaceSpecification
   ProcedureStmt                   -> InterfaceSpecification
-
 
 %%R1203
   OptLabel 'INTERFACE' OptGenericSpec              EOS -> InterfaceStmt     {cons("InterfaceStmt")}
