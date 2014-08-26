@@ -104,16 +104,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  LOGICAL(kind)                     -> OfpType(LOGICAL(),         <ofp-kind>kind)
   ofp-to-ast:  DOUBLECOMPLEX()                   -> OfpType(DOUBLECOMPLEX(),   None())
 
-//R405
-  ofp-to-ast:  no-kind()                         -> None()
-  ofp-to-ast:  no-kind-param()                   -> None()
-
-//R407
-  ofp-to-ast:  IntLiteralConstant(str, kind)     -> OfpLiteral(str, OfpType(INTEGER(), <ofp-kind>kind))
-
-//R413
-  ofp-to-ast:  RealLiteralConstant(str, kind)    -> OfpLiteral(str, OfpType(REAL(), <ofp-kind>kind))
-
 //R511
   ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
 
@@ -159,11 +149,6 @@ rules //========================START OF RULES===============================
 
 //R560
   ofp-to-ast:  ImplicitStmt(label,eos)   -> OfpImplicitStmt(<ofp-label>label, []) {Comment(eos)}
-
-//R611
-//TODO OfpArrayRef, make sure multiple partrefs works
-  ofp-to-ast:  DataRef([OfpVarRef])                        -> OfpVarRef
-  ofp-to-ast:  DataRef(list)                               -> list
 
 //R612
   ofp-to-ast:  PartRef(name,no-section-subscripts(),
@@ -289,17 +274,6 @@ ofp-to-ast:  no-init()                        -> None()
 //R1218
   ofp-to-ast:  IntrinsicStmt(label,list,eos)  -> OfpIntrinsicStmt(<ofp-label>label,
                                                                   <map(ofp-name)>list)     {Comment(eos)}
-//R1220
-  ofp-to-ast:  CallStmt(label,name,eos)       -> OfpCallStmt(label,name,[])                {Comment(eos)}
-  ofp-to-ast:  CallStmt(label,name,args,eos)  -> OfpCallStmt(label,name,args)              {Comment(eos)}
-
-//R1221
-  ofp-to-ast:  ProcedureDesignator(proc)      -> OfpProcRef(proc)
-
-//R1222
-  ofp-to-ast:  ActualArgSpec(arg)             -> OfpArg(arg)
-  ofp-to-ast:  ActualArgSpec(keyword,arg)     -> OfpArg(arg,keyword)
-  ofp-to-ast:  ActualArgSpecList(args)        -> args
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
