@@ -530,6 +530,8 @@ sorts
   ErrorStopStmt                       %% R856
   StopCode                            %% R857
 
+  OptStopCode
+
 %% 8.5 Image execution control
 
   SyncAllStmt                         %% R858
@@ -542,7 +544,7 @@ sorts
   UnlockStmt                          %% R865
   LockVariable                        %% R866
 
-  LabelList LockStatList SyncStatList
+  LockStatList NoSyncStatList
 
 %% Deleted features
 
@@ -2598,15 +2600,13 @@ context-free syntax
 %%R852
 %%       expr substituted for scalar-int-expr
 %%
-  Label? 'GO' 'TO' '(' LabelList ')'     Expr       EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
-  Label? 'GO' 'TO' '(' LabelList ')' ',' Expr       EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
-
-  {LblRef ','}+                                         -> LabelList        {cons("LabelList")}
+  OptLabel 'GO' 'TO' '(' {LblRef ','}+ ')'     Expr  EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
+  OptLabel 'GO' 'TO' '(' {LblRef ','}+ ')' ',' Expr  EOS -> ComputedGotoStmt {cons("ComputedGotoStmt")}
 
 %%R853
 %%       expr substituted for scalar-numeric-expr
 %%
-  Label? 'IF' '(' Expr ')' LblRef ',' LblRef ',' LblRef EOS -> ArithmeticIfStmt {cons("ArithmeticIfStmt")}
+  OptLabel 'IF' '(' Expr ')' LblRef ',' LblRef ',' LblRef EOS -> ArithmeticIfStmt {cons("ArithmeticIfStmt")}
 
 
 %% 8.3 Continue statement
@@ -2620,42 +2620,47 @@ context-free syntax
 %%
 
 %%R855
-  Label?         'STOP' StopCode?                   EOS -> StopStmt             {cons("StopStmt")}
+  OptLabel         'STOP' OptStopCode               EOS -> StopStmt             {cons("StopStmt")}
 
 %%R856
-  Label? 'ERROR' 'STOP' StopCode?                   EOS -> ErrorStopStmt        {cons("ErrorStopStmt")}
+  OptLabel 'ERROR' 'STOP' OptStopCode               EOS -> ErrorStopStmt        {cons("ErrorStopStmt")}
 
 %%R857
 %%        Scon substituted for scalar-default-char-constant-expr
 %%        Icon substituted for scalar-int-constant-expr
 %%
-  Scon                                                  -> StopCode             {cons("StopCode_SD")}
-  Icon                                                  -> StopCode             {cons("StopCode_SI")}
+  Scon                                                  -> StopCode
+  Icon                                                  -> StopCode
 
+  StopCode                                              -> OptStopCode
+  % empty %                                             -> OptStopCode          {cons("no-stop-code")}
 
 %% 8.5 Image execution control
 %%
 
 %%R858
-  Label? 'SYNC' 'ALL' '(' SyncStatList? ')'         EOS -> SyncAllStmt          {cons("SyncAllStmt_SSL")}
-  Label? 'SYNC' 'ALL'                               EOS -> SyncAllStmt          {cons("SyncAllStmt_0")}
+  OptLabel 'SYNC' 'ALL' '(' {SyncStat ','}* ')'     EOS -> SyncAllStmt          {cons("SyncAllStmt")}
+  OptLabel 'SYNC' 'ALL'    NoSyncStatList           EOS -> SyncAllStmt          {cons("SyncAllStmt")}
 
 %%R859
-  'STAT'   '=' StatVariable                             -> SyncStat             {cons("SyncStat_STAT")}
-  'ERRMSG' '=' ErrmsgVariable                           -> SyncStat             {cons("SyncStat_ERRMSG")}
-  {SyncStat ','}+                                       -> SyncStatList         {cons("SyncStatList")}
+  'STAT'   '=' StatVariable                             -> SyncStat             {cons("STAT")}
+  'ERRMSG' '=' ErrmsgVariable                           -> SyncStat             {cons("ERRMSG")}
+
+  ',' {SyncStat ','}+                                   -> OptSyncStatList      {cons("opt-list")}
+  % empty %                                             -> OptSyncStatList      {cons("no-list")}
+  % empty %                                             ->  NoSyncStatList      {cons("no-list")}
 
 %%R860
-  Label? 'SYNC' 'IMAGES' '(' ImageSet
-                (',' SyncStatList )? ')'            EOS -> SyncImagesStmt       {cons("SyncImagesStmt")}
+  Label? 'SYNC' 'IMAGES'
+         '(' ImageSet OptSyncStatList ')'           EOS -> SyncImagesStmt       {cons("SyncImagesStmt")}
 
 %%R861
   IntExpr                                               -> ImageSet             {cons("ImageSet_IE")}
   '*'                                                   -> ImageSet             {cons("ImageSet_STAR")}
 
 %%R862
-  Label? 'SYNC' 'MEMORY' '(' SyncStatList? ')'      EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt_SSL")}
-  Label? 'SYNC' 'MEMORY'                            EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt_0")}
+  Label? 'SYNC' 'MEMORY' '(' {SyncStat ','}* ')'    EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
+  Label? 'SYNC' 'MEMORY'    NoSyncStatList          EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
 
 %%R863
   Label? 'LOCK' '(' LockVariable
