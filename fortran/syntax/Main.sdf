@@ -2593,7 +2593,7 @@ context-free syntax
 %%
 
 %%R851
-  Label? 'GO' 'TO' LblRef                           EOS -> GotoStmt             {cons("GotoStmt")}
+  OptLabel 'GO' 'TO' LblRef                         EOS -> GotoStmt         {cons("GotoStmt")}
 
 %%R852
 %%       expr substituted for scalar-int-expr
