@@ -59,6 +59,9 @@ ofp-simplify-ast:  opt-char-length(length)        -> length
 //R508
 ofp-simplify-ast:  language-binding-name(str)     -> str
 
+//R560
+ofp-simplify-ast:  letter(char)                   -> char
+
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
 
