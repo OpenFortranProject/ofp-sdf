@@ -43,9 +43,11 @@ signature
                                    : CharLength -> CharLength0
                                    : ComponentArraySpec -> ComponentArraySpec0
                                    : Expr -> Expr1
-    StmtFunctionStmt               : OptLabel * FunctionName * OptDummyArgNameList * Expr * EOS -> StmtFunctionStmt
+    StmtFunctionStmt               : OptLabel * FunctionName * List(DummyArgName) * Expr * EOS -> StmtFunctionStmt
     ContainsStmt                   : OptLabel * EOS -> ContainsStmt
-    ReturnStmt                     : OptLabel * Option(Expr) * EOS -> ReturnStmt
+    no-expr                        : OptExpr
+                                   : Expr -> OptExpr
+    ReturnStmt                     : OptLabel * OptExpr * EOS -> ReturnStmt
                                    : Ident -> EntryName
     EntryStmt                      : OptLabel * EntryName * NoDummyArgList * NoSuffix * EOS -> EntryStmt
     EntryStmt                      : OptLabel * EntryName * OptDummyArgList * OptSuffix * EOS -> EntryStmt
@@ -88,8 +90,7 @@ signature
     no-language-binding            : OptProcLanguageBindingSpec
                                    : ProcLanguageBindingSpec -> OptProcLanguageBindingSpec
                                    : LanguageBindingSpec -> ProcLanguageBindingSpec
-                                   : List(DummyArgName) -> OptDummyArgNameList
-    FunctionStmt                   : OptLabel * OptPrefix * FunctionName * OptDummyArgNameList * OptSuffix * EOS -> FunctionStmt
+    FunctionStmt                   : OptLabel * OptPrefix * FunctionName * List(DummyArgName) * OptSuffix * EOS -> FunctionStmt
     FunctionSubprogram             : FunctionStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndFunctionStmt -> FunctionSubprogram
     RECURSIVE                      : PrefixSpec
     PURE                           : PrefixSpec
@@ -103,14 +104,14 @@ signature
     AltReturnSpec                  : Label -> AltReturnSpec
                                    : AltReturnSpec -> ActualArg
                                    : Expr -> ActualArg
-    ActualArgSpecList              : List(ActualArgSpec) -> ActualArgSpecList
     ActualArgSpec                  : Keyword * ActualArg -> ActualArgSpec
-    ActualArgSpec                  : ActualArg -> ActualArgSpec
+    ActualArgSpec                  : NoKeyword * ActualArg -> ActualArgSpec
     ProcedureDesignator            : DataRef * BindingName -> ProcedureDesignator
     ProcedureDesignator            : ProcedureName -> ProcedureDesignator
-    CallStmt                       : Option(Label) * ProcedureDesignator * ActualArgSpecList * EOS -> CallStmt
-    CallStmt                       : Option(Label) * ProcedureDesignator * EOS -> CallStmt
-    FunctionReference              : ProcedureDesignator * Option(ActualArgSpecList) -> FunctionReference
+    no-list                        : NoActualArgSpecList
+    CallStmt                       : OptLabel * ProcedureDesignator * List(ActualArgSpec) * EOS -> CallStmt
+    CallStmt                       : OptLabel * ProcedureDesignator * NoActualArgSpecList * EOS -> CallStmt
+    FunctionReference              : ProcedureDesignator * List(ActualArgSpec) -> FunctionReference
                                    : Ident -> IntrinsicProcedureName
     IntrinsicStmt                  : OptLabel * List(IntrinsicProcedureName) * EOS -> IntrinsicStmt
                                    : ProcedureName -> InitialProcTarget
@@ -187,9 +188,9 @@ signature
     Rename                         : LocalName * UseName -> Rename
     NON_INTRINSIC                  : ModuleNature
     INTRINSIC                      : ModuleNature
-    opt-only-list                  : OnlyList -> OptOnlyList
-    opt-rename-list                : RenameList -> OptRenameList
-    no-rename-list                 : NoRenameList
+    opt-list                       : OnlyList -> OptOnlyList
+    opt-list                       : RenameList -> OptRenameList
+    no-list                        : NoRenameList
     no-module-nature               : NoModuleNature
                                    : NoModuleNature -> OptModuleNature
     opt-module-nature              : ModuleNature -> OptModuleNature
@@ -202,6 +203,8 @@ signature
                                    : SeparateModuleSubprogram -> ModuleSubprogram
                                    : SubroutineSubprogram -> ModuleSubprogram
                                    : FunctionSubprogram -> ModuleSubprogram
+    no-module-subprogram-part      : OptModuleSubprogramPart
+                                   : ModuleSubprogramPart -> OptModuleSubprogramPart
     ModuleSubprogramPart           : ContainsStmt * List(ModuleSubprogram) -> ModuleSubprogramPart
                                    : ModuleName -> OptModuleName
     no-module-name                 : OptModuleName
@@ -210,7 +213,7 @@ signature
     EndModuleStmt                  : OptLabel * OptModuleName * EOS -> EndModuleStmt
     EndModuleStmt                  : OptLabel * NoModuleName * EOS -> EndModuleStmt
     ModuleStmt                     : OptLabel * ModuleName * EOS -> ModuleStmt
-    Module                         : ModuleStmt * SpecificationPart * Option(ModuleSubprogramPart) * EndModuleStmt -> Module
+    Module                         : ModuleStmt * SpecificationPart * OptModuleSubprogramPart * EndModuleStmt -> Module
                                    : ProgramName -> OptProgramName
     no-program-name                : OptProgramName
     no-program-name                : NoProgramName
@@ -221,7 +224,8 @@ signature
     no-program-stmt                : OptProgramStmt
                                    : ProgramStmt -> OptProgramStmt
     MainProgram                    : OptProgramStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndProgramStmt -> MainProgram
-    Keyword                        : Name -> Keyword
+    no-keyword                     : NoKeyword
+                                   : Name -> Keyword
                                    : PauseStmt -> ActionStmt
                                    : EndDoStmt -> ActionStmt
                                    : NonlabelDoStmt -> ActionStmt
@@ -707,7 +711,6 @@ signature
     PowerOp                        : PowerOp
     DefinedUnaryOp                 : Dop -> DefinedUnaryOp
     Primary                        : Expr -> Primary
-                                   : TypeParamInquiry -> Primary
                                    : FunctionReference -> Primary
                                    : StructureConstructor -> Primary
                                    : ArrayConstructor -> Primary
@@ -761,7 +764,7 @@ signature
                                    : DefaultCharVariable -> ErrmsgVariable
                                    : IntVariable -> StatVariable
     no-list                        : OptAllocOptList
-    opt-alloc-opt-list             : List(AllocOpt) -> OptAllocOptList
+    opt-list                       : List(AllocOpt) -> OptAllocOptList
     STAT                           : StatVariable -> AllocOpt
     SOURCE                         : Expr -> AllocOpt
     MOLD                           : Expr -> AllocOpt
@@ -783,10 +786,9 @@ signature
                                    : Subscript -> OptSubscript
                                    : IntExpr -> Subscript
     ArrayElement                   : DataRef -> ArrayElement
-    TypeParamInquiry               : Designator * TypeParamName -> TypeParamInquiry
                                    : DataRef -> StructureComponent
                                    : Ident -> PartName
-    opt-section-subscripts         : List(SectionSubscript) -> OptSectionSubscripts
+    opt-list                       : List(SectionSubscript) -> OptSectionSubscripts
     no-section-subscripts          : OptSectionSubscripts
     PartRef                        : PartName * OptSectionSubscripts * OptImageSelector -> PartRef
     DataRef                        : List(PartRef) -> DataRef
@@ -931,7 +933,7 @@ signature
                                    : DeferredCoshapeSpecList -> CoarraySpec
     no-binding-name                : OptLanguageBindingName
                                    : LanguageBindingName -> OptLanguageBindingName
-    LanguageBindingName            : Ident -> LanguageBindingName
+    language-binding-name          : Ident -> LanguageBindingName
     LanguageBindingSpec            : OptLanguageBindingName -> LanguageBindingSpec
     PRIVATE                        : AccessSpec
     PUBLIC                         : AccessSpec
@@ -1046,7 +1048,7 @@ signature
     ComponentAttrSpec_ALLOCATABLE  : ComponentAttrSpec
     ComponentAttrSpec_AS           : AccessSpec -> ComponentAttrSpec
     no-list                        : OptComponentAttrSpecList
-    opt-component-attr-spec-list   : List(ComponentAttrSpec) -> OptComponentAttrSpecList
+    opt-list                       : List(ComponentAttrSpec) -> OptComponentAttrSpecList
     DataComponentDefStmt           : OptLabel * DeclarationTypeSpec * OptComponentAttrSpecList * List(ComponentDecl) * EOS -> DataComponentDefStmt
                                    : ProcComponentDefStmt -> ComponentDefStmt
                                    : DataComponentDefStmt -> ComponentDefStmt
@@ -1068,9 +1070,9 @@ signature
                                    : TypeName -> OptTypeName
                                    : Ident -> TypeName
     no-list                        : OptTypeParamNameList
-    opt-type-param-name-list       : List(TypeParamName) -> OptTypeParamNameList
+    opt-list                       : List(TypeParamName) -> OptTypeParamNameList
     no-list                        : OptTypeAttrSpecList
-    opt-type-attr-spec-list        : List(TypeAttrSpec) -> OptTypeAttrSpecList
+    opt-list                       : List(TypeAttrSpec) -> OptTypeAttrSpecList
     DerivedTypeStmt                : OptLabel * OptTypeAttrSpecList * TypeName * OptTypeParamNameList * EOS -> DerivedTypeStmt
     DerivedTypeDef                 : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * ComponentPart * OptTypeBoundProcedurePart * EndTypeStmt -> DerivedTypeDef
     no-kind-param                  : OptKindParam
@@ -1144,7 +1146,7 @@ signature
     TypeParamName                  : Ident -> TypeParamName
     ScalarIntConstantName          : Ident -> ScalarIntConstantName
     ParentTypeName                 : Ident -> ParentTypeName
-    Name                           : Ident -> Name
+                                   : Ident -> Name
     FinalSubroutineName            : Ident -> FinalSubroutineName
     BindingName                    : Ident -> BindingName
     ArgName                        : Ident -> ArgName

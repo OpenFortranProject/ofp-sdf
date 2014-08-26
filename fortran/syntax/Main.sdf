@@ -736,7 +736,7 @@ sorts
 
   NoActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
   OptGenericSpec  OptPrefix
-  NoProcLanguageBindingSpec OptProcLanguageBindingSpec ProcAttrSpecList
+  NoProcLanguageBindingSpec OptProcLanguageBindingSpec
   NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
   NoProcedureName NoSuffix OptSuffix
   OptStartCommentBlock
@@ -960,10 +960,10 @@ context-free syntax
   OptLabel 'TYPE'  OptTypeAttrSpecList
          TypeName  OptTypeParamNameList          EOS -> DerivedTypeStmt      {cons("DerivedTypeStmt")}
 
-  ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("opt-type-attr-spec-list")}
+  ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("opt-list")}
   % empty %                                          -> OptTypeAttrSpecList  {cons("no-list")}
 
-  '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("opt-type-param-name-list")}
+  '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("opt-list")}
   % empty %                                          -> OptTypeParamNameList {cons("no-list")}
 
   'INTEGER'                                                    -> TypeName  {reject}
@@ -1020,7 +1020,7 @@ context-free syntax
            OptComponentAttrSpecList
              {ComponentDecl ','}+      EOS  -> DataComponentDefStmt     {cons("DataComponentDefStmt")}
 
-  ',' {ComponentAttrSpec ','}+ '::'         -> OptComponentAttrSpecList {cons("opt-component-attr-spec-list")}
+  ',' {ComponentAttrSpec ','}+ '::'         -> OptComponentAttrSpecList {cons("opt-list")}
                                '::'         -> OptComponentAttrSpecList {cons("no-list")}
   % empty %                                 -> OptComponentAttrSpecList {cons("no-list")}
 
@@ -1746,7 +1746,7 @@ context-free syntax
   PartName OptSectionSubscripts OptImageSelector         -> PartRef   {cons("PartRef")}
 
   % empty %                                              -> OptSectionSubscripts  {cons("no-section-subscripts")}
-  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("opt-section-subscripts")}
+  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("opt-list")}
 
   Ident                                                  -> PartName
 
@@ -1835,7 +1835,7 @@ context-free syntax
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
 
-  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("opt-alloc-opt-list")}
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("opt-list")}
   % empty %                                              -> OptAllocOptList      {cons("no-list")}
 
 %%R628
@@ -3339,9 +3339,9 @@ context-free syntax
   NoModuleNature                               -> OptModuleNature
   % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
 
-  % empty %                                    -> NoRenameList    {cons("no-rename-list")}
-  ',' RenameList                               -> OptRenameList   {cons("opt-rename-list")}
-  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("opt-only-list")}
+  % empty %                                    -> NoRenameList    {cons("no-list")}
+  ',' RenameList                               -> OptRenameList   {cons("opt-list")}
+  ',' 'ONLY' ':' OnlyList                      -> OptOnlyList     {cons("opt-list")}
 
 
 %%R1110
@@ -3507,9 +3507,8 @@ context-free syntax
   'OPTIONAL'                                   -> ProcAttrSpec            {cons("OPTIONAL")}
   'POINTER'                                    -> ProcAttrSpec            {cons("POINTER")}
   'SAVE'                                       -> ProcAttrSpec            {cons("SAVE")}
-  {ProcAttrSpec ','}+                          -> ProcAttrSpecList        {cons("proc-attr-spec-list")}
 
-  ',' ProcAttrSpecList                         -> OptProcAttrSpecList     {cons("opt-list")}
+  ',' {ProcAttrSpec ','}+                      -> OptProcAttrSpecList     {cons("opt-list")}
   % empty %                                    -> OptProcAttrSpecList     {cons("no-list")}
   % empty %                                    -> NoProcAttrSpecList      {cons("no-list")}
 
