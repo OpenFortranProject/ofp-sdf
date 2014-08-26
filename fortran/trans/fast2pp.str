@@ -14,6 +14,8 @@ signature
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
+    eos            : EOStmt          -> EOS
+
 strategies
 
   main =
