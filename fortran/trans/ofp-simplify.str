@@ -40,6 +40,7 @@ ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
 //
 
 ofp-simplify-ast:  no-list()                      -> []
+ofp-simplify-ast:  opt-list(list)                 -> list
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
@@ -49,14 +50,6 @@ ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1
 
 //R403
 ofp-simplify-ast:  intrinsic-type-spec(type)      -> type
-
-//R426
-ofp-simplify-ast:  opt-type-attr-spec-list(list)  -> list
-ofp-simplify-ast:  opt-type-param-name-list(list) -> list
-
-//R436
-ofp-simplify-ast:
-  opt-component-attr-spec-list(list)              -> list
 
 //R503
 ofp-simplify-ast:  opt-array-spec(spec)           -> spec
@@ -73,16 +66,12 @@ ofp-simplify-ast:  DataRef([str])                 -> str
 ofp-simplify-ast:
   PartRef(name,no-section-subscripts(),
                no-image-selector())               -> name
-ofp-simplify-ast:  opt-section-subscripts(list)   -> list
 
 //R622
 ofp-simplify-ast:  opt-stride(stride)             -> stride
 
 //R624
 ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list ']' to list
-
-//R627
-ofp-simplify-ast:  opt-alloc-opt-list(list)       -> list
 
 //R701
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
@@ -95,7 +84,4 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-only-list(list),eos)
 //                      -> UseStmt(label,nature,name,RenameList([]),list,eos)
 
-ofp-simplify-ast:  no-rename-list()               -> RenameList([])
-ofp-simplify-ast:  opt-rename-list(list)          -> list
-ofp-simplify-ast:  opt-only-list(list)            -> list
 ofp-simplify-ast:  opt-module-nature(nature)      -> nature
