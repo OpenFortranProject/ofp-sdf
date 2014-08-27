@@ -1,5 +1,11 @@
 !! R865 unlock-stmt
 !    is UNLOCK ( lock-variable [ , sync-stat-list ] )
 !
-   UNLOCK (a_lock_variable)
+complex :: comp
+character err
+integer :: a_lock_variable
+
+999 UNLOCK (comp)
+    unlock(a_lock_variable, ERRMSG   =err)
+
 end
