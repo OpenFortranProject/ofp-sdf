@@ -201,8 +201,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  RelOp_GT()                   -> GT()
   ofp-to-ast:  RelOp_GE()                   -> GE()
 
-  ofp-to-ast:  Plus(left,right)             -> OfpPlusExpr(left,right)
-
 //R723
   ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
