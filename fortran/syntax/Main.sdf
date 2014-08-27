@@ -2867,12 +2867,12 @@ context-free syntax
 %%
 
 %%R924
-  Label? 'BACKSPACE' FileUnitNumber                EOS -> BackspaceStmt   {cons("BackspaceStmt_FUN")}
-  Label? 'BACKSPACE' '(' {PositionSpec ','}+ ')'   EOS -> BackspaceStmt   {cons("BackspaceStmt_PSL")}
+  OptLabel 'BACKSPACE' FileUnitNumber              EOS -> BackspaceStmt   {cons("backspace-unit-stmt")}
+  OptLabel 'BACKSPACE' '(' {PositionSpec ','}+ ')' EOS -> BackspaceStmt   {cons("BackspaceStmt")}
 
 %%R925
-  Label? 'END' 'FILE' FileUnitNumber               EOS -> EndfileStmt     {cons("EndfileStmt_FUN")}
-  Label? 'END' 'FILE' '(' {PositionSpec ','}+ ')'  EOS -> EndfileStmt     {cons("EndfileStmt_PSL")}
+  OptLabel 'END' 'FILE' FileUnitNumber             EOS -> EndfileStmt     {cons("endfile-unit-stmt")}
+  OptLabel 'END' 'FILE' '('{PositionSpec ','}+ ')' EOS -> EndfileStmt     {cons("EndfileStmt")}
 
 %%R926
   OptLabel 'REWIND' FileUnitNumber                 EOS -> RewindStmt      {cons("rewind-unit-stmt")}
