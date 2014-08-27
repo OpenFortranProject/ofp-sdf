@@ -11,8 +11,6 @@ signature
                                    : IntExpr -> IntExpr0
                                    : OutputItemList -> OutputItemList0
                                    : InputItemList -> InputItemList0
-                                   : SyncStatList -> SyncStatList0
-                                   : LockStatList -> LockStatList0
                                    : AssociateName -> AssociateName0
                                    : SelectConstructName -> SelectConstructName0
                                    : CaseConstructName -> CaseConstructName0
@@ -529,32 +527,35 @@ signature
     IoUnit_IFV                     : CharVariable -> IoUnit
     IoUnit_STAR                    : IoUnit
     IoUnit_FUN                     : IntExpr -> IoUnit
-    PauseStmt                      : Option(Label) * Option(StopCode) * EOS -> PauseStmt
+    PauseStmt                      : OptLabel * OptStopCode * EOS -> PauseStmt
                                    : Variable -> LockVariable
-    UnlockStmt                     : Option(Label) * LockVariable * Option(SyncStatList0) * EOS -> UnlockStmt
-    LockStatList                   : List(LockStat) -> LockStatList
-    LockStat_SS                    : SyncStat -> LockStat
-    LockStat_LV                    : LogicalVariable -> LockStat
-    LockStmt                       : Option(Label) * LockVariable * Option(LockStatList0) * EOS -> LockStmt
-    SyncMemoryStmt_0               : Option(Label) * EOS -> SyncMemoryStmt
-    SyncMemoryStmt_SSL             : Option(Label) * Option(SyncStatList) * EOS -> SyncMemoryStmt
-    ImageSet_STAR                  : ImageSet
-    ImageSet_IE                    : IntExpr -> ImageSet
-    SyncImagesStmt                 : Option(Label) * ImageSet * Option(SyncStatList0) * EOS -> SyncImagesStmt
-    SyncStatList                   : List(SyncStat) -> SyncStatList
-    SyncStat_ERRMSG                : ErrmsgVariable -> SyncStat
-    SyncStat_STAT                  : StatVariable -> SyncStat
-    SyncAllStmt_0                  : Option(Label) * EOS -> SyncAllStmt
-    SyncAllStmt_SSL                : Option(Label) * Option(SyncStatList) * EOS -> SyncAllStmt
-    StopCode_SI                    : Icon -> StopCode
-    StopCode_SD                    : Scon -> StopCode
-    ErrorStopStmt                  : Option(Label) * Option(StopCode) * EOS -> ErrorStopStmt
-    StopStmt                       : Option(Label) * Option(StopCode) * EOS -> StopStmt
+    UnlockStmt                     : OptLabel * LockVariable * OptSyncStatList * EOS -> UnlockStmt
+    no-list                        : OptLockStatList
+    opt-list                       : List(LockStat) -> OptLockStatList
+                                   : SyncStat -> LockStat
+    ACQUIRED_LOCK                  : LogicalVariable -> LockStat
+    LockStmt                       : OptLabel * LockVariable * OptLockStatList * EOS -> LockStmt
+    SyncMemoryStmt                 : OptLabel * NoSyncStatList * EOS -> SyncMemoryStmt
+    SyncMemoryStmt                 : OptLabel * List(SyncStat) * EOS -> SyncMemoryStmt
+    STAR                           : ImageSet
+                                   : IntExpr -> ImageSet
+    SyncImagesStmt                 : OptLabel * ImageSet * OptSyncStatList * EOS -> SyncImagesStmt
+    no-list                        : NoSyncStatList
+    no-list                        : OptSyncStatList
+    opt-list                       : List(SyncStat) -> OptSyncStatList
+    ERRMSG                         : ErrmsgVariable -> SyncStat
+    STAT                           : StatVariable -> SyncStat
+    SyncAllStmt                    : OptLabel * NoSyncStatList * EOS -> SyncAllStmt
+    SyncAllStmt                    : OptLabel * List(SyncStat) * EOS -> SyncAllStmt
+    no-stop-code                   : OptStopCode
+                                   : StopCode -> OptStopCode
+                                   : Expr -> StopCode
+    ErrorStopStmt                  : OptLabel * OptStopCode * EOS -> ErrorStopStmt
+    StopStmt                       : OptLabel * OptStopCode * EOS -> StopStmt
     ContinueStmt                   : OptLabel * EOS -> ContinueStmt
-    ArithmeticIfStmt               : Option(Label) * Expr * LblRef * LblRef * LblRef * EOS -> ArithmeticIfStmt
-    LabelList                      : List(LblRef) -> LabelList
-    ComputedGotoStmt               : Option(Label) * LabelList * Expr * EOS -> ComputedGotoStmt
-    GotoStmt                       : Option(Label) * LblRef * EOS -> GotoStmt
+    ArithmeticIfStmt               : OptLabel * Expr * LblRef * LblRef * LblRef * EOS -> ArithmeticIfStmt
+    ComputedGotoStmt               : OptLabel * List(LblRef) * Expr * EOS -> ComputedGotoStmt
+    GotoStmt                       : OptLabel * LblRef * EOS -> GotoStmt
     ExitStmt                       : Option(Label) * Option(ConstructName) * EOS -> ExitStmt
     EndSelectTypeStmt              : Option(SelectConstructName) * EOS -> EndSelectTypeStmt
     TypeGuardStmt_CLASS_DEF        : Option(SelectConstructName) * EOS -> TypeGuardStmt
@@ -796,8 +797,8 @@ signature
     Substring                      : ParentString * SubstringRange -> Substring
                                    : Variable -> IntVariable
                                    : Variable -> DefaultCharVariable
-    CharVariable                   : Variable -> CharVariable
-    LogicalVariable                : Variable -> LogicalVariable
+                                   : Variable -> CharVariable
+                                   : Variable -> LogicalVariable
                                    : Ident -> VariableName
                                    : Designator -> Variable
                                    : Substring -> Designator
@@ -936,9 +937,9 @@ signature
     PRIVATE                        : AccessSpec
     PUBLIC                         : AccessSpec
     NullInit                       : FunctionReference -> NullInit
-    Initialization_IDT             : InitialDataTarget -> Initialization
-    Initialization_NI              : NullInit -> Initialization
-    Initialization_CE              : ConstantExpr -> Initialization
+    Initialization                 : InitialDataTarget -> Initialization
+    Initialization                 : NullInit -> Initialization
+    Initialization                 : ConstantExpr -> Initialization
     no-init                        : OptInitialization
                                    : Initialization -> OptInitialization
     no-char-length                 : OptCharLength
@@ -967,7 +968,7 @@ signature
     ASYNCHRONOUS                   : AttrSpec
     ALLOCATABLE                    : AttrSpec
                                    : AccessSpec -> AttrSpec
-    opt-attr-spec-list             : List(AttrSpec) -> OptAttrSpecList
+    opt-list                       : List(AttrSpec) -> OptAttrSpecList
     no-list                        : OptAttrSpecList
     no-list                        : NoAttrSpecList
     TypeDeclarationStmt            : OptLabel * DeclarationTypeSpec * OptAttrSpecList * List(EntityDecl) * EOS -> TypeDeclarationStmt
