@@ -85,8 +85,14 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
 
+//R924
+ofp-simplify-ast:  backspace-unit-stmt(label,u,eos) -> BackspaceStmt(label,[UNIT(u)],eos)
+
+//R925
+ofp-simplify-ast:  endfile-unit-stmt(label,u,eos)   -> EndfileStmt(label,[UNIT(u)],eos)
+
 //R926
-ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)  -> RewindStmt(label,[UNIT(u)],eos)
+ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)    -> RewindStmt(label,[UNIT(u)],eos)
 
 //R1109
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
