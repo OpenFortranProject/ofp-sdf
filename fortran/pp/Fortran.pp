@@ -3,20 +3,24 @@
    None                          -- ,
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER ::"],
+   CHARACTER                     -- KW["CHARACTER ::"],
 
    #R201 --,
    OfpProgram                    -- V vs=0 is=0 [_1 _2],
    OfpProgram.1:opt              -- ,
 
    #R204 --,
-   OfpSpecPart                   -- V vs=1[_1],
+   OfpSpecPart                   -- V vs=0 is=0[_1],
 
    #R208 --,
-   OfpExecPart                   -- H hs=0[_1],
-   OfpFuncPart                   -- H hs=0[_1],
+   OfpExecPart                   -- V vs=0 is=2[_1],
+   OfpFuncPart                   -- V vs=0 is=0[_1],
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
+
+   #R305 --,
+   IntLiteralConstant            -- _1 _2,
 
    #R312 --,
    Label                         -- _1,
@@ -31,7 +35,7 @@
    ProcDecl                      -- _1 _2,
 
    #R501 --,
-   OfpTypeDeclarationStmt        -- H hs=1[H hs=3[_1] _2 _3 _4],
+   TypeDeclarationStmt           -- H hs=1[H hs=3[_1] _2 _3 _4 _5],
 
    #R502 --,
    Some                          -- _1,
@@ -40,7 +44,7 @@
 
    
    #R503 --,
-   OfpEntityDecl                 -- _1 _2 _3 _4 _5,
+   EntityDecl                 -- _1 _2 _3 _4 _5,
 
    #R511 --,
    OfpExplicitCoshape            -- _1,
@@ -74,8 +78,31 @@
    Minus                         -- _1,   
 
    #R732 --,
-   OfpAssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3],
-   OfpAssignmentStmt.2:opt       -- ,
+   AssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3 _4],
+   AssignmentStmt.2:opt       -- ,
+
+   #R851 --,
+   GotoStmt                      -- H hs=1[_1 KW["GOTO"] _2 _3],
+
+   #R852 --,
+   ComputedGotoStmt              -- _1 _2 _3 _4,
+
+   #R854 --,
+   ContinueStmt                  -- _1 _2,
+
+   #R900 --,
+   IOMSG                         -- KW["IOMSG="]_1,
+   UNIT                          -- KW["UNIT="]_1,
+   ERR                           -- KW["ERR="]_1,
+   IOSTAT                        -- KW["IOSTAT="]_1,
+
+   #R924 --,
+   BackspaceStmt                 -- H hs=0[_1 KW["BACKSPACE"] "("_2")" _3],
+   BackspaceStmt.2:iter-sep      -- _1 ",",
+
+   #R926 --,
+   RewindStmt                    -- H hs=0[_1 KW["REWIND"] "("_2")" _3],
+   RewindStmt.2:iter-sep         -- _1 ",",
 
    #R1101 --,
    PpMainProgram                -- V vs=0 [H[_1]],
@@ -88,13 +115,16 @@
    PpModule                      -- _1,
 
    #R1201 --,
-   OfpInterfaceBlock             -- V vs=0 [_1 _3 _2],
-   OfpInterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
-   OfpEndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2],
+   InterfaceBlock             -- V vs=0 [_1 _3 _2],
+   InterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
+   EndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2 _3],
    
+   #R1203 --,
+   AbstractInterfaceStmt      -- _1 _2,
+
    #R1205 --,
    OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 V vs=1 [_5 _3 _6]],
-
+   InterfaceBody                 -- _1 _2 _3,
 
    OfpPrefix                           -- _1,
    OfpPrefix.1:iter-star               -- _1,
@@ -124,8 +154,11 @@
 
    #R1217 --,
    PpFunction                          -- _1,
-   OfpFunctionStmt                     -- _1 _4 "FUNCTION" H hs=0[ _2 "(" _3 ")"] _5,
-   OfpEndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2],
+   FunctionStmt                     -- _1 _4 "FUNCTION" H hs=0[ _2 "(" _3 ")"] _5 _6,
+   EndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
+
+   #R1218 --,
+   IntrinsicStmt                       -- _1 _2 _3,
 
    #R1220 --,
    OfpCallStmt                         -- _1 _2 _3,
@@ -138,15 +171,15 @@
 
    #R1233 --,
    PpSubroutine                         -- _1,
-   OfpSubroutineStmt                    -- _1 _4 "SUBROUTINE" H hs=0[ _2 "(" _3 ")"] _5,
-   OfpEndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2],
+   SubroutineStmt                    -- _1 _4 "SUBROUTINE" H hs=0[ _2  _3 "("_5")" _6],
+   EndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2 _3],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
    OfpArgList.1:iter-star-sep          -- _1 ",",
 
    #R1242 --,
-   OfpContainsStmt                     -- _1 KW["CONTAINS"]
+   ContainsStmt                     -- _1 KW["CONTAINS"] _2
 
 
 ]
