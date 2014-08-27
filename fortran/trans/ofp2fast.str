@@ -82,7 +82,7 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
 
 //R215
-  ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
+//  ofp-to-ast:  Keyword(Name(str))                -> OfpKeyword(str)
 
 //R310
   ofp-to-ast:  PowerOp(op)                       -> OfpOp(op)
