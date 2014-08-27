@@ -574,7 +574,7 @@ sorts
   CloseStmt                           %% R908
   CloseSpec                           %% R909
 
-  CloseSpecList ConnectSpecList
+  CloseSpecList
 
 %% 9.6 Data transfer statements
 
@@ -604,7 +604,6 @@ sorts
   EndfileStmt                          %% R925
   RewindStmt                           %% R926
   PositionSpec                         %% R927
-  PositionSpecList
 
 %% 9.9 FLUSH statement
 
@@ -2702,9 +2701,9 @@ context-free syntax
 %%         int-expr substituted for file-unit-number
 %%         char-variable substituted for internal-file-variable
 %%
-  IntExpr                                        -> IoUnit          {cons("IoUnit_FUN")}
-  '*'                                            -> IoUnit          {cons("IoUnit_STAR")}
-  CharVariable                                   -> IoUnit          {cons("IoUnit_IFV")}
+  IntExpr                                        -> IoUnit
+  '*'                                            -> IoUnit        {cons("STAR")}
+  CharVariable                                   -> IoUnit
 
 %%R902
 %%         int-expr substituted for scalar-int-expr
@@ -2715,40 +2714,38 @@ context-free syntax
   CharVariable                                   -> InternalFileVariable
 
 %%R904
-  Label? 'OPEN' '(' ConnectSpecList ')'      EOS -> OpenStmt        {cons("OpenStmt")}
+  OptLabel 'OPEN' '(' {ConnectSpec ','}+ ')' EOS -> OpenStmt      {cons("OpenStmt")}
 
 %%R905
 %%         default-char-expr substituted for scalar-default-char-expr
 %%         int-variable substituted for scalar-int-variable
 %%
-                      FileUnitNumber             -> ConnectSpec   {cons("ConnectSpec_UNIT")}
-  'UNIT'         '='  FileUnitNumber             -> ConnectSpec   {cons("ConnectSpec_UNIT")}
-  'ACCESS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ACCESS")}
-  'ACTION'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ACTION")}
-  'ASYNCHRONOUS' '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ASYNC")}
-  'BLANK'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_BLANK")}
-  'DECIMAL'      '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_DECIMAL")}
-  'DELIM'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_DELIM")}
-  'ENCODING'     '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ENCODING")}
-  'ERR'          '='  LblRef                     -> ConnectSpec   {cons("ConnectSpec_ERR")}
-  'FILE'         '='  FileNameExpr               -> ConnectSpec   {cons("ConnectSpec_FILE")}
-  'FORM'         '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_FORM")}
-  'IOMSG'        '='  IomsgVariable              -> ConnectSpec   {cons("ConnectSpec_IOMSG")}
-  'IOSTAT'       '='  IntVariable                -> ConnectSpec   {cons("ConnectSpec_IOSTAT")}
-  'NEWUNIT'      '='  IntVariable                -> ConnectSpec   {cons("ConnectSpec_NEWUNIT")}
-  'PAD'          '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_PAD")}
-  'POSITION'     '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_POSITION")}
-  'RECL'         '='  IntExpr                    -> ConnectSpec   {cons("ConnectSpec_RECL")}
-  'ROUND'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_ROUND")}
-  'SIGN'         '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_SIGN")}
-  'STATUS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ConnectSpec_STATUS")}
+                      FileUnitNumber             -> ConnectSpec   {cons("UNIT")}
+  'UNIT'         '='  FileUnitNumber             -> ConnectSpec   {cons("UNIT")}
+  'ACCESS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ACCESS")}
+  'ACTION'       '='  DefaultCharExpr            -> ConnectSpec   {cons("ACTION")}
+  'ASYNCHRONOUS' '='  DefaultCharExpr            -> ConnectSpec   {cons("ASYNC")}
+  'BLANK'        '='  DefaultCharExpr            -> ConnectSpec   {cons("BLANK")}
+  'DECIMAL'      '='  DefaultCharExpr            -> ConnectSpec   {cons("DECIMAL")}
+  'DELIM'        '='  DefaultCharExpr            -> ConnectSpec   {cons("DELIM")}
+  'ENCODING'     '='  DefaultCharExpr            -> ConnectSpec   {cons("ENCODING")}
+  'ERR'          '='  LblRef                     -> ConnectSpec   {cons("ERR")}
+  'FILE'         '='  FileNameExpr               -> ConnectSpec   {cons("FILE")}
+  'FORM'         '='  DefaultCharExpr            -> ConnectSpec   {cons("FORM")}
+  'IOMSG'        '='  IomsgVariable              -> ConnectSpec   {cons("IOMSG")}
+  'IOSTAT'       '='  IntVariable                -> ConnectSpec   {cons("IOSTAT")}
+  'NEWUNIT'      '='  IntVariable                -> ConnectSpec   {cons("NEWUNIT")}
+  'PAD'          '='  DefaultCharExpr            -> ConnectSpec   {cons("PAD")}
+  'POSITION'     '='  DefaultCharExpr            -> ConnectSpec   {cons("POSITION")}
+  'RECL'         '='  IntExpr                    -> ConnectSpec   {cons("RECL")}
+  'ROUND'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ROUND")}
+  'SIGN'         '='  DefaultCharExpr            -> ConnectSpec   {cons("SIGN")}
+  'STATUS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("STATUS")}
 %%'TEAM'         '='  ImageTeam          %%TODO - is this in standard for F08?
-
-  {ConnectSpec ','}+                             -> ConnectSpecList {cons("ConnectSpecList")}
 
 %%R906
 %%           default-char-expr substituted for scalar-default-char-expr
-  DefaultCharExpr                               -> FileNameExpr   {cons("FileNameExpr")}
+  DefaultCharExpr                               -> FileNameExpr
 
 %%R907
 %%           default-char-expr substituted for scalar-default-char-expr
@@ -2871,23 +2868,22 @@ context-free syntax
 
 %%R924
   Label? 'BACKSPACE' FileUnitNumber                EOS -> BackspaceStmt   {cons("BackspaceStmt_FUN")}
-  Label? 'BACKSPACE' '(' PositionSpecList ')'      EOS -> BackspaceStmt   {cons("BackspaceStmt_PSL")}
+  Label? 'BACKSPACE' '(' {PositionSpec ','}+ ')'   EOS -> BackspaceStmt   {cons("BackspaceStmt_PSL")}
 
 %%R925
   Label? 'END' 'FILE' FileUnitNumber               EOS -> EndfileStmt     {cons("EndfileStmt_FUN")}
-  Label? 'END' 'FILE' '(' PositionSpecList ')'     EOS -> EndfileStmt     {cons("EndfileStmt_PSL")}
+  Label? 'END' 'FILE' '(' {PositionSpec ','}+ ')'  EOS -> EndfileStmt     {cons("EndfileStmt_PSL")}
 
 %%R926
-  Label? 'REWIND' FileUnitNumber                   EOS -> RewindStmt      {cons("RewindStmt_FUN")}
-  Label? 'REWIND' '(' PositionSpecList ')'         EOS -> RewindStmt      {cons("RewindStmt_PSL")}
+  OptLabel 'REWIND' FileUnitNumber                 EOS -> RewindStmt      {cons("rewind-unit-stmt")}
+  OptLabel 'REWIND' '(' {PositionSpec ','}+ ')'    EOS -> RewindStmt      {cons("RewindStmt")}
 
 %%R927
-                 FileUnitNumber                        -> PositionSpec    {cons("PositionSpec_UNIT")}
-  'UNIT'    '='  FileUnitNumber                        -> PositionSpec    {cons("PositionSpec_UNIT")}
-  'IOSTAT'  '='  IntVariable                           -> PositionSpec    {cons("PositionSpec_IOSTAT")}
-  'IOMSG'   '='  IomsgVariable                         -> PositionSpec    {cons("PositionSpec_IOMSG")}
-  'ERR'     '='  LblRef                                -> PositionSpec    {cons("PositionSpec_ERR")}
-  {PositionSpec ','}+                                  -> PositionSpecList{cons("PositionSpecList")}
+                 FileUnitNumber                        -> PositionSpec    {cons("UNIT")}
+  'UNIT'    '='  FileUnitNumber                        -> PositionSpec    {cons("UNIT")}
+  'IOSTAT'  '='  IntVariable                           -> PositionSpec    {cons("IOSTAT")}
+  'IOMSG'   '='  IomsgVariable                         -> PositionSpec    {cons("IOMSG")}
+  'ERR'     '='  LblRef                                -> PositionSpec    {cons("ERR")}
 
 
 %% 9.9 FLUSH statement
