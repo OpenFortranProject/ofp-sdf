@@ -50,5 +50,16 @@ rules
   ast-to-pp:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
 
 
-  no-to-none: no-label()                   -> None()
-  no-to-none: no-program-name()            -> None()
+  no-to-none: no-label()                   -> None()   // R312
+  no-to-none: no-program-name()            -> None()   // R1103
+  no-to-none: no-program-stmt()            -> None()   // R1102
+  no-to-none: no-kind-param()              -> None()   // R408
+  no-to-none: no-char-selector()           -> None()   // R420
+  no-to-none: no-array-spec()              -> None()   // R503
+  no-to-none: no-coarray-spec()            -> None()   // R503
+  no-to-none: no-char-length()             -> None()   // R503
+  no-to-none: no-init()                    -> None()   // R503
+  no-to-none: no-kind()                    -> None()   // R405
+  no-to-none: no-prefix()                  -> None()   // R1225
+  no-to-none: no-language-binding()        -> None()   // R1229
+  no-to-none: no-generic-spec()            -> None()   // R1204
