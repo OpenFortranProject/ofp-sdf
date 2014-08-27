@@ -544,7 +544,7 @@ sorts
   UnlockStmt                          %% R865
   LockVariable                        %% R866
 
-  LockStatList NoSyncStatList OptSyncStatList
+  OptLockStatList NoSyncStatList OptSyncStatList
 
 %% Deleted features
 
@@ -1259,7 +1259,7 @@ context-free syntax
 
   % empty %                                               -> NoAttrSpecList        {cons("no-list")}
   % empty %                                               -> OptAttrSpecList       {cons("no-list")}
-  ',' {AttrSpec ','}+                                     -> OptAttrSpecList       {cons("opt-attr-spec-list")}
+  ',' {AttrSpec ','}+                                     -> OptAttrSpecList       {cons("opt-list")}
 
 %%R502
    AccessSpec                                             -> AttrSpec
@@ -1305,9 +1305,9 @@ context-free syntax
 %%Name - lex
 
 %%R505
-  '='   ConstantExpr                                    -> Initialization  {cons("Initialization_CE")}
-  '=>'  NullInit                                        -> Initialization  {cons("Initialization_NI")}
-  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization_IDT")}
+  '='   ConstantExpr                                    -> Initialization  {cons("Initialization")}
+  '=>'  NullInit                                        -> Initialization  {cons("Initialization")}
+  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization")}
 
 %%R506
   FunctionReference                                     -> NullInit        {cons("NullInit")}
@@ -1705,10 +1705,10 @@ context-free syntax
   Ident              -> VariableName
 
 %%R604
-  Variable           -> LogicalVariable                    {cons("LogicalVariable")}
+  Variable           -> LogicalVariable
 
 %%605
-  Variable           -> CharVariable                       {cons("CharVariable")}
+  Variable           -> CharVariable
 
 %%R606
   Variable           -> DefaultCharVariable
@@ -2650,38 +2650,40 @@ context-free syntax
   % empty %                                             ->  NoSyncStatList      {cons("no-list")}
 
 %%R860
-  Label? 'SYNC' 'IMAGES'
+  OptLabel 'SYNC' 'IMAGES'
          '(' ImageSet OptSyncStatList ')'           EOS -> SyncImagesStmt       {cons("SyncImagesStmt")}
 
 %%R861
-  IntExpr                                               -> ImageSet             {cons("ImageSet_IE")}
-  '*'                                                   -> ImageSet             {cons("ImageSet_STAR")}
+  IntExpr                                               -> ImageSet
+  '*'                                                   -> ImageSet             {cons("STAR")}
 
 %%R862
-  Label? 'SYNC' 'MEMORY' '(' {SyncStat ','}* ')'    EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
-  Label? 'SYNC' 'MEMORY'    NoSyncStatList          EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
+  OptLabel 'SYNC' 'MEMORY' '(' {SyncStat ','}* ')'  EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
+  OptLabel 'SYNC' 'MEMORY'    NoSyncStatList        EOS -> SyncMemoryStmt       {cons("SyncMemoryStmt")}
 
 %%R863
-  Label? 'LOCK' '(' LockVariable
-                 (',' LockStatList )? ')'           EOS -> LockStmt             {cons("LockStmt")}
+  OptLabel 'LOCK' '(' LockVariable
+                      OptLockStatList ')'           EOS -> LockStmt             {cons("LockStmt")}
 
 %%R864
-  'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("LockStat_LV")}
-  SyncStat                                              -> LockStat             {cons("LockStat_SS")}
-  {LockStat ','}+                                       -> LockStatList         {cons("LockStatList")}
+  'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("ACQUIRED_LOCK")}
+  SyncStat                                              -> LockStat
+
+  ',' {LockStat ','}+                                   -> OptLockStatList      {cons("opt-list")}
+  % empty %                                             -> OptLockStatList      {cons("no-list")}
 
 %%R865
-  Label? 'UNLOCK' '(' LockVariable OptSyncStatList  EOS -> UnlockStmt           {cons("UnlockStmt")}
+  OptLabel 'UNLOCK' '(' LockVariable
+                        OptSyncStatList ')'         EOS -> UnlockStmt           {cons("UnlockStmt")}
 
 %%R866
 %%          variable substituted for scalar-variable
 %%
   Variable                                              -> LockVariable
 
-
 %% Deleted Statements
 %%
-  Label? 'PAUSE' StopCode?                          EOS -> PauseStmt            {cons("PauseStmt")}
+  OptLabel 'PAUSE' OptStopCode                      EOS -> PauseStmt            {cons("PauseStmt")}
 
 
 %%%%%%%%%%
