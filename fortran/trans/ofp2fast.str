@@ -68,7 +68,7 @@ rules //========================START OF RULES===============================
                                <ofp-extract-contains>funcs,
                                <ofp-add-some>end)
 
-  ofp-to-ast:  ObjectName(str)           -> OfpName(str)
+//  ofp-to-ast:  ObjectName(str)           -> OfpName(str)
 
 //R201
   ofp-to-ast:  Program(no-comments(), ProgramUnits) -> OfpProgram(None(),ProgramUnits)
