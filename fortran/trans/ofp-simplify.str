@@ -9,6 +9,10 @@ signature
 
    SpecificationPart : A -> B
 
+   RewindStmt        : OptLabel * List(PositionSpec) * EOS -> RewindStmt
+   rewind-unit-stmt  : OptLabel * FileUnitNumber * EOS     -> RewindStmt
+
+
    // For ambiguities
    amb : list -> choice
 
@@ -80,6 +84,9 @@ ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list '
 ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
+
+//R926
+ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)  -> RewindStmt(label,[UNIT(u)],eos)
 
 //R1109
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
