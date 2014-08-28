@@ -63,3 +63,13 @@ rules
   no-to-none: no-prefix()                  -> None()   // R1225
   no-to-none: no-language-binding()        -> None()   // R1229
   no-to-none: no-generic-spec()            -> None()   // R1204
+  no-to-none: no-module-name()             -> None()   // R1106
+  no-to-none: no-module-nature()           -> None()   // R1109
+  no-to-none: no-block-data-name()         -> None()   // R1122
+  no-to-none: no-proc-interface()          -> None()   // R1212
+  no-to-none: no-keyword()                 -> None()   // R215
+  no-to-none: no-subroutine-name           -> None()   // R1236
+  no-to-none: no-binding-name              -> None()   // R508
+  no-to-none: no-expr                      -> None()   // R1241
+  no-to-none: no-letter                    -> None()   // R562
+  no-to-none: no-stop-code                 -> None()   // R857
