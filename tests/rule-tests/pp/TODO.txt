@@ -1,8 +1,19 @@
 To Do List
 
 
-R1237.f90 - 08.21.14
+R1237.f90 - 08.21.14     and 8.28.14      - checked on that file from the new directory, needssame thing
 No pp entry found for: (1,["PpMpSubprogram"])
+
+R860.f90  8.28.14
+need to fix SyncImages so they are in proper lists and etc.....
+
+
+
+
+
+
+
+
 
 
 R1207.f90 - 08.22.14
