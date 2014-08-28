@@ -4,7 +4,9 @@
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER ::"],
    CHARACTER                     -- KW["CHARACTER ::"],
-
+   INTRINSIC                     -- KW["INTRINSIC ::"],
+   NON_INTRINSIC                 -- KW["NON_INTRINSIC ::"],
+  
    #R201 --,
    OfpProgram                    -- V vs=0 is=0 [_1 _2],
    OfpProgram.1:opt              -- ,
@@ -27,7 +29,7 @@
 
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
-
+   
    #R407 --,
    PpLiteral                    -- H hs=1[_1],
 
@@ -45,7 +47,7 @@
    
    #R503 --,
    EntityDecl                 -- _1 _2 _3 _4 _5,
-
+   
    #R511 --,
    OfpExplicitCoshape            -- _1,
 
@@ -114,6 +116,28 @@
    #R1104 --,
    PpModule                      -- _1,
 
+   #R1105 --, 
+   ModuleStmt                    -- H hs=1[_1 KW["MODULE"] _2 _3],
+ 
+   #R1106 --, 
+   EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
+
+   #R1109 --,
+   UseStmt                       -- _1 _2 _3 _4 _5,
+   UseOnlyStmt                   -- _1 _2 _3 _4 _5,
+
+   #R1111 --,
+   Rename                        -- _1 _2,
+
+   #R1120 --,
+   BlockData                     -- _1 _2 _3,
+
+   #R1121 --, 
+   BlockDataStmt                 -- _1 KW["BLOCKDATA"] _2 _3,
+
+   #R1122 --,
+   EndBlockDataStmt              -- _1 _2 _3,
+
    #R1201 --,
    InterfaceBlock             -- V vs=0 [_1 _3 _2],
    InterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
@@ -141,16 +165,17 @@
    OfpSuffix.1:iter-star               -- _1,
 
    #R1206 --,
-   OfpProcedureStmt,                   -- _1 _2 _3,
+   ProcedureStmt,                      -- _1 _2 _3,
 
     #R1207 --,
    OfpGenericSpec                      -- _1,
 
    #R1210 --,
-   OfpExternalStmt                     -- _1 _2,
+   ExternalStmt                        -- H hs=0 [_1 KW["EXTERNAL"] _2 _3],
+   ExternalStmt.2:iter-sep             -- _1 ",",
 
    #R1211 --,
-   OfpProcedureDeclarationStmt         -- V vs=0 [H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] _4]],
+   ProcedureDeclarationStmt         -- V vs=0 [H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] _4 _5]],
 
    #R1217 --,
    PpFunction                          -- _1,
