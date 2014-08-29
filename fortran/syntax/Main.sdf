@@ -39,6 +39,12 @@ sorts
   ExecutableConstruct                 %% R213
   ActionStmt                          %% R214
 
+%% to remove AMBIGUITY related to FormatStmt, EntryStmt, ...
+%%
+  InitialSpecPart
+  SpecAndExecPart
+  GenericStmt
+
   OptImplicitPart OptInternalSubprogramPart
 
 %% 2.5 Fundamental concepts
@@ -2981,9 +2987,9 @@ context-free syntax
 %%
 
 %%R1003
-  FormatItem                                        -> FormatItems          {cons("FormatItems_0")}
-  FormatItems ',' FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
-  FormatItems     FormatItem                        -> FormatItems          {cons("FormatItems_FIs")}
+  FormatItem                                        -> FormatItems          {cons("format-items-first")}
+  FormatItems ',' FormatItem                        -> FormatItems          {cons("format-items")}
+  FormatItems     FormatItem                        -> FormatItems          {cons("format-items")}
 
 %%R1004
 %% Icon substituted for int-literal-constant
@@ -3116,10 +3122,18 @@ context-free syntax
   SubroutineSubprogram                   -> ExternalSubprogram
   
 %%R204
+%% - Refactored to fix ambiguity with FormatStmt appearing in Spec and Exec parts
+  UseStmt*
+  ImportStmt*                            -> InitialSpecPart     {cons("initial-spec-part")}
+
+
+%%R204
   UseStmt*
   ImportStmt*
   OptImplicitPart
   DeclarationConstruct*                  -> SpecificationPart   {cons("SpecificationPart")}
+
+  GenericStmt*                           -> SpecAndExecPart     {cons("SpecAndExecPart")}
 
 %%R205
   ImplicitPartStmt* ImplicitStmt         -> ImplicitPart        {cons("ImplicitPart")}
@@ -3135,15 +3149,17 @@ context-free syntax
 
 %%R207
   DerivedTypeDef                         -> DeclarationConstruct
-  EntryStmt                              -> DeclarationConstruct
+%%EntryStmt                              -> DeclarationConstruct
   EnumDef                                -> DeclarationConstruct
-  FormatStmt                             -> DeclarationConstruct
+%%FormatStmt                             -> DeclarationConstruct
   InterfaceBlock                         -> DeclarationConstruct
   ParameterStmt                          -> DeclarationConstruct
   ProcedureDeclarationStmt               -> DeclarationConstruct
   OtherSpecificationStmt                 -> DeclarationConstruct
   TypeDeclarationStmt                    -> DeclarationConstruct
   StmtFunctionStmt                       -> DeclarationConstruct
+
+  FormatStmt                             -> GenericStmt
 
 %%R208
 %%     WARNING-MODIFICATION:
@@ -3268,9 +3284,15 @@ context-free syntax
 %%       is detectable from an empty list and None components in the specification-part ATerm.
 %%       ExecutionPart modified so it can be an empty list, thus it is not optional.
 %%
+%%  OptProgramStmt
+%%    SpecificationPart
+%%    ExecutionPart
+%%    OptInternalSubprogramPart
+%%  EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
+
   OptProgramStmt
-    SpecificationPart
-    ExecutionPart
+    InitialSpecPart
+    SpecAndExecPart
     OptInternalSubprogramPart
   EndProgramStmt                               -> MainProgram      {cons("MainProgram")}
 
