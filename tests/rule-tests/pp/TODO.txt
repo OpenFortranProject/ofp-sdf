@@ -1,8 +1,43 @@
 To Do List
 
+______________________________________________________________________________
+8.29.14
 
-R1237.f90 - 08.21.14
+Files to check on in /new to check if they are good enough to move up a directory
+R1111.f90
+R1120a.f90
+R1210.f90
+R1214.f90
+R1218.f90
+
+File to fix
+R1206.f90
+No pp entry found for: (3,["ProcedureStmt"])
+     Already has ProcedureStmt with 3 arguments
+
+_______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+R1237.f90 - 08.21.14     and 8.28.14      - checked on that file from the new directory, needssame thing
 No pp entry found for: (1,["PpMpSubprogram"])
+
+R860.f90  8.28.14
+need to fix SyncImages so they are in proper lists and etc.....
+
+
+
+
+
+
+
+
 
 
 R1207.f90 - 08.22.14
