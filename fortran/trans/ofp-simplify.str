@@ -94,6 +94,10 @@ ofp-simplify-ast:  endfile-unit-stmt(label,u,eos)   -> EndfileStmt(label,[UNIT(u
 //R926
 ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)    -> RewindStmt(label,[UNIT(u)],eos)
 
+//R1003
+ofp-simplify-ast:  format-items-first(item)         -> [item]
+ofp-simplify-ast:  format-items(list, item)         -> <concat>[list, [item]]
+
 //R1109
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
 //                      -> UseStmt(label,nature,name,list,OnlyList([]),eos)
