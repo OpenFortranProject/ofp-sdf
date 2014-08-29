@@ -44,7 +44,7 @@ ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
 //
 
 ofp-simplify-ast:  no-list()                      -> []
-ofp-simplify-ast:  opt-list(list)                 -> list
+//ofp-simplify-ast:  opt-list(list)                 -> list
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
