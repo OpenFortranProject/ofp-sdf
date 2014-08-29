@@ -1,6 +1,10 @@
 [
    Comment                       -- _1,
    None                          -- ,
+
+   opt-list                      -- KW[", "] _1,
+   opt-list.1:iter-sep           -- _1 ", ",
+
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER :: "],
    CHARACTER                     -- KW["CHARACTER ::"],
@@ -139,6 +143,10 @@
    SyncImagesStmt                -- H hs=1[_1 KW["SYNC IMAGES"] H hs=0["("_2 _3")"] _4],
    SyncImagesStmt.3:iter-sep     -- _1 ", ",
  
+   #R862 --,
+   SyncMemoryStmt                -- H hs=1[_1 KW["SYNC MEMORY"] H hs=0["("_2")"] _3],
+   SyncMemoryStmt.2:iter-sep     -- _1 ", ",
+
    #R900 --,
    IOMSG                         -- KW["IOMSG="]_1,
    UNIT                          -- KW["UNIT="]_1,
