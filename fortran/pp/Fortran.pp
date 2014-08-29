@@ -8,8 +8,8 @@
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER :: "],
    CHARACTER                     -- KW["CHARACTER :: "],
-   INTRINSIC                     -- KW["INTRINSIC ::"],
-   NON_INTRINSIC                 -- KW["NON_INTRINSIC ::"],
+   INTRINSIC                     -- KW["INTRINSIC :: "],
+   NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
    PARAMETER                     -- KW["PARAMETER ::"],
    LOGICAL                       -- KW["LOGICAL :: "],
    COMPLEX                       -- KW["COMPLEX :: "],
@@ -195,11 +195,11 @@
    EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
 
    #R1109 --,
-   UseStmt                       -- H hs=1[_1 KW["USE"] _2 _3 _4 _5],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE ONLY"] _2 _3 _4 _5],
+   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
+   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
 
    #R1111 --,
-   Rename                        -- _1 _2,
+   Rename                        -- H hs=0[_1 KW["=>"] _2],
 
    #R1120 --,
    BlockData                     -- _1 _2 _3,
