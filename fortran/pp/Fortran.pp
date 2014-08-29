@@ -7,10 +7,12 @@
 
    REAL                          -- KW["REAL ::"],
    INTEGER                       -- KW["INTEGER :: "],
-   CHARACTER                     -- KW["CHARACTER ::"],
+   CHARACTER                     -- KW["CHARACTER :: "],
    INTRINSIC                     -- KW["INTRINSIC ::"],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC ::"],
    PARAMETER                     -- KW["PARAMETER ::"],
+   LOGICAL                       -- KW["LOGICAL :: "],
+   COMPLEX                       -- KW["COMPLEX :: "],
 
    #R201 --,
    OfpProgram                    -- V vs=0 is=0 [_1 _2],
@@ -147,11 +149,26 @@
    SyncMemoryStmt                -- H hs=1[_1 KW["SYNC MEMORY"] H hs=0["("_2")"] _3],
    SyncMemoryStmt.2:iter-sep     -- _1 ", ",
 
+   #R863 --,
+   LockStmt                      -- H hs=1[_1 KW["LOCK"] H hs=0["("_2 _3")"] _4],
+
+   #R864 --,
+   ACQUIRED_LOCK                 -- KW["ACQUIRED_LOCK="] _1,
+
+   #R865 --,
+   UnlockStmt                    -- H hs=1[_1 KW["UNLOCK"] H hs=0["("_2 _3")"] _4],
+
    #R900 --,
    IOMSG                         -- KW["IOMSG="]_1,
    UNIT                          -- KW["UNIT="]_1,
    ERR                           -- KW["ERR="]_1,
    IOSTAT                        -- KW["IOSTAT="]_1,
+   END                           -- KW["END="]_1,
+   EOR                           -- KW["EOR="]_1,
+
+   #R922 --,
+   WaitStmt                      -- H hs=1[_1 KW["WAIT"] H hs=0["("_2")"] _3],
+   WaitStmt.2:iter-sep           -- _1 ", ",
 
    #R924 --,
    BackspaceStmt                 -- H hs=0[_1 KW["BACKSPACE"] "("_2")" _3],
