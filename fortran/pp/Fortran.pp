@@ -216,7 +216,7 @@
    EndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2 _3],
    
    #R1203 --,
-   AbstractInterfaceStmt      -- _1 _2,
+   AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
    OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 V vs=1 [_5 _3 _6]],
@@ -243,7 +243,7 @@
    OfpGenericSpec                      -- _1,
 
    #R1210 --,
-   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL"] H hs=0[_2] _3],
+   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL :: "] H hs=0[_2] _3],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
@@ -256,7 +256,7 @@
    EndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
 
    #R1218 --,
-   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC"] H hs=0[_2 _3]],
+   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC :: "] H hs=0[_2 _3]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    #R1220 --,
