@@ -5,12 +5,12 @@
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
-   REAL                          -- KW["REAL ::"],
+   REAL                          -- KW["REAL :: "],
    INTEGER                       -- KW["INTEGER :: "],
    CHARACTER                     -- KW["CHARACTER :: "],
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
-   PARAMETER                     -- KW["PARAMETER ::"],
+   PARAMETER                     -- KW["PARAMETER :: "],
    LOGICAL                       -- KW["LOGICAL :: "],
    COMPLEX                       -- KW["COMPLEX :: "],
 
@@ -56,7 +56,7 @@
    #R502 --,
    Some                          -- _1,
    Some                          -- _1 _2,
-   ALLOCATABLE                   -- KW["ALLOCATABLE ::"],
+   ALLOCATABLE                   -- KW["ALLOCATABLE :: "],
 
    
    #R503 --,
@@ -112,7 +112,7 @@
 
    #Operators --,
    Minus                         -- _1,
-   NOT                           -- _1 KW[".NOT."],
+   NOT                           -- KW[".NOT."] _1,
    Plus                          -- _1 KW["+"] _2,
 
    #R732 --,
@@ -196,7 +196,7 @@
 
    #R1109 --,
    UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
+   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "]_4 _5]],
 
    #R1111 --,
    Rename                        -- H hs=0[_1 KW["=>"] _2],
@@ -205,10 +205,10 @@
    BlockData                     -- _1 _2 _3,
 
    #R1121 --, 
-   BlockDataStmt                 -- _1 KW["BLOCKDATA"] _2 _3,
+   BlockDataStmt                 -- _1 KW["BLOCK DATA"] _2 _3,
 
    #R1122 --,
-   EndBlockDataStmt              -- _1 _2 _3,
+   EndBlockDataStmt              -- _1 KW["END BLOCK DATA"] _2 _3,
 
    #R1201 --,
    InterfaceBlock             -- V vs=0 [_1 _3 _2],
@@ -243,11 +243,12 @@
    OfpGenericSpec                      -- _1,
 
    #R1210 --,
-   ExternalStmt                        -- H hs=0 [_1 KW["EXTERNAL"] _2 _3],
-   ExternalStmt.2:iter-sep             -- _1 ",",
+   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL"] H hs=0[_2] _3],
+   ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
-   ProcedureDeclarationStmt         -- V vs=0 [H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] _4 _5]],
+   ProcedureDeclarationStmt            --H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] H hs=0[_4 _5]],
+   ProcedureDeclarationStmt.4:iter-sep    -- _1 ", ",
   
    #R1217 --,
    PpFunction                          -- _1,
@@ -255,10 +256,12 @@
    EndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
 
    #R1218 --,
-   IntrinsicStmt                       -- H hs=1 [_1 KW["INTRINSIC"] _2 _3],
+   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC"] H hs=0[_2 _3]],
+   IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    #R1220 --,
-   CallStmt                            -- H hs=1[_1 KW["CALL"] _2 "("_3")" _4],
+   CallStmt                            -- H hs=1[_1 KW["CALL"] H hs=0[_2 "("_3")" _4]],
+   CallStmt.3:iter-sep                 -- _1 ",",
 
    #R1221 --,
    OfpProcRef                          -- _1,
