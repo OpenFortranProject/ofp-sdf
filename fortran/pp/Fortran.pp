@@ -121,10 +121,10 @@
    AssignmentStmt.2:opt          -- ,
 
    #R851 --,
-   GotoStmt                      -- H hs=1[_1 KW["GOTO"] _2 _3],
+   GotoStmt                      -- H hs=1[_1 KW["GO TO"] _2 _3],
 
    #R852 --,
-   ComputedGotoStmt              -- H hs=1[_1 KW["GOTO"] H hs=0["("_2")"] H hs=0[_3] _4],
+   ComputedGotoStmt              -- H hs=1[_1 KW["GO TO"] H hs=0["("_2")"] H hs=0[_3] _4],
    ComputedGotoStmt.2:iter-sep   -- _1 ", ",
 
    R#853 --,
