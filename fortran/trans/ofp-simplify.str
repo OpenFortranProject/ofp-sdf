@@ -7,7 +7,10 @@ imports
 signature
   constructors
 
+   CommonStmt        : A * B * C -> D
+   InitialSpecPart   : A -> B
    SpecificationPart : A -> B
+   
 
    RewindStmt        : OptLabel * List(PositionSpec) * EOS -> RewindStmt
    rewind-unit-stmt  : OptLabel * FileUnitNumber * EOS     -> RewindStmt
@@ -23,8 +26,9 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(ofp-simplify)
 
   ofp-simplify =
-      outermost(ofp-disamb)
-    ; innermost(ofp-simplify-ast)
+//      outermost(ofp-disamb)
+//    ; innermost(ofp-simplify-ast)
+      innermost(ofp-simplify-ast)
 
 rules //========================START OF RULES===============================
 
@@ -37,7 +41,7 @@ rules //========================START OF RULES===============================
 //ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
 //R703,R723
-ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
+//ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
 
 
 // General catch-all rules
@@ -50,7 +54,9 @@ ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
 ofp-simplify-ast:  no-implicit-part()             -> []
 
+//R204
 ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
+ofp-simplify-ast:  initial-spec-part(l1,l2)       -> InitialSpecPart(<conc>(l1,l2))
 
 //R403
 ofp-simplify-ast:  intrinsic-type-spec(type)      -> type
@@ -65,6 +71,10 @@ ofp-simplify-ast:  language-binding-name(str)     -> str
 
 //R560
 ofp-simplify-ast:  letter(char)                   -> char
+
+//R568
+ofp-simplify-ast:
+  common-stmt(label,entry,list,eos)               -> CommonStmt(label, <concat>[[entry], list], eos)
 
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
@@ -93,6 +103,13 @@ ofp-simplify-ast:  endfile-unit-stmt(label,u,eos)   -> EndfileStmt(label,[UNIT(u
 
 //R926
 ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)    -> RewindStmt(label,[UNIT(u)],eos)
+
+//R928
+ofp-simplify-ast:  flush-unit-stmt(label,u,eos)     -> FlushStmt(label,[UNIT(u)],eos)
+
+//R1003
+ofp-simplify-ast:  format-items-first(item)         -> [item]
+ofp-simplify-ast:  format-items(list, item)         -> <concat>[list, [item]]
 
 //R1109
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)

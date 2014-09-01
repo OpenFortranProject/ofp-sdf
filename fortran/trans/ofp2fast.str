@@ -50,6 +50,7 @@ rules //========================START OF RULES===============================
 
   ofp-extract-name:  no-program-stmt()                      -> None()
   ofp-extract-name:  ModuleStmt       (_,name,_)            -> name
+  ofp-extract-name:  SubmoduleStmt    (_,_,name,_)          -> name
   ofp-extract-name:  ProgramStmt      (_,name,_)            -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
   ofp-extract-name:  SubroutineStmt   (_,_,name,_,_,_)      -> name
@@ -77,18 +78,7 @@ rules //========================START OF RULES===============================
     SpecificationPart(l1)                        -> OfpSpecPart(l1)
 
 //R208
-  ofp-to-ast:  ExecutionPart(stmts)              -> OfpExecPart(stmts)
-
-//R310
-  ofp-to-ast:  PowerOp(op)                       -> OfpOp(op)
-  ofp-to-ast:  MultOp(op)                        -> OfpOp(op)
-  ofp-to-ast:  AddOp(op)                         -> OfpOp(op)
-  ofp-to-ast:  ConcatOp(op)                      -> OfpOp(op)
-  ofp-to-ast:  RelOp(op)                         -> OfpOp(op)
-  ofp-to-ast:  NotOp(op)                         -> OfpOp(op)
-  ofp-to-ast:  AndOp(op)                         -> OfpOp(op)
-  ofp-to-ast:  OrOp(op)                          -> OfpOp(op)
-  ofp-to-ast:  EquivOp(op)                       -> OfpOp(op)
+  ofp-to-ast:  SpecAndExecPart(stmts)            -> OfpExecPart(stmts)
 
 //R403
   ofp-to-ast:  INTEGER(kind)                     -> OfpType(INTEGER(),         <ofp-kind>kind)
@@ -146,28 +136,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  PartRef(name,no-section-subscripts(),
                             no-image-selector())           -> OfpVarRef(OfpName(name))
 
-//R626
-  ofp-to-ast:  AllocateStmt(label,type,list,opts,eos)
-                  -> OfpAllocateStmt(<ofp-label>label,type,list,<map(alloc-opt)>opts) {Comment(eos)}
-
-  ofp-to-ast:  no-type-spec()                             -> None()
-
-//R627
-//TODO - these may not all be simple ids (check for arrays, ...)
-  alloc-opt:  ERRMSG(str)                                 -> ERRMSG(<ofp-name-fail>str)
-  alloc-opt:  MOLD  (str)                                 -> MOLD  (<ofp-name-fail>str)
-  alloc-opt:  SOURCE(str)                                 -> SOURCE(<ofp-name-fail>str)
-  alloc-opt:  STAT  (str)                                 -> STAT  (<ofp-name-fail>str)
-
-//R631
-  ofp-to-ast:  Allocation(obj,shp,coshp)    -> OfpAllocation(<ofp-var-ref>obj,shp,coshp)
-
-//R633
-  ofp-to-ast:  AllocateShapeSpec(lb,ub)     -> OfpDimSpec(<ofp-var-ref>lb,<ofp-var-ref>ub)
-  ofp-to-ast:  no-shape-specs()             -> None()
-  ofp-to-ast:  no-coshape-specs()           -> None()
-  ofp-to-ast:  no-lower-bound()             -> None()
-
 //R636
   ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[OfpDimSpec(<ofp-add-some>lb,"*")]])
 
@@ -210,6 +178,14 @@ rules //========================START OF RULES===============================
                      OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
   ofp-to-ast:  Module(begin,spec,ModuleSubprogramPart(contains,l),end)
                   -> OfpModule(<ofp-extract-name>begin,
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
+
+//R1116
+  ofp-to-ast:  Submodule(begin,spec,no-module-subprogram-part(),end)
+                  -> OfpSubmodule(<ofp-extract-name>begin,
+                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
+  ofp-to-ast:  Submodule(begin,spec,ModuleSubprogramPart(contains,l),end)
+                  -> OfpSubmodule(<ofp-extract-name>begin,
                      OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
 
 //R1207
