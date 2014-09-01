@@ -99,6 +99,8 @@ exports
     OfpModuleStmt            %% R1105
     OfpEndModuleStmt         %% R1106
 
+    OfpSubmodule             %% R1116
+
     OfpUseStmt               %% R1109
     OfpModuleNature          %% R1110
     INTRINSIC
@@ -210,6 +212,7 @@ exports
 %%R202
   OfpMainProgram              -> OfpProgramUnit
   OfpModule                   -> OfpProgramUnit
+  OfpSubmodule                -> OfpProgramUnit
   OfpSubroutine               -> OfpProgramUnit
   OfpFunction                 -> OfpProgramUnit
 
@@ -369,6 +372,8 @@ exports
   OfpName                     -> OfpOnly            {cons("OfpOnly")}
   OfpRename                   -> OfpOnly            {cons("OfpOnly")}
   OfpOnly*                    -> OfpOnlyList        {cons("OfpOnlyList")}
+
+  OfpName?  OfpScope          -> OfpSubmodule       {cons("OfpSubmodule")}         %% R1116
 
   OfpInterfaceStmt
   OfpEndInterfaceStmt OfpScope* -> OfpInterfaceBlock {cons("OfpInterfaceBlock")}   %% R1201
