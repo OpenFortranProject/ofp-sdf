@@ -60,11 +60,15 @@
 
    
    #R503 --,
-   EntityDecl                 -- _1 _2 _3 _4 _5,
+   EntityDecl                    -- _1 _2 _3 _4 _5,
 
    #R505 --,
    Initialization                -- _1,
 
+   #R507 --,
+   PRIVATE                       -- KW["PRIVATE"],
+   PUBLIC                        -- KW["PUBLIC"],
+   
    #R508 --, 
    LanguageBindingSpec           -- _1 KW[" BIND(C)"],
    
@@ -77,16 +81,36 @@
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
 
+   #R524 --,
+   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
+   AccessStmt.3:iter-sep         -- _1 ", ",
+
+   #R553 --,
+   SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
+   SaveStmt.2:iter-sep           -- _1 ", ",
+
+   #R554 --,
+   SavedEntity                   -- _1,
+   SavedEntity_CBN               -- _1,
+
    #R560 --,
    ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
-   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] _2 _3],
+   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=0[_2 _3]],
 
    #R561 --,
    ImplicitSpec                  -- _1 "("_2")",
-   ImplicitSpec.2:iter-sep       -- _1 ",",
+   ImplicitSpec.2:iter-sep       -- _1 ", ",
 
    #R562 --,
    LetterSpec                    -- _1 _2,
+
+   #R568 --,
+   CommonStmt                    -- H hs=1[_1 KW["COMMON"] H hs=0[ _2 _3]],
+   CommonBlockEntry              -- _1 _2,
+   CommonBlockName               -- "/"_1"/",
+
+   #R569 --,
+   CommonBlockObject             -- _1 _2,
 
    #R602 --,
    OfpVarDef                     -- _1,
@@ -115,6 +139,9 @@
    Minus                         -- KW["-"] _1,
    NOT                           -- KW[".NOT."] _1,
    Plus                          -- _1 KW["+"] _2,
+
+   #R709 --,
+   PLUS                          -- KW ["+"],
 
    #R732 --,
    AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
@@ -179,12 +206,39 @@
    RewindStmt                    -- H hs=0[_1 KW["REWIND"] "("_2")" _3],
    RewindStmt.2:iter-sep         -- _1 ",",
 
-   #R1101 --,
-   PpMainProgram                -- V vs=0 [_1],
-   PpMainProgram.1:opt          -- ,
+   #R1001 --,
+   FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
+   FormatStmt.1:iter-sep         -- _1 ", ",
 
-   ProgramStmt                -- _1 KW["PROGRAM"] _2 _3,
-   EndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2 _3],
+   R#1002 --,
+   FormatSpec                    -- _1 _2,
+
+   R#1004 --,
+   R                             -- _1 _2,
+
+   R#1007 --,
+   I                             -- _1 KW["I"] _2 _3,
+   E                             -- _1 KW["E"] _2 _3 _4,
+   F                             -- _1 _2 _3,
+
+   #R1013 --,
+   P                             -- _1 KW["P"],
+   SLASH                         -- KW ["/ "] _1,
+   COLON_ED                      -- KW[":"],
+
+   #R1015 --,
+   X                             -- _1,
+
+   #R1021 --,
+   CS                            -- _1,
+
+
+   #R1101 --,
+   PpMainProgram                 -- V vs=0 [_1],
+   PpMainProgram.1:opt           -- ,
+
+   ProgramStmt                   -- _1 KW["PROGRAM"] _2 _3,
+   EndProgramStmt                -- H hs=1[_1 "END PROGRAM" _2 _3],
 
    #R1104 --,
    PpModule                      -- _1,
@@ -197,7 +251,7 @@
 
    #R1109 --,
    UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "]_4 _5]],
+   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "] _4 _5]],
 
    #R1111 --,
    Rename                        -- H hs=0[_1 KW["=>"] _2],
@@ -239,11 +293,13 @@
    #R1206 --,
    ProcedureStmt,                      -- _1 _2 _3,
 
-    #R1207 --,
+   #R1207 --,
    OfpGenericSpec                      -- _1,
+   ASSIGNMENT                          -- KW["ASSIGNMENT"],
+   OPERATOR                            -- KW ["OPERATOR"] _1,
 
    #R1210 --,
-   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL :: "] H hs=0[_2] _3],
+   ExternalStmt                        -- H hs=0[_1 KW["EXTERNAL :: "] _2 _3],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
