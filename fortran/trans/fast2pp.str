@@ -7,7 +7,6 @@ imports
 signature
   constructors
 
-    PpLiteral      : OfpLiteral      -> PpLiteral
     PpMainProgram  : OfpMainProgram  -> PpMainProgram
     PpModule       : OfpModule       -> PpModule
     PpFunction     : OfpFunction     -> PpFunction
@@ -15,6 +14,11 @@ signature
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
     eos            : EOStmt          -> EOS
+
+    opt-list       : list            -> opt-list
+
+    SyncImagesStmt : OptLabel * ImageSet * OptSyncStatList -> SyncImagesStmt
+
 
 strategies
 
@@ -25,14 +29,20 @@ strategies
       outermost(ast-to-pp)
     ; outermost(no-to-none)
 
+  pp-opt-list =
+      where(<gt>(<length>,0))
+    ; !opt-list(<id>)
+
+
 rules
 
 // Don't print EOS and associated comments
 //
   ast-to-pp:  eos(_)                       -> None()
 
-//R305
-  ast-to-pp:  OfpLiteral(str, type)        -> PpLiteral(str)
+//R860
+//  ast-to-pp:
+//    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
 
 //R1101
   ast-to-pp:  OfpMainProgram(name, scope)  -> PpMainProgram(scope)
