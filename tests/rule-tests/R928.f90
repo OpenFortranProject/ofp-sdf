@@ -6,7 +6,7 @@
 
 character :: cvar
 
-flush(unit=5)
-flush(6, iostat=ifoo, err=13, iomsg=cvar)
+11 flush(unit=5)
+12 flush(6, iostat=ifoo, err=13, iomsg=cvar)
 
 13 end
