@@ -2,14 +2,7 @@ module Main
 
 signature
   constructors
-                                   : Option(SubmoduleName) -> OptSubmoduleName1
-                                   : ParentSubmoduleName -> ParentSubmoduleName0
-                                   : VEditDescList -> VEditDescList0
-                                   : Icon -> Icon0
-                                   : Icon -> Icon1
-                                   : FormatItems -> FormatItems0
                                    : IntExpr -> IntExpr0
-                                   : OutputItemList -> OutputItemList0
                                    : InputItemList -> InputItemList0
                                    : AssociateName -> AssociateName0
                                    : SelectConstructName -> SelectConstructName0
@@ -26,8 +19,8 @@ signature
                                    : ForallConstructName -> ForallConstructName0
                                    : Ident -> Ident0
                                    : BoundsSpecList -> BoundsSpecList0
-                                   : ArraySpec -> ArraySpec0
                                    : CoarraySpec -> CoarraySpec0
+                                   : ArraySpec -> ArraySpec0
                                    : AssumedOrDeferredShapeSpecList -> AssumedOrDeferredShapeSpecList0
                                    : DataStmtRepeat -> DataStmtRepeat0
                                    : IntConstantExpr -> IntConstantExpr0
@@ -51,7 +44,7 @@ signature
     EndMpSubprogramStmt            : OptLabel * ProcedureName * EOS -> EndMpSubprogramStmt
     EndMpSubprogramStmt            : OptLabel * NoProcedureName * EOS -> EndMpSubprogramStmt
     MpSubprogramStmt               : OptLabel * ProcedureName * EOS -> MpSubprogramStmt
-    SeparateModuleSubprogram       : MpSubprogramStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndMpSubprogramStmt -> SeparateModuleSubprogram
+    SeparateModuleSubprogram       : MpSubprogramStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndMpSubprogramStmt -> SeparateModuleSubprogram
                                    : SubroutineName -> OptSubroutineName
     no-subroutine-name             : OptSubroutineName
     no-subroutine-name             : NoSubroutineName
@@ -66,7 +59,7 @@ signature
                                    : DummyArgName -> DummyArg
     SubroutineStmt                 : OptLabel * OptPrefix * SubroutineName * NoDummyArgList * NoProcLanguageBindingSpec * EOS -> SubroutineStmt
     SubroutineStmt                 : OptLabel * OptPrefix * SubroutineName * OptDummyArgList * OptProcLanguageBindingSpec * EOS -> SubroutineStmt
-    SubroutineSubprogram           : SubroutineStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndSubroutineStmt -> SubroutineSubprogram
+    SubroutineSubprogram           : SubroutineStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndSubroutineStmt -> SubroutineSubprogram
                                    : FunctionName -> OptFunctionName
     no-function-name               : OptFunctionName
     no-function-name               : NoFunctionName
@@ -88,7 +81,7 @@ signature
                                    : ProcLanguageBindingSpec -> OptProcLanguageBindingSpec
                                    : LanguageBindingSpec -> ProcLanguageBindingSpec
     FunctionStmt                   : OptLabel * OptPrefix * FunctionName * List(DummyArgName) * OptSuffix * EOS -> FunctionStmt
-    FunctionSubprogram             : FunctionStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndFunctionStmt -> FunctionSubprogram
+    FunctionSubprogram             : FunctionStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndFunctionStmt -> FunctionSubprogram
     RECURSIVE                      : PrefixSpec
     PURE                           : PrefixSpec
     MODULE                         : PrefixSpec
@@ -170,10 +163,17 @@ signature
     EndBlockDataStmt               : OptLabel * OptBlockDataName * EOS -> EndBlockDataStmt
     BlockDataStmt                  : OptLabel * OptBlockDataName * EOS -> BlockDataStmt
     BlockData                      : BlockDataStmt * SpecificationPart * EndBlockDataStmt -> BlockData
-    EndSubmoduleStmt               : Option(Label) * Option(OptSubmoduleName1) * EOS -> EndSubmoduleStmt
-    ParentIdentifier               : AncestorModuleName * Option(ParentSubmoduleName0) -> ParentIdentifier
-    SubmoduleStmt                  : Option(Label) * ParentIdentifier * SubmoduleName * EOS -> SubmoduleStmt
-    Submodule                      : SubmoduleStmt * SpecificationPart * Option(ModuleSubprogramPart) * EndSubmoduleStmt -> Submodule
+    EndSubmoduleStmt               : OptLabel * NoSubmoduleName * EOS -> EndSubmoduleStmt
+    EndSubmoduleStmt               : OptLabel * SubmoduleName * EOS -> EndSubmoduleStmt
+    no-parent-submodule-name       : NoParentSubmoduleName
+                                   : Ident -> ParentSubmoduleName
+                                   : Ident -> AncestorModuleName
+    ParentIdentifier               : AncestorModuleName * NoParentSubmoduleName -> ParentIdentifier
+    ParentIdentifier               : AncestorModuleName * ParentSubmoduleName -> ParentIdentifier
+    no-submodule-name              : NoSubmoduleName
+                                   : Ident -> SubmoduleName
+    SubmoduleStmt                  : OptLabel * ParentIdentifier * SubmoduleName * EOS -> SubmoduleStmt
+    Submodule                      : SubmoduleStmt * SpecificationPart * OptModuleSubprogramPart * EndSubmoduleStmt -> Submodule
     UseDefinedOperator_DBO         : DefinedBinaryOp -> UseDefinedOperator
     UseDefinedOperator_DUO         : DefinedUnaryOp -> UseDefinedOperator
     LocalDefinedOperator_DBO       : DefinedBinaryOp -> LocalDefinedOperator
@@ -221,7 +221,7 @@ signature
     ProgramStmt                    : OptLabel * ProgramName * EOS -> ProgramStmt
     no-program-stmt                : OptProgramStmt
                                    : ProgramStmt -> OptProgramStmt
-    MainProgram                    : OptProgramStmt * SpecificationPart * ExecutionPart * OptInternalSubprogramPart * EndProgramStmt -> MainProgram
+    MainProgram                    : OptProgramStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndProgramStmt -> MainProgram
     no-keyword                     : NoKeyword
                                    : Name -> Keyword
                                    : PauseStmt -> ActionStmt
@@ -301,11 +301,10 @@ signature
     no-subprogram-part             : OptInternalSubprogramPart
                                    : InternalSubprogramPart -> OptInternalSubprogramPart
     SubprogramPart                 : ContainsStmt * List(InternalSubprogram) -> InternalSubprogramPart
-                                   : DataStmt -> ExecutionPartConstruct
-                                   : EntryStmt -> ExecutionPartConstruct
-                                   : FormatStmt -> ExecutionPartConstruct
                                    : ExecutableConstruct -> ExecutionPartConstruct
-    ExecutionPart                  : List(ExecutionPartConstruct) -> ExecutionPart
+                                   : ExecutableConstruct -> SpecAndExecConstruct
+                                   : DeclarationConstruct -> SpecAndExecConstruct
+                                   : ImplicitStmt -> SpecAndExecConstruct
                                    : StmtFunctionStmt -> DeclarationConstruct
                                    : TypeDeclarationStmt -> DeclarationConstruct
                                    : OtherSpecificationStmt -> DeclarationConstruct
@@ -323,7 +322,9 @@ signature
     no-implicit-part               : OptImplicitPart
                                    : ImplicitPart -> OptImplicitPart
     ImplicitPart                   : List(ImplicitPartStmt) * ImplicitStmt -> ImplicitPart
+    SpecAndExecPart                : List(SpecAndExecConstruct) -> SpecAndExecPart
     SpecificationPart              : List(UseStmt) * List(ImportStmt) * OptImplicitPart * List(DeclarationConstruct) -> SpecificationPart
+    initial-spec-part              : List(UseStmt) * List(ImportStmt) -> InitialSpecPart
                                    : SubroutineSubprogram -> ExternalSubprogram
                                    : FunctionSubprogram -> ExternalSubprogram
                                    : BlockData -> ProgramUnit
@@ -334,116 +335,131 @@ signature
     no-comments                    : OptStartCommentBlock
                                    : StartCommentBlock -> OptStartCommentBlock
     Program                        : OptStartCommentBlock * List(ProgramUnit) -> Program
-    SubmoduleName                  : Ident -> SubmoduleName
-    ParentSubmoduleName            : Ident -> ParentSubmoduleName
-    AncestorModuleName             : Ident -> AncestorModuleName
-    DecimalEditDesc_DP             : DecimalEditDesc
-    DecimalEditDesc_DC             : DecimalEditDesc
-    RoundEditDesc_RP               : RoundEditDesc
-    RoundEditDesc_RC               : RoundEditDesc
-    RoundEditDesc_RN               : RoundEditDesc
-    RoundEditDesc_RZ               : RoundEditDesc
-    RoundEditDesc_RD               : RoundEditDesc
-    RoundEditDesc_RU               : RoundEditDesc
-    BlonkInterpEditDesc_BZ         : BlankInterpEditDesc
-    BlonkInterpEditDesc_BN         : BlankInterpEditDesc
-    SignEditDesc_S                 : SignEditDesc
-    SignEditDesc_SP                : SignEditDesc
-    SignEditDesc_SS                : SignEditDesc
-    PositionEditDesc_X             : Icon -> PositionEditDesc
-    PositionEditDesc_TR            : Icon -> PositionEditDesc
-    PositionEditDesc_TL            : Icon -> PositionEditDesc
-    PositionEditDesc_T             : Icon -> PositionEditDesc
-    ControlEditDesc_DED            : DecimalEditDesc -> ControlEditDesc
-    ControlEditDesc_RED            : RoundEditDesc -> ControlEditDesc
-    ControlEditDesc_BIED           : BlankInterpEditDesc -> ControlEditDesc
-    ControlEditDesc_P              : SignedIntLiteralConstant -> ControlEditDesc
-    ControlEditDesc_SED            : SignEditDesc -> ControlEditDesc
-    ControlEditDesc_COLON          : ControlEditDesc
-    ControlEditDesc_SLASH          : Option(Icon) -> ControlEditDesc
-    ControlEditDesc_PED            : PositionEditDesc -> ControlEditDesc
-    VEditDescList                  : List(Icon) -> VEditDescList
-    DataEditDesc_DT                : Option(Scon) * Option(VEditDescList0) -> DataEditDesc
-    DataEditDesc_D                 : Icon * Icon -> DataEditDesc
-    DataEditDesc_A                 : Option(Icon) -> DataEditDesc
-    DataEditDesc_L                 : Icon -> DataEditDesc
-    DataEditDesc_G                 : Icon -> DataEditDesc
-    DataEditDesc_GE                : Icon * Icon * Option(Icon0) -> DataEditDesc
-    DataEditDesc_ES                : Icon * Icon * Option(Icon0) -> DataEditDesc
-    DataEditDesc_EN                : Icon * Icon * Option(Icon0) -> DataEditDesc
-    DataEditDesc_E                 : Icon * Icon * Option(Icon0) -> DataEditDesc
-    DataEditDesc_F                 : Icon * Icon -> DataEditDesc
-    DataEditDesc_Z                 : Icon * Option(Icon1) -> DataEditDesc
-    DataEditDesc_O                 : Icon * Option(Icon1) -> DataEditDesc
-    DataEditDesc_B                 : Icon * Option(Icon1) -> DataEditDesc
-    DataEditDesc_I                 : Icon * Option(Icon1) -> DataEditDesc
+    CS                             : CharLiteralConstant -> CharStringEditDesc
+    DP                             : DecimalEditDesc
+    DC                             : DecimalEditDesc
+    RP                             : RoundEditDesc
+    RC                             : RoundEditDesc
+    RN                             : RoundEditDesc
+    RZ                             : RoundEditDesc
+    RD                             : RoundEditDesc
+    RU                             : RoundEditDesc
+    BZ                             : BlankInterpEditDesc
+    BN                             : BlankInterpEditDesc
+    S                              : SignEditDesc
+    SP                             : SignEditDesc
+    SS                             : SignEditDesc
+    X                              : IntLiteralConstant -> PositionEditDesc
+    TR                             : IntLiteralConstant -> PositionEditDesc
+    TL                             : IntLiteralConstant -> PositionEditDesc
+    T                              : IntLiteralConstant -> PositionEditDesc
+                                   : DecimalEditDesc -> ControlEditDesc
+                                   : RoundEditDesc -> ControlEditDesc
+                                   : BlankInterpEditDesc -> ControlEditDesc
+    P                              : SignedIntLiteralConstant -> ControlEditDesc
+                                   : SignEditDesc -> ControlEditDesc
+    COLON_ED                       : ControlEditDesc
+    SLASH                          : NoR -> ControlEditDesc
+    SLASH                          : IntLiteralConstant -> ControlEditDesc
+                                   : PositionEditDesc -> ControlEditDesc
+    V                              : SignedIntLiteralConstant -> VEditDesc
+    no-list                        : OptVList
+    opt-list                       : List(VEditDesc) -> OptVList
+    no-iotype                      : OptIOType
+    opt-iotype                     : CharLiteralConstant -> OptIOType
+    no-d                           : NoD
+    no-e                           : NoE
+    no-e                           : OptE
+    opt-e                          : IntLiteralConstant -> OptE
+    no-m                           : OptM
+    opt-m                          : IntLiteralConstant -> OptM
+    no-w                           : OptW
+    opt-w                          : IntLiteralConstant -> OptW
+    DT                             : OptR * OptIOType * OptVList -> DataEditDesc
+    D                              : OptR * IntLiteralConstant * IntLiteralConstant -> DataEditDesc
+    A                              : OptR * OptW -> DataEditDesc
+    L                              : OptR * IntLiteralConstant -> DataEditDesc
+    G                              : OptR * IntLiteralConstant * NoD * NoE -> DataEditDesc
+    G                              : OptR * IntLiteralConstant * IntLiteralConstant * OptE -> DataEditDesc
+    ES                             : OptR * IntLiteralConstant * IntLiteralConstant * OptE -> DataEditDesc
+    EN                             : OptR * IntLiteralConstant * IntLiteralConstant * OptE -> DataEditDesc
+    E                              : OptR * IntLiteralConstant * IntLiteralConstant * OptE -> DataEditDesc
+    F                              : OptR * IntLiteralConstant * IntLiteralConstant -> DataEditDesc
+    Z                              : OptR * IntLiteralConstant * OptM -> DataEditDesc
+    O                              : OptR * IntLiteralConstant * OptM -> DataEditDesc
+    B                              : OptR * IntLiteralConstant * OptM -> DataEditDesc
+    I                              : OptR * IntLiteralConstant * OptM -> DataEditDesc
     UnlimitedFormatItem            : FormatItems -> UnlimitedFormatItem
-    FormatItem_FIs                 : Option(Icon) * FormatItems -> FormatItem
-    FormatItem_CSED                : Scon -> FormatItem
-    FormatItem_CED                 : ControlEditDesc -> FormatItem
-    FormatItem_RED                 : Option(Icon) * DataEditDesc -> FormatItem
-    FormatItems_FIs                : FormatItems * FormatItem -> FormatItems
-    FormatItems_0                  : FormatItem -> FormatItems
-    FormatSpecification_UFI        : Option(FormatItems0) * UnlimitedFormatItem -> FormatSpecification
-    FormatSpecification_0          : Option(FormatItems) -> FormatSpecification
+    no-r                           : NoR
+    no-r                           : OptR
+                                   : IntLiteralConstant -> OptR
+    R                              : OptR * FormatItems -> FormatItem
+                                   : CharStringEditDesc -> FormatItem
+                                   : ControlEditDesc -> FormatItem
+                                   : DataEditDesc -> FormatItem
+    format-items                   : FormatItems * FormatItem -> FormatItems
+    format-items-first             : FormatItem -> FormatItems
+    no-list                        : NoUnlimitedFormatItem
+    no-list                        : NoFormatItems
+    FormatSpec                     : FormatItems * UnlimitedFormatItem -> FormatSpecification
+    FormatSpec                     : NoFormatItems * UnlimitedFormatItem -> FormatSpecification
+    FormatSpec                     : FormatItems * NoUnlimitedFormatItem -> FormatSpecification
+    FormatSpec                     : NoFormatItems * NoUnlimitedFormatItem -> FormatSpecification
     FormatStmt                     : Label * FormatSpecification * EOS -> FormatStmt
-    InquireSpecList                : List(InquireSpec) -> InquireSpecList
-    InquireSpec_WRITE              : DefaultCharExpr -> InquireSpec
-    InquireSpec_UNFORMATTED        : DefaultCharExpr -> InquireSpec
-    InquireSpec_STREAM             : DefaultCharExpr -> InquireSpec
-    InquireSpec_SIZE               : IntVariable -> InquireSpec
-    InquireSpec_SIGN               : DefaultCharExpr -> InquireSpec
-    InquireSpec_SEQUENTIAL         : DefaultCharExpr -> InquireSpec
-    InquireSpec_ROUND              : DefaultCharExpr -> InquireSpec
-    InquireSpec_RECL               : IntVariable -> InquireSpec
-    InquireSpec_READWRITE          : DefaultCharExpr -> InquireSpec
-    InquireSpec_READ               : DefaultCharExpr -> InquireSpec
-    InquireSpec_POSITION           : DefaultCharExpr -> InquireSpec
-    InquireSpec_POS                : IntVariable -> InquireSpec
-    InquireSpec_PENDING            : LogicalVariable -> InquireSpec
-    InquireSpec_PAD                : DefaultCharExpr -> InquireSpec
-    InquireSpec_OPENED             : LogicalVariable -> InquireSpec
-    InquireSpec_NUMBER             : IntVariable -> InquireSpec
-    InquireSpec_NEXTREC            : IntVariable -> InquireSpec
-    InquireSpec_NAMED              : LogicalVariable -> InquireSpec
-    InquireSpec_NAME               : DefaultCharExpr -> InquireSpec
-    InquireSpec_IOSTAT             : IntVariable -> InquireSpec
-    InquireSpec_IOMSG              : IomsgVariable -> InquireSpec
-    InquireSpec_ID                 : IntExpr -> InquireSpec
-    InquireSpec_FORMATTED          : DefaultCharExpr -> InquireSpec
-    InquireSpec_FORM               : DefaultCharExpr -> InquireSpec
-    InquireSpec_EXIST              : LogicalVariable -> InquireSpec
-    InquireSpec_ERR                : LblRef -> InquireSpec
-    InquireSpec_ENCODING           : DefaultCharExpr -> InquireSpec
-    InquireSpec_DIRECT             : DefaultCharExpr -> InquireSpec
-    InquireSpec_DELIM              : DefaultCharExpr -> InquireSpec
-    InquireSpec_DECIMAL            : DefaultCharExpr -> InquireSpec
-    InquireSpec_BLANK              : DefaultCharExpr -> InquireSpec
-    InquireSpec_ASYNC              : DefaultCharExpr -> InquireSpec
-    InquireSpec_ACTION             : DefaultCharExpr -> InquireSpec
-    InquireSpec_ACCESS             : DefaultCharExpr -> InquireSpec
-    InquireSpec_FILE               : FileNameExpr -> InquireSpec
-    InquireSpec_UNIT               : FileUnitNumber -> InquireSpec
-    InquireStmt_IV                 : Option(Label) * IntVariable * OutputItemList * EOS -> InquireStmt
-    InquireStmt_ISL                : Option(Label) * InquireSpecList * EOS -> InquireStmt
-    FlushSpecList                  : List(FlushSpec) -> FlushSpecList
-    FlushSpec_ERR                  : LblRef -> FlushSpec
-    FlushSpec_IOMSG                : IomsgVariable -> FlushSpec
-    FlushSpec_IOSTAT               : IntVariable -> FlushSpec
-    FlushSpec_UNIT                 : FileUnitNumber -> FlushSpec
-    FlushStmt_FSL                  : Option(Label) * FlushSpecList * EOS -> FlushStmt
-    FlushStmt_FUN                  : Option(Label) * FileUnitNumber * EOS -> FlushStmt
-    PositionSpecList               : List(PositionSpec) -> PositionSpecList
-    PositionSpec_ERR               : LblRef -> PositionSpec
-    PositionSpec_IOMSG             : IomsgVariable -> PositionSpec
-    PositionSpec_IOSTAT            : IntVariable -> PositionSpec
-    PositionSpec_UNIT              : FileUnitNumber -> PositionSpec
-    RewindStmt_PSL                 : Option(Label) * PositionSpecList * EOS -> RewindStmt
-    RewindStmt_FUN                 : Option(Label) * FileUnitNumber * EOS -> RewindStmt
-    EndfileStmt_PSL                : Option(Label) * PositionSpecList * EOS -> EndfileStmt
-    EndfileStmt_FUN                : Option(Label) * FileUnitNumber * EOS -> EndfileStmt
-    BackspaceStmt_PSL              : Option(Label) * PositionSpecList * EOS -> BackspaceStmt
-    BackspaceStmt_FUN              : Option(Label) * FileUnitNumber * EOS -> BackspaceStmt
+    WRITE                          : DefaultCharExpr -> InquireSpec
+    UNFORMATTED                    : DefaultCharExpr -> InquireSpec
+    STREAM                         : DefaultCharExpr -> InquireSpec
+    SIZE                           : IntVariable -> InquireSpec
+    SIGN                           : DefaultCharExpr -> InquireSpec
+    SEQUENTIAL                     : DefaultCharExpr -> InquireSpec
+    ROUND                          : DefaultCharExpr -> InquireSpec
+    RECL                           : IntVariable -> InquireSpec
+    READWRITE                      : DefaultCharExpr -> InquireSpec
+    READ                           : DefaultCharExpr -> InquireSpec
+    POSITION                       : DefaultCharExpr -> InquireSpec
+    POS                            : IntVariable -> InquireSpec
+    PENDING                        : LogicalVariable -> InquireSpec
+    PAD                            : DefaultCharExpr -> InquireSpec
+    OPENED                         : LogicalVariable -> InquireSpec
+    NUMBER                         : IntVariable -> InquireSpec
+    NEXTREC                        : IntVariable -> InquireSpec
+    NAMED                          : LogicalVariable -> InquireSpec
+    NAME                           : DefaultCharExpr -> InquireSpec
+    IOSTAT                         : IntVariable -> InquireSpec
+    IOMSG                          : IomsgVariable -> InquireSpec
+    ID                             : IntExpr -> InquireSpec
+    FORMATTED                      : DefaultCharExpr -> InquireSpec
+    FORM                           : DefaultCharExpr -> InquireSpec
+    EXIST                          : LogicalVariable -> InquireSpec
+    ERR                            : LblRef -> InquireSpec
+    ENCODING                       : DefaultCharExpr -> InquireSpec
+    DIRECT                         : DefaultCharExpr -> InquireSpec
+    DELIM                          : DefaultCharExpr -> InquireSpec
+    DECIMAL                        : DefaultCharExpr -> InquireSpec
+    BLANK                          : DefaultCharExpr -> InquireSpec
+    ASYNCHRONOUS                   : DefaultCharExpr -> InquireSpec
+    ACTION                         : DefaultCharExpr -> InquireSpec
+    ACCESS                         : DefaultCharExpr -> InquireSpec
+    FILE                           : FileNameExpr -> InquireSpec
+    UNIT                           : FileUnitNumber -> InquireSpec
+    InquireLengthStmt              : OptLabel * IntVariable * List(OutputItem) * EOS -> InquireStmt
+    InquireStmt                    : OptLabel * List(InquireSpec) * EOS -> InquireStmt
+    ERR                            : LblRef -> FlushSpec
+    IOMSG                          : IomsgVariable -> FlushSpec
+    IOSTAT                         : IntVariable -> FlushSpec
+    UNIT                           : FileUnitNumber -> FlushSpec
+    FlushStmt                      : OptLabel * List(FlushSpec) * EOS -> FlushStmt
+    flush-unit-stmt                : OptLabel * FileUnitNumber * EOS -> FlushStmt
+    ERR                            : LblRef -> PositionSpec
+    IOMSG                          : IomsgVariable -> PositionSpec
+    IOSTAT                         : IntVariable -> PositionSpec
+    UNIT                           : FileUnitNumber -> PositionSpec
+    RewindStmt                     : OptLabel * List(PositionSpec) * EOS -> RewindStmt
+    rewind-unit-stmt               : OptLabel * FileUnitNumber * EOS -> RewindStmt
+    EndfileStmt                    : OptLabel * List(PositionSpec) * EOS -> EndfileStmt
+    endfile-unit-stmt              : OptLabel * FileUnitNumber * EOS -> EndfileStmt
+    BackspaceStmt                  : OptLabel * List(PositionSpec) * EOS -> BackspaceStmt
+    backspace-unit-stmt            : OptLabel * FileUnitNumber * EOS -> BackspaceStmt
     IOSTAT                         : IntExpr -> WaitSpec
     IOMSG                          : IomsgVariable -> WaitSpec
     ID                             : IntExpr -> WaitSpec
@@ -457,9 +473,10 @@ signature
     IoImpliedDoObject_OI           : OutputItem -> IoImpliedDoObject
     IoImpliedDoObject_II           : InputItem -> IoImpliedDoObject
     IoImpliedDo                    : IoImpliedDoObjectList * IoImpliedDoControl -> IoImpliedDo
-    OutputItemList                 : List(OutputItem) -> OutputItemList
+    no-list                        : OptOutputItemList
+    opt-list                       : List(OutputItem) -> OptOutputItemList
     OutputItem_IID                 : IoImpliedDo -> OutputItem
-    OutputItem_E                   : Expr -> OutputItem
+    OutputItem                     : Expr -> OutputItem
     InputItemList                  : List(InputItem) -> InputItemList
     InputItem_IID                  : IoImpliedDo -> InputItem
     InputItem_V                    : Variable -> InputItem
@@ -467,7 +484,6 @@ signature
     Format_L                       : Label -> Format
     Format_DCE                     : DefaultCharExpr -> Format
     IdVariable                     : IntVariable -> IdVariable
-    IoControlSpecList              : List(IoControlSpec) -> IoControlSpecList
     IoControlSpec_SIZE             : IntVariable -> IoControlSpec
     IoControlSpec_SIGN             : DefaultCharExpr -> IoControlSpec
     IoControlSpec_ROUND            : DefaultCharExpr -> IoControlSpec
@@ -483,15 +499,15 @@ signature
     IoControlSpec_DELIM            : DefaultCharExpr -> IoControlSpec
     IoControlSpec_DECIMAL          : DefaultCharExpr -> IoControlSpec
     IoControlSpec_BLANK            : DefaultCharExpr -> IoControlSpec
-    IoControlSpec_ASYNC            : DefaultCharExpr -> IoControlSpec
+    IoControlSpec_ASYNCHRONOUS     : DefaultCharExpr -> IoControlSpec
     IoControlSpec_ADVANCE          : DefaultCharExpr -> IoControlSpec
     IoControlSpec_NML              : NamelistGroupName -> IoControlSpec
     IoControlSpec_FMT              : Format -> IoControlSpec
     IoControlSpec_UNIT             : IoUnit -> IoControlSpec
-    PrintStmt                      : Option(Label) * Format * Option(OutputItemList0) * EOS -> PrintStmt
-    WriteStmt                      : Option(Label) * IoControlSpecList * Option(OutputItemList) * EOS -> WriteStmt
+    PrintStmt                      : OptLabel * Format * OptOutputItemList * EOS -> PrintStmt
+    WriteStmt                      : Option(Label) * List(IoControlSpec) * List(OutputItem) * EOS -> WriteStmt
     ReadStmt_F                     : Option(Label) * Format * Option(InputItemList0) * EOS -> ReadStmt
-    ReadStmt_ICSL                  : Option(Label) * IoControlSpecList * Option(InputItemList) * EOS -> ReadStmt
+    ReadStmt_ICSL                  : Option(Label) * List(IoControlSpec) * List(InputItem) * EOS -> ReadStmt
     CloseSpecList                  : List(CloseSpec) -> CloseSpecList
     CloseSpec_STATUS               : DefaultCharExpr -> CloseSpec
     CloseSpec_ERR                  : LblRef -> CloseSpec
@@ -500,33 +516,32 @@ signature
     CloseSpec_UNIT                 : FileUnitNumber -> CloseSpec
     CloseStmt                      : Option(Label) * CloseSpecList * EOS -> CloseStmt
                                    : DefaultCharExpr -> IomsgVariable
-    FileNameExpr                   : DefaultCharExpr -> FileNameExpr
-    ConnectSpecList                : List(ConnectSpec) -> ConnectSpecList
-    ConnectSpec_STATUS             : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_SIGN               : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_ROUND              : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_RECL               : IntExpr -> ConnectSpec
-    ConnectSpec_POSITION           : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_PAD                : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_NEWUNIT            : IntVariable -> ConnectSpec
-    ConnectSpec_IOSTAT             : IntVariable -> ConnectSpec
-    ConnectSpec_IOMSG              : IomsgVariable -> ConnectSpec
-    ConnectSpec_FORM               : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_FILE               : FileNameExpr -> ConnectSpec
-    ConnectSpec_ERR                : LblRef -> ConnectSpec
-    ConnectSpec_ENCODING           : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_DELIM              : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_DECIMAL            : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_BLANK              : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_ASYNC              : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_ACTION             : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_ACCESS             : DefaultCharExpr -> ConnectSpec
-    ConnectSpec_UNIT               : FileUnitNumber -> ConnectSpec
-    OpenStmt                       : Option(Label) * ConnectSpecList * EOS -> OpenStmt
+                                   : DefaultCharExpr -> FileNameExpr
+    STATUS                         : DefaultCharExpr -> ConnectSpec
+    SIGN                           : DefaultCharExpr -> ConnectSpec
+    ROUND                          : DefaultCharExpr -> ConnectSpec
+    RECL                           : IntExpr -> ConnectSpec
+    POSITION                       : DefaultCharExpr -> ConnectSpec
+    PAD                            : DefaultCharExpr -> ConnectSpec
+    NEWUNIT                        : IntVariable -> ConnectSpec
+    IOSTAT                         : IntVariable -> ConnectSpec
+    IOMSG                          : IomsgVariable -> ConnectSpec
+    FORM                           : DefaultCharExpr -> ConnectSpec
+    FILE                           : FileNameExpr -> ConnectSpec
+    ERR                            : LblRef -> ConnectSpec
+    ENCODING                       : DefaultCharExpr -> ConnectSpec
+    DELIM                          : DefaultCharExpr -> ConnectSpec
+    DECIMAL                        : DefaultCharExpr -> ConnectSpec
+    BLANK                          : DefaultCharExpr -> ConnectSpec
+    ASYNCHRONOUS                   : DefaultCharExpr -> ConnectSpec
+    ACTION                         : DefaultCharExpr -> ConnectSpec
+    ACCESS                         : DefaultCharExpr -> ConnectSpec
+    UNIT                           : FileUnitNumber -> ConnectSpec
+    OpenStmt                       : OptLabel * List(ConnectSpec) * EOS -> OpenStmt
                                    : IntExpr -> FileUnitNumber
-    IoUnit_IFV                     : CharVariable -> IoUnit
-    IoUnit_STAR                    : IoUnit
-    IoUnit_FUN                     : IntExpr -> IoUnit
+                                   : CharVariable -> IoUnit
+    STAR                           : IoUnit
+                                   : IntExpr -> IoUnit
     PauseStmt                      : OptLabel * OptStopCode * EOS -> PauseStmt
                                    : Variable -> LockVariable
     UnlockStmt                     : OptLabel * LockVariable * OptSyncStatList * EOS -> UnlockStmt
@@ -716,18 +731,18 @@ signature
                                    : Designator -> Primary
                                    : Constant -> Primary
                                    : IntrinsicOperator -> ExtendedIntrinsicOp
-    DefinedOperator                : ExtendedIntrinsicOp -> DefinedOperator
-    DefinedOperator                : DefinedBinaryOp -> DefinedOperator
-    DefinedOperator                : DefinedUnaryOp -> DefinedOperator
-    EquivOp                        : EquivOp -> IntrinsicOperator
-    OrOp                           : OrOp -> IntrinsicOperator
-    AndOp                          : AndOp -> IntrinsicOperator
-    NotOp                          : NotOp -> IntrinsicOperator
-    RelOp                          : RelOp -> IntrinsicOperator
-    ConcatOp                       : ConcatOp -> IntrinsicOperator
-    AddOp                          : AddOp -> IntrinsicOperator
-    MultOp                         : MultOp -> IntrinsicOperator
-    PowerOp                        : PowerOp -> IntrinsicOperator
+                                   : ExtendedIntrinsicOp -> DefinedOperator
+                                   : DefinedBinaryOp -> DefinedOperator
+                                   : DefinedUnaryOp -> DefinedOperator
+                                   : EquivOp -> IntrinsicOperator
+                                   : OrOp -> IntrinsicOperator
+                                   : AndOp -> IntrinsicOperator
+                                   : NotOp -> IntrinsicOperator
+                                   : RelOp -> IntrinsicOperator
+                                   : ConcatOp -> IntrinsicOperator
+                                   : AddOp -> IntrinsicOperator
+                                   : MultOp -> IntrinsicOperator
+                                   : PowerOp -> IntrinsicOperator
     ProcedureComponentName         : Ident -> ProcedureComponentName
     IndexName                      : Ident -> IndexName
     ForallConstructName            : Ident -> ForallConstructName
@@ -751,8 +766,8 @@ signature
                                    : IntExpr -> UpperBoundExpr
                                    : IntExpr -> LowerBoundExpr
     no-lower-bound                 : NoLowerBoundExpr
-    no-coshape-specs               : NoAllocateCoarraySpec
-    no-shape-specs                 : NoAllocateShapeSpecList
+    no-list                        : NoAllocateCoarraySpec
+    no-list                        : NoAllocateShapeSpecList
     AllocateShapeSpec              : LowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
     AllocateShapeSpec              : NoLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
                                    : StructureComponent -> AllocateObject
@@ -803,12 +818,15 @@ signature
                                    : Designator -> Variable
                                    : Substring -> Designator
                                    : DataRef -> Designator
-    CommonBlockObjectList          : List(CommonBlockObject) -> CommonBlockObjectList
-    CommonBlockObject              : VariableName * Option(ArraySpec0) -> CommonBlockObject
-    CBE                            : Option(CommonBlockName) * CommonBlockObjectList -> CommonBlockEntry
-    CBE1                           : CommonBlockObjectList -> CommonBlockEntry1
-    CBE1_CBN                       : Option(CommonBlockName) * CommonBlockObjectList -> CommonBlockEntry1
-    CommonStmt                     : Option(Label) * CommonBlockEntry1 * List(CommonBlockEntry) * EOS -> CommonStmt
+    CommonBlockObject              : VariableName * OptArraySpec -> CommonBlockObject
+    no-cb-name1                    : NoCommonBlockName1
+    no-cb-name                     : OptCommonBlockName
+                                   : CommonBlockName -> OptCommonBlockName
+    CommonBlockName                : Ident -> CommonBlockName
+    CommonBlockEntry               : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry
+    CommonBlockEntry               : NoCommonBlockName1 * List(CommonBlockObject) -> CommonBlockEntry1
+    CommonBlockEntry               : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry1
+    common-stmt                    : OptLabel * CommonBlockEntry1 * List(CommonBlockEntry) * EOS -> CommonStmt
     EquivalenceObjectList          : List(EquivalenceObject) -> EquivalenceObjectList
     EquivalenceObject              : Variable -> EquivalenceObject
     EquivalenceSetList             : List(EquivalenceSet) -> EquivalenceSetList
@@ -832,11 +850,10 @@ signature
     TargetDecl                     : ObjectName * Option(ArraySpec0) * Option(CoarraySpec0) -> TargetDecl
     TargetStmt                     : Option(Label) * TargetDeclList * EOS -> TargetStmt
     ProcPointerName                : Ident -> ProcPointerName
-    SavedEntityList                : List(SavedEntity) -> SavedEntityList
     SavedEntity_CBN                : CommonBlockName -> SavedEntity
-    SavedEntity_AMB                : ObjectName -> SavedEntity
-    SaveStmt_0                     : Option(Label) * EOS -> SaveStmt
-    SaveStmt_SEL                   : Option(Label) * SavedEntityList * EOS -> SaveStmt
+    SavedEntity                    : ObjectName -> SavedEntity
+    SaveStmt                       : OptLabel * List(SavedEntity) * EOS -> SaveStmt
+    SaveStmt                       : OptLabel * List(SavedEntity) * EOS -> SaveStmt
     EntityNameList                 : List(EntityName) -> EntityNameList
     ProtectedStmt                  : Option(Label) * EntityNameList * EOS -> ProtectedStmt
     PointerDeclList                : List(PointerDecl) -> PointerDeclList
@@ -891,10 +908,9 @@ signature
     AllocatableDeclList            : List(AllocatableDecl) -> AllocatableDeclList
     AllocatableDecl                : ObjectName * Option(ArraySpec0) * Option(CoarraySpec0) -> AllocatableDecl
     AllocatableStmt                : Option(Label) * AllocatableDeclList * EOS -> AllocatableStmt
-    AccessIdList                   : List(AccessId) -> AccessIdList
-    AccessId                       : GenericSpec -> AccessId
-    AccessStmt_AIL                 : Option(Label) * AccessSpec * AccessIdList * EOS -> AccessStmt
-    AccessStmt_0                   : Option(Label) * AccessSpec * EOS -> AccessStmt
+                                   : GenericSpec -> AccessId
+    AccessStmt                     : OptLabel * AccessSpec * List(AccessId) * EOS -> AccessStmt
+    AccessStmt                     : OptLabel * AccessSpec * List(AccessId) * EOS -> AccessStmt
     IntentSpec_INOUT               : IntentSpec
     IntentSpec_OUT                 : IntentSpec
     IntentSpec_IN                  : IntentSpec
@@ -977,7 +993,6 @@ signature
     NamelistGroupName              : Ident -> NamelistGroupName
     EntityName                     : Ident -> EntityName
     CoarrayName                    : Ident -> CoarrayName
-    CommonBlockName                : Ident -> CommonBlockName
     ArrayName                      : Ident -> ArrayName
     AcDoVariable                   : DoVariable -> AcDoVariable
     AcImpliedDoControl             : AcDoVariable * Expr * Expr * Option(Expr0) -> AcImpliedDoControl
@@ -1078,7 +1093,7 @@ signature
     opt-kind-param                 : KindParam -> OptKindParam
     LogicalLiteralConstant_FALSE   : OptKindParam -> LogicalLiteralConstant
     LogicalLiteralConstant_TRUE    : OptKindParam -> LogicalLiteralConstant
-    CharLiteralConstant            : NoKindParam * Scon -> CharLiteralConstant
+                                   : Scon -> CharLiteralConstant
     CharLiteralConstant            : KindParam * Scon -> CharLiteralConstant
     CharLength_I                   : Icon -> CharLength
     CharLength_TPV                 : TypeParamValue -> CharLength
@@ -1107,8 +1122,9 @@ signature
     KindParam_DS                   : DigitString -> KindParam
     no-kind-param                  : NoKindParam
     IntLiteralConstant             : DigitString * KindParam -> IntLiteralConstant
-    IntLiteralConstant             : DigitString * NoKindParam -> IntLiteralConstant
-    SignedIntLiteralConstant       : Option(Sign) * IntLiteralConstant -> SignedIntLiteralConstant
+                                   : DigitString -> IntLiteralConstant
+    SignedIntLiteralConstant       : Sign * IntLiteralConstant -> SignedIntLiteralConstant
+                                   : IntLiteralConstant -> SignedIntLiteralConstant
     no-kind                        : NoKindSelector
     no-kind                        : OptKindSelector
                                    : KindSelector -> OptKindSelector
