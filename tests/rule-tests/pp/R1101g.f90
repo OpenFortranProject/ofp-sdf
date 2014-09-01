@@ -1,5 +1,5 @@
 PROGRAM my_prog
- REAL :: i
+REAL :: i
  i = 1
 CONTAINS
 
