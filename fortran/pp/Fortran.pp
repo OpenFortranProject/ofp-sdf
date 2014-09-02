@@ -96,6 +96,7 @@
    #R560 --,
    ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
    ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=0[_2 _3]],
+   ImplicitStmt.2:iter-sep       -- _1 ", ",
 
    #R561 --,
    ImplicitSpec                  -- _1 "("_2")",
@@ -147,6 +148,18 @@
    AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
    AssignmentStmt.2:opt          -- ,
 
+   #R817 --,
+   NonlabelDoStmt                -- H hs=1[_1 H hs=0 [_2 KW[":DO"]] H hs=1[_3] _4],
+
+   #R818 --,
+   LoopControl                   -- H hs=1[_1 KW["="] H hs=0[_2 KW[", "] _3 _4]],
+
+   #R822 --,
+   EndDoStmt                     -- H hs=1[_1 KW["END DO"] H hs=0[_2 _3]],
+
+   #R850 --,
+   ExitStmt                      -- H hs=1[_1 KW["EXIT"] H hs=0[_2 _3]],
+
    #R851 --,
    GotoStmt                      -- H hs=1[_1 KW["GO TO"] _2 _3],
 
@@ -186,6 +199,9 @@
 
    #R865 --,
    UnlockStmt                    -- H hs=1[_1 KW["UNLOCK"] H hs=0["("_2 _3")"] _4],
+
+   #R866 --,
+   PauseStmt                     -- H hs=1[_1 KW["PAUSE"] H hs=0 [_2 _3]],
 
    #R900 --,
    IOMSG                         -- KW["IOMSG="]_1,
@@ -233,6 +249,7 @@
    ENCODING                      -- KW ["ENCODING="] _1,
    ACCESS                        -- KW ["ACCESS="] _1,
    ACTION                        -- KW ["ACTION="] _1,
+   ASYNCHRONOUS                  -- KW ["ASYNCHRONOUS="] _1,
 
    #R1001 --,
    FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
