@@ -15,7 +15,7 @@
    COMPLEX                       -- KW["COMPLEX :: "],
 
    #R201 --,
-   OfpProgram                    -- V vs=0 is=0 [_1 _2],
+   OfpProgram                    -- V vs=1 is=0 [_1 _2],
    OfpProgram.1:opt              -- ,
 
    #R204 --,
@@ -23,7 +23,7 @@
    
    #R208 --,
    OfpExecPart                   -- V vs=0 is=0[_1],
-   OfpFuncPart                   -- V vs=0 is=0[_1],
+   OfpFuncPart                   -- V vs=1 is=0[_1],
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
@@ -60,13 +60,17 @@
 
    
    #R503 --,
-   EntityDecl                 -- _1 _2 _3 _4 _5,
+   EntityDecl                    -- _1 _2 _3 _4 _5,
 
    #R505 --,
-   Initialization                -- _1,
+   Initialization                -- KW [" = "] _1,
 
+   #R507 --,
+   PRIVATE                       -- KW["PRIVATE"],
+   PUBLIC                        -- KW["PUBLIC"],
+   
    #R508 --, 
-   LanguageBindingSpec           -- _1 KW["BIND"],
+   LanguageBindingSpec           -- _1 KW[" BIND(C)"],
    
    #R511 --,
    OfpExplicitCoshape            -- _1,
@@ -77,22 +81,43 @@
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
 
+   #R524 --,
+   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
+   AccessStmt.3:iter-sep         -- _1 ", ",
+
+   #R553 --,
+   SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
+   SaveStmt.2:iter-sep           -- _1 ", ",
+
+   #R554 --,
+   SavedEntity                   -- _1,
+   SavedEntity_CBN               -- _1,
+
    #R560 --,
    ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
-   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] _2 _3],
+   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=0[_2 _3]],
 
    #R561 --,
    ImplicitSpec                  -- _1 "("_2")",
-   ImplicitSpec.2:iter-sep       -- _1 ",",
+   ImplicitSpec.2:iter-sep       -- _1 ", ",
 
    #R562 --,
    LetterSpec                    -- _1 _2,
+
+   #R568 --,
+   CommonStmt                    -- H hs=1[_1 KW["COMMON"] H hs=0[ _2 _3]],
+   CommonBlockEntry              -- _1 _2,
+   CommonBlockName               -- "/"_1"/",
+
+   #R569 --,
+   CommonBlockObject             -- _1 _2,
 
    #R602 --,
    OfpVarDef                     -- _1,
 
    #R611 --,
    DataRef                       -- _1,
+   DataRef.1:iter-sep            -- _1 "%",
 
    #R612 --,
    OfpVarRef                     -- _1,
@@ -111,24 +136,27 @@
    OfpAllocation                 -- _1 _2 _3,
 
    #Operators --,
-   Minus                         -- _1,
+   Minus                         -- KW["-"] _1,
    NOT                           -- KW[".NOT."] _1,
    Plus                          -- _1 KW["+"] _2,
 
+   #R709 --,
+   PLUS                          -- KW ["+"],
+
    #R732 --,
-   AssignmentStmt             -- H hs=1[H hs=3[_1] _2 KW["="] _3 _4],
-   AssignmentStmt.2:opt       -- ,
+   AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
+   AssignmentStmt.2:opt          -- ,
 
    #R851 --,
-   GotoStmt                      -- H hs=1[_1 KW["GOTO"] _2 _3],
+   GotoStmt                      -- H hs=1[_1 KW["GO TO"] _2 _3],
 
    #R852 --,
-   ComputedGotoStmt              -- H hs=1[_1 KW["GOTO"] H hs=0["("_2")"] _3 _4],
-   ComputedGotoStmt.2:iter-sep   -- _1 ",",
+   ComputedGotoStmt              -- H hs=1[_1 KW["GO TO"] H hs=0["("_2")"] H hs=0[_3] _4],
+   ComputedGotoStmt.2:iter-sep   -- _1 ", ",
 
    R#853 --,
-   ArithmeticIfStmt              -- H hs=1[H hs=0 [_1 KW["IF"] "("_2")"] _3 _4 _5 _6],
-  
+   ArithmeticIfStmt              -- H hs=1[H hs=0[_1 KW["IF"] "("_2")"] H hs=0 [_3 KW[", "] _4 KW[", "] _5 _6]],
+     
    #R854 --,
    ContinueStmt                  -- H hs=1[_1 KW["CONTINUE"] _2],
 
@@ -139,7 +167,8 @@
    ErrorStopStmt                 -- H hs=1[_1 KW["ERROR STOP"] _2 _3],
 
    #R858 --,
-   SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] _2 "("_3")"],
+   SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] H hs=0 ["("_2 _3")"]],
+   SyncAllStmt.2:iter-sep     -- _1 ", ",
 
    #R860 --,
    SyncImagesStmt                -- H hs=1[_1 KW["SYNC IMAGES"] H hs=0["("_2 _3")"] _4],
@@ -166,6 +195,9 @@
    END                           -- KW["END="]_1,
    EOR                           -- KW["EOR="]_1,
 
+   #R917 --,
+   OutputItem                    -- _1,
+
    #R922 --,
    WaitStmt                      -- H hs=1[_1 KW["WAIT"] H hs=0["("_2")"] _3],
    WaitStmt.2:iter-sep           -- _1 ", ",
@@ -178,12 +210,54 @@
    RewindStmt                    -- H hs=0[_1 KW["REWIND"] "("_2")" _3],
    RewindStmt.2:iter-sep         -- _1 ",",
 
-   #R1101 --,
-   PpMainProgram                -- V vs=0 [H[_1]],
-   PpMainProgram.1:opt          -- ,
+   #R928 --,
+   FlushStmt                     -- H hs=1[_1 KW["FLUSH"] H hs=0["("_2")" _3]],
+   FlushStmt.2:iter-sep          -- _1 ", ",
 
-   ProgramStmt                -- _1 KW["PROGRAM"] _2 _3,
-   EndProgramStmt             -- H hs=1[_1 "END PROGRAM" _2 _3],
+   #R930 --,
+   InquireStmt                   -- H hs=1[_1 KW["INQUIRE"] H hs=0["("_2")" _3]],
+   InquireStmt.2:iter-sep        -- _1 ", ",
+   InquireLengthStmt             -- H hs=1[_1 KW["INQUIRE"] H hs=0["("KW["IOLENGTH="] _2")"] H hs=0[_3 _4]],
+   InquireLengthStmt.3:iter-sep  -- _1 ", ",
+
+   #R931 --,
+   FILE                          -- KW ["FILE="] _1,
+   BLANK                         -- KW ["BLANK="] _1,
+   ENCODING                      -- KW ["ENCODING="] _1,
+
+   #R1001 --,
+   FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
+   FormatStmt.1:iter-sep         -- _1 ", ",
+
+   R#1002 --,
+   FormatSpec                    -- _1 _2,
+
+   R#1004 --,
+   R                             -- _1 _2,
+
+   R#1007 --,
+   I                             -- _1 KW["I"] _2 _3,
+   E                             -- _1 KW["E"] _2 _3 _4,
+   F                             -- _1 _2 _3,
+
+   #R1013 --,
+   P                             -- _1 KW["P"],
+   SLASH                         -- KW ["/ "] _1,
+   COLON_ED                      -- KW[":"],
+
+   #R1015 --,
+   X                             -- _1,
+
+   #R1021 --,
+   CS                            -- _1,
+
+
+   #R1101 --,
+   PpMainProgram                 -- V vs=0 [_1],
+   PpMainProgram.1:opt           -- ,
+
+   ProgramStmt                   -- _1 KW["PROGRAM"] _2 _3,
+   EndProgramStmt                -- H hs=1[_1 "END PROGRAM" _2 _3],
 
    #R1104 --,
    PpModule                      -- _1,
@@ -196,7 +270,7 @@
 
    #R1109 --,
    UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "]_4 _5]],
+   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "] _4 _5]],
 
    #R1111 --,
    Rename                        -- H hs=0[_1 KW["=>"] _2],
@@ -211,8 +285,8 @@
    EndBlockDataStmt              -- _1 KW["END BLOCK DATA"] _2 _3,
 
    #R1201 --,
-   InterfaceBlock             -- V vs=0 [_1 _3 _2],
-   InterfaceStmt              -- H hs=1 [_2 _1 KW["INTERFACE"] _3],
+   InterfaceBlock             -- V vs=0 [_1 _2 _3],
+   InterfaceStmt              -- H hs=1 [_1 KW["INTERFACE"] _2 _3],
    EndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2 _3],
    
    #R1203 --,
@@ -231,7 +305,6 @@
    PURE                                -- "PURE",
    RECURSIVE                           -- "RECURSIVE",
 
-   OfpLanguageBinding                  -- "BIND(C" _1 ")",
    OfpResultName                       -- "RESULT" _1,
    OfpSuffix                           -- _1,
    OfpSuffix.1:iter-star               -- _1,
@@ -239,11 +312,13 @@
    #R1206 --,
    ProcedureStmt,                      -- _1 _2 _3,
 
-    #R1207 --,
+   #R1207 --,
    OfpGenericSpec                      -- _1,
+   ASSIGNMENT                          -- KW["ASSIGNMENT"],
+   OPERATOR                            -- KW ["OPERATOR"] _1,
 
    #R1210 --,
-   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL :: "] H hs=0[_2] _3],
+   ExternalStmt                        -- H hs=0[_1 KW["EXTERNAL :: "] _2 _3],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
@@ -252,8 +327,8 @@
   
    #R1217 --,
    PpFunction                          -- _1,
-   FunctionStmt                     -- _1 _4 "FUNCTION" H hs=0[ _2 "(" _3 ")"] _5 _6,
-   EndFunctionStmt                  -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
+   FunctionStmt                        -- H hs=1[_1 "FUNCTION" H hs=0[_2 _3 "("_4")" _5 _6]],
+   EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
 
    #R1218 --,
    IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC :: "] H hs=0[_2 _3]],
@@ -269,16 +344,16 @@
 
    #R1222 --,
    OfpArg                              -- _1 _2,
-   ActualArgSpec                       -- _1 _2,
+   ActualArgSpec                       -- _1 KW[" = "] _2,
 
    #R1224 --,
-   AltReturnSpec                       -- _1,
+   AltReturnSpec                       -- KW["*"] _1,
 
    #R1233 --,
-   PpSubroutine                         -- _1,
-   SubroutineStmt                    -- _2 _1 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5 _6],
-   SubroutineStmt.4:iter-sep         -- _1 ",",
-   EndSubroutineStmt                 -- H hs=1[_1 "END SUBROUTINE" _2 _3],
+   PpSubroutine                        -- _1,
+   SubroutineStmt                      -- H hs=1[_2 _1 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5 _6]],
+   SubroutineStmt.4:iter-sep           -- _1 ",",
+   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE" _2 _3],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
@@ -288,7 +363,7 @@
    ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3],
 
    #R1242 --,
-   ContainsStmt                     -- _1 KW["CONTAINS"] _2
+   ContainsStmt                        -- _1 KW["CONTAINS"] _2
 
 
 ]

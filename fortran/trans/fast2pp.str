@@ -83,3 +83,6 @@ rules
   no-to-none: no-expr()                    -> None()   // R1241
   no-to-none: no-letter()                  -> None()   // R562
   no-to-none: no-stop-code()               -> None()   // R857
+  no-to-none: no-r()                       -> None()   // R1004
+  no-to-none: no-m()                       -> None()   // R1007
+  no-to-none: no-e()                       -> None()   // R1007

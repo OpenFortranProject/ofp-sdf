@@ -1,3 +1,3 @@
 PROGRAM my_prog
- REAL :: a
+REAL :: a
 END PROGRAM my_prog
