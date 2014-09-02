@@ -516,9 +516,8 @@ sorts
   EndSelectTypeStmt                   %% R849
   ExitStmt                            %% R850
 
-  CaseStmtAndBlock ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
-
-  AssociationList CaseValueRangeList
+  AssociationList CaseValueRangeList CaseStmtAndBlock
+  ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
 
 %% 8.2 Branching
 
@@ -559,7 +558,8 @@ sorts
 %% Identifier aliases
 
   AssociateConstructName AssociateName BlockConstructName
-  CaseConstructName ConstructName CriticalConstructName
+  CaseConstructName NoCaseConstructName
+  ConstructName NoConstructName CriticalConstructName
   DoConstructName IfConstructName ScalarIntVariableName
   SelectConstructName
 
@@ -2351,8 +2351,6 @@ context-free syntax
   Ident   -> AssociateConstructName    {cons("AssociateConstructName")}
   Ident   -> AssociateName             {cons("AssociateName")}
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
-  Ident   -> CaseConstructName         {cons("CaseConstructName")}
-  Ident   -> ConstructName             {cons("ConstructName")}
   Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
   Ident   -> DoConstructName           {cons("DoConstructName")}
   Ident   -> IfConstructName           {cons("IfConstructName")}
@@ -2542,14 +2540,21 @@ context-free syntax
   CaseStmt Block                                        -> CaseStmtAndBlock  {cons("CaseStmt_Block")}
 
 %%R839
-  Label? ( CaseConstructName ':' )?
+  OptLabel CaseConstructName ':'
+     'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
+  OptLabel NoCaseConstructName
      'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
 
+  Ident                                                 ->   CaseConstructName
+  % empty %                                             -> NoCaseConstructName {cons("no-case-construct-name")}
+
 %%R840
-  Label? 'CASE' CaseSelector CaseConstructName?     EOS -> CaseStmt       {cons("CaseStmt")}
+  OptLabel 'CASE' CaseSelector   CaseConstructName  EOS -> CaseStmt       {cons("CaseStmt")}
+  OptLabel 'CASE' CaseSelector NoCaseConstructName  EOS -> CaseStmt       {cons("CaseStmt")}
 
 %%R841
-  Label? 'END' 'SELECT' CaseConstructName?          EOS -> EndSelectStmt  {cons("EndSelectStmt")}
+  OptLabel 'END' 'SELECT'   CaseConstructName       EOS -> EndSelectStmt  {cons("EndSelectStmt")}
+  OptLabel 'END' 'SELECT' NoCaseConstructName       EOS -> EndSelectStmt  {cons("EndSelectStmt")}
 
 %%R842
 %%       expr substituted for scalar-expr
@@ -2594,8 +2599,11 @@ context-free syntax
   'END' 'SELECT' SelectConstructName?               EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
 
 %%R850
-  Label? 'EXIT' ConstructName?                      EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT'   ConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT' NoConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
 
+  Ident                                                 -> ConstructName
+  % empty %                                             -> NoConstructName      {cons("no-construct-name")}
 
 %% 8.2 Branching
 %%
