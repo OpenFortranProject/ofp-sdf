@@ -116,5 +116,3 @@ ofp-simplify-ast:  format-items(list, item)         -> <concat>[list, [item]]
 //                      -> UseStmt(label,nature,name,list,OnlyList([]),eos)
 //ofp-simplify-ast:  UseStmt(label,nature,name,opt-only-list(list),eos)
 //                      -> UseStmt(label,nature,name,RenameList([]),list,eos)
-
-ofp-simplify-ast:  opt-module-nature(nature)      -> nature
