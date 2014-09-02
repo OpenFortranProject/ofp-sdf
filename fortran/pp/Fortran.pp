@@ -168,7 +168,7 @@
 
    #R858 --,
    SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] H hs=0 ["("_2 _3")"]],
-   SyncAllStmt.2:iter-sep     -- _1 ", ",
+   SyncAllStmt.2:iter-sep        -- _1 ", ",
 
    #R860 --,
    SyncImagesStmt                -- H hs=1[_1 KW["SYNC IMAGES"] H hs=0["("_2 _3")"] _4],
@@ -194,6 +194,13 @@
    IOSTAT                        -- KW["IOSTAT="]_1,
    END                           -- KW["END="]_1,
    EOR                           -- KW["EOR="]_1,
+
+   #R912 --,
+   PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 _3 _4]],
+
+   #R915 --,
+   Format_STAR                   -- KW["*"],
+   Format                        -- _1,
 
    #R917 --,
    OutputItem                    -- _1,
@@ -224,6 +231,8 @@
    FILE                          -- KW ["FILE="] _1,
    BLANK                         -- KW ["BLANK="] _1,
    ENCODING                      -- KW ["ENCODING="] _1,
+   ACCESS                        -- KW ["ACCESS="] _1,
+   ACTION                        -- KW ["ACTION="] _1,
 
    #R1001 --,
    FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
@@ -238,7 +247,7 @@
    R#1007 --,
    I                             -- _1 KW["I"] _2 _3,
    E                             -- _1 KW["E"] _2 _3 _4,
-   F                             -- _1 _2 _3,
+   F                             -- _1 KW["F"] _2 KW["."] _3,
 
    #R1013 --,
    P                             -- _1 KW["P"],
@@ -270,7 +279,12 @@
 
    #R1109 --,
    UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW["ONLY: "] _4 _5]],
+   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 ", ONLY: " _4 _5]],
+   OnlyList                      -- _1,
+   OnlyList.1:iter-sep           -- _1 KW[", "],
+
+   #R1110 --,
+   ModuleNature                  -- KW[", "] _1,
 
    #R1111 --,
    Rename                        -- H hs=0[_1 KW["=>"] _2],
