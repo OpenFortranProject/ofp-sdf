@@ -3343,13 +3343,13 @@ context-free syntax
   OptLabel 'USE'  NoModuleNature      ModuleName OptOnlyList   EOS -> UseStmt {cons("UseOnlyStmt")}
   OptLabel 'USE' OptModuleNature '::' ModuleName OptOnlyList   EOS -> UseStmt {cons("UseOnlyStmt")}
 
-  ',' ModuleNature                             -> OptModuleNature {cons("opt-module-nature")}
+  ',' ModuleNature                             -> OptModuleNature {cons("ModuleNature")}
   NoModuleNature                               -> OptModuleNature
   % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
 
   % empty %                                    -> NoRenameList    {cons("no-list")}
   ',' {Rename ','}+                            -> OptRenameList   {cons("opt-list")}
-  ',' 'ONLY' ':' {Only ','}*                   -> OptOnlyList     {cons("opt-list")}
+  ',' 'ONLY' ':' {Only ','}*                   -> OptOnlyList     {cons("OnlyList")}
 
 %%R1110
   'INTRINSIC'                                  -> ModuleNature    {cons("INTRINSIC")}
