@@ -2784,45 +2784,45 @@ context-free syntax
   Label? 'READ' Format              ( ',' InputItemList )?      EOS -> ReadStmt  {cons("ReadStmt_F")}
 
 %%R911
-  Label? 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("WriteStmt")}
+  OptLabel 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("WriteStmt")}
 
 %%R912
-  OptLabel 'PRINT' Format OptOutputItemList                  EOS -> PrintStmt {cons("PrintStmt")}
+  OptLabel 'PRINT' Format OptOutputItemList                       EOS -> PrintStmt {cons("PrintStmt")}
 
 %%R913
 %% TODO-F08  io-unit and format must be first and second (without {UNIT,FMT}=)
 %%           default-char-expr substituted for scalar-default-char-expr
 %%
-                      IoUnit                      -> IoControlSpec  {cons("IoControlSpec_UNIT")}
-  'UNIT'         '='  IoUnit                      -> IoControlSpec  {cons("IoControlSpec_UNIT")}
-                      Format                      -> IoControlSpec  {cons("IoControlSpec_FMT")}
-  'FMT'          '='  Format                      -> IoControlSpec  {cons("IoControlSpec_FMT")}
-                      NamelistGroupName           -> IoControlSpec  {cons("IoControlSpec_NML")}
-  'NML'          '='  NamelistGroupName           -> IoControlSpec  {cons("IoControlSpec_NML")}
-  'ADVANCE'      '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ADVANCE")}
-  'ASYNCHRONOUS' '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ASYNCHRONOUS")}
-  'BLANK'        '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_BLANK")}
-  'DECIMAL'      '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_DECIMAL")}
-  'DELIM'        '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_DELIM")}
-  'END'          '='  LblRef                      -> IoControlSpec  {cons("IoControlSpec_END")}
-  'EOR'          '='  LblRef                      -> IoControlSpec  {cons("IoControlSpec_EOR")}
-  'ERR'          '='  LblRef                      -> IoControlSpec  {cons("IoControlSpec_ERR")}
-  'ID'           '='  IdVariable                  -> IoControlSpec  {cons("IoControlSpec_ID")}
-  'IOMSG'        '='  IomsgVariable               -> IoControlSpec  {cons("IoControlSpec_IOMSG")}
-  'IOSTAT'       '='  IntVariable                 -> IoControlSpec  {cons("IoControlSpec_IOSTAT")}
-  'PAD'          '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_PAD")}
-  'POS'          '='  Expr                        -> IoControlSpec  {cons("IoControlSpec_POS")}
-  'REC'          '='  Expr                        -> IoControlSpec  {cons("IoControlSpec_REC")}
-  'ROUND'        '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_ROUND")}
-  'SIGN'         '='  DefaultCharExpr             -> IoControlSpec  {cons("IoControlSpec_SIGN")}
-  'SIZE'         '='  IntVariable                 -> IoControlSpec  {cons("IoControlSpec_SIZE")}
+                      IoUnit                      -> IoControlSpec  {cons("no-unit-keyword")}
+  'UNIT'         '='  IoUnit                      -> IoControlSpec  {cons("UNIT")}
+                      Format                      -> IoControlSpec  {cons("no-fmt-keyword")}
+  'FMT'          '='  Format                      -> IoControlSpec  {cons("FMT")}
+                      NamelistGroupName           -> IoControlSpec  {cons("NML")}
+  'NML'          '='  NamelistGroupName           -> IoControlSpec  {cons("NML")}
+  'ADVANCE'      '='  DefaultCharExpr             -> IoControlSpec  {cons("ADVANCE")}
+  'ASYNCHRONOUS' '='  DefaultCharExpr             -> IoControlSpec  {cons("ASYNCHRONOUS")}
+  'BLANK'        '='  DefaultCharExpr             -> IoControlSpec  {cons("BLANK")}
+  'DECIMAL'      '='  DefaultCharExpr             -> IoControlSpec  {cons("DECIMAL")}
+  'DELIM'        '='  DefaultCharExpr             -> IoControlSpec  {cons("DELIM")}
+  'END'          '='  LblRef                      -> IoControlSpec  {cons("END")}
+  'EOR'          '='  LblRef                      -> IoControlSpec  {cons("EOR")}
+  'ERR'          '='  LblRef                      -> IoControlSpec  {cons("ERR")}
+  'ID'           '='  IdVariable                  -> IoControlSpec  {cons("ID")}
+  'IOMSG'        '='  IomsgVariable               -> IoControlSpec  {cons("IOMSG")}
+  'IOSTAT'       '='  IntVariable                 -> IoControlSpec  {cons("IOSTAT")}
+  'PAD'          '='  DefaultCharExpr             -> IoControlSpec  {cons("PAD")}
+  'POS'          '='  Expr                        -> IoControlSpec  {cons("POS")}
+  'REC'          '='  Expr                        -> IoControlSpec  {cons("REC")}
+  'ROUND'        '='  DefaultCharExpr             -> IoControlSpec  {cons("ROUND")}
+  'SIGN'         '='  DefaultCharExpr             -> IoControlSpec  {cons("SIGN")}
+  'SIZE'         '='  IntVariable                 -> IoControlSpec  {cons("SIZE")}
 
 %%R914
   IntVariable                                     -> IdVariable     {cons("IdVariable")}
 
 %%R915
-  DefaultCharExpr                                 -> Format         {cons("Format_DCE")}
-  Label                                           -> Format         {cons("Format_L")}
+  DefaultCharExpr                                 -> Format         {cons("Format")}
+%%Label                                           -> Format         {cons("Format")}
   '*'                                             -> Format         {cons("Format_STAR")}
 
 %%R916
