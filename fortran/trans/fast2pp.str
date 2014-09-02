@@ -86,3 +86,4 @@ rules
   no-to-none: no-r()                       -> None()   // R1004
   no-to-none: no-m()                       -> None()   // R1007
   no-to-none: no-e()                       -> None()   // R1007
+  no-to-none: no-construct-name()          -> None()   // R850
