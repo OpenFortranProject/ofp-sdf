@@ -63,7 +63,7 @@
    EntityDecl                    -- _1 _2 _3 _4 _5,
 
    #R505 --,
-   Initialization                -- _1,
+   Initialization                -- KW [" = "] _1,
 
    #R507 --,
    PRIVATE                       -- KW["PRIVATE"],
@@ -167,7 +167,8 @@
    ErrorStopStmt                 -- H hs=1[_1 KW["ERROR STOP"] _2 _3],
 
    #R858 --,
-   SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] _2 "("_3")"],
+   SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] H hs=0 ["("_2 _3")"]],
+   SyncAllStmt.2:iter-sep     -- _1 ", ",
 
    #R860 --,
    SyncImagesStmt                -- H hs=1[_1 KW["SYNC IMAGES"] H hs=0["("_2 _3")"] _4],
@@ -194,6 +195,9 @@
    END                           -- KW["END="]_1,
    EOR                           -- KW["EOR="]_1,
 
+   #R917 --,
+   OutputItem                    -- _1,
+
    #R922 --,
    WaitStmt                      -- H hs=1[_1 KW["WAIT"] H hs=0["("_2")"] _3],
    WaitStmt.2:iter-sep           -- _1 ", ",
@@ -205,6 +209,21 @@
    #R926 --,
    RewindStmt                    -- H hs=0[_1 KW["REWIND"] "("_2")" _3],
    RewindStmt.2:iter-sep         -- _1 ",",
+
+   #R928 --,
+   FlushStmt                     -- H hs=1[_1 KW["FLUSH"] H hs=0["("_2")" _3]],
+   FlushStmt.2:iter-sep          -- _1 ", ",
+
+   #R930 --,
+   InquireStmt                   -- H hs=1[_1 KW["INQUIRE"] H hs=0["("_2")" _3]],
+   InquireStmt.2:iter-sep        -- _1 ", ",
+   InquireLengthStmt             -- H hs=1[_1 KW["INQUIRE"] H hs=0["("KW["IOLENGTH="] _2")"] H hs=0[_3 _4]],
+   InquireLengthStmt.3:iter-sep  -- _1 ", ",
+
+   #R931 --,
+   FILE                          -- KW ["FILE="] _1,
+   BLANK                         -- KW ["BLANK="] _1,
+   ENCODING                      -- KW ["ENCODING="] _1,
 
    #R1001 --,
    FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
