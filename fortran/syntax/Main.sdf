@@ -449,7 +449,7 @@ sorts
   EndForallStmt                       %% R758
   ForallStmt                          %% R759
 
-  ElsewhereClause MaskedElsewhereClause OptExpr
+  ElsewhereClause MaskedElsewhereClause OptExpr NoExpr
 
   BoundsRemappingList BoundsSpecList ForallTripletSpecList
 
@@ -518,6 +518,7 @@ sorts
 
   AssociationList CaseValueRangeList CaseStmtAndBlock
   ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
+  OptLoopControl
 
 %% 8.2 Branching
 
@@ -560,8 +561,8 @@ sorts
   AssociateConstructName AssociateName BlockConstructName
   CaseConstructName NoCaseConstructName
   ConstructName NoConstructName CriticalConstructName
-  DoConstructName IfConstructName ScalarIntVariableName
-  SelectConstructName
+  DoConstructName NoDoConstructName IfConstructName
+  ScalarIntVariableName SelectConstructName
 
       
 %%%%%%%%%%
@@ -2352,9 +2353,7 @@ context-free syntax
   Ident   -> AssociateName             {cons("AssociateName")}
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
   Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
-  Ident   -> DoConstructName           {cons("DoConstructName")}
   Ident   -> IfConstructName           {cons("IfConstructName")}
-  Ident   -> ScalarIntVariableName     {cons("ScalarIntVariableName")}
   Ident   -> SelectConstructName       {cons("SelectConstructName")}
 
 %% 8.1 Executable constructs containing blocks
@@ -2435,25 +2434,36 @@ context-free syntax
 
 %%R816
   Label? (DoConstructName ':')?
-         'DO' LblRef LoopControl?                   EOS -> LabelDoStmt    {cons("LabelDoStmt")}
+         'DO' LblRef OptLoopControl                 EOS -> LabelDoStmt    {cons("LabelDoStmt")}
+
+  Ident                                                 ->   DoConstructName
+  % empty %                                             -> NoDoConstructName {cons("no-do-construct-name")}
 
 %%R817
-  Label? (DoConstructName ':')?
-         'DO'        LoopControl?                   EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
+  OptLabel DoConstructName ':' 'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
+  OptLabel NoDoConstructName   'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
 
 %%R818
 %%        expr substituted for scalar-int-expr
 %%        expr substituted for scalar-logical-expr
 %%
-      DoVariable '=' Expr ',' Expr (',' Expr)?          -> LoopControl    {cons("LoopControl_DV")}
-  ',' DoVariable '=' Expr ',' Expr (',' Expr)?          -> LoopControl    {cons("LoopControl_DV")}
-      'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopControl_WHILE")}
-  ',' 'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopControl_WHILE")}
-      'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopControl_CONCURRENT")}
-  ',' 'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopControl_CONCURRENT")}
+      DoVariable '=' Expr ',' Expr OptExpr              -> LoopControl    {cons("LoopControl")}
+  ',' DoVariable '=' Expr ',' Expr OptExpr              -> LoopControl    {cons("LoopControl")}
+      'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopWhileControl")}
+  ',' 'WHILE' '(' Expr ')'                              -> LoopControl    {cons("LoopWhileControl")}
+      'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopConcurrentControl")}
+  ',' 'CONCURRENT' ForallHeader                         -> LoopControl    {cons("LoopConcurrentControl")}
+
+  LoopControl                                           -> OptLoopControl
+  % empty %                                             -> OptLoopControl {cons("no-loop-control")}
+
+  ',' Expr                                              -> OptExpr        {cons("opt-expr")}
+  % empty %                                             -> OptExpr        {cons("no-expr")}
+  % empty %                                             ->  NoExpr        {cons("no-expr")}
 
 %%R819
-  ScalarIntVariableName                                 -> DoVariable     {cons("DoVariable")}
+  ScalarIntVariableName                                 -> DoVariable
+  Ident                                                 -> ScalarIntVariableName
 
 %%820
 %%AMB  Block                                            -> DoBlock
@@ -2463,7 +2473,8 @@ context-free syntax
 %%AMB ContinueStmt                                      -> EndDo
 
 %%R822
-  Label? 'END' 'DO' DoConstructName?                EOS -> EndDoStmt      {cons("EndDoStmt")}
+  OptLabel 'END' 'DO'   DoConstructName             EOS -> EndDoStmt      {cons("EndDoStmt")}
+  OptLabel 'END' 'DO' NoDoConstructName             EOS -> EndDoStmt      {cons("EndDoStmt")}
 
 %%R823
 %%AMB ActionTermDoConstruct                             -> NonblockDoConstruct
@@ -3725,10 +3736,8 @@ context-free syntax
 %%R1241
 %%       expr substituted for scalar-int-expr
 %%
-  OptLabel 'RETURN' OptExpr                 EOS -> ReturnStmt     {cons("ReturnStmt")}
-
-  Expr                                          -> OptExpr
-  % empty %                                     -> OptExpr        {cons("no-expr")}
+  OptLabel 'RETURN'    Expr                 EOS -> ReturnStmt     {cons("ReturnStmt")}
+  OptLabel 'RETURN'  NoExpr                 EOS -> ReturnStmt     {cons("ReturnStmt")}
 
 %%R1242
   OptLabel 'CONTAINS'                       EOS -> ContainsStmt   {cons("ContainsStmt")}
