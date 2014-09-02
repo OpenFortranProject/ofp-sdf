@@ -580,8 +580,6 @@ sorts
   CloseStmt                           %% R908
   CloseSpec                           %% R909
 
-  CloseSpecList
-
 %% 9.6 Data transfer statements
 
   ReadStmt                            %% R910
@@ -2761,20 +2759,18 @@ context-free syntax
   DefaultCharExpr                               -> IomsgVariable
 
 %%R908
-  Label? 'CLOSE' '(' CloseSpecList ')'     EOS -> CloseStmt      {cons("CloseStmt")}
+  OptLabel 'CLOSE' '(' {CloseSpec ','}+ ')' EOS -> CloseStmt      {cons("CloseStmt")}
 
 %%R909
 %%           default-char-expr substituted for scalar-default-char-expr
 %%           int-variable substituted for scalar-int-variable
 %%
-                      FileUnitNumber            -> CloseSpec      {cons("CloseSpec_UNIT")}
-  'UNIT'         '='  FileUnitNumber            -> CloseSpec      {cons("CloseSpec_UNIT")}
-  'IOSTAT'       '='  IntVariable               -> CloseSpec      {cons("CloseSpec_IOSTAT")}
-  'IOMSG'        '='  IomsgVariable             -> CloseSpec      {cons("CloseSpec_IOMSG")}
-  'ERR'          '='  LblRef                    -> CloseSpec      {cons("CloseSpec_ERR")}
-  'STATUS'       '='  DefaultCharExpr           -> CloseSpec      {cons("CloseSpec_STATUS")}
-  {CloseSpec ','}+                              -> CloseSpecList  {cons("CloseSpecList")}
-
+                      FileUnitNumber            -> CloseSpec      {cons("UNIT")}
+  'UNIT'         '='  FileUnitNumber            -> CloseSpec      {cons("UNIT")}
+  'IOSTAT'       '='  IntVariable               -> CloseSpec      {cons("IOSTAT")}
+  'IOMSG'        '='  IomsgVariable             -> CloseSpec      {cons("IOMSG")}
+  'ERR'          '='  LblRef                    -> CloseSpec      {cons("ERR")}
+  'STATUS'       '='  DefaultCharExpr           -> CloseSpec      {cons("STATUS")}
 
 %% 9.6 Data transfer statements
 %%
@@ -2816,6 +2812,11 @@ context-free syntax
   'ROUND'        '='  DefaultCharExpr             -> IoControlSpec  {cons("ROUND")}
   'SIGN'         '='  DefaultCharExpr             -> IoControlSpec  {cons("SIGN")}
   'SIZE'         '='  IntVariable                 -> IoControlSpec  {cons("SIZE")}
+
+%%  IoUnit {IoControlSpec ','}*                     -> IoControlSpecList  {cons("io-control-spec-list")}
+
+%%  IoUnitNoKW                       -> IoControlSpecList  {cons("")}
+
 
 %%R914
   IntVariable                                     -> IdVariable     {cons("IdVariable")}
