@@ -581,6 +581,8 @@ sorts
   CloseStmt                           %% R908
   CloseSpec                           %% R909
 
+  IoUnitNoKW FormatNoKW NameListNoKW
+
 %% 9.6 Data transfer statements
 
   ReadStmt                            %% R910
@@ -596,6 +598,8 @@ sorts
   IoImpliedDoControl                  %% R920
 
   InputItemList IoImpliedDoObjectList OptOutputItemList
+  IoControlSpecList OptIoControlSpecList
+
 
 %% 9.7 Waiting on pending data transfer
 
@@ -2616,7 +2620,7 @@ context-free syntax
   OptLabel 'EXIT' NoConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
 
   Ident                                                 -> ConstructName
-  % empty %                                             -> NoConstructName      {cons("no-construct-name")}
+  % empty %                                             -> NoConstructName      {cons("no-name")}
 
 %% 8.2 Branching
 %%
@@ -2801,20 +2805,23 @@ context-free syntax
   Label? 'READ' Format              ( ',' InputItemList )?      EOS -> ReadStmt  {cons("ReadStmt_F")}
 
 %%R911
-  OptLabel 'WRITE' '(' {IoControlSpec ','}+ ')' {OutputItem ','}* EOS -> WriteStmt {cons("WriteStmt")}
+  OptLabel 'WRITE' '(' IoControlSpecList ')' {OutputItem ','}*  EOS -> WriteStmt {cons("WriteStmt")}
 
 %%R912
   OptLabel 'PRINT' Format OptOutputItemList                       EOS -> PrintStmt {cons("PrintStmt")}
 
 %%R913
-%% TODO-F08  io-unit and format must be first and second (without {UNIT,FMT}=)
-%%           default-char-expr substituted for scalar-default-char-expr
+%%     default-char-expr substituted for scalar-default-char-expr
 %%
-                      IoUnit                      -> IoControlSpec  {cons("no-unit-keyword")}
+%%     io-unit                       must be first and second (without {UNIT}=)
+%%     io-unit and format            must be first and second (without {UNIT,FMT}=)
+%% or  io-unit and NamelistGroupName must be first and second (without {UNIT,NML}=)
+%%
+%%                    IoUnit                      -> IoControlSpec  {cons("UNIT")}
+%%                    Format                      -> IoControlSpec  {cons("FMT")}
+%%                    NamelistGroupName           -> IoControlSpec  {cons("NML")}
   'UNIT'         '='  IoUnit                      -> IoControlSpec  {cons("UNIT")}
-                      Format                      -> IoControlSpec  {cons("no-fmt-keyword")}
   'FMT'          '='  Format                      -> IoControlSpec  {cons("FMT")}
-                      NamelistGroupName           -> IoControlSpec  {cons("NML")}
   'NML'          '='  NamelistGroupName           -> IoControlSpec  {cons("NML")}
   'ADVANCE'      '='  DefaultCharExpr             -> IoControlSpec  {cons("ADVANCE")}
   'ASYNCHRONOUS' '='  DefaultCharExpr             -> IoControlSpec  {cons("ASYNCHRONOUS")}
@@ -2834,10 +2841,17 @@ context-free syntax
   'SIGN'         '='  DefaultCharExpr             -> IoControlSpec  {cons("SIGN")}
   'SIZE'         '='  IntVariable                 -> IoControlSpec  {cons("SIZE")}
 
-%%  IoUnit {IoControlSpec ','}*                     -> IoControlSpecList  {cons("io-control-spec-list")}
+                              {IoControlSpec ','}+  -> IoControlSpecList    {cons("io-control-spec-list")}
+  IoUnitNoKW                  OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
+  IoUnitNoKW ',' FormatNoKW   OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
+  IoUnitNoKW ',' NameListNoKW OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
 
-%%  IoUnitNoKW                       -> IoControlSpecList  {cons("")}
+  ',' {IoControlSpec ','}+                          -> OptIoControlSpecList {cons("a-list")}
+  % empty %                                         -> OptIoControlSpecList {cons("no-list")}
 
+  IoUnit                                          -> IoUnitNoKW         {cons("UNIT")}
+  Format                                          -> FormatNoKW         {cons("FMT")}
+  NamelistGroupName                               -> NameListNoKW       {cons("NML")}
 
 %%R914
   IntVariable                                     -> IdVariable     {cons("IdVariable")}
