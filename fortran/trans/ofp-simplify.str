@@ -46,9 +46,10 @@ rules //========================START OF RULES===============================
 
 // General catch-all rules
 //
-
 ofp-simplify-ast:  no-list()                      -> []
+ofp-simplify-ast:  paren-list(list)               -> list
 //ofp-simplify-ast:  opt-list(list)                 -> list
+
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
