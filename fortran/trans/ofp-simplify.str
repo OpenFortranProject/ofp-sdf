@@ -101,7 +101,6 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 ofp-simplify-ast:  opt-expr(expr)                 -> expr
 
 //R913
-ofp-simplify-ast:  FMT(Format(x))                   -> FMT(x)
 ofp-simplify-ast:  io-control-spec-list(list)       -> list
 ofp-simplify-ast:  io-control-spec-list(l1,list)    -> <concat>[[l1],list]
 ofp-simplify-ast:  io-control-spec-list(l1,l2,list) -> <concat>[[l1],[l2],list]
