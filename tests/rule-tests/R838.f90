@@ -38,8 +38,8 @@
 character :: y
 LOGICAL   :: flag
 
-select case(n)
-   case (1)
+10 select case(n)
+11 case (1)
       x = 1
    case (2:3)
       x = 2
@@ -51,7 +51,7 @@ select case(n)
       x = 33
    case default 
       x = 0
-end select
+12 end select
 
 SELECT case(n)
    CASE(:3)
