@@ -12,7 +12,7 @@ END MODULE
 
 USE a
 USE , INTRINSIC :: iso_c_binding
-USE , NON_INTRINSIC :: my_mod
+USE , NON_INTRINSIC :: A
 USE aa, d=>b, e=>c
 USE aaa, ONLY: m, f=>n
 END PROGRAM
