@@ -1,0 +1,5 @@
+EXTERNAL :: a
+EXTERNAL :: a, b
+EXTERNAL :: a
+EXTERNAL :: a, b
+END PROGRAM
