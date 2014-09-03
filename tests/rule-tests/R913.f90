@@ -20,7 +20,7 @@
 !    or SIGN = scalar-default-char-expr
 !    or SIZE = scalar-int-variable
 
-write (*,*) a
+13 write (*,*) a
 write (6,*) b
 write (10,fmt=*) c 
 write (unit=n,fmt=*,iostat=ios) d
