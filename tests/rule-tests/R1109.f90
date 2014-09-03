@@ -45,7 +45,7 @@ USE a
 
 ! Include optional module nature
 use, intrinsic :: iso_c_binding
-use, non_intrinsic :: my_mod
+use, non_intrinsic :: A
 
 ! Include optional rename-list
 USE aa, d=>b, e=>c
