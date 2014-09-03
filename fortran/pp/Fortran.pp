@@ -211,8 +211,17 @@
    END                           -- KW["END="]_1,
    EOR                           -- KW["EOR="]_1,
 
+   #R911 --,
+   WriteStmt                     -- H hs=1[ H hs=0[_1 KW["WRITE"] "("_2")"] H hs=0 [_3 _4]],
+   WriteStmt.2:iter-sep          -- _1 ", ",
+   WriteStmt.3:iter-sep          -- _1 ", ",
+
    #R912 --,
    PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 _3 _4]],
+
+   #R913 --,
+   FMT                           -- KW["FMT="] _1,
+   DECIMAL                       -- KW["DECIMAL="] _1,
 
    #R915 --,
    Format_STAR                   -- KW["*"],
@@ -226,12 +235,12 @@
    WaitStmt.2:iter-sep           -- _1 ", ",
 
    #R924 --,
-   BackspaceStmt                 -- H hs=0[_1 KW["BACKSPACE"] "("_2")" _3],
-   BackspaceStmt.2:iter-sep      -- _1 ",",
+   BackspaceStmt                 -- H hs=1[_1 KW["BACKSPACE"] H hs=0 ["("_2")" _3]],
+   BackspaceStmt.2:iter-sep      -- _1 ", ",
 
    #R926 --,
-   RewindStmt                    -- H hs=0[_1 KW["REWIND"] "("_2")" _3],
-   RewindStmt.2:iter-sep         -- _1 ",",
+   RewindStmt                    -- H hs=1[_1 KW["REWIND"] H hs=0["("_2")" _3]],
+   RewindStmt.2:iter-sep         -- _1 ", ",
 
    #R928 --,
    FlushStmt                     -- H hs=1[_1 KW["FLUSH"] H hs=0["("_2")" _3]],
@@ -356,7 +365,7 @@
    OPERATOR                            -- H hs=1[KW ["OPERATOR"] H hs=0 ["("_1")"]],
 
    #R1210 --,
-   ExternalStmt                        -- H hs=0[_1 KW["EXTERNAL :: "] _2 _3],
+   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL ::"] H hs=0[_2 _3]],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
