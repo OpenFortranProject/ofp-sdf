@@ -3,9 +3,7 @@ To Do List
 _____________________________________________________________________________
 9.02.04
 Files to chck on in /new to possibly move up a directory
-R1109.f90
-R1120a.f90
-R1210.f90
+R1109.f90     - DONE, 2014.09.02
 R1234.f90
 R1241.f90
 R850.f90
@@ -30,10 +28,10 @@ ______________________________________________________________________________
 
 Files to check on in /new to check if they are good enough to move up a directory
 R1111.f90     - DONE, 2014.09.01
-R1120a.f90
-R1210.f90
-R1214.f90
-R1218.f90
+R1120a.f90    - DONE, 2014.09.02
+R1210.f90     - DONE, 2014.09.02
+R1214.f90     - DONE, 2014.09.02
+R1218.f90     - DONE, 2014.09.02
 
 File to fix
 R1206.f90
