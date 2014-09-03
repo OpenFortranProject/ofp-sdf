@@ -47,6 +47,7 @@ rules //========================START OF RULES===============================
 // General catch-all rules
 //
 ofp-simplify-ast:  no-list()                      -> []
+ofp-simplify-ast:  a-list(list)                   -> list
 ofp-simplify-ast:  paren-list(list)               -> list
 //ofp-simplify-ast:  opt-list(list)                 -> list
 
@@ -98,6 +99,12 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 
 //R818
 ofp-simplify-ast:  opt-expr(expr)                 -> expr
+
+//R913
+ofp-simplify-ast:  FMT(Format(x))                   -> FMT(x)
+ofp-simplify-ast:  io-control-spec-list(list)       -> list
+ofp-simplify-ast:  io-control-spec-list(l1,list)    -> <concat>[[l1],list]
+ofp-simplify-ast:  io-control-spec-list(l1,l2,list) -> <concat>[[l1],[l2],list]
 
 //R924
 ofp-simplify-ast:  backspace-unit-stmt(label,u,eos) -> BackspaceStmt(label,[UNIT(u)],eos)
