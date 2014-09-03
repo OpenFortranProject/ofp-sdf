@@ -13,11 +13,15 @@ signature
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
+    PpLetterSpec   : Spec            -> PpLetterSpec
+    PpLetterSpec   : Spec * Spec     -> PpLetterSpec
+
     eos            : EOStmt          -> EOS
 
     opt-list       : list            -> opt-list
 
-    SyncImagesStmt : OptLabel * ImageSet * OptSyncStatList -> SyncImagesStmt
+
+//    SyncImagesStmt : OptLabel * ImageSet * OptSyncStatList -> SyncImagesStmt
 
 
 strategies
@@ -39,6 +43,10 @@ rules
 // Don't print EOS and associated comments
 //
   ast-to-pp:  eos(_)                       -> None()
+
+//R562
+  ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
+  ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
 
 //R860
 //  ast-to-pp:
@@ -81,9 +89,8 @@ rules
   no-to-none: no-subroutine-name()         -> None()   // R1236
   no-to-none: no-binding-name()            -> None()   // R508
   no-to-none: no-expr()                    -> None()   // R1241
-  no-to-none: no-letter()                  -> None()   // R562
   no-to-none: no-stop-code()               -> None()   // R857
   no-to-none: no-r()                       -> None()   // R1004
   no-to-none: no-m()                       -> None()   // R1007
   no-to-none: no-e()                       -> None()   // R1007
-  no-to-none: no-name()                    -> None()   // R839, R850
+//  no-to-none: no-name()                    -> None()   // R839, R850
