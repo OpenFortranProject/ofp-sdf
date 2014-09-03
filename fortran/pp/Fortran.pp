@@ -82,7 +82,7 @@
    OfpAssumedOrDeferredShape     -- _1,
 
    #R524 --,
-   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
+   AccessStmt                    -- H hs=1[_1 _2 KW["::"] H hs=0[_3 _4]],
    AccessStmt.3:iter-sep         -- _1 ", ",
 
    #R553 --,
@@ -257,13 +257,15 @@
 
    R#1002 --,
    FormatSpec                    -- _1 _2,
+   FormatSpec.1:iter-sep         -- _1 ", ",
 
    R#1004 --,
-   R                             -- _1 _2,
+   R                             -- _1 "("_2")",
+   R.2:iter-sep                  -- _1 ", ",
 
    R#1007 --,
    I                             -- _1 KW["I"] _2 _3,
-   E                             -- _1 KW["E"] _2 _3 _4,
+   E                             -- _1 KW["E"] _2 KW["."] _3 _4,
    F                             -- _1 KW["F"] _2 KW["."] _3,
 
    #R1013 --,
@@ -272,7 +274,7 @@
    COLON_ED                      -- KW[":"],
 
    #R1015 --,
-   X                             -- _1,
+   X                             -- _1 KW["X"],
 
    #R1021 --,
    CS                            -- _1,
@@ -299,6 +301,8 @@
    UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 ", ONLY: " _4 _5]],
    OnlyList                      -- _1,
    OnlyList.1:iter-sep           -- _1 KW[", "],
+   comma-list                    -- KW [", "] _1,
+   comma-list.1:iter-sep         -- _1 KW[", "],
 
    #R1110 --,
    ModuleNature                  -- KW[", "] _1,
@@ -341,12 +345,15 @@
    OfpSuffix.1:iter-star               -- _1,
 
    #R1206 --,
-   ProcedureStmt,                      -- _1 _2 _3,
+   ProcedureStmt                       -- H hs=1[_1 KW["PROCEDURE ::"] H hs=0[_2 _3]],
+   ProcedureStmt.2:iter-sep            -- _1 ", ",
+   ModuleProcedureStmt                 -- H hs=1[_1 KW["MODULE PROCEDURE ::"] H hs=0[_2 _3]],
+   ModuleProcedureStmt.2:iter-sep            -- _1 ", ",
 
    #R1207 --,
    OfpGenericSpec                      -- _1,
-   ASSIGNMENT                          -- KW["ASSIGNMENT"],
-   OPERATOR                            -- KW ["OPERATOR"] _1,
+   ASSIGNMENT                          -- KW["ASSIGNMENT(=)"],
+   OPERATOR                            -- H hs=1[KW ["OPERATOR"] H hs=0 ["("_1")"]],
 
    #R1210 --,
    ExternalStmt                        -- H hs=0[_1 KW["EXTERNAL :: "] _2 _3],
@@ -394,7 +401,7 @@
    ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3],
 
    #R1242 --,
-   ContainsStmt                        -- _1 KW["CONTAINS"] _2
+   ContainsStmt                        -- H hs=1[_1 KW["CONTAINS"] _2]
 
 
 ]
