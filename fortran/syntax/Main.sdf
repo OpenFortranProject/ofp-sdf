@@ -2735,7 +2735,7 @@ context-free syntax
 %%
   IntExpr                                        -> IoUnit
   '*'                                            -> IoUnit        {cons("STAR")}
-  CharVariable                                   -> IoUnit
+%%CharVariable                                   -> IoUnit  %% ABIGUOUS with (Expr->) IntExpr
 
 %%R902
 %%         int-expr substituted for scalar-int-expr
