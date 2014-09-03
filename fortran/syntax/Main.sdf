@@ -2857,9 +2857,9 @@ context-free syntax
   IntVariable                                     -> IdVariable     {cons("IdVariable")}
 
 %%R915
-  DefaultCharExpr                                 -> Format         {cons("Format")}
-%%Label                                           -> Format         {cons("Format")}
-  '*'                                             -> Format         {cons("Format_STAR")}
+  DefaultCharExpr                                 -> Format
+%%Label                                           -> Format
+  '*'                                             -> Format         {cons("STAR")}
 
 %%R916
   Variable                                        -> InputItem      {cons("InputItem_V")}
@@ -2867,8 +2867,8 @@ context-free syntax
   {InputItem ','}+                                -> InputItemList  {cons("InputItemList")}
 
 %%R917
-  Expr                                            -> OutputItem     {cons("OutputItem")}
-  IoImpliedDo                                     -> OutputItem     {cons("OutputItem_IID")}
+  Expr                                            -> OutputItem
+  IoImpliedDo                                     -> OutputItem
 
   ',' {OutputItem ','}+                           -> OptOutputItemList {cons("comma-list")}
   % empty %                                       -> OptOutputItemList {cons("no-list")}
