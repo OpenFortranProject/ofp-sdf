@@ -362,7 +362,7 @@
    EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
 
    #R1218 --,
-   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC :: "] H hs=0[_2 _3]],
+   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC ::"] H hs=0[_2 _3]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    #R1220 --,
