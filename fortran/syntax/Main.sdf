@@ -2359,7 +2359,6 @@ context-free syntax
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
   Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
   Ident   -> IfConstructName           {cons("IfConstructName")}
-  Ident   -> SelectConstructName       {cons("SelectConstructName")}
 
 %% 8.1 Executable constructs containing blocks
 %%
@@ -2604,17 +2603,20 @@ context-free syntax
 
 
 %%R847
-  ( SelectConstructName ':')?
+  OptLabel ( SelectConstructName ':')?
   'SELECT' 'TYPE'
            '(' (AssociateName '=>')? Selector ')'   EOS -> SelectTypeStmt       {cons("SelectTypeStmt")}
 
 %%848
-  'TYPE'  'IS' '(' TypeSpec        ')' SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_TYPE")}
-  'CLASS' 'IS' '(' DerivedTypeSpec ')' SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS")}
-  'CLASS' 'DEFAULT'                    SelectConstructName? EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS_DEF")}
+  OptLabel 'TYPE'  'IS' '(' TypeSpec        ')' OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt")}
+  OptLabel 'CLASS' 'IS' '(' DerivedTypeSpec ')' OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS")}
+  OptLabel 'CLASS' 'DEFAULT'                    OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS_DEF")}
 
 %%R849
-  'END' 'SELECT' SelectConstructName?               EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
+  OptLabel 'END' 'SELECT' OptSelectConstructName    EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
+
+  Ident                                                 -> OptSelectConstructName
+  % empty %                                             -> OptSelectConstructName {cons("no-name")}
 
 %%R850
   OptLabel 'EXIT'   ConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
