@@ -272,7 +272,7 @@ sorts
   ImplicitSpec                        %% R561
   LetterSpec                          %% R562
 
-  OptLetter2
+  NoLetter
 
 %% 5.6 Namelist statement
 
@@ -593,13 +593,14 @@ sorts
   Format                              %% R915
   InputItem                           %% R916
   OutputItem                          %% R917
-  IoImpliedDo                         %% R918
+                                      %% R918  IoImpliedDo
   IoImpliedDoObject                   %% R919
   IoImpliedDoControl                  %% R920
 
-  InputItemList IoImpliedDoObjectList OptOutputItemList
+  IoImpliedDoInput IoImpliedDoOutput
+  OptInputItemList OptOutputItemList
   IoControlSpecList OptIoControlSpecList
-
+  NoStride ReadFormat
 
 %% 9.7 Waiting on pending data transfer
 
@@ -1605,10 +1606,10 @@ context-free syntax
   DeclarationTypeSpec '(' {LetterSpec ','}+ ')'        -> ImplicitSpec    {cons("ImplicitSpec")}
 
 %%R562
-  Letter OptLetter2                                    -> LetterSpec      {cons("LetterSpec")}
+  Letter '-'  Letter                                   -> LetterSpec      {cons("LetterSpec")}
+  Letter    NoLetter                                   -> LetterSpec      {cons("LetterSpec")}
 
-  '-' Letter                                           -> OptLetter2      {cons("letter")}
-  % empty %                                            -> OptLetter2      {cons("no-letter")}
+  % empty %                                            -> NoLetter        {cons("no-letter")}
 
 %% 5.6 Namelist statement
 %%
@@ -2801,14 +2802,16 @@ context-free syntax
 %%
 
 %%910
-  Label? 'READ' '(' {IoControlSpec ','}+ ')' {InputItem ','}*   EOS -> ReadStmt  {cons("ReadStmt_ICSL")}
-  Label? 'READ' Format              ( ',' InputItemList )?      EOS -> ReadStmt  {cons("ReadStmt_F")}
+  OptLabel 'READ' '(' IoControlSpecList ')' {InputItem ','}*    EOS -> ReadStmt   {cons("ReadStmt")}
+  OptLabel 'READ' ReadFormat                OptInputItemList    EOS -> ReadStmt   {cons("ReadStmt")}
+
+  Format                                                            -> ReadFormat {cons("read-format")}
 
 %%R911
-  OptLabel 'WRITE' '(' IoControlSpecList ')' {OutputItem ','}*  EOS -> WriteStmt {cons("WriteStmt")}
+  OptLabel 'WRITE' '(' IoControlSpecList ')' {OutputItem ','}*  EOS -> WriteStmt  {cons("WriteStmt")}
 
 %%R912
-  OptLabel 'PRINT' Format OptOutputItemList                       EOS -> PrintStmt {cons("PrintStmt")}
+  OptLabel 'PRINT' Format OptOutputItemList                     EOS -> PrintStmt  {cons("PrintStmt")}
 
 %%R913
 %%     default-char-expr substituted for scalar-default-char-expr
@@ -2849,43 +2852,44 @@ context-free syntax
   ',' {IoControlSpec ','}+                          -> OptIoControlSpecList {cons("a-list")}
   % empty %                                         -> OptIoControlSpecList {cons("no-list")}
 
-  IoUnit                                          -> IoUnitNoKW         {cons("UNIT")}
-  Format                                          -> FormatNoKW         {cons("FMT")}
-  NamelistGroupName                               -> NameListNoKW       {cons("NML")}
+  IoUnit                                            -> IoUnitNoKW         {cons("UNIT")}
+  Format                                            -> FormatNoKW         {cons("FMT")}
+  NamelistGroupName                                 -> NameListNoKW       {cons("NML")}
 
 %%R914
-  IntVariable                                     -> IdVariable     {cons("IdVariable")}
+  IntVariable                                       -> IdVariable     {cons("IdVariable")}
 
 %%R915
-  DefaultCharExpr                                 -> Format
-%%Label                                           -> Format
-  '*'                                             -> Format         {cons("STAR")}
+  DefaultCharExpr                                   -> Format
+%%Label                                             -> Format
+  '*'                                               -> Format         {cons("STAR")}
 
 %%R916
-  Variable                                        -> InputItem      {cons("InputItem_V")}
-  IoImpliedDo                                     -> InputItem      {cons("InputItem_IID")}
-  {InputItem ','}+                                -> InputItemList  {cons("InputItemList")}
+  Variable                                          -> InputItem
+  IoImpliedDoInput                                  -> InputItem
+
+  ',' {InputItem ','}+                              -> OptInputItemList   {cons("comma-list")}
 
 %%R917
-  Expr                                            -> OutputItem
-  IoImpliedDo                                     -> OutputItem
+  Expr                                              -> OutputItem
+  IoImpliedDoOutput                                 -> OutputItem
 
-  ',' {OutputItem ','}+                           -> OptOutputItemList {cons("comma-list")}
-  % empty %                                       -> OptOutputItemList {cons("no-list")}
+  ',' {OutputItem ','}+                             -> OptOutputItemList  {cons("comma-list")}
+  % empty %                                         -> OptOutputItemList  {cons("no-list")}
 
 %%R918
-  '('
-      IoImpliedDoObjectList ',' IoImpliedDoControl
-  ')'                                             -> IoImpliedDo    {cons("IoImpliedDo")}
+  '(' {InputItem ','}+  ',' IoImpliedDoControl ')'  -> IoImpliedDoInput   {cons("IoImpliedDo")}
+  '(' {OutputItem ','}+ ',' IoImpliedDoControl ')'  -> IoImpliedDoOutput  {cons("IoImpliedDo")}
 
 %%R919
-  InputItem                                       -> IoImpliedDoObject     {cons("IoImpliedDoObject_II")}
-  OutputItem                                      -> IoImpliedDoObject     {cons("IoImpliedDoObject_OI")}
-  {IoImpliedDoObject ','}+                        -> IoImpliedDoObjectList {cons("IoImpliedDoObjectList")}
+  InputItem                                         -> IoImpliedDoObject
+  OutputItem                                        -> IoImpliedDoObject
 
 %%R920
-  DoVariable '=' IntExpr  ','
-                 IntExpr (',' IntExpr)?           -> IoImpliedDoControl {cons("IoImpliedDoControl")}
+  DoVariable '=' IntExpr  ',' IntExpr ',' IntExpr   -> IoImpliedDoControl {cons("IoImpliedDoControl")}
+  DoVariable '=' IntExpr  ',' IntExpr NoStride      -> IoImpliedDoControl {cons("IoImpliedDoControl")}
+
+  % empty %                                         -> NoStride           {cons("no-stride")}
 
 %% 9.7 Waiting on pending data transfer
 %%
