@@ -372,7 +372,7 @@ sorts
 
   NoAllocateCoshapeSpecList NoAllocateCoarraySpec
   NoAllocateShapeSpecList
-  OptAllocOptList DeallocOptList OptDeallocOptList
+  OptAllocOptList OptDeallocOptList
   NoLowerBoundExpr
 
 %% Identifier aliases
@@ -516,9 +516,9 @@ sorts
   EndSelectTypeStmt                   %% R849
   ExitStmt                            %% R850
 
-  AssociationList CaseValueRangeList CaseStmtAndBlock
+  AssociationList CaseStmtAndBlock
   ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
-  OptLoopControl
+  OptLoopControl NoLow NoHigh
 
 %% 8.2 Branching
 
@@ -946,8 +946,8 @@ context-free syntax
                 Scon                    -> CharLiteralConstant
 
 %%R424
-  '.TRUE.'  OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_TRUE")}
-  '.FALSE.' OptKindParam                -> LogicalLiteralConstant  {cons("LogicalLiteralConstant_FALSE")}
+  '.TRUE.'  OptKindParam                -> LogicalLiteralConstant  {cons("TRUE")}
+  '.FALSE.' OptKindParam                -> LogicalLiteralConstant  {cons("FALSE")}
 
   '_' KindParam                         -> OptKindParam            {cons("opt-kind-param")}
   % empty %                             -> OptKindParam            {cons("no-kind-param")}
@@ -1753,7 +1753,7 @@ context-free syntax
   PartName OptSectionSubscripts OptImageSelector         -> PartRef   {cons("PartRef")}
 
   % empty %                                              -> OptSectionSubscripts  {cons("no-section-subscripts")}
-  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("opt-list")}
+  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("a-list")}
 
   Ident                                                  -> PartName
 
@@ -1913,13 +1913,13 @@ context-free syntax
   OptLabel 'DEALLOCATE'
      '(' {AllocateObject ','}+ OptDeallocOptList ')' EOS -> DeallocateStmt       {cons("DeallocateStmt")}
 
-  ',' DeallocOptList                                     -> OptDeallocOptList    {cons("opt-dealloc-opt-list")}
-  % empty %                                              -> OptDeallocOptList    {cons("no-dealloc-opt-list")}
+  ',' {DeallocOpt ','}+                                  -> OptDeallocOptList    {cons("comma-list")}
+  % empty %                                              -> OptDeallocOptList    {cons("no-list")}
+
 
 %%641
   'STAT'   '=' StatVariable                              -> DeallocOpt           {cons("STAT")}
   'ERRMSG' '=' ErrmsgVariable                            -> DeallocOpt           {cons("ERRMSG")}
-  {DeallocOpt ','}+                                      -> DeallocOptList       {cons("dealloc-opt-list")}
 
 
 %%%%%%%%%%
@@ -2548,7 +2548,7 @@ context-free syntax
     CaseStmtAndBlock*
   EndSelectStmt                                         -> CaseConstruct     {cons("CaseConstruct")}
 
-  CaseStmt Block                                        -> CaseStmtAndBlock  {cons("CaseStmt_Block")}
+  CaseStmt Block                                        -> CaseStmtAndBlock  {cons("CaseStmtBlock")}
 
 %%R839
   OptLabel CaseConstructName ':'
@@ -2557,7 +2557,7 @@ context-free syntax
      'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
 
   Ident                                                 ->   CaseConstructName
-  % empty %                                             -> NoCaseConstructName {cons("no-case-construct-name")}
+  % empty %                                             -> NoCaseConstructName {cons("no-name")}
 
 %%R840
   OptLabel 'CASE' CaseSelector   CaseConstructName  EOS -> CaseStmt       {cons("CaseStmt")}
@@ -2570,23 +2570,25 @@ context-free syntax
 %%R842
 %%       expr substituted for scalar-expr
 %%
-  Expr                                                  -> CaseExpr       {cons("CaseExpr")}
+  Expr                                                  -> CaseExpr
 
 %%R843
-  '(' CaseValueRangeList ')'                            -> CaseSelector   {cons("CaseSelector_CVRL")}
-  'DEFAULT'                                             -> CaseSelector   {cons("CaseSelector_DEFAULT")}
+  '(' {CaseValueRange ','}+ ')'                         -> CaseSelector   {cons("paren-list")}
+  'DEFAULT'                                             -> CaseSelector   {cons("DEFAULT")}
 
 %%R844
-      CaseValue                                         -> CaseValueRange     {cons("CaseValueRange_CV")}
-      CaseValue ':'                                     -> CaseValueRange     {cons("CaseValueRange_CV")}
-  ':' CaseValue                                         -> CaseValueRange     {cons("CaseValueRange_CV")}
-      CaseValue ':' CaseValue                           -> CaseValueRange     {cons("CaseValueRange_CVCV")}
-  {CaseValueRange ','}+                                 -> CaseValueRangeList {cons("CaseValueRangeList")}
+  CaseValue                                           -> CaseValueRange {cons("CaseValue")}
+  CaseValue   ':' NoHigh                              -> CaseValueRange {cons("CaseValueRange")}
+  NoLow       ':' CaseValue                           -> CaseValueRange {cons("CaseValueRange")}
+  CaseValue   ':' CaseValue                           -> CaseValueRange {cons("CaseValueRange")}
+
+  % empty %                                             -> NoLow          {cons("no-low")}
+  % empty %                                             -> NoHigh         {cons("no-high")}
 
 %%R845
 %%       constant-expr substituted for scalar-constant-expr
 %%
-  ConstantExpr                                          -> CaseValue      {cons("CaseValue")}
+  ConstantExpr                                          -> CaseValue
 
 %%R846
   SelectTypeStmt
@@ -2670,7 +2672,7 @@ context-free syntax
   'STAT'   '=' StatVariable                             -> SyncStat             {cons("STAT")}
   'ERRMSG' '=' ErrmsgVariable                           -> SyncStat             {cons("ERRMSG")}
 
-  ',' {SyncStat ','}+                                   -> OptSyncStatList      {cons("opt-list")}
+  ',' {SyncStat ','}+                                   -> OptSyncStatList      {cons("comma-list")}
   % empty %                                             -> OptSyncStatList      {cons("no-list")}
   % empty %                                             ->  NoSyncStatList      {cons("no-list")}
 
@@ -2694,7 +2696,7 @@ context-free syntax
   'ACQUIRED_LOCK' '=' LogicalVariable                   -> LockStat             {cons("ACQUIRED_LOCK")}
   SyncStat                                              -> LockStat
 
-  ',' {LockStat ','}+                                   -> OptLockStatList      {cons("opt-list")}
+  ',' {LockStat ','}+                                   -> OptLockStatList      {cons("comma-list")}
   % empty %                                             -> OptLockStatList      {cons("no-list")}
 
 %%R865
@@ -2854,7 +2856,7 @@ context-free syntax
   Expr                                            -> OutputItem     {cons("OutputItem")}
   IoImpliedDo                                     -> OutputItem     {cons("OutputItem_IID")}
 
-  ',' {OutputItem ','}+                           -> OptOutputItemList {cons("opt-list")}
+  ',' {OutputItem ','}+                           -> OptOutputItemList {cons("comma-list")}
   % empty %                                       -> OptOutputItemList {cons("no-list")}
 
 %%R918
@@ -3058,7 +3060,7 @@ context-free syntax
   CharLiteralConstant                   -> OptIOType            {cons("opt-iotype")}
   % empty %                             -> OptIOType            {cons("no-iotype")}
 
-  '(' {VEditDesc ','}+ ')'              -> OptVList             {cons("opt-list")}
+  '(' {VEditDesc ','}+ ')'              -> OptVList             {cons("paren-list")}
   % empty %                             -> OptVList             {cons("no-list")}
 
 %%R1012
@@ -3368,7 +3370,7 @@ context-free syntax
   % empty %                                    -> NoModuleNature  {cons("no-module-nature")}
 
   % empty %                                    -> NoRenameList    {cons("no-list")}
-  ',' {Rename ','}+                            -> OptRenameList   {cons("opt-list")}
+  ',' {Rename ','}+                            -> OptRenameList   {cons("comma-list")}
   ',' 'ONLY' ':' {Only ','}*                   -> OptOnlyList     {cons("OnlyList")}
 
 %%R1110
@@ -3547,7 +3549,7 @@ context-free syntax
   'POINTER'                                    -> ProcAttrSpec            {cons("POINTER")}
   'SAVE'                                       -> ProcAttrSpec            {cons("SAVE")}
 
-  ',' {ProcAttrSpec ','}+                      -> OptProcAttrSpecList     {cons("opt-list")}
+  ',' {ProcAttrSpec ','}+                      -> OptProcAttrSpecList     {cons("comma-list")}
   % empty %                                    -> OptProcAttrSpecList     {cons("no-list")}
   % empty %                                    -> NoProcAttrSpecList      {cons("no-list")}
 
