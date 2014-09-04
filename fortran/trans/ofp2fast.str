@@ -84,13 +84,13 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  SpecAndExecPart(stmts)            -> OfpExecPart(stmts)
 
 //R403
-  ofp-to-ast:  INTEGER(kind)                     -> OfpType(INTEGER(),         <ofp-kind>kind)
-  ofp-to-ast:  REAL(kind)                        -> OfpType(REAL(),            <ofp-kind>kind)
-  ofp-to-ast:  DOUBLEPRECISION()                 -> OfpType(DOUBLEPRECISION(), None())
-  ofp-to-ast:  COMPLEX(kind)                     -> OfpType(COMPLEX(),         <ofp-kind>kind)
-  ofp-to-ast:  CHARACTER(char)                   -> OfpType(CHARACTER(),       <ofp-char-select>char)
-  ofp-to-ast:  LOGICAL(kind)                     -> OfpType(LOGICAL(),         <ofp-kind>kind)
-  ofp-to-ast:  DOUBLECOMPLEX()                   -> OfpType(DOUBLECOMPLEX(),   None())
+//  ofp-to-ast:  INTEGER(kind)                     -> OfpType(INTEGER(),         <ofp-kind>kind)
+//  ofp-to-ast:  REAL(kind)                        -> OfpType(REAL(),            <ofp-kind>kind)
+//  ofp-to-ast:  DOUBLEPRECISION()                 -> OfpType(DOUBLEPRECISION(), None())
+//  ofp-to-ast:  COMPLEX(kind)                     -> OfpType(COMPLEX(),         <ofp-kind>kind)
+//  ofp-to-ast:  CHARACTER(char)                   -> OfpType(CHARACTER(),       <ofp-char-select>char)
+//  ofp-to-ast:  LOGICAL(kind)                     -> OfpType(LOGICAL(),         <ofp-kind>kind)
+//  ofp-to-ast:  DOUBLECOMPLEX()                   -> OfpType(DOUBLECOMPLEX(),   None())
 
 //R511
   ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
