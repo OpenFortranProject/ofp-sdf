@@ -51,6 +51,8 @@ ofp-simplify-ast:  a-list(list)                   -> list
 ofp-simplify-ast:  paren-list(list)               -> list
 //ofp-simplify-ast:  opt-list(list)                 -> list
 
+ofp-simplify-ast:  a-name(name)                   -> name
+
 
 ofp-simplify-ast:  ImplicitPart(list, stmt)       -> <conc>(list, [stmt])
 
@@ -70,9 +72,6 @@ ofp-simplify-ast:  opt-char-length(length)        -> length
 
 //R508
 ofp-simplify-ast:  language-binding-name(str)     -> str
-
-//R560
-ofp-simplify-ast:  letter(char)                   -> char
 
 //R568
 ofp-simplify-ast:
