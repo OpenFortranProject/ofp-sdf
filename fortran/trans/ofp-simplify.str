@@ -49,7 +49,7 @@ rules //========================START OF RULES===============================
 ofp-simplify-ast:  no-list()                      -> []
 ofp-simplify-ast:  a-list(list)                   -> list
 ofp-simplify-ast:  paren-list(list)               -> list
-//ofp-simplify-ast:  opt-list(list)                 -> list
+ofp-simplify-ast:  comma-list(list)               -> list
 
 ofp-simplify-ast:  a-name(name)                   -> name
 
