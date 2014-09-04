@@ -11,6 +11,8 @@ signature
    InitialSpecPart   : A -> B
    SpecificationPart : A -> B
    
+   DerivedType       : TypeName * OptTypeParamSpecList     -> DerivedType
+   Class             : TypeName * OptTypeParamSpecList     -> Class
 
    RewindStmt        : OptLabel * List(PositionSpec) * EOS -> RewindStmt
    rewind-unit-stmt  : OptLabel * FileUnitNumber * EOS     -> RewindStmt
@@ -63,7 +65,8 @@ ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1
 ofp-simplify-ast:  initial-spec-part(l1,l2)       -> InitialSpecPart(<conc>(l1,l2))
 
 //R403
-ofp-simplify-ast:  intrinsic-type-spec(type)      -> type
+ofp-simplify-ast:  derived-type-spec(DerivedTypeSpec(name,list))   -> DerivedType(name,list)
+ofp-simplify-ast:  class-type-spec(  DerivedTypeSpec(name,list))   -> Class(name,list)
 
 //R503
 ofp-simplify-ast:  opt-array-spec(spec)           -> spec
@@ -122,9 +125,3 @@ ofp-simplify-ast:  flush-unit-stmt(label,u,eos)     -> FlushStmt(label,[UNIT(u)]
 //R1003
 ofp-simplify-ast:  format-items-first(item)         -> [item]
 ofp-simplify-ast:  format-items(list, item)         -> <concat>[list, [item]]
-
-//R1109
-//ofp-simplify-ast:  UseStmt(label,nature,name,opt-rename-list(list),eos)
-//                      -> UseStmt(label,nature,name,list,OnlyList([]),eos)
-//ofp-simplify-ast:  UseStmt(label,nature,name,opt-only-list(list),eos)
-//                      -> UseStmt(label,nature,name,RenameList([]),list,eos)
