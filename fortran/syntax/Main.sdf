@@ -560,7 +560,7 @@ sorts
   AssociateConstructName AssociateName OptAssociateName
   BlockConstructName CaseConstructName NoCaseConstructName
   ConstructName NoConstructName CriticalConstructName
-  DoConstructName NoDoConstructName IfConstructName
+  DoConstructName NoDoConstructName IfConstructName OptIfConstructName
   ScalarIntVariableName SelectConstructName
   OptSelectConstructName
 
@@ -2360,7 +2360,6 @@ context-free syntax
 
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
   Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
-  Ident   -> IfConstructName           {cons("IfConstructName")}
 
 %% 8.1 Executable constructs containing blocks
 %%
@@ -2441,11 +2440,13 @@ context-free syntax
 %%AMB NonlableDoStmt                                    -> DoStmt
 
 %%R816
-  Label? (DoConstructName ':')?
+  OptLabel DoConstructName ':'
+         'DO' LblRef OptLoopControl                 EOS -> LabelDoStmt    {cons("LabelDoStmt")}
+  OptLabel NoDoConstructName
          'DO' LblRef OptLoopControl                 EOS -> LabelDoStmt    {cons("LabelDoStmt")}
 
   Ident                                                 ->   DoConstructName
-  % empty %                                             -> NoDoConstructName {cons("no-do-construct-name")}
+  % empty %                                             -> NoDoConstructName {cons("no-name")}
 
 %%R817
   OptLabel DoConstructName ':' 'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
@@ -2517,7 +2518,8 @@ context-free syntax
 %%AMB ActionStmt                                        -> DoTermSharedStmt
 
 %%R831
-  Label? 'CYCLE' DoConstructName?                   EOS -> CycleStmt      {cons("CycleStmt")}
+  OptLabel 'CYCLE'   DoConstructName                EOS -> CycleStmt      {cons("CycleStmt")}
+  OptLabel 'CYCLE' NoDoConstructName                EOS -> CycleStmt      {cons("CycleStmt")}
 
 %%R832
   IfThenStmt Block
@@ -2531,20 +2533,27 @@ context-free syntax
 %%R833
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  Label? (IfConstructName ':')?
+  OptLabel IfConstructName ':'
          'IF' '(' LogicalExpr ')' 'THEN'            EOS -> IfThenStmt     {cons("IfThenStmt")}
+  OptLabel
+         'IF' '(' LogicalExpr ')' 'THEN'            EOS -> IfThenStmt     {cons("IfThenStmt")}
+
+  Ident                                                 -> IfConstructName
 
 %%R834
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  Label? 'ELSE' 'IF' '(' LogicalExpr ')'
-         'THEN' IfConstructName?                    EOS -> ElseIfStmt     {cons("ElseIfStmt")}
+  OptLabel 'ELSE' 'IF' '(' LogicalExpr ')'
+         'THEN' OptIfConstructName                  EOS -> ElseIfStmt     {cons("ElseIfStmt")}
+
+  IfConstructName                                       -> OptIfConstructName
+  % empty %                                             -> OptIfConstructName  {cons("no-name")}
 
 %%R835
-  Label? 'ELSE' IfConstructName?                    EOS -> ElseStmt       {cons("ElseStmt")}
+  OptLabel 'ELSE' OptIfConstructName                EOS -> ElseStmt       {cons("ElseStmt")}
 
 %%R836
-  Label? 'END' 'IF' IfConstructName?                EOS -> EndIfStmt      {cons("EndIfStmt")}
+  OptLabel 'END' 'IF' OptIfConstructName            EOS -> EndIfStmt      {cons("EndIfStmt")}
 
 %%R837
 %%       logical-expr substituted for scalar-logical-expr
