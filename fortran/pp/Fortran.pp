@@ -2,6 +2,8 @@
    Comment                       -- _1,
    None                          -- ,
 
+   append-colon                  -- _1 KW[": "],
+
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
@@ -170,7 +172,7 @@
    Block                         -- _1,
 
    #R817 --,
-   NonlabelDoStmt                -- H hs=1[_1 H hs=0 [_2 KW[":DO"]] H hs=1[_3] _4],
+   PpNonlabelDoStmt              -- H hs=1[_1 H hs=0 [_2 KW["DO"]] H hs=1[_3] _4],
 
    #R818 --,
    LoopControl                   -- H hs=1[_1 KW["="] H hs=0[_2 KW[", "] _3 _4]],
@@ -189,7 +191,7 @@
    CaseStmtBlock                 -- _1 _2,
 
    #R839 --,
-   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
+   PpSelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
 
    #R840 --,
    CaseStmt                      -- H hs=1[_1 KW["CASE"] H hs=0["("_2")"] H hs=0[_3 _4]],
