@@ -157,18 +157,18 @@ rules //========================START OF RULES===============================
 // Operators...
 
 //R703
-  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
+//  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
 
 //R713
-  ofp-to-ast:  RelOp_EQ()                   -> EQ()
-  ofp-to-ast:  RelOp_NE()                   -> NE()
-  ofp-to-ast:  RelOp_LT()                   -> LT()
-  ofp-to-ast:  RelOp_LE()                   -> LE()
-  ofp-to-ast:  RelOp_GT()                   -> GT()
-  ofp-to-ast:  RelOp_GE()                   -> GE()
+//  ofp-to-ast:  RelOp_EQ()                   -> EQ()
+//  ofp-to-ast:  RelOp_NE()                   -> NE()
+//  ofp-to-ast:  RelOp_LT()                   -> LT()
+//  ofp-to-ast:  RelOp_LE()                   -> LE()
+//  ofp-to-ast:  RelOp_GT()                   -> GT()
+//  ofp-to-ast:  RelOp_GE()                   -> GE()
 
 //R723
-  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
+//  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R1101
   ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
