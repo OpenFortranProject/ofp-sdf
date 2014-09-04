@@ -46,6 +46,10 @@
    #R423 --,
    CharLiteralConstant          -- _1 _2,
 
+   #R424 --,
+   TRUE                         -- KW[".TRUE."] _1,
+   FALSE                        -- KW[".FALSE."] _1,
+
    #R449 --,
    ProcDecl                      -- _1 _2,
 
@@ -104,6 +108,8 @@
 
    #R562 --,
    LetterSpec                    -- _1 _2,
+   PpLetterSpec                  -- _1,
+   PpLetterSpec                  -- _1 KW["-"] _2,
 
    #R568 --,
    CommonStmt                    -- H hs=1[_1 KW["COMMON"] H hs=0[ _2 _3]],
@@ -140,6 +146,9 @@
    Minus                         -- KW["-"] _1,
    NOT                           -- KW[".NOT."] _1,
    Plus                          -- _1 KW["+"] _2,
+   GT                            -- _1 KW[" > "] _2,
+   LT                            -- _1 KW[" .LT. "] _2,
+   NE                            -- _1 KW[" /= "] _2,
 
    #R709 --,
    PLUS                          -- KW ["+"],
@@ -147,6 +156,9 @@
    #R732 --,
    AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
    AssignmentStmt.2:opt          -- ,
+
+   #R801 --,
+   Block                         -- _1,
 
    #R817 --,
    NonlabelDoStmt                -- H hs=1[_1 H hs=0 [_2 KW[":DO"]] H hs=1[_3] _4],
@@ -156,6 +168,35 @@
 
    #R822 --,
    EndDoStmt                     -- H hs=1[_1 KW["END DO"] H hs=0[_2 _3]],
+
+   #R831 --,
+   CycleStmt                     -- H hs=1[_1 KW["CYCLE"] H hs=0[_2 _3]],
+
+   #R837 --,
+   IfStmt                        -- H hs=1[_1 KW["IF"] H hs=0["("_2")"] _3],
+
+   #R838 --,
+   CaseConstruct                 -- _1 _2 _3,
+   CaseStmtBlock                 -- _1 _2,
+
+   #R839 --,
+   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW[": SELECT CASE"] "("_3")" _4]],
+
+   #R840 --,
+   CaseStmt                      -- H hs=1[_1 KW["CASE"] H hs=0["("_2")"] H hs=0[_3 _4]],
+   CaseStmt.2:iter-sep           -- _1 ", ",
+
+   #R841 --,
+   EndSelectStmt                 -- H hs=1[_1 KW["END SELECT"] H hs=0[_2 _3]],
+
+   #R843 --,
+   DEFAULT                       -- KW["DEFAULT"],
+
+   #R844 --,
+   CaseValueRange                -- _1 KW[":"] _2,
+
+   #R845 --,
+   CaseValue                     -- _1,
 
    #R850 --,
    ExitStmt                      -- H hs=1[_1 KW["EXIT"] H hs=0[_2 _3]],
@@ -211,8 +252,12 @@
    END                           -- KW["END="]_1,
    EOR                           -- KW["EOR="]_1,
 
+   #R910 --,
+   ReadStmt                      -- H hs=1[_1 KW["READ"] H hs=0["("_2")" KW[", "] _3 _4]],
+   ReadStmt.3:iter-sep           -- _1 ", ",
+
    #R911 --,
-   WriteStmt                     -- H hs=1[ H hs=0[_1 KW["WRITE"] "("_2")"] H hs=0 [_3 _4]],
+   WriteStmt                     -- H hs=1[_1 KW["WRITE"] H hs=0 ["("_2")"] H hs=0[_3 _4]],
    WriteStmt.2:iter-sep          -- _1 ", ",
    WriteStmt.3:iter-sep          -- _1 ", ",
 
@@ -222,6 +267,9 @@
    #R913 --,
    FMT                           -- KW["FMT="] _1,
    DECIMAL                       -- KW["DECIMAL="] _1,
+   SIZE                          -- KW["SIZE="] _1,
+   ADVANCE                       -- KW["ADVANCE="] _1,
+   REC                           -- KW["REC="] _1,
 
    #R915 --,
    Format_STAR                   -- KW["*"],
@@ -229,6 +277,16 @@
 
    #R917 --,
    OutputItem                    -- _1,
+
+   #R918 --,
+   IoImpliedDo                   -- "("_1 KW[", "] _2")",
+   IoImpliedDo.1:iter-sep        -- _1 ", ",
+
+   #R919 --,
+   IoImpliedDoObjectList         -- _1,
+
+   #R920 --,
+   IoImpliedDoControl            -- _1 KW["="] _2 KW[","] _3 KW[","] _4,
 
    #R922 --,
    WaitStmt                      -- H hs=1[_1 KW["WAIT"] H hs=0["("_2")"] _3],
@@ -306,18 +364,31 @@
    EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
 
    #R1109 --,
-   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
+   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW[", "] _4 _5]],
+   UseStmt.4:iter-sep            -- _1 ", ",
    UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 ", ONLY: " _4 _5]],
    OnlyList                      -- _1,
    OnlyList.1:iter-sep           -- _1 KW[", "],
-   comma-list                    -- KW [", "] _1,
-   comma-list.1:iter-sep         -- _1 KW[", "],
+ %%  comma-list                    -- KW [", "] _1,
+ %%  comma-list.1:iter-sep         -- _1 KW[", "],
 
    #R1110 --,
    ModuleNature                  -- KW[", "] _1,
 
    #R1111 --,
    Rename                        -- H hs=0[_1 KW["=>"] _2],
+
+   #R1116 --,
+   OfpSubmodule                  -- _1 _2,
+
+   #R1117 --,
+   SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3 _4],
+
+   #R1118 --,
+   ParentIdentifier              -- _1 _2,
+
+   #R1119 --,
+   EndSubmoduleStmt              -- H hs=1[_1 KW["END SUBMODULE"] H hs=0[_2 _3]],
 
    #R1120 --,
    BlockData                     -- _1 _2 _3,
@@ -391,7 +462,7 @@
 
    #R1222 --,
    OfpArg                              -- _1 _2,
-   ActualArgSpec                       -- _1 KW[" = "] _2,
+   ActualArgSpec                       -- _1 KW["="] _2,
 
    #R1224 --,
    AltReturnSpec                       -- KW["*"] _1,
