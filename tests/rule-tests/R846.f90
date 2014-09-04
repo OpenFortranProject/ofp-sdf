@@ -18,26 +18,25 @@
 !
 ! Not tested here: block, select-construct-name, associate-name, selector, 
 ! and type-spec
-select type (a => p) 
+10 select type (a => p)
+11 class is ( point )
+   x = 1
+12 type is (point_3d)
+   x = 2
+13 class default
+   x = 3
+14 end select
+
+select type (p)
 class is ( point )
    x = 1
 type is (point_3d)
    x = 2
 class default
    x = 3
-end select 
+end select
 
-select type (p) 
-class is ( point )
-   x = 1
-type is (point_3d)
-   x = 2
-class default
-   x = 3
-end select 
-
-
-my_select: select type (p) 
+my_select: select type (p)
 class is ( point ) my_select
    x = 1
 type is (point_3d) my_select
