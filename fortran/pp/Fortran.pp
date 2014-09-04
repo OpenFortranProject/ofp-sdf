@@ -5,7 +5,6 @@
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
-   CHARACTER                     -- KW["CHARACTER :: "],
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
    PARAMETER                     -- KW["PARAMETER :: "],
@@ -39,6 +38,7 @@
    OfpType                       -- H hs=1[_1 _2],
    INTEGER                       -- KW["INTEGER :: "] _1,
    REAL                          -- KW["REAL :: "] _1,
+   CHARACTER                     -- KW["CHARACTER :: "] _1,
    
    #R407 --,
    PpLiteral                     -- H hs=1[_1],
