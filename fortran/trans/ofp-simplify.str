@@ -99,6 +99,9 @@ ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr '
 
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
 
+//R753
+ofp-simplify-ast:  colon-forall-step(step)        -> step
+
 //R818
 ofp-simplify-ast:  opt-expr(expr)                 -> expr
 
