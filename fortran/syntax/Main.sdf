@@ -422,10 +422,10 @@ sorts
   AssignmentStmt                      %% R732
   PointerAssignmentStmt               %% R733
   DataPointerObject                   %% R734
-  BoundsSpec                          %% R735
+                                      %% R735  BoundsSpec  %% using BoundsRemapping instead (with no-upper-bounds)
   BoundsRemapping                     %% R736
   DataTarget                          %% R737
-  ProcPointerObject                   %% R738
+                                      %% R738  ProcPointerObject  %% removed to fix AMBIGUITY in PointerAssignmentStmt
   ProcComponentRef                    %% R739
   ProcTarget                          %% R740
   WhereStmt                           %% R741
@@ -448,9 +448,11 @@ sorts
   EndForallStmt                       %% R758
   ForallStmt                          %% R759
 
+  OptWhereConstructName OptElsewhereClause WhereConstructName
   ElsewhereClause MaskedElsewhereClause OptExpr NoExpr
-
-  BoundsRemappingList BoundsSpecList ForallTripletSpecList
+  OptForallStep OptMaskExpr OptTypeSpec
+  OptBoundsRemappingList NoUpperBoundExpr
+  NoDataPointerComponentName
 
 %% Identifier aliases
 
@@ -562,7 +564,7 @@ sorts
   ConstructName CriticalConstructName OptCriticalConstructName
   DoConstructName IfConstructName
   ScalarIntVariableName SelectConstructName
-  OptSelectConstructName
+  NoSelectConstructName OptSelectConstructName
 
       
 %%%%%%%%%%
@@ -1932,9 +1934,7 @@ context-free syntax
 %% Identifier aliases
 %%
 
-  Ident   -> DataPointerComponentName  {cons("DataPointerComponentName")}
   Ident   -> ForallConstructName       {cons("ForallConstructName")}
-  Ident   -> IndexName                 {cons("IndexName")}
   Ident   -> ProcedureComponentName    {cons("ProcedureComponentName")}
 
 %%R309
@@ -2089,67 +2089,55 @@ Primary                                    -> Expr
 %%R732
   OptLabel Variable '=' Expr           EOS -> AssignmentStmt  {cons("AssignmentStmt")}
 
-%% todo: check. Original ISO: assignmentStatement is variable '=' expression
-%%TODO-DELETE   LblDef Name '%' Name '=' Expr EOS                                      -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '%' DataRef '=' Expr EOS                                   -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFExprList ')' '%' Name '=' Expr EOS                   -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFExprList ')' '%' DataRef '=' Expr EOS                -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=' Expr EOS           -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=' Expr EOS        -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '=' Expr EOS                                               -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFExprList ')' '=' Expr EOS                            -> AssignmentStmt
-%%TODO-DELETE   LblDef Name '(' SFExprList ')' SubstringRange '=' Expr EOS             -> AssignmentStmt
-
 %%R733
-  Label? DataPointerObject ( '(' BoundsSpecList ')' )?
-                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_DPO1")}
-  Label? DataPointerObject   '(' BoundsRemappingList ')'
-                           '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_DPO2")}
-  Label? ProcPointerObject '=>' ProcTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt_PPO")}
+  OptLabel DataPointerObject OptBoundsRemappingList
+                             '=>' DataTarget       EOS -> PointerAssignmentStmt  {cons("PointerAssignmentStmt")}
+%%OptLabel ProcPointerObject '=>' ProcTarget       EOS -> PointerAssignmentStmt  {reject} %% AMBIGUOUS
 
-%%TODO-DELETE these
-%%TODO   LblDef Name '%' Name '=>' DataTarget EOS                               -> PointerAssignmentStmt
-%%TODO   LblDef Name '%' DataRef '=>' DataTarget EOS                            -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFExprList ')' '%' Name '=>' DataTarget EOS            -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFExprList ')' '%' DataRef '=>' DataTarget EOS         -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' Name '=>' DataTarget EOS    -> PointerAssignmentStmt
-%%TODO   LblDef Name '(' SFDummyArgNameList ')' '%' DataRef '=>' DataTarget EOS -> PointerAssignmentStmt
+  '(' {BoundsRemapping ','}+ ')'                       -> OptBoundsRemappingList {cons("paren-list")}
+  % empty %                                            -> OptBoundsRemappingList {cons("no-list")}
 
 %%R734
 %%          variable substituted for scalar-variable
 %%
-  VariableName                                           -> DataPointerObject  {cons("DataPointerObject_VN")}
-  Variable '%' DataPointerComponentName                  -> DataPointerObject  {cons("DataPointerObject_V")}
+  VariableName NoDataPointerComponentName               -> DataPointerObject  {cons("DataPointerObject")}
+  Variable '%'   DataPointerComponentName               -> DataPointerObject  {cons("DataPointerObject")}
+
+  Ident                                                 -> DataPointerComponentName
+  % empty %                                             -> NoDataPointerComponentName {cons("no-component-name")}
 
 %%R735
-  LowerBoundExpr ':'                                     -> BoundsSpec         {cons("BoundsSpec")}
-  {BoundsSpec ','}+                                      -> BoundsSpecList     {cons("BoundsSpecList")}
+%% NOTE - replaced by BoundsRemapping with no-upper-bounds
+%%LowerBoundExpr ':'                                    -> BoundsSpec         {cons("BoundsSpec")}
 
 %%R736
-  LowerBoundExpr ':' UpperBoundExpr                      -> BoundsRemapping    {cons("BoundsRemapping")}
-  {BoundsRemapping ','}+                                 -> BoundsRemappingList{cons("BoundsRemappingList")}
+  LowerBoundExpr ':' NoUpperBoundExpr                   -> BoundsRemapping    {cons("BoundsRemapping")}
+  LowerBoundExpr ':' UpperBoundExpr                     -> BoundsRemapping    {cons("BoundsRemapping")}
+
+  % empty %                                             -> NoUpperBoundExpr   {cons("no-upper-bounds")}
 
 %%R737
-%%       Variable producing DataTarget is Ambiguous
+%%       Variable changed to Expr to include ProcTarget
 %%
-  Expr                                                 -> DataTarget        {cons("DataTarget")}
+%%Variable                                            -> DataTarget
+  Expr                                                -> DataTarget
 
 %%R738
-  ProcPointerName                                      -> ProcPointerObject {cons("ProcPointerObject_PPN")}
-  ProcComponentRef                                     -> ProcPointerObject {cons("ProcPointerObject_PCR")}
+%%ProcPointerName                                       -> ProcPointerObject
+%%ProcComponentRef                                      -> ProcPointerObject
 
 %%R739
 %%          variable substituted for scalar-variable
 %%
-  Variable '%' ProcedureComponentName                  -> ProcComponentRef  {cons("ProcComponentRef")}
+  Variable '%' ProcedureComponentName                   -> ProcComponentRef   {cons("ProcComponentRef")}
 
 %%R740
-  Expr                                                 -> ProcTarget
-  ProcedureName                                        -> ProcTarget
-  ProcComponentRef                                     -> ProcTarget
+  Expr                                                  -> ProcTarget
+  ProcedureName                                         -> ProcTarget
+  ProcComponentRef                                      -> ProcTarget
 
 %%R741
-  Label? 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt  -> WhereStmt         {cons("WhereStmt")}
+  OptLabel 'WHERE' '(' MaskExpr ')' WhereAssignmentStmt -> WhereStmt          {cons("WhereStmt")}
 
 %%R742
 %%TODO-F08-FIXME
@@ -2167,45 +2155,52 @@ Primary                                    -> Expr
 %%R742
   WhereConstructStmt  WhereBodyConstruct*
     MaskedElsewhereClause*
-    ElsewhereClause?
+    OptElsewhereClause
   EndWhereStmt                                  -> WhereConstruct         {cons("WhereConstruct")}
 
   MaskedElsewhereStmt WhereBodyConstruct*       -> MaskedElsewhereClause  {cons("MaskedElsewhereClause")}
   ElsewhereStmt       WhereBodyConstruct*       -> ElsewhereClause        {cons("ElsewhereClause")}
 
+  ElsewhereClause                               -> OptElsewhereClause
+  % empty %                                     -> OptElsewhereClause     {cons("no-elsewhere-clause")}
 
 %%R743
 %%       Ident substituted for where-construct-name
 %%
-  Label? (Ident ':')? 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("WhereConstructStmt")}
+  OptLabel OptWhereConstructName 'WHERE' '(' MaskExpr ')' EOS -> WhereConstructStmt  {cons("WhereConstructStmt")}
+
+  Ident                                            -> WhereConstructName
+
+  WhereConstructName ':'                           -> OptWhereConstructName          {cons("where-construct-name-colon")}
+  % empty %                                        -> OptWhereConstructName          {cons("no-name")}
 
 %%R744
-  WhereAssignmentStmt                              -> WhereBodyConstruct  {cons("WhereBodyConstruct_WAS")}
-  WhereStmt                                        -> WhereBodyConstruct  {cons("WhereBodyConstruct_WS")}
-  WhereConstruct                                   -> WhereBodyConstruct  {cons("WhereBodyConstruct_WC")}
+  WhereAssignmentStmt                              -> WhereBodyConstruct
+  WhereStmt                                        -> WhereBodyConstruct
+  WhereConstruct                                   -> WhereBodyConstruct
 
 %%R745
 %%TODO-F08 - make it so label can't be part of assignment-stmt
 %%
-  AssignmentStmt                                   -> WhereAssignmentStmt {cons("WhereAssignmentStmt")}
+  AssignmentStmt                                   -> WhereAssignmentStmt
 
 %%R746
-  LogicalExpr                                      -> MaskExpr            {cons("MaskExpr")}
+  LogicalExpr                                      -> MaskExpr
 
 %%R747
 %%       Ident substituted for where-construct-name
 %%
-  Label? 'ELSEWHERE' '(' MaskExpr ')' Ident?   EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
+  OptLabel 'ELSEWHERE' '(' MaskExpr ')'
+                            WhereConstructName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
+  OptLabel 'ELSEWHERE' '(' MaskExpr ')' NoName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
 
 %%R748
-%%       Ident substituted for where-construct-name
-%%
-  Label? 'ELSEWHERE' Ident?                    EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
+  OptLabel 'ELSEWHERE' WhereConstructName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
+  OptLabel 'ELSEWHERE'             NoName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
 
 %%R749
-%%       Ident substituted for where-construct-name
-%%
-  Label? 'END' 'WHERE' Ident?                  EOS -> EndWhereStmt        {cons("EndWhereStmt")}
+  OptLabel 'END' 'WHERE' WhereConstructName    EOS -> EndWhereStmt        {cons("EndWhereStmt")}
+  OptLabel 'END' 'WHERE'             NoName    EOS -> EndWhereStmt        {cons("EndWhereStmt")}
 
 %%R750
   ForallConstructStmt
@@ -2213,48 +2208,60 @@ Primary                                    -> Expr
   EndForallStmt                                    -> ForallConstruct     {cons("ForallConstruct")}
 
 %%R751
-  Label? (ForallConstructName ':')?
-         'FORALL' ForallHeader                 EOS -> ForallConstructStmt  {cons("ForallConstructStmt")}
+  OptLabel ForallConstructName ':'
+          'FORALL' ForallHeader                EOS -> ForallConstructStmt {cons("ForallConstructStmt")}
+  OptLabel              NoName
+          'FORALL' ForallHeader                EOS -> ForallConstructStmt {cons("ForallConstructStmt")}
 
 %%752
 %%       mask-expr substituted for scalar-mask-expr
 %%
   '('
-     (TypeSpec '::')? ForallTripletSpecList
-                      (',' MaskExpr)?
-  ')'                                              -> ForallHeader         {cons("ForallHeader")}
+     OptTypeSpec {ForallTripletSpec ','}+ OptMaskExpr
+  ')'                                              -> ForallHeader        {cons("ForallHeader")}
+
+  TypeSpec '::'                                    -> OptTypeSpec         {cons("type-spec-colon")}
+  % empty %                                        -> OptTypeSpec         {cons("no-type-spec")}
+
+  ',' MaskExpr                                     -> OptMaskExpr         {cons("comma-expr")}
+  % empty %                                        -> OptMaskExpr         {cons("no-mask-expr")}
 
 %%753
   IndexName '=' ForallLimit
-            ':' ForallLimit (':' ForallStep)?      -> ForallTripletSpec    {cons("ForallTripletSpec")}
-  {ForallTripletSpec ','}+                         -> ForallTripletSpecList{cons("ForallTripletSpecList")}
+            ':' ForallLimit OptForallStep          -> ForallTripletSpec   {cons("ForallTripletSpec")}
+
+  Ident                                            -> IndexName
+
+  ':' ForallStep                                   -> OptForallStep       {cons("colon-forall-step")}
+  % empty %                                        -> OptForallStep       {cons("no-forall-step")}
 
 %%754
 %%        int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                          -> ForallLimit          {cons("ForallLimit")}
+  IntExpr                                          -> ForallLimit
 
 %%755
 %%        int-expr substituted for scalar-int-expr
 %%
-  IntExpr                                          -> ForallStep           {cons("ForallStep")}
+  IntExpr                                          -> ForallStep
 
 %%756
-  ForallAssignmentStmt                             -> ForallBodyConstruct  {cons("ForallBodyConstruct_FAS")}
-  WhereStmt                                        -> ForallBodyConstruct  {cons("ForallBodyConstruct_WS")}
-  WhereConstruct                                   -> ForallBodyConstruct  {cons("ForallBodyConstruct_WC")}
-  ForallConstruct                                  -> ForallBodyConstruct  {cons("ForallBodyConstruct_FC")}
-  ForallStmt                                       -> ForallBodyConstruct  {cons("ForallBodyConstruct_FS")}
+  ForallAssignmentStmt                             -> ForallBodyConstruct
+  WhereStmt                                        -> ForallBodyConstruct
+  WhereConstruct                                   -> ForallBodyConstruct
+  ForallConstruct                                  -> ForallBodyConstruct
+  ForallStmt                                       -> ForallBodyConstruct
 
 %%757
-  AssignmentStmt                                   -> ForallAssignmentStmt {cons("ForallAssignmentStmt_AS")}
-  PointerAssignmentStmt                            -> ForallAssignmentStmt {cons("ForallAssignmentStmt_PAS")}
+  AssignmentStmt                                   -> ForallAssignmentStmt
+  PointerAssignmentStmt                            -> ForallAssignmentStmt
 
 %%758
-  Label? 'END' 'FORALL' ForallConstructName?   EOS -> EndForallStmt        {cons("EndForallStmt")}
+  OptLabel 'END' 'FORALL' ForallConstructName     EOS -> EndForallStmt     {cons("EndForallStmt")}
+  OptLabel 'END' 'FORALL'              NoName     EOS -> EndForallStmt     {cons("EndForallStmt")}
 
 %%759
-  Label? 'FORALL' ForallHeader ForallAssignmentStmt-> ForallStmt           {cons("ForallStmt")}
+  OptLabel 'FORALL' ForallHeader ForallAssignmentStmt -> ForallStmt        {cons("ForallStmt")}
 
 %%TODO - what with the following
 %%
@@ -2617,7 +2624,7 @@ context-free syntax
 %%R847
   OptLabel SelectConstructName ':'
   'SELECT' 'TYPE' '(' OptAssociateName Selector ')' EOS -> SelectTypeStmt        {cons("SelectTypeStmt")}
-  OptLabel
+  OptLabel NoSelectConstructName
   'SELECT' 'TYPE' '(' OptAssociateName Selector ')' EOS -> SelectTypeStmt        {cons("SelectTypeStmt")}
 
   AssociateName '=>'                                    -> OptAssociateName             {cons("a-name")}
@@ -2632,6 +2639,7 @@ context-free syntax
   OptLabel 'END' 'SELECT' OptSelectConstructName    EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
 
   Ident                                                 -> SelectConstructName
+  % empty %                                             -> NoSelectConstructName  {cons("no-name")}
   SelectConstructName                                   -> OptSelectConstructName
   % empty %                                             -> OptSelectConstructName {cons("no-name")}
 
