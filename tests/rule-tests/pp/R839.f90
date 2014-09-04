@@ -1,13 +1,7 @@
-!! R839 cycle-stmt
-!      cycle-stmt  is  CYCLE [ do-construct-name ]
-
-do i = 1, 10
-20 CYCLE
-end do 
-
-my_do: do i = 1, 10
-   cycle my_do
-end do my_do
-
-end
-
+DO i = 1, 10
+20 CYCLE 
+END DO 
+my_do: DO i = 1, 10
+CYCLE my_do
+END DO my_do
+END PROGRAM
