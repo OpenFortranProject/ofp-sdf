@@ -1,4 +1,4 @@
-!! R840 if-construct
+!! R832 if-construct
 !    is  if-then-stmt
 !              block
 !          [ else-if-smt 
@@ -11,13 +11,13 @@
 ! R844 (end-if-stmt), and if-construct-name.  Does not test 
 ! scalar-logical-expr.
 
-if(x .eq. y) then
+10 if(x .eq. y) then
    x = 1
-else if(x .lt. y) then
+11 else if(x .lt. y) then
    x = 0
-else
+12 else
    x = -1
-end if
+13 end if
 
 if(x .eq. y) then
    x = 1
