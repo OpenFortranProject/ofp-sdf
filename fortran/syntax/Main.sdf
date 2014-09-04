@@ -2361,7 +2361,9 @@ context-free syntax
   EndAssociateStmt                                      -> AssociateConstruct {cons("AssociateConstruct")}
 
 %%R803
-  Label? (AssociateConstructName ':')?
+  OptLabel AssociateConstructName ':'
+     'ASSOCIATE' '(' {Association ','}+ ')'         EOS -> AssociateStmt      {cons("AssociateStmt")}
+  OptLabel                 NoName
      'ASSOCIATE' '(' {Association ','}+ ')'         EOS -> AssociateStmt      {cons("AssociateStmt")}
 
   Ident                                                 -> AssociateConstructName
@@ -2376,7 +2378,8 @@ context-free syntax
 %%Variable                                              -> Selector  %% AMBIGUOUS with Expr
 
 %%R806
-  Label? 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("EndAssociateStmt")}
+  OptLabel 'END' 'ASSOCIATE' AssociateConstructName EOS -> EndAssociateStmt   {cons("EndAssociateStmt")}
+  OptLabel 'END' 'ASSOCIATE'                 NoName EOS -> EndAssociateStmt   {cons("EndAssociateStmt")}
 
 %%R807
 %%       The optional specification-part is ambiguous.  The lack of a specification-part
