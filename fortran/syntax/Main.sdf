@@ -172,7 +172,7 @@ sorts
   AcImpliedDoControl                  %% R474
   AcDoVariable                        %% R475
 
-  AcValueList BindingNameList FinalSubroutineNameList
+  NoAcValueList BindingNameList FinalSubroutineNameList
 
 %% Identifier aliases
 
@@ -388,22 +388,22 @@ sorts
 
   Primary                             %% R701
 
-  Level1Expr                          %% R702
+                                      %% R702  Level1Expr
   DefinedUnaryOp                      %% R703
-  MultOperand                         %% R704
-  AddOperand                          %% R705
-  Level2Expr                          %% R706
+                                      %% R704  MultOperand
+                                      %% R705  AddOperand
+                                      %% R706  Level2Expr
   PowerOp                             %% R707
   MultOp                              %% R708
   AddOp                               %% R709
-  Level3Expr                          %% R710
+                                      %% R710  Level3Expr
   ConcatOp                            %% R711
-  Level4Expr                          %% R712
+                                      %% R712  Level4Expr
   RelOp                               %% R713
-  AndOperand                          %% R714
-  OrOperand                           %% R715
-  EquivOperand                        %% R716
-  Level5Expr                          %% R717
+                                      %% R714  AndOperand
+                                      %% R715  OrOperand
+                                      %% R716  EquivOperand
+                                      %% R717  Level5Expr
   NotOp                               %% R718
   AndOp                               %% R719
   OrOp                                %% R720
@@ -1211,9 +1211,10 @@ context-free syntax
   '['  AcSpec  ']'                                 -> ArrayConstructor     {cons("ArrayConstructor")}
 
 %%R469
-   TypeSpec '::'                                   -> AcSpec               {cons("AcSpec_TS")}
-  (TypeSpec '::')? AcValueList                     -> AcSpec               {cons("AcSpec_AVL")}
-  {AcValue ','}+                                   -> AcValueList          {cons("AcValueList")}
+   TypeSpec '::' NoAcValueList                     -> AcSpec               {cons("AcSpec")}
+   OptTypeSpec {AcValue ','}+                      -> AcSpec               {cons("AcSpec")}
+
+  % empty %                                        -> NoAcValueList        {cons("no-list")}
 
 %%R470
 %% Lbracket - lex
@@ -1222,11 +1223,11 @@ context-free syntax
 %% Rbracket - lex
 
 %%R472
-  Expr                                             -> AcValue              {cons("AcValue_E")}
-  AcImpliedDo                                      -> AcValue              {cons("AcValue_AID")}
+  Expr                                             -> AcValue
+  AcImpliedDo                                      -> AcValue
    
 %%R473
-  '(' AcValueList ',' AcImpliedDoControl ')'       -> AcImpliedDo          {cons("AcImpliedDo")}
+  '(' {AcValue ','}+ ',' AcImpliedDoControl ')'    -> AcImpliedDo          {cons("AcImpliedDo")}
 
 %%R474
 %%      expr substituted for scalar-int-expr
@@ -1758,7 +1759,7 @@ context-free syntax
   PartName OptSectionSubscripts OptImageSelector         -> PartRef   {cons("PartRef")}
 
   % empty %                                              -> OptSectionSubscripts  {cons("no-section-subscripts")}
-  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("a-list")}
+  '(' {SectionSubscript ','}+ ')'                        -> OptSectionSubscripts  {cons("paren-list")}
 
   Ident                                                  -> PartName
 
@@ -1766,7 +1767,7 @@ context-free syntax
   DataRef                                                -> StructureComponent
 
 %%R614
-  DataRef                                                -> CoindexedNamedObject {cons("CoindexedNamedObject")}
+  DataRef                                                -> CoindexedNamedObject
 
 %%R615
   Designator '%' 'RE'                                    -> ComplexPartDesignator {cons("ComplexPartDesignator_RE")}
@@ -1798,6 +1799,8 @@ context-free syntax
   Subscript                                              -> SectionSubscript
   SubscriptTriplet                                       -> SectionSubscript
 %%VectorSubscript                                        -> SectionSubscript     %%AMBIGUOUS with Subscript
+%%
+%%TODO-F08 - need to add keyword arguments so that his can stand in for actual args in FunctionReference
 
 %%R621
   OptSubscript ':' OptSubscript OptStride                -> SubscriptTriplet     {cons("SubscriptTriplet")}
@@ -1963,7 +1966,7 @@ context-free syntax
   Designator                    -> Primary
   ArrayConstructor              -> Primary
   StructureConstructor          -> Primary
-  FunctionReference             -> Primary
+%%FunctionReference             -> Primary  {reject}        %% AMBIGUOUS > Designator - TODO: need ActualArgSpec with keyword
 %%TypeParamInquiry              -> Primary  {reject}        %% AMBIGUOUS > Designator
 %%TypeParamName                 -> Primary  {reject}        %% AMBIGUOUS > Designator
   '(' Expr ')'                  -> Primary  {cons("Primary")}
@@ -1974,21 +1977,21 @@ context-free syntax
 %%TODO ???????  ArrayConstructor              -> SFPrimary
 
 %%R702
-  DefinedUnaryOp? Primary                  -> Level1Expr      {cons("Level1Expr")}
+%%DefinedUnaryOp? Primary                  -> Level1Expr      {cons("Level1Expr")}
 
 %%R703
-  Dop                                      -> DefinedUnaryOp  {cons("DefinedUnaryOp")}
+  Dop                                      -> DefinedUnaryOp
 
 %%R704
-  Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("MultOperand")}
+%%Level1Expr (PowerOp MultOperand)?        -> MultOperand     {cons("MultOperand")}
 
 %%R705
-  (AddOperand MultOp)? MultOperand         -> AddOperand      {cons("AddOperand")}
+%%(AddOperand MultOp)? MultOperand         -> AddOperand      {cons("AddOperand")}
 
 %%R706 % ELI: "We need to distinguish unary operators" SDF: ambig on "-2" on next 2 lines 
 %%TODO-F08: is this still true?
 %%R706
-  (Level2Expr? AddOp)? AddOperand          -> Level2Expr      {cons("Level2Expr")}
+%%(Level2Expr? AddOp)? AddOperand          -> Level2Expr      {cons("Level2Expr")}
 
 %%R707
   '**'                                     -> PowerOp         {cons("PowerOp")}
@@ -2002,13 +2005,13 @@ context-free syntax
   '-'                                      -> AddOp           {cons("MINUS")}
 
 %%R710
-  (Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("Level3Expr")}
+%%(Level3Expr ConcatOp)? Level2Expr        -> Level3Expr      {cons("Level3Expr")}
 
 %%R711
   '//'                                     -> ConcatOp        {cons("ConcatOp")}
 
 %%R712
-  (Level3Expr RelOp)? Level3Expr           -> Level4Expr      {cons("Level4Expr")}
+%%(Level3Expr RelOp)? Level3Expr           -> Level4Expr      {cons("Level4Expr")}
 
 %%R713
   '.EQ.'                                   -> RelOp           {cons("RelOp_EQ")}
@@ -2025,16 +2028,16 @@ context-free syntax
   '>='                                     -> RelOp           {cons("RelOp_GE")}
 
 %%R714
-  NotOp? Level4Expr                        -> AndOperand      {cons("AndOperand")}
+%%NotOp? Level4Expr                        -> AndOperand      {cons("AndOperand")}
 
 %%R715
-  (OrOperand AndOp)? AndOperand            -> OrOperand       {cons("OrOperand")}
+%%(OrOperand AndOp)? AndOperand            -> OrOperand       {cons("OrOperand")}
 
 %%R716
-  (EquivOperand OrOp)? OrOperand           -> EquivOperand    {cons("EquivOperand")}
+%%(EquivOperand OrOp)? OrOperand           -> EquivOperand    {cons("EquivOperand")}
 
 %%R717
-  (Level5Expr EquivOp)? EquivOperand       -> Level5Expr      {cons("Level5Expr")}
+%%(Level5Expr EquivOp)? EquivOperand       -> Level5Expr      {cons("Level5Expr")}
 
 %%R718
   '.NOT.'                                  -> NotOp           {cons("NotOp")}
@@ -2050,8 +2053,9 @@ context-free syntax
   '.NEQV.'                                 -> EquivOp         {cons("EquivOp_NEQV")}
 
 %%R722
-%%TODO-short circuit the expr nonsense and make it more sensible
+%%TODO-short circuit the expr nonsense above and make it more sensible
 %%( Expr DefinedBinaryOp )? Level5Expr     -> Expr            {cons("Expr")}
+
 Primary                                    -> Expr
 
 %%R723
