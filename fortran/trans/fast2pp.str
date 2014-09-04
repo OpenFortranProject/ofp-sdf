@@ -20,6 +20,8 @@ signature
 
     PpSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> PpSelectCaseStmt    // R838
 
+    PpNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl * EOS -> PpNonlabelDoStmt  //R817
+
     opt-list       : list            -> opt-list
     append-colon   : name            -> append-colon
 
@@ -48,6 +50,10 @@ rules
 //R562
   ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
   ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
+
+//R817
+  ast-to-pp:
+    NonlabelDoStmt(label,name,loopcontrol,eos) ->PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
 
 //R838
   ast-to-pp:
