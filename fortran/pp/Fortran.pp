@@ -5,8 +5,6 @@
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
-   REAL                          -- KW["REAL :: "],
-   INTEGER                       -- KW["INTEGER :: "],
    CHARACTER                     -- KW["CHARACTER :: "],
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
@@ -34,24 +32,32 @@
    #R312 --,
    Label                         -- _1,
 
+   #R403 --,
+   IntrinsicType                 -- _1,
+
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
+   INTEGER                       -- KW["INTEGER :: "] _1,
+   REAL                          -- KW["REAL :: "] _1,
    
    #R407 --,
-   PpLiteral                    -- H hs=1[_1],
+   PpLiteral                     -- H hs=1[_1],
 
    #R413 --,
-   RealLiteralConstant          -- _1 _2,
+   RealLiteralConstant           -- _1 _2,
 
    #R423 --,
-   CharLiteralConstant          -- _1 _2,
+   CharLiteralConstant           -- _1 _2,
 
    #R424 --,
-   TRUE                         -- KW[".TRUE."] _1,
-   FALSE                        -- KW[".FALSE."] _1,
+   TRUE                          -- KW[".TRUE."] _1,
+   FALSE                         -- KW[".FALSE."] _1,
 
    #R449 --,
    ProcDecl                      -- _1 _2,
+
+   #R453 --,
+   DerivedTypeSpec               -- _1 _2,
 
    #R501 --,
    TypeDeclarationStmt           -- H hs=0[H hs=3[_1] _2 _3 _4 _5],
@@ -130,8 +136,8 @@
    OfpVarRef                     -- _1,
 
    #R626 --,
-   OfpAllocateStmt               -- H hs=1[_1 H hs=0[KW["ALLOCATE"] _2 "("_3")"] _4],
-   OfpAllocateStmt.3:iter-sep    -- _1 ",",
+   AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3")"] _4 _5],
+   AllocateStmt.3:iter-sep       -- _1 ",",
 
    #R627 --,
    ERRMSG                        -- KW["ERRMSG="] _1,
@@ -140,7 +146,10 @@
    STAT                          -- KW["STAT="] _1,
 
    #R631 --,
-   OfpAllocation                 -- _1 _2 _3,
+   Allocation                    -- _1 _2 _3,
+
+   #R633 --,
+   AllocateShapeSpec             -- _1 _2,
 
    #Operators --,
    Minus                         -- KW["-"] _1,
@@ -197,6 +206,22 @@
 
    #R845 --,
    CaseValue                     -- _1,
+
+   #R846 --,
+   SelectTypeConstruct           -- _1 _2 _3,
+   TypeGuardStmtBlock            -- _1 _2,
+
+   #R847 --,
+   SelectTypeStmt                -- H hs=1[_1 KW["SELECT TYPE"] H hs=0["("_2 KW[" => "] _3")" _4]],
+   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 KW[": SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
+
+   #R848 --,
+   ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
+   TypeGuardStmt                 -- H hs=1[_1 KW["TYPE IS"] H hs=0["("_2")"] H hs=0[_3 _4]],
+   DefaultGuardStmt              -- H hs=1[_1 KW["CLASS DEFAULT"] H hs=0[_2 _3]],
+
+   #R849 --,
+   EndSelectTypeStmt             -- H hs=1[_1 KW["END SELECT"] H hs=0[_2 _3]],
 
    #R850 --,
    ExitStmt                      -- H hs=1[_1 KW["EXIT"] H hs=0[_2 _3]],
@@ -364,19 +389,15 @@
    EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
 
    #R1109 --,
-   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 KW[", "] _4 _5]],
-   UseStmt.4:iter-sep            -- _1 ", ",
+   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
    UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 ", ONLY: " _4 _5]],
    OnlyList                      -- _1,
-   OnlyList.1:iter-sep           -- _1 KW[", "],
- %%  comma-list                    -- KW [", "] _1,
- %%  comma-list.1:iter-sep         -- _1 KW[", "],
 
    #R1110 --,
    ModuleNature                  -- KW[", "] _1,
 
    #R1111 --,
-   Rename                        -- H hs=0[_1 KW["=>"] _2],
+   Rename                        -- KW[", "] H hs=0[_1 KW["=>"] _2],
 
    #R1116 --,
    OfpSubmodule                  -- _1 _2,
