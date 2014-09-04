@@ -2549,7 +2549,7 @@ context-free syntax
 %%R837
 %%       logical-expr substituted for scalar-logical-expr
 %%
-  Label? 'IF' '(' LogicalExpr ')' ActionStmt            -> IfStmt         {cons("IfStmt")}
+  OptLabel 'IF' '(' LogicalExpr ')' ActionStmt          -> IfStmt         {cons("IfStmt")}
 
 %%R838
   SelectCaseStmt
