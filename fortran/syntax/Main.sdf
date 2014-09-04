@@ -139,7 +139,7 @@ sorts
 
   BindingAttrList OptComponentAttrSpecList
   ProcComponentAttrSpecList TypeBoundProcDeclList OptTypeBoundProcedurePart
-  TypeParamDeclList TypeParamSpecList
+  OptTypeParamSpecList TypeParamDeclList
 
   OptTypeAttrSpecList OptTypeParamNameList
 
@@ -516,9 +516,8 @@ sorts
   EndSelectTypeStmt                   %% R849
   ExitStmt                            %% R850
 
-  AssociationList CaseStmtAndBlock
-  ElseIfStmtAndBlock ElseStmtAndBlock TypeGuardStmtAndBlock
-  OptLoopControl NoLow NoHigh
+  CaseStmtAndBlock ElseIfStmtAndBlock ElseStmtAndBlock
+  TypeGuardStmtAndBlock OptLoopControl NoLow NoHigh
 
 %% 8.2 Branching
 
@@ -558,11 +557,12 @@ sorts
 
 %% Identifier aliases
 
-  AssociateConstructName AssociateName BlockConstructName
-  CaseConstructName NoCaseConstructName
+  AssociateConstructName AssociateName OptAssociateName
+  BlockConstructName CaseConstructName NoCaseConstructName
   ConstructName NoConstructName CriticalConstructName
   DoConstructName NoDoConstructName IfConstructName
   ScalarIntVariableName SelectConstructName
+  OptSelectConstructName
 
       
 %%%%%%%%%%
@@ -1131,17 +1131,21 @@ context-free syntax
   {FinalSubroutineName ','}+                       -> FinalSubroutineNameList {cons("FinalSubroutineNameList")}
 
 %%R453
-  TypeName ( '(' TypeParamSpecList ')' )?          -> DerivedTypeSpec         {cons("DerivedTypeSpec")}
+  TypeName OptTypeParamSpecList                    -> DerivedTypeSpec         {cons("DerivedTypeSpec")}
+
+ '(' {TypeParamSpec ','}+ ')'                      -> OptTypeParamSpecList    {cons("paren-list")}
+ % empty %                                         -> OptTypeParamSpecList    {cons("no-list")}
 
 %%R454
-  ( Keyword '=' )? TypeParamValue                  -> TypeParamSpec           {cons("TypeParamSpec")}
- {TypeParamSpec ','}+                              -> TypeParamSpecList       {cons("TypeParamSpecList")}
+  NoKeyword   TypeParamValue                       -> TypeParamSpec           {cons("TypeParamSpec")}
+  Keyword '=' TypeParamValue                       -> TypeParamSpec           {cons("TypeParamSpec")}
 
 %%R455
   DerivedTypeSpec '(' {ComponentSpec ','}* ')'     -> StructureConstructor    {cons("StructureConstructor")}
 
 %%R456
-  ( Keyword '=' )? ComponentDataSource             -> ComponentSpec           {cons("ComponentSpec")}
+  NoKeyword   ComponentDataSource                  -> ComponentSpec           {cons("ComponentSpec")}
+  Keyword '=' ComponentDataSource                  -> ComponentSpec           {cons("ComponentSpec")}
 
 %%R457
   Expr                                             -> ComponentDataSource
@@ -2354,8 +2358,6 @@ context-free syntax
 %% Identifier aliases
 %%
 
-  Ident   -> AssociateConstructName    {cons("AssociateConstructName")}
-  Ident   -> AssociateName             {cons("AssociateName")}
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
   Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
   Ident   -> IfConstructName           {cons("IfConstructName")}
@@ -2373,16 +2375,18 @@ context-free syntax
 
 %%R803
   Label? (AssociateConstructName ':')?
-     'ASSOCIATE' '(' AssociationList ')'            EOS -> AssociateStmt      {cons("AssociateStmt")}
+     'ASSOCIATE' '(' {Association ','}+ ')'         EOS -> AssociateStmt      {cons("AssociateStmt")}
+
+  Ident                                                 -> AssociateConstructName
 
 %%R804
   AssociateName '=>' Selector                           -> Association        {cons("Association")}
-  {Association ','}+                                    -> AssociationList    {cons("AssociationList")}
+
+  Ident                                                 -> AssociateName
 
 %%R805
-%%TODO-F08 is this ambiguous?
-  Expr                                                  -> Selector           {cons("Selector_E")}
-  Variable                                              -> Selector           {cons("Selector_V")}
+  Expr                                                  -> Selector
+%%Variable                                              -> Selector  %% AMBIGUOUS with Expr
 
 %%R806
   Label? 'END' 'ASSOCIATE' AssociateConstructName?  EOS -> EndAssociateStmt   {cons("EndAssociateStmt")}
@@ -2597,25 +2601,30 @@ context-free syntax
 %%R846
   SelectTypeStmt
     TypeGuardStmtAndBlock*
-  EndSelectTypeStmt                                     -> SelectTypeConstruct    {cons("SelectTypeConstruct")}
+  EndSelectTypeStmt                                     -> SelectTypeConstruct   {cons("SelectTypeConstruct")}
 
-  TypeGuardStmt Block                                   -> TypeGuardStmtAndBlock  {cons("TypeGuardStmt_Block")}
+  TypeGuardStmt Block                                   -> TypeGuardStmtAndBlock {cons("TypeGuardStmtBlock")}
 
 
 %%R847
-  OptLabel ( SelectConstructName ':')?
-  'SELECT' 'TYPE'
-           '(' (AssociateName '=>')? Selector ')'   EOS -> SelectTypeStmt       {cons("SelectTypeStmt")}
+  OptLabel SelectConstructName ':'
+  'SELECT' 'TYPE' '(' OptAssociateName Selector ')' EOS -> SelectTypeStmt        {cons("SelectTypeStmt")}
+  OptLabel
+  'SELECT' 'TYPE' '(' OptAssociateName Selector ')' EOS -> SelectTypeStmt        {cons("SelectTypeStmt")}
+
+  AssociateName '=>'                                    -> OptAssociateName             {cons("a-name")}
+  % empty %                                             -> OptAssociateName             {cons("no-name")}
 
 %%848
   OptLabel 'TYPE'  'IS' '(' TypeSpec        ')' OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt")}
-  OptLabel 'CLASS' 'IS' '(' DerivedTypeSpec ')' OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS")}
-  OptLabel 'CLASS' 'DEFAULT'                    OptSelectConstructName EOS -> TypeGuardStmt {cons("TypeGuardStmt_CLASS_DEF")}
+  OptLabel 'CLASS' 'IS' '(' DerivedTypeSpec ')' OptSelectConstructName EOS -> TypeGuardStmt {cons("ClassGuardStmt")}
+  OptLabel 'CLASS' 'DEFAULT'                    OptSelectConstructName EOS -> TypeGuardStmt {cons("DefaultGuardStmt")}
 
 %%R849
   OptLabel 'END' 'SELECT' OptSelectConstructName    EOS -> EndSelectTypeStmt    {cons("EndSelectTypeStmt")}
 
-  Ident                                                 -> OptSelectConstructName
+  Ident                                                 -> SelectConstructName
+  SelectConstructName                                   -> OptSelectConstructName
   % empty %                                             -> OptSelectConstructName {cons("no-name")}
 
 %%R850
