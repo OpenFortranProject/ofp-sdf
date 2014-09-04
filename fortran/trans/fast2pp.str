@@ -18,10 +18,10 @@ signature
 
     eos            : EOStmt          -> EOS
 
+    PpSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> PpSelectCaseStmt    // R838
+
     opt-list       : list            -> opt-list
-
-
-//    SyncImagesStmt : OptLabel * ImageSet * OptSyncStatList -> SyncImagesStmt
+    append-colon   : name            -> append-colon
 
 
 strategies
@@ -37,6 +37,7 @@ strategies
       where(<gt>(<length>,0))
     ; !opt-list(<id>)
 
+  append-colon = ?no-name() < id + !append-colon(<id>)
 
 rules
 
@@ -47,6 +48,10 @@ rules
 //R562
   ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
   ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
+
+//R838
+  ast-to-pp:
+    SelectCaseStmt(label,name,expr,eos)    -> PpSelectCaseStmt(label,<append-colon>name,expr,eos)
 
 //R860
 //  ast-to-pp:
