@@ -560,7 +560,8 @@ sorts
 
   AssociateConstructName AssociateName OptAssociateName
   BlockConstructName CaseConstructName NoCaseConstructName
-  ConstructName NoConstructName CriticalConstructName
+  ConstructName NoConstructName
+  CriticalConstructName NoCriticalConstructName OptCriticalConstructName
   DoConstructName NoDoConstructName IfConstructName OptIfConstructName
   ScalarIntVariableName SelectConstructName
   OptSelectConstructName
@@ -2360,7 +2361,6 @@ context-free syntax
 %%
 
   Ident   -> BlockConstructName        {cons("BlockConstructName")}
-  Ident   -> CriticalConstructName     {cons("CriticalConstructName")}
 
 %% 8.1 Executable constructs containing blocks
 %%
@@ -2409,14 +2409,19 @@ context-free syntax
 %%R810
   CriticalStmt
     Block
-  EndCriticalStmt                                       -> CriticalConstruct  {cons("CriticalConstruct")}
+  EndCriticalStmt                                        -> CriticalConstruct  {cons("CriticalConstruct")}
 
 %%R811
-  Label? ( CriticalConstructName ':' )? 'CRITICAL'  EOS -> CriticalStmt       {cons("CriticalStmt")}
+  OptLabel   CriticalConstructName ':' 'CRITICAL'    EOS -> CriticalStmt       {cons("CriticalStmt")}
+  OptLabel NoCriticalConstructName     'CRITICAL'    EOS -> CriticalStmt       {cons("CriticalStmt")}
 
 %%R812
-  Label? 'END' 'CRITICAL' CriticalConstructName?    EOS -> EndCriticalStmt    {cons("EndCriticalStmt")}
+  OptLabel 'END' 'CRITICAL' OptCriticalConstructName EOS -> EndCriticalStmt    {cons("EndCriticalStmt")}
 
+  Ident                                          -> CriticalConstructName
+  CriticalConstructName                          -> OptCriticalConstructName
+  % empty %                                      -> OptCriticalConstructName   {cons("no-name")}
+  % empty %                                      -> NoCriticalConstructName    {cons("no-name")}
 
 %% Block DO constructs cannot be recognized syntactically because there is
 %% no requirement that there is an end do statement.  Specifically, a
