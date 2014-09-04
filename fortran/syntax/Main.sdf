@@ -178,7 +178,7 @@ sorts
 
   ArgName BindingName ComponentName
   FinalSubroutineName ImpliedDoVariable
-  Name ParentTypeName ProcedureName
+  Name NoName ParentTypeName ProcedureName
   ScalarIntConstantName TypeName OptTypeName TypeParamName
 
 %% 5.2 Type declaration statements
@@ -264,7 +264,7 @@ sorts
 
   AllocatableDeclList BindEntityList CodimensionDeclList
   DataIDoObjectList DataStmtObjectList DataStmtSetList DataStmtValueList
-  DummyArgNameList NamedConstantDefList PointerDeclList TargetDeclList
+  NamedConstantDefList PointerDeclList TargetDeclList
 
 %% 5.5 Implicit statement
 
@@ -289,15 +289,14 @@ sorts
   CommonStmt                          %% R568
   CommonBlockObject                   %% R569
 
-  EntityNameList
-  EquivalenceObjectList EquivalenceSetList ObjectNameList
+  EquivalenceObjectList EquivalenceSetList
 
   CommonBlockEntry1 CommonBlockEntry
 
 %% Identifier aliases
 
   ArrayName CoarrayName
-  CommonBlockName OptCommonBlockName NoCommonBlockName1
+  CommonBlockName OptCommonBlockName
   EntityName NamelistGroupName ObjectName
   ProcEntityName
 
@@ -474,7 +473,7 @@ sorts
   BlockConstruct                      %% R807
   BlockStmt                           %% R808
   EndBlockStmt                        %% R809
-  CriticalConstruct                   %% R810
+    CriticalConstruct                   %% R810
   CriticalStmt                        %% R811
   EndCriticalStmt                     %% R812
                                       %% R813  DoConstruct      - ambiguous removed
@@ -559,10 +558,9 @@ sorts
 %% Identifier aliases
 
   AssociateConstructName AssociateName OptAssociateName
-  BlockConstructName CaseConstructName NoCaseConstructName
-  ConstructName NoConstructName
-  CriticalConstructName NoCriticalConstructName OptCriticalConstructName
-  DoConstructName NoDoConstructName IfConstructName OptIfConstructName
+  BlockConstructName CaseConstructName
+  ConstructName CriticalConstructName OptCriticalConstructName
+  DoConstructName IfConstructName
   ScalarIntVariableName SelectConstructName
   OptSelectConstructName
 
@@ -768,10 +766,12 @@ context-free syntax
   Ident   -> BindingName               {cons("BindingName")}
   Ident   -> FinalSubroutineName       {cons("FinalSubroutineName")}
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
-  Ident   -> Name
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
   Ident   -> TypeParamName             {cons("TypeParamName")}
+
+  Ident      -> Name
+  % empty %  -> NoName                 {cons("no-name")}
 
 %%R305
 %%TODO-DELETE   NamedConstantUse                      -> Constant
@@ -840,10 +840,10 @@ context-free syntax
   DerivedTypeSpec                         -> TypeSpec
 
 %%R403
-  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("intrinsic-type-spec")}
-  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("intrinsic-type-spec")}
-  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("DerivedType")}
-  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("Class")}
+  IntrinsicTypeSpec                       -> DeclarationTypeSpec  {cons("IntrinsicType")}
+  'TYPE'  '(' IntrinsicTypeSpec ')'       -> DeclarationTypeSpec  {cons("IntrinsicType")}
+  'TYPE'  '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("derived-type-spec")}  %% -> DerivedType
+  'CLASS' '(' DerivedTypeSpec   ')'       -> DeclarationTypeSpec  {cons("class-type-spec")}    %% -> Class
   'CLASS' '(' '*'               ')'       -> DeclarationTypeSpec  {cons("AssumedClass")}
 %%TR29113
   'TYPE'  '(' '*'               ')'       -> DeclarationTypeSpec  {cons("AssumedType")}
@@ -1446,8 +1446,8 @@ context-free syntax
   {AllocatableDecl ','}+                                    -> AllocatableDeclList {cons("AllocatableDeclList")}
 
 %%R528
-  Label? 'ASYNCHRONOUS' '::' ObjectNameList             EOS -> AsynchronousStmt {cons("AsynchronousStmt")}
-  Label? 'ASYNCHRONOUS'      ObjectNameList             EOS -> AsynchronousStmt {cons("AsynchronousStmt")}
+  OptLabel 'ASYNCHRONOUS' '::' {ObjectName ','}+        EOS -> AsynchronousStmt {cons("AsynchronousStmt")}
+  OptLabel 'ASYNCHRONOUS'      {ObjectName ','}+        EOS -> AsynchronousStmt {cons("AsynchronousStmt")}
 
 %%R529
   Label? LanguageBindingSpec '::' BindEntityList        EOS -> BindStmt         {cons("BindStmt")}
@@ -1467,10 +1467,8 @@ context-free syntax
   {CodimensionDecl ','}+                                    -> CodimensionDeclList {cons("CodimensionDeclList")}
 
 %%R533
-  Label? 'CONTIGUOUS' '::' ObjectNameList               EOS -> ContiguousStmt   {cons("ContiguousStmt")}
-  Label? 'CONTIGUOUS'      ObjectNameList               EOS -> ContiguousStmt   {cons("ContiguousStmt")}
-
-  {ObjectName ','}+                                         -> ObjectNameList   {cons("ObjectNameList")}
+  OptLabel 'CONTIGUOUS' '::' {ObjectName ','}+          EOS -> ContiguousStmt   {cons("ContiguousStmt")}
+  OptLabel 'CONTIGUOUS'      {ObjectName ','}+          EOS -> ContiguousStmt   {cons("ContiguousStmt")}
 
 %%R534
   Label? 'DATA' DataStmtSetList                         EOS -> DataStmt         {cons("DataStmt")}
@@ -1540,14 +1538,12 @@ context-free syntax
   {ArrayNameSpec ','}+                                      -> ArrayNameSpecList {cons("ArrayNameSpecList")}
 
 %%R546
-  OptLabel 'INTENT' '(' IntentSpec ')' '::' DummyArgNameList EOS -> IntentStmt   {cons("IntentStmt")}
-  OptLabel 'INTENT' '(' IntentSpec ')'      DummyArgNameList EOS -> IntentStmt   {cons("IntentStmt")}
-
-  {DummyArgName ','}+                                            -> DummyArgNameList {cons("DummyArgs")}
+  OptLabel 'INTENT' '(' IntentSpec ')' '::' {DummyArgName ','}+ EOS -> IntentStmt   {cons("IntentStmt")}
+  OptLabel 'INTENT' '(' IntentSpec ')'      {DummyArgName ','}+ EOS -> IntentStmt   {cons("IntentStmt")}
 
 %%R547
-  OptLabel 'OPTIONAL' '::' DummyArgNameList                EOS -> OptionalStmt {cons("OptionalStmt")}
-  OptLabel 'OPTIONAL'      DummyArgNameList                EOS -> OptionalStmt {cons("OptionalStmt")}
+  OptLabel 'OPTIONAL' '::' {DummyArgName ','}+             EOS -> OptionalStmt {cons("OptionalStmt")}
+  OptLabel 'OPTIONAL'      {DummyArgName ','}+             EOS -> OptionalStmt {cons("OptionalStmt")}
 
 %%R548
   OptLabel 'PARAMETER' '(' NamedConstantDefList ')'        EOS -> ParameterStmt   {cons("ParameterStmt")}
@@ -1566,10 +1562,8 @@ context-free syntax
   {PointerDecl ','}+                                           -> PointerDeclList {cons("PointerDeclList")}
 
 %%R552
-  Label? 'PROTECTED' '::' EntityNameList                   EOS -> ProtectedStmt   {cons("ProtectedStmt")}
-  Label? 'PROTECTED'      EntityNameList                   EOS -> ProtectedStmt   {cons("ProtectedStmt")}
-
-  {EntityName ','}+                                            -> EntityNameList  {cons("EntityNameList")}
+  OptLabel 'PROTECTED' '::' {EntityName ','}+              EOS -> ProtectedStmt   {cons("ProtectedStmt")}
+  OptLabel 'PROTECTED'      {EntityName ','}+              EOS -> ProtectedStmt   {cons("ProtectedStmt")}
 
 %%R553
   OptLabel 'SAVE' '::' {SavedEntity ','}+                  EOS -> SaveStmt        {cons("SaveStmt")}
@@ -1593,13 +1587,12 @@ context-free syntax
   {TargetDecl ','}+                                            -> TargetDeclList {cons("TargetDeclList")}
 
 %%R558
-  OptLabel 'VALUE' '::' DummyArgNameList                   EOS -> ValueStmt    {cons("ValueStmt")}
-  OptLabel 'VALUE'      DummyArgNameList                   EOS -> ValueStmt    {cons("ValueStmt")}
+  OptLabel 'VALUE' '::' {DummyArgName ','}+        EOS -> ValueStmt    {cons("ValueStmt")}
+  OptLabel 'VALUE'      {DummyArgName ','}+        EOS -> ValueStmt    {cons("ValueStmt")}
 
 %%R559
-  OptLabel 'VOLATILE' '::' ObjectNameList                  EOS -> VolatileStmt {cons("VolatileStmt")}
-  OptLabel 'VOLATILE'      ObjectNameList                  EOS -> VolatileStmt {cons("VolatileStmt")}
-
+  OptLabel 'VOLATILE' '::' {ObjectName ','}+       EOS -> VolatileStmt {cons("VolatileStmt")}
+  OptLabel 'VOLATILE'      {ObjectName ','}+       EOS -> VolatileStmt {cons("VolatileStmt")}
 
 %% 5.5 Implicit statement
 %%
@@ -1654,7 +1647,7 @@ context-free syntax
   OptLabel 'COMMON' CommonBlockEntry1 CommonBlockEntry*  EOS -> CommonStmt  {cons("common-stmt")}
 
    '/' OptCommonBlockName '/' {CommonBlockObject ','}+       -> CommonBlockEntry1    {cons("CommonBlockEntry")}
-        NoCommonBlockName1    {CommonBlockObject ','}+       -> CommonBlockEntry1    {cons("CommonBlockEntry")}
+                   NoName     {CommonBlockObject ','}+       -> CommonBlockEntry1    {cons("CommonBlockEntry")}
 
    ',' '/' OptCommonBlockName '/' {CommonBlockObject ','}+   -> CommonBlockEntry     {cons("CommonBlockEntry")}
        '/' OptCommonBlockName '/' {CommonBlockObject ','}+   -> CommonBlockEntry     {cons("CommonBlockEntry")}
@@ -1662,8 +1655,7 @@ context-free syntax
   %% NOTE - keep this constructor for printing '/' '/'
   Ident                                                      -> CommonBlockName      {cons("CommonBlockName")}
   CommonBlockName                                            -> OptCommonBlockName
-  % empty %                                                  -> OptCommonBlockName   {cons("no-cb-name")}
-  % empty %                                                  -> NoCommonBlockName1   {cons("no-cb-name1")}
+  % empty %                                                  -> OptCommonBlockName   {cons("no-name")}
 
 %%R569
   VariableName OptArraySpec                                  -> CommonBlockObject    {cons("CommonBlockObject")}
@@ -2357,11 +2349,6 @@ context-free syntax
 %% Fortran ISO/IEC 1539:1991 section R8xx Execution Control
 %%%%%%%%%%
 
-%% Identifier aliases
-%%
-
-  Ident   -> BlockConstructName        {cons("BlockConstructName")}
-
 %% 8.1 Executable constructs containing blocks
 %%
 
@@ -2401,10 +2388,14 @@ context-free syntax
   EndBlockStmt                                          -> BlockConstruct     {cons("BlockConstruct")}
 
 %%R808
-  Label? ( BlockConstructName ':' )? 'BLOCK'        EOS -> BlockStmt          {cons("BlockStmt")}
+  OptLabel BlockConstructName ':' 'BLOCK'           EOS -> BlockStmt          {cons("BlockStmt")}
+  OptLabel NoName                 'BLOCK'           EOS -> BlockStmt          {cons("BlockStmt")}
 
 %%R809
-  Label? 'END' 'BLOCK' BlockConstructName?          EOS -> EndBlockStmt       {cons("EndBlockStmt")}
+  OptLabel 'END' 'BLOCK' BlockConstructName        EOS -> EndBlockStmt       {cons("EndBlockStmt")}
+  OptLabel 'END' 'BLOCK' NoName                    EOS -> EndBlockStmt       {cons("EndBlockStmt")}
+
+  Ident                                                -> BlockConstructName
 
 %%R810
   CriticalStmt
@@ -2413,7 +2404,7 @@ context-free syntax
 
 %%R811
   OptLabel   CriticalConstructName ':' 'CRITICAL'    EOS -> CriticalStmt       {cons("CriticalStmt")}
-  OptLabel NoCriticalConstructName     'CRITICAL'    EOS -> CriticalStmt       {cons("CriticalStmt")}
+  OptLabel                  NoName     'CRITICAL'    EOS -> CriticalStmt       {cons("CriticalStmt")}
 
 %%R812
   OptLabel 'END' 'CRITICAL' OptCriticalConstructName EOS -> EndCriticalStmt    {cons("EndCriticalStmt")}
@@ -2421,7 +2412,6 @@ context-free syntax
   Ident                                          -> CriticalConstructName
   CriticalConstructName                          -> OptCriticalConstructName
   % empty %                                      -> OptCriticalConstructName   {cons("no-name")}
-  % empty %                                      -> NoCriticalConstructName    {cons("no-name")}
 
 %% Block DO constructs cannot be recognized syntactically because there is
 %% no requirement that there is an end do statement.  Specifically, a
@@ -2447,16 +2437,14 @@ context-free syntax
 
 %%R816
   OptLabel DoConstructName ':'
-         'DO' LblRef OptLoopControl                 EOS -> LabelDoStmt    {cons("LabelDoStmt")}
-  OptLabel NoDoConstructName
-         'DO' LblRef OptLoopControl                 EOS -> LabelDoStmt    {cons("LabelDoStmt")}
+                  'DO' LblRef OptLoopControl        EOS -> LabelDoStmt    {cons("LabelDoStmt")}
+  OptLabel NoName 'DO' LblRef OptLoopControl        EOS -> LabelDoStmt    {cons("LabelDoStmt")}
 
   Ident                                                 ->   DoConstructName
-  % empty %                                             -> NoDoConstructName {cons("no-name")}
 
 %%R817
   OptLabel DoConstructName ':' 'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
-  OptLabel NoDoConstructName   'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
+  OptLabel          NoName     'DO' OptLoopControl  EOS -> NonlabelDoStmt {cons("NonlabelDoStmt")}
 
 %%R818
 %%        expr substituted for scalar-int-expr
@@ -2488,8 +2476,8 @@ context-free syntax
 %%AMB ContinueStmt                                      -> EndDo
 
 %%R822
-  OptLabel 'END' 'DO'   DoConstructName             EOS -> EndDoStmt      {cons("EndDoStmt")}
-  OptLabel 'END' 'DO' NoDoConstructName             EOS -> EndDoStmt      {cons("EndDoStmt")}
+  OptLabel 'END' 'DO' DoConstructName               EOS -> EndDoStmt      {cons("EndDoStmt")}
+  OptLabel 'END' 'DO'          NoName               EOS -> EndDoStmt      {cons("EndDoStmt")}
 
 %%R823
 %%AMB ActionTermDoConstruct                             -> NonblockDoConstruct
@@ -2524,8 +2512,8 @@ context-free syntax
 %%AMB ActionStmt                                        -> DoTermSharedStmt
 
 %%R831
-  OptLabel 'CYCLE'   DoConstructName                EOS -> CycleStmt      {cons("CycleStmt")}
-  OptLabel 'CYCLE' NoDoConstructName                EOS -> CycleStmt      {cons("CycleStmt")}
+  OptLabel 'CYCLE' DoConstructName                  EOS -> CycleStmt      {cons("CycleStmt")}
+  OptLabel 'CYCLE'          NoName                  EOS -> CycleStmt      {cons("CycleStmt")}
 
 %%R832
   IfThenStmt Block
@@ -2553,16 +2541,17 @@ context-free syntax
 %%       logical-expr substituted for scalar-logical-expr
 %%
   OptLabel 'ELSE' 'IF' '(' LogicalExpr ')'
-         'THEN' OptIfConstructName                  EOS -> ElseIfStmt     {cons("ElseIfStmt")}
-
-  IfConstructName                                       -> OptIfConstructName
-  % empty %                                             -> OptIfConstructName  {cons("no-name")}
+           'THEN' IfConstructName                   EOS -> ElseIfStmt     {cons("ElseIfStmt")}
+  OptLabel 'ELSE' 'IF' '(' LogicalExpr ')'
+           'THEN' NoName                            EOS -> ElseIfStmt     {cons("ElseIfStmt")}
 
 %%R835
-  OptLabel 'ELSE' OptIfConstructName                EOS -> ElseStmt       {cons("ElseStmt")}
+  OptLabel 'ELSE' IfConstructName                   EOS -> ElseStmt       {cons("ElseStmt")}
+  OptLabel 'ELSE'          NoName                   EOS -> ElseStmt       {cons("ElseStmt")}
 
 %%R836
-  OptLabel 'END' 'IF' OptIfConstructName            EOS -> EndIfStmt      {cons("EndIfStmt")}
+  OptLabel 'END' 'IF' IfConstructName               EOS -> EndIfStmt      {cons("EndIfStmt")}
+  OptLabel 'END' 'IF'          NoName               EOS -> EndIfStmt      {cons("EndIfStmt")}
 
 %%R837
 %%       logical-expr substituted for scalar-logical-expr
@@ -2578,20 +2567,18 @@ context-free syntax
 
 %%R839
   OptLabel CaseConstructName ':'
-     'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
-  OptLabel NoCaseConstructName
-     'SELECT' 'CASE' '(' CaseExpr ')'               EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
+                  'SELECT' 'CASE' '(' CaseExpr ')'  EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
+  OptLabel NoName 'SELECT' 'CASE' '(' CaseExpr ')'  EOS -> SelectCaseStmt {cons("SelectCaseStmt")}
 
   Ident                                                 ->   CaseConstructName
-  % empty %                                             -> NoCaseConstructName {cons("no-name")}
 
 %%R840
-  OptLabel 'CASE' CaseSelector   CaseConstructName  EOS -> CaseStmt       {cons("CaseStmt")}
-  OptLabel 'CASE' CaseSelector NoCaseConstructName  EOS -> CaseStmt       {cons("CaseStmt")}
+  OptLabel 'CASE' CaseSelector CaseConstructName    EOS -> CaseStmt       {cons("CaseStmt")}
+  OptLabel 'CASE' CaseSelector            NoName    EOS -> CaseStmt       {cons("CaseStmt")}
 
 %%R841
-  OptLabel 'END' 'SELECT'   CaseConstructName       EOS -> EndSelectStmt  {cons("EndSelectStmt")}
-  OptLabel 'END' 'SELECT' NoCaseConstructName       EOS -> EndSelectStmt  {cons("EndSelectStmt")}
+  OptLabel 'END' 'SELECT' CaseConstructName         EOS -> EndSelectStmt  {cons("EndSelectStmt")}
+  OptLabel 'END' 'SELECT'            NoName         EOS -> EndSelectStmt  {cons("EndSelectStmt")}
 
 %%R842
 %%       expr substituted for scalar-expr
@@ -2646,11 +2633,10 @@ context-free syntax
   % empty %                                             -> OptSelectConstructName {cons("no-name")}
 
 %%R850
-  OptLabel 'EXIT'   ConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
-  OptLabel 'EXIT' NoConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT' ConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT'        NoName                   EOS -> ExitStmt             {cons("ExitStmt")}
 
   Ident                                                 -> ConstructName
-  % empty %                                             -> NoConstructName      {cons("no-name")}
 
 %% 8.2 Branching
 %%
