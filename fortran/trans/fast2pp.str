@@ -93,4 +93,8 @@ rules
   no-to-none: no-r()                       -> None()   // R1004
   no-to-none: no-m()                       -> None()   // R1007
   no-to-none: no-e()                       -> None()   // R1007
-//  no-to-none: no-name()                    -> None()   // R839, R850
+  no-to-none: no-name()                    -> None()   // R839, R850
+  no-to-none: no-parent-submodule-name()   -> None()   // R1118
+  no-to-none: no-high()                    -> None()   // R844
+  no-to-none: no-low()                     -> None()   // R844
+  no-to-none: no-stride()                  -> None()   // R920
