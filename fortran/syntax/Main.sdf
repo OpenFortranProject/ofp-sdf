@@ -973,10 +973,10 @@ context-free syntax
   OptLabel 'TYPE'  OptTypeAttrSpecList
          TypeName  OptTypeParamNameList          EOS -> DerivedTypeStmt      {cons("DerivedTypeStmt")}
 
-  ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("opt-list")}
+  ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("comma-list")}
   % empty %                                          -> OptTypeAttrSpecList  {cons("no-list")}
 
-  '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("opt-list")}
+  '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("paren-list")}
   % empty %                                          -> OptTypeParamNameList {cons("no-list")}
 
   'INTEGER'                                                    -> TypeName  {reject}
@@ -1033,7 +1033,7 @@ context-free syntax
            OptComponentAttrSpecList
              {ComponentDecl ','}+      EOS  -> DataComponentDefStmt     {cons("DataComponentDefStmt")}
 
-  ',' {ComponentAttrSpec ','}+ '::'         -> OptComponentAttrSpecList {cons("opt-list")}
+  ',' {ComponentAttrSpec ','}+ '::'         -> OptComponentAttrSpecList {cons("comma-list")}
                                '::'         -> OptComponentAttrSpecList {cons("no-list")}
   % empty %                                 -> OptComponentAttrSpecList {cons("no-list")}
 
@@ -1275,7 +1275,7 @@ context-free syntax
 
   % empty %                                               -> NoAttrSpecList        {cons("no-list")}
   % empty %                                               -> OptAttrSpecList       {cons("no-list")}
-  ',' {AttrSpec ','}+                                     -> OptAttrSpecList       {cons("opt-list")}
+  ',' {AttrSpec ','}+                                     -> OptAttrSpecList       {cons("comma-list")}
 
 %%R502
    AccessSpec                                             -> AttrSpec
@@ -1852,7 +1852,7 @@ context-free syntax
   'SOURCE' '=' Expr                                      -> AllocOpt             {cons("SOURCE")}
   'STAT'   '=' StatVariable                              -> AllocOpt             {cons("STAT")}
 
-  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("opt-list")}
+  ',' {AllocOpt ','}+                                    -> OptAllocOptList      {cons("comma-list")}
   % empty %                                              -> OptAllocOptList      {cons("no-list")}
 
 %%R628
