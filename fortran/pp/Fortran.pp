@@ -8,7 +8,6 @@
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
    PARAMETER                     -- KW["PARAMETER :: "],
-   LOGICAL                       -- KW["LOGICAL :: "],
    COMPLEX                       -- KW["COMPLEX :: "],
 
    #R201 --,
@@ -39,6 +38,7 @@
    INTEGER                       -- KW["INTEGER :: "] _1,
    REAL                          -- KW["REAL :: "] _1,
    CHARACTER                     -- KW["CHARACTER :: "] _1,
+   LOGICAL                       -- KW["LOGICAL :: "] _1,
    
    #R407 --,
    PpLiteral                     -- H hs=1[_1],
@@ -189,7 +189,7 @@
    CaseStmtBlock                 -- _1 _2,
 
    #R839 --,
-   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW[": SELECT CASE"] "("_3")" _4]],
+   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
 
    #R840 --,
    CaseStmt                      -- H hs=1[_1 KW["CASE"] H hs=0["("_2")"] H hs=0[_3 _4]],
