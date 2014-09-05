@@ -342,6 +342,7 @@ sorts
   VectorSubscript                     %% R623
 
   OptSectionSubscripts OptStride OptSubscript
+  NoSubstringRange
 
 %% 6.6 Image selectors
 
@@ -1750,7 +1751,10 @@ context-free syntax
 %%R610
 %%      int-expr substituted for scalar-int-expr
 %%
-  IntExpr? ':' IntExpr?                -> SubstringRange   {cons("SubstringRange")}
+  NoLowerBoundExpr ':' NoUpperBoundExpr                  -> SubstringRange   {cons("SubstringRange")}
+           IntExpr ':' NoUpperBoundExpr                  -> SubstringRange   {cons("SubstringRange")}
+  NoLowerBoundExpr ':'          IntExpr                  -> SubstringRange   {cons("SubstringRange")}
+  IntExpr          ':'          IntExpr                  -> SubstringRange   {cons("SubstringRange")}
 
 %%R611
   {PartRef '%'}+                                         -> DataRef   {cons("DataRef")}
@@ -1781,11 +1785,14 @@ context-free syntax
 %%
 
 %%R617
-  DataRef                                                -> ArrayElement         {cons("ArrayElement")}
+  DataRef                                                -> ArrayElement
 
 %%R618
-  DataRef ('(' SubstringRange ')')?                      -> ArraySection         {cons("ArraySection_DR")}
-  ComplexPartDesignator                                  -> ArraySection         {cons("ArraySection_CPD")}
+  DataRef '(' SubstringRange ')'                         -> ArraySection         {cons("ArraySection")}
+  DataRef   NoSubstringRange                             -> ArraySection         {cons("ArraySection")}
+  ComplexPartDesignator                                  -> ArraySection
+
+  % empty %                                              -> NoSubstringRange     {cons("no-substring-range")}
 
 %%R619
 %%      int-expr substituted for scalar-int-expr
