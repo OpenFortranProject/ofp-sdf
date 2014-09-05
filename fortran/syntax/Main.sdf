@@ -211,11 +211,12 @@ sorts
 %%ImpliedShapeSpec                    %% R522  AMBIGUOUS with R521
   IntentSpec                          %% R523
 
-  CoboundsEntry NoLowerBound
+  CoboundsEntry FinalCoboundsEntry
+  NoLowerBound NoLowerCobound
   LanguageBindingName OptLanguageBindingName
 
   AssumedOrImpliedSpec
-  DeferredCoshapeSpecList ImpliedShapeSpecList
+  ImpliedShapeSpecList
 
 %% 5.4 Attribute specification statements
 
@@ -1332,25 +1333,27 @@ context-free syntax
   % empty %                                             -> OptLanguageBindingName {cons("no-binding-name")}
 
 %%R509
-  DeferredCoshapeSpecList              -> CoarraySpec
+  {DeferredCoshapeSpec ','}+           -> CoarraySpec
   ExplicitCoshapeSpec                  -> CoarraySpec
 
 %%R510
-  ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshapeSpec")}
-  {DeferredCoshapeSpec ','}+           -> DeferredCoshapeSpecList {cons("DeferredCoshapeSpecList")}
+  ':'                                  -> DeferredCoshapeSpec     {cons("DeferredCoshape")}
 
 %%511
-  CoboundsEntry*                  '*'  -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
-  CoboundsEntry* LowerCobound ':' '*'  -> ExplicitCoshapeSpec  {cons("ExplicitCoshapeSpec")}
+  CoboundsEntry* FinalCoboundsEntry    -> ExplicitCoshapeSpec  {cons("explicit-coshape-spec-list")}
 
-                   UpperCobound ','    -> CoboundsEntry        {cons("CoboundsEntry")}
-  LowerCobound ':' UpperCobound ','    -> CoboundsEntry        {cons("CoboundsEntry")}
+  NoLowerCobound     UpperCobound ','  -> CoboundsEntry        {cons("ExplicitCoshape")}
+    LowerCobound ':' UpperCobound ','  -> CoboundsEntry        {cons("ExplicitCoshape")}
+
+  NoLowerCobound    '*'                -> FinalCoboundsEntry   {cons("final-cobounds-entry")}
+  LowerCobound  ':' '*'                -> FinalCoboundsEntry   {cons("final-cobounds-entry")}
 
 %%R512
   SpecificationExpr                    -> LowerCobound         {cons("LowerCobound")}
+  % empty %                            -> NoLowerCobound       {cons("no-lower-bound")}
 
 %%R513
-  SpecificationExpr                    -> UpperCobound         {cons("UpperCobound")}
+  SpecificationExpr                    -> UpperCobound
 
 %%R514
   'DIMENSION' '(' ArraySpec ')'        -> DimensionSpec        {cons("DimensionSpec")}
@@ -1365,8 +1368,8 @@ context-free syntax
   AssumedRankSpec                      -> ArraySpec
 
 %%R516
-                 UpperBound                     -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
-  LowerBound ':' UpperBound                     -> ExplicitShapeSpec     {cons("ExplicitShapeSpec")}
+  NoLowerBound     UpperBound                   -> ExplicitShapeSpec     {cons("ExplicitShape")}
+    LowerBound ':' UpperBound                   -> ExplicitShapeSpec     {cons("ExplicitShape")}
 
 %%R517
   SpecificationExpr                             ->   LowerBound
@@ -1377,28 +1380,28 @@ context-free syntax
 
 %%R519
 %%AMB deferred-shape-spec is ambiguous with assumed-shape-spec 
-  NoLowerBound ':'                              -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
-    LowerBound ':'                              -> AssumedShapeSpec      {cons("AssumedShapeSpec")}
+  NoLowerBound ':'                              -> AssumedShapeSpec      {cons("AssumedShape")}
+    LowerBound ':'                              -> AssumedShapeSpec      {cons("AssumedShape")}
 
 %%R520
 %%AMB deferred-shape-spec is ambiguous with assumed-shape-spec 
-  ':'                                           -> DeferredShapeSpec     {cons("DeferredShapeSpec")}
+  ':'                                           -> DeferredShapeSpec     {cons("DeferredShape")}
 
 %%R521
 %%AMB: explicit-shape-spec list made non-empty to remove ambiguity with implied-shape-spec-list
 %%
-  {ExplicitShapeSpec ','}+ ',' '*'                 -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
-  {ExplicitShapeSpec ','}+ ',' LowerBound ':' '*'  -> AssumedSizeSpec    {cons("AssumedSizeSpec")}
+  {ExplicitShapeSpec ','}+ ',' '*'                 -> AssumedSizeSpec    {cons("AssumedSize")}
+  {ExplicitShapeSpec ','}+ ',' LowerBound ':' '*'  -> AssumedSizeSpec    {cons("AssumedSize")}
 
 %%R522a
-  '..'                                          -> AssumedRankSpec       {cons("AssumedRankSpec")}
+  '..'                                          -> AssumedRankSpec       {cons("AssumedRank")}
 
 %%R522
   AssumedOrImpliedSpec
     ',' {AssumedOrImpliedSpec ','}+             -> ImpliedShapeSpecList  {cons("ImpliedShapeSpecList")}
 
-                 '*'                            -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
-  LowerBound ':' '*'                            -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
+  NoLowerBound     '*'                          -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
+    LowerBound ':' '*'                          -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
 
 %%R523
   'IN'                                          -> IntentSpec  {cons("IN")}
@@ -1439,8 +1442,8 @@ context-free syntax
   Ident                                                     -> EntityName
 
 %%R531
-  Label? 'CODIMENSION' '::' {CodimensionDecl ','}+      EOS -> CodimensionStmt  {cons("CodimensionStmt")}
-  Label? 'CODIMENSION'      {CodimensionDecl ','}+      EOS -> CodimensionStmt  {cons("CodimensionStmt")}
+  Label? 'CODIMENSION' '::' {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("CodimensionStmt")}
+  OptLabel 'CODIMENSION'      {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("CodimensionStmt")}
 
 %%R532
   CoarrayName '[' CoarraySpec ']'                           -> CodimensionDecl     {cons("CodimensionDecl")}
@@ -1554,12 +1557,11 @@ context-free syntax
   Ident                                                        -> ProcPointerName
 
 %%R556
-  Label? 'TARGET' '::' {TargetDecl ','}+                   EOS -> TargetStmt   {cons("TargetStmt")}
-  Label? 'TARGET'      {TargetDecl ','}+                   EOS -> TargetStmt   {cons("TargetStmt")}
+  OptLabel 'TARGET' '::' {TargetDecl ','}+                 EOS -> TargetStmt   {cons("TargetStmt")}
+  OptLabel 'TARGET'      {TargetDecl ','}+                 EOS -> TargetStmt   {cons("TargetStmt")}
 
 %%R557
-  ObjectName ( '(' ArraySpec   ')' )?
-             ( '[' CoarraySpec ']' )?                          -> TargetDecl     {cons("TargetDecl")}
+  ObjectName OptArraySpec OptCoarraySpec                       -> TargetDecl   {cons("TargetDecl")}
 
 %%R558
   OptLabel 'VALUE' '::' {DummyArgName ','}+        EOS -> ValueStmt    {cons("ValueStmt")}
