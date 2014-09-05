@@ -288,7 +288,6 @@ sorts
   ArrayName CoarrayName
   CommonBlockName OptCommonBlockName
   EntityName NamelistGroupName ObjectName
-  ProcEntityName
 
 
 %%%%%%%%%%
@@ -1248,9 +1247,7 @@ context-free syntax
 
   Ident   -> ArrayName                 {cons("ArrayName")}
   Ident   -> CoarrayName               {cons("CoarrayName")}
-  Ident   -> EntityName                {cons("EntityName")}
   Ident   -> NamelistGroupName         {cons("NamelistGroupName")}
-  Ident   -> ProcEntityName            {cons("ProcEntityName")}
 
 %% 5.2 Type declaration statements
 %%
@@ -1269,11 +1266,11 @@ context-free syntax
    AccessSpec                                             -> AttrSpec
   'ALLOCATABLE'                                           -> AttrSpec     {cons("ALLOCATABLE")}
   'ASYNCHRONOUS'                                          -> AttrSpec     {cons("ASYNCHRONOUS")}
-  'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("AttrSpec")}
+  'CODIMENSION' '[' CoarraySpec ']'                       -> AttrSpec     {cons("Codimension")}
   'CONTIGUOUS'                                            -> AttrSpec     {cons("CONTIGUOUS")}
-  'DIMENSION' '(' ArraySpec ')'                           -> AttrSpec     {cons("AttrSpec")}
+  'DIMENSION' '(' ArraySpec ')'                           -> AttrSpec     {cons("Dimension")}
   'EXTERNAL'                                              -> AttrSpec     {cons("EXTERNAL")}
-  'INTENT' '(' IntentSpec ')'                             -> AttrSpec     {cons("AttrSpec")}
+  'INTENT' '(' IntentSpec ')'                             -> AttrSpec     {cons("Intent")}
   'INTRINSIC'                                             -> AttrSpec     {cons("INTRINSIC")}
    LanguageBindingSpec                                    -> AttrSpec
   'OPTIONAL'                                              -> AttrSpec     {cons("OPTIONAL")}
@@ -1404,9 +1401,9 @@ context-free syntax
   LowerBound ':' '*'                            -> AssumedOrImpliedSpec  {cons("AssumedOrImpliedSpec")}
 
 %%R523
-  'IN'                                          -> IntentSpec  {cons("IntentSpec_IN")}
-  'OUT'                                         -> IntentSpec  {cons("IntentSpec_OUT")}
-  'IN' 'OUT'                                    -> IntentSpec  {cons("IntentSpec_INOUT")}
+  'IN'                                          -> IntentSpec  {cons("IN")}
+  'OUT'                                         -> IntentSpec  {cons("OUT")}
+  'IN' 'OUT'                                    -> IntentSpec  {cons("INOUT")}
 
 
 %% 5.4 Attribute specification statements
@@ -1432,12 +1429,14 @@ context-free syntax
   OptLabel 'ASYNCHRONOUS'      {ObjectName ','}+        EOS -> AsynchronousStmt {cons("AsynchronousStmt")}
 
 %%R529
-  Label? LanguageBindingSpec '::' {BindEntity ','}+     EOS -> BindStmt         {cons("BindStmt")}
-  Label? LanguageBindingSpec      {BindEntity ','}+     EOS -> BindStmt         {cons("BindStmt")}
+  OptLabel LanguageBindingSpec '::' {BindEntity ','}+   EOS -> BindStmt         {cons("BindStmt")}
+  OptLabel LanguageBindingSpec      {BindEntity ','}+   EOS -> BindStmt         {cons("BindStmt")}
 
 %%R530
-  EntityName                                                -> BindEntity       {cons("BindEntity_EN")}
-  '/' CommonBlockName '/'                                   -> BindEntity       {cons("BindEntity_CBN")}
+  EntityName                                                -> BindEntity
+  '/' CommonBlockName '/'                                   -> BindEntity       {cons("CommonBlockName")}
+
+  Ident                                                     -> EntityName
 
 %%R531
   Label? 'CODIMENSION' '::' {CodimensionDecl ','}+      EOS -> CodimensionStmt  {cons("CodimensionStmt")}
@@ -1549,10 +1548,10 @@ context-free syntax
 %%R554
   ObjectName                                                   -> SavedEntity     {cons("SavedEntity")}
 %%ProcPointerName           %% Ambiguous with object-name
-  '/' CommonBlockName '/'                                      -> SavedEntity     {cons("SavedEntity_CBN")}
+  '/' CommonBlockName '/'                                      -> SavedEntity     {cons("CommonBlockName")}
 
 %%R555
-  Ident                                                        -> ProcPointerName {cons("ProcPointerName")}
+  Ident                                                        -> ProcPointerName
 
 %%R556
   Label? 'TARGET' '::' {TargetDecl ','}+                   EOS -> TargetStmt   {cons("TargetStmt")}
@@ -1626,9 +1625,9 @@ context-free syntax
        '/' OptCommonBlockName '/' {CommonBlockObject ','}+   -> CommonBlockEntry     {cons("CommonBlockEntry")}
 
   %% NOTE - keep this constructor for printing '/' '/'
-  Ident                                                      -> CommonBlockName      {cons("CommonBlockName")}
-  CommonBlockName                                            -> OptCommonBlockName
+  CommonBlockName                                            -> OptCommonBlockName   {cons("CommonBlockName")}
   % empty %                                                  -> OptCommonBlockName   {cons("no-name")}
+  Ident                                                      -> CommonBlockName
 
 %%R569
   VariableName OptArraySpec                                  -> CommonBlockObject    {cons("CommonBlockObject")}
