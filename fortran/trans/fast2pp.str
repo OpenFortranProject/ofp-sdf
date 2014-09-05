@@ -111,3 +111,4 @@ rules
   no-to-none: no-stride()                  -> None()   // R920
   no-to-none: no-type-spec()               -> None()   // R626
   no-to-none: no-lower-bound()             -> None()   // R633
+  no-to-none: no-image-selector()          -> None()   // R624
