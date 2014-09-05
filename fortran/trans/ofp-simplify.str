@@ -76,6 +76,10 @@ ofp-simplify-ast:  opt-char-length(length)        -> length
 //R508
 ofp-simplify-ast:  language-binding-name(str)     -> str
 
+//R511
+ofp-simplify-ast:  explicit-coshape-spec-list(list,final)   -> <conc>(list, [final])
+ofp-simplify-ast:  final-cobounds-entry(lower)              -> ExplicitCoshape(no-lower-bound(),STAR())
+
 //R568
 ofp-simplify-ast:
   common-stmt(label,entry,list,eos)               -> CommonStmt(label, <concat>[[entry], list], eos)
