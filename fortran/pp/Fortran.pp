@@ -61,6 +61,13 @@
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
 
+   #R468 --,
+   ArrayConstructor              -- "(/"_1"/)",
+
+   #R469 --,
+   AcSpec                        -- _1 _2,
+   AcSpec.2:iter-sep             -- _1 ",",
+
    #R501 --,
    TypeDeclarationStmt           -- H hs=0[H hs=3[_1] _2 _3 _4 _5],
    TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
@@ -136,30 +143,40 @@
 
    #R612 --,
    OfpVarRef                     -- _1,
+   PartRef                       -- _1 "("_2")" _3,
+   PartRef.2:iter-sep            -- _1 ",",
 
    #R626 --,
-   AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3")"] _4 _5],
+   AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
    AllocateStmt.3:iter-sep       -- _1 ",",
+   AllocateStmt.4:iter-sep       -- _1 ", ",
 
    #R627 --,
    ERRMSG                        -- KW["ERRMSG="] _1,
    MOLD                          -- _1,
-   SOURCE                        -- _1,
+   SOURCE                        -- KW["SOURCE="] _1,
    STAT                          -- KW["STAT="] _1,
 
    #R631 --,
-   Allocation                    -- _1 _2 _3,
+   Allocation                    -- _1 "("_2 _3")",
+   Allocation.2:iter-sep         -- _1 ", ",
 
    #R633 --,
-   AllocateShapeSpec             -- _1 _2,
+   AllocateShapeSpec             -- _1 KW[":"] _2,
 
    #Operators --,
    Minus                         -- KW["-"] _1,
+   Minus                         -- _1 KW[" - "] _2,
    NOT                           -- KW[".NOT."] _1,
-   Plus                          -- _1 KW["+"] _2,
+   Plus                          -- _1 KW[" + "] _2,
+   Plus                          -- KW["+"] _1,
    GT                            -- _1 KW[" > "] _2,
    LT                            -- _1 KW[" .LT. "] _2,
    NE                            -- _1 KW[" /= "] _2,
+   DefUnaryExpr                  -- H hs=1[_1 _2],
+   Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
+   Mult                          -- _1 KW[" * "] _2,
+   Div                           -- _1 KW[" / "] _2,
 
    #R709 --,
    PLUS                          -- KW ["+"],
@@ -167,6 +184,9 @@
    #R732 --,
    AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
    AssignmentStmt.2:opt          -- ,
+
+   #R750 --,
+   ForallConstruct               -- _1 _2 _3,
 
    #R801 --,
    Block                         -- _1,
@@ -215,7 +235,7 @@
 
    #R847 --,
    SelectTypeStmt                -- H hs=1[_1 KW["SELECT TYPE"] H hs=0["("_2 KW[" => "] _3")" _4]],
-   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 KW[": SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
+   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
 
    #R848 --,
    ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
