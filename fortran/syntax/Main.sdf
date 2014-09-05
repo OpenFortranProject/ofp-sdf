@@ -1803,7 +1803,7 @@ context-free syntax
 %%TODO-F08 - need to add keyword arguments so that his can stand in for actual args in FunctionReference
 
 %%R621
-  OptSubscript ':' OptSubscript OptStride                -> SubscriptTriplet     {cons("SubscriptTriplet")}
+  OptSubscript ':' OptSubscript OptStride                -> SubscriptTriplet     {cons("Triplet")}
 
 %%R622
 %%      int-expr substituted for scalar-int-expr
@@ -2059,7 +2059,7 @@ context-free syntax
 Primary                                    -> Expr
 
 %%R723
-  Dop                                      -> DefinedBinaryOp {cons("DefinedBinaryOp")}
+  Dop                                      -> DefinedBinaryOp
 
 %%TODO - what to do about this
 %%R725-R734 chain rule deleted
@@ -2346,12 +2346,12 @@ context-free priorities
   > Expr '.OR.'  Expr   -> Expr {cons("OR"),  left}
   >
   { left:
-    Expr '.EQV.'  Expr  -> Expr {cons("EQV"),    left}
+    Expr '.EQV.'  Expr  -> Expr {cons("EQV"),  left}
     Expr '.NEQV.' Expr  -> Expr {cons("NEQV"), left}
   }
 %%
 %% defined-binary-op has lowest priority
-  > Expr DefinedBinaryOp Expr -> Expr {cons("DefBinExpr")}
+  > Expr DefinedBinaryOp Expr -> Expr {cons("DefBinExpr"), left}
 
 
 context-free syntax
