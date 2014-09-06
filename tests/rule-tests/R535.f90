@@ -1,5 +1,5 @@
 !! R535 data-stmt-set
-!    is ata-stmt-object -list / data-stmt-value -list /
+!    is data-stmt-object-list / data-stmt-value -list /
 !
 
 data truth, beauty, ugly /3,14,15/
