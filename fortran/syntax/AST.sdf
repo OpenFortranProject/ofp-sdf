@@ -58,7 +58,7 @@ exports
 
     OfpArraySpec                      %% R515  
     OfpExplicitShape                  %% R516
-    OfpDimSpec                        %% R517-R518
+    DimSpec                           %% R517-R518
     OfpAssumedOrDeferredShape         %% R519-R520
     OfpAssumedSize                    %% R521
     OfpImpliedShape                   %% R522
@@ -263,17 +263,17 @@ exports
 
   OfpName?                    -> OfpLanguageBinding {cons("OfpLanguageBinding")}   %% R508
 
-  OfpDimSpec+                 -> OfpExplicitCoshape {cons("OfpExplicitCoshape")}   %% R511
+  DimSpec+                    -> OfpExplicitCoshape {cons("OfpExplicitCoshape")}   %% R511
 
-  OfpDimSpec+                 -> OfpExplicitShape {cons("OfpExplicitShape")}       %% R516
+  DimSpec+                    -> OfpExplicitShape {cons("OfpExplicitShape")}       %% R516
 
-  OfpExpr OfpExpr             -> OfpDimSpec       {cons("OfpDimSpec")}             %% R517-R518
-  OfpExpr String              -> OfpDimSpec       {cons("OfpDimSpec")}
+  OfpExpr OfpExpr             -> DimSpec       {cons("DimSpec")}                   %% R517-R518
+  OfpExpr String              -> DimSpec       {cons("DimSpec")}
 
-  OfpDimSpec+     -> OfpAssumedOrDeferredShape {cons("OfpAssumedOrDeferredShape")} %% R519-R520
-  OfpDimSpec+     -> OfpAssumedSize            {cons("OfpAssumedSize")}            %% R521
-  OfpDimSpec+     -> OfpImpliedShape           {cons("OfpImpliedShape")}           %% R522
-  OfpDimSpec+     -> OfpAssumedRank            {cons("OfpAssumedRank")}            %% R522a
+  DimSpec+     -> OfpAssumedOrDeferredShape {cons("OfpAssumedOrDeferredShape")} %% R519-R520
+  DimSpec+     -> OfpAssumedSize            {cons("OfpAssumedSize")}            %% R521
+  DimSpec+     -> OfpImpliedShape           {cons("OfpImpliedShape")}           %% R522
+  DimSpec+     -> OfpAssumedRank            {cons("OfpAssumedRank")}            %% R522a
 
   String          -> OfpIntent                 {cons("OfpIntent")}                 %% R523
                   -> IN                        {cons("IN")}
@@ -309,9 +309,9 @@ exports
   OfpVarRef OfpShape?
             OfpCoshape?       -> OfpAllocation      {cons("OfpAllocation")}        %% R631
 
-  OfpDimSpec+                 -> OfpShape           {cons("OfpShape")}             %% R633
+  DimSpec+                    -> OfpShape           {cons("OfpShape")}             %% R633
 
-  OfpDimSpec+                 -> OfpCoshape         {cons("OfpCoshape")}           %% R636
+  DimSpec+                    -> OfpCoshape         {cons("OfpCoshape")}           %% R636
 
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
