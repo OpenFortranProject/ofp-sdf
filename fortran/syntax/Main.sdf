@@ -138,7 +138,7 @@ sorts
   ComponentDataSource                 %% R457
 
   OptComponentAttrSpecList OptTypeBoundProcedurePart
-  OptTypeParamSpecList TypeParamDeclList
+  OptTypeParamSpecList TypeParamDeclList OptBindingPrivateStmt
 
   OptTypeAttrSpecList OptTypeParamNameList
 
@@ -758,7 +758,6 @@ context-free syntax
 
   Ident   -> ArgName                   {cons("ArgName")}
   Ident   -> BindingName               {cons("BindingName")}
-  Ident   -> FinalSubroutineName       {cons("FinalSubroutineName")}
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
@@ -1077,7 +1076,7 @@ context-free syntax
 
 %%R445
   ContainsStmt
-    BindingPrivateStmt?
+    OptBindingPrivateStmt
     TypeBoundProcBinding*                     -> TypeBoundProcedurePart      {cons("TypeBoundProcedurePart")}
 
   TypeBoundProcedurePart                      -> OptTypeBoundProcedurePart
@@ -1085,6 +1084,9 @@ context-free syntax
 
 %%R446
   OptLabel 'PRIVATE'                      EOS -> BindingPrivateStmt          {cons("BindingPrivateStmt")}
+
+  BindingPrivateStmt                          -> OptBindingPrivateStmt
+  % empty %                                   -> OptBindingPrivateStmt       {cons("no-binding-private-stmt")}
 
 %%R447
   TypeBoundProcedureStmt                      -> TypeBoundProcBinding
@@ -1105,7 +1107,7 @@ context-free syntax
   BindingName ( '=>' ProcedureName )?              -> TypeBoundProcDecl       {cons("TypeBoundProcDecl")}
 
 %%R450
-  Label? 'GENERIC' ( ',' AccessSpec )?
+  OptLabel 'GENERIC' ( ',' AccessSpec )?
      '::' GenericSpec '=>' {BindingName ','}+  EOS -> TypeBoundGenericStmt    {cons("TypeBoundGenericStmt")}
 
 %%451
@@ -1116,8 +1118,10 @@ context-free syntax
   AccessSpec                                       -> BindingAttr             {cons("BindingAttr_AS")}
 
 %%452
-  Label? 'FINAL' '::' {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
-  Label? 'FINAL'      {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
+  OptLabel 'FINAL' '::' {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
+  OptLabel 'FINAL'      {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
+
+  Ident                                                -> FinalSubroutineName
 
 %%R453
   TypeName OptTypeParamSpecList                    -> DerivedTypeSpec         {cons("DerivedTypeSpec")}
