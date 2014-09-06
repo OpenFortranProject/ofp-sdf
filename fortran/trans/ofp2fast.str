@@ -16,6 +16,8 @@ signature
   OfpString : A -> B            /* node for a string literal */
   ERROR     : A -> B            /* error reporting for a node */
 
+  COLON     :      COLON
+
 strategies //=================START OF STRATEGIES============================
 
   main = io-wrap(ofp2fast)
@@ -83,53 +85,46 @@ rules //========================START OF RULES===============================
 //R208
   ofp-to-ast:  SpecAndExecPart(stmts)            -> OfpExecPart(stmts)
 
-//R403
-//  ofp-to-ast:  INTEGER(kind)                     -> OfpType(INTEGER(),         <ofp-kind>kind)
-//  ofp-to-ast:  REAL(kind)                        -> OfpType(REAL(),            <ofp-kind>kind)
-//  ofp-to-ast:  DOUBLEPRECISION()                 -> OfpType(DOUBLEPRECISION(), None())
-//  ofp-to-ast:  COMPLEX(kind)                     -> OfpType(COMPLEX(),         <ofp-kind>kind)
-//  ofp-to-ast:  CHARACTER(char)                   -> OfpType(CHARACTER(),       <ofp-char-select>char)
-//  ofp-to-ast:  LOGICAL(kind)                     -> OfpType(LOGICAL(),         <ofp-kind>kind)
-//  ofp-to-ast:  DOUBLECOMPLEX()                   -> OfpType(DOUBLECOMPLEX(),   None())
+//R510
+  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
 
 //R511
-  ofp-to-ast:  ExplicitCoshapeSpec([])          -> OfpExplicitCoshape([OfpDimSpec(None(),"*")])
+  ofp-to-ast:  ExplicitCoshape(lower,upper)     -> DimSpec(lower,upper)
 
 //R516
-  ofp-to-ast:  ExplicitShapeSpec(upper)         -> OfpDimSpec(None(),upper)
-  ofp-to-ast:  ExplicitShapeSpec(lower,upper)   -> OfpDimSpec(<ofp-add-some>lower,upper)
-  ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
+  ofp-to-ast:  ExplicitShape(lower,upper)       -> DimSpec(lower,upper)
+//  ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
 
 //R519
-  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> OfpDimSpec(None(),":")
-  ofp-to-ast:  AssumedShapeSpec(lower)                        -> OfpDimSpec(<ofp-add-some>lower,":")
-  ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
+//  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> DimSpec(None(),":")
+  ofp-to-ast:  AssumedShape(lower)              -> DimSpec(lower,":")
+//  ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
 
 //R521
   ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
-                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(<ofp-add-some>lower,"*")]])
+                            -> OfpAssumedSize(<concat>[list, [DimSpec(lower,"*")]])
   ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
-                            -> OfpAssumedSize(<concat>[list, [OfpDimSpec(None(),"*")]])
+                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
 
 //R522
   ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
-  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([OfpDimSpec(None(),<ofp-add-some>"..")])
+  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
 
 //R523
-  ofp-to-ast:  IntentSpec_IN()                    -> OfpIntent(IN())
-  ofp-to-ast:  IntentSpec_OUT()                   -> OfpIntent(OUT())
-  ofp-to-ast:  IntentSpec_INOUT()                 -> OfpIntent(INOUT())
+  ofp-to-ast:  IN()                    -> OfpIntent(IN())
+  ofp-to-ast:  OUT()                   -> OfpIntent(OUT())
+  ofp-to-ast:  INOUT()                 -> OfpIntent(INOUT())
 
 // assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
 //    - The following four rules remove the ambiguity by choosing assumed-size over
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
 //
   ofp-to-ast:  AssumedOrImpliedSpec()
-                            -> OfpAssumedSize([OfpDimSpec(None(),"*")])
+                            -> OfpAssumedSize([DimSpec(None(),"*")])
   ofp-to-ast:  AssumedOrImpliedSpec(lower)
-                            -> OfpAssumedSize([OfpDimSpec(<ofp-add-some>lower,"*")])
+                            -> OfpAssumedSize([DimSpec(lower,"*")])
 
   rm-assumed-size: OfpAssumedSize([l]) -> l
 
@@ -140,19 +135,19 @@ rules //========================START OF RULES===============================
                             no-image-selector())           -> OfpVarRef(OfpName(name))
 
 //R636
-  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[OfpDimSpec(<ofp-add-some>lb,"*")]])
+  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[DimSpec(lb,"*")]])
 
 /*****
-  ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([OfpDimSpec(None(),"*")])
-  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([OfpDimSpec(<ofp-add-some>lb,"*")])
+  ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([DimSpec(None(),"*")])
+  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([DimSpec(lb,"*")])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
-                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(None(),"*")]])
+                                            -> OfpCoshape(<concat>[list,[DimSpec(None(),"*")]])
   ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),lb)
-                                            -> OfpCoshape(<concat>[list,[OfpDimSpec(<ofp-add-some>lb,"*")]])
+                                            -> OfpCoshape(<concat>[list,[DimSpec(lb,"*")]])
 *****/
 
 //R637
-  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> OfpDimSpec(<ofp-add-some>lb,ub)
+  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> DimSpec(lb,ub)
 
 // Operators...
 
