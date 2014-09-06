@@ -99,7 +99,7 @@ sorts
   LogicalLiteralConstant              %% R424
 
   NoKindParam OptKindParam OptKindSelector
-  NoKindSelector OptCharSelector OptSign
+  NoKindSelector OptCharSelector
 
 %% 4.5 Derived types
 
@@ -258,6 +258,7 @@ sorts
   VolatileStmt                        %% R559
 
   ArrayNameSpec DataStmtSetList NoList
+  NoDataStmtRepeat
 
 %% 5.5 Implicit statement
 
@@ -881,7 +882,8 @@ context-free syntax
   ScalarIntConstantName                 -> KindParam          {cons("KindParam_SICN")}
 
 %%R409
-  Sign? DigitString                     -> SignedDigitString  {cons("SignedDigitString")}
+       DigitString                      -> SignedDigitString
+  Sign DigitString                      -> SignedDigitString  {cons("SignedDigitString")}
 
 %%R410
   Icon                                  -> DigitString
@@ -889,11 +891,10 @@ context-free syntax
 %%R411
   '+'                                   -> Sign               {cons("Sign_PLUS")}
   '-'                                   -> Sign               {cons("Sign_MINUS")}
-  Sign                                  -> OptSign
-  % empty %                             -> OptSign            {cons("no-sign")}
 
 %%R412
-  Sign? RealLiteralConstant             -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
+       RealLiteralConstant              -> SignedRealLiteralConstant
+  Sign RealLiteralConstant              -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
   Rcon   NoKindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
@@ -1069,8 +1070,7 @@ context-free syntax
   '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentInitialization_IDT")}
 
 %%R443
-%%ABIGUITY Replace designator by variable?
-  Designator                                  -> InitialDataTarget      {cons("InitialDataTarget")}
+  Designator                                  -> InitialDataTarget
 
 %%R444
   OptLabel 'PRIVATE'                      EOS -> PrivateComponentsStmt  {cons("PrivateComponentsStmt")}
@@ -1453,61 +1453,68 @@ context-free syntax
   OptLabel 'CONTIGUOUS'      {ObjectName ','}+          EOS -> ContiguousStmt   {cons("ContiguousStmt")}
 
 %%R534
-  Label? 'DATA' DataStmtSetList                         EOS -> DataStmt         {cons("DataStmt")}
+  OptLabel 'DATA' DataStmtSetList                       EOS -> DataStmt         {cons("DataStmt")}
 
 %%R535
   {DataStmtObject ','}+ '/' {DataStmtValue ','}+ '/'        -> DataStmtSet      {cons("DataStmtSet")}
-  DataStmtSet                                               -> DataStmtSetList  {cons("DataStmtSetList_1")}
+  DataStmtSet                                               -> DataStmtSetList
   DataStmtSetList ',' DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList_2")}
   DataStmtSetList     DataStmtSet                           -> DataStmtSetList  {cons("DataStmtSetList_2")}
 
 %%R536
-  Variable                                                  -> DataStmtObject     {cons("DataStmtObject_V")}
-  DataImpliedDo                                             -> DataStmtObject     {cons("DataStmtObject_DID")}
+  Variable                                                  -> DataStmtObject
+  DataImpliedDo                                             -> DataStmtObject
 
 %%R537
 %%         expr substituted for scalar-int-constant-expr
 %%
   '('
        {DataIDoObject ','}+ ',' DataIDoVariable
-          '=' Expr ',' Expr (',' Expr)?
+          '=' Expr ',' Expr  OptExpr
   ')'                                                       -> DataImpliedDo    {cons("DataImpliedDo")}
 
 %%R538
-  ArrayElement                                              -> DataIDoObject    {cons("DataIDoObject_AE")}
-  StructureComponent                                        -> DataIDoObject    {cons("DataIDoObject_SC")}
-  DataImpliedDo                                             -> DataIDoObject    {cons("DataIDoObject_DID")}
+%%ArrayElement                                              -> DataIDoObject %% AMBIGOUS with StructureComponent
+  StructureComponent                                        -> DataIDoObject
+  DataImpliedDo                                             -> DataIDoObject
 
 %%R539
   DoVariable                                                -> DataIDoVariable  {cons("DataIDoVariable")}
 
 %%R540
-  (DataStmtRepeat '*')? DataStmtConstant                    -> DataStmtValue    {cons("DataStmtValue")}
+    DataStmtRepeat '*' DataStmtConstant                     -> DataStmtValue    {cons("DataStmtValue")}
+  NoDataStmtRepeat     DataStmtConstant                     -> DataStmtValue    {cons("DataStmtValue")}
   
 %%541
 %%         Icon substituted for scalar-int-constant
 %%         int-constant-subobject substituted for scalar-int-constant-subobject
 %%
-  Icon                                                      -> DataStmtRepeat   {cons("DataStmtRepeat_IC")}
-  IntConstantSubobject                                      -> DataStmtRepeat   {cons("DataStmtRepeat_ICS")}
+  Icon                                                      ->   DataStmtRepeat
+  IntConstantSubobject                                      ->   DataStmtRepeat
+  % empty %                                                 -> NoDataStmtRepeat {cons("no-repeat")}
 
 %%R542
 %%       constant substituted for scalar-constant
 %%       constant-subobject substituted for scalar-constant-subobject
+%%       constant AMBIGUOUS with e.g. SignedIntLiteralConstant so substituted needed constants
 %%
-  Constant                                                  -> DataStmtConstant  {cons("DataStmtConstant_C")}
-  ConstantSubobject                                         -> DataStmtConstant  {cons("DataStmtConstant_CS")}
-  SignedIntLiteralConstant                                  -> DataStmtConstant  {cons("DataStmtConstant_SILC")}
-  SignedRealLiteralConstant                                 -> DataStmtConstant  {cons("DataStmtConstant_SRLC")}
-  NullInit                                                  -> DataStmtConstant  {cons("DataStmtConstant_NI")}
-  InitialDataTarget                                         -> DataStmtConstant  {cons("DataStmtConstant_IDT")}
-  StructureConstructor                                      -> DataStmtConstant  {cons("DataStmtConstant_SC")}
+%%Constant                                                  -> DataStmtConstant
+  ComplexLiteralConstant                                    -> DataStmtConstant
+  LogicalLiteralConstant                                    -> DataStmtConstant
+  CharLiteralConstant                                       -> DataStmtConstant
+  BozLiteralConstant                                        -> DataStmtConstant
+  ConstantSubobject                                         -> DataStmtConstant
+  SignedIntLiteralConstant                                  -> DataStmtConstant
+  SignedRealLiteralConstant                                 -> DataStmtConstant
+%%NullInit                                                  -> DataStmtConstant  %%AMBIGUOUS with StructureConstructure
+%%InitialDataTarget                                         -> DataStmtConstant  %%AMBIGUOUS with ConstantSubobject
+  StructureConstructor                                      -> DataStmtConstant
 
 %%R543
-  ConstantSubobject                                         -> IntConstantSubobject  {cons("IntConstantSubobject")}
+  ConstantSubobject                                         -> IntConstantSubobject
 
 %%R544
-  Designator                                                -> ConstantSubobject {cons("ConstantSubobject")}
+  Designator                                                -> ConstantSubobject
 
 %%R545
   OptLabel 'DIMENSION' '::' {ArrayNameSpec ','}+        EOS -> DimensionStmt     {cons("DimensionStmt")}
