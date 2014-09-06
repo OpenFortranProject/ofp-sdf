@@ -37,6 +37,22 @@ check : $(TBL)
              echo $$file "		FAILED!"; \
            fi; \
         done;
+	@for file in *.f77 ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
+	@for file in *.f08 ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
 
 junk :
 	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
