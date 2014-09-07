@@ -84,8 +84,6 @@ rules
   no-to-none: no-program-stmt()            -> None()   // R1102
   no-to-none: no-kind-param()              -> None()   // R408
   no-to-none: no-char-selector()           -> None()   // R420
-  no-to-none: no-array-spec()              -> None()   // R503
-  no-to-none: no-coarray-spec()            -> None()   // R503
   no-to-none: no-char-length()             -> None()   // R503
   no-to-none: no-init()                    -> None()   // R503
   no-to-none: no-kind()                    -> None()   // R405
