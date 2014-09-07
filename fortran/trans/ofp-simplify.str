@@ -68,6 +68,9 @@ ofp-simplify-ast:  initial-spec-part(l1,l2)       -> InitialSpecPart(<conc>(l1,l
 ofp-simplify-ast:  derived-type-spec(DerivedTypeSpec(name,list))   -> DerivedType(name,list)
 ofp-simplify-ast:  class-type-spec(  DerivedTypeSpec(name,list))   -> Class(name,list)
 
+//R461
+ofp-simplify-ast:  equals-expr(expr)              -> expr
+
 //R503
 ofp-simplify-ast:  opt-array-spec(spec)           -> spec
 ofp-simplify-ast:  opt-coarray-spec(spec)         -> spec
