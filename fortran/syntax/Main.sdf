@@ -1273,7 +1273,6 @@ context-free syntax
 %%
 
   Ident   -> ArrayName                 {cons("ArrayName")}
-  Ident   -> CoarrayName               {cons("CoarrayName")}
   Ident   -> NamelistGroupName         {cons("NamelistGroupName")}
 
 %% 5.2 Type declaration statements
@@ -1468,11 +1467,13 @@ context-free syntax
   Ident                                                     -> EntityName
 
 %%R531
-  Label? 'CODIMENSION' '::' {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("CodimensionStmt")}
+  OptLabel 'CODIMENSION' '::' {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("CodimensionStmt")}
   OptLabel 'CODIMENSION'      {CodimensionDecl ','}+    EOS -> CodimensionStmt  {cons("CodimensionStmt")}
 
 %%R532
   CoarrayName '[' CoarraySpec ']'                           -> CodimensionDecl     {cons("CodimensionDecl")}
+
+  Ident                                                     -> CoarrayName
 
 %%R533
   OptLabel 'CONTIGUOUS' '::' {ObjectName ','}+          EOS -> ContiguousStmt   {cons("ContiguousStmt")}
