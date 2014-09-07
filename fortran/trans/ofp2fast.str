@@ -113,9 +113,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
 
 //R523
-  ofp-to-ast:  IN()                    -> OfpIntent(IN())
-  ofp-to-ast:  OUT()                   -> OfpIntent(OUT())
-  ofp-to-ast:  INOUT()                 -> OfpIntent(INOUT())
+//  ofp-to-ast:  IN()                    -> OfpIntent(IN())
+//  ofp-to-ast:  OUT()                   -> OfpIntent(OUT())
+//  ofp-to-ast:  INOUT()                 -> OfpIntent(INOUT())
 
 // assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
 //    - The following four rules remove the ambiguity by choosing assumed-size over
