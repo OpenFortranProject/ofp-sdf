@@ -138,7 +138,7 @@ sorts
   ComponentDataSource                 %% R457
 
   OptBindingAttrList OptComponentAttrSpecList OptTypeBoundProcedurePart
-  OptTypeParamSpecList TypeParamDeclList OptBindingPrivateStmt
+  OptTypeParamSpecList OptBindingPrivateStmt
   OptTypeAttrSpecList OptTypeParamNameList NoArgName
   OptAccessSpec OptComponentArraySpec OptComponentInitialization
 
@@ -761,7 +761,6 @@ context-free syntax
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
-  Ident   -> TypeParamName             {cons("TypeParamName")}
 
   Ident      -> Name
   % empty %  -> NoName                 {cons("no-name")}
@@ -970,6 +969,8 @@ context-free syntax
   ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("comma-list")}
   % empty %                                          -> OptTypeAttrSpecList  {cons("no-list")}
 
+  Ident                                              -> TypeParamName
+
   '(' {TypeParamName ','}+ ')'                       -> OptTypeParamNameList {cons("paren-list")}
   % empty %                                          -> OptTypeParamNameList {cons("no-list")}
 
@@ -1002,18 +1003,17 @@ context-free syntax
   OptLabel 'SEQUENCE'                                      EOS -> SequenceStmt     {cons("SequenceStmt")}
 
 %%R431
-  Label? 'INTEGER' OptKindSelector ','   TypeParamAttrSpec
-                                   '::'  TypeParamDeclList EOS -> TypeParamDefStmt {cons("TypeParamDefStmt")}
+  OptLabel 'INTEGER' OptKindSelector ',' TypeParamAttrSpec
+                               '::'  {TypeParamDecl ','}+  EOS -> TypeParamDefStmt {cons("TypeParamDefStmt")}
 
 %%R432
 %%        expr substituted for scalar-int-constant-expr
 %%
-  TypeParamName ( '=' Expr )?                                  -> TypeParamDecl    {cons("TypeParamDecl")}
-  {TypeParamDecl ','}+                                         -> TypeParamDeclList{cons("TypeParamDeclList")}
+  TypeParamName OptEqualsExpr                                  -> TypeParamDecl    {cons("TypeParamDecl")}
 
 %%R433
-  'KIND'                                    -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_KIND")}
-  'LEN'                                     -> TypeParamAttrSpec  {cons("TypeParamAttrSpec_LEN")}
+  'KIND'                                    -> TypeParamAttrSpec  {cons("KIND")}
+  'LEN'                                     -> TypeParamAttrSpec  {cons("LEN")}
 
 %%R434
   ComponentDefStmt*                         -> ComponentPart
