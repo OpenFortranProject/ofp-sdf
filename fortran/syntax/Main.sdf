@@ -137,10 +137,10 @@ sorts
   ComponentSpec                       %% R456
   ComponentDataSource                 %% R457
 
-  OptComponentAttrSpecList OptTypeBoundProcedurePart
+  OptBindingAttrList OptComponentAttrSpecList OptTypeBoundProcedurePart
   OptTypeParamSpecList TypeParamDeclList OptBindingPrivateStmt
-
-  OptTypeAttrSpecList OptTypeParamNameList
+  OptTypeAttrSpecList OptTypeParamNameList NoArgName
+  OptAccessSpec OptComponentArraySpec OptComponentInitialization
 
 %% 4.6 Enumerations and enumerators
 
@@ -149,6 +149,8 @@ sorts
   EnumeratorDefStmt                   %% R460
   Enumerator                          %% R461
   EndEnumStmt                         %% R462
+
+  OptEqualsExpr
 
 %% 4.7 Binary, octal, and hexadecimal literal constants
 
@@ -756,8 +758,6 @@ context-free syntax
 %% Identifier aliases
 %%
 
-  Ident   -> ArgName                   {cons("ArgName")}
-  Ident   -> BindingName               {cons("BindingName")}
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
   Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
@@ -1041,11 +1041,18 @@ context-free syntax
   'POINTER'                                 -> ComponentAttrSpec     {cons("ComponentAttrSpec_POINTER")}
 
 %%R438
-  ComponentName ( '(' ComponentArraySpec ')' )?
-                ( '[' CoarraySpec        ']' )?
-                ( '*' CharLength )? ComponentInitialization?  -> ComponentDecl     {cons("ComponentDecl")}
+  ComponentName OptComponentArraySpec
+                OptCoarraySpec
+                OptCharLength
+                OptComponentInitialization    -> ComponentDecl       {cons("ComponentDecl")}
 
   Ident                                       -> ComponentName
+
+  '(' ComponentArraySpec   ')'                -> OptComponentArraySpec     {cons("opt-component-array-spec")}
+  ComponentInitialization                     -> OptComponentInitialization
+
+  % empty %                                   -> OptComponentArraySpec     {cons("no-list")}
+  % empty %                                   -> OptComponentInitialization{cons("no-init")}
 
 %%R439
   {ExplicitShapeSpec ','}+                    -> ComponentArraySpec        {cons("ComponentArraySpec")}
@@ -1058,10 +1065,10 @@ context-free syntax
           '::' {ProcDecl ','}+           EOS  -> ProcComponentDefStmt      {cons("ProcComponentDefStmt")}
 
 %%R441
-  'POINTER'                                   -> ProcComponentAttrSpec     {cons("ProcComponentAttrSpec_POINTER")}
-  'PASS'                                      -> ProcComponentAttrSpec     {cons("ProcComponentAttrSpec_PASS")}
-  'NOPASS'                                    -> ProcComponentAttrSpec     {cons("ProcComponentAttrSpec_NOPASS")}
-  AccessSpec                                  -> ProcComponentAttrSpec     {cons("ProcComponentAttrSpec_AS")}
+  'POINTER'                                   -> ProcComponentAttrSpec     {cons("POINTER")}
+  'PASS'                                      -> ProcComponentAttrSpec     {cons("PASS")}
+  'NOPASS'                                    -> ProcComponentAttrSpec     {cons("NOPASS")}
+  AccessSpec                                  -> ProcComponentAttrSpec
 
 %%R442
   '=' Expr                                    -> ComponentInitialization   {cons("ComponentInitialization_E")}
@@ -1094,32 +1101,44 @@ context-free syntax
   FinalProcedureStmt                          -> TypeBoundProcBinding
 
 %%R448
-  Label? 'PROCEDURE' {TypeBoundProcDecl ','}+  EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_1")}
-  Label? 'PROCEDURE'
-               ( ',' {BindingAttr ','}+ )? '::'
-                     {TypeBoundProcDecl ','}+  EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_2")}
-  Label? 'PROCEDURE'
-              '(' InterfaceName ')'
+  OptLabel 'PROCEDURE' OptBindingAttrList
+                      {TypeBoundProcDecl ','}+ EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt")}
+
+  ',' {BindingAttr ','}+ '::'                      -> OptBindingAttrList      {cons("comma-list")}
+                         '::'                      -> OptBindingAttrList      {cons("no-list")}
+  % empty %                                        -> OptBindingAttrList      {cons("no-list")}
+
+  OptLabel 'PROCEDURE' '(' InterfaceName ')'
                  ',' {BindingAttr ','}+ '::'
-                     {BindingName ','}+        EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureStmt_3")}
+                     {BindingName ','}+        EOS -> TypeBoundProcedureStmt  {cons("TypeBoundProcedureInterfaceStmt")}
+
+  Ident                                            -> BindingName
 
 %%R449
-  BindingName ( '=>' ProcedureName )?              -> TypeBoundProcDecl       {cons("TypeBoundProcDecl")}
+  BindingName '=>' ProcedureName                   -> TypeBoundProcDecl       {cons("TypeBoundProcDecl")}
+  BindingName    NoProcedureName                   -> TypeBoundProcDecl       {cons("TypeBoundProcDecl")}
 
 %%R450
-  OptLabel 'GENERIC' ( ',' AccessSpec )?
+  OptLabel 'GENERIC' OptAccessSpec
      '::' GenericSpec '=>' {BindingName ','}+  EOS -> TypeBoundGenericStmt    {cons("TypeBoundGenericStmt")}
 
+  ',' AccessSpec                                   -> OptAccessSpec           {cons("comma-access-spec")}
+  % empty %                                        -> OptAccessSpec           {cons("no-access-spec")}
+
 %%451
-  'PASS' ('(' ArgName ')')?                        -> BindingAttr             {cons("BindingAttr_PASS")}
-  'NOPASS'                                         -> BindingAttr             {cons("BindingAttr_NOPASS")}
-  'NON_OVERRIDABLE'                                -> BindingAttr             {cons("BindingAttr_NON_OVERRIDABLE")}
-  'DEFERRED'                                       -> BindingAttr             {cons("BindingAttr_DEFERRED")}
-  AccessSpec                                       -> BindingAttr             {cons("BindingAttr_AS")}
+  'PASS' '(' ArgName ')'                           -> BindingAttr             {cons("Pass")}
+  'PASS'   NoArgName                               -> BindingAttr             {cons("Pass")}
+  'NOPASS'                                         -> BindingAttr             {cons("NOPASS")}
+  'NON_OVERRIDABLE'                                -> BindingAttr             {cons("NON_OVERRIDABLE")}
+  'DEFERRED'                                       -> BindingAttr             {cons("DEFERRED")}
+  AccessSpec                                       -> BindingAttr
+
+  Ident                                            -> ArgName
+  % empty %                                        -> NoArgName               {cons("no-arg-name")}
 
 %%452
-  OptLabel 'FINAL' '::' {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
-  OptLabel 'FINAL'      {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt    {cons("FinalProcedureStmt")}
+  OptLabel 'FINAL' '::' {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt  {cons("FinalProcedureStmt")}
+  OptLabel 'FINAL'      {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt  {cons("FinalProcedureStmt")}
 
   Ident                                                -> FinalSubroutineName
 
@@ -1155,19 +1174,22 @@ context-free syntax
   EndEnumStmt                                      -> EnumDef                 {cons("EnumDef")}
 
 %%R459
-  Label? 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("EnumDefStmt")}
+  OptLabel 'ENUM' ',' 'BIND' '(' 'C' ')'         EOS -> EnumDefStmt             {cons("EnumDefStmt")}
 
 %%R460
-  Label? 'ENUMERATOR' '::' {Enumerator ','}+   EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
-  Label? 'ENUMERATOR'      {Enumerator ','}+   EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
+  OptLabel 'ENUMERATOR' '::' {Enumerator ','}+   EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
+  OptLabel 'ENUMERATOR'      {Enumerator ','}+   EOS -> EnumeratorDefStmt       {cons("EnumeratorDefStmt")}
 
 %%R461
 %%       IntConstantExpr substituted for ScalarIntConstantExpr
 %%
-  NamedConstant ('=' IntConstantExpr)?             -> Enumerator              {cons("Enumerator")}
+  NamedConstant OptEqualsExpr                      -> Enumerator              {cons("Enumerator")}
+
+  '=' IntConstantExpr                              -> OptEqualsExpr           {cons("equals-expr")}
+  % empty %                                        -> OptEqualsExpr           {cons("no-expr")}
 
 %%R462
-  Label? 'END' 'ENUM'                          EOS -> EndEnumStmt             {cons("EndEnumStmt")}
+  OptLabel 'END' 'ENUM'                        EOS -> EndEnumStmt             {cons("EndEnumStmt")}
 
 
 %% 4.7 Binary, octal, and hexadecimal literal constants
