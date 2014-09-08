@@ -100,6 +100,9 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  AssumedShape(lower)              -> DimSpec(lower,":")
 //  ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
 
+//R520
+  ofp-to-ast:  DeferredShape()                  -> DimSpec(no-lower-bound(), COLON())
+
 //R521
   ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
                             -> OfpAssumedSize(<concat>[list, [DimSpec(lower,"*")]])
