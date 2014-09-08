@@ -660,6 +660,7 @@ signature
     no-type-spec                    : OptTypeSpec
     type-spec-colon                 : TypeSpec -> OptTypeSpec
     ForallHeader                    : OptTypeSpec * List(ForallTripletSpec) * OptMaskExpr -> ForallHeader
+                                    : Ident -> ForallConstructName
     ForallConstructStmt             : OptLabel * NoName * ForallHeader * EOS -> ForallConstructStmt
     ForallConstructStmt             : OptLabel * ForallConstructName * ForallHeader * EOS -> ForallConstructStmt
     ForallConstruct                 : ForallConstructStmt * List(ForallBodyConstruct) * EndForallStmt -> ForallConstruct
@@ -761,7 +762,6 @@ signature
                                     : AddOp -> IntrinsicOperator
                                     : MultOp -> IntrinsicOperator
                                     : PowerOp -> IntrinsicOperator
-    ForallConstructName             : Ident -> ForallConstructName
     ERRMSG                          : ErrmsgVariable -> DeallocOpt
     STAT                            : StatVariable -> DeallocOpt
     no-list                         : OptDeallocOptList
@@ -873,6 +873,7 @@ signature
     ParameterStmt                   : OptLabel * List(NamedConstantDef) * EOS -> ParameterStmt
     OptionalStmt                    : OptLabel * List(DummyArgName) * EOS -> OptionalStmt
     IntentStmt                      : OptLabel * IntentSpec * List(DummyArgName) * EOS -> IntentStmt
+                                    : Ident -> ArrayName
     ArrayNameSpec                   : ArrayName * ArraySpec -> ArrayNameSpec
     DimensionStmt                   : OptLabel * List(ArrayNameSpec) * EOS -> DimensionStmt
                                     : Designator -> ConstantSubobject
@@ -955,9 +956,9 @@ signature
     PRIVATE                         : AccessSpec
     PUBLIC                          : AccessSpec
     NullInit                        : FunctionReference -> NullInit
-    Initialization                  : InitialDataTarget -> Initialization
-    Initialization                  : NullInit -> Initialization
-    Initialization                  : ConstantExpr -> Initialization
+    PointerInit                     : InitialDataTarget -> Initialization
+    PointerInit                     : NullInit -> Initialization
+    Init                            : ConstantExpr -> Initialization
     no-init                         : OptInitialization
                                     : Initialization -> OptInitialization
     no-char-length                  : OptCharLength
@@ -991,7 +992,6 @@ signature
     no-list                         : NoAttrSpecList
     TypeDeclarationStmt             : OptLabel * DeclarationTypeSpec * OptAttrSpecList * List(EntityDecl) * EOS -> TypeDeclarationStmt
     TypeDeclarationStmt             : OptLabel * DeclarationTypeSpec * NoAttrSpecList * List(EntityDecl) * EOS -> TypeDeclarationStmt
-    ArrayName                       : Ident -> ArrayName
                                     : DoVariable -> AcDoVariable
     AcImpliedDoControl              : AcDoVariable * Expr * Expr * OptExpr -> AcImpliedDoControl
     AcImpliedDo                     : List(AcValue) * AcImpliedDoControl -> AcImpliedDo
@@ -1108,8 +1108,8 @@ signature
     TRUE                            : OptKindParam -> LogicalLiteralConstant
                                     : Scon -> CharLiteralConstant
     CharLiteralConstant             : KindParam * Scon -> CharLiteralConstant
-    CharLength_I                    : Icon -> CharLength
-    CharLength_TPV                  : TypeParamValue -> CharLength
+                                    : Icon -> CharLength
+    CharLength                      : TypeParamValue -> CharLength
     LengthSelector_STAR             : CharLength -> LengthSelector
     LengthSelector                  : TypeParamValue -> LengthSelector
     no-char-selector                : OptCharSelector
@@ -1118,22 +1118,23 @@ signature
     CharSelector_KIND_LEN           : Expr * TypeParamValue -> CharSelector
     CharSelector_LEN_KIND           : TypeParamValue * Expr -> CharSelector
                                     : LengthSelector -> CharSelector
-    ImagPart_NC                     : NamedConstant -> ImagPart
-    ImagPart_SRLC                   : SignedRealLiteralConstant -> ImagPart
-    ImagPart_SILC                   : SignedIntLiteralConstant -> ImagPart
-    RealPart_NC                     : NamedConstant -> RealPart
-    RealPart_SRLC                   : SignedRealLiteralConstant -> RealPart
-    RealPart_SILC                   : SignedIntLiteralConstant -> RealPart
+                                    : NamedConstant -> ImagPart
+                                    : SignedRealLiteralConstant -> ImagPart
+                                    : SignedIntLiteralConstant -> ImagPart
+                                    : NamedConstant -> RealPart
+                                    : SignedRealLiteralConstant -> RealPart
+                                    : SignedIntLiteralConstant -> RealPart
     ComplexLiteralConstant          : RealPart * ImagPart -> ComplexLiteralConstant
     RealLiteralConstant             : Rcon * KindParam -> RealLiteralConstant
     RealLiteralConstant             : Rcon * NoKindParam -> RealLiteralConstant
     SignedRealLiteralConstant       : Sign * RealLiteralConstant -> SignedRealLiteralConstant
                                     : RealLiteralConstant -> SignedRealLiteralConstant
-    Sign_MINUS                      : Sign
-    Sign_PLUS                       : Sign
+    MINUS                           : Sign
+    PLUS                            : Sign
                                     : Icon -> DigitString
-    KindParam_SICN                  : ScalarIntConstantName -> KindParam
-    KindParam_DS                    : DigitString -> KindParam
+                                    : Ident -> ScalarIntConstantName
+                                    : ScalarIntConstantName -> KindParam
+                                    : DigitString -> KindParam
     no-kind-param                   : NoKindParam
     IntLiteralConstant              : DigitString * KindParam -> IntLiteralConstant
                                     : DigitString -> IntLiteralConstant
@@ -1174,7 +1175,6 @@ signature
                                     : LiteralConstant -> Constant
     no-name                         : NoName
                                     : Ident -> Name
-    ScalarIntConstantName           : Ident -> ScalarIntConstantName
     eos                             : EOStmt -> EOS
                                     : LblDef -> LblRef
                                     : String -> Dop

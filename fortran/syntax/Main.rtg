@@ -1434,6 +1434,7 @@ regular tree grammar
     OptTypeSpec                       -> no-type-spec()
     OptTypeSpec                       -> type-spec-colon(TypeSpec)
     ForallHeader                      -> ForallHeader(OptTypeSpec,ListPlusOfForallTripletSpec0,OptMaskExpr)
+    ForallConstructName               -> Ident
     ForallConstructStmt               -> ForallConstructStmt(OptLabel,NoName,ForallHeader,EOS)
     ForallConstructStmt               -> ForallConstructStmt(OptLabel,ForallConstructName,ForallHeader,EOS)
     ForallConstruct                   -> ForallConstruct(ForallConstructStmt,ListStarOfForallBodyConstruct0,EndForallStmt)
@@ -1461,6 +1462,7 @@ regular tree grammar
     ProcTarget                        -> ProcComponentRef
     ProcTarget                        -> ProcedureName
     ProcTarget                        -> Expr
+    ProcedureComponentName            -> Ident
     ProcComponentRef                  -> ProcComponentRef(Variable,ProcedureComponentName)
     DataTarget                        -> Expr
     NoUpperBoundExpr                  -> no-upper-bounds()
@@ -1526,8 +1528,6 @@ regular tree grammar
     IntrinsicOperator                 -> AddOp
     IntrinsicOperator                 -> MultOp
     IntrinsicOperator                 -> PowerOp
-    ProcedureComponentName            -> ProcedureComponentName(Ident)
-    ForallConstructName               -> ForallConstructName(Ident)
     DeallocOpt                        -> ERRMSG(ErrmsgVariable)
     DeallocOpt                        -> STAT(StatVariable)
     OptDeallocOptList                 -> no-list()
@@ -1599,6 +1599,7 @@ regular tree grammar
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
+    ScalarVariableName                -> Ident
     ParentString                      -> Constant
     ParentString                      -> StructureComponent
     Substring                         -> Substring(ParentString,SubstringRange)
@@ -1610,7 +1611,6 @@ regular tree grammar
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef
-    ScalarVariableName                -> ScalarVariableName(Ident)
     CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
     CommonBlockName                   -> Ident
     OptCommonBlockName                -> no-name()
@@ -1661,6 +1661,7 @@ regular tree grammar
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
+    ArrayName                         -> Ident
     ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
     DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
     DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
@@ -1752,9 +1753,9 @@ regular tree grammar
     AccessSpec                        -> PRIVATE()
     AccessSpec                        -> PUBLIC()
     NullInit                          -> NullInit(FunctionReference)
-    Initialization                    -> Initialization(InitialDataTarget)
-    Initialization                    -> Initialization(NullInit)
-    Initialization                    -> Initialization(ConstantExpr)
+    Initialization                    -> PointerInit(InitialDataTarget)
+    Initialization                    -> PointerInit(NullInit)
+    Initialization                    -> Init(ConstantExpr)
     OptInitialization                 -> no-init()
     OptCharLength                     -> no-char-length()
     OptCoarraySpec                    -> no-list()
@@ -1788,7 +1789,6 @@ regular tree grammar
     NoAttrSpecList                    -> no-list()
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,OptAttrSpecList,ListPlusOfEntityDecl0,EOS)
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,NoAttrSpecList,ListPlusOfEntityDecl0,EOS)
-    ArrayName                         -> ArrayName(Ident)
     AcDoVariable                      -> DoVariable
     AcImpliedDoControl                -> AcImpliedDoControl(AcDoVariable,Expr,Expr,OptExpr)
     AcImpliedDo                       -> AcImpliedDo(ListPlusOfAcValue0,AcImpliedDoControl)
@@ -1910,8 +1910,8 @@ regular tree grammar
     LogicalLiteralConstant            -> TRUE(OptKindParam)
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
-    CharLength                        -> CharLength_I(Icon)
-    CharLength                        -> CharLength_TPV(TypeParamValue)
+    CharLength                        -> Icon
+    CharLength                        -> CharLength(TypeParamValue)
     LengthSelector                    -> LengthSelector_STAR(CharLength)
     LengthSelector                    -> LengthSelector_STAR(CharLength)
     LengthSelector                    -> LengthSelector(TypeParamValue)
@@ -1924,24 +1924,25 @@ regular tree grammar
     CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
     CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
     CharSelector                      -> LengthSelector
-    ImagPart                          -> ImagPart_NC(NamedConstant)
-    ImagPart                          -> ImagPart_SRLC(SignedRealLiteralConstant)
-    ImagPart                          -> ImagPart_SILC(SignedIntLiteralConstant)
-    RealPart                          -> RealPart_NC(NamedConstant)
-    RealPart                          -> RealPart_SRLC(SignedRealLiteralConstant)
-    RealPart                          -> RealPart_SILC(SignedIntLiteralConstant)
+    ImagPart                          -> NamedConstant
+    ImagPart                          -> SignedRealLiteralConstant
+    ImagPart                          -> SignedIntLiteralConstant
+    RealPart                          -> NamedConstant
+    RealPart                          -> SignedRealLiteralConstant
+    RealPart                          -> SignedIntLiteralConstant
     ComplexLiteralConstant            -> ComplexLiteralConstant(RealPart,ImagPart)
     RealLiteralConstant               -> RealLiteralConstant(Rcon,KindParam)
     RealLiteralConstant               -> RealLiteralConstant(Rcon,NoKindParam)
     SignedRealLiteralConstant         -> SignedRealLiteralConstant(Sign,RealLiteralConstant)
     SignedRealLiteralConstant         -> RealLiteralConstant
-    Sign                              -> Sign_MINUS()
-    Sign                              -> Sign_PLUS()
+    Sign                              -> MINUS()
+    Sign                              -> PLUS()
     DigitString                       -> Icon
     SignedDigitString                 -> SignedDigitString(Sign,DigitString)
     SignedDigitString                 -> DigitString
-    KindParam                         -> KindParam_SICN(ScalarIntConstantName)
-    KindParam                         -> KindParam_DS(DigitString)
+    ScalarIntConstantName             -> Ident
+    KindParam                         -> ScalarIntConstantName
+    KindParam                         -> DigitString
     NoKindParam                       -> no-kind-param()
     IntLiteralConstant                -> IntLiteralConstant(DigitString,KindParam)
     IntLiteralConstant                -> DigitString
@@ -1974,8 +1975,8 @@ regular tree grammar
     OptLabel                          -> no-label()
     OptLabel                          -> LblDef
     Label                             -> LblDef
-    CharConstant                      -> CharConstant(Constant)
-    IntConstant                       -> IntConstant(Constant)
+    CharConstant                      -> Constant
+    IntConstant                       -> Constant
     NamedConstant                     -> Name
     LiteralConstant                   -> BozLiteralConstant
     LiteralConstant                   -> CharLiteralConstant
@@ -1986,8 +1987,6 @@ regular tree grammar
     Constant                          -> LiteralConstant
     NoName                            -> no-name()
     Name                              -> Ident
-    ScalarIntConstantName             -> ScalarIntConstantName(Ident)
-    ImpliedDoVariable                 -> ImpliedDoVariable(Ident)
     Continuation                      -> <string>
     EOS                               -> eos(EOStmt)
     LblRef                            -> LblDef

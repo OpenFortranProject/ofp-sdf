@@ -175,8 +175,7 @@ sorts
 
 %% Identifier aliases
 
-  ArgName BindingName ComponentName
-  FinalSubroutineName ImpliedDoVariable
+  ArgName BindingName ComponentName FinalSubroutineName
   Name NoName ParentTypeName ProcedureName
   ScalarIntConstantName TypeName OptTypeName TypeParamName
 
@@ -758,9 +757,6 @@ context-free syntax
 %% Identifier aliases
 %%
 
-  Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
-  Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
-
   Ident      -> Name
   % empty %  -> NoName                 {cons("no-name")}
 
@@ -798,10 +794,10 @@ context-free syntax
 %%TODO-F08 the following rules look way ambiguous
 
 %%R307
-  Constant                              -> IntConstant      {cons("IntConstant")}
+  Constant                              -> IntConstant
 
 %%R308
-  Constant                              -> CharConstant     {cons("CharConstant")}
+  Constant                              -> CharConstant
 
 %%R312
   LblDef                                -> Label            %%TODO-DELETE
@@ -875,8 +871,10 @@ context-free syntax
   % empty %                             -> NoKindParam         {cons("no-kind-param")}
 
 %%R408
-  DigitString                           -> KindParam          {cons("KindParam_DS")}
-  ScalarIntConstantName                 -> KindParam          {cons("KindParam_SICN")}
+  DigitString                           -> KindParam
+  ScalarIntConstantName                 -> KindParam
+
+  Ident                                 -> ScalarIntConstantName
 
 %%R409
        DigitString                      -> SignedDigitString
@@ -886,8 +884,8 @@ context-free syntax
   Icon                                  -> DigitString
 
 %%R411
-  '+'                                   -> Sign               {cons("Sign_PLUS")}
-  '-'                                   -> Sign               {cons("Sign_MINUS")}
+  '+'                                   -> Sign               {cons("PLUS")}
+  '-'                                   -> Sign               {cons("MINUS")}
 
 %%R412
        RealLiteralConstant              -> SignedRealLiteralConstant
@@ -907,14 +905,14 @@ context-free syntax
   '(' RealPart ',' ImagPart ')'         -> ComplexLiteralConstant  {cons("ComplexLiteralConstant")}
 
 %%418
-  SignedIntLiteralConstant              -> RealPart                {cons("RealPart_SILC")}
-  SignedRealLiteralConstant             -> RealPart                {cons("RealPart_SRLC")}
-  NamedConstant                         -> RealPart                {cons("RealPart_NC")}
+  SignedIntLiteralConstant              -> RealPart
+  SignedRealLiteralConstant             -> RealPart
+  NamedConstant                         -> RealPart
 
 %%419
-  SignedIntLiteralConstant              -> ImagPart                {cons("ImagPart_SILC")}
-  SignedRealLiteralConstant             -> ImagPart                {cons("ImagPart_SRLC")}
-  NamedConstant                         -> ImagPart                {cons("ImagPart_NC")}
+  SignedIntLiteralConstant              -> ImagPart
+  SignedRealLiteralConstant             -> ImagPart
+  NamedConstant                         -> ImagPart
 
 %%R420
 %%       expr substituted for scalar-int-constant-expr
@@ -936,8 +934,8 @@ context-free syntax
   '*' CharLength                                               -> LengthSelector  {cons("LengthSelector_STAR")}
 
 %%R422
-  '(' TypeParamValue ')'                                       -> CharLength      {cons("CharLength_TPV")}
-  Icon                                                         -> CharLength      {cons("CharLength_I")}
+  '(' TypeParamValue ')'                                       -> CharLength      {cons("CharLength")}
+  Icon                                                         -> CharLength
 
 %%R423
   KindParam '_' Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
@@ -1269,11 +1267,6 @@ context-free syntax
 %%Fortran ISO/IEC 1539:1991 section R5xx Data Object declarations and Specifications
 %%%%%%%%%%
 
-%% Identifier aliases
-%%
-
-  Ident   -> ArrayName                 {cons("ArrayName")}
-
 %% 5.2 Type declaration statements
 %%
 
@@ -1331,9 +1324,9 @@ context-free syntax
 %%Name - lex
 
 %%R505
-  '='   ConstantExpr                                    -> Initialization  {cons("Initialization")}
-  '=>'  NullInit                                        -> Initialization  {cons("Initialization")}
-  '=>'  InitialDataTarget                               -> Initialization  {cons("Initialization")}
+  '='   ConstantExpr                                    -> Initialization  {cons("Init")}
+  '=>'  NullInit                                        -> Initialization  {cons("PointerInit")}
+  '=>'  InitialDataTarget                               -> Initialization  {cons("PointerInit")}
 
 %%R506
   FunctionReference                                     -> NullInit        {cons("NullInit")}
@@ -1547,6 +1540,7 @@ context-free syntax
   OptLabel 'DIMENSION'      {ArrayNameSpec ','}+        EOS -> DimensionStmt     {cons("DimensionStmt")}
 
   ArrayName '(' ArraySpec ')'                               -> ArrayNameSpec     {cons("ArrayNameSpec")}
+  Ident                                                     -> ArrayName
 
 %%R546
   OptLabel 'INTENT' '(' IntentSpec ')' '::' {DummyArgName ','}+ EOS -> IntentStmt   {cons("IntentStmt")}
@@ -1674,11 +1668,6 @@ context-free syntax
 %% Fortran ISO/IEC 1539:1991 section R6xx Use of Data Objects
 %%%%%%%%%%
 
-%% Identifier aliases
-%%
-
-  Ident   -> ScalarVariableName        {cons("ScalarVariableName")}
-
 %% 6.1 Designator
 %%
 
@@ -1752,6 +1741,8 @@ context-free syntax
   CoindexedNamedObject                 -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
   StructureComponent                   -> ParentString
   Constant                             -> ParentString
+
+  Ident                                -> ScalarVariableName
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -1945,12 +1936,6 @@ context-free syntax
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 section R7xx Expressions and Assignments
 %%%%%%%%%%
-
-%% Identifier aliases
-%%
-
-  Ident   -> ForallConstructName       {cons("ForallConstructName")}
-  Ident   -> ProcedureComponentName    {cons("ProcedureComponentName")}
 
 %%R309
   PowerOp                       -> IntrinsicOperator
@@ -2147,6 +2132,8 @@ Primary                                    -> Expr
 %%
   Variable '%' ProcedureComponentName                   -> ProcComponentRef   {cons("ProcComponentRef")}
 
+  Ident                                                 -> ProcedureComponentName
+
 %%R740
   Expr                                                  -> ProcTarget
   ProcedureName                                         -> ProcTarget
@@ -2228,6 +2215,8 @@ Primary                                    -> Expr
           'FORALL' ForallHeader                EOS -> ForallConstructStmt {cons("ForallConstructStmt")}
   OptLabel              NoName
           'FORALL' ForallHeader                EOS -> ForallConstructStmt {cons("ForallConstructStmt")}
+
+  Ident                                            -> ForallConstructName
 
 %%752
 %%       mask-expr substituted for scalar-mask-expr
