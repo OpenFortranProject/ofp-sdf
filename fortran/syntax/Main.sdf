@@ -1242,10 +1242,10 @@ context-free syntax
 %%R474
 %%      expr substituted for scalar-int-expr
 %%
-  AcDoVariable '=' Expr ',' Expr (',' Expr)?       -> AcImpliedDoControl   {cons("AcImpliedDoControl")}
+  AcDoVariable '=' Expr ',' Expr OptExpr           -> AcImpliedDoControl   {cons("AcImpliedDoControl")}
 
 %%R475
-  DoVariable                                       -> AcDoVariable         {cons("AcDoVariable")}
+  DoVariable                                       -> AcDoVariable
 
 %%R432
 %%TODO-REMOVE
