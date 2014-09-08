@@ -1,4 +1,4 @@
-!! R431 derived-type-stmt
+!! R426 derived-type-stmt
 !    is TYPE [ [ , type-attr-spec-list ] :: ] type-name [ ( type-param-name-list ) ]
 
 module DTS
