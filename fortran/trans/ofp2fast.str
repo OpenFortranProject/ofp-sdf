@@ -104,16 +104,16 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  DeferredShape()                  -> DimSpec(no-lower-bound(), COLON())
 
 //R521
-  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
-                            -> OfpAssumedSize(<concat>[list, [DimSpec(lower,"*")]])
-  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
-                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
+//  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
+//                            -> OfpAssumedSize(<concat>[list, [DimSpec(lower,"*")]])
+//  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
+//                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
 
 //R522
   ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
-  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
+//  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
 
 //R523
 //  ofp-to-ast:  IN()                    -> OfpIntent(IN())
@@ -124,10 +124,10 @@ rules //========================START OF RULES===============================
 //    - The following four rules remove the ambiguity by choosing assumed-size over
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
 //
-  ofp-to-ast:  AssumedOrImpliedSpec()
-                            -> OfpAssumedSize([DimSpec(None(),"*")])
-  ofp-to-ast:  AssumedOrImpliedSpec(lower)
-                            -> OfpAssumedSize([DimSpec(lower,"*")])
+//  ofp-to-ast:  AssumedOrImpliedSpec()
+//                            -> OfpAssumedSize([DimSpec(None(),"*")])
+//  ofp-to-ast:  AssumedOrImpliedSpec(lower)
+//                            -> OfpAssumedSize([DimSpec(lower,"*")])
 
   rm-assumed-size: OfpAssumedSize([l]) -> l
 
