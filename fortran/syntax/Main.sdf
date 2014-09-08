@@ -819,9 +819,9 @@ context-free syntax
 %%R401
 %%       expr substituted for scalar-int-expr
 %%
-  Expr                                  -> TypeParamValue       {cons("TypeParamValue_E")}
-  '*'                                   -> TypeParamValue       {cons("TypeParamValue_STAR")}
-  ':'                                   -> TypeParamValue       {cons("TypeParamValue_COLON")}
+  Expr                                  -> TypeParamValue
+  '*'                                   -> TypeParamValue       {cons("STAR")}
+  ':'                                   -> TypeParamValue       {cons("COLON")}
 
 
 %% 4.3 Relationship of types and values to objects
@@ -920,7 +920,7 @@ context-free syntax
 %%R420
 %%       expr substituted for scalar-int-constant-expr
 %%
-  LengthSelector                                               -> CharSelector    {cons("CharSelector_LS")}
+  LengthSelector                                               -> CharSelector
   '(' 'LEN'  '=' TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
   '('            TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
   '('            TypeParamValue ','             Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
@@ -931,8 +931,8 @@ context-free syntax
   % empty %                                                    -> OptCharSelector {cons("no-char-selector")}
 
 %%R421
-  '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector_LEN")}
-  '('           TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector_LEN")}
+  '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector")}
+  '('           TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector")}
   '*' CharLength ','                                           -> LengthSelector  {cons("LengthSelector_STAR")}
   '*' CharLength                                               -> LengthSelector  {cons("LengthSelector_STAR")}
 
@@ -1641,13 +1641,13 @@ context-free syntax
 %%
 
 %%R565
-  Label? 'EQUIVALENCE' {EquivalenceSet ','}+             EOS -> EquivalenceStmt   {cons("EquivalenceStmt")}
+  OptLabel 'EQUIVALENCE' {EquivalenceSet ','}+           EOS -> EquivalenceStmt   {cons("EquivalenceStmt")}
 
 %%R566
-  '(' EquivalenceObject ',' {EquivalenceObject ','}+ ')'     -> EquivalenceSet    {cons("EquivalenceSet")}
+  '(' EquivalenceObject ',' {EquivalenceObject ','}+ ')'     -> EquivalenceSet    {cons("equivalence-set-list")}
 
 %%R567
-  Variable                                                   -> EquivalenceObject {cons("EquivalenceObject")}
+  Variable                                                   -> EquivalenceObject
 %%ArrayElement     %% Ambiguous - included in variable
 %%Substring        %% Ambiguous - included in variable
 
