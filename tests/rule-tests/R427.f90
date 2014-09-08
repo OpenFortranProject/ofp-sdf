@@ -1,4 +1,4 @@
-!! R432 type-attr-spec
+!! R427 type-attr-spec
 !    is ABSTRACT
 !    or access-spec
 !    or BIND (C)
