@@ -1916,9 +1916,9 @@ context-free syntax
   OptLabel 'NULLIFY' '(' {PointerObject ','}+ ')'    EOS -> NullifyStmt          {cons("NullifyStmt")}
 
 %%R639
-  VariableName                                           -> PointerObject
-  StructureComponent                                     -> PointerObject        {avoid}
-  ProcPointerName                                        -> PointerObject        {reject}
+%%VariableName                                           -> PointerObject  %% AMBIGUOUS with StructureComponent
+  StructureComponent                                     -> PointerObject
+%%ProcPointerName                                        -> PointerObject  %% AMBIGUOUS with StructureComponent
 
 %%R640
   OptLabel 'DEALLOCATE'
