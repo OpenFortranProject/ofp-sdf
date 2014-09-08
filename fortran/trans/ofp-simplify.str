@@ -84,6 +84,10 @@ ofp-simplify-ast:  language-binding-name(str)     -> str
 ofp-simplify-ast:  explicit-coshape-spec-list(list,final)   -> <conc>(list, [final])
 ofp-simplify-ast:  final-cobounds-entry(lower)              -> ExplicitCoshape(no-lower-bound(),STAR())
 
+//R563
+ofp-simplify-ast:  name-list-entry-list-head(entry)         -> [entry]
+ofp-simplify-ast:  name-list-entry-list-tail(head,tail)     -> <conc>(head,[tail])
+
 //R566
 ofp-simplify-ast:  equivalence-set-list(head, tail)         -> EquivalenceSet(<concat>[[head], tail])
 
