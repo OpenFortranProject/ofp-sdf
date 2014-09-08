@@ -759,7 +759,6 @@ context-free syntax
 %%
 
   Ident   -> ImpliedDoVariable         {cons("ImpliedDoVariable")}
-  Ident   -> ParentTypeName            {cons("ParentTypeName")}
   Ident   -> ScalarIntConstantName     {cons("ScalarIntConstantName")}
 
   Ident      -> Name
@@ -984,13 +983,15 @@ context-free syntax
 
   Ident                                                        -> TypeName
   TypeName                                                     -> OptTypeName
-  % empty %                                                    -> OptTypeName      {cons("no-type-name")}
+  % empty %                                                    -> OptTypeName      {cons("no-name")}
 
 %%R427
-  'ABSTRACT'                                                   -> TypeAttrSpec     {cons("TypeAttrSpec_ABSTRACT")}
-   AccessSpec                                                  -> TypeAttrSpec     {cons("TypeAttrSpec_AS")}
-  'BIND'     '(' 'C'            ')'                            -> TypeAttrSpec     {cons("TypeAttrSpec_BIND")}
-  'EXTENDS'  '(' ParentTypeName ')'                            -> TypeAttrSpec     {cons("TypeAttrSpec_EXTENDS")}
+  'ABSTRACT'                                                   -> TypeAttrSpec     {cons("ABSTRACT")}
+   AccessSpec                                                  -> TypeAttrSpec
+  'BIND'     '(' 'C'            ')'                            -> TypeAttrSpec     {cons("BIND")}
+  'EXTENDS'  '(' ParentTypeName ')'                            -> TypeAttrSpec     {cons("Extends")}
+
+  Ident                                                        -> ParentTypeName
 
 %%R428
   PrivateComponentsStmt                                        -> PrivateOrSequence
@@ -1033,12 +1034,12 @@ context-free syntax
 
 
 %%R437
-  AccessSpec                                -> ComponentAttrSpec     {cons("ComponentAttrSpec_AS")}
-  'ALLOCATABLE'                             -> ComponentAttrSpec     {cons("ComponentAttrSpec_ALLOCATABLE")}
-  'CODIMENSION' '[' CoarraySpec ']'         -> ComponentAttrSpec     {cons("ComponentAttrSpec_CODIMENSION")}
-  'CONTIGUOUS'                              -> ComponentAttrSpec     {cons("ComponentAttrSpec_CONTIGUOUS")}
-  'DIMENSION' '(' ComponentArraySpec ')'    -> ComponentAttrSpec     {cons("ComponentAttrSpec_DIMENSION")}
-  'POINTER'                                 -> ComponentAttrSpec     {cons("ComponentAttrSpec_POINTER")}
+  AccessSpec                                -> ComponentAttrSpec
+  'ALLOCATABLE'                             -> ComponentAttrSpec     {cons("ALLOCATABLE")}
+  'CODIMENSION' '[' CoarraySpec ']'         -> ComponentAttrSpec     {cons("Codimension")}
+  'CONTIGUOUS'                              -> ComponentAttrSpec     {cons("CONTIGUOUS")}
+  'DIMENSION' '(' ComponentArraySpec ')'    -> ComponentAttrSpec     {cons("Dimension")}
+  'POINTER'                                 -> ComponentAttrSpec     {cons("POINTER")}
 
 %%R438
   ComponentName OptComponentArraySpec
@@ -1048,19 +1049,18 @@ context-free syntax
 
   Ident                                       -> ComponentName
 
-  '(' ComponentArraySpec   ')'                -> OptComponentArraySpec     {cons("opt-component-array-spec")}
+  '(' ComponentArraySpec ')'                  -> OptComponentArraySpec     {cons("opt-component-array-spec")}
   ComponentInitialization                     -> OptComponentInitialization
 
   % empty %                                   -> OptComponentArraySpec     {cons("no-list")}
   % empty %                                   -> OptComponentInitialization{cons("no-init")}
 
 %%R439
-  {ExplicitShapeSpec ','}+                    -> ComponentArraySpec        {cons("ComponentArraySpec")}
-  {DeferredShapeSpec ','}+                    -> ComponentArraySpec        {cons("ComponentArraySpec")}
+  {ExplicitShapeSpec ','}+                    -> ComponentArraySpec
+  {DeferredShapeSpec ','}+                    -> ComponentArraySpec
 
 %%R440
-  Label? 'PROCEDURE'
-           '('  ProcInterface? ')' ','
+  OptLabel 'PROCEDURE' '(' OptProcInterface ')' ','
                {ProcComponentAttrSpec ','}+
           '::' {ProcDecl ','}+           EOS  -> ProcComponentDefStmt      {cons("ProcComponentDefStmt")}
 
@@ -1071,9 +1071,9 @@ context-free syntax
   AccessSpec                                  -> ProcComponentAttrSpec
 
 %%R442
-  '=' Expr                                    -> ComponentInitialization   {cons("ComponentInitialization_E")}
-  '=>' NullInit                               -> ComponentInitialization   {cons("ComponentInitialization_NI")}
-  '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentInitialization_IDT")}
+  '=' Expr                                    -> ComponentInitialization   {cons("ComponentInit")}
+  '=>' NullInit                               -> ComponentInitialization   {cons("ComponentPointerInit")}
+  '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentPointerInit")}
 
 %%R443
   Designator                                  -> InitialDataTarget
