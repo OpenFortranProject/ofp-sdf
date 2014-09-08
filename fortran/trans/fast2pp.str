@@ -110,3 +110,6 @@ rules
   no-to-none: no-type-spec()               -> None()   // R626
   no-to-none: no-lower-bound()             -> None()   // R633
   no-to-none: no-image-selector()          -> None()   // R624
+  no-to-none: no-component-name()          -> None()   // R734
+  no-to-none: no-upper-bounds()            -> None()   // R736
+  no-to-none: no-type-bound-procedure-part()  -> None()   //R445
