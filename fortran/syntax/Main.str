@@ -768,7 +768,6 @@ signature
     comma-list                      : List(DeallocOpt) -> OptDeallocOptList
     DeallocateStmt                  : OptLabel * List(AllocateObject) * OptDeallocOptList * EOS -> DeallocateStmt
                                     : StructureComponent -> PointerObject
-                                    : VariableName -> PointerObject
     NullifyStmt                     : OptLabel * List(PointerObject) * EOS -> NullifyStmt
     no-list                         : NoAllocateCoshapeSpecList
     AllocateCoshapeSpec             : LowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec

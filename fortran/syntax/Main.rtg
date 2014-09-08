@@ -1534,7 +1534,6 @@ regular tree grammar
     OptDeallocOptList                 -> comma-list(ListPlusOfDeallocOpt0)
     DeallocateStmt                    -> DeallocateStmt(OptLabel,ListPlusOfAllocateObject0,OptDeallocOptList,EOS)
     PointerObject                     -> StructureComponent
-    PointerObject                     -> VariableName
     NullifyStmt                       -> NullifyStmt(OptLabel,ListPlusOfPointerObject0,EOS)
     NoAllocateCoshapeSpecList         -> no-list()
     AllocateCoshapeSpec               -> AllocateCoshapeSpec(LowerBoundExpr,UpperBoundExpr)
