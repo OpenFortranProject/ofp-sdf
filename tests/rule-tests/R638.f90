@@ -3,9 +3,11 @@
 !
 ! Tested separetly is: pointer-object-list (R639)
 
-real, pointer :: a
+real, pointer :: a, b
 
 13 nullify(a)
 nullify(a%b)
+
+nullify ( a , b)
 
 end
