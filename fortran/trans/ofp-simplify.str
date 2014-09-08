@@ -17,6 +17,7 @@ signature
    RewindStmt        : OptLabel * List(PositionSpec) * EOS -> RewindStmt
    rewind-unit-stmt  : OptLabel * FileUnitNumber * EOS     -> RewindStmt
 
+   EquivalenceSet    : list                                -> EquivalenceSet
 
    // For ambiguities
    amb : list -> choice
@@ -82,6 +83,9 @@ ofp-simplify-ast:  language-binding-name(str)     -> str
 //R511
 ofp-simplify-ast:  explicit-coshape-spec-list(list,final)   -> <conc>(list, [final])
 ofp-simplify-ast:  final-cobounds-entry(lower)              -> ExplicitCoshape(no-lower-bound(),STAR())
+
+//R566
+ofp-simplify-ast:  equivalence-set-list(head, tail)         -> EquivalenceSet(<concat>[[head], tail])
 
 //R568
 ofp-simplify-ast:
