@@ -58,6 +58,7 @@ junk :
 	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
 
 clean :
-	rm -f tmp/*.f90 tmp/*.o
+	rm -f *.mod
+	rm -f tmp/*.f90 tmp/*.f77 tmp/*.f08 tmp/*.o
 	rm -f tmp-simple/*.aterm
 	rm -f tmp-fast/*.aterm
