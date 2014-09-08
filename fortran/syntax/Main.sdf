@@ -1273,7 +1273,6 @@ context-free syntax
 %%
 
   Ident   -> ArrayName                 {cons("ArrayName")}
-  Ident   -> NamelistGroupName         {cons("NamelistGroupName")}
 
 %% 5.2 Type declaration statements
 %%
@@ -1625,16 +1624,18 @@ context-free syntax
 %%
 
 %%R563
-  Label? 'NAMELIST' NamelistEntryList              EOS -> NamelistStmt      {cons("NamelistStmt")}
+  OptLabel 'NAMELIST' NamelistEntryList            EOS -> NamelistStmt      {cons("NamelistStmt")}
 
   '/' NamelistGroupName '/' {NamelistGroupObject ','}+ -> NamelistEntry     {cons("NamelistEntry")}
 
-  NamelistEntry                                        -> NamelistEntryList {cons("NamelistEntryList_0")}
-  NamelistEntryList ',' NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
-  NamelistEntryList     NamelistEntry                  -> NamelistEntryList {cons("NamelistEntryList_NEL")}
+  NamelistEntry                                        -> NamelistEntryList {cons("name-list-entry-list-head")}
+  NamelistEntryList ',' NamelistEntry                  -> NamelistEntryList {cons("name-list-entry-list-tail")}
+  NamelistEntryList     NamelistEntry                  -> NamelistEntryList {cons("name-list-entry-list-tail")}
+
+  Ident                                                -> NamelistGroupName
 
 %%R564
-  VariableName                                               -> NamelistGroupObject {cons("NamelistGroupObject")}
+  VariableName                                               -> NamelistGroupObject
 
 
 %% 5.7 Storage association of data objects
