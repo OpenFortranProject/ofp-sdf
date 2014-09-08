@@ -55,6 +55,21 @@
    TRUE                          -- KW[".TRUE."] _1,
    FALSE                         -- KW[".FALSE."] _1,
 
+   #R425 --,
+   DerivedTypeDef                -- _1 _2 _3 _4 _5 _6,
+
+   #R426 --,
+   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 _4 _5]],
+   DerivedTypeStmt.2:iter-sep    -- _1 ", ",
+
+   #R427 --,
+   ABSTRACT                      -- KW["ABSTRACT"],
+   Extends                       -- KW["EXTENDS"] _1,
+   BIND                          -- KW["BIND(C)"],
+
+   #R429 --,
+   EndTypeStmt                   -- H hs=1[_1 KW["END TYPE"] H hs=0[_2 _3]],
+
    #R449 --,
    ProcDecl                      -- _1 _2,
 
@@ -101,7 +116,7 @@
    OfpAssumedOrDeferredShape     -- _1,
 
    #R524 --,
-   AccessStmt                    -- H hs=1[_1 _2 KW["::"] H hs=0[_3 _4]],
+   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
    AccessStmt.3:iter-sep         -- _1 ", ",
 
    #R553 --,
@@ -160,6 +175,7 @@
    #R631 --,
    Allocation                    -- _1 "("_2 _3")",
    Allocation.2:iter-sep         -- _1 ", ",
+   Triplet                       -- _1 KW[":"] _2 _3,
 
    #R633 --,
    AllocateShapeSpec             -- _1 KW[":"] _2,
@@ -173,10 +189,19 @@
    GT                            -- _1 KW[" > "] _2,
    LT                            -- _1 KW[" .LT. "] _2,
    NE                            -- _1 KW[" /= "] _2,
+   EQ                            -- _1 KW[" ==  "] _2,
+   LE                            -- _1 KW[" .LE. "] _2,
+   GE                            -- _1 KW[" .GE. "] _2,
+   AND                           -- _1 KW[" .AND. "] _2,
+   OR                            -- _1 KW[" .OR. "] _2,
+   EQV                           -- _1 KW[" .EQV. "] _2,
+   NEQV                          -- _1 KW[" .NEQV. "] _2,
    DefUnaryExpr                  -- H hs=1[_1 _2],
+   DefBinExpr                    -- _1 _2 _3,
    Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
    Mult                          -- _1 KW[" * "] _2,
    Div                           -- _1 KW[" / "] _2,
+   Concat                        -- _1 KW[" // "] _2,
 
    #R709 --,
    PLUS                          -- KW ["+"],
@@ -184,6 +209,16 @@
    #R732 --,
    AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
    AssignmentStmt.2:opt          -- ,
+
+   #R733 --,
+   PointerAssignmentStmt         -- H hs=1[_1 H hs=0[_2 "("_3")" KW["=>"] _4 _5]],
+   PointerAssignmentStmt.3:iter-sep  -- _1 ", ",
+
+   #R734 --,
+   DataPointerObject             -- _1 KW["%"] _2,
+
+   #R736 --,
+   BoundsRemapping               -- _1 KW[":"] _2,
 
    #R750 --,
    ForallConstruct               -- _1 _2 _3,
