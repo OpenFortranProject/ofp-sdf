@@ -128,6 +128,10 @@
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
 
+   #R455 --,
+   StructureConstructor          -- _1 "("_2")",
+%%   StructureConstructor.2:iter-sep   -- _1 ", ",
+
    #R468 --,
    ArrayConstructor              -- "(/"_1"/)",
 
@@ -187,6 +191,32 @@
    BindStmt                      -- H hs=1[_1 H hs=0[_2 KW[" :: "] _3 _4]],
    BindStmt.3:iter-sep           -- _1 ", ",
 
+   #R531 --,
+   CodimensionStmt               -- H hs=1[_1 KW["CODIMENSION ::"] H hs=0[_2 _3]],
+   CodimensionStmt.2:iter-sep    -- _1 ", ",
+
+   #R532 --,
+   CodimensionDecl               -- _1 "["_2"]",
+   CodimensionDecl.2:iter-sep    -- _1 ", ",
+
+   #R534 --,
+   DataStmt                      -- H hs=1[_1 KW["DATA"] H hs=0[_2 _3]],
+
+   #R535 --,
+   DataStmtSet                   -- H hs=1[H hs=0[_1] H hs=0["/"_2"/"]],
+   DataStmtSet.1:iter-sep        -- _1 ", ",
+   DataStmtSet.2:iter-sep        -- _1 ",",
+
+   #R537 --,
+   DataImpliedDo                 -- "("_1 KW[", "] _2 KW["="] _3 KW[","] _4 _5")",
+   DataImpliedDo.1:iter-sep      -- _1 ", ",
+
+   #R539 --,
+   DataIDoVariable               -- _1,
+
+   #R540 --,
+   DataStmtValue                 -- _1 KW["*"] _2,
+
    #R553 --,
    SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
    SaveStmt.2:iter-sep           -- _1 ", ",
@@ -194,6 +224,15 @@
    #R554 --,
    SavedEntity                   -- _1,
    SavedEntity_CBN               -- _1,
+
+   #R556 --,
+   TargetStmt                    -- H hs=1[_1 KW["TARGET ::"] H hs=0[_2 _3]],
+   TargetStmt.2:iter-sep         -- _1 ", ",
+
+   #R557 --,
+   TargetDecl                    -- _1 "("_2")" "["_3"]",
+   TargetDecl.2:iter-sep         -- _1 ", ",
+   TargetDecl.3:iter-sep         -- _1 ", ",
 
    #R560 --,
    ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
