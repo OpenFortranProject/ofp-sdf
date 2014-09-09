@@ -2,6 +2,7 @@
 #define UNTYPED_NODES_H
 
 #include "assert.h"
+#include <stdio.h>
 #include <vector>
 #include <string>
 
