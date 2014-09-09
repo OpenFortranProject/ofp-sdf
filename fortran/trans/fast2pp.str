@@ -113,3 +113,6 @@ rules
   no-to-none: no-component-name()          -> None()   // R734
   no-to-none: no-upper-bounds()            -> None()   // R736
   no-to-none: no-type-bound-procedure-part()  -> None()   //R445
+  no-to-none: no-binding-private-stmt()    -> None()   // R446
+  no-to-none: no-arg-name()                -> None()   // R451
+  no-to-none: no-subprogram-part()         -> None()   // R210
