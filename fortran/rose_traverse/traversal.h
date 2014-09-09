@@ -1,7 +1,7 @@
 #ifndef	OFP_TRAVERSAL_H
 #define	OFP_TRAVERSAL_H
 
-#undef  DEBUG_PRINT
+#define  DEBUG_PRINT
 
 #include <aterm2.h>
 
@@ -52,7 +52,7 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit);
 ATbool ofp_traverse_ExternalSubprogram(ATerm term, OFP::ExternalSubprogram* ExternalSubprogram);
 
 /* R204 */
-ATbool ofp_traverse_SpecificationPart(ATerm term, OFP::SpecificationPart* SpecificationPart);
+ATbool ofp_traverse_InitialSpecPart(ATerm term, OFP::InitialSpecPart* InitialSpecPart);
 ATbool ofp_traverse_SpecificationPart(ATerm term, OFP::SpecificationPart* SpecificationPart);
 
 /* R205 */
@@ -65,6 +65,7 @@ ATbool ofp_traverse_ImplicitPartStmt(ATerm term, OFP::ImplicitPartStmt* Implicit
 ATbool ofp_traverse_DeclarationConstruct(ATerm term, OFP::DeclarationConstruct* DeclarationConstruct);
 
 /* R208 */
+ATbool ofp_traverse_SpecAndExecPart(ATerm term, OFP::SpecAndExecPart* SpecAndExecPart);
 ATbool ofp_traverse_ExecutionPart(ATerm term, OFP::ExecutionPart* ExecutionPart);
 
 /* R209 */
@@ -1130,7 +1131,7 @@ ATbool ofp_traverse_ProcedureComponentName(ATerm term, OFP::ProcedureComponentNa
 ATbool ofp_traverse_ProcedureEntityName(ATerm term, OFP::ProcedureEntityName* ProcedureEntityName);
 ATbool ofp_traverse_ProcedureName(ATerm term, OFP::ProcedureName* ProcedureName);
 ATbool ofp_traverse_ProcEntityName(ATerm term, OFP::ProcEntityName* ProcEntityName);
-ATbool ofp_traverse_ProgramName(ATerm term, OFP::ProgramName* ProgramName);
+ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name);
 ATbool ofp_traverse_ResultName(ATerm term, OFP::ResultName* ResultName);
 ATbool ofp_traverse_ScalarIntConstantName(ATerm term, OFP::ScalarIntConstantName* ScalarIntConstantName);
 ATbool ofp_traverse_ScalarIntVariableName(ATerm term, OFP::ScalarIntVariableName* ScalarIntVariableName);
