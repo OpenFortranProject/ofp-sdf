@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "traversal.h"
-#include "OFPExpr.h"
+#include "traversal.hpp"
+#include "OFPExpr.hpp"
 #include "ASTBuilder.hpp"
 #include <vector>
 
