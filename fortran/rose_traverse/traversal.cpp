@@ -227,7 +227,7 @@ ATbool ofp_traverse_EOS(ATerm term, OFP::EOS* EOS)
 #endif
 
    char * EOS_val;
-   if (ATmatch(term, "<str>", &EOS_val)) {
+   if (ATmatch(term, "eos(<str>)", &EOS_val)) {
       // MATCHED EOS
       EOS->setValue(EOS_val);
 
