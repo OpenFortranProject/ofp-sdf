@@ -964,6 +964,7 @@ context-free syntax
          TypeName  OptTypeParamNameList          EOS -> DerivedTypeStmt      {cons("DerivedTypeStmt")}
 
   ',' {TypeAttrSpec ','}+ '::'                       -> OptTypeAttrSpecList  {cons("comma-list")}
+                          '::'                       -> OptTypeAttrSpecList  {cons("no-list")}
   % empty %                                          -> OptTypeAttrSpecList  {cons("no-list")}
 
   Ident                                              -> TypeParamName
