@@ -581,8 +581,6 @@ regular tree grammar
     ListPlusOfEquivalenceSet0         -> <conc>(ListPlusOfEquivalenceSet0,ListStarOfEquivalenceSet0)
     ListPlusOfEquivalenceSet0         -> <conc>(ListPlusOfEquivalenceSet0,ListPlusOfEquivalenceSet0)
     ListPlusOfEquivalenceSet0         -> <cons>(EquivalenceSet,ListStarOfEquivalenceSet0)
-    OptLabel0                         -> <some>(Label)
-    OptLabel0                         -> <none>()
     ListStarOfNamelistGroupObject0    -> ListPlusOfNamelistGroupObject0
     ListStarOfNamelistGroupObject0    -> <nil>()
     ListStarOfNamelistGroupObject0    -> <conc>(ListStarOfNamelistGroupObject0,ListStarOfNamelistGroupObject0)
@@ -667,12 +665,6 @@ regular tree grammar
     ListPlusOfArrayNameSpec0          -> <conc>(ListPlusOfArrayNameSpec0,ListStarOfArrayNameSpec0)
     ListPlusOfArrayNameSpec0          -> <conc>(ListPlusOfArrayNameSpec0,ListPlusOfArrayNameSpec0)
     ListPlusOfArrayNameSpec0          -> <cons>(ArrayNameSpec,ListStarOfArrayNameSpec0)
-    DataStmtRepeat0                   -> <(1)>(DataStmtRepeat)
-    OptDataStmtRepeat0                -> <some>(DataStmtRepeat0)
-    OptDataStmtRepeat0                -> <none>()
-    Expr0                             -> <(1)>(Expr)
-    OptExpr0                          -> <some>(Expr0)
-    OptExpr0                          -> <none>()
     ListStarOfDataIDoObject0          -> ListPlusOfDataIDoObject0
     ListStarOfDataIDoObject0          -> <nil>()
     ListStarOfDataIDoObject0          -> <conc>(ListStarOfDataIDoObject0,ListStarOfDataIDoObject0)
@@ -771,9 +763,6 @@ regular tree grammar
     ListPlusOfAcValue0                -> <conc>(ListPlusOfAcValue0,ListStarOfAcValue0)
     ListPlusOfAcValue0                -> <conc>(ListPlusOfAcValue0,ListPlusOfAcValue0)
     ListPlusOfAcValue0                -> <cons>(AcValue,ListStarOfAcValue0)
-    IntConstantExpr0                  -> <(1)>(IntConstantExpr)
-    OptIntConstantExpr0               -> <some>(IntConstantExpr0)
-    OptIntConstantExpr0               -> <none>()
     ListStarOfEnumerator0             -> ListPlusOfEnumerator0
     ListStarOfEnumerator0             -> <nil>()
     ListStarOfEnumerator0             -> <conc>(ListStarOfEnumerator0,ListStarOfEnumerator0)
@@ -809,9 +798,6 @@ regular tree grammar
     ListPlusOfFinalSubroutineName0    -> <conc>(ListPlusOfFinalSubroutineName0,ListStarOfFinalSubroutineName0)
     ListPlusOfFinalSubroutineName0    -> <conc>(ListPlusOfFinalSubroutineName0,ListPlusOfFinalSubroutineName0)
     ListPlusOfFinalSubroutineName0    -> <cons>(FinalSubroutineName,ListStarOfFinalSubroutineName0)
-    ArgName0                          -> <(1)>(ArgName)
-    OptArgName0                       -> <some>(ArgName0)
-    OptArgName0                       -> <none>()
     ListStarOfBindingName0            -> ListPlusOfBindingName0
     ListStarOfBindingName0            -> <nil>()
     ListStarOfBindingName0            -> <conc>(ListStarOfBindingName0,ListStarOfBindingName0)
@@ -819,19 +805,6 @@ regular tree grammar
     ListPlusOfBindingName0            -> <conc>(ListPlusOfBindingName0,ListStarOfBindingName0)
     ListPlusOfBindingName0            -> <conc>(ListPlusOfBindingName0,ListPlusOfBindingName0)
     ListPlusOfBindingName0            -> <cons>(BindingName,ListStarOfBindingName0)
-    AccessSpec0                       -> <(1)>(AccessSpec)
-    OptAccessSpec0                    -> <some>(AccessSpec0)
-    OptAccessSpec0                    -> <none>()
-    ProcedureName0                    -> <(1)>(ProcedureName)
-    OptProcedureName0                 -> <some>(ProcedureName0)
-    OptProcedureName0                 -> <none>()
-    ListStarOfTypeBoundProcDecl0      -> ListPlusOfTypeBoundProcDecl0
-    ListStarOfTypeBoundProcDecl0      -> <nil>()
-    ListStarOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <cons>(TypeBoundProcDecl,ListStarOfTypeBoundProcDecl0)
     ListStarOfBindingAttr0            -> ListPlusOfBindingAttr0
     ListStarOfBindingAttr0            -> <nil>()
     ListStarOfBindingAttr0            -> <conc>(ListStarOfBindingAttr0,ListStarOfBindingAttr0)
@@ -839,9 +812,13 @@ regular tree grammar
     ListPlusOfBindingAttr0            -> <conc>(ListPlusOfBindingAttr0,ListStarOfBindingAttr0)
     ListPlusOfBindingAttr0            -> <conc>(ListPlusOfBindingAttr0,ListPlusOfBindingAttr0)
     ListPlusOfBindingAttr0            -> <cons>(BindingAttr,ListStarOfBindingAttr0)
-    ListPlusOfBindingAttr1            -> <(1)>(ListPlusOfBindingAttr0)
-    OptListPlusOfBindingAttr0         -> <some>(ListPlusOfBindingAttr1)
-    OptListPlusOfBindingAttr0         -> <none>()
+    ListStarOfTypeBoundProcDecl0      -> ListPlusOfTypeBoundProcDecl0
+    ListStarOfTypeBoundProcDecl0      -> <nil>()
+    ListStarOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
+    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
+    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
+    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
+    ListPlusOfTypeBoundProcDecl0      -> <cons>(TypeBoundProcDecl,ListStarOfTypeBoundProcDecl0)
     ListStarOfTypeBoundProcBinding0   -> ListPlusOfTypeBoundProcBinding0
     ListStarOfTypeBoundProcBinding0   -> <nil>()
     ListStarOfTypeBoundProcBinding0   -> <conc>(ListStarOfTypeBoundProcBinding0,ListStarOfTypeBoundProcBinding0)
@@ -849,8 +826,6 @@ regular tree grammar
     ListPlusOfTypeBoundProcBinding0   -> <conc>(ListPlusOfTypeBoundProcBinding0,ListStarOfTypeBoundProcBinding0)
     ListPlusOfTypeBoundProcBinding0   -> <conc>(ListPlusOfTypeBoundProcBinding0,ListPlusOfTypeBoundProcBinding0)
     ListPlusOfTypeBoundProcBinding0   -> <cons>(TypeBoundProcBinding,ListStarOfTypeBoundProcBinding0)
-    OptBindingPrivateStmt0            -> <some>(BindingPrivateStmt)
-    OptBindingPrivateStmt0            -> <none>()
     ListStarOfProcComponentAttrSpec0  -> ListPlusOfProcComponentAttrSpec0
     ListStarOfProcComponentAttrSpec0  -> <nil>()
     ListStarOfProcComponentAttrSpec0  -> <conc>(ListStarOfProcComponentAttrSpec0,ListStarOfProcComponentAttrSpec0)
@@ -865,17 +840,6 @@ regular tree grammar
     ListPlusOfDeferredShapeSpec0      -> <conc>(ListPlusOfDeferredShapeSpec0,ListStarOfDeferredShapeSpec0)
     ListPlusOfDeferredShapeSpec0      -> <conc>(ListPlusOfDeferredShapeSpec0,ListPlusOfDeferredShapeSpec0)
     ListPlusOfDeferredShapeSpec0      -> <cons>(DeferredShapeSpec,ListStarOfDeferredShapeSpec0)
-    OptComponentInitialization0       -> <some>(ComponentInitialization)
-    OptComponentInitialization0       -> <none>()
-    CharLength0                       -> <(1)>(CharLength)
-    OptCharLength0                    -> <some>(CharLength0)
-    OptCharLength0                    -> <none>()
-    CoarraySpec0                      -> <(1)>(CoarraySpec)
-    OptCoarraySpec0                   -> <some>(CoarraySpec0)
-    OptCoarraySpec0                   -> <none>()
-    ComponentArraySpec0               -> <(1)>(ComponentArraySpec)
-    OptComponentArraySpec0            -> <some>(ComponentArraySpec0)
-    OptComponentArraySpec0            -> <none>()
     ListStarOfComponentAttrSpec0      -> ListPlusOfComponentAttrSpec0
     ListStarOfComponentAttrSpec0      -> <nil>()
     ListStarOfComponentAttrSpec0      -> <conc>(ListStarOfComponentAttrSpec0,ListStarOfComponentAttrSpec0)
@@ -904,9 +868,6 @@ regular tree grammar
     ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListStarOfTypeParamDecl0)
     ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListPlusOfTypeParamDecl0)
     ListPlusOfTypeParamDecl0          -> <cons>(TypeParamDecl,ListStarOfTypeParamDecl0)
-    Expr1                             -> <(1)>(Expr)
-    OptExpr1                          -> <some>(Expr1)
-    OptExpr1                          -> <none>()
     ListStarOfTypeParamName0          -> ListPlusOfTypeParamName0
     ListStarOfTypeParamName0          -> <nil>()
     ListStarOfTypeParamName0          -> <conc>(ListStarOfTypeParamName0,ListStarOfTypeParamName0)
@@ -935,8 +896,6 @@ regular tree grammar
     ListPlusOfTypeParamDefStmt0       -> <conc>(ListPlusOfTypeParamDefStmt0,ListStarOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0       -> <conc>(ListPlusOfTypeParamDefStmt0,ListPlusOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0       -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt0)
-    OptSign0                          -> <some>(Sign)
-    OptSign0                          -> <none>()
     ListStarOfLetter0                 -> <string>
     ListPlusOfLetter0                 -> <string>
     SconSingle_SconDouble0            -> <string>
@@ -1836,6 +1795,7 @@ regular tree grammar
     OptTypeSpec                       -> no-type-spec()
     OptTypeSpec                       -> type-spec-colon(TypeSpec)
     ForallHeader                      -> ForallHeader(OptTypeSpec,ListPlusOfForallTripletSpec0,OptMaskExpr)
+    ForallConstructName               -> Ident
     ForallConstructStmt               -> ForallConstructStmt(OptLabel,NoName,ForallHeader,EOS)
     ForallConstructStmt               -> ForallConstructStmt(OptLabel,ForallConstructName,ForallHeader,EOS)
     ForallConstruct                   -> ForallConstruct(ForallConstructStmt,ListStarOfForallBodyConstruct0,EndForallStmt)
@@ -1863,6 +1823,7 @@ regular tree grammar
     ProcTarget                        -> ProcComponentRef
     ProcTarget                        -> ProcedureName
     ProcTarget                        -> Expr
+    ProcedureComponentName            -> Ident
     ProcComponentRef                  -> ProcComponentRef(Variable,ProcedureComponentName)
     DataTarget                        -> Expr
     NoUpperBoundExpr                  -> no-upper-bounds()
@@ -1928,15 +1889,12 @@ regular tree grammar
     IntrinsicOperator                 -> AddOp
     IntrinsicOperator                 -> MultOp
     IntrinsicOperator                 -> PowerOp
-    ProcedureComponentName            -> ProcedureComponentName(Ident)
-    ForallConstructName               -> ForallConstructName(Ident)
     DeallocOpt                        -> ERRMSG(ErrmsgVariable)
     DeallocOpt                        -> STAT(StatVariable)
     OptDeallocOptList                 -> no-list()
     OptDeallocOptList                 -> comma-list(ListPlusOfDeallocOpt0)
     DeallocateStmt                    -> DeallocateStmt(OptLabel,ListPlusOfAllocateObject0,OptDeallocOptList,EOS)
     PointerObject                     -> StructureComponent
-    PointerObject                     -> VariableName
     NullifyStmt                       -> NullifyStmt(OptLabel,ListPlusOfPointerObject0,EOS)
     NoAllocateCoshapeSpecList         -> no-list()
     AllocateCoshapeSpec               -> AllocateCoshapeSpec(LowerBoundExpr,UpperBoundExpr)
@@ -2001,6 +1959,7 @@ regular tree grammar
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
+    ScalarVariableName                -> Ident
     ParentString                      -> Constant
     ParentString                      -> StructureComponent
     Substring                         -> Substring(ParentString,SubstringRange)
@@ -2012,7 +1971,6 @@ regular tree grammar
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef
-    ScalarVariableName                -> ScalarVariableName(Ident)
     CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
     CommonBlockName                   -> Ident
     OptCommonBlockName                -> no-name()
@@ -2022,15 +1980,16 @@ regular tree grammar
     CommonBlockEntry1                 -> CommonBlockEntry(NoName,ListPlusOfCommonBlockObject0)
     CommonBlockEntry1                 -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
     CommonStmt                        -> common-stmt(OptLabel,CommonBlockEntry1,ListStarOfCommonBlockEntry0,EOS)
-    EquivalenceObject                 -> EquivalenceObject(Variable)
-    EquivalenceSet                    -> EquivalenceSet(EquivalenceObject,ListPlusOfEquivalenceObject0)
-    EquivalenceStmt                   -> EquivalenceStmt(OptLabel0,ListPlusOfEquivalenceSet0,EOS)
-    NamelistGroupObject               -> NamelistGroupObject(VariableName)
-    NamelistEntryList                 -> NamelistEntryList_NEL(NamelistEntryList,NamelistEntry)
-    NamelistEntryList                 -> NamelistEntryList_NEL(NamelistEntryList,NamelistEntry)
-    NamelistEntryList                 -> NamelistEntryList_0(NamelistEntry)
+    EquivalenceObject                 -> Variable
+    EquivalenceSet                    -> equivalence-set-list(EquivalenceObject,ListPlusOfEquivalenceObject0)
+    EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet0,EOS)
+    NamelistGroupObject               -> VariableName
+    NamelistGroupName                 -> Ident
+    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
+    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
+    NamelistEntryList                 -> name-list-entry-list-head(NamelistEntry)
     NamelistEntry                     -> NamelistEntry(NamelistGroupName,ListPlusOfNamelistGroupObject0)
-    NamelistStmt                      -> NamelistStmt(OptLabel0,NamelistEntryList,EOS)
+    NamelistStmt                      -> NamelistStmt(OptLabel,NamelistEntryList,EOS)
     NoLetter                          -> no-letter()
     LetterSpec                        -> LetterSpec(Letter,NoLetter)
     LetterSpec                        -> LetterSpec(Letter,Letter)
@@ -2062,38 +2021,42 @@ regular tree grammar
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
+    ArrayName                         -> Ident
     ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
     DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
     DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
-    ConstantSubobject                 -> ConstantSubobject(Designator)
-    IntConstantSubobject              -> IntConstantSubobject(ConstantSubobject)
-    DataStmtConstant                  -> DataStmtConstant_SC(StructureConstructor)
-    DataStmtConstant                  -> DataStmtConstant_IDT(InitialDataTarget)
-    DataStmtConstant                  -> DataStmtConstant_NI(NullInit)
-    DataStmtConstant                  -> DataStmtConstant_SRLC(SignedRealLiteralConstant)
-    DataStmtConstant                  -> DataStmtConstant_SILC(SignedIntLiteralConstant)
-    DataStmtConstant                  -> DataStmtConstant_CS(ConstantSubobject)
-    DataStmtConstant                  -> DataStmtConstant_C(Constant)
-    DataStmtRepeat                    -> DataStmtRepeat_ICS(IntConstantSubobject)
-    DataStmtRepeat                    -> DataStmtRepeat_IC(Icon)
-    DataStmtValue                     -> DataStmtValue(OptDataStmtRepeat0,DataStmtConstant)
+    ConstantSubobject                 -> Designator
+    IntConstantSubobject              -> ConstantSubobject
+    DataStmtConstant                  -> StructureConstructor
+    DataStmtConstant                  -> SignedRealLiteralConstant
+    DataStmtConstant                  -> SignedIntLiteralConstant
+    DataStmtConstant                  -> ConstantSubobject
+    DataStmtConstant                  -> BozLiteralConstant
+    DataStmtConstant                  -> CharLiteralConstant
+    DataStmtConstant                  -> LogicalLiteralConstant
+    DataStmtConstant                  -> ComplexLiteralConstant
+    NoDataStmtRepeat                  -> no-repeat()
+    DataStmtRepeat                    -> IntConstantSubobject
+    DataStmtRepeat                    -> Icon
+    DataStmtValue                     -> DataStmtValue(NoDataStmtRepeat,DataStmtConstant)
+    DataStmtValue                     -> DataStmtValue(DataStmtRepeat,DataStmtConstant)
     DataIDoVariable                   -> DataIDoVariable(DoVariable)
-    DataIDoObject                     -> DataIDoObject_DID(DataImpliedDo)
-    DataIDoObject                     -> DataIDoObject_SC(StructureComponent)
-    DataIDoObject                     -> DataIDoObject_AE(ArrayElement)
-    DataImpliedDo                     -> DataImpliedDo(ListPlusOfDataIDoObject0,DataIDoVariable,Expr,Expr,OptExpr0)
-    DataStmtObject                    -> DataStmtObject_DID(DataImpliedDo)
-    DataStmtObject                    -> DataStmtObject_V(Variable)
+    DataIDoObject                     -> DataImpliedDo
+    DataIDoObject                     -> StructureComponent
+    DataImpliedDo                     -> DataImpliedDo(ListPlusOfDataIDoObject0,DataIDoVariable,Expr,Expr,OptExpr)
+    DataStmtObject                    -> DataImpliedDo
+    DataStmtObject                    -> Variable
     DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
     DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
-    DataStmtSetList                   -> DataStmtSetList_1(DataStmtSet)
+    DataStmtSetList                   -> DataStmtSet
     DataStmtSet                       -> DataStmtSet(ListPlusOfDataStmtObject0,ListPlusOfDataStmtValue0)
-    DataStmt                          -> DataStmt(OptLabel0,DataStmtSetList,EOS)
+    DataStmt                          -> DataStmt(OptLabel,DataStmtSetList,EOS)
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
+    CoarrayName                       -> Ident
     CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
     CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
-    CodimensionStmt                   -> CodimensionStmt(OptLabel0,ListPlusOfCodimensionDecl0,EOS)
+    CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
     EntityName                        -> Ident
     BindEntity                        -> CommonBlockName(CommonBlockName)
     BindEntity                        -> EntityName
@@ -2111,19 +2074,19 @@ regular tree grammar
     IntentSpec                        -> OUT()
     IntentSpec                        -> IN()
     AssumedOrImpliedSpec              -> AssumedOrImpliedSpec(LowerBound)
-    AssumedOrImpliedSpec              -> AssumedOrImpliedSpec()
+    AssumedOrImpliedSpec              -> AssumedOrImpliedSpec(NoLowerBound)
     ImpliedShapeSpecList              -> ImpliedShapeSpecList(AssumedOrImpliedSpec,ListPlusOfAssumedOrImpliedSpec0)
-    AssumedRankSpec                   -> AssumedRankSpec()
-    AssumedSizeSpec                   -> AssumedSizeSpec(ListPlusOfExplicitShapeSpec0,LowerBound)
-    AssumedSizeSpec                   -> AssumedSizeSpec(ListPlusOfExplicitShapeSpec0)
-    DeferredShapeSpec                 -> DeferredShapeSpec()
-    AssumedShapeSpec                  -> AssumedShapeSpec(LowerBound)
-    AssumedShapeSpec                  -> AssumedShapeSpec(NoLowerBound)
+    AssumedRankSpec                   -> AssumedRank()
+    AssumedSizeSpec                   -> AssumedSize(ListPlusOfExplicitShapeSpec0,LowerBound)
+    AssumedSizeSpec                   -> AssumedSize(ListPlusOfExplicitShapeSpec0)
+    DeferredShapeSpec                 -> DeferredShape()
+    AssumedShapeSpec                  -> AssumedShape(LowerBound)
+    AssumedShapeSpec                  -> AssumedShape(NoLowerBound)
     UpperBound                        -> SpecificationExpr
     NoLowerBound                      -> no-lower-bound()
     LowerBound                        -> SpecificationExpr
-    ExplicitShapeSpec                 -> ExplicitShapeSpec(LowerBound,UpperBound)
-    ExplicitShapeSpec                 -> ExplicitShapeSpec(NoLowerBound,UpperBound)
+    ExplicitShapeSpec                 -> ExplicitShape(LowerBound,UpperBound)
+    ExplicitShapeSpec                 -> ExplicitShape(NoLowerBound,UpperBound)
     ArraySpec                         -> AssumedRankSpec
     ArraySpec                         -> ImpliedShapeSpecList
     ArraySpec                         -> AssumedOrImpliedSpec
@@ -2131,16 +2094,17 @@ regular tree grammar
     ArraySpec                         -> ListPlusOfAssumedShapeSpec0
     ArraySpec                         -> ListPlusOfExplicitShapeSpec0
     DimensionSpec                     -> DimensionSpec(ArraySpec)
-    UpperCobound                      -> UpperCobound(SpecificationExpr)
+    UpperCobound                      -> SpecificationExpr
+    NoLowerCobound                    -> no-lower-bound()
     LowerCobound                      -> LowerCobound(SpecificationExpr)
-    CoboundsEntry                     -> CoboundsEntry(LowerCobound,UpperCobound)
-    CoboundsEntry                     -> CoboundsEntry(UpperCobound)
-    ExplicitCoshapeSpec               -> ExplicitCoshapeSpec(ListStarOfCoboundsEntry0,LowerCobound)
-    ExplicitCoshapeSpec               -> ExplicitCoshapeSpec(ListStarOfCoboundsEntry0)
-    DeferredCoshapeSpecList           -> DeferredCoshapeSpecList(ListPlusOfDeferredCoshapeSpec0)
-    DeferredCoshapeSpec               -> DeferredCoshapeSpec()
+    FinalCoboundsEntry                -> final-cobounds-entry(LowerCobound)
+    FinalCoboundsEntry                -> final-cobounds-entry(NoLowerCobound)
+    CoboundsEntry                     -> ExplicitCoshape(LowerCobound,UpperCobound)
+    CoboundsEntry                     -> ExplicitCoshape(NoLowerCobound,UpperCobound)
+    ExplicitCoshapeSpec               -> explicit-coshape-spec-list(ListStarOfCoboundsEntry0,FinalCoboundsEntry)
+    DeferredCoshapeSpec               -> DeferredCoshape()
     CoarraySpec                       -> ExplicitCoshapeSpec
-    CoarraySpec                       -> DeferredCoshapeSpecList
+    CoarraySpec                       -> ListPlusOfDeferredCoshapeSpec0
     OptLanguageBindingName            -> no-binding-name()
     OptLanguageBindingName            -> LanguageBindingName
     LanguageBindingName               -> language-binding-name(Ident)
@@ -2149,9 +2113,9 @@ regular tree grammar
     AccessSpec                        -> PRIVATE()
     AccessSpec                        -> PUBLIC()
     NullInit                          -> NullInit(FunctionReference)
-    Initialization                    -> Initialization(InitialDataTarget)
-    Initialization                    -> Initialization(NullInit)
-    Initialization                    -> Initialization(ConstantExpr)
+    Initialization                    -> PointerInit(InitialDataTarget)
+    Initialization                    -> PointerInit(NullInit)
+    Initialization                    -> Init(ConstantExpr)
     OptInitialization                 -> no-init()
     OptCharLength                     -> no-char-length()
     OptCoarraySpec                    -> no-list()
@@ -2185,11 +2149,8 @@ regular tree grammar
     NoAttrSpecList                    -> no-list()
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,OptAttrSpecList,ListPlusOfEntityDecl0,EOS)
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,NoAttrSpecList,ListPlusOfEntityDecl0,EOS)
-    NamelistGroupName                 -> NamelistGroupName(Ident)
-    CoarrayName                       -> CoarrayName(Ident)
-    ArrayName                         -> ArrayName(Ident)
-    AcDoVariable                      -> AcDoVariable(DoVariable)
-    AcImpliedDoControl                -> AcImpliedDoControl(AcDoVariable,Expr,Expr,OptExpr0)
+    AcDoVariable                      -> DoVariable
+    AcImpliedDoControl                -> AcImpliedDoControl(AcDoVariable,Expr,Expr,OptExpr)
     AcImpliedDo                       -> AcImpliedDo(ListPlusOfAcValue0,AcImpliedDoControl)
     AcValue                           -> AcImpliedDo
     AcValue                           -> Expr
@@ -2201,11 +2162,13 @@ regular tree grammar
     BozLiteralConstant                -> BozLiteralConstant_HC(HexConstant)
     BozLiteralConstant                -> BozLiteralConstant_OC(OctalConstant)
     BozLiteralConstant                -> BozLiteralConstant_BC(BinaryConstant)
-    EndEnumStmt                       -> EndEnumStmt(OptLabel0,EOS)
-    Enumerator                        -> Enumerator(NamedConstant,OptIntConstantExpr0)
-    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel0,ListPlusOfEnumerator0,EOS)
-    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel0,ListPlusOfEnumerator0,EOS)
-    EnumDefStmt                       -> EnumDefStmt(OptLabel0,EOS)
+    EndEnumStmt                       -> EndEnumStmt(OptLabel,EOS)
+    OptEqualsExpr                     -> no-expr()
+    OptEqualsExpr                     -> equals-expr(IntConstantExpr)
+    Enumerator                        -> Enumerator(NamedConstant,OptEqualsExpr)
+    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator0,EOS)
+    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator0,EOS)
+    EnumDefStmt                       -> EnumDefStmt(OptLabel,EOS)
     EnumDef                           -> EnumDef(EnumDefStmt,ListPlusOfEnumeratorDefStmt0,EndEnumStmt)
     ComponentDataSource               -> Expr
     ComponentSpec                     -> ComponentSpec(Keyword,ComponentDataSource)
@@ -2216,45 +2179,61 @@ regular tree grammar
     OptTypeParamSpecList              -> no-list()
     OptTypeParamSpecList              -> paren-list(ListPlusOfTypeParamSpec0)
     DerivedTypeSpec                   -> DerivedTypeSpec(TypeName,OptTypeParamSpecList)
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel0,ListPlusOfFinalSubroutineName0,EOS)
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel0,ListPlusOfFinalSubroutineName0,EOS)
-    BindingAttr                       -> BindingAttr_AS(AccessSpec)
-    BindingAttr                       -> BindingAttr_DEFERRED()
-    BindingAttr                       -> BindingAttr_NON_OVERRIDABLE()
-    BindingAttr                       -> BindingAttr_NOPASS()
-    BindingAttr                       -> BindingAttr_PASS(OptArgName0)
-    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel0,OptAccessSpec0,GenericSpec,ListPlusOfBindingName0,EOS)
-    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,OptProcedureName0)
-    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt_3(OptLabel0,InterfaceName,ListPlusOfBindingAttr0,ListPlusOfBindingName0,EOS)
-    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt_2(OptLabel0,OptListPlusOfBindingAttr0,ListPlusOfTypeBoundProcDecl0,EOS)
-    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt_1(OptLabel0,ListPlusOfTypeBoundProcDecl0,EOS)
+    FinalSubroutineName               -> Ident
+    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
+    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
+    NoArgName                         -> no-arg-name()
+    ArgName                           -> Ident
+    BindingAttr                       -> AccessSpec
+    BindingAttr                       -> DEFERRED()
+    BindingAttr                       -> NON_OVERRIDABLE()
+    BindingAttr                       -> NOPASS()
+    BindingAttr                       -> Pass(NoArgName)
+    BindingAttr                       -> Pass(ArgName)
+    OptAccessSpec                     -> no-access-spec()
+    OptAccessSpec                     -> comma-access-spec(AccessSpec)
+    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfBindingName0,EOS)
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,NoProcedureName)
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,ProcedureName)
+    BindingName                       -> Ident
+    TypeBoundProcedureStmt            -> TypeBoundProcedureInterfaceStmt(OptLabel,InterfaceName,ListPlusOfBindingAttr0,ListPlusOfBindingName0,EOS)
+    OptBindingAttrList                -> no-list()
+    OptBindingAttrList                -> no-list()
+    OptBindingAttrList                -> comma-list(ListPlusOfBindingAttr0)
+    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt(OptLabel,OptBindingAttrList,ListPlusOfTypeBoundProcDecl0,EOS)
     TypeBoundProcBinding              -> FinalProcedureStmt
     TypeBoundProcBinding              -> TypeBoundGenericStmt
     TypeBoundProcBinding              -> TypeBoundProcedureStmt
+    OptBindingPrivateStmt             -> no-binding-private-stmt()
+    OptBindingPrivateStmt             -> BindingPrivateStmt
     BindingPrivateStmt                -> BindingPrivateStmt(OptLabel,EOS)
     OptTypeBoundProcedurePart         -> no-type-bound-procedure-part()
     OptTypeBoundProcedurePart         -> TypeBoundProcedurePart
-    TypeBoundProcedurePart            -> TypeBoundProcedurePart(ContainsStmt,OptBindingPrivateStmt0,ListStarOfTypeBoundProcBinding0)
+    TypeBoundProcedurePart            -> TypeBoundProcedurePart(ContainsStmt,OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding0)
     PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel,EOS)
-    InitialDataTarget                 -> InitialDataTarget(Designator)
-    ComponentInitialization           -> ComponentInitialization_IDT(InitialDataTarget)
-    ComponentInitialization           -> ComponentInitialization_NI(NullInit)
-    ComponentInitialization           -> ComponentInitialization_E(Expr)
-    ProcComponentAttrSpec             -> ProcComponentAttrSpec_AS(AccessSpec)
-    ProcComponentAttrSpec             -> ProcComponentAttrSpec_NOPASS()
-    ProcComponentAttrSpec             -> ProcComponentAttrSpec_PASS()
-    ProcComponentAttrSpec             -> ProcComponentAttrSpec_POINTER()
-    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel0,OptProcInterface0,ListPlusOfProcComponentAttrSpec0,ListPlusOfProcDecl1,EOS)
-    ComponentArraySpec                -> ComponentArraySpec(ListPlusOfDeferredShapeSpec0)
-    ComponentArraySpec                -> ComponentArraySpec(ListPlusOfExplicitShapeSpec0)
+    InitialDataTarget                 -> Designator
+    ComponentInitialization           -> ComponentPointerInit(InitialDataTarget)
+    ComponentInitialization           -> ComponentPointerInit(NullInit)
+    ComponentInitialization           -> ComponentInit(Expr)
+    ProcComponentAttrSpec             -> AccessSpec
+    ProcComponentAttrSpec             -> NOPASS()
+    ProcComponentAttrSpec             -> PASS()
+    ProcComponentAttrSpec             -> POINTER()
+    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec0,ListPlusOfProcDecl1,EOS)
+    ComponentArraySpec                -> ListPlusOfDeferredShapeSpec0
+    ComponentArraySpec                -> ListPlusOfExplicitShapeSpec0
+    OptComponentInitialization        -> no-init()
+    OptComponentArraySpec             -> no-list()
+    OptComponentInitialization        -> ComponentInitialization
+    OptComponentArraySpec             -> opt-component-array-spec(ComponentArraySpec)
     ComponentName                     -> Ident
-    ComponentDecl                     -> ComponentDecl(ComponentName,OptComponentArraySpec0,OptCoarraySpec0,OptCharLength0,OptComponentInitialization0)
-    ComponentAttrSpec                 -> ComponentAttrSpec_POINTER()
-    ComponentAttrSpec                 -> ComponentAttrSpec_DIMENSION(ComponentArraySpec)
-    ComponentAttrSpec                 -> ComponentAttrSpec_CONTIGUOUS()
-    ComponentAttrSpec                 -> ComponentAttrSpec_CODIMENSION(CoarraySpec)
-    ComponentAttrSpec                 -> ComponentAttrSpec_ALLOCATABLE()
-    ComponentAttrSpec                 -> ComponentAttrSpec_AS(AccessSpec)
+    ComponentDecl                     -> ComponentDecl(ComponentName,OptComponentArraySpec,OptCoarraySpec,OptCharLength,OptComponentInitialization)
+    ComponentAttrSpec                 -> POINTER()
+    ComponentAttrSpec                 -> Dimension(ComponentArraySpec)
+    ComponentAttrSpec                 -> CONTIGUOUS()
+    ComponentAttrSpec                 -> Codimension(CoarraySpec)
+    ComponentAttrSpec                 -> ALLOCATABLE()
+    ComponentAttrSpec                 -> AccessSpec
     OptComponentAttrSpecList          -> no-list()
     OptComponentAttrSpecList          -> no-list()
     OptComponentAttrSpecList          -> comma-list(ListPlusOfComponentAttrSpec0)
@@ -2262,24 +2241,26 @@ regular tree grammar
     ComponentDefStmt                  -> ProcComponentDefStmt
     ComponentDefStmt                  -> DataComponentDefStmt
     ComponentPart                     -> ListStarOfComponentDefStmt0
-    TypeParamAttrSpec                 -> TypeParamAttrSpec_LEN()
-    TypeParamAttrSpec                 -> TypeParamAttrSpec_KIND()
-    TypeParamDeclList                 -> TypeParamDeclList(ListPlusOfTypeParamDecl0)
-    TypeParamDecl                     -> TypeParamDecl(TypeParamName,OptExpr1)
-    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel0,OptKindSelector,TypeParamAttrSpec,TypeParamDeclList,EOS)
+    TypeParamAttrSpec                 -> LEN()
+    TypeParamAttrSpec                 -> KIND()
+    TypeParamDecl                     -> TypeParamDecl(TypeParamName,OptEqualsExpr)
+    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKindSelector,TypeParamAttrSpec,ListPlusOfTypeParamDecl0,EOS)
     SequenceStmt                      -> SequenceStmt(OptLabel,EOS)
     EndTypeStmt                       -> EndTypeStmt(OptLabel,OptTypeName,EOS)
     PrivateOrSequence                 -> SequenceStmt
     PrivateOrSequence                 -> PrivateComponentsStmt
-    TypeAttrSpec                      -> TypeAttrSpec_EXTENDS(ParentTypeName)
-    TypeAttrSpec                      -> TypeAttrSpec_BIND()
-    TypeAttrSpec                      -> TypeAttrSpec_AS(AccessSpec)
-    TypeAttrSpec                      -> TypeAttrSpec_ABSTRACT()
-    OptTypeName                       -> no-type-name()
+    ParentTypeName                    -> Ident
+    TypeAttrSpec                      -> Extends(ParentTypeName)
+    TypeAttrSpec                      -> BIND()
+    TypeAttrSpec                      -> AccessSpec
+    TypeAttrSpec                      -> ABSTRACT()
+    OptTypeName                       -> no-name()
     OptTypeName                       -> TypeName
     TypeName                          -> Ident
     OptTypeParamNameList              -> no-list()
     OptTypeParamNameList              -> paren-list(ListPlusOfTypeParamName0)
+    TypeParamName                     -> Ident
+    OptTypeAttrSpecList               -> no-list()
     OptTypeAttrSpecList               -> no-list()
     OptTypeAttrSpecList               -> comma-list(ListPlusOfTypeAttrSpec0)
     DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,OptTypeAttrSpecList,TypeName,OptTypeParamNameList,EOS)
@@ -2290,12 +2271,12 @@ regular tree grammar
     LogicalLiteralConstant            -> TRUE(OptKindParam)
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
-    CharLength                        -> CharLength_I(Icon)
-    CharLength                        -> CharLength_TPV(TypeParamValue)
+    CharLength                        -> Icon
+    CharLength                        -> CharLength(TypeParamValue)
     LengthSelector                    -> LengthSelector_STAR(CharLength)
     LengthSelector                    -> LengthSelector_STAR(CharLength)
-    LengthSelector                    -> LengthSelector_LEN(TypeParamValue)
-    LengthSelector                    -> LengthSelector_LEN(TypeParamValue)
+    LengthSelector                    -> LengthSelector(TypeParamValue)
+    LengthSelector                    -> LengthSelector(TypeParamValue)
     OptCharSelector                   -> no-char-selector()
     OptCharSelector                   -> CharSelector
     CharSelector                      -> CharSelector_KIND(Expr)
@@ -2303,25 +2284,26 @@ regular tree grammar
     CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
     CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
     CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> CharSelector_LS(LengthSelector)
-    ImagPart                          -> ImagPart_NC(NamedConstant)
-    ImagPart                          -> ImagPart_SRLC(SignedRealLiteralConstant)
-    ImagPart                          -> ImagPart_SILC(SignedIntLiteralConstant)
-    RealPart                          -> RealPart_NC(NamedConstant)
-    RealPart                          -> RealPart_SRLC(SignedRealLiteralConstant)
-    RealPart                          -> RealPart_SILC(SignedIntLiteralConstant)
+    CharSelector                      -> LengthSelector
+    ImagPart                          -> NamedConstant
+    ImagPart                          -> SignedRealLiteralConstant
+    ImagPart                          -> SignedIntLiteralConstant
+    RealPart                          -> NamedConstant
+    RealPart                          -> SignedRealLiteralConstant
+    RealPart                          -> SignedIntLiteralConstant
     ComplexLiteralConstant            -> ComplexLiteralConstant(RealPart,ImagPart)
     RealLiteralConstant               -> RealLiteralConstant(Rcon,KindParam)
     RealLiteralConstant               -> RealLiteralConstant(Rcon,NoKindParam)
-    SignedRealLiteralConstant         -> SignedRealLiteralConstant(OptSign0,RealLiteralConstant)
-    OptSign                           -> no-sign()
-    OptSign                           -> Sign
-    Sign                              -> Sign_MINUS()
-    Sign                              -> Sign_PLUS()
+    SignedRealLiteralConstant         -> SignedRealLiteralConstant(Sign,RealLiteralConstant)
+    SignedRealLiteralConstant         -> RealLiteralConstant
+    Sign                              -> MINUS()
+    Sign                              -> PLUS()
     DigitString                       -> Icon
-    SignedDigitString                 -> SignedDigitString(OptSign0,DigitString)
-    KindParam                         -> KindParam_SICN(ScalarIntConstantName)
-    KindParam                         -> KindParam_DS(DigitString)
+    SignedDigitString                 -> SignedDigitString(Sign,DigitString)
+    SignedDigitString                 -> DigitString
+    ScalarIntConstantName             -> Ident
+    KindParam                         -> ScalarIntConstantName
+    KindParam                         -> DigitString
     NoKindParam                       -> no-kind-param()
     IntLiteralConstant                -> IntLiteralConstant(DigitString,KindParam)
     IntLiteralConstant                -> DigitString
@@ -2348,14 +2330,14 @@ regular tree grammar
     DeclarationTypeSpec               -> IntrinsicType(IntrinsicTypeSpec)
     TypeSpec                          -> DerivedTypeSpec
     TypeSpec                          -> IntrinsicTypeSpec
-    TypeParamValue                    -> TypeParamValue_COLON()
-    TypeParamValue                    -> TypeParamValue_STAR()
-    TypeParamValue                    -> TypeParamValue_E(Expr)
+    TypeParamValue                    -> COLON()
+    TypeParamValue                    -> STAR()
+    TypeParamValue                    -> Expr
     OptLabel                          -> no-label()
     OptLabel                          -> LblDef
     Label                             -> LblDef
-    CharConstant                      -> CharConstant(Constant)
-    IntConstant                       -> IntConstant(Constant)
+    CharConstant                      -> Constant
+    IntConstant                       -> Constant
     NamedConstant                     -> Name
     LiteralConstant                   -> BozLiteralConstant
     LiteralConstant                   -> CharLiteralConstant
@@ -2366,13 +2348,6 @@ regular tree grammar
     Constant                          -> LiteralConstant
     NoName                            -> no-name()
     Name                              -> Ident
-    TypeParamName                     -> TypeParamName(Ident)
-    ScalarIntConstantName             -> ScalarIntConstantName(Ident)
-    ParentTypeName                    -> ParentTypeName(Ident)
-    ImpliedDoVariable                 -> ImpliedDoVariable(Ident)
-    FinalSubroutineName               -> FinalSubroutineName(Ident)
-    BindingName                       -> BindingName(Ident)
-    ArgName                           -> ArgName(Ident)
     Continuation                      -> <string>
     EOS                               -> eos(EOStmt)
     LblRef                            -> LblDef
