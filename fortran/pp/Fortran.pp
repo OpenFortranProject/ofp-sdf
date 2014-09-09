@@ -10,7 +10,6 @@
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
    PARAMETER                     -- KW["PARAMETER :: "],
-   COMPLEX                       -- KW["COMPLEX :: "],
 
    #R201 --,
    OfpProgram                    -- V vs=1 is=0 [_1 _2],
@@ -44,6 +43,7 @@
    REAL                          -- KW["REAL :: "] _1,
    CHARACTER                     -- KW["CHARACTER :: "] _1,
    LOGICAL                       -- KW["LOGICAL :: "] _1,
+   COMPLEX                       -- KW["COMPLEX :: "] _1,
 
    #R403 --,
    Class                         -- _1 KW["CLASS"] "("_2")",
@@ -149,7 +149,8 @@
    EntityDecl                    -- _1 _2 _3 _4 _5,
 
    #R505 --,
-   Initialization                -- KW [" = "] _1,
+   Initialization                -- KW[" = "] _1,
+   Init                          -- KW[" = "] _1,
 
    #R507 --,
    PRIVATE                       -- KW["PRIVATE"],
@@ -173,6 +174,18 @@
    #R524 --,
    AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
    AccessStmt.3:iter-sep         -- _1 ", ",
+
+   #R526 --,
+   AllocatableStmt               -- H hs=1[_1 KW["ALLOCATABLE ::"] H hs=0[_2 _3]],
+   AllocatableStmt.2:iter-sep    -- _1 ", ",
+
+   #R527 --,
+   AllocatableDecl               -- _1 "("_2")" _3,
+   AllocatableDecl.2:iter-sep    -- _1 ", ",
+
+   #R529 --,
+   BindStmt                      -- H hs=1[_1 H hs=0[_2 KW[" :: "] _3 _4]],
+   BindStmt.3:iter-sep           -- _1 ", ",
 
    #R553 --,
    SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
