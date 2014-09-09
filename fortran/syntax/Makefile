@@ -75,7 +75,7 @@ junk.ast-info.pp : junk.f90 Fortran.tbl
 	$(SDF2_PATH)/sglr -i junk.f90 -p Fortran.tbl | addPosInfo -p ./junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
 
 clean :
-	rm -f *.def *.tbl Main.sig AST.rtg AST.sig AST.str
+	rm -f *.def *.tbl
 	rm -f *.ast *.pp
 	rm -f *.o *.mod
 	rm -f $(TEST_DIR)/*.ast $(TEST_DIR)/*.ast.pp
