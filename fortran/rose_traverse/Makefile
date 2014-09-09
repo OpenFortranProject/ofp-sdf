@@ -25,14 +25,6 @@ EXES = build_classes build_includes build_traversals \
 	@echo 'Compiling file: $<'
 	@$(CPC) -c $(CFLAGS) -o $@ $<
 
-%.o: %.C
-	@echo 'Compiling file: $<'
-	@$(CPC) -c $(CFLAGS) -o $@ $<
-
-%.o: %.c
-	@echo 'Compiling file: $<'
-	@$(CC) -c $(CFLAGS) -o $@ $<
-
 all: $(OBJS) traverse
 
 traverse: traverse.o $(TRAVERSE_OBJS)
