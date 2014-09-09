@@ -6,10 +6,12 @@ namespace OFP {
    class Program;
    class ProgramUnit;
    class ExternalSubprogram;
+   class InitialSpecPart;
    class SpecificationPart;
    class ImplicitPart;
    class ImplicitPartStmt;
    class DeclarationConstruct;
+   class SpecAndExecPart;
    class ExecutionPart;
    class ExecutionPartConstruct;
    class InternalSubprogramPart;
@@ -673,6 +675,30 @@ class ExternalSubprogram : public Node
     FunctionSubprogram* pFunctionSubprogram;
 };
 
+class InitialSpecPart : public Node
+{
+ public:
+    InitialSpecPart()
+      {
+         pInitialSpecPartList = new std::vector<DeclarationConstruct*>();
+      }
+   virtual ~InitialSpecPart();
+
+    InitialSpecPart* newInitialSpecPart()
+      {
+         InitialSpecPart* node = new InitialSpecPart();
+         //         delete node->pDeclarationConstructList; node->pDeclarationConstructList = pDeclarationConstructList;  pDeclarationConstructList = NULL;
+         node->setOptionType(optionType);
+         node->inheritPayload(this);
+         return node;
+      }
+
+    std::vector<DeclarationConstruct*>* getDeclarationConstructList() {return pInitialSpecPartList;}
+
+ private:
+    std::vector<DeclarationConstruct*>* pInitialSpecPartList;
+};
+
 class SpecificationPart : public Node
 {
  public:
@@ -879,6 +905,32 @@ class DeclarationConstruct : public Node
     EnumDef* pEnumDef;
     EntryStmt* pEntryStmt;
     DerivedTypeDef* pDerivedTypeDef;
+};
+
+class SpecAndExecPart : public Node
+{
+ public:
+    SpecAndExecPart()
+      {
+         pSpecAndExecPartList = new std::vector<ExecutionPartConstruct*>();
+      }
+   virtual ~SpecAndExecPart();
+
+    SpecAndExecPart* newSpecAndExecPart()
+      {
+         SpecAndExecPart* node = new SpecAndExecPart();
+         //delete node->pSpecAndExecPartList; node->pSpecAndExecPartList = pSpecAndExecPartList;  pSpecAndExecPartList = NULL;
+         node->setOptionType(optionType);
+         node->inheritPayload(this);
+         return node;
+      }
+
+    std::vector<ExecutionPartConstruct*>* getSpecAndExecPartList() {return pSpecAndExecPartList;}
+
+    void appendSpecAndExecPart(ExecutionPartConstruct* executionpartconstruct) {pSpecAndExecPartList->push_back(executionpartconstruct);}
+
+ private:
+    std::vector<ExecutionPartConstruct*>* pSpecAndExecPartList;
 };
 
 class ExecutionPart : public Node
@@ -15265,8 +15317,8 @@ class MainProgram : public Node
     MainProgram()
       {
          pProgramStmt = NULL;
-         pSpecificationPart = NULL;
-         pExecutionPart = NULL;
+         pInitialSpecPart = NULL;
+         pSpecAndExecPart = NULL;
          pInternalSubprogramPart = NULL;
          pEndProgramStmt = NULL;
       }
@@ -15276,8 +15328,8 @@ class MainProgram : public Node
       {
          MainProgram* node = new MainProgram();
          node->pProgramStmt = pProgramStmt;  pProgramStmt = NULL;
-         node->pSpecificationPart = pSpecificationPart;  pSpecificationPart = NULL;
-         node->pExecutionPart = pExecutionPart;  pExecutionPart = NULL;
+         node->pInitialSpecPart = pInitialSpecPart;  pInitialSpecPart = NULL;
+         node->pSpecAndExecPart = pSpecAndExecPart;  pSpecAndExecPart = NULL;
          node->pInternalSubprogramPart = pInternalSubprogramPart;  pInternalSubprogramPart = NULL;
          node->pEndProgramStmt = pEndProgramStmt;  pEndProgramStmt = NULL;
          node->setOptionType(optionType);
@@ -15286,21 +15338,21 @@ class MainProgram : public Node
       }
 
     ProgramStmt* getProgramStmt() {return pProgramStmt;}
-    SpecificationPart* getSpecificationPart() {return pSpecificationPart;}
-    ExecutionPart* getExecutionPart() {return pExecutionPart;}
+    InitialSpecPart* getInitialSpecPart() {return pInitialSpecPart;}
+    SpecAndExecPart* getSpecAndExecPart() {return pSpecAndExecPart;}
     InternalSubprogramPart* getInternalSubprogramPart() {return pInternalSubprogramPart;}
     EndProgramStmt* getEndProgramStmt() {return pEndProgramStmt;}
 
     void setProgramStmt(ProgramStmt* programstmt) {pProgramStmt = programstmt;}
-    void setSpecificationPart(SpecificationPart* specificationpart) {pSpecificationPart = specificationpart;}
-    void setExecutionPart(ExecutionPart* executionpart) {pExecutionPart = executionpart;}
+    void setInitialSpecPart(InitialSpecPart* specificationpart) {pInitialSpecPart = specificationpart;}
+    void setSpecAndExecPart(SpecAndExecPart* executionpart) {pSpecAndExecPart = executionpart;}
     void setInternalSubprogramPart(InternalSubprogramPart* internalsubprogrampart) {pInternalSubprogramPart = internalsubprogrampart;}
     void setEndProgramStmt(EndProgramStmt* endprogramstmt) {pEndProgramStmt = endprogramstmt;}
 
  private:
     ProgramStmt* pProgramStmt;
-    SpecificationPart* pSpecificationPart;
-    ExecutionPart* pExecutionPart;
+    InitialSpecPart* pInitialSpecPart;
+    SpecAndExecPart* pSpecAndExecPart;
     InternalSubprogramPart* pInternalSubprogramPart;
     EndProgramStmt* pEndProgramStmt;
 };
@@ -15328,16 +15380,16 @@ class ProgramStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ProgramName* getProgramName() {return pProgramName;}
+    Name* getProgramName() {return pProgramName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setProgramName(ProgramName* programname) {pProgramName = programname;}
+    void setProgramName(Name* programname) {pProgramName = programname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ProgramName* pProgramName;
+    Name* pProgramName;
     EOS* pEOS;
 };
 
@@ -15364,16 +15416,16 @@ class EndProgramStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ProgramName* getProgramName() {return pProgramName;}
+    Name* getProgramName() {return pProgramName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setProgramName(ProgramName* programname) {pProgramName = programname;}
+    void setProgramName(Name* programname) {pProgramName = programname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ProgramName* pProgramName;
+    Name* pProgramName;
     EOS* pEOS;
 };
 
@@ -18731,32 +18783,6 @@ class ModuleName : public Node
     Ident* pIdent;
 };
 
-class Name : public Node
-{
- public:
-    Name()
-      {
-         pIdent = NULL;
-      }
-   virtual ~Name();
-
-    Name* newName()
-      {
-         Name* node = new Name();
-         node->pIdent = pIdent;  pIdent = NULL;
-         node->setOptionType(optionType);
-         node->inheritPayload(this);
-         return node;
-      }
-
-    Ident* getIdent() {return pIdent;}
-
-    void setIdent(Ident* ident) {pIdent = ident;}
-
- private:
-    Ident* pIdent;
-};
-
 class NamelistGroupName : public Node
 {
  public:
@@ -18991,18 +19017,18 @@ class ProcEntityName : public Node
     Ident* pIdent;
 };
 
-class ProgramName : public Node
+class Name : public Node
 {
  public:
-    ProgramName()
+    Name()
       {
          pIdent = NULL;
       }
-   virtual ~ProgramName();
+   virtual ~Name();
 
-    ProgramName* newProgramName()
+    Name* newName()
       {
-         ProgramName* node = new ProgramName();
+         Name* node = new Name();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
