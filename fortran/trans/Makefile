@@ -18,17 +18,17 @@ fast2pp : fast2pp.str no-to-none
 	$(ST_PATH)/strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
 
 check : ofp-simplify ofp2fast
-	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
 unparse : ofp-simplify ofp2fast
 	@echo "------------"
-	@$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2pp | ast2text -p ../pp/Fortran.pp
+	@$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2pp | ast2text -p ../pp/Fortran.pp
 
 test : ofp-simplify ofp2fast
-	$(ST_PATH)/sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
+	$(SGLRI) -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
 cafe : ofp-simplify ofp2fast
-	$(ST_PATH)/sglri -i cafe.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
+	$(SGLRI) -i cafe.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
 clean :
 	rm -f ofp2fast ofp2fast.c
