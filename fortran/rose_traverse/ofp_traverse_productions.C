@@ -33,12 +33,10 @@ ATbool ofp_traverse_Program(ATerm term, OFP::Program* Program)
  OFP::ProgramUnit ProgramUnit;
  if (ATmatch(term, "Program(<term>,<term>)", &StartCommentBlock.term, &ProgramUnit.term)) {
 
-   if (ATmatch(StartCommentBlock.term, "Some(<term>)", &StartCommentBlock.term)) {
-      if (ofp_traverse_StartCommentBlock(StartCommentBlock.term, &StartCommentBlock)) {
-         // MATCHED StartCommentBlock
-         Program->setStartCommentBlock(StartCommentBlock.newStartCommentBlock());
-      } else return ATfalse;
-   }
+    if (ofp_traverse_StartCommentBlock(StartCommentBlock.term, &StartCommentBlock)) {
+       // MATCHED StartCommentBlock
+       Program->setStartCommentBlock(StartCommentBlock.newStartCommentBlock());
+    }
 
    ATermList ProgramUnit_tail = (ATermList) ATmake("<term>", ProgramUnit.term);
    while (! ATisEmpty(ProgramUnit_tail)) {
@@ -127,22 +125,15 @@ ATbool ofp_traverse_ProgramUnit(ATerm term, OFP::ProgramUnit* ProgramUnit)
    return ATtrue;
  }
 
- OFP::MainProgram MainProgram;
- if (ATmatch(term, "ProgramUnit_MP(<term>)", &MainProgram.term)) {
+   OFP::MainProgram MainProgram;
+   if (ofp_traverse_MainProgram(term, &MainProgram)) {
+      // MATCHED MainProgram
+      ProgramUnit->setMainProgram(MainProgram.newMainProgram());
+      ProgramUnit->inheritPayload(ProgramUnit->getMainProgram());
+      return ATtrue;
+   }
 
-      if (ofp_traverse_MainProgram(MainProgram.term, &MainProgram)) {
-         // MATCHED MainProgram
-         ProgramUnit->setMainProgram(MainProgram.newMainProgram());
-         ProgramUnit->inheritPayload(ProgramUnit->getMainProgram());
-      } else return ATfalse;
-
-   // MATCHED ProgramUnit_MP
-   ProgramUnit->setOptionType(OFP::ProgramUnit::ProgramUnit_MP);
-
-   return ATtrue;
- }
-
- return ATfalse;
+   return ATfalse;
 }
 
 //========================================================================================
@@ -190,6 +181,34 @@ ATbool ofp_traverse_ExternalSubprogram(ATerm term, OFP::ExternalSubprogram* Exte
 //========================================================================================
 // R204 specification-part
 //----------------------------------------------------------------------------------------
+ATbool ofp_traverse_InitialSpecPart(ATerm term, OFP::InitialSpecPart* InitialSpecPart)
+{
+#ifdef DEBUG_PRINT
+   printf("InitialSpecPart(F): %s\n", ATwriteToString(term));
+#endif
+
+   if (ATmatch(term, "InitialSpecPart(<term>)", &InitialSpecPart->term)) {
+
+#ifdef TODO_ROSE
+      ATermList UseStmt_tail = (ATermList) ATmake("<term>", UseStmt.term);
+      while (! ATisEmpty(UseStmt_tail)) {
+         UseStmt.term = ATgetFirst(UseStmt_tail);
+         UseStmt_tail = ATgetNext (UseStmt_tail);
+         if (ofp_traverse_UseStmt(UseStmt.term, &UseStmt)) {
+            // MATCHED UseStmt
+            InitialSpecPart->appendUseStmt(UseStmt.newUseStmt());
+         } else return ATfalse;
+      }
+#endif
+
+      ast->build_InitialSpecPart(InitialSpecPart);
+
+      return ATtrue;
+   }
+
+   return ATfalse;
+}
+
 ATbool ofp_traverse_SpecificationPart(ATerm term, OFP::SpecificationPart* SpecificationPart)
 {
 #ifdef DEBUG_PRINT
@@ -520,6 +539,34 @@ ATbool ofp_traverse_DeclarationConstruct(ATerm term, OFP::DeclarationConstruct* 
 //========================================================================================
 // R208 execution-part
 //----------------------------------------------------------------------------------------
+ATbool ofp_traverse_SpecAndExecPart(ATerm term, OFP::SpecAndExecPart* SpecAndExecPart)
+{
+#ifdef DEBUG_PRINT
+   printf("SpecAndExecPart(F): %s\n", ATwriteToString(term));
+#endif
+
+ if (ATmatch(term, "SpecAndExecPart(<term>)", &SpecAndExecPart->term)) {
+
+#ifdef TODO_ROSE
+   ATermList SpecAndExecPartConstruct_tail = (ATermList) ATmake("<term>", SpecAndExecPartConstruct.term);
+   while (! ATisEmpty(SpecAndExecPartConstruct_tail)) {
+      SpecAndExecPartConstruct.term = ATgetFirst(SpecAndExecPartConstruct_tail);
+      SpecAndExecPartConstruct_tail = ATgetNext (SpecAndExecPartConstruct_tail);
+      if (ofp_traverse_SpecAndExecPartConstruct(SpecAndExecPartConstruct.term, &SpecAndExecPartConstruct)) {
+         // MATCHED SpecAndExecPartConstruct
+         SpecAndExecPart->appendSpecAndExecPartConstruct(SpecAndExecPartConstruct.newSpecAndExecPartConstruct());
+      } else return ATfalse;
+   }
+
+   ast->build_SpecAndExecPart(SpecAndExecPart);
+#endif
+
+   return ATtrue;
+ }
+
+ return ATfalse;
+}
+
 ATbool ofp_traverse_ExecutionPart(ATerm term, OFP::ExecutionPart* ExecutionPart)
 {
 #ifdef DEBUG_PRINT
@@ -17728,42 +17775,38 @@ ATbool ofp_traverse_MainProgram(ATerm term, OFP::MainProgram* MainProgram)
 #endif
 
  OFP::ProgramStmt ProgramStmt;
- OFP::SpecificationPart SpecificationPart;
- OFP::ExecutionPart ExecutionPart;
+ OFP::InitialSpecPart InitialSpecPart;
+ OFP::SpecAndExecPart SpecAndExecPart;
  OFP::InternalSubprogramPart InternalSubprogramPart;
  OFP::EndProgramStmt EndProgramStmt;
- if (ATmatch(term, "MainProgram(<term>,<term>,<term>,<term>,<term>)", &ProgramStmt.term, &SpecificationPart.term, &ExecutionPart.term, &InternalSubprogramPart.term, &EndProgramStmt.term)) {
+ if (ATmatch(term, "MainProgram(<term>,<term>,<term>,<term>,<term>)", &ProgramStmt.term, &InitialSpecPart.term, &SpecAndExecPart.term, &InternalSubprogramPart.term, &EndProgramStmt.term)) {
 
-   if (ATmatch(ProgramStmt.term, "Some(<term>)", &ProgramStmt.term)) {
-      if (ofp_traverse_ProgramStmt(ProgramStmt.term, &ProgramStmt)) {
-         // MATCHED ProgramStmt
-         MainProgram->setProgramStmt(ProgramStmt.newProgramStmt());
-      } else return ATfalse;
-   }
+    if (ofp_traverse_ProgramStmt(ProgramStmt.term, &ProgramStmt)) {
+       // MATCHED ProgramStmt
+       MainProgram->setProgramStmt(ProgramStmt.newProgramStmt());
+    } // Optional
 
-      if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
-         // MATCHED SpecificationPart
-         MainProgram->setSpecificationPart(SpecificationPart.newSpecificationPart());
-      } else return ATfalse;
+    if (ofp_traverse_InitialSpecPart(InitialSpecPart.term, &InitialSpecPart)) {
+       // MATCHED InitialSpecPart
+       MainProgram->setInitialSpecPart(InitialSpecPart.newInitialSpecPart());
+    } else return ATfalse;
 
-      if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
-         // MATCHED ExecutionPart
-         MainProgram->setExecutionPart(ExecutionPart.newExecutionPart());
-      } else return ATfalse;
+    if (ofp_traverse_SpecAndExecPart(SpecAndExecPart.term, &SpecAndExecPart)) {
+       // MATCHED SpecAndExecPart
+       MainProgram->setSpecAndExecPart(SpecAndExecPart.newSpecAndExecPart());
+    } else return ATfalse;
 
-   if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
-      if (ofp_traverse_InternalSubprogramPart(InternalSubprogramPart.term, &InternalSubprogramPart)) {
-         // MATCHED InternalSubprogramPart
-         MainProgram->setInternalSubprogramPart(InternalSubprogramPart.newInternalSubprogramPart());
-      } else return ATfalse;
-   }
+    if (ofp_traverse_InternalSubprogramPart(InternalSubprogramPart.term, &InternalSubprogramPart)) {
+       // MATCHED InternalSubprogramPart
+       MainProgram->setInternalSubprogramPart(InternalSubprogramPart.newInternalSubprogramPart());
+    } // Optional
 
-      if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
-         // MATCHED EndProgramStmt
-         MainProgram->setEndProgramStmt(EndProgramStmt.newEndProgramStmt());
-      } else return ATfalse;
+    if (ofp_traverse_EndProgramStmt(EndProgramStmt.term, &EndProgramStmt)) {
+       // MATCHED EndProgramStmt
+       MainProgram->setEndProgramStmt(EndProgramStmt.newEndProgramStmt());
+    } else return ATfalse;
 
-   ast->build_MainProgram(MainProgram);
+    ast->build_MainProgram(MainProgram);
 
    return ATtrue;
  }
@@ -17781,26 +17824,24 @@ ATbool ofp_traverse_ProgramStmt(ATerm term, OFP::ProgramStmt* ProgramStmt)
 #endif
 
  OFP::Label Label;
- OFP::ProgramName ProgramName;
+ OFP::Name ProgramName;
  OFP::EOS EOS;
  if (ATmatch(term, "ProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
-   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
-      if (ofp_traverse_Label(Label.term, &Label)) {
-         // MATCHED Label
-         ProgramStmt->setLabel(Label.newLabel());
-      } else return ATfalse;
-   }
+    if (ofp_traverse_Label(Label.term, &Label)) {
+       // MATCHED Label
+       ProgramStmt->setLabel(Label.newLabel());
+    } // Optional
 
-      if (ofp_traverse_ProgramName(ProgramName.term, &ProgramName)) {
-         // MATCHED ProgramName
-         ProgramStmt->setProgramName(ProgramName.newProgramName());
-      } else return ATfalse;
+   if (ofp_traverse_Name(ProgramName.term, &ProgramName)) {
+      // MATCHED ProgramName
+      ProgramStmt->setProgramName(ProgramName.newName());
+   } else return ATfalse;
 
-      if (ofp_traverse_EOS(EOS.term, &EOS)) {
-         // MATCHED EOS
-         ProgramStmt->setEOS(EOS.newEOS());
-      } else return ATfalse;
+   if (ofp_traverse_EOS(EOS.term, &EOS)) {
+      // MATCHED EOS
+      ProgramStmt->setEOS(EOS.newEOS());
+   } else return ATfalse;
 
    ast->build_ProgramStmt(ProgramStmt);
 
@@ -17820,30 +17861,24 @@ ATbool ofp_traverse_EndProgramStmt(ATerm term, OFP::EndProgramStmt* EndProgramSt
 #endif
 
  OFP::Label Label;
- OFP::ProgramName ProgramName;
+ OFP::Name ProgramName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndProgramStmt(<term>,<term>,<term>)", &Label.term, &ProgramName.term, &EOS.term)) {
 
-   if (ATmatch(Label.term, "Some(<term>)", &Label.term)) {
-      if (ofp_traverse_Label(Label.term, &Label)) {
-         // MATCHED Label
-         EndProgramStmt->setLabel(Label.newLabel());
-      } else return ATfalse;
-   }
+    if (ofp_traverse_Label(Label.term, &Label)) {
+       // MATCHED Label
+       EndProgramStmt->setLabel(Label.newLabel());
+    } // Optional
 
-   if (ATmatch(ProgramName.term, "Some(<term>)", &ProgramName.term)) {
-   if (ATmatch(ProgramName.term, "(Some(<term>))", &ProgramName.term)) {
-      if (ofp_traverse_ProgramName(ProgramName.term, &ProgramName)) {
-         // MATCHED ProgramName
-         EndProgramStmt->setProgramName(ProgramName.newProgramName());
-      } else return ATfalse;
-   }
-   }
+    if (ofp_traverse_Name(ProgramName.term, &ProgramName)) {
+       // MATCHED ProgramName
+       EndProgramStmt->setProgramName(ProgramName.newName());
+    } // Optional
 
-      if (ofp_traverse_EOS(EOS.term, &EOS)) {
-         // MATCHED EOS
-         EndProgramStmt->setEOS(EOS.newEOS());
-      } else return ATfalse;
+    if (ofp_traverse_EOS(EOS.term, &EOS)) {
+       // MATCHED EOS
+       EndProgramStmt->setEOS(EOS.newEOS());
+    } else return ATfalse;
 
    ast->build_EndProgramStmt(EndProgramStmt);
 
@@ -21309,26 +21344,6 @@ ATbool ofp_traverse_ModuleName(ATerm term, OFP::ModuleName* ModuleName)
  return ATfalse;
 }
 
-ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name)
-{
-#ifdef DEBUG_PRINT
-   printf("Name: %s\n", ATwriteToString(term));
-#endif
-
- OFP::Ident Ident;
- if (ATmatch(term, "Name(<term>)", &Ident.term)) {
-
-      if (ofp_traverse_Ident(Ident.term, &Ident)) {
-         // MATCHED Ident
-         Name->setIdent(Ident.newIdent());
-      } else return ATfalse;
-
-   return ATtrue;
- }
-
- return ATfalse;
-}
-
 ATbool ofp_traverse_NamelistGroupName(ATerm term, OFP::NamelistGroupName* NamelistGroupName)
 {
 #ifdef DEBUG_PRINT
@@ -21530,24 +21545,15 @@ ATbool ofp_traverse_ProcEntityName(ATerm term, OFP::ProcEntityName* ProcEntityNa
  return ATfalse;
 }
 
-ATbool ofp_traverse_ProgramName(ATerm term, OFP::ProgramName* ProgramName)
+ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name)
 {
-#ifdef DEBUG_PRINT
-   printf("ProgramName(F): %s\n", ATwriteToString(term));
-#endif
-
  OFP::Ident Ident;
- if (ATmatch(term, "ProgramName(<term>)", &Ident.term)) {
+ if (ofp_traverse_Ident(term, &Ident)) {
+    // MATCHED Ident
+    Name->setIdent(Ident.newIdent());
+ } else return ATfalse;
 
-      if (ofp_traverse_Ident(Ident.term, &Ident)) {
-         // MATCHED Ident
-         ProgramName->setIdent(Ident.newIdent());
-      } else return ATfalse;
-
-   return ATtrue;
- }
-
- return ATfalse;
+ return ATtrue;
 }
 
 ATbool ofp_traverse_ResultName(ATerm term, OFP::ResultName* ResultName)
