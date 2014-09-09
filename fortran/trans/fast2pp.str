@@ -116,3 +116,4 @@ rules
   no-to-none: no-binding-private-stmt()    -> None()   // R446
   no-to-none: no-arg-name()                -> None()   // R451
   no-to-none: no-subprogram-part()         -> None()   // R210
+  no-to-none: no-repeat()                  -> None()   // R541
