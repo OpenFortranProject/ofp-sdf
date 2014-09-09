@@ -1,3 +1,5 @@
+include ../../make.inc
+
 SYNTAX = ../../fortran/syntax
 TRANS  = ../../fortran/trans
 
@@ -9,7 +11,7 @@ $(SYNTAX)/Fortran.tbl :
 check : $(SYNTAX)/Fortran.tbl
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-           sglri -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
+           $(SGLRI) -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
@@ -17,7 +19,7 @@ check : $(SYNTAX)/Fortran.tbl
         done;
 
 junk : $(SYNTAX)/Fortran.tbl  $(TRANS)/ofp-simplify
-	sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 | $(TRANS)/ofp-simplify | pp-aterm
+	$(SGLRI) -p $(SYNTAX)/Fortran.tbl -i junk.f90 | $(TRANS)/ofp-simplify | pp-aterm
 
 clean :
 	rm -f *.ast *.ast.aterm
