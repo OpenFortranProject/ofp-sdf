@@ -1,7 +1,7 @@
 #ifndef	OFP_EXPR_H
 #define	OFP_EXPR_H
 
-#include "traversal.h"
+#include "traversal.hpp"
 #include <sstream>
 
 namespace OFP {
