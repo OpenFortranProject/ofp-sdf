@@ -1,5 +1,5 @@
 #include "UntypedASTBuilder.hpp"
-#include "OFPExpr.h"
+#include "OFPExpr.hpp"
 #include <assert.h>
 #include <stdio.h>
 
@@ -20,6 +20,7 @@ UntypedASTBuilder::~UntypedASTBuilder()
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_Program(Program * program)
 {
+#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedGlobalScope * scope = NULL;
    SgUntypedDeclarationStatement * decl = NULL;
@@ -51,6 +52,7 @@ void UntypedASTBuilder::build_Program(Program * program)
    
 #ifdef OFP_BUILD_DEBUG
    printf("build_Program: ..................... %lu\n", declList->get_decl_list().size());
+#endif
 #endif
 }
 
@@ -435,6 +437,7 @@ void UntypedASTBuilder::build_AssignmentStmt(AssignmentStmt * assignmentStmt)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 {
+#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedNamedStatement * stmt = NULL;
    SgUntypedDeclarationList* sgDeclList = NULL;
@@ -459,9 +462,9 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
    printf("             begin name: ........... %s\n", program->get_name().c_str());
 #endif
 
-   // SpecificationPart
+   // InitialSpecPart
    //
-   SpecificationPart * specPart = mainProgram->getSpecificationPart();
+   InitialSpecPart * specPart = mainProgram->getInitialSpecPart();
    sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
    program->get_scope()->set_declaration_list(sgDeclList);
 
@@ -469,9 +472,9 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
    printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
 #endif
 
-   // ExecutionPart
+   // SpecAndExecPart
    //
-   ExecutionPart * execPart = mainProgram->getExecutionPart();
+   SpecAndExecPart * execPart = mainProgram->getSpecAndExecPart();
    sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
    program->get_scope()->set_statement_list(sgStmtList);
 
@@ -508,6 +511,7 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 #endif
 
    mainProgram->setPayload(program);
+#endif
 }
    
 //========================================================================================
