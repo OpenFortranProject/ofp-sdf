@@ -1,6 +1,6 @@
-#include "OFPNodes.h"
-#include "OFPExpr.h"
-#include "junk_traverse.hpp"
+#include "OFPNodes.hpp"
+#include "OFPExpr.hpp"
+#include "traverse.hpp"
 
 OFP::Program::~Program()
    {
