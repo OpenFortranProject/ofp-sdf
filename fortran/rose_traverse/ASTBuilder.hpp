@@ -1,7 +1,7 @@
 #ifndef	AST_BUILDER_HPP
 #define	AST_BUILDER_HPP
 
-#include "traversal.h"
+#include "traversal.hpp"
 
 namespace OFP {
 
