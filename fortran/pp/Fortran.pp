@@ -32,6 +32,9 @@
    #R312 --,
    Label                         -- _1,
 
+   #R401 --,
+   COLON                         -- KW[":"],
+
    #R403 --,
    IntrinsicType                 -- _1,
 
@@ -41,6 +44,12 @@
    REAL                          -- KW["REAL :: "] _1,
    CHARACTER                     -- KW["CHARACTER :: "] _1,
    LOGICAL                       -- KW["LOGICAL :: "] _1,
+
+   #R403 --,
+   Class                         -- _1 KW["CLASS"] "("_2")",
+
+   #R405 --,
+   KindSelector                  -- "(" KW["KIND="] _1")",
    
    #R407 --,
    PpLiteral                     -- H hs=1[_1],
@@ -53,14 +62,16 @@
 
    #R424 --,
    TRUE                          -- KW[".TRUE."] _1,
+
    FALSE                         -- KW[".FALSE."] _1,
 
    #R425 --,
    DerivedTypeDef                -- _1 _2 _3 _4 _5 _6,
 
    #R426 --,
-   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 _4 _5]],
+   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 "("_4")" _5]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
+   DerivedTypeStmt.4:iter-sep    -- _1 ", ",
 
    #R427 --,
    ABSTRACT                      -- KW["ABSTRACT"],
@@ -70,8 +81,49 @@
    #R429 --,
    EndTypeStmt                   -- H hs=1[_1 KW["END TYPE"] H hs=0[_2 _3]],
 
+   #R431 --,
+   TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
+
+   #R432 --,
+   TypeParamDecl                 -- _1 KW[" = "] _2,
+
+   #R433 --,
+   KIND                          -- KW["KIND"],
+   LEN                           -- KW["LEN"],
+
+   #R436 --,
+   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 _4 _5]],
+   DataComponentDefStmt.4:iter-sep   -- _1 ", ",
+
+   #R437 --,
+   Codimension                   -- KW["CODIMENSION"] _1,
+   Codimension.1:iter-sep        -- _1 ",",
+
+   #R438 --,
+   ComponentDecl                 -- _1 _2 _3 _4 _5,
+
+   #R440 --,
+   ProcComponentDefStmt          -- H hs=1[_1 KW["PROCEDURE"] H hs=0["("_2")" KW[", "] _3 KW[" :: "] _4 _5]],
+   ProcComponentDefStmt.3:iter-sep   -- _1 ", ",
+
+   #R441 --,
+   POINTER                       -- KW["POINTER"],
+   PASS                          -- KW["PASS"],
+
+   #R442 --,
+   ComponentInit                 -- _1,
+
+   #R445 --,
+   TypeBoundProcedurePart        -- _1 _2 _3,
+
+   #R448 --,
+   TypeBoundProcedureStmt        -- H hs=1[H hs=0[_1 KW["PROCEDURE"] KW[", "] _2 KW[" :: "] _3 _4]],
+
    #R449 --,
-   ProcDecl                      -- _1 _2,
+   TypeBoundProcDecl             -- _1 KW[" => "] _2,
+
+   #R451 --,
+   Pass                          -- KW["PASS"] _1,
 
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
@@ -91,7 +143,7 @@
    Some                          -- _1,
    Some                          -- _1 _2,
    ALLOCATABLE                   -- KW["ALLOCATABLE :: "],
-
+   Intent                        -- KW["INTENT"] _1,
    
    #R503 --,
    EntityDecl                    -- _1 _2 _3 _4 _5,
@@ -110,10 +162,13 @@
    OfpExplicitCoshape            -- _1,
 
    #R517 --,
-   OfpDimSpec                    -- _1 _2,
+   DimSpec                    -- _1 _2,
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
+
+   #R523 --,
+   IN                            -- KW["IN"],
 
    #R524 --,
    AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
@@ -402,6 +457,7 @@
 
    #R1001 --,
    FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
+
    FormatStmt.1:iter-sep         -- _1 ", ",
 
    R#1002 --,
@@ -521,9 +577,13 @@
    ProcedureDeclarationStmt            --H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] H hs=0[_4 _5]],
    ProcedureDeclarationStmt.4:iter-sep    -- _1 ", ",
   
+   #R1214 --,
+   ProcDecl                            -- _1 _2,
+
    #R1217 --,
    PpFunction                          -- _1,
    FunctionStmt                        -- H hs=1[_1 "FUNCTION" H hs=0[_2 _3 "("_4")" _5 _6]],
+   FunctionStmt.4:iter-sep             -- _1 ", ",
    EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
 
    #R1218 --,
