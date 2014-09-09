@@ -1,16 +1,14 @@
+include ../../make.inc
+
 ATERM_ROOT = /usr/local/stratego-debug-32
 SDF_GRAMMAR_DIR = ../syntax
 
 CC  = cc
 CPC = c++
 
-## -m32 flag used in aterm build on Mac OS X
-#
-OSX_ARCH = -m32
-OSX_ERROR_LIMIT = -ferror-limit=5
+CLANG_ERROR_LIMIT = -ferror-limit=5
 
-ARCH =
-ERROR_LIMIT =
+ERROR_LIMIT = 
 
 CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
@@ -70,7 +68,7 @@ OFPUnparser.o: OFPUnparser.cpp OFPUnparser.hpp
 traversal_f.o: traversal_f.c traversal.h
 
 check: traverse
-	sglri -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl -o testfile.f90.aterm
+	$(SGLRI) -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl | ../trans/ofp-simplify  -o testfile.f90.aterm
 	traverse -i testfile.f90.aterm
 
 clean:
