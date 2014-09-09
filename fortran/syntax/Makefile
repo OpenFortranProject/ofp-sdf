@@ -14,7 +14,7 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	$(SDF2_PATH)/sdf2table -i $< -o $@
 
-all : Fortran.tbl AST.str Main.str
+all : Fortran.tbl
 
 AST.def : AST.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
