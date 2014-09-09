@@ -1,7 +1,7 @@
-#include "traversal.h"
+#include "traversal.hpp"
 #include "OFPUnparser.hpp"
 #include "UntypedASTBuilder.hpp"
-//#include "OFPNodes.h"
+//#include "OFPNodes.hpp"
 
 #include <stdlib.h>
 #include <stdio.h>
