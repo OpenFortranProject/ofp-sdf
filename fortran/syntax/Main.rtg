@@ -1900,6 +1900,7 @@ regular tree grammar
     OptTypeParamNameList              -> paren-list(ListPlusOfTypeParamName0)
     TypeParamName                     -> Ident
     OptTypeAttrSpecList               -> no-list()
+    OptTypeAttrSpecList               -> no-list()
     OptTypeAttrSpecList               -> comma-list(ListPlusOfTypeAttrSpec0)
     DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,OptTypeAttrSpecList,TypeName,OptTypeParamNameList,EOS)
     DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt0,ListStarOfPrivateOrSequence0,ComponentPart,OptTypeBoundProcedurePart,EndTypeStmt)
