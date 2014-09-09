@@ -199,9 +199,9 @@ ATbool ofp_traverse_InitialSpecPart(ATerm term, OFP::InitialSpecPart* InitialSpe
             InitialSpecPart->appendUseStmt(UseStmt.newUseStmt());
          } else return ATfalse;
       }
-#endif
 
       ast->build_InitialSpecPart(InitialSpecPart);
+#endif
 
       return ATtrue;
    }
