@@ -23,6 +23,11 @@ OFP::ExternalSubprogram::~ExternalSubprogram()
       if (pFunctionSubprogram) delete pFunctionSubprogram;
    }
 
+OFP::InitialSpecPart::~InitialSpecPart()
+   {
+      if (pInitialSpecPartList) delete pInitialSpecPartList;
+   }
+
 OFP::SpecificationPart::~SpecificationPart()
    {
       if (pUseStmtList) delete pUseStmtList;
@@ -57,6 +62,11 @@ OFP::DeclarationConstruct::~DeclarationConstruct()
       if (pEnumDef) delete pEnumDef;
       if (pEntryStmt) delete pEntryStmt;
       if (pDerivedTypeDef) delete pDerivedTypeDef;
+   }
+
+OFP::SpecAndExecPart::~SpecAndExecPart()
+   {
+      if (pSpecAndExecPartList) delete pSpecAndExecPartList;
    }
 
 OFP::ExecutionPart::~ExecutionPart()
@@ -2682,8 +2692,8 @@ OFP::CharStringEditDesc::~CharStringEditDesc()
 OFP::MainProgram::~MainProgram()
    {
       if (pProgramStmt) delete pProgramStmt;
-      if (pSpecificationPart) delete pSpecificationPart;
-      if (pExecutionPart) delete pExecutionPart;
+      if (pInitialSpecPart) delete pInitialSpecPart;
+      if (pSpecAndExecPart) delete pSpecAndExecPart;
       if (pInternalSubprogramPart) delete pInternalSubprogramPart;
       if (pEndProgramStmt) delete pEndProgramStmt;
    }
@@ -3362,11 +3372,6 @@ OFP::ProcedureName::~ProcedureName()
    }
 
 OFP::ProcEntityName::~ProcEntityName()
-   {
-      if (pIdent) delete pIdent;
-   }
-
-OFP::ProgramName::~ProgramName()
    {
       if (pIdent) delete pIdent;
    }
