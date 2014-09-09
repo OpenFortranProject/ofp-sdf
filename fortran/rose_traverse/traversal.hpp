@@ -5,9 +5,9 @@
 
 #include <aterm2.h>
 
-#include "OFPNodes.h"
+#include "OFPNodes.hpp"
 #include "OFPUnparser.hpp"
-#include "junk_traverse.hpp"
+#include "traverse.hpp"
 
 extern OFP::Unparser* unparser;
 

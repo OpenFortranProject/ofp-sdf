@@ -1,5 +1,5 @@
-#include "traversal.h"
-#include "OFPNodes.h"
+#include "traversal.hpp"
+#include "OFPNodes.hpp"
 #include "ASTBuilder.hpp"
 #include <string.h>
 
