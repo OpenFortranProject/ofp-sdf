@@ -2,6 +2,12 @@ To Do List
 
 ___________________________________________________________________________
 09.09.14
+Things to Fix
+R833
+IfThenStmt wants both 3 and 4 arguments
+
+
+
 Files to check again
 R524.f90
 
@@ -18,6 +24,9 @@ R720.f90
 R721.f90
 R723.f90
 R743.f90
+
+R757.f90
+R804.f90
 
 
 R526.f90
