@@ -409,6 +409,23 @@
    #R831 --,
    CycleStmt                     -- H hs=1[_1 KW["CYCLE"] H hs=0[_2 _3]],
 
+   #R832 --,
+   IfConstruct                   -- _1 _2 _3 _4 _5,
+   ElseIfStmtBlock               -- _1 _2,
+   ElseStmtBlock                 -- _1 _2,
+
+   #R833 --,
+   IfThenStmt                    -- H hs=1[_1 KW["IF"] H hs=0[_2 _3 _4]],
+
+   #R834 --,
+   ElseIfStmt                    -- H hs=1[_1 KW["ELSE IF"] H hs=0["("_2")" _3 _4]],
+
+   #R835 --,
+   ElseStmt                      -- H hs=1[_1 KW["ELSE"] H hs=0[_2 _3]],
+
+   #R836 --,
+   EndIfStmt                     -- H hs=1[_1 KW["END IF"] H hs=0[_2 _3]],
+
    #R837 --,
    IfStmt                        -- H hs=1[_1 KW["IF"] H hs=0["("_2")"] _3],
 
