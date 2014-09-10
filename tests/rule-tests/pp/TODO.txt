@@ -1,5 +1,31 @@
 To Do List
 
+___________________________________________________________________________
+09.09.14
+Files to check again
+R524.f90
+
+Files to check
+These 700's are mostly perfectly pretty~ Check first
+R701.f90
+R702.f90
+R704.f90
+R705.f90
+R706.f90
+R710.f90
+R719.f90
+
+R526.f90
+R530.f90
+R531.f90
+R557.f90
+
+
+
+
+
+
+
 _____________________________________________________________________________
 9.03.14
 New files to check on possibly moving
