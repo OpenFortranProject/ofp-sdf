@@ -130,6 +130,7 @@
 
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
+   DerivedType                   -- KW["TYPE"] "("_1")" _2,
 
    #R455 --,
    StructureConstructor          -- _1 "("_2")",
@@ -237,6 +238,10 @@
    TargetDecl                    -- _1 "("_2")" "["_3"]",
    TargetDecl.2:iter-sep         -- _1 ", ",
    TargetDecl.3:iter-sep         -- _1 ", ",
+
+   #R559 --,
+   VolatileStmt                  -- H hs=1[_1 KW["VOLATILE ::"] H hs=0[_2 _3]],
+   VolatileStmt.2:iter-sep       -- _1 ", ",
 
    #R560 --,
    ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
@@ -369,6 +374,28 @@
 
    #R801 --,
    Block                         -- _1,
+
+   #R802 --,
+   AssociateConstruct            -- _1 _2 _3,
+
+   #R803 --,
+   AssociateStmt                 -- H hs=1[_1 _2 KW["ASSOCIATE"] H hs=0["("_3")" _4]],
+   AssociateStmt.3:iter-sep      -- _1 ", ",
+
+   #R804 --,
+   Association                   -- _1 KW["=>"] _2,
+
+   #R806 --,
+   EndAssociateStmt              -- H hs=1[_1 KW["END ASSOCIATE"] H hs=0[_2 _3]],
+
+   #R807 --,
+   BlockConstruct                -- _1 _2 _3 _4,
+
+   #R808 --,
+   BlockStmt                     -- H hs=1[_1 _2 KW["BLOCK"] H hs=0[_3]],
+
+   #R809 --,
+   EndBlockStmt                  -- H hs=1[_1 KW["END BLOCK"] H hs=0[_2 _3]],
 
    #R817 --,
    PpNonlabelDoStmt              -- H hs=1[_1 H hs=0 [_2 KW["DO"]] H hs=1[_3] _4],
@@ -657,6 +684,10 @@
    OfpGenericSpec                      -- _1,
    ASSIGNMENT                          -- KW["ASSIGNMENT(=)"],
    OPERATOR                            -- H hs=1[KW ["OPERATOR"] H hs=0 ["("_1")"]],
+
+   #R1209 --,
+   ImportStmt                          -- H hs=1[_1 KW["IMPORT ::"] H hs=0[_2 _3]],
+   ImportStmt.2:iter-sep               -- _1 ", ",
 
    #R1210 --,
    ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL ::"] H hs=0[_2 _3]],
