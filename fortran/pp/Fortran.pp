@@ -120,28 +120,63 @@
    TypeBoundProcedurePart        -- _1 _2 _3,
 
    #R448 --,
-   TypeBoundProcedureStmt        -- H hs=1[H hs=0[_1 KW["PROCEDURE"] KW[", "] _2 KW[" :: "] _3 _4]],
+   TypeBoundProcedureStmt        -- H hs=1[H hs=0[_1 KW["PROCEDURE"] _2 _3 _4]],
+   TypeBoundProcedureInterfaceStmt    -- H hs=1[H hs=0[_1 KW["PROCEDURE"] "("_2")" _3 _4 _5]],
+   TypeBoundProcedureInterfaceStmt.3:iter-sep  -- _1 ", ",
+   TypeBoundProcedureInterfaceStmt.4:iter-sep  -- _1 ", ",
+
 
    #R449 --,
    TypeBoundProcDecl             -- _1 KW[" => "] _2,
 
    #R451 --,
    Pass                          -- KW["PASS"] _1,
+   NON_OVERRIDABLE               -- KW["NON_OVERRIDABLE"],
+   DEFERRED                      -- KW["DEFERRED"],
+
+   #R452 --,
+   FinalProcedureStmt            -- H hs=1[_1 KW["FINAL ::"] H hs=0[_2 _3]],
+   FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
    DerivedType                   -- KW["TYPE"] "("_1")" _2,
 
+   #R454 --,
+   TypeParamSpec                 -- _1 KW["="] "("_2")",
+
    #R455 --,
    StructureConstructor          -- _1 "("_2")",
 %%   StructureConstructor.2:iter-sep   -- _1 ", ",
+
+   #R458 --,
+   EnumDef                       -- _1 _2 _3,
+
+   #R459 --,
+   EnumDefStmt                   -- H hs=1[_1 KW["ENUM, "] H hs=0[KW["BIND(C)"] _2]],
+
+   #R460 --,
+   EnumeratorDefStmt             -- H hs=1[_1 KW["ENUMERATOR ::"] H hs=0[_2 _3]],
+   EnumeratorDefStmt.2:iter-sep  -- _1 ", ",
+
+   #R461 --,
+   Enumerator                    -- _1 KW[" = "] _2,
+
+   #R462 --,
+   EndEnumStmt                   -- H hs=1[_1 KW["END ENUM"] _2],
 
    #R468 --,
    ArrayConstructor              -- "(/"_1"/)",
 
    #R469 --,
    AcSpec                        -- _1 _2,
-   AcSpec.2:iter-sep             -- _1 ",",
+   AcSpec.2:iter-sep             -- _1 ", ",
+
+   #R473 --,
+   AcImpliedDo                   -- "("_1 KW[", "] _2")",
+
+   #R474 --,
+   AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
    #R501 --,
    TypeDeclarationStmt           -- H hs=0[H hs=3[_1] _2 _3 _4 _5],
@@ -504,6 +539,7 @@
 
    #R863 --,
    LockStmt                      -- H hs=1[_1 KW["LOCK"] H hs=0["("_2 _3")"] _4],
+   LockStmt.3:iter-sep           -- _1 ", ",
 
    #R864 --,
    ACQUIRED_LOCK                 -- KW["ACQUIRED_LOCK="] _1,
@@ -533,6 +569,7 @@
 
    #R912 --,
    PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 _3 _4]],
+   PrintStmt.3:iter-sep          -- _1 ", ",
 
    #R913 --,
    FMT                           -- KW["FMT="] _1,
