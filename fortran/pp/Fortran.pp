@@ -282,7 +282,7 @@
 
    #R612 --,
    OfpVarRef                     -- _1,
-   PartRef                       -- _1 "("_2")" _3,
+   PartRef                       -- H hs=1[_1 H hs=0["("_2")" _3]],
    PartRef.2:iter-sep            -- _1 ",",
 
    #R626 --,
@@ -339,7 +339,7 @@
    AssignmentStmt.2:opt          -- ,
 
    #R733 --,
-   PointerAssignmentStmt         -- H hs=1[_1 H hs=0[_2 "("_3")" KW["=>"] _4 _5]],
+   PointerAssignmentStmt         -- H hs=1[_1 H hs=0[_2 "("_3")" KW[" => "] _4 _5]],
    PointerAssignmentStmt.3:iter-sep  -- _1 ", ",
 
    #R734 --,
@@ -348,8 +348,24 @@
    #R736 --,
    BoundsRemapping               -- _1 KW[":"] _2,
 
+   #R741 --,
+   WhereStmt                     -- H hs=1[_1 KW["WHERE"] H hs=0["("_2")"] H hs=0[_3]],
+
    #R750 --,
    ForallConstruct               -- _1 _2 _3,
+
+   #R751 --,
+   ForallConstructStmt           -- H hs=1[_1 _2 KW["FORALL"] H hs=0[_3 _4]],
+
+   #R752 --,
+   ForallHeader                  -- "("_1 _2 _3")",
+   ForallHeader.2:iter-sep       -- _1 ", ",
+
+   #R753 --,
+   ForallTripletSpec             -- _1 KW[" = "] _2 KW[":"] _3 _4,
+
+   #R758 --,
+   EndForallStmt                 -- H hs=1[_1 KW["END FORALL"] H hs=0[_2 _3]],
 
    #R801 --,
    Block                         -- _1,
