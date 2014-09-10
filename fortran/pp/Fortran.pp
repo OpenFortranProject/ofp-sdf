@@ -57,6 +57,9 @@
    #R413 --,
    RealLiteralConstant           -- _1 _2,
 
+   #R421 --,
+   LengthSelector                -- "(" KW["LEN = "] _1")",
+
    #R423 --,
    CharLiteralConstant           -- _1 _2,
 
@@ -148,7 +151,8 @@
    Some                          -- _1 _2,
    ALLOCATABLE                   -- KW["ALLOCATABLE :: "],
    Intent                        -- KW["INTENT"] _1,
-   
+   Dimension                     -- KW["DIMENSION"] _1,
+
    #R503 --,
    EntityDecl                    -- _1 _2 _3 _4 _5,
 
@@ -167,7 +171,7 @@
    OfpExplicitCoshape            -- _1,
 
    #R517 --,
-   DimSpec                    -- _1 _2,
+   DimSpec                       -- _1 "("_2")",
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
@@ -248,6 +252,19 @@
    PpLetterSpec                  -- _1,
    PpLetterSpec                  -- _1 KW["-"] _2,
 
+   #R563 --,
+   NamelistStmt                  -- H hs=1[_1 KW["NAMELIST"] H hs=0[_2] _3],
+   NamelistEntry                 -- "/"_1"/ " _2,
+   NamelistEntry.2:iter-sep      -- _1 ", ",
+
+   #R565 --,
+   EquivalenceStmt               -- H hs=1[_1 KW["EQUIVALENCE"] H hs=0[_2 _3]],
+   EquivalenceStmt.2:iter-sep    -- _1 ", ",
+
+   #R566 --, 
+   EquivalenceSet                -- "("_1")",
+   EquivalenceSet.1:iter-sep     -- _1 ", ",
+
    #R568 --,
    CommonStmt                    -- H hs=1[_1 KW["COMMON"] H hs=0[ _2 _3]],
    CommonBlockEntry              -- _1 _2,
@@ -286,6 +303,10 @@
 
    #R633 --,
    AllocateShapeSpec             -- _1 KW[":"] _2,
+
+   #R638 --,
+   NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
+   NullifyStmt.2:iter-sep        -- _1 ", ",
 
    #Operators --,
    Minus                         -- KW["-"] _1,
