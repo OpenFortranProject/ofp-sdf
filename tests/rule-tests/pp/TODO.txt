@@ -5,7 +5,8 @@ ___________________________________________________________________________
 Things to Fix
 R833
 IfThenStmt wants both 3 and 4 arguments
-
+R448
+TypeBoundProcedureStmt wants both 4 and 5 arguments
 
 
 Files to check again
@@ -27,8 +28,8 @@ R743.f90
 
 R757.f90
 R804.f90
-
-
+R837.f90
+R452.f90
 R526.f90
 R530.f90
 R531.f90
