@@ -117,3 +117,5 @@ rules
   no-to-none: no-arg-name()                -> None()   // R451
   no-to-none: no-subprogram-part()         -> None()   // R210
   no-to-none: no-repeat()                  -> None()   // R541
+  no-to-none: no-forall-step()             -> None()   // R753
+  no-to-none: no-mask-expr()               -> None()   // R752
