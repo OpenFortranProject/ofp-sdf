@@ -1,5 +1,5 @@
-#ifndef	JUNK_TRAVERSE_HPP
-#define JUNK_TRAVERSE_HPP
+#ifndef	TRAVERSE_HPP
+#define TRAVERSE_HPP
 
 namespace OFP {
 
@@ -531,7 +531,6 @@ namespace OFP {
    class ObjectName;
    class ParentSubmoduleName;
    class ParentTypeName;
-   class PartName;
    class ProcedureComponentName;
    class ProcedureEntityName;
    class ProcedureName;
@@ -680,23 +679,24 @@ class InitialSpecPart : public Node
  public:
     InitialSpecPart()
       {
-         pInitialSpecPartList = new std::vector<DeclarationConstruct*>();
+         pStatementList = new std::vector<Statement*>();
       }
    virtual ~InitialSpecPart();
 
     InitialSpecPart* newInitialSpecPart()
       {
          InitialSpecPart* node = new InitialSpecPart();
-         //         delete node->pDeclarationConstructList; node->pDeclarationConstructList = pDeclarationConstructList;  pDeclarationConstructList = NULL;
+         delete node->pStatementList; node->pStatementList = pStatementList;  pStatementList = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
          return node;
       }
 
-    std::vector<DeclarationConstruct*>* getDeclarationConstructList() {return pInitialSpecPartList;}
+    std::vector<Statement*>* getStatementList() {return pStatementList;}
+    void appendStatement(Statement* stmt) {pStatementList->push_back(stmt);}
 
  private:
-    std::vector<DeclarationConstruct*>* pInitialSpecPartList;
+    std::vector<Statement*>* pStatementList;
 };
 
 class SpecificationPart : public Node
@@ -826,8 +826,9 @@ class DeclarationConstruct : public Node
  public:
     DeclarationConstruct()
       {
+         pStatement = NULL;
+
          pStmtFunctionStmt = NULL;
-         pTypeDeclarationStmt = NULL;
          pOtherSpecificationStmt = NULL;
          pProcedureDeclarationStmt = NULL;
          pParameterStmt = NULL;
@@ -843,7 +844,7 @@ class DeclarationConstruct : public Node
      {
         DEFAULT = 0,
         DeclarationConstruct_SFS,
-        DeclarationConstruct_TDS,
+        TypeDeclarationStmt_ot,
         DeclarationConstruct_OSS,
         DeclarationConstruct_PDS,
         DeclarationConstruct_PS,
@@ -857,8 +858,10 @@ class DeclarationConstruct : public Node
     DeclarationConstruct* newDeclarationConstruct()
       {
          DeclarationConstruct* node = new DeclarationConstruct();
+
+         node->pStatement = pStatement;  pStatement = NULL;
+
          node->pStmtFunctionStmt = pStmtFunctionStmt;  pStmtFunctionStmt = NULL;
-         node->pTypeDeclarationStmt = pTypeDeclarationStmt;  pTypeDeclarationStmt = NULL;
          node->pOtherSpecificationStmt = pOtherSpecificationStmt;  pOtherSpecificationStmt = NULL;
          node->pProcedureDeclarationStmt = pProcedureDeclarationStmt;  pProcedureDeclarationStmt = NULL;
          node->pParameterStmt = pParameterStmt;  pParameterStmt = NULL;
@@ -872,8 +875,9 @@ class DeclarationConstruct : public Node
          return node;
       }
 
+    Statement* getStatement() {return pStatement;}
+
     StmtFunctionStmt* getStmtFunctionStmt() {return pStmtFunctionStmt;}
-    TypeDeclarationStmt* getTypeDeclarationStmt() {return pTypeDeclarationStmt;}
     OtherSpecificationStmt* getOtherSpecificationStmt() {return pOtherSpecificationStmt;}
     ProcedureDeclarationStmt* getProcedureDeclarationStmt() {return pProcedureDeclarationStmt;}
     ParameterStmt* getParameterStmt() {return pParameterStmt;}
@@ -883,8 +887,9 @@ class DeclarationConstruct : public Node
     EntryStmt* getEntryStmt() {return pEntryStmt;}
     DerivedTypeDef* getDerivedTypeDef() {return pDerivedTypeDef;}
 
+    void setStatement(Statement* stmt) {pStatement = stmt;}
+
     void setStmtFunctionStmt(StmtFunctionStmt* stmtfunctionstmt) {pStmtFunctionStmt = stmtfunctionstmt;}
-    void setTypeDeclarationStmt(TypeDeclarationStmt* typedeclarationstmt) {pTypeDeclarationStmt = typedeclarationstmt;}
     void setOtherSpecificationStmt(OtherSpecificationStmt* otherspecificationstmt) {pOtherSpecificationStmt = otherspecificationstmt;}
     void setProcedureDeclarationStmt(ProcedureDeclarationStmt* proceduredeclarationstmt) {pProcedureDeclarationStmt = proceduredeclarationstmt;}
     void setParameterStmt(ParameterStmt* parameterstmt) {pParameterStmt = parameterstmt;}
@@ -895,8 +900,9 @@ class DeclarationConstruct : public Node
     void setDerivedTypeDef(DerivedTypeDef* derivedtypedef) {pDerivedTypeDef = derivedtypedef;}
 
  private:
+    Statement* pStatement;
+
     StmtFunctionStmt* pStmtFunctionStmt;
-    TypeDeclarationStmt* pTypeDeclarationStmt;
     OtherSpecificationStmt* pOtherSpecificationStmt;
     ProcedureDeclarationStmt* pProcedureDeclarationStmt;
     ParameterStmt* pParameterStmt;
@@ -912,25 +918,25 @@ class SpecAndExecPart : public Node
  public:
     SpecAndExecPart()
       {
-         pSpecAndExecPartList = new std::vector<ExecutionPartConstruct*>();
+         pStatementList = new std::vector<Statement*>();
       }
    virtual ~SpecAndExecPart();
 
     SpecAndExecPart* newSpecAndExecPart()
       {
          SpecAndExecPart* node = new SpecAndExecPart();
-         //delete node->pSpecAndExecPartList; node->pSpecAndExecPartList = pSpecAndExecPartList;  pSpecAndExecPartList = NULL;
+         delete node->pStatementList; node->pStatementList = pStatementList;  pStatementList = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
          return node;
       }
 
-    std::vector<ExecutionPartConstruct*>* getSpecAndExecPartList() {return pSpecAndExecPartList;}
+    std::vector<Statement*>* getStatementList() {return pStatementList;}
 
-    void appendSpecAndExecPart(ExecutionPartConstruct* executionpartconstruct) {pSpecAndExecPartList->push_back(executionpartconstruct);}
+   void appendStatement(Statement* stmt) {pStatementList->push_back(stmt);}
 
  private:
-    std::vector<ExecutionPartConstruct*>* pSpecAndExecPartList;
+    std::vector<Statement*>* pStatementList;
 };
 
 class ExecutionPart : public Node
@@ -1053,8 +1059,8 @@ class InternalSubprogram : public Node
    enum OptionType
      {
         DEFAULT = 0,
-        InternalSubprogram_SS,
-        InternalSubprogram_FS
+        FunctionSubprogram_ot,
+        SubroutineSubprogram_ot
      };
 
     InternalSubprogram* newInternalSubprogram()
@@ -1235,6 +1241,8 @@ class ExecutableConstruct : public Node
  public:
     ExecutableConstruct()
       {
+         pStatement = NULL;
+
          pWhereConstruct = NULL;
          pSelectTypeConstruct = NULL;
          pIfConstruct = NULL;
@@ -1264,6 +1272,9 @@ class ExecutableConstruct : public Node
     ExecutableConstruct* newExecutableConstruct()
       {
          ExecutableConstruct* node = new ExecutableConstruct();
+
+         node->pStatement = pStatement;  pStatement = NULL;
+
          node->pWhereConstruct = pWhereConstruct;  pWhereConstruct = NULL;
          node->pSelectTypeConstruct = pSelectTypeConstruct;  pSelectTypeConstruct = NULL;
          node->pIfConstruct = pIfConstruct;  pIfConstruct = NULL;
@@ -1278,6 +1289,8 @@ class ExecutableConstruct : public Node
          return node;
       }
 
+    Statement* getStatement() {return pStatement;}
+
     WhereConstruct* getWhereConstruct() {return pWhereConstruct;}
     SelectTypeConstruct* getSelectTypeConstruct() {return pSelectTypeConstruct;}
     IfConstruct* getIfConstruct() {return pIfConstruct;}
@@ -1287,6 +1300,8 @@ class ExecutableConstruct : public Node
     BlockConstruct* getBlockConstruct() {return pBlockConstruct;}
     AssociateConstruct* getAssociateConstruct() {return pAssociateConstruct;}
     ActionStmt* getActionStmt() {return pActionStmt;}
+
+    void setStatement(Statement* stmt) {pStatement = stmt;}
 
     void setWhereConstruct(WhereConstruct* whereconstruct) {pWhereConstruct = whereconstruct;}
     void setSelectTypeConstruct(SelectTypeConstruct* selecttypeconstruct) {pSelectTypeConstruct = selecttypeconstruct;}
@@ -1299,6 +1314,8 @@ class ExecutableConstruct : public Node
     void setActionStmt(ActionStmt* actionstmt) {pActionStmt = actionstmt;}
 
  private:
+    Statement* pStatement;
+
     WhereConstruct* pWhereConstruct;
     SelectTypeConstruct* pSelectTypeConstruct;
     IfConstruct* pIfConstruct;
@@ -1354,7 +1371,7 @@ class ActionStmt : public Node
          pCloseStmt = NULL;
          pCallStmt = NULL;
          pBackspaceStmt = NULL;
-         pAssignmentStmt = NULL;
+         pStatement = NULL;
          pAllocateStmt = NULL;
          pPauseStmt = NULL;
       }
@@ -1402,7 +1419,7 @@ class ActionStmt : public Node
         ActionStmt_CS2,
         ActionStmt_CS1,
         ActionStmt_BS,
-        ActionStmt_AS2,
+        AssignmentStmt_ot,
         ActionStmt_AS1,
         ActionStmt_PS2
      };
@@ -1449,7 +1466,7 @@ class ActionStmt : public Node
          node->pCloseStmt = pCloseStmt;  pCloseStmt = NULL;
          node->pCallStmt = pCallStmt;  pCallStmt = NULL;
          node->pBackspaceStmt = pBackspaceStmt;  pBackspaceStmt = NULL;
-         node->pAssignmentStmt = pAssignmentStmt;  pAssignmentStmt = NULL;
+         node->pStatement = pStatement;  pStatement = NULL;
          node->pAllocateStmt = pAllocateStmt;  pAllocateStmt = NULL;
          node->pPauseStmt = pPauseStmt;  pPauseStmt = NULL;
          node->setOptionType(optionType);
@@ -1496,7 +1513,7 @@ class ActionStmt : public Node
     CloseStmt* getCloseStmt() {return pCloseStmt;}
     CallStmt* getCallStmt() {return pCallStmt;}
     BackspaceStmt* getBackspaceStmt() {return pBackspaceStmt;}
-    AssignmentStmt* getAssignmentStmt() {return pAssignmentStmt;}
+    Statement* getStatement() {return pStatement;}
     AllocateStmt* getAllocateStmt() {return pAllocateStmt;}
     PauseStmt* getPauseStmt() {return pPauseStmt;}
 
@@ -1539,7 +1556,7 @@ class ActionStmt : public Node
     void setCloseStmt(CloseStmt* closestmt) {pCloseStmt = closestmt;}
     void setCallStmt(CallStmt* callstmt) {pCallStmt = callstmt;}
     void setBackspaceStmt(BackspaceStmt* backspacestmt) {pBackspaceStmt = backspacestmt;}
-    void setAssignmentStmt(AssignmentStmt* assignmentstmt) {pAssignmentStmt = assignmentstmt;}
+    void setStatement(Statement* stmt) {pStatement = stmt;}
     void setAllocateStmt(AllocateStmt* allocatestmt) {pAllocateStmt = allocatestmt;}
     void setPauseStmt(PauseStmt* pausestmt) {pPauseStmt = pausestmt;}
 
@@ -1583,7 +1600,7 @@ class ActionStmt : public Node
     CloseStmt* pCloseStmt;
     CallStmt* pCallStmt;
     BackspaceStmt* pBackspaceStmt;
-    AssignmentStmt* pAssignmentStmt;
+    Statement* pStatement;
     AllocateStmt* pAllocateStmt;
     PauseStmt* pPauseStmt;
 };
@@ -1662,7 +1679,7 @@ class LiteralConstant : public Node
         LiteralConstant_LLC,
         LiteralConstant_CXLC,
         LiteralConstant_RLC,
-        LiteralConstant_ILC
+        IntLiteralConstant_ot
      };
 
     LiteralConstant* newLiteralConstant()
@@ -1817,7 +1834,7 @@ class DeclarationTypeSpec : public Node
         DeclarationTypeSpec_C_STAR,
         DeclarationTypeSpec_C_DTS,
         DeclarationTypeSpec_T_DTS,
-        DeclarationTypeSpec_T_ITS,
+        IntrinsicType,
         DeclarationTypeSpec_ITS
      };
 
@@ -1856,12 +1873,12 @@ class IntrinsicTypeSpec : public Node
      {
         DEFAULT = 0,
         IntrinsicTypeSpec_DBL_CMPLX,
-        IntrinsicTypeSpec_LOGICAL,
+        LOGICAL,
         IntrinsicTypeSpec_CHAR,
         IntrinsicTypeSpec_CMPLX,
         IntrinsicTypeSpec_DBL_PREC,
         IntrinsicTypeSpec_REAL,
-        IntrinsicTypeSpec_INT
+        INTEGER
      };
 
     IntrinsicTypeSpec* newIntrinsicTypeSpec()
@@ -1999,7 +2016,7 @@ class KindParam : public Node
      {
         DEFAULT = 0,
         KindParam_SICN,
-        KindParam_DS
+        DigitString_ot
      };
 
     KindParam* newKindParam()
@@ -2492,7 +2509,7 @@ class DerivedTypeDef : public Node
     EndTypeStmt* pEndTypeStmt;
 };
 
-class DerivedTypeStmt : public Node
+class DerivedTypeStmt : public Statement
 {
  public:
     DerivedTypeStmt()
@@ -2720,7 +2737,7 @@ class PrivateOrSequence : public Node
     PrivateComponentsStmt* pPrivateComponentsStmt;
 };
 
-class EndTypeStmt : public Node
+class EndTypeStmt : public Statement
 {
  public:
     EndTypeStmt()
@@ -4516,14 +4533,14 @@ class AcDoVariable : public Node
     DoVariable* pDoVariable;
 };
 
-class TypeDeclarationStmt : public Node
+class TypeDeclarationStmt : public Statement
 {
  public:
     TypeDeclarationStmt()
       {
          pLabel = NULL;
          pDeclarationTypeSpec = NULL;
-         pOptAttrSpecList = NULL;
+         pAttrSpecList = NULL;
          pEntityDeclList = NULL;
          pEOS = NULL;
       }
@@ -4534,7 +4551,7 @@ class TypeDeclarationStmt : public Node
          TypeDeclarationStmt* node = new TypeDeclarationStmt();
          node->pLabel = pLabel;  pLabel = NULL;
          node->pDeclarationTypeSpec = pDeclarationTypeSpec;  pDeclarationTypeSpec = NULL;
-         node->pOptAttrSpecList = pOptAttrSpecList;  pOptAttrSpecList = NULL;
+         node->pAttrSpecList = pAttrSpecList;  pAttrSpecList = NULL;
          node->pEntityDeclList = pEntityDeclList;  pEntityDeclList = NULL;
          node->pEOS = pEOS;  pEOS = NULL;
          node->setOptionType(optionType);
@@ -4544,24 +4561,25 @@ class TypeDeclarationStmt : public Node
 
     Label* getLabel() {return pLabel;}
     DeclarationTypeSpec* getDeclarationTypeSpec() {return pDeclarationTypeSpec;}
-    OptAttrSpecList* getOptAttrSpecList() {return pOptAttrSpecList;}
+    AttrSpecList* getAttrSpecList() {return pAttrSpecList;}
     EntityDeclList* getEntityDeclList() {return pEntityDeclList;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setDeclarationTypeSpec(DeclarationTypeSpec* declarationtypespec) {pDeclarationTypeSpec = declarationtypespec;}
-    void setOptAttrSpecList(OptAttrSpecList* optattrspeclist) {pOptAttrSpecList = optattrspeclist;}
+    void setAttrSpecList(AttrSpecList* attrspeclist) {pAttrSpecList = attrspeclist;}
     void setEntityDeclList(EntityDeclList* entitydecllist) {pEntityDeclList = entitydecllist;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
     DeclarationTypeSpec* pDeclarationTypeSpec;
-    OptAttrSpecList* pOptAttrSpecList;
+    AttrSpecList* pAttrSpecList;
     EntityDeclList* pEntityDeclList;
     EOS* pEOS;
 };
 
+#ifdef OBSOLETE
 class OptAttrSpecList : public Node
 {
  public:
@@ -4587,6 +4605,7 @@ class OptAttrSpecList : public Node
  private:
     AttrSpecList* pAttrSpecList;
 };
+#endif
 
 class AttrSpec : public Node
 {
@@ -7235,7 +7254,7 @@ class VolatileStmt : public Node
     EOS* pEOS;
 };
 
-class ImplicitStmt : public Node
+class ImplicitStmt : public Statement
 {
  public:
     ImplicitStmt()
@@ -7250,7 +7269,6 @@ class ImplicitStmt : public Node
      {
         DEFAULT = 0,
         ImplicitStmt_NONE,
-        ImplicitStmt_ISL
      };
 
     ImplicitStmt* newImplicitStmt()
@@ -7865,7 +7883,7 @@ class Designator : public Node
      {
         DEFAULT = 0,
         Designator_S_AMB,
-        Designator_DR_AMB
+        DataRef_ot
      };
 
     Designator* newDesignator()
@@ -8206,16 +8224,16 @@ class PartRef : public Node
          return node;
       }
 
-    PartName* getPartName() {return pPartName;}
+    Name* getPartName() {return pPartName;}
     SectionSubscriptList* getSectionSubscriptList() {return pSectionSubscriptList;}
     ImageSelector* getImageSelector() {return pImageSelector;}
 
-    void setPartName(PartName* partname) {pPartName = partname;}
+    void setPartName(Name* partname) {pPartName = partname;}
     void setSectionSubscriptList(SectionSubscriptList* sectionsubscriptlist) {pSectionSubscriptList = sectionsubscriptlist;}
     void setImageSelector(ImageSelector* imageselector) {pImageSelector = imageselector;}
 
  private:
-    PartName* pPartName;
+    Name* pPartName;
     SectionSubscriptList* pSectionSubscriptList;
     ImageSelector* pImageSelector;
 };
@@ -9320,7 +9338,6 @@ class Primary : public Node
  public:
     Primary()
       {
-         pExpr = NULL;
          pTypeParamInquiry = NULL;
          pFunctionReference = NULL;
          pStructureConstructor = NULL;
@@ -9333,19 +9350,17 @@ class Primary : public Node
    enum OptionType
      {
         DEFAULT = 0,
-        Primary_E_AMB,
+        Designator_ot,
         Primary_TPI_AMB,
         Primary_FR_AMB,
         Primary_SC_AMB,
         Primary_AC_AMB,
-        Primary_D_AMB,
-        Primary_C_AMB
+        Constant_ot
      };
 
     Primary* newPrimary()
       {
          Primary* node = new Primary();
-         node->pExpr = pExpr;  pExpr = NULL;
          node->pTypeParamInquiry = pTypeParamInquiry;  pTypeParamInquiry = NULL;
          node->pFunctionReference = pFunctionReference;  pFunctionReference = NULL;
          node->pStructureConstructor = pStructureConstructor;  pStructureConstructor = NULL;
@@ -9357,7 +9372,6 @@ class Primary : public Node
          return node;
       }
 
-    Expr* getExpr() {return pExpr;}
     TypeParamInquiry* getTypeParamInquiry() {return pTypeParamInquiry;}
     FunctionReference* getFunctionReference() {return pFunctionReference;}
     StructureConstructor* getStructureConstructor() {return pStructureConstructor;}
@@ -9365,7 +9379,6 @@ class Primary : public Node
     Designator* getDesignator() {return pDesignator;}
     Constant* getConstant() {return pConstant;}
 
-    void setExpr(Expr* expr) {pExpr = expr;}
     void setTypeParamInquiry(TypeParamInquiry* typeparaminquiry) {pTypeParamInquiry = typeparaminquiry;}
     void setFunctionReference(FunctionReference* functionreference) {pFunctionReference = functionreference;}
     void setStructureConstructor(StructureConstructor* structureconstructor) {pStructureConstructor = structureconstructor;}
@@ -9374,7 +9387,6 @@ class Primary : public Node
     void setConstant(Constant* constant) {pConstant = constant;}
 
  private:
-    Expr* pExpr;
     TypeParamInquiry* pTypeParamInquiry;
     FunctionReference* pFunctionReference;
     StructureConstructor* pStructureConstructor;
@@ -9592,7 +9604,7 @@ class IntConstantExpr : public Node
     IntExpr* pIntExpr;
 };
 
-class AssignmentStmt : public Node
+class AssignmentStmt : public Statement
 {
  public:
     AssignmentStmt()
@@ -15617,7 +15629,7 @@ class ModuleSubprogram : public Node
     FunctionSubprogram* pFunctionSubprogram;
 };
 
-class UseStmt : public Node
+class UseStmt : public Statement
 {
  public:
     UseStmt()
@@ -16553,7 +16565,7 @@ class DefinedIoGenericSpec : public Node
  private:
 };
 
-class ImportStmt : public Node
+class ImportStmt : public Statement
 {
  public:
     ImportStmt()
@@ -17552,8 +17564,8 @@ class SubroutineSubprogram : public Node
     SubroutineSubprogram()
       {
          pSubroutineStmt = NULL;
-         pSpecificationPart = NULL;
-         pExecutionPart = NULL;
+         pInitialSpecPart = NULL;
+         pSpecAndExecPart = NULL;
          pInternalSubprogramPart = NULL;
          pEndSubroutineStmt = NULL;
       }
@@ -17563,8 +17575,8 @@ class SubroutineSubprogram : public Node
       {
          SubroutineSubprogram* node = new SubroutineSubprogram();
          node->pSubroutineStmt = pSubroutineStmt;  pSubroutineStmt = NULL;
-         node->pSpecificationPart = pSpecificationPart;  pSpecificationPart = NULL;
-         node->pExecutionPart = pExecutionPart;  pExecutionPart = NULL;
+         node->pInitialSpecPart = pInitialSpecPart;  pInitialSpecPart = NULL;
+         node->pSpecAndExecPart = pSpecAndExecPart;  pSpecAndExecPart = NULL;
          node->pInternalSubprogramPart = pInternalSubprogramPart;  pInternalSubprogramPart = NULL;
          node->pEndSubroutineStmt = pEndSubroutineStmt;  pEndSubroutineStmt = NULL;
          node->setOptionType(optionType);
@@ -17573,26 +17585,26 @@ class SubroutineSubprogram : public Node
       }
 
     SubroutineStmt* getSubroutineStmt() {return pSubroutineStmt;}
-    SpecificationPart* getSpecificationPart() {return pSpecificationPart;}
-    ExecutionPart* getExecutionPart() {return pExecutionPart;}
+    InitialSpecPart* getInitialSpecPart() {return pInitialSpecPart;}
+    SpecAndExecPart* getSpecAndExecPart() {return pSpecAndExecPart;}
     InternalSubprogramPart* getInternalSubprogramPart() {return pInternalSubprogramPart;}
     EndSubroutineStmt* getEndSubroutineStmt() {return pEndSubroutineStmt;}
 
     void setSubroutineStmt(SubroutineStmt* subroutinestmt) {pSubroutineStmt = subroutinestmt;}
-    void setSpecificationPart(SpecificationPart* specificationpart) {pSpecificationPart = specificationpart;}
-    void setExecutionPart(ExecutionPart* executionpart) {pExecutionPart = executionpart;}
+    void setInitialSpecPart(InitialSpecPart* specPart) {pInitialSpecPart = specPart;}
+    void setSpecAndExecPart(SpecAndExecPart* execPart) {pSpecAndExecPart = execPart;}
     void setInternalSubprogramPart(InternalSubprogramPart* internalsubprogrampart) {pInternalSubprogramPart = internalsubprogrampart;}
     void setEndSubroutineStmt(EndSubroutineStmt* endsubroutinestmt) {pEndSubroutineStmt = endsubroutinestmt;}
 
  private:
     SubroutineStmt* pSubroutineStmt;
-    SpecificationPart* pSpecificationPart;
-    ExecutionPart* pExecutionPart;
+    InitialSpecPart* pInitialSpecPart;
+    SpecAndExecPart* pSpecAndExecPart;
     InternalSubprogramPart* pInternalSubprogramPart;
     EndSubroutineStmt* pEndSubroutineStmt;
 };
 
-class SubroutineStmt : public Node
+class SubroutineStmt : public Statement
 {
  public:
     SubroutineStmt()
@@ -17605,13 +17617,6 @@ class SubroutineStmt : public Node
          pProcLanguageBindingSpec = NULL;
       }
    virtual ~SubroutineStmt();
-
-   enum OptionType
-     {
-        DEFAULT = 0,
-        SubroutineStmt_0,
-        SubroutineStmt_DAL
-     };
 
     SubroutineStmt* newSubroutineStmt()
       {
@@ -17629,14 +17634,14 @@ class SubroutineStmt : public Node
 
     Label* getLabel() {return pLabel;}
     Prefix* getPrefix() {return pPrefix;}
-    SubroutineName* getSubroutineName() {return pSubroutineName;}
+    Name* getSubroutineName() {return pSubroutineName;}
     EOS* getEOS() {return pEOS;}
     DummyArgList* getDummyArgList() {return pDummyArgList;}
     ProcLanguageBindingSpec* getProcLanguageBindingSpec() {return pProcLanguageBindingSpec;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setPrefix(Prefix* prefix) {pPrefix = prefix;}
-    void setSubroutineName(SubroutineName* subroutinename) {pSubroutineName = subroutinename;}
+    void setSubroutineName(Name* subroutinename) {pSubroutineName = subroutinename;}
     void setEOS(EOS* eos) {pEOS = eos;}
     void setDummyArgList(DummyArgList* dummyarglist) {pDummyArgList = dummyarglist;}
     void setProcLanguageBindingSpec(ProcLanguageBindingSpec* proclanguagebindingspec) {pProcLanguageBindingSpec = proclanguagebindingspec;}
@@ -17644,7 +17649,7 @@ class SubroutineStmt : public Node
  private:
     Label* pLabel;
     Prefix* pPrefix;
-    SubroutineName* pSubroutineName;
+    Name* pSubroutineName;
     EOS* pEOS;
     DummyArgList* pDummyArgList;
     ProcLanguageBindingSpec* pProcLanguageBindingSpec;
@@ -17709,7 +17714,7 @@ class DummyArgList : public Node
     std::vector<DummyArg*>* pDummyArgList;
 };
 
-class EndSubroutineStmt : public Node
+class EndSubroutineStmt : public Statement
 {
  public:
     EndSubroutineStmt()
@@ -17732,16 +17737,16 @@ class EndSubroutineStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    SubroutineName* getSubroutineName() {return pSubroutineName;}
+    Name* getSubroutineName() {return pSubroutineName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setSubroutineName(SubroutineName* subroutinename) {pSubroutineName = subroutinename;}
+    void setSubroutineName(Name* subroutinename) {pSubroutineName = subroutinename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    SubroutineName* pSubroutineName;
+    Name* pSubroutineName;
     EOS* pEOS;
 };
 
@@ -18887,6 +18892,7 @@ class ParentTypeName : public Node
     Ident* pIdent;
 };
 
+#ifdef OBSOLETE
 class PartName : public Node
 {
  public:
@@ -18912,6 +18918,7 @@ class PartName : public Node
  private:
     Ident* pIdent;
 };
+#endif
 
 class ProcedureComponentName : public Node
 {
@@ -19199,6 +19206,7 @@ class SubmoduleName : public Node
     Ident* pIdent;
 };
 
+#ifdef OBSOLETE
 class SubroutineName : public Node
 {
  public:
@@ -19224,6 +19232,7 @@ class SubroutineName : public Node
  private:
     Ident* pIdent;
 };
+#endif
 
 class TypeName : public Node
 {
