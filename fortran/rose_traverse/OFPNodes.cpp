@@ -25,7 +25,7 @@ OFP::ExternalSubprogram::~ExternalSubprogram()
 
 OFP::InitialSpecPart::~InitialSpecPart()
    {
-      if (pInitialSpecPartList) delete pInitialSpecPartList;
+      if (pStatementList) delete pStatementList;
    }
 
 OFP::SpecificationPart::~SpecificationPart()
@@ -52,8 +52,9 @@ OFP::ImplicitPartStmt::~ImplicitPartStmt()
 
 OFP::DeclarationConstruct::~DeclarationConstruct()
    {
+      if (pStatement) delete pStatement;
+
       if (pStmtFunctionStmt) delete pStmtFunctionStmt;
-      if (pTypeDeclarationStmt) delete pTypeDeclarationStmt;
       if (pOtherSpecificationStmt) delete pOtherSpecificationStmt;
       if (pProcedureDeclarationStmt) delete pProcedureDeclarationStmt;
       if (pParameterStmt) delete pParameterStmt;
@@ -66,7 +67,7 @@ OFP::DeclarationConstruct::~DeclarationConstruct()
 
 OFP::SpecAndExecPart::~SpecAndExecPart()
    {
-      if (pSpecAndExecPartList) delete pSpecAndExecPartList;
+      if (pStatementList) delete pStatementList;
    }
 
 OFP::ExecutionPart::~ExecutionPart()
@@ -121,61 +122,10 @@ OFP::OtherSpecificationStmt::~OtherSpecificationStmt()
 
 OFP::ExecutableConstruct::~ExecutableConstruct()
    {
-      if (pWhereConstruct) delete pWhereConstruct;
-      if (pSelectTypeConstruct) delete pSelectTypeConstruct;
-      if (pIfConstruct) delete pIfConstruct;
-      if (pForallConstruct) delete pForallConstruct;
-      if (pCriticalConstruct) delete pCriticalConstruct;
-      if (pCaseConstruct) delete pCaseConstruct;
-      if (pBlockConstruct) delete pBlockConstruct;
-      if (pAssociateConstruct) delete pAssociateConstruct;
-      if (pActionStmt) delete pActionStmt;
    }
 
 OFP::ActionStmt::~ActionStmt()
    {
-      if (pEndDoStmt) delete pEndDoStmt;
-      if (pNonlabelDoStmt) delete pNonlabelDoStmt;
-      if (pLabelDoStmt) delete pLabelDoStmt;
-      if (pComputedGotoStmt) delete pComputedGotoStmt;
-      if (pArithmeticIfStmt) delete pArithmeticIfStmt;
-      if (pWriteStmt) delete pWriteStmt;
-      if (pWhereStmt) delete pWhereStmt;
-      if (pWaitStmt) delete pWaitStmt;
-      if (pUnlockStmt) delete pUnlockStmt;
-      if (pSyncMemoryStmt) delete pSyncMemoryStmt;
-      if (pSyncImagesStmt) delete pSyncImagesStmt;
-      if (pSyncAllStmt) delete pSyncAllStmt;
-      if (pStopStmt) delete pStopStmt;
-      if (pRewindStmt) delete pRewindStmt;
-      if (pReturnStmt) delete pReturnStmt;
-      if (pReadStmt) delete pReadStmt;
-      if (pPrintStmt) delete pPrintStmt;
-      if (pPointerAssignmentStmt) delete pPointerAssignmentStmt;
-      if (pOpenStmt) delete pOpenStmt;
-      if (pNullifyStmt) delete pNullifyStmt;
-      if (pLockStmt) delete pLockStmt;
-      if (pInquireStmt) delete pInquireStmt;
-      if (pIfStmt) delete pIfStmt;
-      if (pGotoStmt) delete pGotoStmt;
-      if (pForallStmt) delete pForallStmt;
-      if (pFlushStmt) delete pFlushStmt;
-      if (pExitStmt) delete pExitStmt;
-      if (pErrorStopStmt) delete pErrorStopStmt;
-      if (pEndfileStmt) delete pEndfileStmt;
-      if (pEndSubroutineStmt) delete pEndSubroutineStmt;
-      if (pEndProgramStmt) delete pEndProgramStmt;
-      if (pEndMpSubprogramStmt) delete pEndMpSubprogramStmt;
-      if (pEndFunctionStmt) delete pEndFunctionStmt;
-      if (pDeallocateStmt) delete pDeallocateStmt;
-      if (pCycleStmt) delete pCycleStmt;
-      if (pContinueStmt) delete pContinueStmt;
-      if (pCloseStmt) delete pCloseStmt;
-      if (pCallStmt) delete pCallStmt;
-      if (pBackspaceStmt) delete pBackspaceStmt;
-      if (pAssignmentStmt) delete pAssignmentStmt;
-      if (pAllocateStmt) delete pAllocateStmt;
-      if (pPauseStmt) delete pPauseStmt;
    }
 
 OFP::Keyword::~Keyword()
@@ -704,15 +654,17 @@ OFP::TypeDeclarationStmt::~TypeDeclarationStmt()
    {
       if (pLabel) delete pLabel;
       if (pDeclarationTypeSpec) delete pDeclarationTypeSpec;
-      if (pOptAttrSpecList) delete pOptAttrSpecList;
+      if (pAttrSpecList) delete pAttrSpecList;
       if (pEntityDeclList) delete pEntityDeclList;
       if (pEOS) delete pEOS;
    }
 
+#ifdef OBSOLETE
 OFP::OptAttrSpecList::~OptAttrSpecList()
    {
       if (pAttrSpecList) delete pAttrSpecList;
    }
+#endif
 
 OFP::AttrSpec::~AttrSpec()
    {
@@ -1605,7 +1557,6 @@ OFP::ExtendedIntrinsicOp::~ExtendedIntrinsicOp()
 
 OFP::Primary::~Primary()
    {
-      if (pExpr) delete pExpr;
       if (pTypeParamInquiry) delete pTypeParamInquiry;
       if (pFunctionReference) delete pFunctionReference;
       if (pStructureConstructor) delete pStructureConstructor;
@@ -3094,8 +3045,8 @@ OFP::EndFunctionStmt::~EndFunctionStmt()
 OFP::SubroutineSubprogram::~SubroutineSubprogram()
    {
       if (pSubroutineStmt) delete pSubroutineStmt;
-      if (pSpecificationPart) delete pSpecificationPart;
-      if (pExecutionPart) delete pExecutionPart;
+      if (pInitialSpecPart) delete pInitialSpecPart;
+      if (pSpecAndExecPart) delete pSpecAndExecPart;
       if (pInternalSubprogramPart) delete pInternalSubprogramPart;
       if (pEndSubroutineStmt) delete pEndSubroutineStmt;
    }
@@ -3351,11 +3302,6 @@ OFP::ParentTypeName::~ParentTypeName()
       if (pIdent) delete pIdent;
    }
 
-OFP::PartName::~PartName()
-   {
-      if (pIdent) delete pIdent;
-   }
-
 OFP::ProcedureComponentName::~ProcedureComponentName()
    {
       if (pIdent) delete pIdent;
@@ -3406,10 +3352,12 @@ OFP::SubmoduleName::~SubmoduleName()
       if (pIdent) delete pIdent;
    }
 
+#ifdef OBSOLETE
 OFP::SubroutineName::~SubroutineName()
    {
       if (pIdent) delete pIdent;
    }
+#endif
 
 OFP::TypeName::~TypeName()
    {
