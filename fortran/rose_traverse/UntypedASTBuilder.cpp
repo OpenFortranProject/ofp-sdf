@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+#undef OFP_BUILD_DEBUG
+
 extern OFP::Unparser* unparser;
 
 namespace OFP {
@@ -20,7 +22,6 @@ UntypedASTBuilder::~UntypedASTBuilder()
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_Program(Program * program)
 {
-#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedGlobalScope * scope = NULL;
    SgUntypedDeclarationStatement * decl = NULL;
@@ -53,12 +54,29 @@ void UntypedASTBuilder::build_Program(Program * program)
 #ifdef OFP_BUILD_DEBUG
    printf("build_Program: ..................... %lu\n", declList->get_decl_list().size());
 #endif
-#endif
 }
 
 //========================================================================================
 // R204 specification-part
 //----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_InitialSpecPart(InitialSpecPart * initialSpecPart)
+{
+   SgUntypedDeclarationStatement * decl = NULL;
+   SgUntypedDeclarationList * sgDeclList = new SgUntypedDeclarationList(NULL);
+
+   std::vector<Statement*>* stmtList = initialSpecPart->getStatementList();
+   for (int i = 0; i < stmtList->size(); i++) {
+      decl = dynamic_cast<SgUntypedDeclarationStatement*>(stmtList->at(i)->getPayload());  assert(decl);
+      sgDeclList->get_decl_list().push_back(decl);
+   }
+
+   initialSpecPart->setPayload(sgDeclList);
+   
+#ifdef OFP_BUILD_DEBUG
+   printf("build_InitialSpecPart: ........... %lu\n", sgDeclList->get_decl_list().size());
+#endif
+}
+
 void UntypedASTBuilder::build_SpecificationPart(SpecificationPart * specificationPart)
 {
    SgUntypedDeclarationStatement * decl = NULL;
@@ -126,6 +144,24 @@ void UntypedASTBuilder::build_ImplicitPart(ImplicitPart* implicitPart)
 //========================================================================================
 // R208 execution-part
 //----------------------------------------------------------------------------------------
+void UntypedASTBuilder::build_SpecAndExecPart(SpecAndExecPart * specAndExecPart)
+{
+   SgUntypedStatement * stmt = NULL;
+
+   SgUntypedStatementList * sgStmtList = new SgUntypedStatementList(NULL);
+   std::vector<Statement*>* ofpStmtList = specAndExecPart->getStatementList();
+
+   for (int i = 0; i < ofpStmtList->size(); i++) {
+      stmt = dynamic_cast<SgUntypedStatement*>(ofpStmtList->at(i)->getPayload());  assert(stmt);
+      sgStmtList->get_stmt_list().push_back(stmt);
+   }
+   specAndExecPart->setPayload(sgStmtList);
+
+#ifdef OFP_BUILD_DEBUG
+   printf("build_SpecAndExecPart: ............... %lu\n", sgStmtList->get_stmt_list().size());
+#endif
+}
+
 void UntypedASTBuilder::build_ExecutionPart(ExecutionPart * executionPart)
 {
    SgUntypedStatement * stmt = NULL;
@@ -204,18 +240,15 @@ void UntypedASTBuilder::build_DeclarationTypeSpec(DeclarationTypeSpec * declarat
      case OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_DTS:
        keyword = SgToken::FORTRAN_TYPE;
        break;
-     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_T_ITS:
-       keyword = SgToken::FORTRAN_TYPE;
-       break;
-     case OFP::DeclarationTypeSpec::DeclarationTypeSpec_ITS:
+     case OFP::DeclarationTypeSpec::IntrinsicType:
        switch (intrinsicTypeSpec->getOptionType()) {
-         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_INT:
+         case OFP::IntrinsicTypeSpec::INTEGER:
             name = "INTEGER";  keyword = SgToken::FORTRAN_INTEGER;         break;
          case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_REAL:
             name = "REAL";     keyword = SgToken::FORTRAN_REAL;            break;
          case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_CMPLX:
             name = "COMPLEX";  keyword = SgToken::FORTRAN_COMPLEX;         break;
-         case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_LOGICAL:
+         case OFP::IntrinsicTypeSpec::LOGICAL:
             name = "LOGICAL";  keyword = SgToken::FORTRAN_LOGICAL;         break;
          case OFP::IntrinsicTypeSpec::IntrinsicTypeSpec_DBL_PREC:
             name = "DOUBLE PRECISION";
@@ -369,7 +402,7 @@ void UntypedASTBuilder::build_ImplicitStmt(ImplicitStmt * implicitStmt)
         printf("build_ImplicitStmt: NONE ...........\n");
 #endif
         break;
-     case ImplicitStmt::ImplicitStmt_ISL:
+     default:
         //TODO-CER- fix this cons call
         //stmt = new SgUntypedImplicitStatement(start, false);
 #ifdef OFP_BUILD_DEBUG
@@ -424,6 +457,7 @@ void UntypedASTBuilder::build_AssignmentStmt(AssignmentStmt * assignmentStmt)
 
    SgUntypedExpression* lhs = dynamic_cast<SgUntypedExpression*>(assignmentStmt->getVariable()->payload);
    SgUntypedExpression* rhs = dynamic_cast<SgUntypedExpression*>(assignmentStmt->getExpr()->payload);
+   assert(lhs);  assert(rhs);
 
    stmt = new SgUntypedAssignmentStatement(start, lhs, rhs);
    stmt->set_statement_enum(SgToken::FORTRAN_ASSIGN);
@@ -437,7 +471,6 @@ void UntypedASTBuilder::build_AssignmentStmt(AssignmentStmt * assignmentStmt)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 {
-#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedNamedStatement * stmt = NULL;
    SgUntypedDeclarationList* sgDeclList = NULL;
@@ -511,7 +544,6 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 #endif
 
    mainProgram->setPayload(program);
-#endif
 }
    
 //========================================================================================
@@ -796,9 +828,9 @@ void UntypedASTBuilder::build_SubroutineSubprogram(SubroutineSubprogram * subrou
    printf("             begin name: ........... %s\n", subroutine->get_name().c_str());
 #endif
 
-   // SpecificationPart
+   // InitialSpecPart
    //
-   SpecificationPart * specPart = subroutineSubprogram->getSpecificationPart();
+   InitialSpecPart * specPart = subroutineSubprogram->getInitialSpecPart();
    sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
    subroutine->get_scope()->set_declaration_list(sgDeclList);
 
@@ -806,9 +838,9 @@ void UntypedASTBuilder::build_SubroutineSubprogram(SubroutineSubprogram * subrou
    printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
 #endif
 
-   // ExecutionPart
+   // SpecAndExecPart
    //
-   ExecutionPart * execPart = subroutineSubprogram->getExecutionPart();
+   SpecAndExecPart * execPart = subroutineSubprogram->getSpecAndExecPart();
    sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
    subroutine->get_scope()->set_statement_list(sgStmtList);
 
