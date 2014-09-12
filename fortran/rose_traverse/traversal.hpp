@@ -1,7 +1,7 @@
 #ifndef	OFP_TRAVERSAL_H
 #define	OFP_TRAVERSAL_H
 
-#define  DEBUG_PRINT
+#undef  DEBUG_PRINT
 
 #include <aterm2.h>
 
@@ -1126,7 +1126,6 @@ ATbool ofp_traverse_ObjectName(ATerm term, OFP::Name* ObjectName);
 ATbool ofp_traverse_ObjectName(ATerm term, OFP::ObjectName* ObjectName);
 ATbool ofp_traverse_ParentSubmoduleName(ATerm term, OFP::ParentSubmoduleName* ParentSubmoduleName);
 ATbool ofp_traverse_ParentTypeName(ATerm term, OFP::ParentTypeName* ParentTypeName);
-ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName);
 ATbool ofp_traverse_ProcedureComponentName(ATerm term, OFP::ProcedureComponentName* ProcedureComponentName);
 ATbool ofp_traverse_ProcedureEntityName(ATerm term, OFP::ProcedureEntityName* ProcedureEntityName);
 ATbool ofp_traverse_ProcedureName(ATerm term, OFP::ProcedureName* ProcedureName);
