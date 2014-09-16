@@ -497,6 +497,8 @@ namespace OFP {
    class ReturnStmt;
    class ContainsStmt;
    class StmtFunctionStmt;
+   class Name;
+#ifdef OBSOLETE
    class AncestorModuleName;
    class ArgName;
    class ArrayName;
@@ -526,7 +528,6 @@ namespace OFP {
    class IntrinsicProcedureName;
    class LocalName;
    class ModuleName;
-   class Name;
    class NamelistGroupName;
    class ObjectName;
    class ParentSubmoduleName;
@@ -546,6 +547,7 @@ namespace OFP {
    class TypeName;
    class TypeParamName;
    class UseName;
+#endif
    class ExternalNameList;
    class LabelList;
 
@@ -2029,14 +2031,14 @@ class KindParam : public Node
          return node;
       }
 
-    ScalarIntConstantName* getScalarIntConstantName() {return pScalarIntConstantName;}
+    Name* getScalarIntConstantName() {return pScalarIntConstantName;}
     DigitString* getDigitString() {return pDigitString;}
 
-    void setScalarIntConstantName(ScalarIntConstantName* scalarintconstantname) {pScalarIntConstantName = scalarintconstantname;}
+    void setScalarIntConstantName(Name* scalarintconstantname) {pScalarIntConstantName = scalarintconstantname;}
     void setDigitString(DigitString* digitstring) {pDigitString = digitstring;}
 
  private:
-    ScalarIntConstantName* pScalarIntConstantName;
+    Name* pScalarIntConstantName;
     DigitString* pDigitString;
 };
 
@@ -2537,20 +2539,20 @@ class DerivedTypeStmt : public Statement
 
     Label* getLabel() {return pLabel;}
     OptTypeAttrSpecList* getOptTypeAttrSpecList() {return pOptTypeAttrSpecList;}
-    TypeName* getTypeName() {return pTypeName;}
+    Name* getTypeName() {return pTypeName;}
     OptTypeParamNameList* getOptTypeParamNameList() {return pOptTypeParamNameList;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setOptTypeAttrSpecList(OptTypeAttrSpecList* opttypeattrspeclist) {pOptTypeAttrSpecList = opttypeattrspeclist;}
-    void setTypeName(TypeName* type_name) {pTypeName = type_name;}
+    void setTypeName(Name* type_name) {pTypeName = type_name;}
     void setOptTypeParamNameList(OptTypeParamNameList* opttypeparamnamelist) {pOptTypeParamNameList = opttypeparamnamelist;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
     OptTypeAttrSpecList* pOptTypeAttrSpecList;
-    TypeName* pTypeName;
+    Name* pTypeName;
     OptTypeParamNameList* pOptTypeParamNameList;
     EOS* pEOS;
 };
@@ -2636,14 +2638,14 @@ class TypeAttrSpec : public Node
          return node;
       }
 
-    ParentTypeName* getParentTypeName() {return pParentTypeName;}
+    Name* getParentTypeName() {return pParentTypeName;}
     AccessSpec* getAccessSpec() {return pAccessSpec;}
 
-    void setParentTypeName(ParentTypeName* parenttypename) {pParentTypeName = parenttypename;}
+    void setParentTypeName(Name* parenttypename) {pParentTypeName = parenttypename;}
     void setAccessSpec(AccessSpec* accessspec) {pAccessSpec = accessspec;}
 
  private:
-    ParentTypeName* pParentTypeName;
+    Name* pParentTypeName;
     AccessSpec* pAccessSpec;
 };
 
@@ -2678,7 +2680,7 @@ class TypeParamNameList : public Node
  public:
     TypeParamNameList()
       {
-         pTypeParamNameList = new std::vector<TypeParamName*>();
+         pTypeParamNameList = new std::vector<Name*>();
       }
    virtual ~TypeParamNameList();
 
@@ -2691,12 +2693,12 @@ class TypeParamNameList : public Node
          return node;
       }
 
-    std::vector<TypeParamName*>* getTypeParamNameList() {return pTypeParamNameList;}
+    std::vector<Name*>* getTypeParamNameList() {return pTypeParamNameList;}
 
-    void appendTypeParamName(TypeParamName* typeparamname) {pTypeParamNameList->push_back(typeparamname);}
+    void appendTypeParamName(Name* typeparamname) {pTypeParamNameList->push_back(typeparamname);}
 
  private:
-    std::vector<TypeParamName*>* pTypeParamNameList;
+    std::vector<Name*>* pTypeParamNameList;
 };
 
 class PrivateOrSequence : public Node
@@ -2760,20 +2762,20 @@ class EndTypeStmt : public Statement
       }
 
     Label* getLabel() {return pLabel;}
-    TypeName* getTypeName() {return pTypeName;}
+    Name* getTypeName() {return pTypeName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setTypeName(TypeName* type_name) {pTypeName = type_name;}
+    void setTypeName(Name* type_name) {pTypeName = type_name;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    TypeName* pTypeName;
+    Name* pTypeName;
     EOS* pEOS;
 };
 
-class SequenceStmt : public Node
+class SequenceStmt : public Statement
 {
  public:
     SequenceStmt()
@@ -2804,7 +2806,7 @@ class SequenceStmt : public Node
     EOS* pEOS;
 };
 
-class TypeParamDefStmt : public Node
+class TypeParamDefStmt : public Statement
 {
  public:
     TypeParamDefStmt()
@@ -2870,14 +2872,14 @@ class TypeParamDecl : public Node
          return node;
       }
 
-    TypeParamName* getTypeParamName() {return pTypeParamName;}
+    Name* getTypeParamName() {return pTypeParamName;}
     Expr* getExpr() {return pExpr;}
 
-    void setTypeParamName(TypeParamName* typeparamname) {pTypeParamName = typeparamname;}
+    void setTypeParamName(Name* typeparamname) {pTypeParamName = typeparamname;}
     void setExpr(Expr* expr) {pExpr = expr;}
 
  private:
-    TypeParamName* pTypeParamName;
+    Name* pTypeParamName;
     Expr* pExpr;
 };
 
@@ -2997,7 +2999,7 @@ class ComponentDefStmt : public Node
     DataComponentDefStmt* pDataComponentDefStmt;
 };
 
-class DataComponentDefStmt : public Node
+class DataComponentDefStmt : public Statement
 {
  public:
     DataComponentDefStmt()
@@ -3168,20 +3170,20 @@ class ComponentDecl : public Node
          return node;
       }
 
-    ComponentName* getComponentName() {return pComponentName;}
+    Name* getComponentName() {return pComponentName;}
     ComponentArraySpec* getComponentArraySpec() {return pComponentArraySpec;}
     CoarraySpec* getCoarraySpec() {return pCoarraySpec;}
     CharLength* getCharLength() {return pCharLength;}
     ComponentInitialization* getComponentInitialization() {return pComponentInitialization;}
 
-    void setComponentName(ComponentName* componentname) {pComponentName = componentname;}
+    void setComponentName(Name* componentname) {pComponentName = componentname;}
     void setComponentArraySpec(ComponentArraySpec* componentarrayspec) {pComponentArraySpec = componentarrayspec;}
     void setCoarraySpec(CoarraySpec* coarrayspec) {pCoarraySpec = coarrayspec;}
     void setCharLength(CharLength* charlength) {pCharLength = charlength;}
     void setComponentInitialization(ComponentInitialization* componentinitialization) {pComponentInitialization = componentinitialization;}
 
  private:
-    ComponentName* pComponentName;
+    Name* pComponentName;
     ComponentArraySpec* pComponentArraySpec;
     CoarraySpec* pCoarraySpec;
     CharLength* pCharLength;
@@ -3252,7 +3254,7 @@ class ComponentArraySpec : public Node
     ExplicitShapeSpecList* pExplicitShapeSpecList;
 };
 
-class ProcComponentDefStmt : public Node
+class ProcComponentDefStmt : public Statement
 {
  public:
     ProcComponentDefStmt()
@@ -3429,7 +3431,7 @@ class InitialDataTarget : public Node
     Designator* pDesignator;
 };
 
-class PrivateComponentsStmt : public Node
+class PrivateComponentsStmt : public Statement
 {
  public:
     PrivateComponentsStmt()
@@ -3496,7 +3498,7 @@ class TypeBoundProcedurePart : public Node
     std::vector<TypeBoundProcBinding*>* pTypeBoundProcBindingList;
 };
 
-class BindingPrivateStmt : public Node
+class BindingPrivateStmt : public Statement
 {
  public:
     BindingPrivateStmt()
@@ -3571,7 +3573,7 @@ class TypeBoundProcBinding : public Node
     TypeBoundProcedureStmt* pTypeBoundProcedureStmt;
 };
 
-class TypeBoundProcedureStmt : public Node
+class TypeBoundProcedureStmt : public Statement
 {
  public:
     TypeBoundProcedureStmt()
@@ -3635,7 +3637,7 @@ class BindingNameList : public Node
  public:
     BindingNameList()
       {
-         pBindingNameList = new std::vector<BindingName*>();
+         pBindingNameList = new std::vector<Name*>();
       }
    virtual ~BindingNameList();
 
@@ -3648,12 +3650,12 @@ class BindingNameList : public Node
          return node;
       }
 
-    std::vector<BindingName*>* getBindingNameList() {return pBindingNameList;}
+    std::vector<Name*>* getBindingNameList() {return pBindingNameList;}
 
-    void appendBindingName(BindingName* bindingname) {pBindingNameList->push_back(bindingname);}
+    void appendBindingName(Name* bindingname) {pBindingNameList->push_back(bindingname);}
 
  private:
-    std::vector<BindingName*>* pBindingNameList;
+    std::vector<Name*>* pBindingNameList;
 };
 
 class BindingAttrList : public Node
@@ -3702,15 +3704,15 @@ class TypeBoundProcDecl : public Node
          return node;
       }
 
-    BindingName* getBindingName() {return pBindingName;}
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getBindingName() {return pBindingName;}
+    Name* getProcedureName() {return pProcedureName;}
 
-    void setBindingName(BindingName* bindingname) {pBindingName = bindingname;}
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setBindingName(Name* bindingname) {pBindingName = bindingname;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
 
  private:
-    BindingName* pBindingName;
-    ProcedureName* pProcedureName;
+    Name* pBindingName;
+    Name* pProcedureName;
 };
 
 class TypeBoundProcDeclList : public Node
@@ -3739,7 +3741,7 @@ class TypeBoundProcDeclList : public Node
     std::vector<TypeBoundProcDecl*>* pTypeBoundProcDeclList;
 };
 
-class TypeBoundGenericStmt : public Node
+class TypeBoundGenericStmt : public Statement
 {
  public:
     TypeBoundGenericStmt()
@@ -3816,17 +3818,17 @@ class BindingAttr : public Node
       }
 
     AccessSpec* getAccessSpec() {return pAccessSpec;}
-    ArgName* getArgName() {return pArgName;}
+    Name* getArgName() {return pArgName;}
 
     void setAccessSpec(AccessSpec* accessspec) {pAccessSpec = accessspec;}
-    void setArgName(ArgName* argname) {pArgName = argname;}
+    void setArgName(Name* argname) {pArgName = argname;}
 
  private:
     AccessSpec* pAccessSpec;
-    ArgName* pArgName;
+    Name* pArgName;
 };
 
-class FinalProcedureStmt : public Node
+class FinalProcedureStmt : public Statement
 {
  public:
     FinalProcedureStmt()
@@ -3867,7 +3869,7 @@ class FinalSubroutineNameList : public Node
  public:
     FinalSubroutineNameList()
       {
-         pFinalSubroutineNameList = new std::vector<FinalSubroutineName*>();
+         pFinalSubroutineNameList = new std::vector<Name*>();
       }
    virtual ~FinalSubroutineNameList();
 
@@ -3880,12 +3882,12 @@ class FinalSubroutineNameList : public Node
          return node;
       }
 
-    std::vector<FinalSubroutineName*>* getFinalSubroutineNameList() {return pFinalSubroutineNameList;}
+    std::vector<Name*>* getFinalSubroutineNameList() {return pFinalSubroutineNameList;}
 
-    void appendFinalSubroutineName(FinalSubroutineName* finalsubroutinename) {pFinalSubroutineNameList->push_back(finalsubroutinename);}
+    void appendFinalSubroutineName(Name* finalsubroutinename) {pFinalSubroutineNameList->push_back(finalsubroutinename);}
 
  private:
-    std::vector<FinalSubroutineName*>* pFinalSubroutineNameList;
+    std::vector<Name*>* pFinalSubroutineNameList;
 };
 
 class DerivedTypeSpec : public Node
@@ -3908,14 +3910,14 @@ class DerivedTypeSpec : public Node
          return node;
       }
 
-    TypeName* getTypeName() {return pTypeName;}
+    Name* getTypeName() {return pTypeName;}
     TypeParamSpecList* getTypeParamSpecList() {return pTypeParamSpecList;}
 
-    void setTypeName(TypeName* type_name) {pTypeName = type_name;}
+    void setTypeName(Name* type_name) {pTypeName = type_name;}
     void setTypeParamSpecList(TypeParamSpecList* typeparamspeclist) {pTypeParamSpecList = typeparamspeclist;}
 
  private:
-    TypeName* pTypeName;
+    Name* pTypeName;
     TypeParamSpecList* pTypeParamSpecList;
 };
 
@@ -4118,7 +4120,7 @@ class EnumDef : public Node
     EndEnumStmt* pEndEnumStmt;
 };
 
-class EnumDefStmt : public Node
+class EnumDefStmt : public Statement
 {
  public:
     EnumDefStmt()
@@ -4149,7 +4151,7 @@ class EnumDefStmt : public Node
     EOS* pEOS;
 };
 
-class EnumeratorDefStmt : public Node
+class EnumeratorDefStmt : public Statement
 {
  public:
     EnumeratorDefStmt()
@@ -4242,7 +4244,7 @@ class EnumeratorList : public Node
     std::vector<Enumerator*>* pEnumeratorList;
 };
 
-class EndEnumStmt : public Node
+class EndEnumStmt : public Statement
 {
  public:
     EndEnumStmt()
@@ -4728,20 +4730,20 @@ class EntityDecl : public Node
          return node;
       }
 
-    ObjectName* getObjectName() {return pObjectName;}
+    Name* getObjectName() {return pObjectName;}
     ArraySpec* getArraySpec() {return pArraySpec;}
     CoarraySpec* getCoarraySpec() {return pCoarraySpec;}
     CharLength* getCharLength() {return pCharLength;}
     Initialization* getInitialization() {return pInitialization;}
 
-    void setObjectName(ObjectName* objectname) {pObjectName = objectname;}
+    void setObjectName(Name* objectname) {pObjectName = objectname;}
     void setArraySpec(ArraySpec* arrayspec) {pArraySpec = arrayspec;}
     void setCoarraySpec(CoarraySpec* coarrayspec) {pCoarraySpec = coarrayspec;}
     void setCharLength(CharLength* charlength) {pCharLength = charlength;}
     void setInitialization(Initialization* initialization) {pInitialization = initialization;}
 
  private:
-    ObjectName* pObjectName;
+    Name* pObjectName;
     ArraySpec* pArraySpec;
     CoarraySpec* pCoarraySpec;
     CharLength* pCharLength;
@@ -5490,7 +5492,7 @@ class IntentSpec : public Node
  private:
 };
 
-class AccessStmt : public Node
+class AccessStmt : public Statement
 {
  public:
     AccessStmt()
@@ -5590,7 +5592,7 @@ class AccessIdList : public Node
     std::vector<AccessId*>* pAccessIdList;
 };
 
-class AllocatableStmt : public Node
+class AllocatableStmt : public Statement
 {
  public:
     AllocatableStmt()
@@ -5648,16 +5650,16 @@ class AllocatableDecl : public Node
          return node;
       }
 
-    ObjectName* getObjectName() {return pObjectName;}
+    Name* getObjectName() {return pObjectName;}
     ArraySpec* getArraySpec() {return pArraySpec;}
     CoarraySpec* getCoarraySpec() {return pCoarraySpec;}
 
-    void setObjectName(ObjectName* objectname) {pObjectName = objectname;}
+    void setObjectName(Name* objectname) {pObjectName = objectname;}
     void setArraySpec(ArraySpec* arrayspec) {pArraySpec = arrayspec;}
     void setCoarraySpec(CoarraySpec* coarrayspec) {pCoarraySpec = coarrayspec;}
 
  private:
-    ObjectName* pObjectName;
+    Name* pObjectName;
     ArraySpec* pArraySpec;
     CoarraySpec* pCoarraySpec;
 };
@@ -5688,7 +5690,7 @@ class AllocatableDeclList : public Node
     std::vector<AllocatableDecl*>* pAllocatableDeclList;
 };
 
-class AsynchronousStmt : public Node
+class AsynchronousStmt : public Statement
 {
  public:
     AsynchronousStmt()
@@ -5724,7 +5726,7 @@ class AsynchronousStmt : public Node
     EOS* pEOS;
 };
 
-class BindStmt : public Node
+class BindStmt : public Statement
 {
  public:
     BindStmt()
@@ -5792,15 +5794,15 @@ class BindEntity : public Node
          return node;
       }
 
-    CommonBlockName* getCommonBlockName() {return pCommonBlockName;}
-    EntityName* getEntityName() {return pEntityName;}
+    Name* getCommonBlockName() {return pCommonBlockName;}
+    Name* getEntityName() {return pEntityName;}
 
-    void setCommonBlockName(CommonBlockName* commonblockname) {pCommonBlockName = commonblockname;}
-    void setEntityName(EntityName* entityname) {pEntityName = entityname;}
+    void setCommonBlockName(Name* commonblockname) {pCommonBlockName = commonblockname;}
+    void setEntityName(Name* entityname) {pEntityName = entityname;}
 
  private:
-    CommonBlockName* pCommonBlockName;
-    EntityName* pEntityName;
+    Name* pCommonBlockName;
+    Name* pEntityName;
 };
 
 class BindEntityList : public Node
@@ -5829,7 +5831,7 @@ class BindEntityList : public Node
     std::vector<BindEntity*>* pBindEntityList;
 };
 
-class CodimensionStmt : public Node
+class CodimensionStmt : public Statement
 {
  public:
     CodimensionStmt()
@@ -5885,14 +5887,14 @@ class CodimensionDecl : public Node
          return node;
       }
 
-    CoarrayName* getCoarrayName() {return pCoarrayName;}
+    Name* getCoarrayName() {return pCoarrayName;}
     CoarraySpec* getCoarraySpec() {return pCoarraySpec;}
 
-    void setCoarrayName(CoarrayName* coarrayname) {pCoarrayName = coarrayname;}
+    void setCoarrayName(Name* coarrayname) {pCoarrayName = coarrayname;}
     void setCoarraySpec(CoarraySpec* coarrayspec) {pCoarraySpec = coarrayspec;}
 
  private:
-    CoarrayName* pCoarrayName;
+    Name* pCoarrayName;
     CoarraySpec* pCoarraySpec;
 };
 
@@ -5922,7 +5924,7 @@ class CodimensionDeclList : public Node
     std::vector<CodimensionDecl*>* pCodimensionDeclList;
 };
 
-class ContiguousStmt : public Node
+class ContiguousStmt : public Statement
 {
  public:
     ContiguousStmt()
@@ -5963,7 +5965,7 @@ class ObjectNameList : public Node
  public:
     ObjectNameList()
       {
-         pObjectNameList = new std::vector<ObjectName*>();
+         pObjectNameList = new std::vector<Name*>();
       }
    virtual ~ObjectNameList();
 
@@ -5976,15 +5978,15 @@ class ObjectNameList : public Node
          return node;
       }
 
-    std::vector<ObjectName*>* getObjectNameList() {return pObjectNameList;}
+    std::vector<Name*>* getObjectNameList() {return pObjectNameList;}
 
-    void appendObjectName(ObjectName* objectname) {pObjectNameList->push_back(objectname);}
+    void appendObjectName(Name* objectname) {pObjectNameList->push_back(objectname);}
 
  private:
-    std::vector<ObjectName*>* pObjectNameList;
+    std::vector<Name*>* pObjectNameList;
 };
 
-class DataStmt : public Node
+class DataStmt : public Statement
 {
  public:
     DataStmt()
@@ -6495,7 +6497,7 @@ class ConstantSubobject : public Node
     Designator* pDesignator;
 };
 
-class DimensionStmt : public Node
+class DimensionStmt : public Statement
 {
  public:
     DimensionStmt()
@@ -6551,14 +6553,14 @@ class ArrayNameSpec : public Node
          return node;
       }
 
-    ArrayName* getArrayName() {return pArrayName;}
+    Name* getArrayName() {return pArrayName;}
     ArraySpec* getArraySpec() {return pArraySpec;}
 
-    void setArrayName(ArrayName* arrayname) {pArrayName = arrayname;}
+    void setArrayName(Name* arrayname) {pArrayName = arrayname;}
     void setArraySpec(ArraySpec* arrayspec) {pArraySpec = arrayspec;}
 
  private:
-    ArrayName* pArrayName;
+    Name* pArrayName;
     ArraySpec* pArraySpec;
 };
 
@@ -6588,7 +6590,7 @@ class ArrayNameSpecList : public Node
     std::vector<ArrayNameSpec*>* pArrayNameSpecList;
 };
 
-class IntentStmt : public Node
+class IntentStmt : public Statement
 {
  public:
     IntentStmt()
@@ -6655,7 +6657,7 @@ class DummyArgNameList : public Node
     std::vector<DummyArgName*>* pDummyArgNameList;
 };
 
-class OptionalStmt : public Node
+class OptionalStmt : public Statement
 {
  public:
     OptionalStmt()
@@ -6691,7 +6693,7 @@ class OptionalStmt : public Node
     EOS* pEOS;
 };
 
-class ParameterStmt : public Node
+class ParameterStmt : public Statement
 {
  public:
     ParameterStmt()
@@ -6784,7 +6786,7 @@ class NamedConstantDefList : public Node
     std::vector<NamedConstantDef*>* pNamedConstantDefList;
 };
 
-class PointerStmt : public Node
+class PointerStmt : public Statement
 {
  public:
     PointerStmt()
@@ -6849,17 +6851,17 @@ class PointerDecl : public Node
          return node;
       }
 
-    ProcEntityName* getProcEntityName() {return pProcEntityName;}
-    ObjectName* getObjectName() {return pObjectName;}
+    Name* getProcEntityName() {return pProcEntityName;}
+    Name* getObjectName() {return pObjectName;}
     DeferredShapeSpecList* getDeferredShapeSpecList() {return pDeferredShapeSpecList;}
 
-    void setProcEntityName(ProcEntityName* procentityname) {pProcEntityName = procentityname;}
-    void setObjectName(ObjectName* objectname) {pObjectName = objectname;}
+    void setProcEntityName(Name* procentityname) {pProcEntityName = procentityname;}
+    void setObjectName(Name* objectname) {pObjectName = objectname;}
     void setDeferredShapeSpecList(DeferredShapeSpecList* deferredshapespeclist) {pDeferredShapeSpecList = deferredshapespeclist;}
 
  private:
-    ProcEntityName* pProcEntityName;
-    ObjectName* pObjectName;
+    Name* pProcEntityName;
+    Name* pObjectName;
     DeferredShapeSpecList* pDeferredShapeSpecList;
 };
 
@@ -6889,7 +6891,7 @@ class PointerDeclList : public Node
     std::vector<PointerDecl*>* pPointerDeclList;
 };
 
-class ProtectedStmt : public Node
+class ProtectedStmt : public Statement
 {
  public:
     ProtectedStmt()
@@ -6930,7 +6932,7 @@ class EntityNameList : public Node
  public:
     EntityNameList()
       {
-         pEntityNameList = new std::vector<EntityName*>();
+         pEntityNameList = new std::vector<Name*>();
       }
    virtual ~EntityNameList();
 
@@ -6943,15 +6945,15 @@ class EntityNameList : public Node
          return node;
       }
 
-    std::vector<EntityName*>* getEntityNameList() {return pEntityNameList;}
+    std::vector<Name*>* getEntityNameList() {return pEntityNameList;}
 
-    void appendEntityName(EntityName* entityname) {pEntityNameList->push_back(entityname);}
+    void appendEntityName(Name* entityname) {pEntityNameList->push_back(entityname);}
 
  private:
-    std::vector<EntityName*>* pEntityNameList;
+    std::vector<Name*>* pEntityNameList;
 };
 
-class SaveStmt : public Node
+class SaveStmt : public Statement
 {
  public:
     SaveStmt()
@@ -7021,15 +7023,15 @@ class SavedEntity : public Node
          return node;
       }
 
-    CommonBlockName* getCommonBlockName() {return pCommonBlockName;}
-    ObjectName* getObjectName() {return pObjectName;}
+    Name* getCommonBlockName() {return pCommonBlockName;}
+    Name* getObjectName() {return pObjectName;}
 
-    void setCommonBlockName(CommonBlockName* commonblockname) {pCommonBlockName = commonblockname;}
-    void setObjectName(ObjectName* objectname) {pObjectName = objectname;}
+    void setCommonBlockName(Name* commonblockname) {pCommonBlockName = commonblockname;}
+    void setObjectName(Name* objectname) {pObjectName = objectname;}
 
  private:
-    CommonBlockName* pCommonBlockName;
-    ObjectName* pObjectName;
+    Name* pCommonBlockName;
+    Name* pObjectName;
 };
 
 class SavedEntityList : public Node
@@ -7084,7 +7086,7 @@ class ProcPointerName : public Node
     Ident* pIdent;
 };
 
-class TargetStmt : public Node
+class TargetStmt : public Statement
 {
  public:
     TargetStmt()
@@ -7142,16 +7144,16 @@ class TargetDecl : public Node
          return node;
       }
 
-    ObjectName* getObjectName() {return pObjectName;}
+    Name* getObjectName() {return pObjectName;}
     ArraySpec* getArraySpec() {return pArraySpec;}
     CoarraySpec* getCoarraySpec() {return pCoarraySpec;}
 
-    void setObjectName(ObjectName* objectname) {pObjectName = objectname;}
+    void setObjectName(Name* objectname) {pObjectName = objectname;}
     void setArraySpec(ArraySpec* arrayspec) {pArraySpec = arrayspec;}
     void setCoarraySpec(CoarraySpec* coarrayspec) {pCoarraySpec = coarrayspec;}
 
  private:
-    ObjectName* pObjectName;
+    Name* pObjectName;
     ArraySpec* pArraySpec;
     CoarraySpec* pCoarraySpec;
 };
@@ -7182,7 +7184,7 @@ class TargetDeclList : public Node
     std::vector<TargetDecl*>* pTargetDeclList;
 };
 
-class ValueStmt : public Node
+class ValueStmt : public Statement
 {
  public:
     ValueStmt()
@@ -7218,7 +7220,7 @@ class ValueStmt : public Node
     EOS* pEOS;
 };
 
-class VolatileStmt : public Node
+class VolatileStmt : public Statement
 {
  public:
     VolatileStmt()
@@ -7405,7 +7407,7 @@ class LetterSpecList : public Node
     std::vector<LetterSpec*>* pLetterSpecList;
 };
 
-class NamelistStmt : public Node
+class NamelistStmt : public Statement
 {
  public:
     NamelistStmt()
@@ -7461,14 +7463,14 @@ class NamelistEntry : public Node
          return node;
       }
 
-    NamelistGroupName* getNamelistGroupName() {return pNamelistGroupName;}
+    Name* getNamelistGroupName() {return pNamelistGroupName;}
     NamelistGroupObjectList* getNamelistGroupObjectList() {return pNamelistGroupObjectList;}
 
-    void setNamelistGroupName(NamelistGroupName* namelistgroupname) {pNamelistGroupName = namelistgroupname;}
+    void setNamelistGroupName(Name* namelistgroupname) {pNamelistGroupName = namelistgroupname;}
     void setNamelistGroupObjectList(NamelistGroupObjectList* namelistgroupobjectlist) {pNamelistGroupObjectList = namelistgroupobjectlist;}
 
  private:
-    NamelistGroupName* pNamelistGroupName;
+    Name* pNamelistGroupName;
     NamelistGroupObjectList* pNamelistGroupObjectList;
 };
 
@@ -7557,7 +7559,7 @@ class NamelistGroupObjectList : public Node
     std::vector<NamelistGroupObject*>* pNamelistGroupObjectList;
 };
 
-class EquivalenceStmt : public Node
+class EquivalenceStmt : public Statement
 {
  public:
     EquivalenceStmt()
@@ -7702,7 +7704,7 @@ class EquivalenceObjectList : public Node
     std::vector<EquivalenceObject*>* pEquivalenceObjectList;
 };
 
-class CommonStmt : public Node
+class CommonStmt : public Statement
 {
  public:
     CommonStmt()
@@ -7771,14 +7773,14 @@ class CommonBlockEntry1 : public Node
       }
 
     CommonBlockObjectList* getCommonBlockObjectList() {return pCommonBlockObjectList;}
-    CommonBlockName* getCommonBlockName() {return pCommonBlockName;}
+    Name* getCommonBlockName() {return pCommonBlockName;}
 
     void setCommonBlockObjectList(CommonBlockObjectList* commonblockobjectlist) {pCommonBlockObjectList = commonblockobjectlist;}
-    void setCommonBlockName(CommonBlockName* commonblockname) {pCommonBlockName = commonblockname;}
+    void setCommonBlockName(Name* commonblockname) {pCommonBlockName = commonblockname;}
 
  private:
     CommonBlockObjectList* pCommonBlockObjectList;
-    CommonBlockName* pCommonBlockName;
+    Name* pCommonBlockName;
 };
 
 class CommonBlockEntry : public Node
@@ -7801,14 +7803,14 @@ class CommonBlockEntry : public Node
          return node;
       }
 
-    CommonBlockName* getCommonBlockName() {return pCommonBlockName;}
+    Name* getCommonBlockName() {return pCommonBlockName;}
     CommonBlockObjectList* getCommonBlockObjectList() {return pCommonBlockObjectList;}
 
-    void setCommonBlockName(CommonBlockName* commonblockname) {pCommonBlockName = commonblockname;}
+    void setCommonBlockName(Name* commonblockname) {pCommonBlockName = commonblockname;}
     void setCommonBlockObjectList(CommonBlockObjectList* commonblockobjectlist) {pCommonBlockObjectList = commonblockobjectlist;}
 
  private:
-    CommonBlockName* pCommonBlockName;
+    Name* pCommonBlockName;
     CommonBlockObjectList* pCommonBlockObjectList;
 };
 
@@ -8134,20 +8136,20 @@ class ParentString : public Node
     StructureComponent* getStructureComponent() {return pStructureComponent;}
     CoindexedNamedObject* getCoindexedNamedObject() {return pCoindexedNamedObject;}
     ArrayElement* getArrayElement() {return pArrayElement;}
-    ScalarVariableName* getScalarVariableName() {return pScalarVariableName;}
+    Name* getScalarVariableName() {return pScalarVariableName;}
 
     void setConstant(Constant* constant) {pConstant = constant;}
     void setStructureComponent(StructureComponent* structurecomponent) {pStructureComponent = structurecomponent;}
     void setCoindexedNamedObject(CoindexedNamedObject* coindexednamedobject) {pCoindexedNamedObject = coindexednamedobject;}
     void setArrayElement(ArrayElement* arrayelement) {pArrayElement = arrayelement;}
-    void setScalarVariableName(ScalarVariableName* scalarvariablename) {pScalarVariableName = scalarvariablename;}
+    void setScalarVariableName(Name* scalarvariablename) {pScalarVariableName = scalarvariablename;}
 
  private:
     Constant* pConstant;
     StructureComponent* pStructureComponent;
     CoindexedNamedObject* pCoindexedNamedObject;
     ArrayElement* pArrayElement;
-    ScalarVariableName* pScalarVariableName;
+    Name* pScalarVariableName;
 };
 
 class SubstringRange : public Node
@@ -8311,14 +8313,14 @@ class TypeParamInquiry : public Node
       }
 
     Designator* getDesignator() {return pDesignator;}
-    TypeParamName* getTypeParamName() {return pTypeParamName;}
+    Name* getTypeParamName() {return pTypeParamName;}
 
     void setDesignator(Designator* designator) {pDesignator = designator;}
-    void setTypeParamName(TypeParamName* typeparamname) {pTypeParamName = typeparamname;}
+    void setTypeParamName(Name* typeparamname) {pTypeParamName = typeparamname;}
 
  private:
     Designator* pDesignator;
-    TypeParamName* pTypeParamName;
+    Name* pTypeParamName;
 };
 
 class ArrayElement : public Node
@@ -8572,7 +8574,7 @@ class CosubscriptList : public Node
     std::vector<Cosubscript*>* pCosubscriptList;
 };
 
-class AllocateStmt : public Node
+class AllocateStmt : public Statement
 {
  public:
     AllocateStmt()
@@ -9052,7 +9054,7 @@ class AllocateCoshapeSpecList : public Node
     std::vector<AllocateCoshapeSpec*>* pAllocateCoshapeSpecList;
 };
 
-class NullifyStmt : public Node
+class NullifyStmt : public Statement
 {
  public:
     NullifyStmt()
@@ -9158,7 +9160,7 @@ class PointerObjectList : public Node
     std::vector<PointerObject*>* pPointerObjectList;
 };
 
-class DeallocateStmt : public Node
+class DeallocateStmt : public Statement
 {
  public:
     DeallocateStmt()
@@ -9645,7 +9647,7 @@ class AssignmentStmt : public Statement
     EOS* pEOS;
 };
 
-class PointerAssignmentStmt : public Node
+class PointerAssignmentStmt : public Statement
 {
  public:
     PointerAssignmentStmt()
@@ -9744,16 +9746,16 @@ class DataPointerObject : public Node
       }
 
     Variable* getVariable() {return pVariable;}
-    DataPointerComponentName* getDataPointerComponentName() {return pDataPointerComponentName;}
+    Name* getDataPointerComponentName() {return pDataPointerComponentName;}
     VariableName* getVariableName() {return pVariableName;}
 
     void setVariable(Variable* variable) {pVariable = variable;}
-    void setDataPointerComponentName(DataPointerComponentName* datapointercomponentname) {pDataPointerComponentName = datapointercomponentname;}
+    void setDataPointerComponentName(Name* datapointercomponentname) {pDataPointerComponentName = datapointercomponentname;}
     void setVariableName(VariableName* variablename) {pVariableName = variablename;}
 
  private:
     Variable* pVariable;
-    DataPointerComponentName* pDataPointerComponentName;
+    Name* pDataPointerComponentName;
     VariableName* pVariableName;
 };
 
@@ -9951,14 +9953,14 @@ class ProcComponentRef : public Node
       }
 
     Variable* getVariable() {return pVariable;}
-    ProcedureComponentName* getProcedureComponentName() {return pProcedureComponentName;}
+    Name* getProcedureComponentName() {return pProcedureComponentName;}
 
     void setVariable(Variable* variable) {pVariable = variable;}
-    void setProcedureComponentName(ProcedureComponentName* procedurecomponentname) {pProcedureComponentName = procedurecomponentname;}
+    void setProcedureComponentName(Name* procedurecomponentname) {pProcedureComponentName = procedurecomponentname;}
 
  private:
     Variable* pVariable;
-    ProcedureComponentName* pProcedureComponentName;
+    Name* pProcedureComponentName;
 };
 
 class ProcTarget : public Node
@@ -9992,16 +9994,16 @@ class ProcTarget : public Node
       }
 
     ProcComponentRef* getProcComponentRef() {return pProcComponentRef;}
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getProcedureName() {return pProcedureName;}
     Expr* getExpr() {return pExpr;}
 
     void setProcComponentRef(ProcComponentRef* proccomponentref) {pProcComponentRef = proccomponentref;}
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
     void setExpr(Expr* expr) {pExpr = expr;}
 
  private:
     ProcComponentRef* pProcComponentRef;
-    ProcedureName* pProcedureName;
+    Name* pProcedureName;
     Expr* pExpr;
 };
 
@@ -10149,7 +10151,7 @@ class ElsewhereClause : public Node
     std::vector<WhereBodyConstruct*>* pWhereBodyConstructList;
 };
 
-class WhereConstructStmt : public Node
+class WhereConstructStmt : public Statement
 {
  public:
     WhereConstructStmt()
@@ -10286,7 +10288,7 @@ class MaskExpr : public Node
     LogicalExpr* pLogicalExpr;
 };
 
-class MaskedElsewhereStmt : public Node
+class MaskedElsewhereStmt : public Statement
 {
  public:
     MaskedElsewhereStmt()
@@ -10327,7 +10329,7 @@ class MaskedElsewhereStmt : public Node
     EOS* pEOS;
 };
 
-class ElsewhereStmt : public Node
+class ElsewhereStmt : public Statement
 {
  public:
     ElsewhereStmt()
@@ -10363,7 +10365,7 @@ class ElsewhereStmt : public Node
     EOS* pEOS;
 };
 
-class EndWhereStmt : public Node
+class EndWhereStmt : public Statement
 {
  public:
     EndWhereStmt()
@@ -10435,7 +10437,7 @@ class ForallConstruct : public Node
     EndForallStmt* pEndForallStmt;
 };
 
-class ForallConstructStmt : public Node
+class ForallConstructStmt : public Statement
 {
  public:
     ForallConstructStmt()
@@ -10460,18 +10462,18 @@ class ForallConstructStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ForallConstructName* getForallConstructName() {return pForallConstructName;}
+    Name* getForallConstructName() {return pForallConstructName;}
     ForallHeader* getForallHeader() {return pForallHeader;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setForallConstructName(ForallConstructName* forallconstructname) {pForallConstructName = forallconstructname;}
+    void setForallConstructName(Name* forallconstructname) {pForallConstructName = forallconstructname;}
     void setForallHeader(ForallHeader* forallheader) {pForallHeader = forallheader;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ForallConstructName* pForallConstructName;
+    Name* pForallConstructName;
     ForallHeader* pForallHeader;
     EOS* pEOS;
 };
@@ -10534,16 +10536,16 @@ class ForallTripletSpec : public Node
          return node;
       }
 
-    IndexName* getIndexName() {return pIndexName;}
+    Name* getIndexName() {return pIndexName;}
     ForallLimit* getForallLimit() {return pForallLimit;}
     ForallStep* getForallStep() {return pForallStep;}
 
-    void setIndexName(IndexName* indexname) {pIndexName = indexname;}
+    void setIndexName(Name* indexname) {pIndexName = indexname;}
     void setForallLimit(ForallLimit* foralllimit) {pForallLimit = foralllimit;}
     void setForallStep(ForallStep* forallstep) {pForallStep = forallstep;}
 
  private:
-    IndexName* pIndexName;
+    Name* pIndexName;
     ForallLimit* pForallLimit;
     ForallStep* pForallStep;
 };
@@ -10720,7 +10722,7 @@ class ForallAssignmentStmt : public Node
     AssignmentStmt* pAssignmentStmt;
 };
 
-class EndForallStmt : public Node
+class EndForallStmt : public Statement
 {
  public:
     EndForallStmt()
@@ -10743,16 +10745,16 @@ class EndForallStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ForallConstructName* getForallConstructName() {return pForallConstructName;}
+    Name* getForallConstructName() {return pForallConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setForallConstructName(ForallConstructName* forallconstructname) {pForallConstructName = forallconstructname;}
+    void setForallConstructName(Name* forallconstructname) {pForallConstructName = forallconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ForallConstructName* pForallConstructName;
+    Name* pForallConstructName;
     EOS* pEOS;
 };
 
@@ -10854,7 +10856,7 @@ class AssociateConstruct : public Node
     EndAssociateStmt* pEndAssociateStmt;
 };
 
-class AssociateStmt : public Node
+class AssociateStmt : public Statement
 {
  public:
     AssociateStmt()
@@ -10879,18 +10881,18 @@ class AssociateStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    AssociateConstructName* getAssociateConstructName() {return pAssociateConstructName;}
+    Name* getAssociateConstructName() {return pAssociateConstructName;}
     AssociationList* getAssociationList() {return pAssociationList;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setAssociateConstructName(AssociateConstructName* associateconstructname) {pAssociateConstructName = associateconstructname;}
+    void setAssociateConstructName(Name* associateconstructname) {pAssociateConstructName = associateconstructname;}
     void setAssociationList(AssociationList* associationlist) {pAssociationList = associationlist;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    AssociateConstructName* pAssociateConstructName;
+    Name* pAssociateConstructName;
     AssociationList* pAssociationList;
     EOS* pEOS;
 };
@@ -10915,14 +10917,14 @@ class Association : public Node
          return node;
       }
 
-    AssociateName* getAssociateName() {return pAssociateName;}
+    Name* getAssociateName() {return pAssociateName;}
     Selector* getSelector() {return pSelector;}
 
-    void setAssociateName(AssociateName* associatename) {pAssociateName = associatename;}
+    void setAssociateName(Name* associatename) {pAssociateName = associatename;}
     void setSelector(Selector* selector) {pSelector = selector;}
 
  private:
-    AssociateName* pAssociateName;
+    Name* pAssociateName;
     Selector* pSelector;
 };
 
@@ -10990,7 +10992,7 @@ class Selector : public Node
     Expr* pExpr;
 };
 
-class EndAssociateStmt : public Node
+class EndAssociateStmt : public Statement
 {
  public:
     EndAssociateStmt()
@@ -11013,16 +11015,16 @@ class EndAssociateStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    AssociateConstructName* getAssociateConstructName() {return pAssociateConstructName;}
+    Name* getAssociateConstructName() {return pAssociateConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setAssociateConstructName(AssociateConstructName* associateconstructname) {pAssociateConstructName = associateconstructname;}
+    void setAssociateConstructName(Name* associateconstructname) {pAssociateConstructName = associateconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    AssociateConstructName* pAssociateConstructName;
+    Name* pAssociateConstructName;
     EOS* pEOS;
 };
 
@@ -11067,7 +11069,7 @@ class BlockConstruct : public Node
     EndBlockStmt* pEndBlockStmt;
 };
 
-class BlockStmt : public Node
+class BlockStmt : public Statement
 {
  public:
     BlockStmt()
@@ -11090,20 +11092,20 @@ class BlockStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    BlockConstructName* getBlockConstructName() {return pBlockConstructName;}
+    Name* getBlockConstructName() {return pBlockConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setBlockConstructName(BlockConstructName* blockconstructname) {pBlockConstructName = blockconstructname;}
+    void setBlockConstructName(Name* blockconstructname) {pBlockConstructName = blockconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    BlockConstructName* pBlockConstructName;
+    Name* pBlockConstructName;
     EOS* pEOS;
 };
 
-class EndBlockStmt : public Node
+class EndBlockStmt : public Statement
 {
  public:
     EndBlockStmt()
@@ -11126,16 +11128,16 @@ class EndBlockStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    BlockConstructName* getBlockConstructName() {return pBlockConstructName;}
+    Name* getBlockConstructName() {return pBlockConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setBlockConstructName(BlockConstructName* blockconstructname) {pBlockConstructName = blockconstructname;}
+    void setBlockConstructName(Name* blockconstructname) {pBlockConstructName = blockconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    BlockConstructName* pBlockConstructName;
+    Name* pBlockConstructName;
     EOS* pEOS;
 };
 
@@ -11175,7 +11177,7 @@ class CriticalConstruct : public Node
     EndCriticalStmt* pEndCriticalStmt;
 };
 
-class CriticalStmt : public Node
+class CriticalStmt : public Statement
 {
  public:
     CriticalStmt()
@@ -11198,20 +11200,20 @@ class CriticalStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    CriticalConstructName* getCriticalConstructName() {return pCriticalConstructName;}
+    Name* getCriticalConstructName() {return pCriticalConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setCriticalConstructName(CriticalConstructName* criticalconstructname) {pCriticalConstructName = criticalconstructname;}
+    void setCriticalConstructName(Name* criticalconstructname) {pCriticalConstructName = criticalconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    CriticalConstructName* pCriticalConstructName;
+    Name* pCriticalConstructName;
     EOS* pEOS;
 };
 
-class EndCriticalStmt : public Node
+class EndCriticalStmt : public Statement
 {
  public:
     EndCriticalStmt()
@@ -11234,20 +11236,20 @@ class EndCriticalStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    CriticalConstructName* getCriticalConstructName() {return pCriticalConstructName;}
+    Name* getCriticalConstructName() {return pCriticalConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setCriticalConstructName(CriticalConstructName* criticalconstructname) {pCriticalConstructName = criticalconstructname;}
+    void setCriticalConstructName(Name* criticalconstructname) {pCriticalConstructName = criticalconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    CriticalConstructName* pCriticalConstructName;
+    Name* pCriticalConstructName;
     EOS* pEOS;
 };
 
-class LabelDoStmt : public Node
+class LabelDoStmt : public Statement
 {
  public:
     LabelDoStmt()
@@ -11274,26 +11276,26 @@ class LabelDoStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    DoConstructName* getDoConstructName() {return pDoConstructName;}
+    Name* getDoConstructName() {return pDoConstructName;}
     LblRef* getLblRef() {return pLblRef;}
     LoopControl* getLoopControl() {return pLoopControl;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setDoConstructName(DoConstructName* doconstructname) {pDoConstructName = doconstructname;}
+    void setDoConstructName(Name* doconstructname) {pDoConstructName = doconstructname;}
     void setLblRef(LblRef* lblref) {pLblRef = lblref;}
     void setLoopControl(LoopControl* loopcontrol) {pLoopControl = loopcontrol;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    DoConstructName* pDoConstructName;
+    Name* pDoConstructName;
     LblRef* pLblRef;
     LoopControl* pLoopControl;
     EOS* pEOS;
 };
 
-class NonlabelDoStmt : public Node
+class NonlabelDoStmt : public Statement
 {
  public:
     NonlabelDoStmt()
@@ -11318,18 +11320,18 @@ class NonlabelDoStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    DoConstructName* getDoConstructName() {return pDoConstructName;}
+    Name* getDoConstructName() {return pDoConstructName;}
     LoopControl* getLoopControl() {return pLoopControl;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setDoConstructName(DoConstructName* doconstructname) {pDoConstructName = doconstructname;}
+    void setDoConstructName(Name* doconstructname) {pDoConstructName = doconstructname;}
     void setLoopControl(LoopControl* loopcontrol) {pLoopControl = loopcontrol;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    DoConstructName* pDoConstructName;
+    Name* pDoConstructName;
     LoopControl* pLoopControl;
     EOS* pEOS;
 };
@@ -11396,15 +11398,15 @@ class DoVariable : public Node
          return node;
       }
 
-    ScalarIntVariableName* getScalarIntVariableName() {return pScalarIntVariableName;}
+    Name* getScalarIntVariableName() {return pScalarIntVariableName;}
 
-    void setScalarIntVariableName(ScalarIntVariableName* scalarintvariablename) {pScalarIntVariableName = scalarintvariablename;}
+    void setScalarIntVariableName(Name* scalarintvariablename) {pScalarIntVariableName = scalarintvariablename;}
 
  private:
-    ScalarIntVariableName* pScalarIntVariableName;
+    Name* pScalarIntVariableName;
 };
 
-class EndDoStmt : public Node
+class EndDoStmt : public Statement
 {
  public:
     EndDoStmt()
@@ -11427,20 +11429,20 @@ class EndDoStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    DoConstructName* getDoConstructName() {return pDoConstructName;}
+    Name* getDoConstructName() {return pDoConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setDoConstructName(DoConstructName* doconstructname) {pDoConstructName = doconstructname;}
+    void setDoConstructName(Name* doconstructname) {pDoConstructName = doconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    DoConstructName* pDoConstructName;
+    Name* pDoConstructName;
     EOS* pEOS;
 };
 
-class CycleStmt : public Node
+class CycleStmt : public Statement
 {
  public:
     CycleStmt()
@@ -11463,16 +11465,16 @@ class CycleStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    DoConstructName* getDoConstructName() {return pDoConstructName;}
+    Name* getDoConstructName() {return pDoConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setDoConstructName(DoConstructName* doconstructname) {pDoConstructName = doconstructname;}
+    void setDoConstructName(Name* doconstructname) {pDoConstructName = doconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    DoConstructName* pDoConstructName;
+    Name* pDoConstructName;
     EOS* pEOS;
 };
 
@@ -11584,7 +11586,7 @@ class ElseStmtAndBlock : public Node
     Block* pBlock;
 };
 
-class IfThenStmt : public Node
+class IfThenStmt : public Statement
 {
  public:
     IfThenStmt()
@@ -11609,23 +11611,23 @@ class IfThenStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    IfConstructName* getIfConstructName() {return pIfConstructName;}
+    Name* getIfConstructName() {return pIfConstructName;}
     LogicalExpr* getLogicalExpr() {return pLogicalExpr;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setIfConstructName(IfConstructName* ifconstructname) {pIfConstructName = ifconstructname;}
+    void setIfConstructName(Name* ifconstructname) {pIfConstructName = ifconstructname;}
     void setLogicalExpr(LogicalExpr* logicalexpr) {pLogicalExpr = logicalexpr;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    IfConstructName* pIfConstructName;
+    Name* pIfConstructName;
     LogicalExpr* pLogicalExpr;
     EOS* pEOS;
 };
 
-class ElseIfStmt : public Node
+class ElseIfStmt : public Statement
 {
  public:
     ElseIfStmt()
@@ -11651,22 +11653,22 @@ class ElseIfStmt : public Node
 
     Label* getLabel() {return pLabel;}
     LogicalExpr* getLogicalExpr() {return pLogicalExpr;}
-    IfConstructName* getIfConstructName() {return pIfConstructName;}
+    Name* getIfConstructName() {return pIfConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setLogicalExpr(LogicalExpr* logicalexpr) {pLogicalExpr = logicalexpr;}
-    void setIfConstructName(IfConstructName* ifconstructname) {pIfConstructName = ifconstructname;}
+    void setIfConstructName(Name* ifconstructname) {pIfConstructName = ifconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
     LogicalExpr* pLogicalExpr;
-    IfConstructName* pIfConstructName;
+    Name* pIfConstructName;
     EOS* pEOS;
 };
 
-class ElseStmt : public Node
+class ElseStmt : public Statement
 {
  public:
     ElseStmt()
@@ -11689,20 +11691,20 @@ class ElseStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    IfConstructName* getIfConstructName() {return pIfConstructName;}
+    Name* getIfConstructName() {return pIfConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setIfConstructName(IfConstructName* ifconstructname) {pIfConstructName = ifconstructname;}
+    void setIfConstructName(Name* ifconstructname) {pIfConstructName = ifconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    IfConstructName* pIfConstructName;
+    Name* pIfConstructName;
     EOS* pEOS;
 };
 
-class EndIfStmt : public Node
+class EndIfStmt : public Statement
 {
  public:
     EndIfStmt()
@@ -11725,16 +11727,16 @@ class EndIfStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    IfConstructName* getIfConstructName() {return pIfConstructName;}
+    Name* getIfConstructName() {return pIfConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setIfConstructName(IfConstructName* ifconstructname) {pIfConstructName = ifconstructname;}
+    void setIfConstructName(Name* ifconstructname) {pIfConstructName = ifconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    IfConstructName* pIfConstructName;
+    Name* pIfConstructName;
     EOS* pEOS;
 };
 
@@ -11841,7 +11843,7 @@ class CaseStmtAndBlock : public Node
     Block* pBlock;
 };
 
-class SelectCaseStmt : public Node
+class SelectCaseStmt : public Statement
 {
  public:
     SelectCaseStmt()
@@ -11866,23 +11868,23 @@ class SelectCaseStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    CaseConstructName* getCaseConstructName() {return pCaseConstructName;}
+    Name* getCaseConstructName() {return pCaseConstructName;}
     CaseExpr* getCaseExpr() {return pCaseExpr;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setCaseConstructName(CaseConstructName* caseconstructname) {pCaseConstructName = caseconstructname;}
+    void setCaseConstructName(Name* caseconstructname) {pCaseConstructName = caseconstructname;}
     void setCaseExpr(CaseExpr* caseexpr) {pCaseExpr = caseexpr;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    CaseConstructName* pCaseConstructName;
+    Name* pCaseConstructName;
     CaseExpr* pCaseExpr;
     EOS* pEOS;
 };
 
-class CaseStmt : public Node
+class CaseStmt : public Statement
 {
  public:
     CaseStmt()
@@ -11908,22 +11910,22 @@ class CaseStmt : public Node
 
     Label* getLabel() {return pLabel;}
     CaseSelector* getCaseSelector() {return pCaseSelector;}
-    CaseConstructName* getCaseConstructName() {return pCaseConstructName;}
+    Name* getCaseConstructName() {return pCaseConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setCaseSelector(CaseSelector* caseselector) {pCaseSelector = caseselector;}
-    void setCaseConstructName(CaseConstructName* caseconstructname) {pCaseConstructName = caseconstructname;}
+    void setCaseConstructName(Name* caseconstructname) {pCaseConstructName = caseconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
     CaseSelector* pCaseSelector;
-    CaseConstructName* pCaseConstructName;
+    Name* pCaseConstructName;
     EOS* pEOS;
 };
 
-class EndSelectStmt : public Node
+class EndSelectStmt : public Statement
 {
  public:
     EndSelectStmt()
@@ -11946,16 +11948,16 @@ class EndSelectStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    CaseConstructName* getCaseConstructName() {return pCaseConstructName;}
+    Name* getCaseConstructName() {return pCaseConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setCaseConstructName(CaseConstructName* caseconstructname) {pCaseConstructName = caseconstructname;}
+    void setCaseConstructName(Name* caseconstructname) {pCaseConstructName = caseconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    CaseConstructName* pCaseConstructName;
+    Name* pCaseConstructName;
     EOS* pEOS;
 };
 
@@ -12194,19 +12196,19 @@ class SelectTypeStmt : public Node
          return node;
       }
 
-    SelectConstructName* getSelectConstructName() {return pSelectConstructName;}
-    AssociateName* getAssociateName() {return pAssociateName;}
+    Name* getSelectConstructName() {return pSelectConstructName;}
+    Name* getAssociateName() {return pAssociateName;}
     Selector* getSelector() {return pSelector;}
     EOS* getEOS() {return pEOS;}
 
-    void setSelectConstructName(SelectConstructName* selectconstructname) {pSelectConstructName = selectconstructname;}
-    void setAssociateName(AssociateName* associatename) {pAssociateName = associatename;}
+    void setSelectConstructName(Name* selectconstructname) {pSelectConstructName = selectconstructname;}
+    void setAssociateName(Name* associatename) {pAssociateName = associatename;}
     void setSelector(Selector* selector) {pSelector = selector;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
-    SelectConstructName* pSelectConstructName;
-    AssociateName* pAssociateName;
+    Name* pSelectConstructName;
+    Name* pAssociateName;
     Selector* pSelector;
     EOS* pEOS;
 };
@@ -12243,18 +12245,18 @@ class TypeGuardStmt : public Node
          return node;
       }
 
-    SelectConstructName* getSelectConstructName() {return pSelectConstructName;}
+    Name* getSelectConstructName() {return pSelectConstructName;}
     EOS* getEOS() {return pEOS;}
     DerivedTypeSpec* getDerivedTypeSpec() {return pDerivedTypeSpec;}
     TypeSpec* getTypeSpec() {return pTypeSpec;}
 
-    void setSelectConstructName(SelectConstructName* selectconstructname) {pSelectConstructName = selectconstructname;}
+    void setSelectConstructName(Name* selectconstructname) {pSelectConstructName = selectconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
     void setDerivedTypeSpec(DerivedTypeSpec* derivedtypespec) {pDerivedTypeSpec = derivedtypespec;}
     void setTypeSpec(TypeSpec* typespec) {pTypeSpec = typespec;}
 
  private:
-    SelectConstructName* pSelectConstructName;
+    Name* pSelectConstructName;
     EOS* pEOS;
     DerivedTypeSpec* pDerivedTypeSpec;
     TypeSpec* pTypeSpec;
@@ -12280,18 +12282,18 @@ class EndSelectTypeStmt : public Node
          return node;
       }
 
-    SelectConstructName* getSelectConstructName() {return pSelectConstructName;}
+    Name* getSelectConstructName() {return pSelectConstructName;}
     EOS* getEOS() {return pEOS;}
 
-    void setSelectConstructName(SelectConstructName* selectconstructname) {pSelectConstructName = selectconstructname;}
+    void setSelectConstructName(Name* selectconstructname) {pSelectConstructName = selectconstructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
-    SelectConstructName* pSelectConstructName;
+    Name* pSelectConstructName;
     EOS* pEOS;
 };
 
-class ExitStmt : public Node
+class ExitStmt : public Statement
 {
  public:
     ExitStmt()
@@ -12314,20 +12316,20 @@ class ExitStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ConstructName* getConstructName() {return pConstructName;}
+    Name* getConstructName() {return pConstructName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setConstructName(ConstructName* constructname) {pConstructName = constructname;}
+    void setConstructName(Name* constructname) {pConstructName = constructname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ConstructName* pConstructName;
+    Name* pConstructName;
     EOS* pEOS;
 };
 
-class GotoStmt : public Node
+class GotoStmt : public Statement
 {
  public:
     GotoStmt()
@@ -12363,7 +12365,7 @@ class GotoStmt : public Node
     EOS* pEOS;
 };
 
-class ComputedGotoStmt : public Node
+class ComputedGotoStmt : public Statement
 {
  public:
     ComputedGotoStmt()
@@ -12404,7 +12406,7 @@ class ComputedGotoStmt : public Node
     EOS* pEOS;
 };
 
-class ArithmeticIfStmt : public Node
+class ArithmeticIfStmt : public Statement
 {
  public:
     ArithmeticIfStmt()
@@ -12445,7 +12447,7 @@ class ArithmeticIfStmt : public Node
     EOS* pEOS;
 };
 
-class ContinueStmt : public Node
+class ContinueStmt : public Statement
 {
  public:
     ContinueStmt()
@@ -12476,7 +12478,7 @@ class ContinueStmt : public Node
     EOS* pEOS;
 };
 
-class StopStmt : public Node
+class StopStmt : public Statement
 {
  public:
     StopStmt()
@@ -12512,7 +12514,7 @@ class StopStmt : public Node
     EOS* pEOS;
 };
 
-class ErrorStopStmt : public Node
+class ErrorStopStmt : public Statement
 {
  public:
     ErrorStopStmt()
@@ -12586,7 +12588,7 @@ class StopCode : public Node
     Scon* pScon;
 };
 
-class SyncAllStmt : public Node
+class SyncAllStmt : public Statement
 {
  public:
     SyncAllStmt()
@@ -12693,7 +12695,7 @@ class SyncStatList : public Node
     std::vector<SyncStat*>* pSyncStatList;
 };
 
-class SyncImagesStmt : public Node
+class SyncImagesStmt : public Statement
 {
  public:
     SyncImagesStmt()
@@ -12767,7 +12769,7 @@ class ImageSet : public Node
     IntExpr* pIntExpr;
 };
 
-class SyncMemoryStmt : public Node
+class SyncMemoryStmt : public Statement
 {
  public:
     SyncMemoryStmt()
@@ -12810,7 +12812,7 @@ class SyncMemoryStmt : public Node
     SyncStatList* pSyncStatList;
 };
 
-class LockStmt : public Node
+class LockStmt : public Statement
 {
  public:
     LockStmt()
@@ -12915,7 +12917,7 @@ class LockStatList : public Node
     std::vector<LockStat*>* pLockStatList;
 };
 
-class UnlockStmt : public Node
+class UnlockStmt : public Statement
 {
  public:
     UnlockStmt()
@@ -12982,7 +12984,7 @@ class LockVariable : public Node
     Variable* pVariable;
 };
 
-class PauseStmt : public Node
+class PauseStmt : public Statement
 {
  public:
     PauseStmt()
@@ -13083,7 +13085,7 @@ class FileUnitNumber : public Node
     IntExpr* pIntExpr;
 };
 
-class OpenStmt : public Node
+class OpenStmt : public Statement
 {
  public:
     OpenStmt()
@@ -13278,7 +13280,7 @@ class IomsgVariable : public Node
     DefaultCharExpr* pDefaultCharExpr;
 };
 
-class CloseStmt : public Node
+class CloseStmt : public Statement
 {
  public:
     CloseStmt()
@@ -13396,7 +13398,7 @@ class CloseSpecList : public Node
     std::vector<CloseSpec*>* pCloseSpecList;
 };
 
-class ReadStmt : public Node
+class ReadStmt : public Statement
 {
  public:
     ReadStmt()
@@ -13449,7 +13451,7 @@ class ReadStmt : public Node
     IoControlSpecList* pIoControlSpecList;
 };
 
-class WriteStmt : public Node
+class WriteStmt : public Statement
 {
  public:
     WriteStmt()
@@ -13490,7 +13492,7 @@ class WriteStmt : public Node
     EOS* pEOS;
 };
 
-class PrintStmt : public Node
+class PrintStmt : public Statement
 {
  public:
     PrintStmt()
@@ -13596,7 +13598,7 @@ class IoControlSpec : public Node
     IomsgVariable* getIomsgVariable() {return pIomsgVariable;}
     IdVariable* getIdVariable() {return pIdVariable;}
     LblRef* getLblRef() {return pLblRef;}
-    NamelistGroupName* getNamelistGroupName() {return pNamelistGroupName;}
+    Name* getNamelistGroupName() {return pNamelistGroupName;}
     Format* getFormat() {return pFormat;}
     IoUnit* getIoUnit() {return pIoUnit;}
 
@@ -13606,7 +13608,7 @@ class IoControlSpec : public Node
     void setIomsgVariable(IomsgVariable* iomsgvariable) {pIomsgVariable = iomsgvariable;}
     void setIdVariable(IdVariable* idvariable) {pIdVariable = idvariable;}
     void setLblRef(LblRef* lblref) {pLblRef = lblref;}
-    void setNamelistGroupName(NamelistGroupName* namelistgroupname) {pNamelistGroupName = namelistgroupname;}
+    void setNamelistGroupName(Name* namelistgroupname) {pNamelistGroupName = namelistgroupname;}
     void setFormat(Format* format) {pFormat = format;}
     void setIoUnit(IoUnit* iounit) {pIoUnit = iounit;}
 
@@ -13617,7 +13619,7 @@ class IoControlSpec : public Node
     IomsgVariable* pIomsgVariable;
     IdVariable* pIdVariable;
     LblRef* pLblRef;
-    NamelistGroupName* pNamelistGroupName;
+    Name* pNamelistGroupName;
     Format* pFormat;
     IoUnit* pIoUnit;
 };
@@ -13967,7 +13969,7 @@ class IoImpliedDoControl : public Node
     IntExpr* pIntExpr;
 };
 
-class WaitStmt : public Node
+class WaitStmt : public Statement
 {
  public:
     WaitStmt()
@@ -14082,7 +14084,7 @@ class WaitSpecList : public Node
     std::vector<WaitSpec*>* pWaitSpecList;
 };
 
-class BackspaceStmt : public Node
+class BackspaceStmt : public Statement
 {
  public:
     BackspaceStmt()
@@ -14130,7 +14132,7 @@ class BackspaceStmt : public Node
     FileUnitNumber* pFileUnitNumber;
 };
 
-class EndfileStmt : public Node
+class EndfileStmt : public Statement
 {
  public:
     EndfileStmt()
@@ -14178,7 +14180,7 @@ class EndfileStmt : public Node
     FileUnitNumber* pFileUnitNumber;
 };
 
-class RewindStmt : public Node
+class RewindStmt : public Statement
 {
  public:
     RewindStmt()
@@ -14302,7 +14304,7 @@ class PositionSpecList : public Node
     std::vector<PositionSpec*>* pPositionSpecList;
 };
 
-class FlushStmt : public Node
+class FlushStmt : public Statement
 {
  public:
     FlushStmt()
@@ -14426,7 +14428,7 @@ class FlushSpecList : public Node
     std::vector<FlushSpec*>* pFlushSpecList;
 };
 
-class InquireStmt : public Node
+class InquireStmt : public Statement
 {
  public:
     InquireStmt()
@@ -14607,7 +14609,7 @@ class InquireSpecList : public Node
     std::vector<InquireSpec*>* pInquireSpecList;
 };
 
-class FormatStmt : public Node
+class FormatStmt : public Statement
 {
  public:
     FormatStmt()
@@ -15369,7 +15371,7 @@ class MainProgram : public Node
     EndProgramStmt* pEndProgramStmt;
 };
 
-class ProgramStmt : public Node
+class ProgramStmt : public Statement
 {
  public:
     ProgramStmt()
@@ -15405,7 +15407,7 @@ class ProgramStmt : public Node
     EOS* pEOS;
 };
 
-class EndProgramStmt : public Node
+class EndProgramStmt : public Statement
 {
  public:
     EndProgramStmt()
@@ -15482,7 +15484,7 @@ class Module : public Node
     EndModuleStmt* pEndModuleStmt;
 };
 
-class ModuleStmt : public Node
+class ModuleStmt : public Statement
 {
  public:
     ModuleStmt()
@@ -15505,20 +15507,20 @@ class ModuleStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ModuleName* getModuleName() {return pModuleName;}
+    Name* getModuleName() {return pModuleName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setModuleName(ModuleName* modulename) {pModuleName = modulename;}
+    void setModuleName(Name* modulename) {pModuleName = modulename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ModuleName* pModuleName;
+    Name* pModuleName;
     EOS* pEOS;
 };
 
-class EndModuleStmt : public Node
+class EndModuleStmt : public Statement
 {
  public:
     EndModuleStmt()
@@ -15541,16 +15543,16 @@ class EndModuleStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ModuleName* getModuleName() {return pModuleName;}
+    Name* getModuleName() {return pModuleName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setModuleName(ModuleName* modulename) {pModuleName = modulename;}
+    void setModuleName(Name* modulename) {pModuleName = modulename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ModuleName* pModuleName;
+    Name* pModuleName;
     EOS* pEOS;
 };
 
@@ -15666,14 +15668,14 @@ class UseStmt : public Statement
 
     Label* getLabel() {return pLabel;}
     ModuleNature* getModuleNature() {return pModuleNature;}
-    ModuleName* getModuleName() {return pModuleName;}
+    Name* getModuleName() {return pModuleName;}
     OnlyList* getOnlyList() {return pOnlyList;}
     EOS* getEOS() {return pEOS;}
     RenameList* getRenameList() {return pRenameList;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setModuleNature(ModuleNature* modulenature) {pModuleNature = modulenature;}
-    void setModuleName(ModuleName* modulename) {pModuleName = modulename;}
+    void setModuleName(Name* modulename) {pModuleName = modulename;}
     void setOnlyList(OnlyList* onlylist) {pOnlyList = onlylist;}
     void setEOS(EOS* eos) {pEOS = eos;}
     void setRenameList(RenameList* renamelist) {pRenameList = renamelist;}
@@ -15681,7 +15683,7 @@ class UseStmt : public Statement
  private:
     Label* pLabel;
     ModuleNature* pModuleNature;
-    ModuleName* pModuleName;
+    Name* pModuleName;
     OnlyList* pOnlyList;
     EOS* pEOS;
     RenameList* pRenameList;
@@ -15746,19 +15748,19 @@ class Rename : public Node
 
     LocalDefinedOperator* getLocalDefinedOperator() {return pLocalDefinedOperator;}
     UseDefinedOperator* getUseDefinedOperator() {return pUseDefinedOperator;}
-    LocalName* getLocalName() {return pLocalName;}
-    UseName* getUseName() {return pUseName;}
+    Name* getLocalName() {return pLocalName;}
+    Name* getUseName() {return pUseName;}
 
     void setLocalDefinedOperator(LocalDefinedOperator* localdefinedoperator) {pLocalDefinedOperator = localdefinedoperator;}
     void setUseDefinedOperator(UseDefinedOperator* usedefinedoperator) {pUseDefinedOperator = usedefinedoperator;}
-    void setLocalName(LocalName* localname) {pLocalName = localname;}
-    void setUseName(UseName* usename) {pUseName = usename;}
+    void setLocalName(Name* localname) {pLocalName = localname;}
+    void setUseName(Name* usename) {pUseName = usename;}
 
  private:
     LocalDefinedOperator* pLocalDefinedOperator;
     UseDefinedOperator* pUseDefinedOperator;
-    LocalName* pLocalName;
-    UseName* pUseName;
+    Name* pLocalName;
+    Name* pUseName;
 };
 
 class RenameList : public Node
@@ -15994,7 +15996,7 @@ class Submodule : public Node
     EndSubmoduleStmt* pEndSubmoduleStmt;
 };
 
-class SubmoduleStmt : public Node
+class SubmoduleStmt : public Statement
 {
  public:
     SubmoduleStmt()
@@ -16020,18 +16022,18 @@ class SubmoduleStmt : public Node
 
     Label* getLabel() {return pLabel;}
     ParentIdentifier* getParentIdentifier() {return pParentIdentifier;}
-    SubmoduleName* getSubmoduleName() {return pSubmoduleName;}
+    Name* getSubmoduleName() {return pSubmoduleName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setParentIdentifier(ParentIdentifier* parentidentifier) {pParentIdentifier = parentidentifier;}
-    void setSubmoduleName(SubmoduleName* submodulename) {pSubmoduleName = submodulename;}
+    void setSubmoduleName(Name* submodulename) {pSubmoduleName = submodulename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
     ParentIdentifier* pParentIdentifier;
-    SubmoduleName* pSubmoduleName;
+    Name* pSubmoduleName;
     EOS* pEOS;
 };
 
@@ -16055,18 +16057,18 @@ class ParentIdentifier : public Node
          return node;
       }
 
-    AncestorModuleName* getAncestorModuleName() {return pAncestorModuleName;}
-    ParentSubmoduleName* getParentSubmoduleName() {return pParentSubmoduleName;}
+    Name* getAncestorModuleName() {return pAncestorModuleName;}
+    Name* getParentSubmoduleName() {return pParentSubmoduleName;}
 
-    void setAncestorModuleName(AncestorModuleName* ancestormodulename) {pAncestorModuleName = ancestormodulename;}
-    void setParentSubmoduleName(ParentSubmoduleName* parentsubmodulename) {pParentSubmoduleName = parentsubmodulename;}
+    void setAncestorModuleName(Name* ancestormodulename) {pAncestorModuleName = ancestormodulename;}
+    void setParentSubmoduleName(Name* parentsubmodulename) {pParentSubmoduleName = parentsubmodulename;}
 
  private:
-    AncestorModuleName* pAncestorModuleName;
-    ParentSubmoduleName* pParentSubmoduleName;
+    Name* pAncestorModuleName;
+    Name* pParentSubmoduleName;
 };
 
-class EndSubmoduleStmt : public Node
+class EndSubmoduleStmt : public Statement
 {
  public:
     EndSubmoduleStmt()
@@ -16089,16 +16091,16 @@ class EndSubmoduleStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    SubmoduleName* getSubmoduleName() {return pSubmoduleName;}
+    Name* getSubmoduleName() {return pSubmoduleName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setSubmoduleName(SubmoduleName* submodulename) {pSubmoduleName = submodulename;}
+    void setSubmoduleName(Name* submodulename) {pSubmoduleName = submodulename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    SubmoduleName* pSubmoduleName;
+    Name* pSubmoduleName;
     EOS* pEOS;
 };
 
@@ -16138,7 +16140,7 @@ class BlockData : public Node
     EndBlockDataStmt* pEndBlockDataStmt;
 };
 
-class BlockDataStmt : public Node
+class BlockDataStmt : public Statement
 {
  public:
     BlockDataStmt()
@@ -16161,20 +16163,20 @@ class BlockDataStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    BlockDataName* getBlockDataName() {return pBlockDataName;}
+    Name* getBlockDataName() {return pBlockDataName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setBlockDataName(BlockDataName* blockdataname) {pBlockDataName = blockdataname;}
+    void setBlockDataName(Name* blockdataname) {pBlockDataName = blockdataname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    BlockDataName* pBlockDataName;
+    Name* pBlockDataName;
     EOS* pEOS;
 };
 
-class EndBlockDataStmt : public Node
+class EndBlockDataStmt : public Statement
 {
  public:
     EndBlockDataStmt()
@@ -16205,16 +16207,16 @@ class EndBlockDataStmt : public Node
 
     Label* getLabel() {return pLabel;}
     EOS* getEOS() {return pEOS;}
-    BlockDataName* getBlockDataName() {return pBlockDataName;}
+    Name* getBlockDataName() {return pBlockDataName;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setEOS(EOS* eos) {pEOS = eos;}
-    void setBlockDataName(BlockDataName* blockdataname) {pBlockDataName = blockdataname;}
+    void setBlockDataName(Name* blockdataname) {pBlockDataName = blockdataname;}
 
  private:
     Label* pLabel;
     EOS* pEOS;
-    BlockDataName* pBlockDataName;
+    Name* pBlockDataName;
 };
 
 class InterfaceBlock : public Node
@@ -16291,7 +16293,7 @@ class InterfaceSpecification : public Node
     InterfaceBody* pInterfaceBody;
 };
 
-class InterfaceStmt : public Node
+class InterfaceStmt : public Statement
 {
  public:
     InterfaceStmt()
@@ -16334,7 +16336,7 @@ class InterfaceStmt : public Node
     GenericSpec* pGenericSpec;
 };
 
-class EndInterfaceStmt : public Node
+class EndInterfaceStmt : public Statement
 {
  public:
     EndInterfaceStmt()
@@ -16423,7 +16425,7 @@ class InterfaceBody : public Node
     EndFunctionStmt* pEndFunctionStmt;
 };
 
-class ProcedureStmt : public Node
+class ProcedureStmt : public Statement
 {
  public:
     ProcedureStmt()
@@ -16471,7 +16473,7 @@ class ProcedureNameList : public Node
  public:
     ProcedureNameList()
       {
-         pProcedureNameList = new std::vector<ProcedureName*>();
+         pProcedureNameList = new std::vector<Name*>();
       }
    virtual ~ProcedureNameList();
 
@@ -16484,12 +16486,12 @@ class ProcedureNameList : public Node
          return node;
       }
 
-    std::vector<ProcedureName*>* getProcedureNameList() {return pProcedureNameList;}
+    std::vector<Name*>* getProcedureNameList() {return pProcedureNameList;}
 
-    void appendProcedureName(ProcedureName* procedurename) {pProcedureNameList->push_back(procedurename);}
+    void appendProcedureName(Name* procedurename) {pProcedureNameList->push_back(procedurename);}
 
  private:
-    std::vector<ProcedureName*>* pProcedureNameList;
+    std::vector<Name*>* pProcedureNameList;
 };
 
 class GenericSpec : public Node
@@ -16525,16 +16527,16 @@ class GenericSpec : public Node
 
     DefinedIoGenericSpec* getDefinedIoGenericSpec() {return pDefinedIoGenericSpec;}
     DefinedOperator* getDefinedOperator() {return pDefinedOperator;}
-    GenericName* getGenericName() {return pGenericName;}
+    Name* getGenericName() {return pGenericName;}
 
     void setDefinedIoGenericSpec(DefinedIoGenericSpec* definediogenericspec) {pDefinedIoGenericSpec = definediogenericspec;}
     void setDefinedOperator(DefinedOperator* definedoperator) {pDefinedOperator = definedoperator;}
-    void setGenericName(GenericName* genericname) {pGenericName = genericname;}
+    void setGenericName(Name* genericname) {pGenericName = genericname;}
 
  private:
     DefinedIoGenericSpec* pDefinedIoGenericSpec;
     DefinedOperator* pDefinedOperator;
-    GenericName* pGenericName;
+    Name* pGenericName;
 };
 
 class DefinedIoGenericSpec : public Node
@@ -16613,7 +16615,7 @@ class ImportNameList : public Node
  public:
     ImportNameList()
       {
-         pImportNameList = new std::vector<ImportName*>();
+         pImportNameList = new std::vector<Name*>();
       }
    virtual ~ImportNameList();
 
@@ -16626,15 +16628,15 @@ class ImportNameList : public Node
          return node;
       }
 
-    std::vector<ImportName*>* getImportNameList() {return pImportNameList;}
+    std::vector<Name*>* getImportNameList() {return pImportNameList;}
 
-    void appendImportName(ImportName* importname) {pImportNameList->push_back(importname);}
+    void appendImportName(Name* importname) {pImportNameList->push_back(importname);}
 
  private:
-    std::vector<ImportName*>* pImportNameList;
+    std::vector<Name*>* pImportNameList;
 };
 
-class ExternalStmt : public Node
+class ExternalStmt : public Statement
 {
  public:
     ExternalStmt()
@@ -16670,7 +16672,7 @@ class ExternalStmt : public Node
     EOS* pEOS;
 };
 
-class ProcedureDeclarationStmt : public Node
+class ProcedureDeclarationStmt : public Statement
 {
  public:
     ProcedureDeclarationStmt()
@@ -16847,14 +16849,14 @@ class ProcDecl : public Node
          return node;
       }
 
-    ProcedureEntityName* getProcedureEntityName() {return pProcedureEntityName;}
+    Name* getProcedureEntityName() {return pProcedureEntityName;}
     ProcPointerInit* getProcPointerInit() {return pProcPointerInit;}
 
-    void setProcedureEntityName(ProcedureEntityName* procedureentityname) {pProcedureEntityName = procedureentityname;}
+    void setProcedureEntityName(Name* procedureentityname) {pProcedureEntityName = procedureentityname;}
     void setProcPointerInit(ProcPointerInit* procpointerinit) {pProcPointerInit = procpointerinit;}
 
  private:
-    ProcedureEntityName* pProcedureEntityName;
+    Name* pProcedureEntityName;
     ProcPointerInit* pProcPointerInit;
 };
 
@@ -16966,15 +16968,15 @@ class InitialProcTarget : public Node
          return node;
       }
 
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getProcedureName() {return pProcedureName;}
 
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
 
  private:
-    ProcedureName* pProcedureName;
+    Name* pProcedureName;
 };
 
-class IntrinsicStmt : public Node
+class IntrinsicStmt : public Statement
 {
  public:
     IntrinsicStmt()
@@ -17015,7 +17017,7 @@ class IntrinsicProcedureNameList : public Node
  public:
     IntrinsicProcedureNameList()
       {
-         pIntrinsicProcedureNameList = new std::vector<IntrinsicProcedureName*>();
+         pIntrinsicProcedureNameList = new std::vector<Name*>();
       }
    virtual ~IntrinsicProcedureNameList();
 
@@ -17028,12 +17030,12 @@ class IntrinsicProcedureNameList : public Node
          return node;
       }
 
-    std::vector<IntrinsicProcedureName*>* getIntrinsicProcedureNameList() {return pIntrinsicProcedureNameList;}
+    std::vector<Name*>* getIntrinsicProcedureNameList() {return pIntrinsicProcedureNameList;}
 
-    void appendIntrinsicProcedureName(IntrinsicProcedureName* intrinsicprocedurename) {pIntrinsicProcedureNameList->push_back(intrinsicprocedurename);}
+    void appendIntrinsicProcedureName(Name* intrinsicprocedurename) {pIntrinsicProcedureNameList->push_back(intrinsicprocedurename);}
 
  private:
-    std::vector<IntrinsicProcedureName*>* pIntrinsicProcedureNameList;
+    std::vector<Name*>* pIntrinsicProcedureNameList;
 };
 
 class FunctionReference : public Node
@@ -17067,7 +17069,7 @@ class FunctionReference : public Node
     ActualArgSpecList* pActualArgSpecList;
 };
 
-class CallStmt : public Node
+class CallStmt : public Statement
 {
  public:
     CallStmt()
@@ -17138,17 +17140,17 @@ class ProcedureDesignator : public Node
       }
 
     DataRef* getDataRef() {return pDataRef;}
-    BindingName* getBindingName() {return pBindingName;}
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getBindingName() {return pBindingName;}
+    Name* getProcedureName() {return pProcedureName;}
 
     void setDataRef(DataRef* dataref) {pDataRef = dataref;}
-    void setBindingName(BindingName* bindingname) {pBindingName = bindingname;}
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setBindingName(Name* bindingname) {pBindingName = bindingname;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
 
  private:
     DataRef* pDataRef;
-    BindingName* pBindingName;
-    ProcedureName* pProcedureName;
+    Name* pBindingName;
+    Name* pProcedureName;
 };
 
 class ActualArgSpec : public Node
@@ -17341,8 +17343,8 @@ class FunctionSubprogram : public Node
     FunctionSubprogram()
       {
          pFunctionStmt = NULL;
-         pSpecificationPart = NULL;
-         pExecutionPart = NULL;
+         pInitialSpecPart = NULL;
+         pSpecAndExecPart = NULL;
          pInternalSubprogramPart = NULL;
          pEndFunctionStmt = NULL;
       }
@@ -17352,8 +17354,8 @@ class FunctionSubprogram : public Node
       {
          FunctionSubprogram* node = new FunctionSubprogram();
          node->pFunctionStmt = pFunctionStmt;  pFunctionStmt = NULL;
-         node->pSpecificationPart = pSpecificationPart;  pSpecificationPart = NULL;
-         node->pExecutionPart = pExecutionPart;  pExecutionPart = NULL;
+         node->pInitialSpecPart = pInitialSpecPart;  pInitialSpecPart = NULL;
+         node->pSpecAndExecPart = pSpecAndExecPart;  pSpecAndExecPart = NULL;
          node->pInternalSubprogramPart = pInternalSubprogramPart;  pInternalSubprogramPart = NULL;
          node->pEndFunctionStmt = pEndFunctionStmt;  pEndFunctionStmt = NULL;
          node->setOptionType(optionType);
@@ -17362,26 +17364,26 @@ class FunctionSubprogram : public Node
       }
 
     FunctionStmt* getFunctionStmt() {return pFunctionStmt;}
-    SpecificationPart* getSpecificationPart() {return pSpecificationPart;}
-    ExecutionPart* getExecutionPart() {return pExecutionPart;}
+    InitialSpecPart* getInitialSpecPart() {return pInitialSpecPart;}
+    SpecAndExecPart* getSpecAndExecPart() {return pSpecAndExecPart;}
     InternalSubprogramPart* getInternalSubprogramPart() {return pInternalSubprogramPart;}
     EndFunctionStmt* getEndFunctionStmt() {return pEndFunctionStmt;}
 
     void setFunctionStmt(FunctionStmt* functionstmt) {pFunctionStmt = functionstmt;}
-    void setSpecificationPart(SpecificationPart* specificationpart) {pSpecificationPart = specificationpart;}
-    void setExecutionPart(ExecutionPart* executionpart) {pExecutionPart = executionpart;}
+    void setInitialSpecPart(InitialSpecPart* specPart) {pInitialSpecPart = specPart;}
+    void setSpecAndExecPart(SpecAndExecPart* execPart) {pSpecAndExecPart = execPart;}
     void setInternalSubprogramPart(InternalSubprogramPart* internalsubprogrampart) {pInternalSubprogramPart = internalsubprogrampart;}
     void setEndFunctionStmt(EndFunctionStmt* endfunctionstmt) {pEndFunctionStmt = endfunctionstmt;}
 
  private:
     FunctionStmt* pFunctionStmt;
-    SpecificationPart* pSpecificationPart;
-    ExecutionPart* pExecutionPart;
+    InitialSpecPart* pInitialSpecPart;
+    SpecAndExecPart* pSpecAndExecPart;
     InternalSubprogramPart* pInternalSubprogramPart;
     EndFunctionStmt* pEndFunctionStmt;
 };
 
-class FunctionStmt : public Node
+class FunctionStmt : public Statement
 {
  public:
     FunctionStmt()
@@ -17411,14 +17413,14 @@ class FunctionStmt : public Node
 
     Label* getLabel() {return pLabel;}
     Prefix* getPrefix() {return pPrefix;}
-    FunctionName* getFunctionName() {return pFunctionName;}
+    Name* getFunctionName() {return pFunctionName;}
     DummyArgNameList* getDummyArgNameList() {return pDummyArgNameList;}
     Suffix* getSuffix() {return pSuffix;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
     void setPrefix(Prefix* prefix) {pPrefix = prefix;}
-    void setFunctionName(FunctionName* functionname) {pFunctionName = functionname;}
+    void setFunctionName(Name* functionname) {pFunctionName = functionname;}
     void setDummyArgNameList(DummyArgNameList* dummyargnamelist) {pDummyArgNameList = dummyargnamelist;}
     void setSuffix(Suffix* suffix) {pSuffix = suffix;}
     void setEOS(EOS* eos) {pEOS = eos;}
@@ -17426,7 +17428,7 @@ class FunctionStmt : public Node
  private:
     Label* pLabel;
     Prefix* pPrefix;
-    FunctionName* pFunctionName;
+    Name* pFunctionName;
     DummyArgNameList* pDummyArgNameList;
     Suffix* pSuffix;
     EOS* pEOS;
@@ -17511,18 +17513,18 @@ class Suffix : public Node
          return node;
       }
 
-    ResultName* getResultName() {return pResultName;}
+    Name* getResultName() {return pResultName;}
     ProcLanguageBindingSpec* getProcLanguageBindingSpec() {return pProcLanguageBindingSpec;}
 
-    void setResultName(ResultName* resultname) {pResultName = resultname;}
+    void setResultName(Name* resultname) {pResultName = resultname;}
     void setProcLanguageBindingSpec(ProcLanguageBindingSpec* proclanguagebindingspec) {pProcLanguageBindingSpec = proclanguagebindingspec;}
 
  private:
-    ResultName* pResultName;
+    Name* pResultName;
     ProcLanguageBindingSpec* pProcLanguageBindingSpec;
 };
 
-class EndFunctionStmt : public Node
+class EndFunctionStmt : public Statement
 {
  public:
     EndFunctionStmt()
@@ -17545,16 +17547,16 @@ class EndFunctionStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    FunctionName* getFunctionName() {return pFunctionName;}
+    Name* getFunctionName() {return pFunctionName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setFunctionName(FunctionName* functionname) {pFunctionName = functionname;}
+    void setFunctionName(Name* functionname) {pFunctionName = functionname;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    FunctionName* pFunctionName;
+    Name* pFunctionName;
     EOS* pEOS;
 };
 
@@ -17756,8 +17758,8 @@ class SeparateModuleSubprogram : public Node
     SeparateModuleSubprogram()
       {
          pMpSubprogramStmt = NULL;
-         pSpecificationPart = NULL;
-         pExecutionPart = NULL;
+         pInitialSpecPart = NULL;
+         pSpecAndExecPart = NULL;
          pInternalSubprogramPart = NULL;
          pEndMpSubprogramStmt = NULL;
       }
@@ -17767,8 +17769,8 @@ class SeparateModuleSubprogram : public Node
       {
          SeparateModuleSubprogram* node = new SeparateModuleSubprogram();
          node->pMpSubprogramStmt = pMpSubprogramStmt;  pMpSubprogramStmt = NULL;
-         node->pSpecificationPart = pSpecificationPart;  pSpecificationPart = NULL;
-         node->pExecutionPart = pExecutionPart;  pExecutionPart = NULL;
+         node->pInitialSpecPart = pInitialSpecPart;  pInitialSpecPart = NULL;
+         node->pSpecAndExecPart = pSpecAndExecPart;  pSpecAndExecPart = NULL;
          node->pInternalSubprogramPart = pInternalSubprogramPart;  pInternalSubprogramPart = NULL;
          node->pEndMpSubprogramStmt = pEndMpSubprogramStmt;  pEndMpSubprogramStmt = NULL;
          node->setOptionType(optionType);
@@ -17777,26 +17779,26 @@ class SeparateModuleSubprogram : public Node
       }
 
     MpSubprogramStmt* getMpSubprogramStmt() {return pMpSubprogramStmt;}
-    SpecificationPart* getSpecificationPart() {return pSpecificationPart;}
-    ExecutionPart* getExecutionPart() {return pExecutionPart;}
+    InitialSpecPart* getInitialSpecPart() {return pInitialSpecPart;}
+    SpecAndExecPart* getSpecAndExecPart() {return pSpecAndExecPart;}
     InternalSubprogramPart* getInternalSubprogramPart() {return pInternalSubprogramPart;}
     EndMpSubprogramStmt* getEndMpSubprogramStmt() {return pEndMpSubprogramStmt;}
 
     void setMpSubprogramStmt(MpSubprogramStmt* mpsubprogramstmt) {pMpSubprogramStmt = mpsubprogramstmt;}
-    void setSpecificationPart(SpecificationPart* specificationpart) {pSpecificationPart = specificationpart;}
-    void setExecutionPart(ExecutionPart* executionpart) {pExecutionPart = executionpart;}
+    void setInitialSpecPart(InitialSpecPart* specPart) {pInitialSpecPart = specPart;}
+    void setSpecAndExecPart(SpecAndExecPart* execPart) {pSpecAndExecPart = execPart;}
     void setInternalSubprogramPart(InternalSubprogramPart* internalsubprogrampart) {pInternalSubprogramPart = internalsubprogrampart;}
     void setEndMpSubprogramStmt(EndMpSubprogramStmt* endmpsubprogramstmt) {pEndMpSubprogramStmt = endmpsubprogramstmt;}
 
  private:
     MpSubprogramStmt* pMpSubprogramStmt;
-    SpecificationPart* pSpecificationPart;
-    ExecutionPart* pExecutionPart;
+    InitialSpecPart* pInitialSpecPart;
+    SpecAndExecPart* pSpecAndExecPart;
     InternalSubprogramPart* pInternalSubprogramPart;
     EndMpSubprogramStmt* pEndMpSubprogramStmt;
 };
 
-class MpSubprogramStmt : public Node
+class MpSubprogramStmt : public Statement
 {
  public:
     MpSubprogramStmt()
@@ -17819,20 +17821,20 @@ class MpSubprogramStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getProcedureName() {return pProcedureName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ProcedureName* pProcedureName;
+    Name* pProcedureName;
     EOS* pEOS;
 };
 
-class EndMpSubprogramStmt : public Node
+class EndMpSubprogramStmt : public Statement
 {
  public:
     EndMpSubprogramStmt()
@@ -17855,20 +17857,20 @@ class EndMpSubprogramStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    ProcedureName* getProcedureName() {return pProcedureName;}
+    Name* getProcedureName() {return pProcedureName;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setProcedureName(ProcedureName* procedurename) {pProcedureName = procedurename;}
+    void setProcedureName(Name* procedurename) {pProcedureName = procedurename;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    ProcedureName* pProcedureName;
+    Name* pProcedureName;
     EOS* pEOS;
 };
 
-class EntryStmt : public Node
+class EntryStmt : public Statement
 {
  public:
     EntryStmt()
@@ -17902,26 +17904,26 @@ class EntryStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    EntryName* getEntryName() {return pEntryName;}
+    Name* getEntryName() {return pEntryName;}
     EOS* getEOS() {return pEOS;}
     DummyArgList* getDummyArgList() {return pDummyArgList;}
     Suffix* getSuffix() {return pSuffix;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setEntryName(EntryName* entryname) {pEntryName = entryname;}
+    void setEntryName(Name* entryname) {pEntryName = entryname;}
     void setEOS(EOS* eos) {pEOS = eos;}
     void setDummyArgList(DummyArgList* dummyarglist) {pDummyArgList = dummyarglist;}
     void setSuffix(Suffix* suffix) {pSuffix = suffix;}
 
  private:
     Label* pLabel;
-    EntryName* pEntryName;
+    Name* pEntryName;
     EOS* pEOS;
     DummyArgList* pDummyArgList;
     Suffix* pSuffix;
 };
 
-class ReturnStmt : public Node
+class ReturnStmt : public Statement
 {
  public:
     ReturnStmt()
@@ -17957,7 +17959,7 @@ class ReturnStmt : public Node
     EOS* pEOS;
 };
 
-class ContainsStmt : public Node
+class ContainsStmt : public Statement
 {
  public:
     ContainsStmt()
@@ -17988,7 +17990,7 @@ class ContainsStmt : public Node
     EOS* pEOS;
 };
 
-class StmtFunctionStmt : public Node
+class StmtFunctionStmt : public Statement
 {
  public:
     StmtFunctionStmt()
@@ -18015,25 +18017,52 @@ class StmtFunctionStmt : public Node
       }
 
     Label* getLabel() {return pLabel;}
-    FunctionName* getFunctionName() {return pFunctionName;}
+    Name* getFunctionName() {return pFunctionName;}
     DummyArgNameList* getDummyArgNameList() {return pDummyArgNameList;}
     Expr* getExpr() {return pExpr;}
     EOS* getEOS() {return pEOS;}
 
     void setLabel(Label* label) {pLabel = label;}
-    void setFunctionName(FunctionName* functionname) {pFunctionName = functionname;}
+    void setFunctionName(Name* functionname) {pFunctionName = functionname;}
     void setDummyArgNameList(DummyArgNameList* dummyargnamelist) {pDummyArgNameList = dummyargnamelist;}
     void setExpr(Expr* expr) {pExpr = expr;}
     void setEOS(EOS* eos) {pEOS = eos;}
 
  private:
     Label* pLabel;
-    FunctionName* pFunctionName;
+    Name* pFunctionName;
     DummyArgNameList* pDummyArgNameList;
     Expr* pExpr;
     EOS* pEOS;
 };
 
+class Name : public Node
+{
+ public:
+    Name()
+      {
+         pIdent = NULL;
+      }
+   virtual ~Name();
+
+    Name* newName()
+      {
+         Name* node = new Name();
+         node->pIdent = pIdent;  pIdent = NULL;
+         node->setOptionType(optionType);
+         node->inheritPayload(this);
+         return node;
+      }
+
+    Ident* getIdent() {return pIdent;}
+
+    void setIdent(Ident* ident) {pIdent = ident;}
+
+ private:
+    Ident* pIdent;
+};
+
+#ifdef OBSOLETE
 class AncestorModuleName : public Node
 {
  public:
@@ -18043,9 +18072,9 @@ class AncestorModuleName : public Node
       }
    virtual ~AncestorModuleName();
 
-    AncestorModuleName* newAncestorModuleName()
+    Name* newAncestorModuleName()
       {
-         AncestorModuleName* node = new AncestorModuleName();
+         Name* node = new AncestorModuleName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18069,9 +18098,9 @@ class ArgName : public Node
       }
    virtual ~ArgName();
 
-    ArgName* newArgName()
+    Name* newArgName()
       {
-         ArgName* node = new ArgName();
+         Name* node = new ArgName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18095,9 +18124,9 @@ class ArrayName : public Node
       }
    virtual ~ArrayName();
 
-    ArrayName* newArrayName()
+    Name* newArrayName()
       {
-         ArrayName* node = new ArrayName();
+         Name* node = new ArrayName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18121,9 +18150,9 @@ class AssociateConstructName : public Node
       }
    virtual ~AssociateConstructName();
 
-    AssociateConstructName* newAssociateConstructName()
+    Name* newAssociateConstructName()
       {
-         AssociateConstructName* node = new AssociateConstructName();
+         Name* node = new AssociateConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18147,9 +18176,9 @@ class AssociateName : public Node
       }
    virtual ~AssociateName();
 
-    AssociateName* newAssociateName()
+    Name* newAssociateName()
       {
-         AssociateName* node = new AssociateName();
+         Name* node = new AssociateName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18173,9 +18202,9 @@ class BindingName : public Node
       }
    virtual ~BindingName();
 
-    BindingName* newBindingName()
+    Name* newBindingName()
       {
-         BindingName* node = new BindingName();
+         Name* node = new BindingName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18199,9 +18228,9 @@ class BlockConstructName : public Node
       }
    virtual ~BlockConstructName();
 
-    BlockConstructName* newBlockConstructName()
+    Name* newBlockConstructName()
       {
-         BlockConstructName* node = new BlockConstructName();
+         Name* node = new BlockConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18225,9 +18254,9 @@ class BlockDataName : public Node
       }
    virtual ~BlockDataName();
 
-    BlockDataName* newBlockDataName()
+    Name* newBlockDataName()
       {
-         BlockDataName* node = new BlockDataName();
+         Name* node = new BlockDataName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18251,9 +18280,9 @@ class CaseConstructName : public Node
       }
    virtual ~CaseConstructName();
 
-    CaseConstructName* newCaseConstructName()
+    Name* newCaseConstructName()
       {
-         CaseConstructName* node = new CaseConstructName();
+         Name* node = new CaseConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18277,9 +18306,9 @@ class CoarrayName : public Node
       }
    virtual ~CoarrayName();
 
-    CoarrayName* newCoarrayName()
+    Name* newCoarrayName()
       {
-         CoarrayName* node = new CoarrayName();
+         Name* node = new CoarrayName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18303,9 +18332,9 @@ class CommonBlockName : public Node
       }
    virtual ~CommonBlockName();
 
-    CommonBlockName* newCommonBlockName()
+    Name* newCommonBlockName()
       {
-         CommonBlockName* node = new CommonBlockName();
+         Name* node = new CommonBlockName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18329,9 +18358,9 @@ class ComponentName : public Node
       }
    virtual ~ComponentName();
 
-    ComponentName* newComponentName()
+    Name* newComponentName()
       {
-         ComponentName* node = new ComponentName();
+         Name* node = new ComponentName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18355,9 +18384,9 @@ class ConstructName : public Node
       }
    virtual ~ConstructName();
 
-    ConstructName* newConstructName()
+    Name* newConstructName()
       {
-         ConstructName* node = new ConstructName();
+         Name* node = new ConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18381,9 +18410,9 @@ class CriticalConstructName : public Node
       }
    virtual ~CriticalConstructName();
 
-    CriticalConstructName* newCriticalConstructName()
+    Name* newCriticalConstructName()
       {
-         CriticalConstructName* node = new CriticalConstructName();
+         Name* node = new CriticalConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18433,9 +18462,9 @@ class DoConstructName : public Node
       }
    virtual ~DoConstructName();
 
-    DoConstructName* newDoConstructName()
+    Name* newDoConstructName()
       {
-         DoConstructName* node = new DoConstructName();
+         Name* node = new DoConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18459,9 +18488,9 @@ class EntityName : public Node
       }
    virtual ~EntityName();
 
-    EntityName* newEntityName()
+    Name* newEntityName()
       {
-         EntityName* node = new EntityName();
+         Name* node = new EntityName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18485,9 +18514,9 @@ class EntryName : public Node
       }
    virtual ~EntryName();
 
-    EntryName* newEntryName()
+    Name* newEntryName()
       {
-         EntryName* node = new EntryName();
+         Name* node = new EntryName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18537,9 +18566,9 @@ class FinalSubroutineName : public Node
       }
    virtual ~FinalSubroutineName();
 
-    FinalSubroutineName* newFinalSubroutineName()
+    Name* newFinalSubroutineName()
       {
-         FinalSubroutineName* node = new FinalSubroutineName();
+         Name* node = new FinalSubroutineName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18563,9 +18592,9 @@ class ForallConstructName : public Node
       }
    virtual ~ForallConstructName();
 
-    ForallConstructName* newForallConstructName()
+    Name* newForallConstructName()
       {
-         ForallConstructName* node = new ForallConstructName();
+         Name* node = new ForallConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18589,9 +18618,9 @@ class FunctionName : public Node
       }
    virtual ~FunctionName();
 
-    FunctionName* newFunctionName()
+    Name* newFunctionName()
       {
-         FunctionName* node = new FunctionName();
+         Name* node = new FunctionName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18615,9 +18644,9 @@ class GenericName : public Node
       }
    virtual ~GenericName();
 
-    GenericName* newGenericName()
+    Name* newGenericName()
       {
-         GenericName* node = new GenericName();
+         Name* node = new GenericName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18641,9 +18670,9 @@ class IfConstructName : public Node
       }
    virtual ~IfConstructName();
 
-    IfConstructName* newIfConstructName()
+    Name* newIfConstructName()
       {
-         IfConstructName* node = new IfConstructName();
+         Name* node = new IfConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18667,9 +18696,9 @@ class ImportName : public Node
       }
    virtual ~ImportName();
 
-    ImportName* newImportName()
+    Name* newImportName()
       {
-         ImportName* node = new ImportName();
+         Name* node = new ImportName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18693,9 +18722,9 @@ class IndexName : public Node
       }
    virtual ~IndexName();
 
-    IndexName* newIndexName()
+    Name* newIndexName()
       {
-         IndexName* node = new IndexName();
+         Name* node = new IndexName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18719,9 +18748,9 @@ class IntrinsicProcedureName : public Node
       }
    virtual ~IntrinsicProcedureName();
 
-    IntrinsicProcedureName* newIntrinsicProcedureName()
+    Name* newIntrinsicProcedureName()
       {
-         IntrinsicProcedureName* node = new IntrinsicProcedureName();
+         Name* node = new IntrinsicProcedureName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18745,9 +18774,9 @@ class LocalName : public Node
       }
    virtual ~LocalName();
 
-    LocalName* newLocalName()
+    Name* newLocalName()
       {
-         LocalName* node = new LocalName();
+         Name* node = new LocalName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18771,9 +18800,9 @@ class ModuleName : public Node
       }
    virtual ~ModuleName();
 
-    ModuleName* newModuleName()
+    Name* newModuleName()
       {
-         ModuleName* node = new ModuleName();
+         Name* node = new ModuleName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18797,9 +18826,9 @@ class NamelistGroupName : public Node
       }
    virtual ~NamelistGroupName();
 
-    NamelistGroupName* newNamelistGroupName()
+    Name* newNamelistGroupName()
       {
-         NamelistGroupName* node = new NamelistGroupName();
+         Name* node = new NamelistGroupName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18823,9 +18852,9 @@ class ObjectName : public Node
       }
    virtual ~ObjectName();
 
-    ObjectName* newObjectName()
+    Name* newObjectName()
       {
-         ObjectName* node = new ObjectName();
+         Name* node = new ObjectName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18849,9 +18878,9 @@ class ParentSubmoduleName : public Node
       }
    virtual ~ParentSubmoduleName();
 
-    ParentSubmoduleName* newParentSubmoduleName()
+    Name* newParentSubmoduleName()
       {
-         ParentSubmoduleName* node = new ParentSubmoduleName();
+         Name* node = new ParentSubmoduleName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18892,7 +18921,6 @@ class ParentTypeName : public Node
     Ident* pIdent;
 };
 
-#ifdef OBSOLETE
 class PartName : public Node
 {
  public:
@@ -18918,7 +18946,6 @@ class PartName : public Node
  private:
     Ident* pIdent;
 };
-#endif
 
 class ProcedureComponentName : public Node
 {
@@ -18929,9 +18956,9 @@ class ProcedureComponentName : public Node
       }
    virtual ~ProcedureComponentName();
 
-    ProcedureComponentName* newProcedureComponentName()
+    Name* newProcedureComponentName()
       {
-         ProcedureComponentName* node = new ProcedureComponentName();
+         Name* node = new ProcedureComponentName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18955,9 +18982,9 @@ class ProcedureEntityName : public Node
       }
    virtual ~ProcedureEntityName();
 
-    ProcedureEntityName* newProcedureEntityName()
+    Name* newProcedureEntityName()
       {
-         ProcedureEntityName* node = new ProcedureEntityName();
+         Name* node = new ProcedureEntityName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -18981,9 +19008,9 @@ class ProcedureName : public Node
       }
    virtual ~ProcedureName();
 
-    ProcedureName* newProcedureName()
+    Name* newProcedureName()
       {
-         ProcedureName* node = new ProcedureName();
+         Name* node = new ProcedureName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19024,32 +19051,6 @@ class ProcEntityName : public Node
     Ident* pIdent;
 };
 
-class Name : public Node
-{
- public:
-    Name()
-      {
-         pIdent = NULL;
-      }
-   virtual ~Name();
-
-    Name* newName()
-      {
-         Name* node = new Name();
-         node->pIdent = pIdent;  pIdent = NULL;
-         node->setOptionType(optionType);
-         node->inheritPayload(this);
-         return node;
-      }
-
-    Ident* getIdent() {return pIdent;}
-
-    void setIdent(Ident* ident) {pIdent = ident;}
-
- private:
-    Ident* pIdent;
-};
-
 class ResultName : public Node
 {
  public:
@@ -19059,9 +19060,9 @@ class ResultName : public Node
       }
    virtual ~ResultName();
 
-    ResultName* newResultName()
+    Name* newResultName()
       {
-         ResultName* node = new ResultName();
+         Name* node = new ResultName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19111,9 +19112,9 @@ class ScalarIntVariableName : public Node
       }
    virtual ~ScalarIntVariableName();
 
-    ScalarIntVariableName* newScalarIntVariableName()
+    Name* newScalarIntVariableName()
       {
-         ScalarIntVariableName* node = new ScalarIntVariableName();
+         Name* node = new ScalarIntVariableName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19137,9 +19138,9 @@ class ScalarVariableName : public Node
       }
    virtual ~ScalarVariableName();
 
-    ScalarVariableName* newScalarVariableName()
+    Name* newScalarVariableName()
       {
-         ScalarVariableName* node = new ScalarVariableName();
+         Name* node = new ScalarVariableName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19163,9 +19164,9 @@ class SelectConstructName : public Node
       }
    virtual ~SelectConstructName();
 
-    SelectConstructName* newSelectConstructName()
+    Name* newSelectConstructName()
       {
-         SelectConstructName* node = new SelectConstructName();
+         Name* node = new SelectConstructName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19189,9 +19190,9 @@ class SubmoduleName : public Node
       }
    virtual ~SubmoduleName();
 
-    SubmoduleName* newSubmoduleName()
+    Name* newSubmoduleName()
       {
-         SubmoduleName* node = new SubmoduleName();
+         Name* node = new SubmoduleName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19206,7 +19207,6 @@ class SubmoduleName : public Node
     Ident* pIdent;
 };
 
-#ifdef OBSOLETE
 class SubroutineName : public Node
 {
  public:
@@ -19232,7 +19232,6 @@ class SubroutineName : public Node
  private:
     Ident* pIdent;
 };
-#endif
 
 class TypeName : public Node
 {
@@ -19269,9 +19268,9 @@ class TypeParamName : public Node
       }
    virtual ~TypeParamName();
 
-    TypeParamName* newTypeParamName()
+    Name* newTypeParamName()
       {
-         TypeParamName* node = new TypeParamName();
+         Name* node = new Name();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19295,9 +19294,9 @@ class UseName : public Node
       }
    virtual ~UseName();
 
-    UseName* newUseName()
+    Name* newUseName()
       {
-         UseName* node = new UseName();
+         Name* node = new UseName();
          node->pIdent = pIdent;  pIdent = NULL;
          node->setOptionType(optionType);
          node->inheritPayload(this);
@@ -19311,13 +19310,14 @@ class UseName : public Node
  private:
     Ident* pIdent;
 };
+#endif
 
 class ExternalNameList : public Node
 {
  public:
     ExternalNameList()
       {
-         pExternalNameList = new std::vector<ExternalName*>();
+         pExternalNameList = new std::vector<Name*>();
       }
    virtual ~ExternalNameList();
 
@@ -19330,12 +19330,12 @@ class ExternalNameList : public Node
          return node;
       }
 
-    std::vector<ExternalName*>* getExternalNameList() {return pExternalNameList;}
+    std::vector<Name*>* getExternalNameList() {return pExternalNameList;}
 
-    void appendExternalName(ExternalName* externalname) {pExternalNameList->push_back(externalname);}
+    void appendExternalName(Name* externalname) {pExternalNameList->push_back(externalname);}
 
  private:
-    std::vector<ExternalName*>* pExternalNameList;
+    std::vector<Name*>* pExternalNameList;
 };
 
 class LabelList : public Node
