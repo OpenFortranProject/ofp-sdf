@@ -1,9 +1,35 @@
+#define COMPILED_WITH_ROSE 1
+
+#if COMPILED_WITH_ROSE
+#include "sage3basic.h"
+
+// DQ (10/14/2010):  This should only be included by source files that require it.
+// This fixed a reported bug which caused conflicts with autoconf macros (e.g. PACKAGE_BUGREPORT).
+// Interestingly it must be at the top of the list of include files.
+#include "rose_config.h"
+#endif
+
 #include "UntypedASTBuilder.hpp"
 #include "OFPExpr.hpp"
 #include <assert.h>
 #include <stdio.h>
 
-#undef OFP_BUILD_DEBUG
+// DQ (9/14/2014): This file contains the function that are called by the OFP file:
+//    src/3rdPartyLibraries/experimental-fortran-parser/aterm_traversal/ofp_traverse_productions.cpp
+// These function use OFP class defined in:
+//    src/3rdPartyLibraries/experimental-fortran-parser/aterm_traversal/traverse.hpp
+// These functions (in this file) must implement the calls to the ROSE build functions
+// to build up the ROSE AST for Untyped Nodes.
+//
+// To support this we need to:
+//   1) build the SageBuilder build functions to build the ROSE Untyped IR nodes.
+//   2) Then we have to modify these functions to call those ROSE build API functions.
+//   3) Once we have the Untyped AST using ROSE Untyped IR nodes, then we can worry about the  
+//      translation of these IR nodes to the usual ROSE IR nodes to define a proper ROSE AST 
+//      (defining a new Fortran frontend for ROSE).
+
+#define UNPARSER_AVAILABLE 0
+#define OFP_BUILD_DEBUG
 
 extern OFP::Unparser* unparser;
 
@@ -22,6 +48,7 @@ UntypedASTBuilder::~UntypedASTBuilder()
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_Program(Program * program)
 {
+#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedGlobalScope * scope = NULL;
    SgUntypedDeclarationStatement * decl = NULL;
@@ -54,6 +81,19 @@ void UntypedASTBuilder::build_Program(Program * program)
 #ifdef OFP_BUILD_DEBUG
    printf("build_Program: ..................... %lu\n", declList->get_decl_list().size());
 #endif
+#else
+   printf ("UntypedASTBuilder::build_Program(): calling ROSE build functions \n");
+
+   SgUntypedDeclarationList* declaration_list      = NULL;
+   SgUntypedStatementList* statement_list          = NULL;
+   SgUntypedFunctionDeclarationList* function_list = NULL;
+
+   SgUntypedGlobalScope* globalScope = SageBuilder::buildUntypedGlobalScope(declaration_list,statement_list,function_list);
+
+   SgUntypedFile* file = SageBuilder::buildUntypedFile(globalScope);
+
+   program->setPayload(file);
+#endif
 }
 
 //========================================================================================
@@ -61,6 +101,7 @@ void UntypedASTBuilder::build_Program(Program * program)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_InitialSpecPart(InitialSpecPart * initialSpecPart)
 {
+#ifdef TODO_ROSE
    SgUntypedDeclarationStatement * decl = NULL;
    SgUntypedDeclarationList * sgDeclList = new SgUntypedDeclarationList(NULL);
 
@@ -74,6 +115,7 @@ void UntypedASTBuilder::build_InitialSpecPart(InitialSpecPart * initialSpecPart)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_InitialSpecPart: ........... %lu\n", sgDeclList->get_decl_list().size());
+#endif
 #endif
 }
 
@@ -146,6 +188,7 @@ void UntypedASTBuilder::build_ImplicitPart(ImplicitPart* implicitPart)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_SpecAndExecPart(SpecAndExecPart * specAndExecPart)
 {
+#ifdef TODO_ROSE
    SgUntypedStatement * stmt = NULL;
 
    SgUntypedStatementList * sgStmtList = new SgUntypedStatementList(NULL);
@@ -159,6 +202,7 @@ void UntypedASTBuilder::build_SpecAndExecPart(SpecAndExecPart * specAndExecPart)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_SpecAndExecPart: ............... %lu\n", sgStmtList->get_stmt_list().size());
+#endif
 #endif
 }
 
@@ -306,7 +350,9 @@ void UntypedASTBuilder::build_IntLiteralConstant(IntLiteralConstant * intLiteral
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_IntLiteralConstant ........... ");
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(expr);  printf("\n");
+#endif
 #endif
 }
 
@@ -326,7 +372,9 @@ void UntypedASTBuilder::build_TypeDeclarationStmt(TypeDeclarationStmt * typeDecl
    start = type->get_startOfConstruct();
 
    stmt = new SgUntypedVariableDeclaration(start, type);
+#if UNPARSER_AVAILABLE
    stmt->set_has_unparse(true);
+#endif
 
    if (typeDeclarationStmt->getLabel()) stmt->set_label_string(typeDeclarationStmt->getLabel()->getValue());
    stmt->set_parameters(new SgUntypedInitializedNameList(start));
@@ -394,7 +442,9 @@ void UntypedASTBuilder::build_ImplicitStmt(ImplicitStmt * implicitStmt)
    switch (implicitStmt->getOptionType()) {
      case ImplicitStmt::ImplicitStmt_NONE:
         stmt = new SgUntypedImplicitDeclaration(start);
+#if UNPARSER_AVAILABLE
         stmt->set_has_unparse(true);
+#endif
         stmt->set_statement_enum(SgToken::FORTRAN_IMPLICIT_NONE);
         if (implicitStmt->getLabel()) stmt->set_label_string(implicitStmt->getLabel()->getValue());
 
@@ -424,7 +474,9 @@ void UntypedASTBuilder::build_DataRef(DataRef * dataRef)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_DataRef: ..................... ");
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(dataRef->getPayload()));  printf("\n");
+#endif
 #endif
 }
 
@@ -443,7 +495,9 @@ void UntypedASTBuilder::build_PartRef(PartRef * partRef)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_PartRef: ..................... ");
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(partRef->getPayload()));  printf("\n");
+#endif
 #endif
 }
 
@@ -471,6 +525,7 @@ void UntypedASTBuilder::build_AssignmentStmt(AssignmentStmt * assignmentStmt)
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 {
+#ifdef TODO_ROSE
    Sg_File_Info * start = NULL;
    SgUntypedNamedStatement * stmt = NULL;
    SgUntypedDeclarationList* sgDeclList = NULL;
@@ -488,7 +543,9 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
       program->set_statement_enum(SgToken::FORTRAN_PROGRAM);
    }
    program->set_scope(new SgUntypedFunctionScope(start));
+#if UNPARSER_AVAILABLE
    program->set_has_unparse(true);
+#endif
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_MainProgram label: ........... %s\n", program->get_label_string().c_str());
@@ -544,6 +601,9 @@ void UntypedASTBuilder::build_MainProgram(MainProgram * mainProgram)
 #endif
 
    mainProgram->setPayload(program);
+#else
+   printf ("UntypedASTBuilder::build_MainProgram(): commented out! \n");
+#endif
 }
    
 //========================================================================================
@@ -592,11 +652,16 @@ void UntypedASTBuilder::build_Module(Module* module)
    sgModule = dynamic_cast<SgUntypedModuleDeclaration*>(module->getModuleStmt()->getPayload());  assert(sgModule);
    start = sgModule->get_startOfConstruct();
    sgModule->set_scope(new SgUntypedModuleScope(start));
+#if UNPARSER_AVAILABLE
    sgModule->set_has_unparse(true);
+#endif
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_Module label: ................ %s\n", sgModule->get_label_string().c_str());
+#if 0
+// DQ (9/10/2014): Need to add name data member for SgUntypedModuleDeclaration.
    printf("             begin name: ........... %s\n", sgModule->get_name().c_str());
+#endif
 #endif
 
    // SpecificationPart
@@ -643,10 +708,13 @@ void UntypedASTBuilder::build_ModuleStmt(ModuleStmt* moduleStmt)
    Sg_File_Info * start = NULL;
    SgUntypedModuleDeclaration * module = NULL;
 
+#if 0
+// DQ (9/10/2014): This failes to compile so we have commented it out.
    module = new SgUntypedModuleDeclaration(start, moduleStmt->getModuleName()->getIdent()->getName());
    module->set_statement_enum(SgToken::FORTRAN_MODULE);
 
    if (moduleStmt->getLabel()) module->set_label_string(moduleStmt->getLabel()->getValue());
+#endif
 
    moduleStmt->setPayload(module);
 }
@@ -716,7 +784,9 @@ void UntypedASTBuilder::build_FunctionSubprogram(FunctionSubprogram* functionSub
    assert(function);
    start = function->get_startOfConstruct();
    function->set_scope(new SgUntypedFunctionScope(start));
+#if UNPARSER_AVAILABLE
    function->set_has_unparse(true);
+#endif
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_Function    label: ........... %s\n", function->get_label_string().c_str());
@@ -915,6 +985,9 @@ void  UntypedASTBuilder::build_EndSubroutineStmt(EndSubroutineStmt * endSubrouti
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram* separateModuleSubprogram)
 {
+#if 0
+// typedef SgUntypedFunctionDeclaration SgUntypedMpSubprogramDeclaration;
+
    Sg_File_Info * start = NULL;
    SgUntypedNamedStatement * stmt = NULL;
    SgUntypedDeclarationList* sgDeclList = NULL;
@@ -977,6 +1050,7 @@ void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram*
 #endif
 
    separateModuleSubprogram->setPayload(subprogram);
+#endif
 }
 
 //========================================================================================
@@ -984,6 +1058,7 @@ void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram*
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStmt)
 {
+#if 0
    Sg_File_Info * start = NULL;
    SgUntypedMpSubprogramDeclaration * subprogram = NULL;
 
@@ -993,6 +1068,7 @@ void UntypedASTBuilder::build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStm
    if (mpSubprogramStmt->getLabel()) subprogram->set_label_string(mpSubprogramStmt->getLabel()->getValue());
 
    mpSubprogramStmt->setPayload(subprogram);
+#endif
 }
 
 //========================================================================================
@@ -1000,6 +1076,7 @@ void UntypedASTBuilder::build_MpSubprogramStmt(MpSubprogramStmt* mpSubprogramStm
 //----------------------------------------------------------------------------------------
 void UntypedASTBuilder::build_EndMpSubprogramStmt(EndMpSubprogramStmt* endMpSubprogramStmt)
 {
+#if 0
    Sg_File_Info * start = NULL;
    SgUntypedNamedStatement * stmt = new SgUntypedNamedStatement(start);
    stmt->set_statement_enum(SgToken::FORTRAN_END_MP_SUBPROGRAM);
@@ -1012,6 +1089,7 @@ void UntypedASTBuilder::build_EndMpSubprogramStmt(EndMpSubprogramStmt* endMpSubp
    }
 
    endMpSubprogramStmt->setPayload(stmt);
+#endif
 }
 
 //========================================================================================
@@ -1022,7 +1100,9 @@ void UntypedASTBuilder::build_ContainsStmt(ContainsStmt* containsStmt)
    Sg_File_Info * start = NULL;
    SgUntypedStatement * stmt = new SgUntypedStatement(start);
    stmt->set_statement_enum(SgToken::FORTRAN_CONTAINS);
+#if UNPARSER_AVAILABLE
    stmt->set_has_unparse(true);
+#endif
 
    if (containsStmt->getLabel()) {
       stmt->set_label_string  (containsStmt->getLabel()->getValue());
@@ -1044,10 +1124,12 @@ void UntypedASTBuilder::build_BinaryOp(Expr * expr, SgToken::ROSE_Fortran_Operat
    assert(rhs);  assert(lhs);
 
 #ifdef OFP_BUILD_DEBUG
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(lhs);
    printf(" ");
    unparser->unparseExpr(rhs);
    printf("\n");
+#endif
 #endif
 
    //TODO-DQ-2014.3.7 I don't think a Fortran enum should be in constructor
@@ -1091,7 +1173,16 @@ void UntypedASTBuilder::build_Icon(Icon* icon)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_Icon: ........................ ");
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(icon->getPayload()));  printf("\n");
+#endif
+#endif
+
+#if 0
+   printf ("Error: In UntypedASTBuilder::build_Icon(): Built a SgUntypedValueExpression (need to call SageBuilder API) \n");
+   ROSE_ASSERT(false);
+#else
+   printf ("WARNING: In UntypedASTBuilder::build_Icon(): Built a SgUntypedValueExpression (need to call SageBuilder API) \n");
 #endif
 }
 
@@ -1102,7 +1193,16 @@ void UntypedASTBuilder::build_Ident(Ident* ident)
 
 #ifdef OFP_BUILD_DEBUG
    printf("build_Ident: ....................... ");
+#if UNPARSER_AVAILABLE
    unparser->unparseExpr(dynamic_cast<SgUntypedExpression*>(ident->getPayload()));  printf("\n");
+#endif
+#endif
+
+#if 0
+   printf ("Error: In UntypedASTBuilder::build_Ident(): Built a SgUntypedValueExpression (need to call SageBuilder API) \n");
+   ROSE_ASSERT(false);
+#else
+   printf ("WARNING: In UntypedASTBuilder::build_Ident(): Built a SgUntypedValueExpression (need to call SageBuilder API) \n");
 #endif
 }
 
