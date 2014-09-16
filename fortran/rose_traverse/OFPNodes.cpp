@@ -3003,8 +3003,8 @@ OFP::PrefixSpec::~PrefixSpec()
 OFP::FunctionSubprogram::~FunctionSubprogram()
    {
       if (pFunctionStmt) delete pFunctionStmt;
-      if (pSpecificationPart) delete pSpecificationPart;
-      if (pExecutionPart) delete pExecutionPart;
+      if (pInitialSpecPart) delete pInitialSpecPart;
+      if (pSpecAndExecPart) delete pSpecAndExecPart;
       if (pInternalSubprogramPart) delete pInternalSubprogramPart;
       if (pEndFunctionStmt) delete pEndFunctionStmt;
    }
@@ -3081,8 +3081,8 @@ OFP::EndSubroutineStmt::~EndSubroutineStmt()
 OFP::SeparateModuleSubprogram::~SeparateModuleSubprogram()
    {
       if (pMpSubprogramStmt) delete pMpSubprogramStmt;
-      if (pSpecificationPart) delete pSpecificationPart;
-      if (pExecutionPart) delete pExecutionPart;
+      if (pInitialSpecPart) delete pInitialSpecPart;
+      if (pSpecAndExecPart) delete pSpecAndExecPart;
       if (pInternalSubprogramPart) delete pInternalSubprogramPart;
       if (pEndMpSubprogramStmt) delete pEndMpSubprogramStmt;
    }
@@ -3132,6 +3132,12 @@ OFP::StmtFunctionStmt::~StmtFunctionStmt()
       if (pEOS) delete pEOS;
    }
 
+OFP::Name::~Name()
+   {
+      if (pIdent) delete pIdent;
+   }
+
+#ifdef OBSOLETE
 OFP::AncestorModuleName::~AncestorModuleName()
    {
       if (pIdent) delete pIdent;
@@ -3277,11 +3283,6 @@ OFP::ModuleName::~ModuleName()
       if (pIdent) delete pIdent;
    }
 
-OFP::Name::~Name()
-   {
-      if (pIdent) delete pIdent;
-   }
-
 OFP::NamelistGroupName::~NamelistGroupName()
    {
       if (pIdent) delete pIdent;
@@ -3352,12 +3353,10 @@ OFP::SubmoduleName::~SubmoduleName()
       if (pIdent) delete pIdent;
    }
 
-#ifdef OBSOLETE
 OFP::SubroutineName::~SubroutineName()
    {
       if (pIdent) delete pIdent;
    }
-#endif
 
 OFP::TypeName::~TypeName()
    {
@@ -3373,6 +3372,7 @@ OFP::UseName::~UseName()
    {
       if (pIdent) delete pIdent;
    }
+#endif
 
 OFP::ExternalNameList::~ExternalNameList()
    {
