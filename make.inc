@@ -1,6 +1,6 @@
 ## Add -m32 for 32 bit builds
 #
-ARCH = 
+ARCH = -m32
 
 ## Define paths to various stratego tools
 #
@@ -11,11 +11,11 @@ SGLRI = /opt/strategoxt/v0.17/bin/sglri
 
 ## Define extra flags for compiling strategies
 #
-#ST_CFLAGS = -Xcc $(ARCH)
-#ST_LDFLAGS = -Xlinker $(ARCH)
+ST_CFLAGS = -Xcc $(ARCH)
+ST_LDFLAGS = -Xlinker $(ARCH)
 
 ## Turns off warning messages for clang compiler
-#ST_CFLAGS += -Xcc -Wno-parentheses-equality
+ST_CFLAGS += -Xcc -Wno-parentheses-equality
 
 ## parse table for parsing signature files
 #
