@@ -1090,6 +1090,9 @@ ATbool ofp_traverse_StmtFunctionStmt(ATerm term, OFP::StmtFunctionStmt* StmtFunc
 /** Identifier aliases
  */
 
+ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name);
+
+#ifdef OBSOLETE
 ATbool ofp_traverse_AncestorModuleName(ATerm term, OFP::AncestorModuleName* AncestorModuleName);
 ATbool ofp_traverse_ArgName(ATerm term, OFP::ArgName* ArgName);
 ATbool ofp_traverse_ArrayName(ATerm term, OFP::ArrayName* ArrayName);
@@ -1120,7 +1123,6 @@ ATbool ofp_traverse_InterfaceName(ATerm term, OFP::InterfaceName* InterfaceName)
 ATbool ofp_traverse_IntrinsicProcedureName(ATerm term, OFP::IntrinsicProcedureName* IntrinsicProcedureName);
 ATbool ofp_traverse_LocalName(ATerm term, OFP::LocalName* LocalName);
 ATbool ofp_traverse_ModuleName(ATerm term, OFP::ModuleName* ModuleName);
-ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name);
 ATbool ofp_traverse_NamelistGroupName(ATerm term, OFP::NamelistGroupName* NamelistGroupName);
 ATbool ofp_traverse_ObjectName(ATerm term, OFP::Name* ObjectName);
 ATbool ofp_traverse_ObjectName(ATerm term, OFP::ObjectName* ObjectName);
@@ -1141,7 +1143,7 @@ ATbool ofp_traverse_SubroutineName(ATerm term, OFP::SubroutineName* SubroutineNa
 ATbool ofp_traverse_TypeName(ATerm term, OFP::TypeName* TypeName);
 ATbool ofp_traverse_TypeParamName(ATerm term, OFP::TypeParamName* TypeParamName);
 ATbool ofp_traverse_UseName(ATerm term, OFP::UseName* UseName);
-
+#endif
 
 /** Lists
  */
