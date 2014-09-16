@@ -71,7 +71,7 @@ void UntypedASTBuilder::build_InitialSpecPart(InitialSpecPart * initialSpecPart)
    }
 
    initialSpecPart->setPayload(sgDeclList);
-   
+
 #ifdef OFP_BUILD_DEBUG
    printf("build_InitialSpecPart: ........... %lu\n", sgDeclList->get_decl_list().size());
 #endif
@@ -723,9 +723,9 @@ void UntypedASTBuilder::build_FunctionSubprogram(FunctionSubprogram* functionSub
    printf("             begin name: ........... %s\n", function->get_name().c_str());
 #endif
 
-   // SpecificationPart
+   // InitialSpecPart
    //
-   SpecificationPart * specPart = functionSubprogram->getSpecificationPart();
+   InitialSpecPart * specPart = functionSubprogram->getInitialSpecPart();
    sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
    function->get_scope()->set_declaration_list(sgDeclList);
 
@@ -733,9 +733,9 @@ void UntypedASTBuilder::build_FunctionSubprogram(FunctionSubprogram* functionSub
    printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
 #endif
 
-   // ExecutionPart
+   // SpecAndExecPart
    //
-   ExecutionPart * execPart = functionSubprogram->getExecutionPart();
+   SpecAndExecPart * execPart = functionSubprogram->getSpecAndExecPart();
    sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
    function->get_scope()->set_statement_list(sgStmtList);
 
@@ -934,9 +934,9 @@ void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram*
    printf("             begin name: ........... %s\n", subprogram->get_name().c_str());
 #endif
 
-   // SpecificationPart
+   // InitialSpecPart
    //
-   SpecificationPart * specPart = separateModuleSubprogram->getSpecificationPart();
+   InitialSpecPart * specPart = separateModuleSubprogram->getInitialSpecPart();
    sgDeclList = dynamic_cast<SgUntypedDeclarationList*>(specPart->givePayload());  assert(sgDeclList);
    subprogram->get_scope()->set_declaration_list(sgDeclList);
 
@@ -944,9 +944,9 @@ void UntypedASTBuilder::build_SeparateModuleSubprogram(SeparateModuleSubprogram*
    printf("         spec_list_size: ........... %lu\n", sgDeclList->get_decl_list().size());
 #endif
 
-   // ExecutionPart
+   // SpecAndExecPart
    //
-   ExecutionPart * execPart = separateModuleSubprogram->getExecutionPart();
+   SpecAndExecPart * execPart = separateModuleSubprogram->getSpecAndExecPart();
    sgStmtList = dynamic_cast<SgUntypedStatementList*>(execPart->givePayload());  assert(sgStmtList);
    subprogram->get_scope()->set_statement_list(sgStmtList);
 
