@@ -2356,13 +2356,12 @@ ATbool ofp_traverse_KindParam(ATerm term, OFP::KindParam* KindParam)
       return ATtrue;
    }
 
-// TODO
- OFP::ScalarIntConstantName ScalarIntConstantName;
+ OFP::Name ScalarIntConstantName;
  if (ATmatch(term, "KindParam_SICN(<term>)", &ScalarIntConstantName.term)) {
 
-      if (ofp_traverse_ScalarIntConstantName(ScalarIntConstantName.term, &ScalarIntConstantName)) {
+      if (ofp_traverse_Name(ScalarIntConstantName.term, &ScalarIntConstantName)) {
          // MATCHED ScalarIntConstantName                                                                       
-         KindParam->setScalarIntConstantName(ScalarIntConstantName.newScalarIntConstantName());
+         KindParam->setScalarIntConstantName(ScalarIntConstantName.newName());
       } else return ATfalse;
 
    // MATCHED KindParam_SICN                                                                                    
@@ -2893,7 +2892,7 @@ ATbool ofp_traverse_DerivedTypeStmt(ATerm term, OFP::DerivedTypeStmt* DerivedTyp
 
  OFP::Label Label;
  OFP::OptTypeAttrSpecList OptTypeAttrSpecList;
- OFP::TypeName TypeName;
+ OFP::Name TypeName;
  OFP::OptTypeParamNameList OptTypeParamNameList;
  OFP::EOS EOS;
  if (ATmatch(term, "DerivedTypeStmt(<term>,<term>,<term>,<term>,<term>)", &Label.term, &OptTypeAttrSpecList.term, &TypeName.term, &OptTypeParamNameList.term, &EOS.term)) {
@@ -2910,8 +2909,8 @@ ATbool ofp_traverse_DerivedTypeStmt(ATerm term, OFP::DerivedTypeStmt* DerivedTyp
       } else return ATfalse;
    }
 
-      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
-         // MATCHED TypeName
+      if (ofp_traverse_Name(TypeName.term, &TypeName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(OptTypeParamNameList.term, "Some(<term>)", &OptTypeParamNameList.term)) {
@@ -2985,11 +2984,11 @@ ATbool ofp_traverse_TypeAttrSpec(ATerm term, OFP::TypeAttrSpec* TypeAttrSpec)
    printf("TypeAttrSpec: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ParentTypeName ParentTypeName;
+ OFP::Name ParentTypeName;
  if (ATmatch(term, "TypeAttrSpec_EXTENDS(<term>)", &ParentTypeName.term)) {
 
-      if (ofp_traverse_ParentTypeName(ParentTypeName.term, &ParentTypeName)) {
-         // MATCHED ParentTypeName
+      if (ofp_traverse_Name(ParentTypeName.term, &ParentTypeName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED TypeAttrSpec_EXTENDS
@@ -3056,15 +3055,15 @@ ATbool ofp_traverse_TypeParamNameList(ATerm term, OFP::TypeParamNameList* TypePa
    printf("TypeParamNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::TypeParamName TypeParamName;
+ OFP::Name TypeParamName;
  if (ATmatch(term, "TypeParamNameList(<term>)", &TypeParamName.term)) {
 
    ATermList TypeParamName_tail = (ATermList) ATmake("<term>", TypeParamName.term);
    while (! ATisEmpty(TypeParamName_tail)) {
       TypeParamName.term = ATgetFirst(TypeParamName_tail);
       TypeParamName_tail = ATgetNext (TypeParamName_tail);
-      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
-         // MATCHED TypeParamName
+      if (ofp_traverse_Name(TypeParamName.term, &TypeParamName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -3120,7 +3119,7 @@ ATbool ofp_traverse_EndTypeStmt(ATerm term, OFP::EndTypeStmt* EndTypeStmt)
 #endif
 
  OFP::Label Label;
- OFP::TypeName TypeName;
+ OFP::Name TypeName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndTypeStmt(<term>,<term>,<term>)", &Label.term, &TypeName.term, &EOS.term)) {
 
@@ -3131,8 +3130,8 @@ ATbool ofp_traverse_EndTypeStmt(ATerm term, OFP::EndTypeStmt* EndTypeStmt)
    }
 
    if (ATmatch(TypeName.term, "Some(<term>)", &TypeName.term)) {
-      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
-         // MATCHED TypeName
+      if (ofp_traverse_Name(TypeName.term, &TypeName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -3230,12 +3229,12 @@ ATbool ofp_traverse_TypeParamDecl(ATerm term, OFP::TypeParamDecl* TypeParamDecl)
    printf("TypeParamDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::TypeParamName TypeParamName;
+ OFP::Name TypeParamName;
  OFP::Expr Expr;
  if (ATmatch(term, "TypeParamDecl(<term>,<term>)", &TypeParamName.term, &Expr.term)) {
 
-      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
-         // MATCHED TypeParamName
+      if (ofp_traverse_Name(TypeParamName.term, &TypeParamName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(Expr.term, "Some(<term>)", &Expr.term)) {
@@ -3538,15 +3537,15 @@ ATbool ofp_traverse_ComponentDecl(ATerm term, OFP::ComponentDecl* ComponentDecl)
    printf("ComponentDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ComponentName ComponentName;
+ OFP::Name ComponentName;
  OFP::ComponentArraySpec ComponentArraySpec;
  OFP::CoarraySpec CoarraySpec;
  OFP::CharLength CharLength;
  OFP::ComponentInitialization ComponentInitialization;
  if (ATmatch(term, "ComponentDecl(<term>,<term>,<term>,<term>,<term>)", &ComponentName.term, &ComponentArraySpec.term, &CoarraySpec.term, &CharLength.term, &ComponentInitialization.term)) {
 
-      if (ofp_traverse_ComponentName(ComponentName.term, &ComponentName)) {
-         // MATCHED ComponentName
+      if (ofp_traverse_Name(ComponentName.term, &ComponentName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ComponentArraySpec.term, "Some(<term>)", &ComponentArraySpec.term)) {
@@ -4084,15 +4083,15 @@ ATbool ofp_traverse_BindingNameList(ATerm term, OFP::BindingNameList* BindingNam
    printf("BindingNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::BindingName BindingName;
+ OFP::Name BindingName;
  if (ATmatch(term, "BindingNameList(<term>)", &BindingName.term)) {
 
    ATermList BindingName_tail = (ATermList) ATmake("<term>", BindingName.term);
    while (! ATisEmpty(BindingName_tail)) {
       BindingName.term = ATgetFirst(BindingName_tail);
       BindingName_tail = ATgetNext (BindingName_tail);
-      if (ofp_traverse_BindingName(BindingName.term, &BindingName)) {
-         // MATCHED BindingName
+      if (ofp_traverse_Name(BindingName.term, &BindingName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -4135,18 +4134,18 @@ ATbool ofp_traverse_TypeBoundProcDecl(ATerm term, OFP::TypeBoundProcDecl* TypeBo
    printf("TypeBoundProcDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::BindingName BindingName;
- OFP::ProcedureName ProcedureName;
+ OFP::Name BindingName;
+ OFP::Name ProcedureName;
  if (ATmatch(term, "TypeBoundProcDecl(<term>,<term>)", &BindingName.term, &ProcedureName.term)) {
 
-      if (ofp_traverse_BindingName(BindingName.term, &BindingName)) {
-         // MATCHED BindingName
+      if (ofp_traverse_Name(BindingName.term, &BindingName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ProcedureName.term, "Some(<term>)", &ProcedureName.term)) {
    if (ATmatch(ProcedureName.term, "(<term>)", &ProcedureName.term)) {
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -4271,13 +4270,13 @@ ATbool ofp_traverse_BindingAttr(ATerm term, OFP::BindingAttr* BindingAttr)
    return ATtrue;
  }
 
- OFP::ArgName ArgName;
+ OFP::Name ArgName;
  if (ATmatch(term, "BindingAttr_PASS(<term>)", &ArgName.term)) {
 
    if (ATmatch(ArgName.term, "Some(<term>)", &ArgName.term)) {
    if (ATmatch(ArgName.term, "(<term>)", &ArgName.term)) {
-      if (ofp_traverse_ArgName(ArgName.term, &ArgName)) {
-         // MATCHED ArgName
+      if (ofp_traverse_Name(ArgName.term, &ArgName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -4330,15 +4329,15 @@ ATbool ofp_traverse_FinalSubroutineNameList(ATerm term, OFP::FinalSubroutineName
    printf("FinalSubroutineNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::FinalSubroutineName FinalSubroutineName;
+ OFP::Name FinalSubroutineName;
  if (ATmatch(term, "FinalSubroutineNameList(<term>)", &FinalSubroutineName.term)) {
 
    ATermList FinalSubroutineName_tail = (ATermList) ATmake("<term>", FinalSubroutineName.term);
    while (! ATisEmpty(FinalSubroutineName_tail)) {
       FinalSubroutineName.term = ATgetFirst(FinalSubroutineName_tail);
       FinalSubroutineName_tail = ATgetNext (FinalSubroutineName_tail);
-      if (ofp_traverse_FinalSubroutineName(FinalSubroutineName.term, &FinalSubroutineName)) {
-         // MATCHED FinalSubroutineName
+      if (ofp_traverse_Name(FinalSubroutineName.term, &FinalSubroutineName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -4357,12 +4356,12 @@ ATbool ofp_traverse_DerivedTypeSpec(ATerm term, OFP::DerivedTypeSpec* DerivedTyp
    printf("DerivedTypeSpec: %s\n", ATwriteToString(term));
 #endif
 
- OFP::TypeName TypeName;
+ OFP::Name TypeName;
  OFP::TypeParamSpecList TypeParamSpecList;
  if (ATmatch(term, "DerivedTypeSpec(<term>,<term>)", &TypeName.term, &TypeParamSpecList.term)) {
 
-      if (ofp_traverse_TypeName(TypeName.term, &TypeName)) {
-         // MATCHED TypeName
+      if (ofp_traverse_Name(TypeName.term, &TypeName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(TypeParamSpecList.term, "Some(<term>)", &TypeParamSpecList.term)) {
@@ -5279,8 +5278,8 @@ ATbool ofp_traverse_EntityDecl(ATerm term, OFP::EntityDecl* EntityDecl)
    if (ATmatch(term, "EntityDecl(<term>,<term>,<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CoarraySpec.term, &CharLength.term, &Initialization.term)) {
 
       if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
-         EntityDecl->setObjectName((OFP::ObjectName*)ObjectName.newName());
+         // MATCHED Name
+         EntityDecl->setObjectName(ObjectName.newName());
       } else return ATfalse;
 
 #ifdef TODO_ROSE
@@ -6201,13 +6200,13 @@ ATbool ofp_traverse_AllocatableDecl(ATerm term, OFP::AllocatableDecl* Allocatabl
    printf("AllocatableDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ObjectName ObjectName;
+ OFP::Name ObjectName;
  OFP::ArraySpec ArraySpec;
  OFP::CoarraySpec CoarraySpec;
  if (ATmatch(term, "AllocatableDecl(<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CoarraySpec.term)) {
 
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
+      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ArraySpec.term, "Some(<term>)", &ArraySpec.term)) {
@@ -6338,11 +6337,11 @@ ATbool ofp_traverse_BindEntity(ATerm term, OFP::BindEntity* BindEntity)
    printf("BindEntity: %s\n", ATwriteToString(term));
 #endif
 
- OFP::CommonBlockName CommonBlockName;
+ OFP::Name CommonBlockName;
  if (ATmatch(term, "BindEntity_CBN(<term>)", &CommonBlockName.term)) {
 
-      if (ofp_traverse_CommonBlockName(CommonBlockName.term, &CommonBlockName)) {
-         // MATCHED CommonBlockName
+      if (ofp_traverse_Name(CommonBlockName.term, &CommonBlockName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED BindEntity_CBN
@@ -6350,11 +6349,11 @@ ATbool ofp_traverse_BindEntity(ATerm term, OFP::BindEntity* BindEntity)
    return ATtrue;
  }
 
- OFP::EntityName EntityName;
+ OFP::Name EntityName;
  if (ATmatch(term, "BindEntity_EN(<term>)", &EntityName.term)) {
 
-      if (ofp_traverse_EntityName(EntityName.term, &EntityName)) {
-         // MATCHED EntityName
+      if (ofp_traverse_Name(EntityName.term, &EntityName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED BindEntity_EN
@@ -6432,12 +6431,12 @@ ATbool ofp_traverse_CodimensionDecl(ATerm term, OFP::CodimensionDecl* Codimensio
    printf("CodimensionDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::CoarrayName CoarrayName;
+ OFP::Name CoarrayName;
  OFP::CoarraySpec CoarraySpec;
  if (ATmatch(term, "CodimensionDecl(<term>,<term>)", &CoarrayName.term, &CoarraySpec.term)) {
 
-      if (ofp_traverse_CoarrayName(CoarrayName.term, &CoarrayName)) {
-         // MATCHED CoarrayName
+      if (ofp_traverse_Name(CoarrayName.term, &CoarrayName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_CoarraySpec(CoarraySpec.term, &CoarraySpec)) {
@@ -6514,15 +6513,15 @@ ATbool ofp_traverse_ObjectNameList(ATerm term, OFP::ObjectNameList* ObjectNameLi
    printf("ObjectNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ObjectName ObjectName;
+ OFP::Name ObjectName;
  if (ATmatch(term, "ObjectNameList(<term>)", &ObjectName.term)) {
 
    ATermList ObjectName_tail = (ATermList) ATmake("<term>", ObjectName.term);
    while (! ATisEmpty(ObjectName_tail)) {
       ObjectName.term = ATgetFirst(ObjectName_tail);
       ObjectName_tail = ATgetNext (ObjectName_tail);
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
+      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -7102,12 +7101,12 @@ ATbool ofp_traverse_ArrayNameSpec(ATerm term, OFP::ArrayNameSpec* ArrayNameSpec)
    printf("ArrayNameSpec: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ArrayName ArrayName;
+ OFP::Name ArrayName;
  OFP::ArraySpec ArraySpec;
  if (ATmatch(term, "ArrayNameSpec(<term>,<term>)", &ArrayName.term, &ArraySpec.term)) {
 
-      if (ofp_traverse_ArrayName(ArrayName.term, &ArrayName)) {
-         // MATCHED ArrayName
+      if (ofp_traverse_Name(ArrayName.term, &ArrayName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_ArraySpec(ArraySpec.term, &ArraySpec)) {
@@ -7372,11 +7371,11 @@ ATbool ofp_traverse_PointerDecl(ATerm term, OFP::PointerDecl* PointerDecl)
    printf("PointerDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ProcEntityName ProcEntityName;
+ OFP::Name ProcEntityName;
  if (ATmatch(term, "PointerDecl_PEN(<term>)", &ProcEntityName.term)) {
 
-      if (ofp_traverse_ProcEntityName(ProcEntityName.term, &ProcEntityName)) {
-         // MATCHED ProcEntityName
+      if (ofp_traverse_Name(ProcEntityName.term, &ProcEntityName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED PointerDecl_PEN
@@ -7384,12 +7383,12 @@ ATbool ofp_traverse_PointerDecl(ATerm term, OFP::PointerDecl* PointerDecl)
    return ATtrue;
  }
 
- OFP::ObjectName ObjectName;
+ OFP::Name ObjectName;
  OFP::DeferredShapeSpecList DeferredShapeSpecList;
  if (ATmatch(term, "PointerDecl_ON(<term>,<term>)", &ObjectName.term, &DeferredShapeSpecList.term)) {
 
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
+      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(DeferredShapeSpecList.term, "Some(<term>)", &DeferredShapeSpecList.term)) {
@@ -7472,15 +7471,15 @@ ATbool ofp_traverse_EntityNameList(ATerm term, OFP::EntityNameList* EntityNameLi
    printf("EntityNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::EntityName EntityName;
+ OFP::Name EntityName;
  if (ATmatch(term, "EntityNameList(<term>)", &EntityName.term)) {
 
    ATermList EntityName_tail = (ATermList) ATmake("<term>", EntityName.term);
    while (! ATisEmpty(EntityName_tail)) {
       EntityName.term = ATgetFirst(EntityName_tail);
       EntityName_tail = ATgetNext (EntityName_tail);
-      if (ofp_traverse_EntityName(EntityName.term, &EntityName)) {
-         // MATCHED EntityName
+      if (ofp_traverse_Name(EntityName.term, &EntityName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -7552,21 +7551,21 @@ ATbool ofp_traverse_SavedEntity(ATerm term, OFP::SavedEntity* SavedEntity)
    printf("SavedEntity: %s\n", ATwriteToString(term));
 #endif
 
- OFP::CommonBlockName CommonBlockName;
+ OFP::Name CommonBlockName;
  if (ATmatch(term, "SavedEntity(<term>)", &CommonBlockName.term)) {
 
-      if (ofp_traverse_CommonBlockName(CommonBlockName.term, &CommonBlockName)) {
-         // MATCHED CommonBlockName
+      if (ofp_traverse_Name(CommonBlockName.term, &CommonBlockName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
  }
 
- OFP::ObjectName ObjectName;
+ OFP::Name ObjectName;
  if (ATmatch(term, "SavedEntity(<term>)", &ObjectName.term)) {
 
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
+      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
@@ -7664,13 +7663,13 @@ ATbool ofp_traverse_TargetDecl(ATerm term, OFP::TargetDecl* TargetDecl)
    printf("TargetDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ObjectName ObjectName;
+ OFP::Name ObjectName;
  OFP::ArraySpec ArraySpec;
  OFP::CoarraySpec CoarraySpec;
  if (ATmatch(term, "TargetDecl(<term>,<term>,<term>)", &ObjectName.term, &ArraySpec.term, &CoarraySpec.term)) {
 
-      if (ofp_traverse_ObjectName(ObjectName.term, &ObjectName)) {
-         // MATCHED ObjectName
+      if (ofp_traverse_Name(ObjectName.term, &ObjectName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ArraySpec.term, "Some(<term>)", &ArraySpec.term)) {
@@ -7977,12 +7976,12 @@ ATbool ofp_traverse_NamelistEntry(ATerm term, OFP::NamelistEntry* NamelistEntry)
    printf("NamelistEntry: %s\n", ATwriteToString(term));
 #endif
 
- OFP::NamelistGroupName NamelistGroupName;
+ OFP::Name NamelistGroupName;
  OFP::NamelistGroupObjectList NamelistGroupObjectList;
  if (ATmatch(term, "NamelistEntry(<term>,<term>)", &NamelistGroupName.term, &NamelistGroupObjectList.term)) {
 
-      if (ofp_traverse_NamelistGroupName(NamelistGroupName.term, &NamelistGroupName)) {
-         // MATCHED NamelistGroupName
+      if (ofp_traverse_Name(NamelistGroupName.term, &NamelistGroupName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_NamelistGroupObjectList(NamelistGroupObjectList.term, &NamelistGroupObjectList)) {
@@ -8270,13 +8269,13 @@ ATbool ofp_traverse_CommonBlockEntry1(ATerm term, OFP::CommonBlockEntry1* Common
    return ATtrue;
  }
 
- OFP::CommonBlockName CommonBlockName;
+ OFP::Name CommonBlockName;
  OFP::CommonBlockObjectList CommonBlockObjectList1;
  if (ATmatch(term, "CBE1_CBN(<term>,<term>)", &CommonBlockName.term, &CommonBlockObjectList1.term)) {
 
    if (ATmatch(CommonBlockName.term, "Some(<term>)", &CommonBlockName.term)) {
-      if (ofp_traverse_CommonBlockName(CommonBlockName.term, &CommonBlockName)) {
-         // MATCHED CommonBlockName
+      if (ofp_traverse_Name(CommonBlockName.term, &CommonBlockName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -8298,13 +8297,13 @@ ATbool ofp_traverse_CommonBlockEntry(ATerm term, OFP::CommonBlockEntry* CommonBl
    printf("CommonBlockEntry: %s\n", ATwriteToString(term));
 #endif
 
- OFP::CommonBlockName CommonBlockName;
+ OFP::Name CommonBlockName;
  OFP::CommonBlockObjectList CommonBlockObjectList;
  if (ATmatch(term, "CBE(<term>,<term>)", &CommonBlockName.term, &CommonBlockObjectList.term)) {
 
    if (ATmatch(CommonBlockName.term, "Some(<term>)", &CommonBlockName.term)) {
-      if (ofp_traverse_CommonBlockName(CommonBlockName.term, &CommonBlockName)) {
-         // MATCHED CommonBlockName
+      if (ofp_traverse_Name(CommonBlockName.term, &CommonBlockName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -8638,11 +8637,11 @@ ATbool ofp_traverse_ParentString(ATerm term, OFP::ParentString* ParentString)
    return ATtrue;
  }
 
- OFP::ScalarVariableName ScalarVariableName;
+ OFP::Name ScalarVariableName;
  if (ATmatch(term, "ParentString_SVN(<term>)", &ScalarVariableName.term)) {
 
-      if (ofp_traverse_ScalarVariableName(ScalarVariableName.term, &ScalarVariableName)) {
-         // MATCHED ScalarVariableName
+      if (ofp_traverse_Name(ScalarVariableName.term, &ScalarVariableName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED ParentString_SVN
@@ -8835,15 +8834,15 @@ ATbool ofp_traverse_TypeParamInquiry(ATerm term, OFP::TypeParamInquiry* TypePara
 #endif
 
  OFP::Designator Designator;
- OFP::TypeParamName TypeParamName;
+ OFP::Name TypeParamName;
  if (ATmatch(term, "TypeParamInquiry(<term>,<term>)", &Designator.term, &TypeParamName.term)) {
 
       if (ofp_traverse_Designator(Designator.term, &Designator)) {
          // MATCHED Designator
       } else return ATfalse;
 
-      if (ofp_traverse_TypeParamName(TypeParamName.term, &TypeParamName)) {
-         // MATCHED TypeParamName
+      if (ofp_traverse_Name(TypeParamName.term, &TypeParamName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
@@ -10427,15 +10426,15 @@ ATbool ofp_traverse_DataPointerObject(ATerm term, OFP::DataPointerObject* DataPo
 #endif
 
  OFP::Variable Variable;
- OFP::DataPointerComponentName DataPointerComponentName;
+ OFP::Name DataPointerComponentName;
  if (ATmatch(term, "DataPointerObject_V(<term>,<term>)", &Variable.term, &DataPointerComponentName.term)) {
 
       if (ofp_traverse_Variable(Variable.term, &Variable)) {
          // MATCHED Variable
       } else return ATfalse;
 
-      if (ofp_traverse_DataPointerComponentName(DataPointerComponentName.term, &DataPointerComponentName)) {
-         // MATCHED DataPointerComponentName
+      if (ofp_traverse_Name(DataPointerComponentName.term, &DataPointerComponentName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED DataPointerObject_V
@@ -10623,15 +10622,15 @@ ATbool ofp_traverse_ProcComponentRef(ATerm term, OFP::ProcComponentRef* ProcComp
 #endif
 
  OFP::Variable Variable;
- OFP::ProcedureComponentName ProcedureComponentName;
+ OFP::Name ProcedureComponentName;
  if (ATmatch(term, "ProcComponentRef(<term>,<term>)", &Variable.term, &ProcedureComponentName.term)) {
 
       if (ofp_traverse_Variable(Variable.term, &Variable)) {
          // MATCHED Variable
       } else return ATfalse;
 
-      if (ofp_traverse_ProcedureComponentName(ProcedureComponentName.term, &ProcedureComponentName)) {
-         // MATCHED ProcedureComponentName
+      if (ofp_traverse_Name(ProcedureComponentName.term, &ProcedureComponentName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
@@ -10661,11 +10660,11 @@ ATbool ofp_traverse_ProcTarget(ATerm term, OFP::ProcTarget* ProcTarget)
    return ATtrue;
  }
 
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  if (ATmatch(term, "ProcTarget_PN(<term>)", &ProcedureName.term)) {
 
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED ProcTarget_PN
@@ -11129,7 +11128,7 @@ ATbool ofp_traverse_ForallConstructStmt(ATerm term, OFP::ForallConstructStmt* Fo
 #endif
 
  OFP::Label Label;
- OFP::ForallConstructName ForallConstructName;
+ OFP::Name ForallConstructName;
  OFP::ForallHeader ForallHeader;
  OFP::EOS EOS;
  if (ATmatch(term, "ForallConstructStmt(<term>,<term>,<term>,<term>)", &Label.term, &ForallConstructName.term, &ForallHeader.term, &EOS.term)) {
@@ -11142,8 +11141,8 @@ ATbool ofp_traverse_ForallConstructStmt(ATerm term, OFP::ForallConstructStmt* Fo
 
    if (ATmatch(ForallConstructName.term, "Some(<term>)", &ForallConstructName.term)) {
    if (ATmatch(ForallConstructName.term, "(<term>)", &ForallConstructName.term)) {
-      if (ofp_traverse_ForallConstructName(ForallConstructName.term, &ForallConstructName)) {
-         // MATCHED ForallConstructName
+      if (ofp_traverse_Name(ForallConstructName.term, &ForallConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -11211,14 +11210,14 @@ ATbool ofp_traverse_ForallTripletSpec(ATerm term, OFP::ForallTripletSpec* Forall
    printf("ForallTripletSpec: %s\n", ATwriteToString(term));
 #endif
 
- OFP::IndexName IndexName;
+ OFP::Name IndexName;
  OFP::ForallLimit ForallLimit;
  OFP::ForallLimit ForallLimit1;
  OFP::ForallStep ForallStep;
  if (ATmatch(term, "ForallTripletSpec(<term>,<term>,<term>,<term>)", &IndexName.term, &ForallLimit.term, &ForallLimit1.term, &ForallStep.term)) {
 
-      if (ofp_traverse_IndexName(IndexName.term, &IndexName)) {
-         // MATCHED IndexName
+      if (ofp_traverse_Name(IndexName.term, &IndexName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_ForallLimit(ForallLimit.term, &ForallLimit)) {
@@ -11429,7 +11428,7 @@ ATbool ofp_traverse_EndForallStmt(ATerm term, OFP::EndForallStmt* EndForallStmt)
 #endif
 
  OFP::Label Label;
- OFP::ForallConstructName ForallConstructName;
+ OFP::Name ForallConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndForallStmt(<term>,<term>,<term>)", &Label.term, &ForallConstructName.term, &EOS.term)) {
 
@@ -11440,8 +11439,8 @@ ATbool ofp_traverse_EndForallStmt(ATerm term, OFP::EndForallStmt* EndForallStmt)
    }
 
    if (ATmatch(ForallConstructName.term, "Some(<term>)", &ForallConstructName.term)) {
-      if (ofp_traverse_ForallConstructName(ForallConstructName.term, &ForallConstructName)) {
-         // MATCHED ForallConstructName
+      if (ofp_traverse_Name(ForallConstructName.term, &ForallConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -11558,7 +11557,7 @@ ATbool ofp_traverse_AssociateStmt(ATerm term, OFP::AssociateStmt* AssociateStmt)
 #endif
 
  OFP::Label Label;
- OFP::AssociateConstructName AssociateConstructName;
+ OFP::Name AssociateConstructName;
  OFP::AssociationList AssociationList;
  OFP::EOS EOS;
  if (ATmatch(term, "AssociateStmt(<term>,<term>,<term>,<term>)", &Label.term, &AssociateConstructName.term, &AssociationList.term, &EOS.term)) {
@@ -11571,8 +11570,8 @@ ATbool ofp_traverse_AssociateStmt(ATerm term, OFP::AssociateStmt* AssociateStmt)
 
    if (ATmatch(AssociateConstructName.term, "Some(<term>)", &AssociateConstructName.term)) {
    if (ATmatch(AssociateConstructName.term, "(<term>)", &AssociateConstructName.term)) {
-      if (ofp_traverse_AssociateConstructName(AssociateConstructName.term, &AssociateConstructName)) {
-         // MATCHED AssociateConstructName
+      if (ofp_traverse_Name(AssociateConstructName.term, &AssociateConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -11600,12 +11599,12 @@ ATbool ofp_traverse_Association(ATerm term, OFP::Association* Association)
    printf("Association: %s\n", ATwriteToString(term));
 #endif
 
- OFP::AssociateName AssociateName;
+ OFP::Name AssociateName;
  OFP::Selector Selector;
  if (ATmatch(term, "Association(<term>,<term>)", &AssociateName.term, &Selector.term)) {
 
-      if (ofp_traverse_AssociateName(AssociateName.term, &AssociateName)) {
-         // MATCHED AssociateName
+      if (ofp_traverse_Name(AssociateName.term, &AssociateName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_Selector(Selector.term, &Selector)) {
@@ -11688,7 +11687,7 @@ ATbool ofp_traverse_EndAssociateStmt(ATerm term, OFP::EndAssociateStmt* EndAssoc
 #endif
 
  OFP::Label Label;
- OFP::AssociateConstructName AssociateConstructName;
+ OFP::Name AssociateConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndAssociateStmt(<term>,<term>,<term>)", &Label.term, &AssociateConstructName.term, &EOS.term)) {
 
@@ -11699,8 +11698,8 @@ ATbool ofp_traverse_EndAssociateStmt(ATerm term, OFP::EndAssociateStmt* EndAssoc
    }
 
    if (ATmatch(AssociateConstructName.term, "Some(<term>)", &AssociateConstructName.term)) {
-      if (ofp_traverse_AssociateConstructName(AssociateConstructName.term, &AssociateConstructName)) {
-         // MATCHED AssociateConstructName
+      if (ofp_traverse_Name(AssociateConstructName.term, &AssociateConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -11761,7 +11760,7 @@ ATbool ofp_traverse_BlockStmt(ATerm term, OFP::BlockStmt* BlockStmt)
 #endif
 
  OFP::Label Label;
- OFP::BlockConstructName BlockConstructName;
+ OFP::Name BlockConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "BlockStmt(<term>,<term>,<term>)", &Label.term, &BlockConstructName.term, &EOS.term)) {
 
@@ -11773,8 +11772,8 @@ ATbool ofp_traverse_BlockStmt(ATerm term, OFP::BlockStmt* BlockStmt)
 
    if (ATmatch(BlockConstructName.term, "Some(<term>)", &BlockConstructName.term)) {
    if (ATmatch(BlockConstructName.term, "(<term>)", &BlockConstructName.term)) {
-      if (ofp_traverse_BlockConstructName(BlockConstructName.term, &BlockConstructName)) {
-         // MATCHED BlockConstructName
+      if (ofp_traverse_Name(BlockConstructName.term, &BlockConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -11799,7 +11798,7 @@ ATbool ofp_traverse_EndBlockStmt(ATerm term, OFP::EndBlockStmt* EndBlockStmt)
 #endif
 
  OFP::Label Label;
- OFP::BlockConstructName BlockConstructName;
+ OFP::Name BlockConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndBlockStmt(<term>,<term>,<term>)", &Label.term, &BlockConstructName.term, &EOS.term)) {
 
@@ -11810,8 +11809,8 @@ ATbool ofp_traverse_EndBlockStmt(ATerm term, OFP::EndBlockStmt* EndBlockStmt)
    }
 
    if (ATmatch(BlockConstructName.term, "Some(<term>)", &BlockConstructName.term)) {
-      if (ofp_traverse_BlockConstructName(BlockConstructName.term, &BlockConstructName)) {
-         // MATCHED BlockConstructName
+      if (ofp_traverse_Name(BlockConstructName.term, &BlockConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -11867,7 +11866,7 @@ ATbool ofp_traverse_CriticalStmt(ATerm term, OFP::CriticalStmt* CriticalStmt)
 #endif
 
  OFP::Label Label;
- OFP::CriticalConstructName CriticalConstructName;
+ OFP::Name CriticalConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "CriticalStmt(<term>,<term>,<term>)", &Label.term, &CriticalConstructName.term, &EOS.term)) {
 
@@ -11879,8 +11878,8 @@ ATbool ofp_traverse_CriticalStmt(ATerm term, OFP::CriticalStmt* CriticalStmt)
 
    if (ATmatch(CriticalConstructName.term, "Some(<term>)", &CriticalConstructName.term)) {
    if (ATmatch(CriticalConstructName.term, "(<term>)", &CriticalConstructName.term)) {
-      if (ofp_traverse_CriticalConstructName(CriticalConstructName.term, &CriticalConstructName)) {
-         // MATCHED CriticalConstructName
+      if (ofp_traverse_Name(CriticalConstructName.term, &CriticalConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -11905,7 +11904,7 @@ ATbool ofp_traverse_EndCriticalStmt(ATerm term, OFP::EndCriticalStmt* EndCritica
 #endif
 
  OFP::Label Label;
- OFP::CriticalConstructName CriticalConstructName;
+ OFP::Name CriticalConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndCriticalStmt(<term>,<term>,<term>)", &Label.term, &CriticalConstructName.term, &EOS.term)) {
 
@@ -11916,8 +11915,8 @@ ATbool ofp_traverse_EndCriticalStmt(ATerm term, OFP::EndCriticalStmt* EndCritica
    }
 
    if (ATmatch(CriticalConstructName.term, "Some(<term>)", &CriticalConstructName.term)) {
-      if (ofp_traverse_CriticalConstructName(CriticalConstructName.term, &CriticalConstructName)) {
-         // MATCHED CriticalConstructName
+      if (ofp_traverse_Name(CriticalConstructName.term, &CriticalConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -11953,7 +11952,7 @@ ATbool ofp_traverse_LabelDoStmt(ATerm term, OFP::LabelDoStmt* LabelDoStmt)
 #endif
 
  OFP::Label Label;
- OFP::DoConstructName DoConstructName;
+ OFP::Name DoConstructName;
  OFP::LblRef LblRef;
  OFP::LoopControl LoopControl;
  OFP::EOS EOS;
@@ -11967,8 +11966,8 @@ ATbool ofp_traverse_LabelDoStmt(ATerm term, OFP::LabelDoStmt* LabelDoStmt)
 
    if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
    if (ATmatch(DoConstructName.term, "(<term>)", &DoConstructName.term)) {
-      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
-         // MATCHED DoConstructName
+      if (ofp_traverse_Name(DoConstructName.term, &DoConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -12003,7 +12002,7 @@ ATbool ofp_traverse_NonlabelDoStmt(ATerm term, OFP::NonlabelDoStmt* NonlabelDoSt
 #endif
 
  OFP::Label Label;
- OFP::DoConstructName DoConstructName;
+ OFP::Name DoConstructName;
  OFP::LoopControl LoopControl;
  OFP::EOS EOS;
  if (ATmatch(term, "NonlabelDoStmt(<term>,<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &LoopControl.term, &EOS.term)) {
@@ -12016,8 +12015,8 @@ ATbool ofp_traverse_NonlabelDoStmt(ATerm term, OFP::NonlabelDoStmt* NonlabelDoSt
 
    if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
    if (ATmatch(DoConstructName.term, "(<term>)", &DoConstructName.term)) {
-      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
-         // MATCHED DoConstructName
+      if (ofp_traverse_Name(DoConstructName.term, &DoConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -12114,11 +12113,11 @@ ATbool ofp_traverse_DoVariable(ATerm term, OFP::DoVariable* DoVariable)
    printf("DoVariable: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ScalarIntVariableName ScalarIntVariableName;
+ OFP::Name ScalarIntVariableName;
  if (ATmatch(term, "DoVariable(<term>)", &ScalarIntVariableName.term)) {
 
-      if (ofp_traverse_ScalarIntVariableName(ScalarIntVariableName.term, &ScalarIntVariableName)) {
-         // MATCHED ScalarIntVariableName
+      if (ofp_traverse_Name(ScalarIntVariableName.term, &ScalarIntVariableName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
@@ -12145,7 +12144,7 @@ ATbool ofp_traverse_EndDoStmt(ATerm term, OFP::EndDoStmt* EndDoStmt)
 #endif
 
  OFP::Label Label;
- OFP::DoConstructName DoConstructName;
+ OFP::Name DoConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndDoStmt(<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &EOS.term)) {
 
@@ -12156,8 +12155,8 @@ ATbool ofp_traverse_EndDoStmt(ATerm term, OFP::EndDoStmt* EndDoStmt)
    }
 
    if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
-      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
-         // MATCHED DoConstructName
+      if (ofp_traverse_Name(DoConstructName.term, &DoConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12213,7 +12212,7 @@ ATbool ofp_traverse_CycleStmt(ATerm term, OFP::CycleStmt* CycleStmt)
 #endif
 
  OFP::Label Label;
- OFP::DoConstructName DoConstructName;
+ OFP::Name DoConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "CycleStmt(<term>,<term>,<term>)", &Label.term, &DoConstructName.term, &EOS.term)) {
 
@@ -12224,8 +12223,8 @@ ATbool ofp_traverse_CycleStmt(ATerm term, OFP::CycleStmt* CycleStmt)
    }
 
    if (ATmatch(DoConstructName.term, "Some(<term>)", &DoConstructName.term)) {
-      if (ofp_traverse_DoConstructName(DoConstructName.term, &DoConstructName)) {
-         // MATCHED DoConstructName
+      if (ofp_traverse_Name(DoConstructName.term, &DoConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12351,7 +12350,7 @@ ATbool ofp_traverse_IfThenStmt(ATerm term, OFP::IfThenStmt* IfThenStmt)
 #endif
 
  OFP::Label Label;
- OFP::IfConstructName IfConstructName;
+ OFP::Name IfConstructName;
  OFP::LogicalExpr LogicalExpr;
  OFP::EOS EOS;
  if (ATmatch(term, "IfThenStmt(<term>,<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &LogicalExpr.term, &EOS.term)) {
@@ -12364,8 +12363,8 @@ ATbool ofp_traverse_IfThenStmt(ATerm term, OFP::IfThenStmt* IfThenStmt)
 
    if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
    if (ATmatch(IfConstructName.term, "(<term>)", &IfConstructName.term)) {
-      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
-         // MATCHED IfConstructName
+      if (ofp_traverse_Name(IfConstructName.term, &IfConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -12395,7 +12394,7 @@ ATbool ofp_traverse_ElseIfStmt(ATerm term, OFP::ElseIfStmt* ElseIfStmt)
 
  OFP::Label Label;
  OFP::LogicalExpr LogicalExpr;
- OFP::IfConstructName IfConstructName;
+ OFP::Name IfConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "ElseIfStmt(<term>,<term>,<term>,<term>)", &Label.term, &LogicalExpr.term, &IfConstructName.term, &EOS.term)) {
 
@@ -12410,8 +12409,8 @@ ATbool ofp_traverse_ElseIfStmt(ATerm term, OFP::ElseIfStmt* ElseIfStmt)
       } else return ATfalse;
 
    if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
-      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
-         // MATCHED IfConstructName
+      if (ofp_traverse_Name(IfConstructName.term, &IfConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12435,7 +12434,7 @@ ATbool ofp_traverse_ElseStmt(ATerm term, OFP::ElseStmt* ElseStmt)
 #endif
 
  OFP::Label Label;
- OFP::IfConstructName IfConstructName;
+ OFP::Name IfConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "ElseStmt(<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &EOS.term)) {
 
@@ -12446,8 +12445,8 @@ ATbool ofp_traverse_ElseStmt(ATerm term, OFP::ElseStmt* ElseStmt)
    }
 
    if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
-      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
-         // MATCHED IfConstructName
+      if (ofp_traverse_Name(IfConstructName.term, &IfConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12471,7 +12470,7 @@ ATbool ofp_traverse_EndIfStmt(ATerm term, OFP::EndIfStmt* EndIfStmt)
 #endif
 
  OFP::Label Label;
- OFP::IfConstructName IfConstructName;
+ OFP::Name IfConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndIfStmt(<term>,<term>,<term>)", &Label.term, &IfConstructName.term, &EOS.term)) {
 
@@ -12482,8 +12481,8 @@ ATbool ofp_traverse_EndIfStmt(ATerm term, OFP::EndIfStmt* EndIfStmt)
    }
 
    if (ATmatch(IfConstructName.term, "Some(<term>)", &IfConstructName.term)) {
-      if (ofp_traverse_IfConstructName(IfConstructName.term, &IfConstructName)) {
-         // MATCHED IfConstructName
+      if (ofp_traverse_Name(IfConstructName.term, &IfConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12604,7 +12603,7 @@ ATbool ofp_traverse_SelectCaseStmt(ATerm term, OFP::SelectCaseStmt* SelectCaseSt
 #endif
 
  OFP::Label Label;
- OFP::CaseConstructName CaseConstructName;
+ OFP::Name CaseConstructName;
  OFP::CaseExpr CaseExpr;
  OFP::EOS EOS;
  if (ATmatch(term, "SelectCaseStmt(<term>,<term>,<term>,<term>)", &Label.term, &CaseConstructName.term, &CaseExpr.term, &EOS.term)) {
@@ -12617,8 +12616,8 @@ ATbool ofp_traverse_SelectCaseStmt(ATerm term, OFP::SelectCaseStmt* SelectCaseSt
 
    if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
    if (ATmatch(CaseConstructName.term, "(<term>)", &CaseConstructName.term)) {
-      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
-         // MATCHED CaseConstructName
+      if (ofp_traverse_Name(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -12648,7 +12647,7 @@ ATbool ofp_traverse_CaseStmt(ATerm term, OFP::CaseStmt* CaseStmt)
 
  OFP::Label Label;
  OFP::CaseSelector CaseSelector;
- OFP::CaseConstructName CaseConstructName;
+ OFP::Name CaseConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "CaseStmt(<term>,<term>,<term>,<term>)", &Label.term, &CaseSelector.term, &CaseConstructName.term, &EOS.term)) {
 
@@ -12663,8 +12662,8 @@ ATbool ofp_traverse_CaseStmt(ATerm term, OFP::CaseStmt* CaseStmt)
       } else return ATfalse;
 
    if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
-      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
-         // MATCHED CaseConstructName
+      if (ofp_traverse_Name(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12688,7 +12687,7 @@ ATbool ofp_traverse_EndSelectStmt(ATerm term, OFP::EndSelectStmt* EndSelectStmt)
 #endif
 
  OFP::Label Label;
- OFP::CaseConstructName CaseConstructName;
+ OFP::Name CaseConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndSelectStmt(<term>,<term>,<term>)", &Label.term, &CaseConstructName.term, &EOS.term)) {
 
@@ -12699,8 +12698,8 @@ ATbool ofp_traverse_EndSelectStmt(ATerm term, OFP::EndSelectStmt* EndSelectStmt)
    }
 
    if (ATmatch(CaseConstructName.term, "Some(<term>)", &CaseConstructName.term)) {
-      if (ofp_traverse_CaseConstructName(CaseConstructName.term, &CaseConstructName)) {
-         // MATCHED CaseConstructName
+      if (ofp_traverse_Name(CaseConstructName.term, &CaseConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12927,24 +12926,24 @@ ATbool ofp_traverse_SelectTypeStmt(ATerm term, OFP::SelectTypeStmt* SelectTypeSt
    printf("SelectTypeStmt: %s\n", ATwriteToString(term));
 #endif
 
- OFP::SelectConstructName SelectConstructName;
- OFP::AssociateName AssociateName;
+ OFP::Name SelectConstructName;
+ OFP::Name AssociateName;
  OFP::Selector Selector;
  OFP::EOS EOS;
  if (ATmatch(term, "SelectTypeStmt(<term>,<term>,<term>,<term>)", &SelectConstructName.term, &AssociateName.term, &Selector.term, &EOS.term)) {
 
    if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
    if (ATmatch(SelectConstructName.term, "(<term>)", &SelectConstructName.term)) {
-      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
-         // MATCHED SelectConstructName
+      if (ofp_traverse_Name(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
 
    if (ATmatch(AssociateName.term, "Some(<term>)", &AssociateName.term)) {
    if (ATmatch(AssociateName.term, "(<term>)", &AssociateName.term)) {
-      if (ofp_traverse_AssociateName(AssociateName.term, &AssociateName)) {
-         // MATCHED AssociateName
+      if (ofp_traverse_Name(AssociateName.term, &AssociateName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -12972,13 +12971,13 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
    printf("TypeGuardStmt: %s\n", ATwriteToString(term));
 #endif
 
- OFP::SelectConstructName SelectConstructName;
+ OFP::Name SelectConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "TypeGuardStmt_CLASS_DEF(<term>,<term>)", &SelectConstructName.term, &EOS.term)) {
 
    if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
-      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
-         // MATCHED SelectConstructName
+      if (ofp_traverse_Name(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -12992,7 +12991,7 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
  }
 
  OFP::DerivedTypeSpec DerivedTypeSpec;
- OFP::SelectConstructName SelectConstructName1;
+ OFP::Name SelectConstructName1;
  OFP::EOS EOS1;
  if (ATmatch(term, "TypeGuardStmt_CLASS(<term>,<term>,<term>)", &DerivedTypeSpec.term, &SelectConstructName1.term, &EOS1.term)) {
 
@@ -13001,8 +13000,8 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
       } else return ATfalse;
 
    if (ATmatch(SelectConstructName1.term, "Some(<term>)", &SelectConstructName1.term)) {
-      if (ofp_traverse_SelectConstructName(SelectConstructName1.term, &SelectConstructName1)) {
-         // MATCHED SelectConstructName
+      if (ofp_traverse_Name(SelectConstructName1.term, &SelectConstructName1)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -13016,7 +13015,7 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
  }
 
  OFP::TypeSpec TypeSpec;
- OFP::SelectConstructName SelectConstructName2;
+ OFP::Name SelectConstructName2;
  OFP::EOS EOS2;
  if (ATmatch(term, "TypeGuardStmt_TYPE(<term>,<term>,<term>)", &TypeSpec.term, &SelectConstructName2.term, &EOS2.term)) {
 
@@ -13025,8 +13024,8 @@ ATbool ofp_traverse_TypeGuardStmt(ATerm term, OFP::TypeGuardStmt* TypeGuardStmt)
       } else return ATfalse;
 
    if (ATmatch(SelectConstructName2.term, "Some(<term>)", &SelectConstructName2.term)) {
-      if (ofp_traverse_SelectConstructName(SelectConstructName2.term, &SelectConstructName2)) {
-         // MATCHED SelectConstructName
+      if (ofp_traverse_Name(SelectConstructName2.term, &SelectConstructName2)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -13051,13 +13050,13 @@ ATbool ofp_traverse_EndSelectTypeStmt(ATerm term, OFP::EndSelectTypeStmt* EndSel
    printf("EndSelectTypeStmt: %s\n", ATwriteToString(term));
 #endif
 
- OFP::SelectConstructName SelectConstructName;
+ OFP::Name SelectConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndSelectTypeStmt(<term>,<term>)", &SelectConstructName.term, &EOS.term)) {
 
    if (ATmatch(SelectConstructName.term, "Some(<term>)", &SelectConstructName.term)) {
-      if (ofp_traverse_SelectConstructName(SelectConstructName.term, &SelectConstructName)) {
-         // MATCHED SelectConstructName
+      if (ofp_traverse_Name(SelectConstructName.term, &SelectConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -13081,7 +13080,7 @@ ATbool ofp_traverse_ExitStmt(ATerm term, OFP::ExitStmt* ExitStmt)
 #endif
 
  OFP::Label Label;
- OFP::ConstructName ConstructName;
+ OFP::Name ConstructName;
  OFP::EOS EOS;
  if (ATmatch(term, "ExitStmt(<term>,<term>,<term>)", &Label.term, &ConstructName.term, &EOS.term)) {
 
@@ -13092,8 +13091,8 @@ ATbool ofp_traverse_ExitStmt(ATerm term, OFP::ExitStmt* ExitStmt)
    }
 
    if (ATmatch(ConstructName.term, "Some(<term>)", &ConstructName.term)) {
-      if (ofp_traverse_ConstructName(ConstructName.term, &ConstructName)) {
-         // MATCHED ConstructName
+      if (ofp_traverse_Name(ConstructName.term, &ConstructName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -13150,8 +13149,9 @@ ATbool ofp_traverse_ComputedGotoStmt(ATerm term, OFP::ComputedGotoStmt* Computed
    printf("ComputedGotoStmt: %s\n", ATwriteToString(term));
 #endif
 
+#ifdef OBSOLETE
  OFP::Label Label;
- OFP::LabelList LabelList;
+ //OBSOLETE OFP::LabelList LabelList;
  OFP::Expr Expr;
  OFP::EOS EOS;
  if (ATmatch(term, "ComputedGotoStmt(<term>,<term>,<term>,<term>)", &Label.term, &LabelList.term, &Expr.term, &EOS.term)) {
@@ -13162,9 +13162,9 @@ ATbool ofp_traverse_ComputedGotoStmt(ATerm term, OFP::ComputedGotoStmt* Computed
       } else return ATfalse;
    }
 
-      if (ofp_traverse_LabelList(LabelList.term, &LabelList)) {
-         // MATCHED LabelList
-      } else return ATfalse;
+//OBSOLETE       if (ofp_traverse_LabelList(LabelList.term, &LabelList)) {
+//OBSOLETE          // MATCHED LabelList
+//OBSOLETE       } else return ATfalse;
 
       if (ofp_traverse_Expr(Expr.term, &Expr)) {
          // MATCHED Expr
@@ -13176,6 +13176,7 @@ ATbool ofp_traverse_ComputedGotoStmt(ATerm term, OFP::ComputedGotoStmt* Computed
 
    return ATtrue;
  }
+#endif
 
  return ATfalse;
 }
@@ -14740,11 +14741,11 @@ ATbool ofp_traverse_IoControlSpec(ATerm term, OFP::IoControlSpec* IoControlSpec)
    return ATtrue;
  }
 
- OFP::NamelistGroupName NamelistGroupName;
+ OFP::Name NamelistGroupName;
  if (ATmatch(term, "IoControlSpec_NML(<term>)", &NamelistGroupName.term)) {
 
-      if (ofp_traverse_NamelistGroupName(NamelistGroupName.term, &NamelistGroupName)) {
-         // MATCHED NamelistGroupName
+      if (ofp_traverse_Name(NamelistGroupName.term, &NamelistGroupName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED IoControlSpec_NML
@@ -17442,7 +17443,7 @@ ATbool ofp_traverse_ModuleStmt(ATerm term, OFP::ModuleStmt* ModuleStmt)
 #endif
 
  OFP::Label Label;
- OFP::ModuleName ModuleName;
+ OFP::Name ModuleName;
  OFP::EOS EOS;
  if (ATmatch(term, "ModuleStmt(<term>,<term>,<term>)", &Label.term, &ModuleName.term, &EOS.term)) {
 
@@ -17453,9 +17454,9 @@ ATbool ofp_traverse_ModuleStmt(ATerm term, OFP::ModuleStmt* ModuleStmt)
       } else return ATfalse;
    }
 
-      if (ofp_traverse_ModuleName(ModuleName.term, &ModuleName)) {
-         // MATCHED ModuleName
-         ModuleStmt->setModuleName(ModuleName.newModuleName());
+      if (ofp_traverse_Name(ModuleName.term, &ModuleName)) {
+         // MATCHED Name
+         ModuleStmt->setModuleName(ModuleName.newName());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
@@ -17481,7 +17482,7 @@ ATbool ofp_traverse_EndModuleStmt(ATerm term, OFP::EndModuleStmt* EndModuleStmt)
 #endif
 
  OFP::Label Label;
- OFP::ModuleName ModuleName;
+ OFP::Name ModuleName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndModuleStmt(<term>,<term>,<term>)", &Label.term, &ModuleName.term, &EOS.term)) {
 
@@ -17494,9 +17495,9 @@ ATbool ofp_traverse_EndModuleStmt(ATerm term, OFP::EndModuleStmt* EndModuleStmt)
 
    if (ATmatch(ModuleName.term, "Some(<term>)", &ModuleName.term)) {
    if (ATmatch(ModuleName.term, "(Some(<term>))", &ModuleName.term)) {
-      if (ofp_traverse_ModuleName(ModuleName.term, &ModuleName)) {
-         // MATCHED ModuleName
-         EndModuleStmt->setModuleName(ModuleName.newModuleName());
+      if (ofp_traverse_Name(ModuleName.term, &ModuleName)) {
+         // MATCHED Name
+         EndModuleStmt->setModuleName(ModuleName.newName());
       } else return ATfalse;
    }
    }
@@ -17618,7 +17619,7 @@ ATbool ofp_traverse_UseStmt(ATerm term, OFP::UseStmt* UseStmt)
 
  OFP::Label Label;
  OFP::ModuleNature ModuleNature;
- OFP::ModuleName ModuleName;
+ OFP::Name ModuleName;
  OFP::OnlyList OnlyList;
  OFP::EOS EOS;
  if (ATmatch(term, "UseStmt_OL(<term>,<term>,<term>,<term>,<term>)", &Label.term, &ModuleNature.term, &ModuleName.term, &OnlyList.term, &EOS.term)) {
@@ -17639,8 +17640,8 @@ ATbool ofp_traverse_UseStmt(ATerm term, OFP::UseStmt* UseStmt)
    }
    }
 
-      if (ofp_traverse_ModuleName(ModuleName.term, &ModuleName)) {
-         // MATCHED ModuleName
+      if (ofp_traverse_Name(ModuleName.term, &ModuleName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(OnlyList.term, "Some(<term>)", &OnlyList.term)) {
@@ -17660,7 +17661,7 @@ ATbool ofp_traverse_UseStmt(ATerm term, OFP::UseStmt* UseStmt)
 
  OFP::Label Label1;
  OFP::ModuleNature ModuleNature1;
- OFP::ModuleName ModuleName1;
+ OFP::Name ModuleName1;
  OFP::RenameList RenameList;
  OFP::EOS EOS1;
  if (ATmatch(term, "UseStmt_RL(<term>,<term>,<term>,<term>,<term>)", &Label1.term, &ModuleNature1.term, &ModuleName1.term, &RenameList.term, &EOS1.term)) {
@@ -17681,8 +17682,8 @@ ATbool ofp_traverse_UseStmt(ATerm term, OFP::UseStmt* UseStmt)
    }
    }
 
-      if (ofp_traverse_ModuleName(ModuleName1.term, &ModuleName1)) {
-         // MATCHED ModuleName
+      if (ofp_traverse_Name(ModuleName1.term, &ModuleName1)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(RenameList.term, "Some(<term>)", &RenameList.term)) {
@@ -17757,16 +17758,16 @@ ATbool ofp_traverse_Rename(ATerm term, OFP::Rename* Rename)
    return ATtrue;
  }
 
- OFP::LocalName LocalName;
- OFP::UseName UseName;
+ OFP::Name LocalName;
+ OFP::Name UseName;
  if (ATmatch(term, "Rename_LN(<term>,<term>)", &LocalName.term, &UseName.term)) {
 
-      if (ofp_traverse_LocalName(LocalName.term, &LocalName)) {
-         // MATCHED LocalName
+      if (ofp_traverse_Name(LocalName.term, &LocalName)) {
+         // MATCHED Name
       } else return ATfalse;
 
-      if (ofp_traverse_UseName(UseName.term, &UseName)) {
-         // MATCHED UseName
+      if (ofp_traverse_Name(UseName.term, &UseName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED Rename_LN
@@ -18005,7 +18006,7 @@ ATbool ofp_traverse_SubmoduleStmt(ATerm term, OFP::SubmoduleStmt* SubmoduleStmt)
 
  OFP::Label Label;
  OFP::ParentIdentifier ParentIdentifier;
- OFP::SubmoduleName SubmoduleName;
+ OFP::Name SubmoduleName;
  OFP::EOS EOS;
  if (ATmatch(term, "SubmoduleStmt(<term>,<term>,<term>,<term>)", &Label.term, &ParentIdentifier.term, &SubmoduleName.term, &EOS.term)) {
 
@@ -18019,8 +18020,8 @@ ATbool ofp_traverse_SubmoduleStmt(ATerm term, OFP::SubmoduleStmt* SubmoduleStmt)
          // MATCHED ParentIdentifier
       } else return ATfalse;
 
-      if (ofp_traverse_SubmoduleName(SubmoduleName.term, &SubmoduleName)) {
-         // MATCHED SubmoduleName
+      if (ofp_traverse_Name(SubmoduleName.term, &SubmoduleName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
@@ -18042,18 +18043,18 @@ ATbool ofp_traverse_ParentIdentifier(ATerm term, OFP::ParentIdentifier* ParentId
    printf("ParentIdentifier: %s\n", ATwriteToString(term));
 #endif
 
- OFP::AncestorModuleName AncestorModuleName;
- OFP::ParentSubmoduleName ParentSubmoduleName;
+ OFP::Name AncestorModuleName;
+ OFP::Name ParentSubmoduleName;
  if (ATmatch(term, "ParentIdentifier(<term>,<term>)", &AncestorModuleName.term, &ParentSubmoduleName.term)) {
 
-      if (ofp_traverse_AncestorModuleName(AncestorModuleName.term, &AncestorModuleName)) {
-         // MATCHED AncestorModuleName
+      if (ofp_traverse_Name(AncestorModuleName.term, &AncestorModuleName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ParentSubmoduleName.term, "Some(<term>)", &ParentSubmoduleName.term)) {
    if (ATmatch(ParentSubmoduleName.term, "(<term>)", &ParentSubmoduleName.term)) {
-      if (ofp_traverse_ParentSubmoduleName(ParentSubmoduleName.term, &ParentSubmoduleName)) {
-         // MATCHED ParentSubmoduleName
+      if (ofp_traverse_Name(ParentSubmoduleName.term, &ParentSubmoduleName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -18074,7 +18075,7 @@ ATbool ofp_traverse_EndSubmoduleStmt(ATerm term, OFP::EndSubmoduleStmt* EndSubmo
 #endif
 
  OFP::Label Label;
- OFP::SubmoduleName SubmoduleName;
+ OFP::Name SubmoduleName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndSubmoduleStmt(<term>,<term>,<term>)", &Label.term, &SubmoduleName.term, &EOS.term)) {
 
@@ -18086,8 +18087,8 @@ ATbool ofp_traverse_EndSubmoduleStmt(ATerm term, OFP::EndSubmoduleStmt* EndSubmo
 
    if (ATmatch(SubmoduleName.term, "Some(<term>)", &SubmoduleName.term)) {
    if (ATmatch(SubmoduleName.term, "(Some(<term>))", &SubmoduleName.term)) {
-      if (ofp_traverse_SubmoduleName(SubmoduleName.term, &SubmoduleName)) {
-         // MATCHED SubmoduleName
+      if (ofp_traverse_Name(SubmoduleName.term, &SubmoduleName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -18144,7 +18145,7 @@ ATbool ofp_traverse_BlockDataStmt(ATerm term, OFP::BlockDataStmt* BlockDataStmt)
 #endif
 
  OFP::Label Label;
- OFP::BlockDataName BlockDataName;
+ OFP::Name BlockDataName;
  OFP::EOS EOS;
  if (ATmatch(term, "BlockDataStmt(<term>,<term>,<term>)", &Label.term, &BlockDataName.term, &EOS.term)) {
 
@@ -18155,8 +18156,8 @@ ATbool ofp_traverse_BlockDataStmt(ATerm term, OFP::BlockDataStmt* BlockDataStmt)
    }
 
    if (ATmatch(BlockDataName.term, "Some(<term>)", &BlockDataName.term)) {
-      if (ofp_traverse_BlockDataName(BlockDataName.term, &BlockDataName)) {
-         // MATCHED BlockDataName
+      if (ofp_traverse_Name(BlockDataName.term, &BlockDataName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -18197,7 +18198,7 @@ ATbool ofp_traverse_EndBlockDataStmt(ATerm term, OFP::EndBlockDataStmt* EndBlock
  }
 
  OFP::Label Label1;
- OFP::BlockDataName BlockDataName;
+ OFP::Name BlockDataName;
  OFP::EOS EOS1;
  if (ATmatch(term, "EndBlockDataStmt_BDN(<term>,<term>,<term>)", &Label1.term, &BlockDataName.term, &EOS1.term)) {
 
@@ -18208,8 +18209,8 @@ ATbool ofp_traverse_EndBlockDataStmt(ATerm term, OFP::EndBlockDataStmt* EndBlock
    }
 
    if (ATmatch(BlockDataName.term, "Some(<term>)", &BlockDataName.term)) {
-      if (ofp_traverse_BlockDataName(BlockDataName.term, &BlockDataName)) {
-         // MATCHED BlockDataName
+      if (ofp_traverse_Name(BlockDataName.term, &BlockDataName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -18513,15 +18514,15 @@ ATbool ofp_traverse_ProcedureNameList(ATerm term, OFP::ProcedureNameList* Proced
    printf("ProcedureNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  if (ATmatch(term, "ProcedureNameList(<term>)", &ProcedureName.term)) {
 
    ATermList ProcedureName_tail = (ATermList) ATmake("<term>", ProcedureName.term);
    while (! ATisEmpty(ProcedureName_tail)) {
       ProcedureName.term = ATgetFirst(ProcedureName_tail);
       ProcedureName_tail = ATgetNext (ProcedureName_tail);
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -18571,11 +18572,11 @@ ATbool ofp_traverse_GenericSpec(ATerm term, OFP::GenericSpec* GenericSpec)
    return ATtrue;
  }
 
- OFP::GenericName GenericName;
+ OFP::Name GenericName;
  if (ATmatch(term, "GenericSpec_GN(<term>)", &GenericName.term)) {
 
-      if (ofp_traverse_GenericName(GenericName.term, &GenericName)) {
-         // MATCHED GenericName
+      if (ofp_traverse_Name(GenericName.term, &GenericName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED GenericSpec_GN
@@ -18685,15 +18686,15 @@ ATbool ofp_traverse_ImportNameList(ATerm term, OFP::ImportNameList* ImportNameLi
    printf("ImportNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ImportName ImportName;
+ OFP::Name ImportName;
  if (ATmatch(term, "ImportNameList(<term>)", &ImportName.term)) {
 
    ATermList ImportName_tail = (ATermList) ATmake("<term>", ImportName.term);
    while (! ATisEmpty(ImportName_tail)) {
       ImportName.term = ATgetFirst(ImportName_tail);
       ImportName_tail = ATgetNext (ImportName_tail);
-      if (ofp_traverse_ImportName(ImportName.term, &ImportName)) {
-         // MATCHED ImportName
+      if (ofp_traverse_Name(ImportName.term, &ImportName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -18712,8 +18713,9 @@ ATbool ofp_traverse_ExternalStmt(ATerm term, OFP::ExternalStmt* ExternalStmt)
    printf("ExternalStmt: %s\n", ATwriteToString(term));
 #endif
 
+#ifdef OBSOLETE
  OFP::Label Label;
- OFP::ExternalNameList ExternalNameList;
+//OBSOLETE  OFP::ExternalNameList ExternalNameList;
  OFP::EOS EOS;
  if (ATmatch(term, "ExternalStmt(<term>,<term>,<term>)", &Label.term, &ExternalNameList.term, &EOS.term)) {
 
@@ -18733,6 +18735,7 @@ ATbool ofp_traverse_ExternalStmt(ATerm term, OFP::ExternalStmt* ExternalStmt)
 
    return ATtrue;
  }
+#endif
 
  return ATfalse;
 }
@@ -18927,12 +18930,12 @@ ATbool ofp_traverse_ProcDecl(ATerm term, OFP::ProcDecl* ProcDecl)
    printf("ProcDecl: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ProcedureEntityName ProcedureEntityName;
+ OFP::Name ProcedureEntityName;
  OFP::ProcPointerInit ProcPointerInit;
  if (ATmatch(term, "ProcDecl(<term>,<term>)", &ProcedureEntityName.term, &ProcPointerInit.term)) {
 
-      if (ofp_traverse_ProcedureEntityName(ProcedureEntityName.term, &ProcedureEntityName)) {
-         // MATCHED ProcedureEntityName
+      if (ofp_traverse_Name(ProcedureEntityName.term, &ProcedureEntityName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ProcPointerInit.term, "Some(<term>)", &ProcPointerInit.term)) {
@@ -19040,11 +19043,11 @@ ATbool ofp_traverse_InitialProcTarget(ATerm term, OFP::InitialProcTarget* Initia
    printf("InitialProcTarget: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  if (ATmatch(term, "InitialProcTarget(<term>)", &ProcedureName.term)) {
 
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    return ATtrue;
@@ -19093,15 +19096,15 @@ ATbool ofp_traverse_IntrinsicProcedureNameList(ATerm term, OFP::IntrinsicProcedu
    printf("IntrinsicProcedureNameList: %s\n", ATwriteToString(term));
 #endif
 
- OFP::IntrinsicProcedureName IntrinsicProcedureName;
+ OFP::Name IntrinsicProcedureName;
  if (ATmatch(term, "IntrinsicProcedureNameList(<term>)", &IntrinsicProcedureName.term)) {
 
    ATermList IntrinsicProcedureName_tail = (ATermList) ATmake("<term>", IntrinsicProcedureName.term);
    while (! ATisEmpty(IntrinsicProcedureName_tail)) {
       IntrinsicProcedureName.term = ATgetFirst(IntrinsicProcedureName_tail);
       IntrinsicProcedureName_tail = ATgetNext (IntrinsicProcedureName_tail);
-      if (ofp_traverse_IntrinsicProcedureName(IntrinsicProcedureName.term, &IntrinsicProcedureName)) {
-         // MATCHED IntrinsicProcedureName
+      if (ofp_traverse_Name(IntrinsicProcedureName.term, &IntrinsicProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
    }
 
@@ -19197,15 +19200,15 @@ ATbool ofp_traverse_ProcedureDesignator(ATerm term, OFP::ProcedureDesignator* Pr
 #endif
 
  OFP::DataRef DataRef;
- OFP::BindingName BindingName;
+ OFP::Name BindingName;
  if (ATmatch(term, "ProcedureDesignator_AMB(<term>,<term>)", &DataRef.term, &BindingName.term)) {
 
       if (ofp_traverse_DataRef(DataRef.term, &DataRef)) {
          // MATCHED DataRef
       } else return ATfalse;
 
-      if (ofp_traverse_BindingName(BindingName.term, &BindingName)) {
-         // MATCHED BindingName
+      if (ofp_traverse_Name(BindingName.term, &BindingName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED ProcedureDesignator_AMB
@@ -19213,11 +19216,11 @@ ATbool ofp_traverse_ProcedureDesignator(ATerm term, OFP::ProcedureDesignator* Pr
    return ATtrue;
  }
 
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  if (ATmatch(term, "ProcedureDesignator_PN(<term>)", &ProcedureName.term)) {
 
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    // MATCHED ProcedureDesignator_PN
@@ -19435,25 +19438,25 @@ ATbool ofp_traverse_FunctionSubprogram(ATerm term, OFP::FunctionSubprogram* Func
 #endif
 
  OFP::FunctionStmt FunctionStmt;
- OFP::SpecificationPart SpecificationPart;
- OFP::ExecutionPart ExecutionPart;
+ OFP::InitialSpecPart InitialSpecPart;
+ OFP::SpecAndExecPart SpecAndExecPart;
  OFP::InternalSubprogramPart InternalSubprogramPart;
  OFP::EndFunctionStmt EndFunctionStmt;
- if (ATmatch(term, "FunctionSubprogram(<term>,<term>,<term>,<term>,<term>)", &FunctionStmt.term, &SpecificationPart.term, &ExecutionPart.term, &InternalSubprogramPart.term, &EndFunctionStmt.term)) {
+ if (ATmatch(term, "FunctionSubprogram(<term>,<term>,<term>,<term>,<term>)", &FunctionStmt.term, &InitialSpecPart.term, &SpecAndExecPart.term, &InternalSubprogramPart.term, &EndFunctionStmt.term)) {
 
       if (ofp_traverse_FunctionStmt(FunctionStmt.term, &FunctionStmt)) {
          // MATCHED FunctionStmt
          FunctionSubprogram->setFunctionStmt(FunctionStmt.newFunctionStmt());
       } else return ATfalse;
 
-      if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
-         // MATCHED SpecificationPart
-         FunctionSubprogram->setSpecificationPart(SpecificationPart.newSpecificationPart());
+      if (ofp_traverse_InitialSpecPart(InitialSpecPart.term, &InitialSpecPart)) {
+         // MATCHED InitialSpecPart
+         FunctionSubprogram->setInitialSpecPart(InitialSpecPart.newInitialSpecPart());
       } else return ATfalse;
 
-      if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
-         // MATCHED ExecutionPart
-         FunctionSubprogram->setExecutionPart(ExecutionPart.newExecutionPart());
+      if (ofp_traverse_SpecAndExecPart(SpecAndExecPart.term, &SpecAndExecPart)) {
+         // MATCHED SpecAndExecPart
+         FunctionSubprogram->setSpecAndExecPart(SpecAndExecPart.newSpecAndExecPart());
       } else return ATfalse;
 
    if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
@@ -19487,7 +19490,7 @@ ATbool ofp_traverse_FunctionStmt(ATerm term, OFP::FunctionStmt* FunctionStmt)
 
  OFP::Label Label;
  OFP::Prefix Prefix;
- OFP::FunctionName FunctionName;
+ OFP::Name FunctionName;
  OFP::DummyArgNameList DummyArgNameList;
  OFP::Suffix Suffix;
  OFP::EOS EOS;
@@ -19509,9 +19512,9 @@ ATbool ofp_traverse_FunctionStmt(ATerm term, OFP::FunctionStmt* FunctionStmt)
       } else return ATfalse;
    }
 
-      if (ofp_traverse_FunctionName(FunctionName.term, &FunctionName)) {
-         // MATCHED FunctionName
-         FunctionStmt->setFunctionName(FunctionName.newFunctionName());
+      if (ofp_traverse_Name(FunctionName.term, &FunctionName)) {
+         // MATCHED Name
+         FunctionStmt->setFunctionName(FunctionName.newName());
       } else return ATfalse;
 
    if (ATmatch(DummyArgNameList.term, "Some(<term>)", &DummyArgNameList.term)) {
@@ -19594,12 +19597,12 @@ ATbool ofp_traverse_Suffix(ATerm term, OFP::Suffix* Suffix)
    printf("Suffix: %s\n", ATwriteToString(term));
 #endif
 
- OFP::ResultName ResultName;
+ OFP::Name ResultName;
  OFP::ProcLanguageBindingSpec ProcLanguageBindingSpec;
  if (ATmatch(term, "Suffix_RP(<term>,<term>)", &ResultName.term, &ProcLanguageBindingSpec.term)) {
 
-      if (ofp_traverse_ResultName(ResultName.term, &ResultName)) {
-         // MATCHED ResultName
+      if (ofp_traverse_Name(ResultName.term, &ResultName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(ProcLanguageBindingSpec.term, "Some(<term>)", &ProcLanguageBindingSpec.term)) {
@@ -19614,7 +19617,7 @@ ATbool ofp_traverse_Suffix(ATerm term, OFP::Suffix* Suffix)
  }
 
  OFP::ProcLanguageBindingSpec ProcLanguageBindingSpec1;
- OFP::ResultName ResultName1;
+ OFP::Name ResultName1;
  if (ATmatch(term, "Suffix_PR(<term>,<term>)", &ProcLanguageBindingSpec1.term, &ResultName1.term)) {
 
       if (ofp_traverse_ProcLanguageBindingSpec(ProcLanguageBindingSpec1.term, &ProcLanguageBindingSpec1)) {
@@ -19623,8 +19626,8 @@ ATbool ofp_traverse_Suffix(ATerm term, OFP::Suffix* Suffix)
 
    if (ATmatch(ResultName1.term, "Some(<term>)", &ResultName1.term)) {
    if (ATmatch(ResultName1.term, "(<term>)", &ResultName1.term)) {
-      if (ofp_traverse_ResultName(ResultName1.term, &ResultName1)) {
-         // MATCHED ResultName
+      if (ofp_traverse_Name(ResultName1.term, &ResultName1)) {
+         // MATCHED Name
       } else return ATfalse;
    }
    }
@@ -19647,7 +19650,7 @@ ATbool ofp_traverse_EndFunctionStmt(ATerm term, OFP::EndFunctionStmt* EndFunctio
 #endif
 
  OFP::Label Label;
- OFP::FunctionName FunctionName;
+ OFP::Name FunctionName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndFunctionStmt(<term>,<term>,<term>)", &Label.term, &FunctionName.term, &EOS.term)) {
 
@@ -19662,9 +19665,9 @@ ATbool ofp_traverse_EndFunctionStmt(ATerm term, OFP::EndFunctionStmt* EndFunctio
 
    if (ATmatch(FunctionName.term, "Some(<term>)", &FunctionName.term)) {
    if (ATmatch(FunctionName.term, "(Some(<term>))", &FunctionName.term)) {
-      if (ofp_traverse_FunctionName(FunctionName.term, &FunctionName)) {
-         // MATCHED FunctionName
-         EndFunctionStmt->setFunctionName(FunctionName.newFunctionName());
+      if (ofp_traverse_Name(FunctionName.term, &FunctionName)) {
+         // MATCHED Name
+         EndFunctionStmt->setFunctionName(FunctionName.newName());
       } else return ATfalse;
    }
    }
@@ -19891,25 +19894,25 @@ ATbool ofp_traverse_SeparateModuleSubprogram(ATerm term, OFP::SeparateModuleSubp
 #endif
 
  OFP::MpSubprogramStmt MpSubprogramStmt;
- OFP::SpecificationPart SpecificationPart;
- OFP::ExecutionPart ExecutionPart;
+ OFP::InitialSpecPart InitialSpecPart;
+ OFP::SpecAndExecPart SpecAndExecPart;
  OFP::InternalSubprogramPart InternalSubprogramPart;
  OFP::EndMpSubprogramStmt EndMpSubprogramStmt;
- if (ATmatch(term, "SeparateModuleSubprogram(<term>,<term>,<term>,<term>,<term>)", &MpSubprogramStmt.term, &SpecificationPart.term, &ExecutionPart.term, &InternalSubprogramPart.term, &EndMpSubprogramStmt.term)) {
+ if (ATmatch(term, "SeparateModuleSubprogram(<term>,<term>,<term>,<term>,<term>)", &MpSubprogramStmt.term, &InitialSpecPart.term, &SpecAndExecPart.term, &InternalSubprogramPart.term, &EndMpSubprogramStmt.term)) {
 
       if (ofp_traverse_MpSubprogramStmt(MpSubprogramStmt.term, &MpSubprogramStmt)) {
          // MATCHED MpSubprogramStmt
          SeparateModuleSubprogram->setMpSubprogramStmt(MpSubprogramStmt.newMpSubprogramStmt());
       } else return ATfalse;
 
-      if (ofp_traverse_SpecificationPart(SpecificationPart.term, &SpecificationPart)) {
-         // MATCHED SpecificationPart
-         SeparateModuleSubprogram->setSpecificationPart(SpecificationPart.newSpecificationPart());
+      if (ofp_traverse_InitialSpecPart(InitialSpecPart.term, &InitialSpecPart)) {
+         // MATCHED InitialSpecPart
+         SeparateModuleSubprogram->setInitialSpecPart(InitialSpecPart.newInitialSpecPart());
       } else return ATfalse;
 
-      if (ofp_traverse_ExecutionPart(ExecutionPart.term, &ExecutionPart)) {
-         // MATCHED ExecutionPart
-         SeparateModuleSubprogram->setExecutionPart(ExecutionPart.newExecutionPart());
+      if (ofp_traverse_SpecAndExecPart(SpecAndExecPart.term, &SpecAndExecPart)) {
+         // MATCHED SpecAndExecPart
+         SeparateModuleSubprogram->setSpecAndExecPart(SpecAndExecPart.newSpecAndExecPart());
       } else return ATfalse;
 
    if (ATmatch(InternalSubprogramPart.term, "Some(<term>)", &InternalSubprogramPart.term)) {
@@ -19942,7 +19945,7 @@ ATbool ofp_traverse_MpSubprogramStmt(ATerm term, OFP::MpSubprogramStmt* MpSubpro
 #endif
 
  OFP::Label Label;
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  OFP::EOS EOS;
  if (ATmatch(term, "MpSubprogramStmt(<term>,<term>,<term>)", &Label.term, &ProcedureName.term, &EOS.term)) {
 
@@ -19955,9 +19958,9 @@ ATbool ofp_traverse_MpSubprogramStmt(ATerm term, OFP::MpSubprogramStmt* MpSubpro
    }
    }
 
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
-         MpSubprogramStmt->setProcedureName(ProcedureName.newProcedureName());
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
+         MpSubprogramStmt->setProcedureName(ProcedureName.newName());
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
@@ -19983,7 +19986,7 @@ ATbool ofp_traverse_EndMpSubprogramStmt(ATerm term, OFP::EndMpSubprogramStmt* En
 #endif
 
  OFP::Label Label;
- OFP::ProcedureName ProcedureName;
+ OFP::Name ProcedureName;
  OFP::EOS EOS;
  if (ATmatch(term, "EndMpSubprogramStmt(<term>,<term>,<term>)", &Label.term, &ProcedureName.term, &EOS.term)) {
 
@@ -19998,9 +20001,9 @@ ATbool ofp_traverse_EndMpSubprogramStmt(ATerm term, OFP::EndMpSubprogramStmt* En
 
    if (ATmatch(ProcedureName.term, "Some(<term>)", &ProcedureName.term)) {
    if (ATmatch(ProcedureName.term, "(Some(<term>))", &ProcedureName.term)) {
-      if (ofp_traverse_ProcedureName(ProcedureName.term, &ProcedureName)) {
-         // MATCHED ProcedureName
-         EndMpSubprogramStmt->setProcedureName(ProcedureName.newProcedureName());
+      if (ofp_traverse_Name(ProcedureName.term, &ProcedureName)) {
+         // MATCHED Name
+         EndMpSubprogramStmt->setProcedureName(ProcedureName.newName());
       } else return ATfalse;
    }
    }
@@ -20028,7 +20031,7 @@ ATbool ofp_traverse_EntryStmt(ATerm term, OFP::EntryStmt* EntryStmt)
 #endif
 
  OFP::Label Label;
- OFP::EntryName EntryName;
+ OFP::Name EntryName;
  OFP::EOS EOS;
  if (ATmatch(term, "EntryStmt(<term>,<term>,<term>)", &Label.term, &EntryName.term, &EOS.term)) {
 
@@ -20038,8 +20041,8 @@ ATbool ofp_traverse_EntryStmt(ATerm term, OFP::EntryStmt* EntryStmt)
       } else return ATfalse;
    }
 
-      if (ofp_traverse_EntryName(EntryName.term, &EntryName)) {
-         // MATCHED EntryName
+      if (ofp_traverse_Name(EntryName.term, &EntryName)) {
+         // MATCHED Name
       } else return ATfalse;
 
       if (ofp_traverse_EOS(EOS.term, &EOS)) {
@@ -20050,7 +20053,7 @@ ATbool ofp_traverse_EntryStmt(ATerm term, OFP::EntryStmt* EntryStmt)
  }
 
  OFP::Label Label1;
- OFP::EntryName EntryName1;
+ OFP::Name EntryName1;
  OFP::DummyArgList DummyArgList;
  OFP::Suffix Suffix;
  OFP::EOS EOS1;
@@ -20062,8 +20065,8 @@ ATbool ofp_traverse_EntryStmt(ATerm term, OFP::EntryStmt* EntryStmt)
       } else return ATfalse;
    }
 
-      if (ofp_traverse_EntryName(EntryName1.term, &EntryName1)) {
-         // MATCHED EntryName
+      if (ofp_traverse_Name(EntryName1.term, &EntryName1)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(DummyArgList.term, "Some(<term>)", &DummyArgList.term)) {
@@ -20169,7 +20172,7 @@ ATbool ofp_traverse_StmtFunctionStmt(ATerm term, OFP::StmtFunctionStmt* StmtFunc
 #endif
 
  OFP::Label Label;
- OFP::FunctionName FunctionName;
+ OFP::Name FunctionName;
  OFP::DummyArgNameList DummyArgNameList;
  OFP::Expr Expr;
  OFP::EOS EOS;
@@ -20181,8 +20184,8 @@ ATbool ofp_traverse_StmtFunctionStmt(ATerm term, OFP::StmtFunctionStmt* StmtFunc
       } else return ATfalse;
    }
 
-      if (ofp_traverse_FunctionName(FunctionName.term, &FunctionName)) {
-         // MATCHED FunctionName
+      if (ofp_traverse_Name(FunctionName.term, &FunctionName)) {
+         // MATCHED Name
       } else return ATfalse;
 
    if (ATmatch(DummyArgNameList.term, "Some(<term>)", &DummyArgNameList.term)) {
@@ -20209,6 +20212,19 @@ ATbool ofp_traverse_StmtFunctionStmt(ATerm term, OFP::StmtFunctionStmt* StmtFunc
 /** Identifier aliases
  */
 
+ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name)
+{
+ OFP::Ident Ident;
+ if (ofp_traverse_Ident(term, &Ident)) {
+    // MATCHED Ident
+    Name->setIdent(Ident.newIdent());
+    Name->inheritPayload(Name->getIdent());
+ } else return ATfalse;
+
+ return ATtrue;
+}
+
+#ifdef OBSOLETE
 ATbool ofp_traverse_AncestorModuleName(ATerm term, OFP::AncestorModuleName* AncestorModuleName)
 {
 #ifdef DEBUG_PRINT
@@ -20889,7 +20905,6 @@ ATbool ofp_traverse_ParentTypeName(ATerm term, OFP::ParentTypeName* ParentTypeNa
  return ATfalse;
 }
 
-#ifdef OBSOLETE
 ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName)
 {
 #ifdef DEBUG_PRINT
@@ -20910,7 +20925,6 @@ ATbool ofp_traverse_PartName(ATerm term, OFP::PartName* PartName)
 
  return ATfalse;
 }
-#endif
 
 ATbool ofp_traverse_ProcedureComponentName(ATerm term, OFP::ProcedureComponentName* ProcedureComponentName)
 {
@@ -20990,18 +21004,6 @@ ATbool ofp_traverse_ProcEntityName(ATerm term, OFP::ProcEntityName* ProcEntityNa
  }
 
  return ATfalse;
-}
-
-ATbool ofp_traverse_Name(ATerm term, OFP::Name* Name)
-{
- OFP::Ident Ident;
- if (ofp_traverse_Ident(term, &Ident)) {
-    // MATCHED Ident
-    Name->setIdent(Ident.newIdent());
-    Name->inheritPayload(Name->getIdent());
- } else return ATfalse;
-
- return ATtrue;
 }
 
 ATbool ofp_traverse_ResultName(ATerm term, OFP::ResultName* ResultName)
@@ -21205,11 +21207,13 @@ ATbool ofp_traverse_UseName(ATerm term, OFP::UseName* UseName)
 
  return ATfalse;
 }
+#endif
 
 
 /** Lists
  */
 
+#ifdef OBSOLETE
 ATbool ofp_traverse_ExternalNameList(ATerm term, OFP::ExternalNameList* ExternalNameList)
 {
 #ifdef DEBUG_PRINT
@@ -21257,6 +21261,7 @@ ATbool ofp_traverse_LabelList(ATerm term, OFP::LabelList* LabelList)
 
  return ATfalse;
 }
+#endif
 
 #ifdef __cplusplus
 //} /* closing brace for extern "C" */
