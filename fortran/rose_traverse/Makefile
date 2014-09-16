@@ -7,7 +7,7 @@ CPC = c++
 
 CLANG_ERROR_LIMIT = -ferror-limit=5
 
-ERROR_LIMIT = 
+ERROR_LIMIT =
 
 CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
@@ -55,6 +55,7 @@ traversal.o: traversal.cpp traversal.hpp OFPNodes.hpp OFPExpr.hpp UntypedNodes.h
              OFPUnparser.hpp OFPUnparser.cpp
 ofp_traverse_productions.o: ofp_traverse_productions.cpp traversal.hpp OFPNodes.hpp UntypedNodes.h
 OFPExpr.o: OFPExpr.cpp OFPExpr.hpp UntypedNodes.h
+OFPNodes.o: OFPNodes.cpp traversal.hpp
 OFPUnparser.o: OFPUnparser.cpp OFPUnparser.hpp
 traversal_f.o: traversal_f.c traversal.hpp
 
