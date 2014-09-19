@@ -1,0 +1,5 @@
+MODULE ex
+10 PRIVATE 
+PUBLIC boo, ASSIGNMENT(=)
+PUBLIC binky, bonky, OPERATOR(+)
+END MODULE ex
