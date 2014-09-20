@@ -10,12 +10,19 @@
 !
 ! Each alternative is tested separately in the corresponding rule tests.
 ! primary is tested as an rhs.
+type atype
+  integer dim
+end type
+
+real :: x(2)
+type(atype) :: z
+
 a = 3
 a = a
-a = (/3,3/)
-a = b(3,2,1)
+x = (/3,3/)
+a = y(3,2,1)
 a = func(1)
-a = b%dim
+a = z%dim
 a = (3)
 
 end
