@@ -39,9 +39,9 @@
 
    #R404 --,
    OfpType                       -- H hs=1[_1 _2],
-   INTEGER                       -- KW["INTEGER :: "] _1,
-   REAL                          -- KW["REAL :: "] _1,
-   CHARACTER                     -- KW["CHARACTER :: "] _1,
+   INTEGER                       -- KW["INTEGER"] _1,
+   REAL                          -- KW["REAL"] _1,
+   CHARACTER                     -- KW["CHARACTER"] _1,
    LOGICAL                       -- KW["LOGICAL :: "] _1,
    COMPLEX                       -- KW["COMPLEX :: "] _1,
 
@@ -72,7 +72,7 @@
    DerivedTypeDef                -- _1 _2 _3 _4 _5 _6,
 
    #R426 --,
-   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 "("_4")" _5]],
+   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 _4 _5]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
    DerivedTypeStmt.4:iter-sep    -- _1 ", ",
 
@@ -95,7 +95,7 @@
    LEN                           -- KW["LEN"],
 
    #R436 --,
-   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 _4 _5]],
+   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3] H hs=0[_4 _5]],
    DataComponentDefStmt.4:iter-sep   -- _1 ", ",
 
    #R437 --,
@@ -166,7 +166,7 @@
    EndEnumStmt                   -- H hs=1[_1 KW["END ENUM"] _2],
 
    #R468 --,
-   ArrayConstructor              -- "(/"_1"/)",
+   ArrayConstructor              -- "["_1"]",
 
    #R469 --,
    AcSpec                        -- _1 _2,
@@ -179,7 +179,7 @@
    AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
    #R501 --,
-   TypeDeclarationStmt           -- H hs=0[H hs=3[_1] _2 _3 _4 _5],
+   TypeDeclarationStmt           -- H hs=1[_1 H hs=0[_2] H hs=0[_3 KW["::"]] H hs=0[_4 _5]],
    TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
 
    #R502 --,
@@ -322,7 +322,7 @@
 
    #R612 --,
    OfpVarRef                     -- _1,
-   PartRef                       -- H hs=1[_1 H hs=0["("_2")" _3]],
+   PartRef                       -- _1 "("_2")" _3,
    PartRef.2:iter-sep            -- _1 ",",
 
    #R626 --,
@@ -375,7 +375,7 @@
    PLUS                          -- KW ["+"],
 
    #R732 --,
-   AssignmentStmt                -- H hs=0 [_1 _2 KW[" = "] _3 _4],
+   AssignmentStmt                -- H hs=1[_1 H hs=0[_2 KW[" = "] _3 _4]],
    AssignmentStmt.2:opt          -- ,
 
    #R733 --,
