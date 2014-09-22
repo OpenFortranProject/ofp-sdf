@@ -69,7 +69,7 @@
    FALSE                         -- KW[".FALSE."] _1,
 
    #R425 --,
-   DerivedTypeDef                -- _1 _2 _3 _4 _5 _6,
+   DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
 
    #R426 --,
    DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 _4 _5]],
@@ -354,10 +354,10 @@
    NOT                           -- KW[".NOT."] _1,
    Plus                          -- _1 KW[" + "] _2,
    Plus                          -- KW["+"] _1,
-   GT                            -- _1 KW[" > "] _2,
+   GT                            -- _1 KW[" .GT. "] _2,
    LT                            -- _1 KW[" .LT. "] _2,
-   NE                            -- _1 KW[" /= "] _2,
-   EQ                            -- _1 KW[" ==  "] _2,
+   NE                            -- _1 KW[" .NE. "] _2,
+   EQ                            -- _1 KW[" .EQ. "] _2,
    LE                            -- _1 KW[" .LE. "] _2,
    GE                            -- _1 KW[" .GE. "] _2,
    AND                           -- _1 KW[" .AND. "] _2,
