@@ -54,10 +54,10 @@ check : $(TBL)
            fi; \
         done;
 
-junk :
-	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
+test :
+	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
 aterm :
-	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
+	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
 
 clean :
 	rm -f *.mod
