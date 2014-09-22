@@ -82,7 +82,7 @@
    BIND                          -- KW["BIND(C)"],
 
    #R429 --,
-   EndTypeStmt                   -- H hs=1[_1 KW["END TYPE"] H hs=0[_2 _3]],
+   EndTypeStmt                   -- H hs=1[_1 KW["END TYPE"] H hs=0[_2 _3] "\n" ],
 
    #R431 --,
    TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
