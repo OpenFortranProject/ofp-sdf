@@ -1,6 +1,7 @@
 TYPE atype
-INTEGER dim
+  INTEGER dim
 END TYPE 
+
 REAL :: x(2)
 TYPE(atype) :: z
 a = 3
