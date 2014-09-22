@@ -42,7 +42,7 @@
    INTEGER                       -- KW["INTEGER"] _1,
    REAL                          -- KW["REAL"] _1,
    CHARACTER                     -- KW["CHARACTER"] _1,
-   LOGICAL                       -- KW["LOGICAL :: "] _1,
+   LOGICAL                       -- KW["LOGICAL"] _1,
    COMPLEX                       -- KW["COMPLEX :: "] _1,
 
    #R403 --,
@@ -351,7 +351,7 @@
    #Operators --,
    Minus                         -- KW["-"] _1,
    Minus                         -- _1 KW[" - "] _2,
-   NOT                           -- KW[".NOT."] _1,
+   NOT                           -- KW[".NOT. "] _1,
    Plus                          -- _1 KW[" + "] _2,
    Plus                          -- KW["+"] _1,
    GT                            -- _1 KW[" .GT. "] _2,
@@ -432,11 +432,16 @@
    #R809 --,
    EndBlockStmt                  -- H hs=1[_1 KW["END BLOCK"] H hs=0[_2 _3]],
 
+   #R816 --,
+   LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
+
    #R817 --,
    PpNonlabelDoStmt              -- H hs=1[_1 H hs=0 [_2 KW["DO"]] H hs=1[_3] _4],
 
    #R818 --,
    LoopControl                   -- H hs=1[_1 KW["="] H hs=0[_2 KW[", "] _3 _4]],
+   LoopWhileControl              -- KW["WHILE"] "("_1")",
+   LoopConcurrentControl         -- KW["CONCURRENT"] _1,
 
    #R822 --,
    EndDoStmt                     -- H hs=1[_1 KW["END DO"] H hs=0[_2 _3]],
@@ -492,7 +497,7 @@
    TypeGuardStmtBlock            -- _1 _2,
 
    #R847 --,
-   PpSelectTypeStmt              -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
+   SelectTypeStmt              -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
 
    #R848 --,
    ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
