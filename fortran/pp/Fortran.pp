@@ -414,8 +414,8 @@
    AssociateConstruct            -- _1 _2 _3,
 
    #R803 --,
-   AssociateStmt                 -- H hs=1[_1 _2 KW["ASSOCIATE"] H hs=0["("_3")" _4]],
-   AssociateStmt.3:iter-sep      -- _1 ", ",
+   PpAssociateStmt                 -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
+   PpAssociateStmt.3:iter-sep      -- _1 ", ",
 
    #R804 --,
    Association                   -- _1 KW["=>"] _2,
@@ -492,8 +492,7 @@
    TypeGuardStmtBlock            -- _1 _2,
 
    #R847 --,
-   SelectTypeStmt                -- H hs=1[_1 KW["SELECT TYPE"] H hs=0["("_2 KW[" => "] _3")" _4]],
-   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
+   PpSelectTypeStmt              -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
 
    #R848 --,
    ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
@@ -737,7 +736,7 @@
    #R1207 --,
    OfpGenericSpec                      -- _1,
    ASSIGNMENT                          -- KW["ASSIGNMENT(=)"],
-   OPERATOR                            -- H hs=1[KW ["OPERATOR"] H hs=0 ["("_1")"]],
+   OPERATOR                            -- KW ["OPERATOR"] "("_1")",
 
    #R1209 --,
    ImportStmt                          -- H hs=1[_1 KW["IMPORT ::"] H hs=0[_2 _3]],
