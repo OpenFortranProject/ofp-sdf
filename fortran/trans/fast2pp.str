@@ -22,6 +22,10 @@ signature
 
     PpNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl * EOS -> PpNonlabelDoStmt  //R817
 
+    PpAssociateStmt  : OptLabel * NoName * List(Association) * EOS -> PpAssociateStmt        //R803
+
+//    PpSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector * EOS -> PpSelectTypeStmt  //R847
+
     opt-list       : list            -> opt-list
     append-colon   : name            -> append-colon
 
@@ -51,6 +55,10 @@ rules
   ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
   ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
 
+//R803
+  ast-to-pp:
+    AssociateStmt(label,name,list,eos)     -> PpAssociateStmt(label,<append-colon>name,list,eos)
+
 //R817
   ast-to-pp:
     NonlabelDoStmt(label,name,loopcontrol,eos) ->PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
@@ -58,6 +66,10 @@ rules
 //R838
   ast-to-pp:
     SelectCaseStmt(label,name,expr,eos)    -> PpSelectCaseStmt(label,<append-colon>name,expr,eos)
+
+//R847
+//  ast-to-pp:
+//    SelectTypeStmt(label,name,name,selector,eos) -> PpSelectTypeStmt(label,<append-colon>name,name,selector,eos)
 
 //R860
 //  ast-to-pp:
@@ -120,3 +132,5 @@ rules
   no-to-none: no-forall-step()             -> None()   // R753
   no-to-none: no-mask-expr()               -> None()   // R752
   no-to-none: no-else-stmt()               -> None()   // R832
+  no-to-none: no-loop-control()            -> None()   // R818
+  no-to-none: no-section-subscripts()      -> None()   // R612
