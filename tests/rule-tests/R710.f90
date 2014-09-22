@@ -3,6 +3,8 @@
 !
 !  level-3-expr is a concat-op
 
+character :: a(12)
+
 a = 'AB' // 'BC'
 a = 'Hell' // 'o' // ' world!'
 end
