@@ -348,6 +348,10 @@
    NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
    NullifyStmt.2:iter-sep        -- _1 ", ",
 
+   #R640 --,
+   DeallocateStmt                -- H hs=1[_1 KW["DEALLOCATE"] H hs=0["("_2 _3")" _4]],
+   DeallocateStmt.2:iter-sep     -- _1 ",",
+
    #Operators --,
    Minus                         -- KW["-"] _1,
    Minus                         -- _1 KW[" - "] _2,
