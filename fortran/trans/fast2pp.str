@@ -134,3 +134,4 @@ rules
   no-to-none: no-else-stmt()               -> None()   // R832
   no-to-none: no-loop-control()            -> None()   // R818
   no-to-none: no-section-subscripts()      -> None()   // R612
+  no-to-none: no-subscript()               -> None()   // R619
