@@ -56,6 +56,8 @@ check : $(TBL)
 
 junk :
 	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
+aterm :
+	sglri -p $(TBL) -i junk.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
 
 clean :
 	rm -f *.mod
