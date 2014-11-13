@@ -1967,7 +1967,7 @@ context-free syntax
 %%FunctionReference             -> Primary  {reject}        %% AMBIGUOUS > Designator - TODO: need ActualArgSpec with keyword
 %%TypeParamInquiry              -> Primary  {reject}        %% AMBIGUOUS > Designator
 %%TypeParamName                 -> Primary  {reject}        %% AMBIGUOUS > Designator
-  '(' Expr ')'                  -> Primary  {cons("Primary")}
+  '(' Expr ')'                  -> Primary  {cons("Parens")}
 
 %%TODO-DELETE   Scon                          -> Primary          {cons("PrimaryScon")}
 %%TODO-DELETE   UnsignedArithmeticConstant    -> Primary          {cons("ConstExpr")}
