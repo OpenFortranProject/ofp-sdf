@@ -73,12 +73,12 @@ context-free syntax
   HaloStmt                                -> OtherSpecificationStmt {cons("OtherSpecificationStmt")}
 
 %%R502
-  "HALO" "(" HaloSpec ")"                 -> AttrSpec               {cons("HALO")}
+  "HALO" "(" HaloSpec ")"                 -> AttrSpec               {cons("Halo")}
 
-  {HaloAssumedShapeSpec  ","}+            -> HaloSpec               {cons("ASSUMED")}
-  {HaloExplicitShapeSpec ","}+            -> HaloSpec               {cons("EXPLICIT")}
+  {HaloAssumedShapeSpec  ","}+            -> HaloSpec
+  {HaloExplicitShapeSpec ","}+            -> HaloSpec
 
-  ":"                                     -> HaloAssumedShapeSpec   {cons("HaloAssumedShapeSpec")}
+  ":"                                     -> HaloAssumedShapeSpec   {cons("AssumedShape")}
   LowerBound ":" "*" ":" UpperBound       -> HaloExplicitShapeSpec  {cons("HaloExplicitShapeSpec")}
 
   Label? "HALO" "::"
