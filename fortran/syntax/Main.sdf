@@ -736,7 +736,7 @@ sorts
   EntryStmt                           %% R1240
   ReturnStmt                          %% R1241
   ContainsStmt                        %% R1242
-  StmtFunctionStmt                    %% R1243
+%%StmtFunctionStmt                    %% R1243  %% AMBIGUOUS with array assignment
 
   NoActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
   OptGenericSpec  OptPrefix
@@ -3217,7 +3217,7 @@ context-free syntax
   ProcedureDeclarationStmt               -> DeclarationConstruct
   OtherSpecificationStmt                 -> DeclarationConstruct
   TypeDeclarationStmt                    -> DeclarationConstruct
-  StmtFunctionStmt                       -> DeclarationConstruct
+%%StmtFunctionStmt                       -> DeclarationConstruct  %% AMBIGUOUS with array assignment
 
 %%R208
 %%     WARNING-MODIFICATION:
@@ -3292,7 +3292,6 @@ context-free syntax
 %%R214
 %%TODO-REMOVE  AssignStmt
 %%TODO-REMOVE  AssignedGotoStmt
-%%TODO-REMOVE  StmtFunctionStmt  %% see R1226 comment
 %%TODO-REMOVE  AllstopStmt
   AllocateStmt                           -> ActionStmt
   AssignmentStmt                         -> ActionStmt
@@ -3796,5 +3795,6 @@ context-free syntax
 
 %%R1243
 %%          scalar-expr replaced by expr
+%% This rule is AMBIGUOUS with an array assignment, e.g., A(i) = 1
 %%
-  OptLabel FunctionName '(' {DummyArgName ','}* ')' '=' Expr  EOS -> StmtFunctionStmt {cons("StmtFunctionStmt")}
+%% OptLabel FunctionName '(' {DummyArgName ','}* ')' '=' Expr  EOS -> StmtFunctionStmt {cons("StmtFunctionStmt")}
