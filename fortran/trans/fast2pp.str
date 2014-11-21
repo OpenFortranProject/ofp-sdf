@@ -13,8 +13,15 @@ signature
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
+    PpActualArgSpec: PpKeyword * arg -> PpActualArgSpec
+    PpKeyword      : keyword         -> PpKeyword
+
     PpLetterSpec   : Spec            -> PpLetterSpec
     PpLetterSpec   : Spec * Spec     -> PpLetterSpec
+
+    PpPartRef           : name * ss * is -> PpPartRef
+    PpSectionSubscripts : ss             -> PpSectionSubscripts
+    PpImageSelector     : ss             -> PpImageSelector
 
     eos            : EOStmt          -> EOS
 
@@ -55,13 +62,23 @@ rules
   ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
   ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
 
+//R612
+  ast-to-pp:
+    PartRef(name,no-section-subscripts(),no-image-selector()) -> PpPartRef(name,None(),None())
+  ast-to-pp:
+    PartRef(name,no-section-subscripts(),is) -> PpPartRef(name,None(),PpImageSelector(is))
+  ast-to-pp:
+    PartRef(name,ss,no-image-selector()) -> PpPartRef(name,PpSectionSubscripts(ss),None())
+  ast-to-pp:
+    PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
+
 //R803
   ast-to-pp:
-    AssociateStmt(label,name,list,eos)     -> PpAssociateStmt(label,<append-colon>name,list,eos)
+    AssociateStmt(label,name,list,eos) -> PpAssociateStmt(label,<append-colon>name,list,eos)
 
 //R817
   ast-to-pp:
-    NonlabelDoStmt(label,name,loopcontrol,eos) ->PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
+    NonlabelDoStmt(label,name,loopcontrol,eos) -> PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
 
 //R838
   ast-to-pp:
@@ -80,6 +97,10 @@ rules
 
 //R1104
   ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
+
+//R1222
+  ast-to-pp:  ActualArgSpec(no-keyword(), arg) -> PpActualArgSpec(None(),  arg)
+  ast-to-pp:  ActualArgSpec(keyword,      arg) -> PpActualArgSpec(PpKeyword(keyword), arg)
 
 //R1227
   ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
