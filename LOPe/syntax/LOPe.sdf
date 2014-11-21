@@ -54,6 +54,7 @@ exports
 sorts
 
   AttrSpec PrefixSpec OtherSpecificationStmt
+  AssignmentStmt LoopControl
 
 %% Rosebud syntax
 %% uses host sorts
@@ -63,6 +64,7 @@ sorts
 %% private sorts
 
   HaloStmt HaloSpec HaloAssumedShapeSpec HaloExplicitShapeSpec
+  ImageExecutionSelector
 
 %% Rosebud syntax
 %% context-free rules
@@ -81,9 +83,19 @@ context-free syntax
   ":"                                     -> HaloAssumedShapeSpec   {cons("AssumedShape")}
   LowerBound ":" "*" ":" UpperBound       -> HaloExplicitShapeSpec  {cons("HaloExplicitShapeSpec")}
 
-  Label? "HALO" "::"
+  OptLabel "HALO" "::"
          ArrayName "(" HaloSpec ")"
     ("," ArrayName "(" HaloSpec ")")* EOS -> HaloStmt               {cons("HaloStmt")}
+
+%%R732
+  OptLabel Variable '=' Expr
+           ImageExecutionSelector     EOS -> AssignmentStmt  {cons("AssignmentExecStmt")}
+
+%%R818
+  'CONCURRENT' ForallHeader
+               ImageExecutionSelector     -> LoopControl            {cons("ConcurrentExecControl")}
+
+  "[" ImageSelector "]"                   -> ImageExecutionSelector {cons("ImageExecutionSelector")}
 
 %%1226
   "CONCURRENT"                            -> PrefixSpec             {cons("CONCURRENT")}
