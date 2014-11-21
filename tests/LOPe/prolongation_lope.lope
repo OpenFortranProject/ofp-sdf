@@ -1,33 +1,38 @@
 Module Prolongation
 
+Interface prolongate
+   module procedure prolongate_1D_assign, prolongate_1D_convolve
+End Interface
+
 Contains
 
 !!!!!
 ! This version will require "loop" fusion to optimize so there is
 ! only one kernel to run.
 !
-Subroutine interp_1D_deconvolve(U1h, U2h, S, device)
-  real, intent(out) :: U1h(1:N-1)   ! fine grid
-  real, intent(in ) :: U2h(1:N/2-1) ! coarse grid
-  real, intent(out) :: S(3)         ! stencil
-  integer           :: device       ! execution device
+Pure Subroutine prolongate_1D_assign(U1h, U2h, S, N, device)
+  real, intent(out)   :: U1h(0:N)     ! fine grid   (includes halo)
+  real, intent(in )   :: U2h(0:N/2)   ! coarse grid (includes halo)
+  real, intent(in )   :: S(3)         ! stencil
+  integer, intent(in) :: N            ! fine grid size (N-1 interior pts)
+  integer, intent(in) :: device       ! execution device
 
-  U1h(1:N-3:2)[device] = S(1)*U2h(1:N/2-1)[device]  [[device]]   ! take right
-  U1h(2:N-2:2)[device] = S(2)*U2h(1:N/2-1)[device]  [[device]]   ! take center
-  U1h(3:N-1:2)[device] = S(3)*U2h(1:N/2-1)[device]  [[device]]   ! take left
+  U1h(1:N-1:2)[device] = S(1)*U2h(0:N/2-2)[device]  &
+                       + S(3)*U2h(1:N/2-1)[device]  [[device]]   ! take from left and right
+  U1h(2:N-2:2)[device] = S(2)*U2h(1:N/2-1)[device]  [[device]]   ! take from center
 
-End Subroutine Deconvolve_1D_array_assign
+End Subroutine prolongate_1D_assign
 
 
-Pure CONCURRENT Subroutine(U1h, U2h, S, is)
+Pure CONCURRENT Subroutine prolongate_1D_convolve(U1h, U2h, S, is)
   real, intent(out), HALO(:) :: U1h       ! fine grid
   real, intent(in ), HALO(:) :: U2h       ! coarse grid
-  real, intent(out)          :: S(2,2)    ! stencil
-  integer, intent(in)        :: is        ! stencil selector (odd=1, even=2)
+  real, intent(in )          :: S(2,0:1)  ! stencil
+  integer, intent(in)        :: is        ! stencil selector (even=0, odd=1)
   
-  U1h(0) = sum( S(:,is)*Uh2(0:1) )
+  U1h(0) = sum( S(:,is)*U2h(0:1) )
 
-End Subroutine
+End Subroutine prolongate_1D_convolve
 
 
 End Module Prolongation
