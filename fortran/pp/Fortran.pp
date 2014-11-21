@@ -7,9 +7,15 @@
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
+   CONCURRENT                    -- KW["CONCURRENT"],
+   Halo                          -- ", " KW["HALO"] "(" _1 ")",
+   AssumedShape                  -- ":",
+   ConcurrentExecControl         -- " " KW["CONCURRENT"] _1 _2,
+   ImageExecutionSelector        -- " [[" _1 "]]",
+
    INTRINSIC                     -- KW["INTRINSIC :: "],
    NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
-   PARAMETER                     -- KW["PARAMETER :: "],
+   PARAMETER                     -- ", " KW["PARAMETER"],
 
    #R201 --,
    OfpProgram                    -- V vs=1 is=0 [_1 _2],
@@ -179,15 +185,17 @@
    AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
    #R501 --,
-   TypeDeclarationStmt           -- H hs=1[_1 H hs=0[_2] H hs=0[_3 KW["::"]] H hs=0[_4 _5]],
+   TypeDeclarationStmt           -- H hs=0[_1 H hs=0[_2] H hs=0[_3 KW[" :: "]] H hs=0[_4 _5]],
    TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
 
    #R502 --,
-   Some                          -- _1,
-   Some                          -- _1 _2,
    ALLOCATABLE                   -- KW["ALLOCATABLE :: "],
-   Intent                        -- KW["INTENT"] _1,
-   Dimension                     -- KW["DIMENSION"] _1,
+   Intent                        -- ", " KW["INTENT"] "(" _1 ")",
+   Dimension                     -- ", " KW["DIMENSION"] _1,
+
+   IN                            -- KW["IN"],
+   OUT                           -- KW["OUT"],
+   INOUT                         -- KW["INOUT"],
 
    #R503 --,
    EntityDecl                    -- _1 _2 _3 _4 _5,
@@ -207,7 +215,7 @@
    OfpExplicitCoshape            -- _1,
 
    #R517 --,
-   DimSpec                       -- _1 "("_2")",
+   DimSpec                       -- "(" _1 ":" _2 ")",
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
@@ -322,8 +330,10 @@
 
    #R612 --,
    OfpVarRef                     -- _1,
-   PartRef                       -- _1 "("_2")" _3,
-   PartRef.2:iter-sep            -- _1 ",",
+   PpPartRef                     -- _1 _2 _3,
+   PpPartRef.2:iter-sep          -- _1 ",",
+   PpSectionSubscripts           -- "(" _1 ")",
+   PpImageSelector               -- "[" _1 "]",
 
    #R626 --,
    AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
@@ -349,7 +359,7 @@
    NullifyStmt.2:iter-sep        -- _1 ", ",
 
    #R640 --,
-   DeallocateStmt                -- H hs=1[_1 KW["DEALLOCATE"] H hs=0["("_2 _3")" _4]],
+   DeallocateStmt                -- H hs=0[_1 KW["DEALLOCATE"] "("_2 _3")" _4],
    DeallocateStmt.2:iter-sep     -- _1 ",",
 
    #Operators --,
@@ -371,8 +381,8 @@
    DefUnaryExpr                  -- H hs=1[_1 _2],
    DefBinExpr                    -- _1 _2 _3,
    Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
-   Mult                          -- _1 KW[" * "] _2,
-   Div                           -- _1 KW[" / "] _2,
+   Mult                          -- _1 KW["*"] _2,
+   Div                           -- _1 KW["/"] _2,
    Concat                        -- _1 KW[" // "] _2,
 
    Parens                        -- "(" _1 ")",
@@ -408,7 +418,7 @@
    ForallHeader.2:iter-sep       -- _1 ", ",
 
    #R753 --,
-   ForallTripletSpec             -- _1 KW[" = "] _2 KW[":"] _3 _4,
+   ForallTripletSpec             -- _1 "=" _2 ":" _3 _4,
 
    #R758 --,
    EndForallStmt                 -- H hs=1[_1 KW["END FORALL"] H hs=0[_2 _3]],
@@ -442,10 +452,10 @@
    LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
 
    #R817 --,
-   PpNonlabelDoStmt              -- H hs=1[_1 H hs=0 [_2 KW["DO"]] H hs=1[_3] _4],
+   PpNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
 
    #R818 --,
-   LoopControl                   -- H hs=1[_1 KW["="] H hs=0[_2 KW[", "] _3 _4]],
+   LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
    LoopWhileControl              -- KW["WHILE"] "("_1")",
    LoopConcurrentControl         -- KW["CONCURRENT"] _1,
 
@@ -779,12 +789,11 @@
    CallStmt.3:iter-sep                 -- _1 ",",
 
    #R1221 --,
-   OfpProcRef                          -- _1,
    ProcedureDesignator                 -- _1,
 
    #R1222 --,
-   OfpArg                              -- _1 _2,
-   ActualArgSpec                       -- _1 KW["="] _2,
+   PpActualArgSpec                     -- _1 _2,
+   PpKeyword                           -- _1 "=",
 
    #R1224 --,
    AltReturnSpec                       -- KW["*"] _1,
