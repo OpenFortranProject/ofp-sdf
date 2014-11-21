@@ -35,11 +35,11 @@ program test_restrict
    U1h[device] = U1h
 
    do concurrent (j2h = 1:J/2-1)  [[device]]
-      call restrict(U1h(2*j2h:2*j2h), U2h(j2h:j2h))
+      call restrict(U1h(2*j2h:2*j2h)[device], U2h(j2h:j2h)[device])
    end do
 
    do concurrent (j2h = 1:J/2-1)  [[device]]
-      call restrict(U1h(2*j2h:2*j2h), U2h(j2h:j2h), [0.25, 0.5, 0.25])
+      call restrict(U1h(2*j2h:2*j2h)[device], U2h(j2h:j2h)[device], [0.25, 0.5, 0.25])
    end do
 
    deallocate(U1h, U2h)
