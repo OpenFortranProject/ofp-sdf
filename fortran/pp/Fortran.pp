@@ -38,7 +38,7 @@
    Label                         -- _1,
 
    #R401 --,
-   COLON                         -- KW[":"],
+   COLON                         -- ":",
 
    #R403 --,
    IntrinsicType                 -- _1,
@@ -198,7 +198,11 @@
    INOUT                         -- KW["INOUT"],
 
    #R503 --,
-   EntityDecl                    -- _1 _2 _3 _4 _5,
+   PpEntityDecl                  -- _1 _2 _3 _4 _5,
+   PpArraySpec                   -- "(" _1 ")",
+   PpArraySpec.1:iter-sep        -- _1 ",",
+   PpCoarraySpec                 -- "[" _1 "]",
+   PpCoarraySpec.1:iter-sep      -- _1 ",",
 
    #R505 --,
    Initialization                -- KW[" = "] _1,
@@ -215,7 +219,8 @@
    OfpExplicitCoshape            -- _1,
 
    #R517 --,
-   DimSpec                       -- "(" _1 ":" _2 ")",
+   PpDimSpec                     -- _1,
+   PpDimSpec                     -- _1 ":" _2,
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
@@ -329,11 +334,12 @@
    DataRef.1:iter-sep            -- _1 "%",
 
    #R612 --,
-   OfpVarRef                     -- _1,
-   PpPartRef                     -- _1 _2 _3,
-   PpPartRef.2:iter-sep          -- _1 ",",
-   PpSectionSubscripts           -- "(" _1 ")",
-   PpImageSelector               -- "[" _1 "]",
+   OfpVarRef                        -- _1,
+   PpPartRef                        -- _1 _2 _3,
+   PpSectionSubscripts              -- "(" _1 ")",
+   PpSectionSubscripts.1:iter-sep   -- _1 ",",
+   PpImageSelector                  -- "[" _1 "]",
+   PpImageSelector.1:iter-sep       -- _1 ",",
 
    #R626 --,
    AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
@@ -364,9 +370,9 @@
 
    #Operators --,
    Minus                         -- KW["-"] _1,
-   Minus                         -- _1 KW[" - "] _2,
+   Minus                         -- _1 KW["-"] _2,
    NOT                           -- KW[".NOT. "] _1,
-   Plus                          -- _1 KW[" + "] _2,
+   Plus                          -- _1 KW["+"] _2,
    Plus                          -- KW["+"] _1,
    GT                            -- _1 KW[" .GT. "] _2,
    LT                            -- _1 KW[" .LT. "] _2,
@@ -381,14 +387,14 @@
    DefUnaryExpr                  -- H hs=1[_1 _2],
    DefBinExpr                    -- _1 _2 _3,
    Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
-   Mult                          -- _1 KW["*"] _2,
-   Div                           -- _1 KW["/"] _2,
-   Concat                        -- _1 KW[" // "] _2,
+   Mult                          -- _1 "*" _2,
+   Div                           -- _1 "/" _2,
+   Concat                        -- _1 "//" _2,
 
    Parens                        -- "(" _1 ")",
 
    #R709 --,
-   PLUS                          -- KW ["+"],
+   PLUS                          -- "+",
 
    #R732 --,
    AssignmentStmt                -- H hs=1[_1 H hs=0[_2 KW[" = "] _3 _4]],
