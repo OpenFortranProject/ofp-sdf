@@ -2,7 +2,6 @@ module Main
 
 signature
   constructors
-    StmtFunctionStmt                : OptLabel * FunctionName * List(DummyArgName) * Expr * EOS -> StmtFunctionStmt
     ContainsStmt                    : OptLabel * EOS -> ContainsStmt
     ReturnStmt                      : OptLabel * NoExpr * EOS -> ReturnStmt
     ReturnStmt                      : OptLabel * Expr * EOS -> ReturnStmt
@@ -273,7 +272,6 @@ signature
                                     : ExecutableConstruct -> SpecAndExecConstruct
                                     : DeclarationConstruct -> SpecAndExecConstruct
                                     : ImplicitStmt -> SpecAndExecConstruct
-                                    : StmtFunctionStmt -> DeclarationConstruct
                                     : TypeDeclarationStmt -> DeclarationConstruct
                                     : OtherSpecificationStmt -> DeclarationConstruct
                                     : ProcedureDeclarationStmt -> DeclarationConstruct
@@ -744,7 +742,7 @@ signature
     TIMES                           : MultOp
     PowerOp                         : PowerOp
                                     : Dop -> DefinedUnaryOp
-    Primary                         : Expr -> Primary
+    Parens                          : Expr -> Primary
                                     : StructureConstructor -> Primary
                                     : ArrayConstructor -> Primary
                                     : Designator -> Primary

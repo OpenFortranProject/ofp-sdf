@@ -754,7 +754,6 @@ regular tree grammar
     Expr                              -> Mult(Expr,Expr)
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
-    StmtFunctionStmt                  -> StmtFunctionStmt(OptLabel,FunctionName,ListStarOfDummyArgName0,Expr,EOS)
     ContainsStmt                      -> ContainsStmt(OptLabel,EOS)
     ReturnStmt                        -> ReturnStmt(OptLabel,NoExpr,EOS)
     ReturnStmt                        -> ReturnStmt(OptLabel,Expr,EOS)
@@ -1033,7 +1032,6 @@ regular tree grammar
     SpecAndExecConstruct              -> DeclarationConstruct
     SpecAndExecConstruct              -> ImplicitStmt
     ExecutionPart                     -> ExecutionPart(ListStarOfExecutionPartConstruct0)
-    DeclarationConstruct              -> StmtFunctionStmt
     DeclarationConstruct              -> TypeDeclarationStmt
     DeclarationConstruct              -> OtherSpecificationStmt
     DeclarationConstruct              -> ProcedureDeclarationStmt
@@ -1510,7 +1508,7 @@ regular tree grammar
     MultOp                            -> TIMES()
     PowerOp                           -> PowerOp()
     DefinedUnaryOp                    -> Dop
-    Primary                           -> Primary(Expr)
+    Primary                           -> Parens(Expr)
     Primary                           -> StructureConstructor
     Primary                           -> ArrayConstructor
     Primary                           -> Designator
