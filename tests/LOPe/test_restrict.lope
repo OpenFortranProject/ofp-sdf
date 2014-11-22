@@ -9,8 +9,7 @@ program test_restrict
    use restriction
 
    integer, parameter :: J = 256  ! r dimension
-   real :: U1h(0:J)               !  J-1   interior points, HALO(-1:*:1)
-   real :: U2h(0:J/2)             !  J/2-1 interior points, HALO(-1:*:1)
+   real, allocatable :: U1h(:), U2h(:)
    integer :: j1h, j2h, device
 
    !! TODO

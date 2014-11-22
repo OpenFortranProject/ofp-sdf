@@ -11,9 +11,11 @@ program test_prolongate
    integer, parameter :: J = 8  ! r dimension
    real, parameter    :: S(2,0:1) = [[1.0, 0.0], [0.5, 0.5]]  ! stencil
 
-   real :: U1h(0:J)               !  J-1   interior points, HALO(-1:*:1)
-   real :: U2h(0:J/2)             !  J/2-1 interior points, HALO(-1:*:1)
+   real, allocatable :: U1h(:), U2h(:)
    integer :: j1h, j2h, is, device
+
+   allocate(U1h(0:J))             !  J-1   interior points, HALO(-1:*:1)
+   allocate(U2h(0:J/2))           !  J/2-1 interior points, HALO(-1:*:1)
 
    do j2h = 0, J/2
       U2h(j2h) = 2*j2h
@@ -24,5 +26,7 @@ program test_prolongate
       is = mod(j1h, 2)
       call prolongate(U1h(j1h)[device], U2h(j2h)[device], S, is)
    end do
+
+   deallocate(U1h, U2h)
 
 end program
