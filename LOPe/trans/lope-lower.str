@@ -1,0 +1,34 @@
+module lope-lower
+
+imports
+   libstratego-lib
+   LOPe
+
+signature
+  constructors
+
+   zPartRef   : A * B * C -> zPartRef
+
+
+strategies //=================START OF STRATEGIES============================
+
+  io-lope-lower =
+    io-wrap(lope-lower)
+
+  lope-lower =
+      innermost(lope-lower-ast)
+    ; innermost(back-to-fast)
+
+rules //========================START OF RULES===============================
+
+lope-lower-ast:  PartRef(name,ss,is)  -> zPartRef(name,ss,no-image-selector())
+
+lope-lower-ast:
+  ConcurrentExecControl(forall,coexec)          -> LoopConcurrentControl(forall)
+
+// Transform temporary ATerms back to original
+//
+
+back-to-fast:  zPartRef(name,ss,is)             -> PartRef(name,ss,is)
+
+
