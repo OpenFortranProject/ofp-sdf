@@ -189,7 +189,7 @@
    TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
 
    #R502 --,
-   ALLOCATABLE                   -- KW["ALLOCATABLE :: "],
+   ALLOCATABLE                   -- ", " KW["ALLOCATABLE"],
    Intent                        -- ", " KW["INTENT"] "(" _1 ")",
    Dimension                     -- ", " KW["DIMENSION"] _1,
 
@@ -463,7 +463,7 @@
    #R818 --,
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
    LoopWhileControl              -- KW["WHILE"] "("_1")",
-   LoopConcurrentControl         -- KW["CONCURRENT"] _1,
+   LoopConcurrentControl         -- " " KW["CONCURRENT"] _1,
 
    #R822 --,
    EndDoStmt                     -- H hs=1[_1 KW["END DO"] H hs=0[_2 _3]],
