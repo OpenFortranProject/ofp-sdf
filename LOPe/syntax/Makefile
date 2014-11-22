@@ -1,3 +1,5 @@
+include ../../make.inc
+
 TEST_DIR = ../../tests/rule-tests
 
 STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoStratego.tbl
@@ -17,6 +19,12 @@ LOPe.tbl : LOPe.def
 
 LOPe.def : LOPe.sdf $(FOR_ROOT)/Main.def
 	pack-sdf -i $< -o $@ -Idef $(FOR_ROOT)/Main.def
+
+LOPe.rtg : LOPe.def
+	$(ST_PATH)/sdf2rtg -i LOPe.def -m LOPe -o LOPe.rtg
+
+LOPe.str : LOPe.rtg
+	$(ST_PATH)/rtg2sig -i LOPe.rtg -o LOPe.str
 
 convolve : convolve.lope LOPe.tbl
 	sglri -i convolve.lope -p LOPe.tbl | implode-asfix | pp-aterm -o convolve.lope.aterm
