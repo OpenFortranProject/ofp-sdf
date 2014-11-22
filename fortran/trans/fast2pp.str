@@ -13,8 +13,15 @@ signature
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
 
+    PpEntityDecl   : name * PpArraySpec * PpCoarraySpec * CharLength * Initialization -> PpEntityDecl
+    PpArraySpec    : ArraySpec       -> PpArraySpec
+    PpCoarraySpec  : CoarraySpec     -> PpCoarraySpec
+
     PpActualArgSpec: PpKeyword * arg -> PpActualArgSpec
     PpKeyword      : keyword         -> PpKeyword
+
+    PpDimSpec      : upper            -> PpDimSpec
+    PpDimSpec      : lower * upper    -> PpDimSpec
 
     PpLetterSpec   : Spec            -> PpLetterSpec
     PpLetterSpec   : Spec * Spec     -> PpLetterSpec
@@ -58,17 +65,21 @@ rules
 //
   ast-to-pp:  eos(_)                       -> None()
 
+//R503
+  ast-to-pp:
+    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
+
+//R510
+  ast-to-pp:
+    DimSpec(no-lower-bound(), upper)       -> PpDimSpec(upper)
+  ast-to-pp:
+    DimSpec(lower, upper)                  -> PpDimSpec(lower, upper)
+
 //R562
   ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
   ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
 
 //R612
-  ast-to-pp:
-    PartRef(name,no-section-subscripts(),no-image-selector()) -> PpPartRef(name,None(),None())
-  ast-to-pp:
-    PartRef(name,no-section-subscripts(),is) -> PpPartRef(name,None(),PpImageSelector(is))
-  ast-to-pp:
-    PartRef(name,ss,no-image-selector()) -> PpPartRef(name,PpSectionSubscripts(ss),None())
   ast-to-pp:
     PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
 
@@ -99,8 +110,7 @@ rules
   ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
 
 //R1222
-  ast-to-pp:  ActualArgSpec(no-keyword(), arg) -> PpActualArgSpec(None(),  arg)
-  ast-to-pp:  ActualArgSpec(keyword,      arg) -> PpActualArgSpec(PpKeyword(keyword), arg)
+  ast-to-pp:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
 
 //R1227
   ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
@@ -127,7 +137,6 @@ rules
   no-to-none: no-module-nature()           -> None()   // R1109
   no-to-none: no-block-data-name()         -> None()   // R1122
   no-to-none: no-proc-interface()          -> None()   // R1212
-  no-to-none: no-keyword()                 -> None()   // R215
   no-to-none: no-subroutine-name()         -> None()   // R1236
   no-to-none: no-binding-name()            -> None()   // R508
   no-to-none: no-expr()                    -> None()   // R1241
@@ -142,7 +151,6 @@ rules
   no-to-none: no-stride()                  -> None()   // R920
   no-to-none: no-type-spec()               -> None()   // R626
   no-to-none: no-lower-bound()             -> None()   // R633
-  no-to-none: no-image-selector()          -> None()   // R624
   no-to-none: no-component-name()          -> None()   // R734
   no-to-none: no-upper-bounds()            -> None()   // R736
   no-to-none: no-type-bound-procedure-part()  -> None()   //R445
@@ -154,5 +162,12 @@ rules
   no-to-none: no-mask-expr()               -> None()   // R752
   no-to-none: no-else-stmt()               -> None()   // R832
   no-to-none: no-loop-control()            -> None()   // R818
-  no-to-none: no-section-subscripts()      -> None()   // R612
   no-to-none: no-subscript()               -> None()   // R619
+
+  no-to-none: PpKeyword(no-keyword())      -> None()   // R215
+
+  no-to-none: PpArraySpec([])              -> None()   // R515
+  no-to-none: PpCoarraySpec([])            -> None()   // R509
+
+  no-to-none: PpSectionSubscripts(no-section-subscripts()) -> None()
+  no-to-none: PpImageSelector(no-image-selector())         -> None()
