@@ -9,7 +9,7 @@ program test_restrict
    use restriction
 
    integer, parameter :: J = 256  ! r dimension
-   real, allocatable :: U1h(:), U2h(:)
+   real, allocatable :: U1h(:)[:], U2h(:)[:]
    integer :: j1h, j2h, device
 
    !! TODO
@@ -22,8 +22,19 @@ program test_restrict
    ! 6. Should work even if device not found (serial code)?  Then [device==0] a noop?
    !
 
-   allocate(U1h(0:J))             !  J-1   interior points, HALO(-1:*:1)
-   allocate(U2h(0:J/2))           !  J/2-1 interior points, HALO(-1:*:1)
+   !! Allocate local memory (device=THIS_IMAGE())
+   !  -------------------------------------------
+   allocate(U1h(0:J),   HALO=(-1:*:1))           !  J-1   interior points
+   allocate(U2h(0:J/2), HALO=(-1:*:1))           !  J/2-1 interior points
+
+   device = get_subimage(1)          ! THIS_IMAGE() if device unavailable
+
+   !! Allocate memory on subimage if available
+   !  ----------------------------------------
+   if (device /= THIS_IMAGE()) then
+      allocate(U1h(0:J)  [device], HALO=(-1:*:1))   [[device]]
+      allocate(U2h(0:J/2)[device], HALO=(-1:*:1))   [[device]]
+   end if
 
    !! Initialize and transfer memory
    !  ------------------------------
@@ -41,5 +52,9 @@ program test_restrict
    end do
 
    deallocate(U1h, U2h)
+
+   if (device /= THIS_IMAGE()) then
+      deallocate(U1h[device], U2h[device])   [[device]]
+   end if
          
 end program
