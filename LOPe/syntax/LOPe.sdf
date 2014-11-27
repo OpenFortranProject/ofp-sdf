@@ -90,22 +90,22 @@ context-free syntax
 %%R626
   OptLabel 'ALLOCATE'
      '(' NoTypeSpec    {Allocation ','}+ OptAllocOptList ')'
-                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoallocateStmt")}
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoAllocateStmt")}
   OptLabel 'ALLOCATE'
      '(' TypeSpec '::' {Allocation ','}+ OptAllocOptList ')'
-                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoallocateStmt")}
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoAllocateStmt")}
 
 %%R640
   OptLabel 'DEALLOCATE'
      '(' {AllocateObject ','}+ OptDeallocOptList ')'
-                               ImageExecutionSelector        EOS -> DeallocateStmt {cons("CodeallocateStmt")}
+                               ImageExecutionSelector        EOS -> DeallocateStmt {cons("CoDeallocateStmt")}
 
 %%R627
   "HALO" "=" "(" {HaloExplicitShapeSpec ","}+ ")"                -> AllocOpt       {cons("HaloAlloc")}
 
 %%R732
   OptLabel Variable '=' Expr
-           ImageExecutionSelector     EOS -> AssignmentStmt  {cons("AssignmentExecStmt")}
+           ImageExecutionSelector     EOS -> AssignmentStmt  {cons("CoAssignmentStmt")}
 
 %%R818
   'CONCURRENT' ForallHeader
