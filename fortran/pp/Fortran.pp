@@ -9,14 +9,20 @@
 
    CONCURRENT                    -- KW["CONCURRENT"],
    Halo                          -- ", " KW["HALO"] "(" _1 ")",
-   HaloAlloc                     -- KW["HALO"] "=" _1,
+   HaloAlloc                     -- ", " KW["HALO"] "=" _1,
    HaloExplicitShapeSpec         -- "(" _1 ":*:" _2 ")",
    AssumedShape                  -- ":",
    ConcurrentExecControl         -- " " KW["CONCURRENT"] _1 _2,
    ImageExecutionSelector        -- " [[" _1 "]]",
 
-   INTRINSIC                     -- KW["INTRINSIC :: "],
-   NON_INTRINSIC                 -- KW["NON_INTRINSIC :: "],
+   CoAllocateStmt                -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5 _6]],
+   CoAllocateStmt.3:iter-sep     -- _1 ",",
+   CoAllocateStmt.4:iter-sep     -- _1 ", ",
+   CoDeallocateStmt              -- H hs=0[_1 KW["DEALLOCATE"] "("_2 _3")" _4 _5],
+   CoDeallocateStmt.2:iter-sep   -- _1 ",",
+
+   INTRINSIC                     -- KW["INTRINSIC"] " :: ",
+   NON_INTRINSIC                 -- KW["NON_INTRINSIC"] " :: ",
    PARAMETER                     -- ", " KW["PARAMETER"],
 
    #R201 --,
@@ -357,10 +363,11 @@
    #R631 --,
    Allocation                    -- _1 "("_2 _3")",
    Allocation.2:iter-sep         -- _1 ", ",
-   Triplet                       -- _1 KW[":"] _2 _3,
+   PpAllocation                  -- _1,
+   Triplet                       -- _1 ":" _2 _3,
 
    #R633 --,
-   AllocateShapeSpec             -- _1 KW[":"] _2,
+   AllocateShapeSpec             -- _1 ":" _2,
 
    #R638 --,
    NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
@@ -479,7 +486,7 @@
    ElseStmtBlock                 -- _1 _2,
 
    #R833 --,
-   IfThenStmt                    -- H hs=1[_1 KW["IF"] H hs=0[_2 _3 _4]],
+   IfThenStmt                    -- H hs=1[_1 KW["IF"] H hs=0[_2 "("_3")" _4] KW["THEN"]],
 
    #R834 --,
    ElseIfStmt                    -- H hs=1[_1 KW["ELSE IF"] H hs=0["("_2")" _3 _4]],
