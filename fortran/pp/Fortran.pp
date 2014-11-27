@@ -9,6 +9,8 @@
 
    CONCURRENT                    -- KW["CONCURRENT"],
    Halo                          -- ", " KW["HALO"] "(" _1 ")",
+   HaloAlloc                     -- KW["HALO"] "=" _1,
+   HaloExplicitShapeSpec         -- "(" _1 ":*:" _2 ")",
    AssumedShape                  -- ":",
    ConcurrentExecControl         -- " " KW["CONCURRENT"] _1 _2,
    ImageExecutionSelector        -- " [[" _1 "]]",
@@ -185,8 +187,8 @@
    AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
    #R501 --,
-   TypeDeclarationStmt           -- H hs=0[_1 H hs=0[_2] H hs=0[_3 KW[" :: "]] H hs=0[_4 _5]],
-   TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
+   TypeDeclarationStmt             -- H hs=0[_1 H hs=0[_2] H hs=0[_3 " :: "] H hs=0[_4 _5]],
+   TypeDeclarationStmt.4:iter-sep  -- _1 ", ",
 
    #R502 --,
    ALLOCATABLE                   -- ", " KW["ALLOCATABLE"],
