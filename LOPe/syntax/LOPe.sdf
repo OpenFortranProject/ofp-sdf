@@ -54,7 +54,7 @@ exports
 sorts
 
   AllocOpt AttrSpec PrefixSpec OtherSpecificationStmt
-  AssignmentStmt LoopControl
+  AllocateStmt AssignmentStmt LoopControl
 
 %% Rosebud syntax
 %% uses host sorts
@@ -87,9 +87,21 @@ context-free syntax
          ArrayName "(" HaloSpec ")"
     ("," ArrayName "(" HaloSpec ")")* EOS -> HaloStmt               {cons("HaloStmt")}
 
+%%R626
+  OptLabel 'ALLOCATE'
+     '(' NoTypeSpec    {Allocation ','}+ OptAllocOptList ')'
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoallocateStmt")}
+  OptLabel 'ALLOCATE'
+     '(' TypeSpec '::' {Allocation ','}+ OptAllocOptList ')'
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoallocateStmt")}
+
+%%R640
+  OptLabel 'DEALLOCATE'
+     '(' {AllocateObject ','}+ OptDeallocOptList ')'
+                               ImageExecutionSelector        EOS -> DeallocateStmt {cons("CodeallocateStmt")}
+
 %%R627
-  "HALO" "=" "(" {HaloExplicitShapeSpec ","}+ ")"
-                                          -> AllocOpt               {cons("HALO")}
+  "HALO" "=" "(" {HaloExplicitShapeSpec ","}+ ")"                -> AllocOpt       {cons("HaloAlloc")}
 
 %%R732
   OptLabel Variable '=' Expr
