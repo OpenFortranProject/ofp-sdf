@@ -2548,7 +2548,7 @@ context-free syntax
 %%
   OptLabel IfConstructName ':'
          'IF' '(' LogicalExpr ')' 'THEN'            EOS -> IfThenStmt     {cons("IfThenStmt")}
-  OptLabel
+  OptLabel NoName
          'IF' '(' LogicalExpr ')' 'THEN'            EOS -> IfThenStmt     {cons("IfThenStmt")}
 
   Ident                                                 -> IfConstructName
