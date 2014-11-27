@@ -53,7 +53,7 @@ exports
 
 sorts
 
-  AttrSpec PrefixSpec OtherSpecificationStmt
+  AllocOpt AttrSpec PrefixSpec OtherSpecificationStmt
   AssignmentStmt LoopControl
 
 %% Rosebud syntax
@@ -86,6 +86,10 @@ context-free syntax
   OptLabel "HALO" "::"
          ArrayName "(" HaloSpec ")"
     ("," ArrayName "(" HaloSpec ")")* EOS -> HaloStmt               {cons("HaloStmt")}
+
+%%R627
+  "HALO" "=" "(" {HaloExplicitShapeSpec ","}+ ")"
+                                          -> AllocOpt               {cons("HALO")}
 
 %%R732
   OptLabel Variable '=' Expr
