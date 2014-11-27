@@ -4,7 +4,13 @@
 !   1. Remove [device] and [[device]]
 !   2. Add (j2h:j2h), for example
 !
-
+! Execution model
+! ---------------
+!
+!  1. Subimage execution is explicit and task based, unlike regular image
+!     execution model which is SPMD.  So subimages add capability of
+!     executing tasks.
+!
 program test_restrict
    use restriction
 
@@ -14,26 +20,26 @@ program test_restrict
 
    !! TODO
    !-----------------------------------------------------
-   ! 1. Get device coindex
-   ! 2. Allocate with halo and device coindex
-   ! 3. What about local version of memory?  Probably another call to allocate
+   ! 1. Get device/subimage coindex
+   ! 2. Allocate coarrays as normally
+   ! 3. Allocate with halo and on device subimage
    ! 4. Deallocate memory on device?  Probably
    ! 5. Two different array names not needed because using coarray syntax for names
    ! 6. Should work even if device not found (serial code)?  Then [device==0] a noop?
    !
 
-   !! Allocate local memory (device=THIS_IMAGE())
-   !  -------------------------------------------
-   allocate(U1h(0:J),   HALO=(-1:*:1))           !  J-1   interior points
-   allocate(U2h(0:J/2), HALO=(-1:*:1))           !  J/2-1 interior points
-
    device = get_subimage(1)          ! THIS_IMAGE() if device unavailable
+
+   !! Allocate memory on local and remote images
+   !  ------------------------------------------
+   allocate(U1h(0:J)  [*], HALO=(-1:*:1))           !  J-1   interior points
+   allocate(U2h(0:J/2)[*], HALO=(-1:*:1))           !  J/2-1 interior points
 
    !! Allocate memory on subimage if available
    !  ----------------------------------------
    if (device /= THIS_IMAGE()) then
-      allocate(U1h(0:J)  [device], HALO=(-1:*:1))   [[device]]
-      allocate(U2h(0:J/2)[device], HALO=(-1:*:1))   [[device]]
+      allocate(U1h(0:J)  [*], HALO=(-1:*:1))    [[device]]
+      allocate(U2h(0:J/2)[*], HALO=(-1:*:1))    [[device]]
    end if
 
    !! Initialize and transfer memory
@@ -51,10 +57,12 @@ program test_restrict
       call restrict(U1h(2*j2h)[device], U2h(j2h)[device], [0.25, 0.5, 0.25])
    end do
 
+   !! Deallocate memory on all images (including subimages)
+   !  -----------------------------------------------------
    deallocate(U1h, U2h)
 
    if (device /= THIS_IMAGE()) then
-      deallocate(U1h[device], U2h[device])   [[device]]
+      deallocate(U1h, U2h)   [[device]]
    end if
          
 end program
