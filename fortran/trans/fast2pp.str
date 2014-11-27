@@ -30,6 +30,8 @@ signature
     PpSectionSubscripts : ss             -> PpSectionSubscripts
     PpImageSelector     : ss             -> PpImageSelector
 
+    PpAllocation   : PpPartRef       -> PpAllocation
+
     eos            : EOStmt          -> EOS
 
     PpSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> PpSelectCaseStmt    // R838
@@ -82,6 +84,9 @@ rules
 //R612
   ast-to-pp:
     PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
+
+//R631
+  ast-to-pp:  Allocation(part,[],[])       -> PpAllocation(part)
 
 //R803
   ast-to-pp:
