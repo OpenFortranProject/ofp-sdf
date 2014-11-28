@@ -137,21 +137,6 @@ rules //========================START OF RULES===============================
   ofp-to-ast:  PartRef(name,no-section-subscripts(),
                             no-image-selector())           -> OfpVarRef(OfpName(name))
 
-//R636
-  ofp-to-ast:  AllocateCoarraySpec(list,lb) -> OfpCoshape(<concat>[list,[DimSpec(lb,"*")]])
-
-/*****
-  ofp-to-ast:  AllocateCoarraySpec()        -> OfpCoshape([DimSpec(None(),"*")])
-  ofp-to-ast:  AllocateCoarraySpec(lb)      -> OfpCoshape([DimSpec(lb,"*")])
-  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list))
-                                            -> OfpCoshape(<concat>[list,[DimSpec(None(),"*")]])
-  ofp-to-ast:  AllocateCoarraySpec(AllocateCoshapeSpecList(list),lb)
-                                            -> OfpCoshape(<concat>[list,[DimSpec(lb,"*")]])
-*****/
-
-//R637
-  ofp-to-ast:  AllocateCoshapeSpec(lb,ub)   -> DimSpec(lb,ub)
-
 // Operators...
 
 //R703
