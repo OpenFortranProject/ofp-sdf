@@ -29,19 +29,19 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(ofp-simplify)
 
   ofp-simplify =
-//      outermost(ofp-disamb)
-//    ; innermost(ofp-simplify-ast)
-      innermost(ofp-simplify-ast)
+      outermost(ofp-disamb)
+    ; innermost(ofp-simplify-ast)
+
 
 rules //========================START OF RULES===============================
 
 // Disambiguation rules
 //
 
-//R631 : C633 ... AllocateShapeSpecList shall appear
-// TODO - remove: solved by adding {avoid} to Allocation with arity 1
-//ofp-disamb:  amb([Allocation(u),   Allocation(x,y)  ]) -> Allocation(x,y)
-//ofp-disamb:  amb([Allocation(u,v), Allocation(x,y,z)]) -> Allocation(x,y,z)
+//R631 : C633: AllocateShapeSpecList shall appear .... 
+// Sometimes the DataRef swallows up too much; take second choice as it
+// uses AllocateShapeSpec and AllocateCoarraySpec.
+ofp-disamb:  amb([Allocation(u,v,w), Allocation(x,y,z)]) -> Allocation(x,y,z)
 
 //R703,R723
 //ofp-disamb:  amb([DefinedOperator(x), DefinedOperator(y)]) -> DefinedOperator(x)
@@ -112,10 +112,10 @@ ofp-simplify-ast:  opt-stride(stride)             -> stride
 //R624
 ofp-simplify-ast:  ImageSelector(list)            -> list  // reduces '[' list ']' to list
 
-//R701
-ofp-simplify-ast:  Primary(expr)                  -> expr  // reduces '(' Expr ')' to Expr
-
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])    -> obj
+
+//R636
+ofp-simplify-ast:  AllocateCoarraySpec(list,lb) -> <concat>[list,[AllocateCoshapeSpec(lb,"*")]]
 
 //R752
 ofp-simplify-ast:  type-spec-colon(spec)          -> spec
