@@ -361,13 +361,17 @@
    STAT                          -- KW["STAT="] _1,
 
    #R631 --,
-   Allocation                    -- _1 "("_2 _3")",
-   Allocation.2:iter-sep         -- _1 ", ",
+   Allocation                    -- _1 "("_2")" "["_3"]",
+   Allocation.2:iter-sep         -- _1 ",",
+   Allocation.3:iter-sep         -- _1 ",",
    PpAllocation                  -- _1,
    Triplet                       -- _1 ":" _2 _3,
 
-   #R633 --,
-   AllocateShapeSpec             -- _1 ":" _2,
+   PpAllocShapeSpec              -- _1,
+   PpAllocShapeSpec              -- _1 ":" _2,
+
+   PpAllocCoshapeSpec            -- _1,
+   PpAllocCoshapeSpec            -- _1 ":" _2,
 
    #R638 --,
    NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
