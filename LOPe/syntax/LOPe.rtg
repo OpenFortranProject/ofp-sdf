@@ -2,6 +2,27 @@
 regular tree grammar
   start Program
   productions
+    ListStarOfHaloExplicitShapeSpec0  -> ListPlusOfHaloExplicitShapeSpec0
+    ListStarOfHaloExplicitShapeSpec0  -> <nil>()
+    ListStarOfHaloExplicitShapeSpec0  -> <conc>(ListStarOfHaloExplicitShapeSpec0,ListStarOfHaloExplicitShapeSpec0)
+    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListStarOfHaloExplicitShapeSpec0,ListPlusOfHaloExplicitShapeSpec0)
+    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListPlusOfHaloExplicitShapeSpec0,ListStarOfHaloExplicitShapeSpec0)
+    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListPlusOfHaloExplicitShapeSpec0,ListPlusOfHaloExplicitShapeSpec0)
+    ListPlusOfHaloExplicitShapeSpec0  -> <cons>(HaloExplicitShapeSpec,ListStarOfHaloExplicitShapeSpec0)
+    ListStarOfAllocateObject0         -> ListPlusOfAllocateObject0
+    ListStarOfAllocateObject0         -> <nil>()
+    ListStarOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListStarOfAllocateObject0)
+    ListPlusOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListPlusOfAllocateObject0)
+    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListStarOfAllocateObject0)
+    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListPlusOfAllocateObject0)
+    ListPlusOfAllocateObject0         -> <cons>(AllocateObject,ListStarOfAllocateObject0)
+    ListStarOfAllocation0             -> ListPlusOfAllocation0
+    ListStarOfAllocation0             -> <nil>()
+    ListStarOfAllocation0             -> <conc>(ListStarOfAllocation0,ListStarOfAllocation0)
+    ListPlusOfAllocation0             -> <conc>(ListStarOfAllocation0,ListPlusOfAllocation0)
+    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListStarOfAllocation0)
+    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListPlusOfAllocation0)
+    ListPlusOfAllocation0             -> <cons>(Allocation,ListStarOfAllocation0)
     ArrayName_HaloSpec0               -> <(2)>(ArrayName,HaloSpec)
     ListStarOfArrayName_HaloSpec0     -> ListPlusOfArrayName_HaloSpec0
     ListStarOfArrayName_HaloSpec0     -> <nil>()
@@ -10,13 +31,6 @@ regular tree grammar
     ListPlusOfArrayName_HaloSpec0     -> <conc>(ListPlusOfArrayName_HaloSpec0,ListStarOfArrayName_HaloSpec0)
     ListPlusOfArrayName_HaloSpec0     -> <conc>(ListPlusOfArrayName_HaloSpec0,ListPlusOfArrayName_HaloSpec0)
     ListPlusOfArrayName_HaloSpec0     -> <cons>(ArrayName_HaloSpec0,ListStarOfArrayName_HaloSpec0)
-    ListStarOfHaloExplicitShapeSpec0  -> ListPlusOfHaloExplicitShapeSpec0
-    ListStarOfHaloExplicitShapeSpec0  -> <nil>()
-    ListStarOfHaloExplicitShapeSpec0  -> <conc>(ListStarOfHaloExplicitShapeSpec0,ListStarOfHaloExplicitShapeSpec0)
-    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListStarOfHaloExplicitShapeSpec0,ListPlusOfHaloExplicitShapeSpec0)
-    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListPlusOfHaloExplicitShapeSpec0,ListStarOfHaloExplicitShapeSpec0)
-    ListPlusOfHaloExplicitShapeSpec0  -> <conc>(ListPlusOfHaloExplicitShapeSpec0,ListPlusOfHaloExplicitShapeSpec0)
-    ListPlusOfHaloExplicitShapeSpec0  -> <cons>(HaloExplicitShapeSpec,ListStarOfHaloExplicitShapeSpec0)
     ListStarOfHaloAssumedShapeSpec0   -> ListPlusOfHaloAssumedShapeSpec0
     ListStarOfHaloAssumedShapeSpec0   -> <nil>()
     ListStarOfHaloAssumedShapeSpec0   -> <conc>(ListStarOfHaloAssumedShapeSpec0,ListStarOfHaloAssumedShapeSpec0)
@@ -339,13 +353,6 @@ regular tree grammar
     ListPlusOfDeallocOpt0             -> <conc>(ListPlusOfDeallocOpt0,ListStarOfDeallocOpt0)
     ListPlusOfDeallocOpt0             -> <conc>(ListPlusOfDeallocOpt0,ListPlusOfDeallocOpt0)
     ListPlusOfDeallocOpt0             -> <cons>(DeallocOpt,ListStarOfDeallocOpt0)
-    ListStarOfAllocateObject0         -> ListPlusOfAllocateObject0
-    ListStarOfAllocateObject0         -> <nil>()
-    ListStarOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListStarOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListPlusOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListStarOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListPlusOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <cons>(AllocateObject,ListStarOfAllocateObject0)
     ListStarOfPointerObject0          -> ListPlusOfPointerObject0
     ListStarOfPointerObject0          -> <nil>()
     ListStarOfPointerObject0          -> <conc>(ListStarOfPointerObject0,ListStarOfPointerObject0)
@@ -374,13 +381,6 @@ regular tree grammar
     ListPlusOfAllocOpt0               -> <conc>(ListPlusOfAllocOpt0,ListStarOfAllocOpt0)
     ListPlusOfAllocOpt0               -> <conc>(ListPlusOfAllocOpt0,ListPlusOfAllocOpt0)
     ListPlusOfAllocOpt0               -> <cons>(AllocOpt,ListStarOfAllocOpt0)
-    ListStarOfAllocation0             -> ListPlusOfAllocation0
-    ListStarOfAllocation0             -> <nil>()
-    ListStarOfAllocation0             -> <conc>(ListStarOfAllocation0,ListStarOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListStarOfAllocation0,ListPlusOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListStarOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListPlusOfAllocation0)
-    ListPlusOfAllocation0             -> <cons>(Allocation,ListStarOfAllocation0)
     ListStarOfCosubscript0            -> ListPlusOfCosubscript0
     ListStarOfCosubscript0            -> <nil>()
     ListStarOfCosubscript0            -> <conc>(ListStarOfCosubscript0,ListStarOfCosubscript0)
@@ -779,7 +779,11 @@ regular tree grammar
     PrefixSpec                        -> CONCURRENT()
     ImageExecutionSelector            -> ImageExecutionSelector(ImageSelector)
     LoopControl                       -> ConcurrentExecControl(ForallHeader,ImageExecutionSelector)
-    AssignmentStmt                    -> AssignmentExecStmt(OptLabel,Variable,Expr,ImageExecutionSelector,EOS)
+    AssignmentStmt                    -> CoAssignmentStmt(OptLabel,Variable,Expr,ImageExecutionSelector,EOS)
+    AllocOpt                          -> HaloAlloc(ListPlusOfHaloExplicitShapeSpec0)
+    DeallocateStmt                    -> CoDeallocateStmt(OptLabel,ListPlusOfAllocateObject0,OptDeallocOptList,ImageExecutionSelector,EOS)
+    AllocateStmt                      -> CoAllocateStmt(OptLabel,TypeSpec,ListPlusOfAllocation0,OptAllocOptList,ImageExecutionSelector,EOS)
+    AllocateStmt                      -> CoAllocateStmt(OptLabel,NoTypeSpec,ListPlusOfAllocation0,OptAllocOptList,ImageExecutionSelector,EOS)
     HaloStmt                          -> HaloStmt(OptLabel,ArrayName,HaloSpec,ListStarOfArrayName_HaloSpec0,EOS)
     HaloExplicitShapeSpec             -> HaloExplicitShapeSpec(LowerBound,UpperBound)
     HaloAssumedShapeSpec              -> AssumedShape()
@@ -1392,7 +1396,7 @@ regular tree grammar
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,NoName,EOS)
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,IfConstructName,EOS)
     IfConstructName                   -> Ident
-    IfThenStmt                        -> IfThenStmt(OptLabel,LogicalExpr,EOS)
+    IfThenStmt                        -> IfThenStmt(OptLabel,NoName,LogicalExpr,EOS)
     IfThenStmt                        -> IfThenStmt(OptLabel,IfConstructName,LogicalExpr,EOS)
     OptElseStmtAndBlock               -> no-else-stmt()
     OptElseStmtAndBlock               -> ElseStmtAndBlock

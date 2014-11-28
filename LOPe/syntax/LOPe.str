@@ -597,7 +597,7 @@ signature
     ElseIfStmt                      : OptLabel * LogicalExpr * NoName * EOS -> ElseIfStmt
     ElseIfStmt                      : OptLabel * LogicalExpr * IfConstructName * EOS -> ElseIfStmt
                                     : Ident -> IfConstructName
-    IfThenStmt                      : OptLabel * LogicalExpr * EOS -> IfThenStmt
+    IfThenStmt                      : OptLabel * NoName * LogicalExpr * EOS -> IfThenStmt
     IfThenStmt                      : OptLabel * IfConstructName * LogicalExpr * EOS -> IfThenStmt
     no-else-stmt                    : OptElseStmtAndBlock
                                     : ElseStmtAndBlock -> OptElseStmtAndBlock
@@ -704,7 +704,7 @@ signature
     no-list                         : OptBoundsRemappingList
     paren-list                      : List(BoundsRemapping) -> OptBoundsRemappingList
     PointerAssignmentStmt           : OptLabel * DataPointerObject * OptBoundsRemappingList * DataTarget * EOS -> PointerAssignmentStmt
-    AssignmentExecStmt              : OptLabel * Variable * Expr * ImageExecutionSelector * EOS -> AssignmentStmt
+    CoAssignmentStmt                : OptLabel * Variable * Expr * ImageExecutionSelector * EOS -> AssignmentStmt
     AssignmentStmt                  : OptLabel * Variable * Expr * EOS -> AssignmentStmt
                                     : IntExpr -> IntConstantExpr
                                     : Expr -> ConstantExpr
@@ -775,6 +775,7 @@ signature
     STAT                            : StatVariable -> DeallocOpt
     no-list                         : OptDeallocOptList
     comma-list                      : List(DeallocOpt) -> OptDeallocOptList
+    CoDeallocateStmt                : OptLabel * List(AllocateObject) * OptDeallocOptList * ImageExecutionSelector * EOS -> DeallocateStmt
     DeallocateStmt                  : OptLabel * List(AllocateObject) * OptDeallocOptList * EOS -> DeallocateStmt
                                     : StructureComponent -> PointerObject
     NullifyStmt                     : OptLabel * List(PointerObject) * EOS -> NullifyStmt
@@ -801,11 +802,14 @@ signature
                                     : IntVariable -> StatVariable
     no-list                         : OptAllocOptList
     comma-list                      : List(AllocOpt) -> OptAllocOptList
+    HaloAlloc                       : List(HaloExplicitShapeSpec) -> AllocOpt
     STAT                            : StatVariable -> AllocOpt
     SOURCE                          : Expr -> AllocOpt
     MOLD                            : Expr -> AllocOpt
     ERRMSG                          : ErrmsgVariable -> AllocOpt
     no-type-spec                    : NoTypeSpec
+    CoAllocateStmt                  : OptLabel * TypeSpec * List(Allocation) * OptAllocOptList * ImageExecutionSelector * EOS -> AllocateStmt
+    CoAllocateStmt                  : OptLabel * NoTypeSpec * List(Allocation) * OptAllocOptList * ImageExecutionSelector * EOS -> AllocateStmt
     AllocateStmt                    : OptLabel * TypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
     AllocateStmt                    : OptLabel * NoTypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
                                     : IntExpr -> Cosubscript
