@@ -7,8 +7,8 @@ imports
 signature
   constructors
 
-   zPartRef   : A * B * C -> zPartRef
-
+   zPartRef    : A * B * C -> zPartRef
+   zEntityDecl : A * B * C * D * E -> zEntityDecl
 
 strategies //=================START OF STRATEGIES============================
 
@@ -16,19 +16,38 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(lope-lower)
 
   lope-lower =
-      innermost(lope-lower-ast)
+      innermost(caf-lower-ast)
+    ; innermost(lope-lower-ast)
     ; innermost(back-to-fast)
 
 rules //========================START OF RULES===============================
 
+// remove image selector
+caf-lower-ast:  EntityDecl(obj,as,is,cs,init)   -> zEntityDecl(obj,as,[],cs,init)
+
+// transform THIS_IMAGE() to 0
+caf-lower-ast:  StructureConstructor(DerivedTypeSpec("THIS_IMAGE",[]),[]) -> "0"
+
+// transform get_subimage() to 0
+lope-lower-ast:  PartRef("get_subimage",args,no-image-selector())         -> "0"
+
 lope-lower-ast:  PartRef(name,ss,is)  -> zPartRef(name,ss,no-image-selector())
 
 lope-lower-ast:
-  ConcurrentExecControl(forall,coexec)          -> LoopConcurrentControl(forall)
+  ConcurrentExecControl(forall,image)           -> LoopConcurrentControl(forall)
+
+lope-lower-ast:
+  CoAllocateStmt(label,type,obj,list,image,eos) -> AllocateStmt(label,type,obj,list,eos)
+
+lope-lower-ast:
+  CoDeallocateStmt(label,obj,list,image,eos)    -> DeallocateStmt(label,obj,list,eos)
+
+lope-lower-ast:  [HaloAlloc(_)]                 -> []
 
 // Transform temporary ATerms back to original
 //
 
 back-to-fast:  zPartRef(name,ss,is)             -> PartRef(name,ss,is)
+back-to-fast:  zEntityDecl(obj,as,is,cs,init)   -> EntityDecl(obj,as,is,cs,init)
 
 
