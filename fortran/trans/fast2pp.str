@@ -30,7 +30,11 @@ signature
     PpSectionSubscripts : ss             -> PpSectionSubscripts
     PpImageSelector     : ss             -> PpImageSelector
 
-    PpAllocation   : PpPartRef       -> PpAllocation
+    PpAllocation        : PpPartRef      -> PpAllocation
+    PpAllocShapeSpec    : upper          -> PpAllocShapeSpec
+    PpAllocShapeSpec    : lower * upper  -> PpAllocShapeSpec
+    PpAllocCoshapeSpec  : upper          -> PpAllocCoshapeSpec
+    PpAllocCoshapeSpec  : lower * upper  -> PpAllocCoshapeSpec
 
     eos            : EOStmt          -> EOS
 
@@ -86,7 +90,15 @@ rules
     PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
 
 //R631
-  ast-to-pp:  Allocation(part,[],[])       -> PpAllocation(part)
+  ast-to-pp:  Allocation(part,[],[])                 -> PpAllocation(part)
+
+//R633
+  ast-to-pp:  AllocateShapeSpec(no-lower-bound,ub)   -> PpAllocShapeSpec(ub)
+  ast-to-pp:  AllocateShapeSpec(lb,ub)               -> PpAllocShapeSpec(lb,ub)
+
+//R637
+  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound,ub) -> PpAllocCoshapeSpec(ub)
+  ast-to-pp:  AllocateCoshapeSpec(lb,ub)             -> PpAllocCoshapeSpec(lb,ub)
 
 //R803
   ast-to-pp:
