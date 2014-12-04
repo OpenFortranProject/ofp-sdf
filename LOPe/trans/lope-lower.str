@@ -49,5 +49,3 @@ lope-lower-ast:  [HaloAlloc(_)]                 -> []
 
 back-to-fast:  zPartRef(name,ss,is)             -> PartRef(name,ss,is)
 back-to-fast:  zEntityDecl(obj,as,is,cs,init)   -> EntityDecl(obj,as,is,cs,init)
-
-
