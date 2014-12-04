@@ -1,4 +1,5 @@
 include ../../make.inc
+include lope-lower.dep
 
 SYNTAX_DIR = ../../LOPe/syntax
 TRANS_DIR  = ../../fortran/trans
@@ -13,14 +14,18 @@ PP      = $(PP_DIR)/Fortran.pp
 CFLAGS = $(ST_CFLAGS) -I ../syntax
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : lope-lower
+all : lope-lower lope-to-foropencl
 
 lope-lower : lope-lower.str
 	$(ST_PATH)/strc -i lope-lower.str $(CFLAGS) $(LDFLAGS) --main io-lope-lower
+
+lope-to-foropencl : lope-to-foropencl.str
+	$(ST_PATH)/strc -i lope-to-foropencl.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-foropencl
 
 check : lope-lower
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-lower | $(TO_PP) | ast2text -p $(PP)
 
 clean :
 	rm -f lope-lower lope-lower.c
+	rm -f lope-to-foropencl lope-to-foropencl.c
 	rm -f *.o *.lo *.dep
