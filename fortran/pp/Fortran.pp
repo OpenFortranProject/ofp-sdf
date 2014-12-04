@@ -803,6 +803,10 @@
    IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC ::"] H hs=0[_2 _3]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
+   %%R1219 --,
+   FunctionReference                   -- _1 "("_2")",
+   FunctionReference.2:iter-sep        -- _1 ",",
+
    #R1220 --,
    CallStmt                            -- H hs=1[_1 KW["CALL"] H hs=0[_2 "("_3")" _4]],
    CallStmt.3:iter-sep                 -- _1 ",",
