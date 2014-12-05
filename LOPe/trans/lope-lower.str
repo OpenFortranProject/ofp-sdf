@@ -7,20 +7,43 @@ imports
 signature
   constructors
 
+   OfpProgram  : A * B -> OfpProgram
+   OfpSpecPart : A     -> OfpSpecPart
+
    zPartRef    : A * B * C -> zPartRef
    zEntityDecl : A * B * C * D * E -> zEntityDecl
 
 strategies //=================START OF STRATEGIES============================
 
   io-lope-lower =
-    io-wrap(lope-lower)
+    io-wrap(lope-symbols)
 
-  lope-lower =
+//  io-lope-lower =
+//    io-wrap(lope-lower)
+
+  lope-symbols =
+{ st :
+       ?OfpProgram(name, list)
+    ;  new-hashtable => st
+    ;  !OfpProgram(name, list)
+    ;  innermost(debug(!"DEBUG::::::  "); get-symbols(|st))
+//    ;  <hashtable-get(|"two")> st
+    ;  <hashtable-values> st
+    ;  debug(!"Symbols.....")
+}
+
+  lope-lower = 
       innermost(caf-lower-ast)
     ; innermost(lope-lower-ast)
     ; innermost(back-to-fast)
 
 rules //========================START OF RULES===============================
+
+get-symbols:  PartRef("get_subimage",args,no-image-selector())         -> "0"
+get-symbols(|st) = 
+      ?OfpSpecPart(list)
+    ;  <hashtable-put(|"two", 2)> st
+    ; !["bb"]
 
 // remove image selector
 caf-lower-ast:  EntityDecl(obj,as,is,cs,init)   -> zEntityDecl(obj,as,[],cs,init)
