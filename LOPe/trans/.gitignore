@@ -1,0 +1,11 @@
+lope-lower
+lope-lower.c
+lope-lower.o
+lope-lower.lo
+lope-lower.dep
+
+lope-to-foropencl
+lope-to-foropencl.c
+lope-to-foropencl.o
+lope-to-foropencl.lo
+lope-to-foropencl.dep
