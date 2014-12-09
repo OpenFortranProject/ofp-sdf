@@ -10,7 +10,7 @@
    CONCURRENT                    -- KW["CONCURRENT"],
    Halo                          -- ", " KW["HALO"] "(" _1 ")",
    HaloAlloc                     -- ", " KW["HALO"] "=" _1,
-   HaloExplicitShapeSpec         -- "(" _1 ":*:" _2 ")",
+   HaloExplicitShapeSpec         -- _1 ":*:" _2,
    AssumedShape                  -- ":",
    ConcurrentExecControl         -- " " KW["CONCURRENT"] _1 _2,
    ImageExecutionSelector        -- " [[" _1 "]]",
@@ -113,7 +113,7 @@
    DataComponentDefStmt.4:iter-sep   -- _1 ", ",
 
    #R437 --,
-   Codimension                   -- KW["CODIMENSION"] _1,
+   Codimension                   -- KW["CODIMENSION"] "["_1"]",
    Codimension.1:iter-sep        -- _1 ",",
 
    #R438 --,
@@ -198,8 +198,8 @@
 
    #R502 --,
    ALLOCATABLE                   -- ", " KW["ALLOCATABLE"],
-   Intent                        -- ", " KW["INTENT"] "(" _1 ")",
-   Dimension                     -- ", " KW["DIMENSION"] _1,
+   Intent                        -- ", " KW["INTENT"]    "("_1")",
+   Dimension                     -- ", " KW["DIMENSION"] "("_1")",
 
    IN                            -- KW["IN"],
    OUT                           -- KW["OUT"],
