@@ -1,0 +1,106 @@
+module lope-to-foropencl
+
+imports
+   libstratego-lib
+   AST
+   LOPe
+   ofp-simplify
+
+signature
+  constructors
+
+  zOfpSpecPart : decls -> zOfpSpecPart
+  zOfpExecPart : stmts -> zOfpExecPart
+  zAssignmentStmt : label * lhs * rhs * eos -> zAssignmentStmt
+  zTypeDeclarationStmt : label * type * attrs * vars * eos -> zTypeDeclarationStmt
+
+//   FunctionReference : args -> FunctionReference
+
+strategies //=================START OF STRATEGIES============================
+
+  io-lope-to-foropencl =
+    io-wrap(lope-to-foropencl)
+
+  lope-to-foropencl =
+{ st,lt
+        :  ?OfpProgram(name, list)
+        ;  new-hashtable => st
+        ;  new-hashtable => lt
+        ;  !OfpProgram(name, list)
+        ;  innermost(fast-symbols(|st))
+        ;  innermost(get-lope-symbols(|st,lt))
+        ;  innermost(lope-add-cl(|st,lt))
+        ;  innermost(back-to-fast)
+}
+
+rules //========================START OF RULES===============================
+
+// Utility strategies
+// ------------------
+cl-wrap-name =
+     is-string
+  ;  <conc-strings>("cl_", <id>, "_")
+
+ofp-ident
+  :  EntityDecl(ident,_,_,_,_) -> ident
+
+cafe-add-device(|lt,lhs) =
+     ?PartRef("get_subimage",args,no-image-selector())
+  ;  <hashtable-put(|"device", lhs)> lt
+  ;  !PartRef("get_subimage",args,no-image-selector())
+
+st-add-symbol(|st,attrs) =
+     ?ident
+  ;  <hashtable-put(|ident, attrs)> st
+
+// Build symbol table
+// ------------------
+fast-symbols(|st) =
+       ?TypeDeclarationStmt(label,type,attrs,vars,eos)
+    ;  <map(st-add-symbol(|st,attrs))> <map(ofp-ident)> vars
+    ;  <hashtable-keys> st; debug(!"DEBUG: ")
+    ;  <hashtable-values> st; debug(!"DEBUG: ")
+    ;  !zTypeDeclarationStmt(label,type,attrs,vars,eos)
+
+// Get symbols specifically relevant to LOPe
+// -----------------------------------------
+
+//get-lope-symbols(|st,lt):
+//  TypeDeclarationStmt(label,type,attrs,vars,eos) -> zTypeDeclarationStmt(label,type,attrs,vars,eos)
+
+get-lope-symbols(|st,lt) =
+       ?AssignmentStmt(label,lhs,func,eos)
+    ;  !zAssignmentStmt(label,lhs,<cafe-add-device(|lt,lhs)>func,eos)
+
+lope-add-cl(|st,lt) =
+       ?PartRef("get_subimage",args,no-image-selector())
+    ;  !FunctionReference("get_subimage",<concat>[args,[<cl-wrap-name><hashtable-get(|"device")>lt]])
+
+lope-add-cl(|st,lt):
+  OfpSpecPart(list) -> zOfpSpecPart(<concat>[ [UseStmt(no-label(), no-module-nature(),
+                                                            "ForOpenCL", [], eos("\n"))], list ])
+
+lope-add-cl(|st,lt) =
+{dev
+     :  ?OfpExecPart(list)
+     ;  <cl-wrap-name> <hashtable-get(|"device")> lt => dev
+     ;  !zOfpExecPart(<concat>[ [TypeDeclarationStmt(no-label()
+                                      , DerivedType("CLDevice", [])
+                                      , []
+                                      , [EntityDecl(dev, [], [], no-char-length(), no-init())]
+                                      , eos("\n"))
+                                ], list ])
+}
+
+
+// Transform temporary ATerms back to original
+//--------------------------------------------
+
+back-to-fast:
+  zAssignmentStmt(label,lhs,func,eos) -> AssignmentStmt(label,lhs,func,eos)
+back-to-fast:
+  zTypeDeclarationStmt(label,type,attrs,vars,eos) -> TypeDeclarationStmt(label,type,attrs,vars,eos)
+back-to-fast:
+  zOfpSpecPart(list) -> OfpSpecPart(list)
+back-to-fast:
+  zOfpExecPart(list) -> OfpExecPart(list)
