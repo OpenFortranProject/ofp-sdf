@@ -55,34 +55,25 @@ fast-update-allocation-dim =
      ?(AllocateShapeSpec(lb,ub),DimSpec(_,_))
   ;  !DimSpec(lb,ub)
 
+fast-update-allocation-codim =
+     ?(AllocateCoshapeSpec(lb,ub),DimSpec(_,_))
+  ;  !DimSpec(lb,ub)
+
 fast-update-allocation-symbol(|st) =
-{shape,attrs
+{shape,coshape,attrs
   :  topdown(try(fast-fix-no-lower-bound))
   ;  ?Allocation(obj,alloc_shape,alloc_coshape)
-  ;  !alloc_shape
-  ;  debug(!"UPDATE_ALLOC_SHAPE: ")
-  ;  <hashtable-keys> st
-  ;  debug(!"UPDATE_HT_KEYS: ")
-  ;  !alloc_coshape
-  ;  debug(!"UPDATE_ALLOC_COSHAPE: ")
   ;  <hashtable-get(|obj)> st
   ;  ?(type,decl_attrs)
   ;  <elem> (ALLOCATABLE(),decl_attrs)   // ensure this symbol is allocatable
-  ;  debug(!"UPDATE_DECL_ATTRS: ")
   ;  <fetch-elem(?Dimension(decl_shape))> decl_attrs
-  ;  debug(!"UPDATE_DECL_DIMENSION: ")
-  ;  <zip(fast-update-allocation-dim)> (alloc_shape,decl_shape) => shape
-  ;  <filter( try(?Dimension(_) ; !Dimension(shape)) )> decl_attrs
-  ;  <filter( try(?ALLOCATABLE() ; !ALLOCATED()) )> <id> => attrs
-  ;  debug(!"UPDATE_ATTRS: ")
+  ;  <fetch-elem(?Codimension(decl_coshape))> decl_attrs
+  ;  <zip(fast-update-allocation-dim)>   (alloc_shape,  decl_shape)   =>   shape
+  ;  <zip(fast-update-allocation-codim)> (alloc_coshape,decl_coshape) => coshape
+  ;  <filter( try(?Dimension(_)   ; !Dimension(shape))     )> decl_attrs
+  ;  <filter( try(?Codimension(_) ; !Codimension(coshape)) )> <id>
+  ;  <filter( try(?ALLOCATABLE()  ; !ALLOCATED()) )> <id> => attrs
   ;  <hashtable-put(|obj,(type,attrs))> st
-  ;  <hashtable-keys> st
-  ;  debug(!"UPDATE_HT_KEYS: ")
-  ;  <hashtable-values> st
-  ;  debug(!"UPDATE_HT_VALUES: ")
-  ;  !"----------------------------------------------"
-  ;  debug()
-
 }
 
 fast-build-use-stmt =
@@ -114,15 +105,15 @@ cafe-add-subimage-symbol(|ct,lhs) =
   ;  <hashtable-put(|lhs, (<cl-wrap-name>lhs,DerivedType("CLDevice",[]),[]))> ct
   ;  !PartRef("get_subimage",args,no-image-selector())
 
+// Add a symbol to the symbol table
 st-add-symbol(|st,type,attrs) =
      ?obj
   ;  <hashtable-put(|obj,(type,attrs))> st
-  ;  <hashtable-keys> st
-  ;  debug(!"ST_ADD_SYMBOL_KEYS: ")
 
+// Add a symbol to the CAFe symbol table
 ct-add-symbol(|ct,type,attrs) =
-     ?ident
-  ;  <hashtable-put(|ident,(<cl-wrap-name>ident,type,attrs))> ct
+     ?obj
+  ;  <hashtable-put(|obj,(<cl-wrap-name>obj,type,attrs))> ct
 
 ct-add-type-decl(|ct) =
      ?ident
@@ -134,18 +125,16 @@ ct-add-type-decl(|ct) =
 // Build symbol table
 // ------------------
 
+// Add declared variables to symbol table
 fast-get-symbols(|st) =
      ?TypeDeclarationStmt(label,type,attrs,vars,eos)
   ;  <map(st-add-symbol(|st,type,attrs))> <map(ofp-ident)> vars
   ;  !TypeDeclarationStmt(label,type,attrs,vars,eos)
 
+// Update symbol table with information from allocate statements
 fast-get-symbols(|st) =
      ?AllocateStmt(label,type,alloc_list,options,eos)
-  ;  debug(!"ALLOCATE_SYM: ")
-  ;  !"========================"
-  ;  debug()
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
-//  ;  <hashtable-get(|ident)> ct
   ;  !AllocateStmt(label,type,alloc_list,options,eos)
 
 
@@ -191,9 +180,7 @@ cafe-add-cl(|st,ct) =
   :  ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
   ;  <cl-wrap-name> <cafe-subimage> image => device
   ;  <map(fast-allocation-size(|st))> alloc_list => sizes
-  ;  debug(!"ALLOCATE: ")
   ;  <map(fast-allocation-object)> alloc_list
-  ;  debug(!"ALLOCATE: ")
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
   ;  !AssignmentStmt(no-label,"cl_A_",
