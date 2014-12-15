@@ -26,12 +26,21 @@ strategies //=================START OF STRATEGIES============================
         ;  topdown(try(fast-get-symbols(|st)))
         ;  topdown(try(cafe-get-symbols(|st,lt)))
         ;  bottomup(try(cafe-add-cl(|st,lt)))
+        ;  topdown(try(fast-flatten-scope-parts))
 }
 
 rules //========================START OF RULES===============================
 
 // FAST strategies (MOVE TO fortran/trans)
 // ---------------
+
+// Remove excess list elements inside of OfpSpecPart and OfpExecPart
+//   - occurs when a single statement is replaced by a list of statements
+fast-flatten-scope-parts =
+     ?OfpSpecPart(list)
+  ;  !OfpSpecPart(<flatten-list>list)
+ <+  ?OfpExecPart(list)
+  ;  !OfpExecPart(<flatten-list>list)
 
 fast-allocation-object =
      ?Allocation(object,_,_)
@@ -40,12 +49,28 @@ fast-allocation-object =
 // assume literals for now, otherwise get const from symbol table
 // TODO - use choice to use lb info
 fast-build-allocation-size(|st,obj) =
-     ?AllocateShapeSpec(no-lower-bound,ub)
+     ?AllocateShapeSpec(no-lower-bound(),ub)
   ;  !ub
 
+fast-dim-size =
+     ?DimSpec(lb,ub)
+  ;  <subtS> (ub,lb)
+  ;  <addS> (<id>,"1")
+
+// Size of a type in bytes
+// TODO - add other intrinsic types and support for kinds
+// TODO - could replace kind with size in bytes!!!!
+fast-type-size =
+     ?IntrinsicType(REAL(no-kind())) ; !"4"
+
 fast-allocation-size(|st) =
-     ?Allocation(obj,[shape],_)
-  ;  !(obj,<fast-build-allocation-size(|st,obj)> shape)
+     ?obj
+  ;  <hashtable-get(|obj)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ;  <map(fast-dim-size)> shape
+  ;  <foldr(!"1",mulS)> <id>
+  ;  <mulS> (<fast-type-size>type,<id>)
 
 fast-fix-no-lower-bound =
      ?no-lower-bound()
@@ -88,6 +113,19 @@ fast-build-type-decl(|type,attrs) =
                           , [EntityDecl(object_name,[],[],no-char-length(),no-init())]
                           , eos("\n"))
 
+fast-build-block(|decls,execs) =
+     !BlockConstruct(
+              BlockStmt(no-label(),no-name(),eos("\n"))
+            , OfpSpecPart(decls)
+            , Block(execs)
+            , EndBlockStmt(no-label(),no-name(),eos("\n")))
+
+opencl-build-create-buffer(|st,device) =
+     ?obj
+  ;  <fast-allocation-size(|st)> obj
+  ;  !AssignmentStmt(no-label(),<cl-wrap-name>obj,
+         FunctionReference("createBuffer",
+                           [device,"CL_MEM_READ_WRITE",<id>,<conc-strings>("C_LOC(",obj, ")")]),eos("\n"))
 
 // Utility strategies
 // ------------------
@@ -148,9 +186,9 @@ cafe-get-symbols(|st,ct) =
 
 cafe-get-symbols(|st,ct) =
      ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
-  ;  <map(fast-allocation-object)> alloc_list
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
+  ;  <map(fast-update-allocation-symbol(|st))> alloc_list
   ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
 
 cafe-subimage =
@@ -167,23 +205,30 @@ cafe-add-cl(|st,ct) =
                                       [arg,<cl-wrap-name>lhs]),eos)
 
 cafe-add-cl(|st,ct) =
-{use_stmt,size
+{use_stmt
   :  ?OfpSpecPart(decls)
   ;  <fast-build-use-stmt> "ForOpenCL" => use_stmt
-  ;  <fast-build-type-decl(|IntrinsicType(INTEGER(no-kind())),[])> "cl_size_" => size
+//  ;  <fast-build-type-decl(|IntrinsicType(INTEGER(no-kind())),[])> "cl_size_" => size
   ;  <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct
-  ;  !OfpSpecPart(<concat>[[use_stmt,size,<id>],decls])
+  ;  !OfpSpecPart(<concat>[[use_stmt,<id>],decls])
 }
 
 cafe-add-cl(|st,ct) =
 {device,sizes
   :  ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
   ;  <cl-wrap-name> <cafe-subimage> image => device
-  ;  <map(fast-allocation-size(|st))> alloc_list => sizes
-  ;  <map(fast-allocation-object)> alloc_list
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
-  ;  !AssignmentStmt(no-label,"cl_A_",
-         FunctionReference("createBuffer",
-                           [device,"CL_MEM_READ_WRITE","cl_size_","C_LOC(A)"]),eos("\n"))
+  ;  <map(fast-allocation-object)> alloc_list
+  ;  <map(opencl-build-create-buffer(|st,device))> <id>
+
+//  ;  <fast-build-block(|[],[<id>])> <id>
+//  ;  !alloc_list
+//  ;  debug(!"ALLOC_LIST: ")
+//
+//  ;  !AssignmentStmt(no-label(),"cl_A_",
+//         FunctionReference("createBuffer",
+//                           [device,"CL_MEM_READ_WRITE","cl_size_","C_LOC(A)"]),eos("\n"))
+
+
 }
