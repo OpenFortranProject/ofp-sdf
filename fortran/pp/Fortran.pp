@@ -113,7 +113,7 @@
    DataComponentDefStmt.4:iter-sep   -- _1 ", ",
 
    #R437 --,
-   Codimension                   -- KW["CODIMENSION"] "["_1"]",
+   Codimension                   -- ", " KW["CODIMENSION"] "["_1"]",
    Codimension.1:iter-sep        -- _1 ",",
 
    #R438 --,
