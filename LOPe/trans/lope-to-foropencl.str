@@ -10,7 +10,7 @@ signature
   constructors
 
   ALLOCATED : ALLOCATED
-  TMP       : TMP
+  INTERNAL  : INTERNAL
 
 strategies //=================START OF STRATEGIES============================
 
@@ -121,12 +121,22 @@ fast-build-block(|decls,execs) =
             , Block(execs)
             , EndBlockStmt(no-label(),no-name(),eos("\n")))
 
+// Allocate memory on OpenCL device via call to createBuffer()
 opencl-build-create-buffer(|st,device) =
      ?obj
   ;  <fast-allocation-size(|st)> obj
-  ;  !AssignmentStmt(no-label(),<cl-wrap-name>obj,
-         FunctionReference("createBuffer",
-                           [device,"CL_MEM_READ_WRITE",<id>,<conc-strings>("C_LOC(",obj, ")")]),eos("\n"))
+  ;  !AssignmentStmt(no-label(),<cl-wrap-name>obj
+         , FunctionReference("createBuffer"
+              , [device,"CL_MEM_READ_WRITE",<id>,<conc-strings>("C_LOC(",obj, ")")]),eos("\n"))
+
+// Create an OpenCL kernel object via call to createKernel
+opencl-build-create-kernel(|ct,device) =
+     ?obj
+  ;  <hashtable-get(|obj)> ct
+  ;  ?(kernel,DerivedType("CLKernel",[]),[])
+  ;  !AssignmentStmt(no-label(),kernel
+         , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]),eos("\n"))
+ <+  ![]
 
 // Utility strategies
 // ------------------
@@ -194,9 +204,13 @@ cafe-get-symbols(|st,ct) =
 
 // Mark DO CONCURRENT loop as CAFe executable
 cafe-get-symbols(|st,ct) =
-     ?ConcurrentExecControl(header,ImageExecutionSelector([device]))
-  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,TMP(),[]))> ct
-  ;  !ConcurrentExecControl(header,ImageExecutionSelector([device]))
+     ?NonlabelDoStmt(label,name
+         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+         , eos)
+  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
+  ;  !NonlabelDoStmt(label,name
+         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+         , eos)
 
 // Add subroutine name to CAFe symbols
 cafe-get-symbols(|st,ct) =
@@ -230,7 +244,6 @@ cafe-add-cl(|st,ct) =
 {use_stmt
   :  ?OfpSpecPart(decls)
   ;  <fast-build-use-stmt> "ForOpenCL" => use_stmt
-//  ;  <fast-build-type-decl(|IntrinsicType(INTEGER(no-kind())),[])> "cl_size_" => size
   ;  <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct
   ;  !OfpSpecPart(<concat>[[use_stmt,<id>],decls])
 }
@@ -245,3 +258,15 @@ cafe-add-cl(|st,ct) =
   ;  <map(fast-allocation-object)> alloc_list
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
 }
+
+// Create OpenCL kernels
+cafe-add-cl(|st,ct) =
+     ?NonlabelDoStmt(label,name
+         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+         , eos)
+  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
+  ; <flatten-list> <id>
+  ;  <concat>[  <id>
+              , [NonlabelDoStmt(label,name
+                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
+             ]
