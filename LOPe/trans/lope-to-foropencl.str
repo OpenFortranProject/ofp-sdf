@@ -11,7 +11,6 @@ signature
 
   ALLOCATED : ALLOCATED
 
-
 strategies //=================START OF STRATEGIES============================
 
   io-lope-to-foropencl =
@@ -191,6 +190,21 @@ cafe-get-symbols(|st,ct) =
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
   ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
 
+// Add kernel symbols for concurrent function calls
+cafe-get-symbols(|st,ct) =
+     ?ConcurrentExecControl(header,ImageExecutionSelector([device]))
+  ;  topdown(try(cafe-get-symbols(|st,ct,device)))
+  ;!device
+  ;debug(!"FORALL: ")
+  ;  !ConcurrentExecControl(header,ImageExecutionSelector([device]))
+
+// Add subroutine name to CAFe symbols
+// TODO - ensure call is within DO CONCURRENT (with device execution)
+cafe-get-symbols(|st,ct,device) =
+     ?CallStmt(label, ProcedureDesignator(name), args, eos)
+  ;  <hashtable-put(|name, (<cl-wrap-name>name, DerivedType("CLKernel",[]),[]))> ct
+  ;  !CallStmt(label, ProcedureDesignator(name), args, eos)
+
 cafe-subimage =
      ?ImageExecutionSelector([device])
   ;  !device
@@ -204,6 +218,7 @@ cafe-add-cl(|st,ct) =
   ;  !AssignmentStmt(label,lhs,FunctionReference("get_subimage",
                                       [arg,<cl-wrap-name>lhs]),eos)
 
+// Add variables associated with ForOpenCL calls
 cafe-add-cl(|st,ct) =
 {use_stmt
   :  ?OfpSpecPart(decls)
@@ -213,22 +228,13 @@ cafe-add-cl(|st,ct) =
   ;  !OfpSpecPart(<concat>[[use_stmt,<id>],decls])
 }
 
+// Replace coallocate statement with function call to alloc memory on device
 cafe-add-cl(|st,ct) =
-{device,sizes
+{device
   :  ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
   ;  <cl-wrap-name> <cafe-subimage> image => device
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
   ;  <map(fast-allocation-object)> alloc_list
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
-
-//  ;  <fast-build-block(|[],[<id>])> <id>
-//  ;  !alloc_list
-//  ;  debug(!"ALLOC_LIST: ")
-//
-//  ;  !AssignmentStmt(no-label(),"cl_A_",
-//         FunctionReference("createBuffer",
-//                           [device,"CL_MEM_READ_WRITE","cl_size_","C_LOC(A)"]),eos("\n"))
-
-
 }
