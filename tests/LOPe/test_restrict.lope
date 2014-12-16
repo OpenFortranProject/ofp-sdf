@@ -15,7 +15,7 @@ program test_restrict
    use restriction
 
    integer, parameter :: J = 256  ! r dimension
-   real, allocatable :: U1h(:)[:], U2h(:)[:]
+   real, allocatable, dimension(:), codimension(:), HALO(1:*:1) :: U1h, U2h
    integer :: j1h, j2h, device
 
    !! TODO
@@ -32,14 +32,14 @@ program test_restrict
 
    !! Allocate memory on local and remote images
    !  ------------------------------------------
-   allocate(U1h(0:J)  [*], HALO=(-1:*:1))           !  J-1   interior points
-   allocate(U2h(0:J/2)[*], HALO=(-1:*:1))           !  J/2-1 interior points
+   allocate(U1h(0:J)  [*])           !  J-1   interior points
+   allocate(U2h(0:J/2)[*])           !  J/2-1 interior points
 
    !! Allocate memory on subimage if available
    !  ----------------------------------------
    if (device /= THIS_IMAGE()) then
-      allocate(U1h(0:J)  [*], HALO=(-1:*:1))    [[device]]
-      allocate(U2h(0:J/2)[*], HALO=(-1:*:1))    [[device]]
+      allocate(U1h(0:J)  [*])    [[device]]
+      allocate(U2h(0:J/2)[*])    [[device]]
    end if
 
    !! Initialize and transfer memory
