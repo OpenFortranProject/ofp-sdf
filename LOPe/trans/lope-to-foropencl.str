@@ -10,6 +10,7 @@ signature
   constructors
 
   ALLOCATED : ALLOCATED
+  TMP       : TMP
 
 strategies //=================START OF STRATEGIES============================
 
@@ -83,6 +84,7 @@ fast-update-allocation-codim =
      ?(AllocateCoshapeSpec(lb,ub),DimSpec(_,_))
   ;  !DimSpec(lb,ub)
 
+// Update the symbol table with information from an allocate statement
 fast-update-allocation-symbol(|st) =
 {shape,coshape,attrs
   :  topdown(try(fast-fix-no-lower-bound))
@@ -190,20 +192,25 @@ cafe-get-symbols(|st,ct) =
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
   ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
 
-// Add kernel symbols for concurrent function calls
+// Mark DO CONCURRENT loop as CAFe executable
 cafe-get-symbols(|st,ct) =
      ?ConcurrentExecControl(header,ImageExecutionSelector([device]))
-  ;  topdown(try(cafe-get-symbols(|st,ct,device)))
-  ;!device
-  ;debug(!"FORALL: ")
+  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,TMP(),[]))> ct
   ;  !ConcurrentExecControl(header,ImageExecutionSelector([device]))
 
 // Add subroutine name to CAFe symbols
-// TODO - ensure call is within DO CONCURRENT (with device execution)
-cafe-get-symbols(|st,ct,device) =
+cafe-get-symbols(|st,ct) =
      ?CallStmt(label, ProcedureDesignator(name), args, eos)
+  ;  <hashtable-get(|"cafe_do_concurrent_tmp_")> ct
   ;  <hashtable-put(|name, (<cl-wrap-name>name, DerivedType("CLKernel",[]),[]))> ct
   ;  !CallStmt(label, ProcedureDesignator(name), args, eos)
+
+// Unmark DO CONCURRENT loop (assumes no embedded do loops)
+cafe-get-symbols(|st,ct) =
+     ?EndDoStmt(label,name,eos)
+  ;  <hashtable-get(|"cafe_do_concurrent_tmp_")> ct
+  ;  <hashtable-remove(|"cafe_do_concurrent_tmp_")> ct
+  ;  !EndDoStmt(label,name,eos)
 
 cafe-subimage =
      ?ImageExecutionSelector([device])
