@@ -16,14 +16,14 @@ SDF_FILES =  FortranLex.sdf           \
 
 all : Fortran.tbl
 
-AST.def : AST.sdf
+FAST.def : FAST.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
 
-AST.rtg : AST.def
-	$(ST_PATH)/sdf2rtg -i AST.def -m AST -o AST.rtg
+FAST.rtg : FAST.def
+	$(ST_PATH)/sdf2rtg -i FAST.def -m FAST -o FAST.rtg
 
-AST.str : AST.rtg
-	$(ST_PATH)/rtg2sig -i AST.rtg -o AST.str
+FAST.str : FAST.rtg
+	$(ST_PATH)/rtg2sig -i FAST.rtg -o FAST.str
 
 Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
