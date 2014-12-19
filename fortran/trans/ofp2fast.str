@@ -25,8 +25,10 @@ strategies //=================START OF STRATEGIES============================
   ofp2fast =
       ofp-simplify
     ; innermost(ofp-to-ast)
+    ; topdown(try(fast-fixup-spec-part))
 
-// Try to remove usage of Some()
+
+// TODO - try to remove usage of Some()
 //ofp-add-some = ?None() < id + !Some(<id>)
   ofp-add-some = id
 
@@ -70,6 +72,33 @@ rules //========================START OF RULES===============================
                                <ofp-add-some>begin,
                                <ofp-extract-contains>funcs,
                                <ofp-add-some>end)
+
+// The fast-fixup-spec-part strategy transfers statements in the execution-part to the
+// specification-part.  The statements transferred are in the execution-part because
+// of ambiguities in the grammar related to format, entry, and data statements being
+// in both the declaration-construct and the execution-part-construct.
+//
+
+fast-fixup-spec-part =
+{spec_list
+  :  ?OfpScope(OfpSpecPart(slist),OfpExecPart(elist),funcs,begin,contains,end)
+  ;  <concat>[slist,<take-while(fast-fixup-spec-part)> elist] => spec_list
+  ;  <drop-while(fast-fixup-spec-part)> elist
+  ;  !OfpScope(OfpSpecPart(spec_list),OfpExecPart(<id>),funcs,begin,contains,end)
+}
+
+// TODO - add derived-type-def, enum-def, interface-block
+//        procedure-declaration-stmt, stmt-function-stmt, access-stmt, allocatable-stmt
+//        bind-stmt, comdimension-stmt, common-stmt
+// Probably also entry-stmt, data-stmt, and format-stmt that precede any truly executable
+// statements.
+//
+fast-fixup-spec-part =
+     ?ImplicitStmt(_,_,_)
+ +>  ?ImplicitNoneStmt(_,_)
+ +>  ?ParameterStmt(_,_,_)
+ +>  ?TypeDeclarationStmt(_,_,_,_,_)
+
 
 //R201
   ofp-to-ast:  Program(no-comments(), ProgramUnits) -> OfpProgram(None(),ProgramUnits)
