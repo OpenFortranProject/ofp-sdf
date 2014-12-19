@@ -9,22 +9,30 @@ CLANG_ERROR_LIMIT = -ferror-limit=5
 
 ERROR_LIMIT =
 
-CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
-LIBS = -L$(ATERM_ROOT)/lib -lATerm
+CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../trans
+LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
+
+#CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
+#LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 OBJS = ofp_builder.o
 
 TRAVERSE_OBJS = UntypedNodes.o \
                 OFPNodes.o OFPExpr.o OFPUnparser.o UntypedASTBuilder.o traversal.o ofp_traverse_productions.o
 
-EXES = build_classes build_includes build_traversals \
+EXES = fast-to-rose build_classes build_includes build_traversals \
        traverse traverse_sig check_cons_name
 
 %.o: %.cpp
 	@echo 'Compiling file: $<'
 	@$(CPC) -c $(CFLAGS) -o $@ $<
 
-all: $(OBJS) traverse
+#all: $(OBJS) traverse
+
+all : fast-to-rose ofp-simplify
+
+fast-to-rose : fast-to-rose.str
+	$(ST_PATH)/strc -i fast-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-fast-to-rose
 
 traverse: traverse.o $(TRAVERSE_OBJS)
 	$(CPC) -o $@ $(ARCH) $< $(TRAVERSE_OBJS) $(LIBS)
@@ -59,9 +67,12 @@ OFPNodes.o: OFPNodes.cpp traversal.hpp
 OFPUnparser.o: OFPUnparser.cpp OFPUnparser.hpp
 traversal_f.o: traversal_f.c traversal.hpp
 
-check: traverse
+check : fast-to-rose
+	fast-to-rose -i testfile.f90.aterm | pp-aterm
+
+check_traverse: traverse
 	$(SGLRI) -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl | ../trans/ofp-simplify  -o testfile.f90.aterm
 	traverse -i testfile.f90.aterm
 
 clean:
-	rm -f *.o $(EXES) $(OBJS)
+	rm -f *.o fast-to-rose $(EXES) $(OBJS)
