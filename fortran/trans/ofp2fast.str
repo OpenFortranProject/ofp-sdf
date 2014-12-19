@@ -3,7 +3,7 @@ module ofp2fast
 imports
    libstratego-lib
    Main
-   AST
+   FAST
    ofp-simplify
 
 signature
