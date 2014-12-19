@@ -2,7 +2,7 @@ module lope-to-foropencl
 
 imports
    libstratego-lib
-   AST
+   FAST
    LOPe
    ofp-simplify
 
