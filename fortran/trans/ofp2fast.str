@@ -12,6 +12,9 @@ signature
 // Ambiguities
   amb : list -> choice
 
+  OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
+
+
   Comment   : A -> B            /* comments are put in annotations */
   OfpString : A -> B            /* node for a string literal */
   ERROR     : A -> B            /* error reporting for a node */
@@ -26,6 +29,7 @@ strategies //=================START OF STRATEGIES============================
       ofp-simplify
     ; innermost(ofp-to-ast)
     ; topdown(try(fast-fixup-spec-part))
+    ; topdown(try(fast-fixup-do-constructs))
 
 
 // TODO - try to remove usage of Some()
@@ -98,6 +102,24 @@ fast-fixup-spec-part =
  +>  ?ImplicitNoneStmt(_,_)
  +>  ?ParameterStmt(_,_,_)
  +>  ?TypeDeclarationStmt(_,_,_,_,_)
+
+
+fast-fixup-do-constructs =
+     ?OfpScope(spec_part,OfpExecPart(elist),funcs,begin,contains,end)
+  ;  <split-fetch-keep(match-begin-block-do)> elist
+  ;  ?(before,begin_do,after)
+  ;  <split-fetch-keep(match-end-do(|"0"))> after
+  ;  ?(block,end_do,rest)
+  ;  !OfpBlockDoConstruct(begin_do,block,end_do)
+  ;  !OfpScope(spec_part,OfpExecPart(<concat>[before,[<id>],rest]),funcs,begin,contains,end)
+
+match-begin-block-do =
+     ?NonlabelDoStmt(label,name,control,eos)
+
+match-end-do(|level) =
+     ?EndDoStmt(label,name,eos)
+  ;  !level
+  ;  debug(!"LEVEL: ")
 
 
 //R201
