@@ -93,12 +93,12 @@ rules
   ast-to-pp:  Allocation(part,[],[])                 -> PpAllocation(part)
 
 //R633
-  ast-to-pp:  AllocateShapeSpec(no-lower-bound,ub)   -> PpAllocShapeSpec(ub)
+  ast-to-pp:  AllocateShapeSpec(no-lower-bound(),ub) -> PpAllocShapeSpec(ub)
   ast-to-pp:  AllocateShapeSpec(lb,ub)               -> PpAllocShapeSpec(lb,ub)
 
 //R637
-  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound,ub) -> PpAllocCoshapeSpec(ub)
-  ast-to-pp:  AllocateCoshapeSpec(lb,ub)             -> PpAllocCoshapeSpec(lb,ub)
+  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound(),ub) -> PpAllocCoshapeSpec(ub)
+  ast-to-pp:  AllocateCoshapeSpec(lb,ub)               -> PpAllocCoshapeSpec(lb,ub)
 
 //R803
   ast-to-pp:
