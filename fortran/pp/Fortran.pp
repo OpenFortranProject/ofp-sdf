@@ -342,7 +342,7 @@
    DataRef.1:iter-sep            -- _1 "%",
 
    #R612 --,
-   OfpVarRef                        -- _1,
+   VarRef                           -- _1,
    PpPartRef                        -- _1 _2 _3,
    PpSectionSubscripts              -- "(" _1 ")",
    PpSectionSubscripts.1:iter-sep   -- _1 ",",
