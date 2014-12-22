@@ -470,8 +470,9 @@
    #R816 --,
    LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
 
-   #R817 --,
    PpNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
+
+   OfpBlockDoConstruct           -- V vs=0 is=2 [_1 _2] _3,
 
    #R818 --,
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
@@ -751,7 +752,7 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
-   OfpScope                      -- V vs=0 [H hs=1[_4] _1 _2 V vs=1 [_5 _3 _6]],
+   OfpScope                      -- H hs=1[_4] _1 _2 V vs=1 is=0 [_5 _3 _6],
    InterfaceBody                 -- _1 _2 _3,
 
    OfpPrefix                           -- _1,
