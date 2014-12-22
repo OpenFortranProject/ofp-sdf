@@ -402,7 +402,7 @@
    Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
    Mult                          -- _1 "*" _2,
    Div                           -- _1 "/" _2,
-   Concat                        -- _1 "//" _2,
+   Concat                        -- H hs=1[_1 "//" _2],
 
    Parens                        -- "(" _1 ")",
 
@@ -706,7 +706,7 @@
    PpModule                      -- _1,
 
    #R1105 --, 
-   ModuleStmt                    -- H hs=1[_1 KW["MODULE"] _2 _3],
+   ModuleStmt                    -- V vs=0 [H hs=1[_1 KW["MODULE"] _2 _3]],
  
    #R1106 --, 
    EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
@@ -752,7 +752,7 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
-   OfpScope                      -- H hs=1[_4] _1 _2 V vs=1 is=0 [_5 _3 _6],
+   OfpScope                      -- V vs=0[H hs=1[_4] _1 _2 V vs=1 is=0 [_5 _3 _6]],
    InterfaceBody                 -- _1 _2 _3,
 
    OfpPrefix                           -- _1,
