@@ -1711,7 +1711,7 @@ context-free syntax
 %%TODO-AMB   Expr                                                          -> Subscript
 
 %%R603
-  Ident              -> VariableName
+  Ident              -> VariableName                       {cons("VarRef")}
 
 %%R604
   Variable           -> LogicalVariable
@@ -1743,7 +1743,7 @@ context-free syntax
   StructureComponent                   -> ParentString
   Constant                             -> ParentString
 
-  Ident                                -> ScalarVariableName
+  Ident                                -> ScalarVariableName                 {cons("VarRef")}
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
@@ -2482,7 +2482,7 @@ context-free syntax
 
 %%R819
   ScalarIntVariableName                                 -> DoVariable
-  Ident                                                 -> ScalarIntVariableName
+  Ident                                                 -> ScalarIntVariableName  {cons("VarRef")}
 
 %%820
 %%AMB  Block                                            -> DoBlock

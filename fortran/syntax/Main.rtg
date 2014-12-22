@@ -727,6 +727,8 @@ regular tree grammar
     ListPlusOfLetter0                 -> <string>
     SconSingle_SconDouble0            -> <string>
     OptComment0                       -> <string>
+    OptComment_EOL0                   -> <(1)>(<string>)
+    OptComment_EOL_Lit0               -> <string>
     Expr                              -> DefBinExpr(Expr,DefinedBinaryOp,Expr)
     Expr                              -> NEQV(Expr,Expr)
     Expr                              -> EQV(Expr,Expr)
@@ -1359,7 +1361,7 @@ regular tree grammar
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,NoName,EOS)
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,IfConstructName,EOS)
     IfConstructName                   -> Ident
-    IfThenStmt                        -> IfThenStmt(OptLabel,LogicalExpr,EOS)
+    IfThenStmt                        -> IfThenStmt(OptLabel,NoName,LogicalExpr,EOS)
     IfThenStmt                        -> IfThenStmt(OptLabel,IfConstructName,LogicalExpr,EOS)
     OptElseStmtAndBlock               -> no-else-stmt()
     OptElseStmtAndBlock               -> ElseStmtAndBlock
@@ -1370,7 +1372,7 @@ regular tree grammar
     CycleStmt                         -> CycleStmt(OptLabel,DoConstructName,EOS)
     EndDoStmt                         -> EndDoStmt(OptLabel,NoName,EOS)
     EndDoStmt                         -> EndDoStmt(OptLabel,DoConstructName,EOS)
-    ScalarIntVariableName             -> Ident
+    ScalarIntVariableName             -> VarRef(Ident)
     DoVariable                        -> ScalarIntVariableName
     NoExpr                            -> no-expr()
     OptExpr                           -> no-expr()
@@ -1596,7 +1598,7 @@ regular tree grammar
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
-    ScalarVariableName                -> Ident
+    ScalarVariableName                -> VarRef(Ident)
     ParentString                      -> Constant
     ParentString                      -> StructureComponent
     Substring                         -> Substring(ParentString,SubstringRange)
@@ -1604,7 +1606,7 @@ regular tree grammar
     DefaultCharVariable               -> Variable
     CharVariable                      -> Variable
     LogicalVariable                   -> Variable
-    VariableName                      -> Ident
+    VariableName                      -> VarRef(Ident)
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef

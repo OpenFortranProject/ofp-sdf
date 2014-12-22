@@ -588,7 +588,7 @@ signature
     ElseIfStmt                      : OptLabel * LogicalExpr * NoName * EOS -> ElseIfStmt
     ElseIfStmt                      : OptLabel * LogicalExpr * IfConstructName * EOS -> ElseIfStmt
                                     : Ident -> IfConstructName
-    IfThenStmt                      : OptLabel * LogicalExpr * EOS -> IfThenStmt
+    IfThenStmt                      : OptLabel * NoName * LogicalExpr * EOS -> IfThenStmt
     IfThenStmt                      : OptLabel * IfConstructName * LogicalExpr * EOS -> IfThenStmt
     no-else-stmt                    : OptElseStmtAndBlock
                                     : ElseStmtAndBlock -> OptElseStmtAndBlock
@@ -599,7 +599,7 @@ signature
     CycleStmt                       : OptLabel * DoConstructName * EOS -> CycleStmt
     EndDoStmt                       : OptLabel * NoName * EOS -> EndDoStmt
     EndDoStmt                       : OptLabel * DoConstructName * EOS -> EndDoStmt
-                                    : Ident -> ScalarIntVariableName
+    VarRef                          : Ident -> ScalarIntVariableName
                                     : ScalarIntVariableName -> DoVariable
     no-expr                         : NoExpr
     no-expr                         : OptExpr
@@ -826,7 +826,7 @@ signature
                                     : Variable -> IntVariable
                                     : Variable -> DefaultCharVariable
                                     : Variable -> LogicalVariable
-                                    : Ident -> VariableName
+    VarRef                          : Ident -> VariableName
                                     : Designator -> Variable
                                     : Substring -> Designator
                                     : DataRef -> Designator
