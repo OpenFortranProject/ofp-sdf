@@ -7,6 +7,16 @@ imports
 signature
   constructors
 
+// These constructors are commonly used simplifications that prepended by "Ofp".
+// This saves space in the AST and is easier to read.  However,
+// WARNING, as such, they don't follow the Fortran syntax definition.
+//------------------------------------------------------------------------------
+
+//   Moved to Main.sdf
+//   VarRef            : ObjectName                          -> VarRef
+
+//------------------------------------------------------------------------------
+
    CommonStmt        : A * B * C -> D
    InitialSpecPart   : A -> B
    SpecificationPart : A -> B
@@ -104,7 +114,7 @@ ofp-simplify-ast:  DataRef([str])                 -> str
 //R612
 ofp-simplify-ast:
   PartRef(name,no-section-subscripts(),
-               no-image-selector())               -> name
+               no-image-selector())               -> VarRef(name)
 
 //R622
 ofp-simplify-ast:  opt-stride(stride)             -> stride
