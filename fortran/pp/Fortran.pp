@@ -486,7 +486,7 @@
    CycleStmt                     -- H hs=1[_1 KW["CYCLE"] H hs=0[_2 _3]],
 
    #R832 --,
-   IfConstruct                   -- _1 _2 _3 _4 _5,
+   IfConstruct                   -- V vs=0 is=2 [_1 _2 _3 _4] _5,
    ElseIfStmtBlock               -- _1 _2,
    ElseStmtBlock                 -- _1 _2,
 
