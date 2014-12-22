@@ -86,8 +86,8 @@ rules //========================START OF RULES===============================
 fast-fixup-spec-part =
 {spec_list
   :  ?OfpScope(OfpSpecPart(slist),OfpExecPart(elist),funcs,begin,contains,end)
-  ;  <concat>[slist,<take-while(fast-fixup-spec-part)> elist] => spec_list
-  ;  <drop-while(fast-fixup-spec-part)> elist
+  ;  <concat>[slist,<take-while(is-specification-part)> elist] => spec_list
+  ;  <drop-while(is-specification-part)> elist
   ;  !OfpScope(OfpSpecPart(spec_list),OfpExecPart(<id>),funcs,begin,contains,end)
 }
 
@@ -97,7 +97,7 @@ fast-fixup-spec-part =
 // Probably also entry-stmt, data-stmt, and format-stmt that precede any truly executable
 // statements.
 //
-fast-fixup-spec-part =
+is-specification-part =
      ?ImplicitStmt(_,_,_)
  +>  ?ImplicitNoneStmt(_,_)
  +>  ?ParameterStmt(_,_,_)
@@ -118,8 +118,7 @@ match-begin-block-do =
 
 match-end-do(|level) =
      ?EndDoStmt(label,name,eos)
-  ;  !level
-  ;  debug(!"LEVEL: ")
+//  ;  debug(!"LEVEL: ")
 
 
 //R201
