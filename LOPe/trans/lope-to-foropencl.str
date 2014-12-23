@@ -12,6 +12,9 @@ signature
   ALLOCATED : ALLOCATED
   INTERNAL  : INTERNAL
 
+//TODO - move this to FAST
+  OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
+
 
 strategies //=================START OF STRATEGIES============================
 
@@ -211,13 +214,21 @@ cafe-get-symbols(|st,ct) =
 
 // Mark DO CONCURRENT loop as CAFe executable
 cafe-get-symbols(|st,ct) =
-     ?NonlabelDoStmt(label,name
-         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-         , eos)
-  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
-  ;  !NonlabelDoStmt(label,name
-         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-         , eos)
+     ?OfpBlockDoConstruct(begin,stmts,end)
+  ;  debug(!"CAFE-GET-SYMBOL1:=======================-=================== ")
+//  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
+  ;  !OfpBlockDoConstruct(begin,stmts,end){"HasConcurrentExecControl"}
+  ;  debug(!"CAFE-GET-SYMBOL2:=======================-=================== ")
+
+// Mark DO CONCURRENT loop as CAFe executable
+//cafe-get-symbols(|st,ct) =
+//     ?NonlabelDoStmt(label,name
+//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+//         , eos)
+//  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
+//  ;  !NonlabelDoStmt(label,name
+//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+//         , eos)
 
 // Add subroutine name to CAFe symbols
 cafe-get-symbols(|st,ct) =
@@ -268,13 +279,24 @@ cafe-add-cl(|st,ct) =
 
 // Create OpenCL kernels
 cafe-add-cl(|st,ct) =
-     ?NonlabelDoStmt(label,name
-         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-         , eos)
-;debug(!"-------------------------------")
-  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
-  ; <flatten-list> <id>
-  ;  <concat>[  <id>
-              , [NonlabelDoStmt(label,name
-                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
-             ]
+     ?OfpBlockDoConstruct(begin,stmts,end){"HasConcurrentExecControl"}
+;debug(!"HURRAY------------------------------- ")
+//  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
+//  ; <flatten-list> <id>
+//  ;  <concat>[  <id>
+//              , [NonlabelDoStmt(label,name
+//                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
+//             ]
+
+
+//cafe-add-cl(|st,ct) =
+//     ?NonlabelDoStmt(label,name
+//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
+//         , eos)
+//;debug(!"-------------------------------")
+//  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
+//  ; <flatten-list> <id>
+//  ;  <concat>[  <id>
+//              , [NonlabelDoStmt(label,name
+//                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
+//             ]
