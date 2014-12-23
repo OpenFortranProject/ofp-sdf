@@ -103,52 +103,38 @@ is-specification-part =
  +>  ?ParameterStmt(_,_,_)
  +>  ?TypeDeclarationStmt(_,_,_,_,_)
 
+// Call the recursive strategy fast-fixup-do-construct (directly below) to build multiple
+// OfpBlockDoConstructs from a series of do statements.
+//
 fast-fixup-do-constructs =
 {exec_list
   :  ?OfpScope(spec_part,OfpExecPart(elist),funcs,begin,contains,end)
-
-//  ;  <split-fetch-keep(match-begin-block-do)> elist
-//  ;  ?(before,begin_do,after)
-//; debug(!"FIXUP_DO_BEGIN: ")
-//  ;  <split-fetch-keep(match-end-do(|"0"))> after
-//  ;  ?(block,end_do,rest)
-//; debug(!"FIXUP_DO_END: ")
-//  ;  !OfpBlockDoConstruct(begin_do,block,end_do)
-//  ;  <concat> [before, [<id]]
-
-//  ; debug(!"FIXUP_DO_BEGIN: ")
   ;  <fast-fixup-do-construct> ([],elist)
-  ; debug(!"FIXUP_DO_COMPLETE: ")
   ;  ?(before,rest)
-  ; debug(!"FIXUP_DO_BUILDING: ")
   ;  !OfpScope(spec_part,OfpExecPart(<concat>[before,rest]),funcs,begin,contains,end)
-
-//  ;  !OfpScope(spec_part,OfpExecPart(<concat>[before,[<id>],rest]),funcs,begin,contains,end)
 }
 
+// This strategy uses recursion to build multiple OfpBlockDoConstructs from
+// a series of do statements.  Each pass attempts to build one OfpBlockDoConstruct.
+// It exits the recursive loop when the try(<fast-fixup-do-construct>) recursion
+// fails.
+//
 fast-fixup-do-construct =
-     ?(_,[])
-  ; debug(!"FIXUP_DOR_COMPLETE:------------------------------- ")
- +>  ?(exec_list,remaining)
-  ; debug(!"FIXUP_DOR_BEGIN: ")
+     ?(exec_list,remaining)
   ;  <split-fetch-keep(match-begin-block-do)> remaining
   ;  ?(before,begin_do,after)
-; debug(!"FIXUP_DOR_MATCH_BEGIN: ")
-  ;  <split-fetch-keep(match-end-do(|"0"))> after
+  ;  <split-fetch-keep(match-end-do)> after
   ;  ?(block,end_do,rest)
-; debug(!"FIXUP_FETCH_KEEP: ")
   ;  !OfpBlockDoConstruct(begin_do,block,end_do)
-; debug(!"FIXUP_DO_CONSTRUCT: ")
   ;  !(<concat>[exec_list,before,[<id>]], rest)
-; debug(!"FIXUP_DO_RECUR: ")
-  ;  <fast-fixup-do-construct> <id>
+  ;  try(<fast-fixup-do-construct> <id>)
+
 
 match-begin-block-do =
      ?NonlabelDoStmt(label,name,control,eos)
 
-match-end-do(|level) =
+match-end-do =
      ?EndDoStmt(label,name,eos)
-  ;  debug(!"LEVEL:------------------- ")
 
 
 //R201
