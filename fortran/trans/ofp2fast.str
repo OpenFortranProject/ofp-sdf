@@ -133,10 +133,10 @@ fast-fixup-do-construct =
   ; debug(!"FIXUP_DOR_BEGIN: ")
   ;  <split-fetch-keep(match-begin-block-do)> remaining
   ;  ?(before,begin_do,after)
-; debug(!"FIXUP_DOR_BEGIN: ")
+; debug(!"FIXUP_DOR_MATCH_BEGIN: ")
   ;  <split-fetch-keep(match-end-do(|"0"))> after
   ;  ?(block,end_do,rest)
-; debug(!"FIXUP_DOR_END: ")
+; debug(!"FIXUP_FETCH_KEEP: ")
   ;  !OfpBlockDoConstruct(begin_do,block,end_do)
 ; debug(!"FIXUP_DO_CONSTRUCT: ")
   ;  !(<concat>[exec_list,before,[<id>]], rest)
