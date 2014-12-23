@@ -15,7 +15,7 @@ PP      = $(PP_DIR)/Fortran.pp
 CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../../fortran/syntax -I ../../fortran/trans
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : lope-to-foropencl lope-lower
+all : lope-to-foropencl
 
 lope-lower : lope-lower.str
 	$(ST_PATH)/strc -i lope-lower.str $(CFLAGS) $(LDFLAGS) --main io-lope-lower
@@ -25,6 +25,9 @@ lope-to-foropencl : lope-to-foropencl.str
 
 check : lope-to-foropencl
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+
+check-last : lope-to-foropencl
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | pp-aterm
 
 check-lower : lope-lower
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-lower | $(TO_PP) | ast2text -p $(PP)
