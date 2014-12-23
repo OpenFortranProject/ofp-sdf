@@ -12,13 +12,14 @@ signature
   ALLOCATED : ALLOCATED
   INTERNAL  : INTERNAL
 
+
 strategies //=================START OF STRATEGIES============================
 
   io-lope-to-foropencl =
     io-wrap(lope-to-foropencl)
 
   lope-to-foropencl =
-{ st,lt
+{ st,lt,save
         :  ?OfpProgram(name, units)
         ;  new-hashtable => st
         ;  new-hashtable => lt
@@ -26,8 +27,12 @@ strategies //=================START OF STRATEGIES============================
         ;  topdown(try(fast-get-symbols(|st)))
         ;  topdown(try(cafe-get-symbols(|st,lt)))
         ;  bottomup(try(cafe-add-cl(|st,lt)))
-        ;  topdown(try(fast-flatten-scope-parts))
+        ;  topdown(try(fast-flatten-scope-parts))  => save
+        ;  !"--------------------------------------------------------------------------------------"
+        ;  debug()
+        ;  !save
 }
+
 
 rules //========================START OF RULES===============================
 
@@ -141,8 +146,11 @@ opencl-build-create-kernel(|ct,device) =
 // Utility strategies
 // ------------------
 cl-wrap-name =
-     is-string
-  ;  <conc-strings>("cl_", <id>, "_")
+     ?VarRef(name) 
+  ;  <conc-strings>("cl_", name, "_")
+ +>  is-string
+  ;  debug(!"CL_WRAP_NAME: ERROR is-string ------------------------------------------------")
+  ;  debug(!"\n")
 
 ofp-ident
   :  EntityDecl(ident,_,_,_,_) -> ident
@@ -169,7 +177,6 @@ ct-add-type-decl(|ct) =
   ;  <hashtable-get(|ident)> ct
   ;  ?(clident,type,attrs)
   ;  <fast-build-type-decl(|type,attrs)> clident
-
 
 // Build symbol table
 // ------------------
@@ -264,6 +271,7 @@ cafe-add-cl(|st,ct) =
      ?NonlabelDoStmt(label,name
          , ConcurrentExecControl(header,ImageExecutionSelector([device]))
          , eos)
+;debug(!"-------------------------------")
   ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
   ; <flatten-list> <id>
   ;  <concat>[  <id>
