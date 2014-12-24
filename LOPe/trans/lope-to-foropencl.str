@@ -141,7 +141,9 @@ opencl-build-create-buffer(|st,device) =
 opencl-build-create-kernel(|ct,device) =
      ?obj
   ;  <hashtable-get(|obj)> ct
-  ;  ?(kernel,DerivedType("CLKernel",[]),[])
+  ;  ?(kernel,DerivedType("CLKernel",[]),[]){annotations}
+  ;  <lookup> ("args", annotations)
+;debug(!"CREATE: ")
   ;  !AssignmentStmt(no-label(),kernel
          , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]),eos("\n"))
  <+  ![]
@@ -153,7 +155,7 @@ cl-wrap-name =
   ;  <conc-strings>("cl_", name, "_")
  +>  is-string
   ;  debug(!"CL_WRAP_NAME: ERROR is-string ------------------------------------------------")
-  ;  debug(!"\n")
+  ;  <conc-strings>("cl_", <id>, "_")
 
 ofp-ident
   :  EntityDecl(ident,_,_,_,_) -> ident
@@ -212,30 +214,13 @@ cafe-get-symbols(|st,ct) =
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
   ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
 
-// Mark DO CONCURRENT loop as CAFe executable
+// Mark DO CONCURRENT loops having an ImageExecutionSelector
 cafe-get-symbols(|st,ct) =
      ?OfpBlockDoConstruct(begin,stmts,end)
-  ;  debug(!"CAFE-GET-SYMBOL1:=======================-=================== ")
-//  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
-  ;  !OfpBlockDoConstruct(begin,stmts,end){"HasConcurrentExecControl"}
-  ;  debug(!"CAFE-GET-SYMBOL2:=======================-=================== ")
-
-// Mark DO CONCURRENT loop as CAFe executable
-//cafe-get-symbols(|st,ct) =
-//     ?NonlabelDoStmt(label,name
-//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-//         , eos)
-//  ;  <hashtable-put(|"cafe_do_concurrent_tmp_", (device,INTERNAL(),[]))> ct
-//  ;  !NonlabelDoStmt(label,name
-//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-//         , eos)
-
-// Add subroutine name to CAFe symbols
-cafe-get-symbols(|st,ct) =
-     ?CallStmt(label, ProcedureDesignator(name), args, eos)
-  ;  <hashtable-get(|"cafe_do_concurrent_tmp_")> ct
-  ;  <hashtable-put(|name, (<cl-wrap-name>name, DerivedType("CLKernel",[]),[]))> ct
-  ;  !CallStmt(label, ProcedureDesignator(name), args, eos)
+  ;  !begin
+  ;  ?NonlabelDoStmt(_,_,ConcurrentExecControl(_,image),eos)
+  ;  <map(cafe-add-cl(|st,ct))> stmts
+  ;  !OfpBlockDoConstruct(begin,stmts,end){[("ImageExecutionSelector",<cafe-subimage>image)]}
 
 // Unmark DO CONCURRENT loop (assumes no embedded do loops)
 cafe-get-symbols(|st,ct) =
@@ -245,7 +230,7 @@ cafe-get-symbols(|st,ct) =
   ;  !EndDoStmt(label,name,eos)
 
 cafe-subimage =
-     ?ImageExecutionSelector([device])
+     ?ImageExecutionSelector([VarRef(device)])
   ;  !device
 
 
@@ -277,26 +262,22 @@ cafe-add-cl(|st,ct) =
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
 }
 
+// Add CONCURRENT subroutine names to CAFe symbols
+cafe-add-cl(|st,ct) =
+     ?CallStmt(label, ProcedureDesignator(name), args, eos)
+  ;  <hashtable-put(|name,(<cl-wrap-name>name
+            , DerivedType("CLKernel",[])
+            , []){[("args",args)]})> ct
+  ;  !CallStmt(label, ProcedureDesignator(name), args, eos)
+
 // Create OpenCL kernels
 cafe-add-cl(|st,ct) =
-     ?OfpBlockDoConstruct(begin,stmts,end){"HasConcurrentExecControl"}
-;debug(!"HURRAY------------------------------- ")
-//  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
-//  ; <flatten-list> <id>
-//  ;  <concat>[  <id>
-//              , [NonlabelDoStmt(label,name
-//                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
-//             ]
-
-
-//cafe-add-cl(|st,ct) =
-//     ?NonlabelDoStmt(label,name
-//         , ConcurrentExecControl(header,ImageExecutionSelector([device]))
-//         , eos)
-//;debug(!"-------------------------------")
-//  ;  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
-//  ; <flatten-list> <id>
-//  ;  <concat>[  <id>
-//              , [NonlabelDoStmt(label,name
-//                    , ConcurrentExecControl(header,ImageExecutionSelector([device])),eos)]
-//             ]
+     ?OfpBlockDoConstruct(begin,stmts,end){annotations}
+;<hashtable-keys>ct
+;debug(!"CREATE-KERNEL(KEYS): ")
+;<hashtable-values>ct
+;debug(!"CREATE-KERNEL(VALS): ")
+  ;  <lookup> ("ImageExecutionSelector", annotations)
+  ;  <map(opencl-build-create-kernel(|ct,<id>))> <hashtable-keys> ct
+  ;  <flatten-list> <id>
+  ;  <concat>[<id>, [OfpBlockDoConstruct(begin,stmts,end){annotations}]]
