@@ -199,10 +199,6 @@ match-end-do =
 
   ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
-//R612
-  ofp-to-ast:  PartRef(name,no-section-subscripts(),
-                            no-image-selector())           -> OfpVarRef(OfpName(name))
-
 // Operators...
 
 //R703
