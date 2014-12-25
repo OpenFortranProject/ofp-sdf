@@ -21,6 +21,8 @@
    CoDeallocateStmt              -- H hs=0[_1 KW["DEALLOCATE"] "("_2 _3")" _4 _5],
    CoDeallocateStmt.2:iter-sep   -- _1 ",",
 
+   clMemObject                   -- "clMemObject(" _1 ")",
+
    INTRINSIC                     -- KW["INTRINSIC"] " :: ",
    NON_INTRINSIC                 -- KW["NON_INTRINSIC"] " :: ",
    PARAMETER                     -- ", " KW["PARAMETER"],
@@ -334,14 +336,12 @@
    #R569 --,
    CommonBlockObject             -- _1 _2,
 
-   #R602 --,
-   OfpVarDef                     -- _1,
-
    #R611 --,
    DataRef                       -- _1,
    DataRef.1:iter-sep            -- _1 "%",
 
    #R612 --,
+   VarDef                           -- _1,
    VarRef                           -- _1,
    PpPartRef                        -- _1 _2 _3,
    PpSectionSubscripts              -- "(" _1 ")",
