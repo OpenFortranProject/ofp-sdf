@@ -78,11 +78,18 @@ fast-type-size =
      ?IntrinsicType(REAL(no-kind())) ; !"4"
 
 fast-allocation-size(|st) =
-     ?obj
-  ;  <hashtable-get(|obj)> st
+     ?symbol
+;<hashtable-keys> st
+;debug(!"COALLOC (KEYS):------- ")
+;<hashtable-values> st
+;debug(!"COALLOC (VALS):------- ")
+  ;  <hashtable-get(|symbol)> st
   ;  ?(type,attrs)
   ;  <fetch-elem(?Dimension(shape))> attrs
+  ;  innermost(fast-var-name)
+;debug(!"IWANNA THRICE:------- ")
   ;  <map(fast-dim-size)> shape
+;debug(!"IWANNA FOUR:------- ")
   ;  <foldr(!"1",mulS)> <id>
   ;  <mulS> (<fast-type-size>type,<id>)
 
@@ -102,7 +109,7 @@ fast-update-allocation-codim =
 fast-update-allocation-symbol(|st) =
 {shape,coshape,attrs
   :  topdown(try(fast-fix-no-lower-bound))
-  ;  ?Allocation(obj,alloc_shape,alloc_coshape)
+  ;  ?Allocation(VarRef(obj),alloc_shape,alloc_coshape)
   ;  <hashtable-get(|obj)> st
   ;  ?(type,decl_attrs)
   ;  <elem> (ALLOCATABLE(),decl_attrs)   // ensure this symbol is allocatable
@@ -114,6 +121,10 @@ fast-update-allocation-symbol(|st) =
   ;  <filter( try(?Codimension(_) ; !Codimension(coshape)) )> <id>
   ;  <filter( try(?ALLOCATABLE()  ; !ALLOCATED()) )> <id> => attrs
   ;  <hashtable-put(|obj,(type,attrs))> st
+;<hashtable-keys> st
+;debug(!"UPDATE (KEYS):------- ")
+;<hashtable-values> st
+;debug(!"UPDATE (VALS):------- ")
 }
 
 fast-build-use-stmt =
@@ -138,6 +149,7 @@ fast-build-block(|decls,execs) =
 // Allocate memory on OpenCL device via call to createBuffer()
 opencl-build-create-buffer(|st,device) =
      ?obj
+;debug(!"IWANNA TWICE:------- ")
   ;  <fast-allocation-size(|st)> obj
   ;  !AssignmentStmt(no-label(),<cl-wrap-var> obj
          , FunctionReference("createBuffer"
@@ -303,8 +315,15 @@ cafe-add-cl(|st,ct) =
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
   ;  <map(fast-allocation-object)> alloc_list
+;debug(!"IWANNA:------- ")
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
 }
+
+// Replace assignment statements with memory transfer with read/writeBuffer
+cafe-add-cl(|st,ct) =
+     ?AssignmentStmt(label,PartRef(var,no-section-subscripts,[VarRef(device)]),expr,eos)
+  ;  !AssignmentStmt(no-label(),"status"
+         , FunctionReference("readBuffer",[<cl-wrap-name>var,expr,"TODO_MEM_SIZE"]),eos("\n"))
 
 // Create OpenCL kernels
 cafe-add-cl(|st,ct) =
