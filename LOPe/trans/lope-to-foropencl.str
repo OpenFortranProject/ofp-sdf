@@ -47,6 +47,8 @@ rules //========================START OF RULES===============================
 fast-var-name =
      ?VarRef(name)
   ;  !name
+ <+  ?VarDef(name)
+  ;  !name
 
 // Remove excess list elements inside of OfpSpecPart and OfpExecPart
 //   - occurs when a single statement is replaced by a list of statements
@@ -188,6 +190,8 @@ cl-wrap-name =
 
 cl-wrap-var =
      ?VarRef(name) 
+  ;  <conc-strings>("cl_", name, "_")
+ +>  ?VarDef(name) 
   ;  <conc-strings>("cl_", name, "_")
  +>  is-string
   ;  debug(!"CL_WRAP_VAR: ERROR is-string ------------------------------------------------")
