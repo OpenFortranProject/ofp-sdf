@@ -68,8 +68,8 @@ fast-build-allocation-size(|st,obj) =
 
 fast-dim-size =
      ?DimSpec(lb,ub)
-  ;  <subtS> (ub,lb)
-  ;  <addS> (<id>,"1")
+  ;  !Parens(Minus(ub,lb))
+  ;  !Parens(Plus(<id>,"1"))
 
 // Size of a type in bytes
 // TODO - add other intrinsic types and support for kinds
@@ -77,21 +77,19 @@ fast-dim-size =
 fast-type-size =
      ?IntrinsicType(REAL(no-kind())) ; !"4"
 
+fast-mult-op =
+     ?(l,r)
+  ;  !Mult(l,r)
+
 fast-allocation-size(|st) =
      ?symbol
-;<hashtable-keys> st
-;debug(!"COALLOC (KEYS):------- ")
-;<hashtable-values> st
-;debug(!"COALLOC (VALS):------- ")
   ;  <hashtable-get(|symbol)> st
   ;  ?(type,attrs)
   ;  <fetch-elem(?Dimension(shape))> attrs
   ;  innermost(fast-var-name)
-;debug(!"IWANNA THRICE:------- ")
   ;  <map(fast-dim-size)> shape
-;debug(!"IWANNA FOUR:------- ")
-  ;  <foldr(!"1",mulS)> <id>
-  ;  <mulS> (<fast-type-size>type,<id>)
+  ;  <foldr(!"1",fast-mult-op)> <id>
+  ;  <fast-mult-op> (<fast-type-size>type,<id>)
 
 fast-fix-no-lower-bound =
      ?no-lower-bound()
@@ -121,10 +119,6 @@ fast-update-allocation-symbol(|st) =
   ;  <filter( try(?Codimension(_) ; !Codimension(coshape)) )> <id>
   ;  <filter( try(?ALLOCATABLE()  ; !ALLOCATED()) )> <id> => attrs
   ;  <hashtable-put(|obj,(type,attrs))> st
-;<hashtable-keys> st
-;debug(!"UPDATE (KEYS):------- ")
-;<hashtable-values> st
-;debug(!"UPDATE (VALS):------- ")
 }
 
 fast-build-use-stmt =
@@ -149,11 +143,10 @@ fast-build-block(|decls,execs) =
 // Allocate memory on OpenCL device via call to createBuffer()
 opencl-build-create-buffer(|st,device) =
      ?obj
-;debug(!"IWANNA TWICE:------- ")
   ;  <fast-allocation-size(|st)> obj
-  ;  !AssignmentStmt(no-label(),<cl-wrap-var> obj
+  ;  !AssignmentStmt(no-label(),<cl-wrap-name> obj
          , FunctionReference("createBuffer"
-              , [device,"CL_MEM_READ_WRITE",<id>,<conc-strings>("C_LOC(",obj, ")")]),eos("\n"))
+              , [device,"CL_MEM_READ_WRITE",<id>,<conc-strings>("C_LOC(",obj,")")]),eos("\n"))
 
 // Create an OpenCL kernel object via call to createKernel
 opencl-build-create-kernel(|ct,device) =
@@ -315,15 +308,21 @@ cafe-add-cl(|st,ct) =
   ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
          <map(fast-allocation-object)> alloc_list
   ;  <map(fast-allocation-object)> alloc_list
-;debug(!"IWANNA:------- ")
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
 }
 
 // Replace assignment statements with memory transfer with read/writeBuffer
 cafe-add-cl(|st,ct) =
-     ?AssignmentStmt(label,PartRef(var,no-section-subscripts,[VarRef(device)]),expr,eos)
+     ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj),eos)
+  ;  <fast-allocation-size(|st)> var
   ;  !AssignmentStmt(no-label(),"status"
-         , FunctionReference("readBuffer",[<cl-wrap-name>var,expr,"TODO_MEM_SIZE"]),eos("\n"))
+         , FunctionReference("readBuffer"
+              ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),<id>]),eos("\n"))
+ +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]),eos)
+  ;  <fast-allocation-size(|st)> obj
+  ;  !AssignmentStmt(no-label(),"status"
+         , FunctionReference("writeBuffer"
+              ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),<id>]),eos("\n"))
 
 // Create OpenCL kernels
 cafe-add-cl(|st,ct) =
