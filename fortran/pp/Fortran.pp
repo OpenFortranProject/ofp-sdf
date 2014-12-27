@@ -365,6 +365,10 @@
    Allocation.2:iter-sep         -- _1 ",",
    Allocation.3:iter-sep         -- _1 ",",
    PpAllocation                  -- _1,
+   PpAllocationShape             -- _1 "("_2")",
+   AllocationShape.2:iter-sep    -- _1 ",",
+   PpAllocationCoshape           -- _1 "["_2"]",
+   AllocationCoshape.2:iter-sep  -- _1 ",",
    Triplet                       -- _1 ":" _2 _3,
 
    PpAllocShapeSpec              -- _1,
