@@ -30,11 +30,13 @@ signature
     PpSectionSubscripts : ss             -> PpSectionSubscripts
     PpImageSelector     : ss             -> PpImageSelector
 
-    PpAllocation        : PpPartRef      -> PpAllocation
-    PpAllocShapeSpec    : upper          -> PpAllocShapeSpec
-    PpAllocShapeSpec    : lower * upper  -> PpAllocShapeSpec
-    PpAllocCoshapeSpec  : upper          -> PpAllocCoshapeSpec
-    PpAllocCoshapeSpec  : lower * upper  -> PpAllocCoshapeSpec
+    PpAllocation        : PpPartRef           -> PpAllocation
+    PpAllocationShape   : PpPartRef * shape   -> PpAllocationShape
+    PpAllocationCoshape : PpPartRef * coshape -> PpAllocationCoshape
+    PpAllocShapeSpec    : upper               -> PpAllocShapeSpec
+    PpAllocShapeSpec    : lower * upper       -> PpAllocShapeSpec
+    PpAllocCoshapeSpec  : upper               -> PpAllocCoshapeSpec
+    PpAllocCoshapeSpec  : lower * upper       -> PpAllocCoshapeSpec
 
     eos            : EOStmt          -> EOS
 
@@ -91,6 +93,8 @@ rules
 
 //R631
   ast-to-pp:  Allocation(part,[],[])                 -> PpAllocation(part)
+  ast-to-pp:  Allocation(part,shape,[])              -> PpAllocationShape(part,shape)
+  ast-to-pp:  Allocation(part,[],coshape)            -> PpAllocationCoshape(part,coshape)
 
 //R633
   ast-to-pp:  AllocateShapeSpec(no-lower-bound(),ub) -> PpAllocShapeSpec(ub)
