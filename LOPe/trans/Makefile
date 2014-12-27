@@ -15,6 +15,17 @@ PP      = $(PP_DIR)/Fortran.pp
 CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../../fortran/syntax -I ../../fortran/trans
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
+## Fortran targets
+#  ---------------
+
+FC = ifort
+FCFLAGS = -I ForOpenCL
+
+%.o: %.f90
+	@echo 'Building for OS $(OSUPPER) file: $<'
+	$(FC) -c $(FCFLAGS) -o $@ $<
+
+
 all : lope-to-foropencl
 
 lope-lower : lope-lower.str
