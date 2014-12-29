@@ -612,8 +612,8 @@
    WriteStmt.3:iter-sep          -- _1 ", ",
 
    #R912 --,
-   PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 _3 _4]],
-   PrintStmt.3:iter-sep          -- _1 ", ",
+   PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 ", " _3 _4]],
+   PrintStmt.3:iter-sep          -- _1 ",",
 
    #R913 --,
    FMT                           -- KW["FMT="] _1,
