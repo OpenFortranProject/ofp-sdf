@@ -321,6 +321,13 @@ cafe-add-cl(|st,ct) =
                         , [EntityDecl("cl_ng__",[DimSpec(no-lower-bound(), "3")]
                              ,[],no-char-length(),no-init())]
                         , eos("\n"))]]
+  ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
+                        , IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t"))))
+                        , []
+                        , [EntityDecl("cl_nl__",[DimSpec(no-lower-bound(), "3")]
+                             ,[],no-char-length()
+                             ,Init(ArrayConstructor(AcSpec(no-type-spec(),["16","16","16"]))))]
+                        , eos("\n"))]]
   ;  !OfpSpecPart(<id>)
 
 // Replace coallocate statement with function call to alloc memory on device
@@ -391,7 +398,7 @@ opencl-replace-call-stmt(|bounds) =
      ?CallStmt(label, ProcedureDesignator(name), args, eos)
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
                , FunctionReference("run",[<cl-wrap-name>name
-                  , <length>bounds, VarRef("cl_ng__"), <opencl-local-size>]),eos("\n"))
+                  , <length>bounds, VarRef("cl_ng__"), VarRef("cl_nl__")]),eos("\n"))
 
 // Build the OpenCL kernel finish call
 opencl-build-finish-kernel =
