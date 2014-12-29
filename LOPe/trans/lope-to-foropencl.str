@@ -42,6 +42,11 @@ strategies //=================START OF STRATEGIES============================
 
 rules //========================START OF RULES===============================
 
+// Local thread group size
+// TODO - make dependent on dim and device
+opencl-local-size =
+     !["1","1","1"]
+
 // FAST strategies (MOVE TO fortran/trans)
 // ---------------
 
@@ -142,10 +147,6 @@ fast-build-block(|decls,execs) =
             , OfpSpecPart(decls)
             , Block(execs)
             , EndBlockStmt(no-label(),no-name(),eos("\n")))
-
-// Local thread group size (in any dimension)
-opencl-local-size =
-     !"int(16,c_size_t)"
 
 // Allocate memory on OpenCL device via call to createBuffer()
 opencl-build-create-buffer(|st,device) =
@@ -326,7 +327,7 @@ cafe-add-cl(|st,ct) =
                         , []
                         , [EntityDecl("cl_nl__",[DimSpec(no-lower-bound(), "3")]
                              ,[],no-char-length()
-                             ,Init(ArrayConstructor(AcSpec(no-type-spec(),["16","16","16"]))))]
+                             ,Init(ArrayConstructor(AcSpec(no-type-spec(),<opencl-local-size>))))]
                         , eos("\n"))]]
   ;  !OfpSpecPart(<id>)
 
