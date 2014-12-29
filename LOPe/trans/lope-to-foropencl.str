@@ -155,31 +155,36 @@ opencl-build-create-buffer(|st,device) =
        , AssignmentStmt(no-label(),<cl-wrap-name> obj
           , FunctionReference("createBuffer"
              , [device,"CL_MEM_READ_WRITE",VarRef("cl_size__")
-               ,<conc-strings>("C_LOC(",obj,")")]),eos("\n"))
+               ,"C_NULL_PTR"]),eos("\n"))
       ]
 
+// Deallocate memory on OpenCL device via call to releaseMemObject()
+opencl-build-release-buffer(|st,device) =
+    !AssignmentStmt(no-label(),VarDef("cl_status__")
+          , FunctionReference("releaseMemObject", [<cl-wrap-var> <id>]), eos("\n"))
+
 // Create an OpenCL kernel object via call to createKernel
+//TODO - check selector against device to ensure they refer to same image
 opencl-build-create-kernel(|ct,device) =
 {kernel_arg_funcs
   :  ?obj
   ;  <hashtable-get(|obj)> ct
   ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
   ;  <lookup> ("args", annotations)
-  ;  <map(opencl-build-add-kernel-args(|ct,device))> <add-indices> <id>  => kernel_arg_funcs
+  ;  <map(opencl-build-add-kernel-args(|ct,kernel))> <add-indices> <id>  => kernel_arg_funcs
   ;  !AssignmentStmt(no-label(),kernel
          , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]),eos("\n"))
   ;  <flatten-list> [<id>, kernel_arg_funcs]
  <+  ![]
 }
 
-// Create an OpenCL kernel object via call to createKernel
-//TODO - check selector against device to ensure they refer to same image
-opencl-build-add-kernel-args(|ct,device) =
-  ?(index, ActualArgSpec(_,PartRef(arg,_,selector)))
+// Add an argument to an OpenCL kernel object via call to setKernelArg
+opencl-build-add-kernel-args(|ct,kernel) =
+     ?(index, ActualArgSpec(_,PartRef(arg,_,selector)))
   ;  <opencl-kernel-arg-type(|ct)> <hashtable-get(|arg)> ct
-  ;  !AssignmentStmt(no-label(),"cl_status__"
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("setKernelArg"
-              ,[<cl-wrap-name>device,<subti>(index,1),<id>]),eos("\n"))
+              ,[kernel,<subti>(index,1),<id>]),eos("\n"))
  <+  ![]
 
 opencl-kernel-arg-type(|ct) =
@@ -328,20 +333,28 @@ cafe-add-cl(|st,ct) =
   ;  <map(opencl-build-create-buffer(|st,device))> <id>
 }
 
+// Replace codeallocate statement with function call to free memory on device
+cafe-add-cl(|st,ct) =
+{device
+  :  ?CoDeallocateStmt(label,dealloc_list,options,image,eos)
+  ;  <cl-wrap-name> <cafe-subimage> image => device
+  ;  <map(opencl-build-release-buffer(|st,device))> dealloc_list
+}
+
 // Replace assignment statements with memory transfer with read/writeBuffer
 cafe-add-cl(|st,ct) =
      ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj),eos)
   ;  <fast-allocation-size(|st)> var
   ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>,eos("\n"))
-       , AssignmentStmt(no-label(),"cl_status__"
-         , FunctionReference("readBuffer"
+       , AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("writeBuffer"
             ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]),eos("\n"))
       ]
  +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]),eos)
   ;  <fast-allocation-size(|st)> obj
   ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>,eos("\n"))
-       , AssignmentStmt(no-label(),"cl_status__"
-         , FunctionReference("writeBuffer"
+       , AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("readBuffer"
             ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]),eos("\n"))
       ]
 
@@ -362,14 +375,14 @@ cafe-add-cl(|st,ct) =
 opencl-replace-call-stmt(|bounds) =
      ?CallStmt(label, ProcedureDesignator(name), args, eos)
   ;  !AssignmentStmt(no-label(),"cl_nx__", bounds, eos("\n"))
-  ;  ![<id>, AssignmentStmt(no-label(),"cl_status__"
+  ;  ![<id>, AssignmentStmt(no-label(),VarDef("cl_status__")
                , FunctionReference("run",[<cl-wrap-name>name
                   , VarRef("cl_nx__"), <opencl-group-size>]),eos("\n"))]
 
 // Build the OpenCL kernel finish call
 opencl-build-finish-kernel =
      ?CallStmt(label, ProcedureDesignator(name), args, eos)
-  ;  !AssignmentStmt(no-label(),"cl_status__"
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("clFinish",[<conc-strings>(<cl-wrap-name>name, "%commands")]),eos("\n"))
 
 
@@ -391,8 +404,3 @@ caf-lower-ast =
 caf-lower-ast =
      ?Allocation(var,shape,coshape)
   ;  !Allocation(var,shape,     [])
-
-// Transform a CoDeallocateStmt to an regular DeallocateStmt
-caf-lower-ast =
-     ?CoDeallocateStmt(label,vars,options,ImageExecutionSelector(_),eos)
-  ;  !DeallocateStmt(label,vars,options,eos)
