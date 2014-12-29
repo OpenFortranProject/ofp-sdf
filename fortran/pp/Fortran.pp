@@ -202,6 +202,7 @@
    ALLOCATABLE                   -- ", " KW["ALLOCATABLE"],
    Intent                        -- ", " KW["INTENT"]    "("_1")",
    Dimension                     -- ", " KW["DIMENSION"] "("_1")",
+   Dimension.1:iter-sep          -- _1 ",",
 
    IN                            -- KW["IN"],
    OUT                           -- KW["OUT"],
@@ -366,9 +367,9 @@
    Allocation.3:iter-sep         -- _1 ",",
    PpAllocation                  -- _1,
    PpAllocationShape             -- _1 "("_2")",
-   AllocationShape.2:iter-sep    -- _1 ",",
+   PpAllocationShape.2:iter-sep  -- _1 ",",
    PpAllocationCoshape           -- _1 "["_2"]",
-   AllocationCoshape.2:iter-sep  -- _1 ",",
+   PpAllocationCoshape.2:iter-sep-- _1 ",",
    Triplet                       -- _1 ":" _2 _3,
 
    PpAllocShapeSpec              -- _1,
