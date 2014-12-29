@@ -144,7 +144,7 @@ fast-build-block(|decls,execs) =
             , EndBlockStmt(no-label(),no-name(),eos("\n")))
 
 // Local thread group size (in any dimension)
-opencl-group-size =
+opencl-local-size =
      !"int(16,c_size_t)"
 
 // Allocate memory on OpenCL device via call to createBuffer()
@@ -296,10 +296,6 @@ cafe-subimage =
      ?ImageExecutionSelector([VarRef(device)])
   ;  !device
 
-cafe-loop-bounds =
-     ?NonlabelDoStmt(_,_,ConcurrentExecControl(ForallHeader(_,[ForallTripletSpec(var,lb,ub,_)],_),_),_)
-  ;  !Plus(Minus(ub,lb),"1")
-
 
 // Add ForOpenCL calls to the AST
 // ------------------------------
@@ -310,6 +306,7 @@ cafe-add-cl(|st,ct) =
                                       [arg,<cl-wrap-name>lhs]),eos)
 
 // Add variables associated with ForOpenCL calls
+//    cl_status__, cl_size__, ch_ng__(3)
 cafe-add-cl(|st,ct) =
      ?OfpSpecPart(decls)
   ;  <concat> [[<fast-build-use-stmt>"ForOpenCL"], decls]
@@ -318,8 +315,12 @@ cafe-add-cl(|st,ct) =
                        IntrinsicType(INTEGER(KindSelector(VarRef("cl_int")))),[])> "cl_status__"]]
   ;  <concat> [<id>, [<fast-build-type-decl(|
                        IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t")))),[])> "cl_size__"]]
-  ;  <concat> [<id>, [<fast-build-type-decl(|
-                       IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t")))),[])> "cl_nx__"]]
+  ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
+                        , IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t"))))
+                        , []
+                        , [EntityDecl("cl_ng__",[DimSpec(no-lower-bound(), "3")]
+                             ,[],no-char-length(),no-init())]
+                        , eos("\n"))]]
   ;  !OfpSpecPart(<id>)
 
 // Replace coallocate statement with function call to alloc memory on device
@@ -358,7 +359,7 @@ cafe-add-cl(|st,ct) =
             ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]),eos("\n"))
       ]
 
-// Create OpenCL kernels
+// Create OpenCL kernels and run them; replacing DO CONCURRENT loop
 cafe-add-cl(|st,ct) =
 {device,kernels,finish
   :  ?OfpBlockDoConstruct(begin,stmts,end) {annotations}
@@ -367,17 +368,30 @@ cafe-add-cl(|st,ct) =
   ;  <flatten-list> <id>  => kernels
   ;  <map(opencl-build-finish-kernel)> stmts
   ;  <flatten-list> <id>  => finish
-  ;  <map(opencl-replace-call-stmt(|<cafe-loop-bounds>begin))> stmts
+  ;  <map(opencl-build-calc-triplet-size)> <add-indices> <cafe-forall-triplet> begin
+  ;  <concat> [<id>, <map(opencl-replace-call-stmt(|<cafe-forall-triplet>begin))> stmts]
   ;  <concat> [kernels, <id>, finish]
 }
+
+// Retrieve list of ForallHeader triplets
+cafe-forall-triplet =
+     ?NonlabelDoStmt(_,_,ConcurrentExecControl(ForallHeader(_,triplet_list,_),_),_)
+  ;  !triplet_list
+
+// Build AssignmentStmt calculating a ForallHeader triplet size
+// TODO - incorporate step information
+opencl-build-calc-triplet-size =
+     ?(index, ForallTripletSpec(var,lb,ub,step))
+  ;  <fast-dim-size> DimSpec(lb,ub)
+  ;  !AssignmentStmt(no-label(),PartRef("cl_ng__",[index],no-image-selector())
+         , <id>, eos("\n"))
 
 // Replace subroutine call with running the corresponding OpenCL kernel
 opencl-replace-call-stmt(|bounds) =
      ?CallStmt(label, ProcedureDesignator(name), args, eos)
-  ;  !AssignmentStmt(no-label(),"cl_nx__", bounds, eos("\n"))
-  ;  ![<id>, AssignmentStmt(no-label(),VarDef("cl_status__")
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
                , FunctionReference("run",[<cl-wrap-name>name
-                  , VarRef("cl_nx__"), <opencl-group-size>]),eos("\n"))]
+                  , <length>bounds, VarRef("cl_ng__"), <opencl-local-size>]),eos("\n"))
 
 // Build the OpenCL kernel finish call
 opencl-build-finish-kernel =
@@ -396,7 +410,7 @@ caf-lower-ast =
      ?EntityDecl(name,array_spec,coarray_spec,char_length,init)
   ;  !EntityDecl(name,array_spec,          [],char_length,init)
 
-// This is just used to flatten the attribute list from removing Codimension attribute
+// This is just used to flatten the attribute list after removing Codimension attribute
 caf-lower-ast =
      ?TypeDeclarationStmt(label,type,attrs,vars,eos)
   ;  !TypeDeclarationStmt(label,type,<flatten-list>attrs,vars,eos)
