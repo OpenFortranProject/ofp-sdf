@@ -1,0 +1,24 @@
+SgSourceFile(
+  SgGlobal(
+    [ SgVariableDeclaration(NULL(), SgInitializedName(NULL())) 
+    , SgFunctionDeclaration(
+        SgFunctionParameterList([])
+      , NULL()
+      , SgFunctionDefinition(
+          SgBasicBlock(
+            [ SgVariableDeclaration(NULL(), SgInitializedName(NULL()))
+            , SgExprStatement(SgAssignOp(SgVarRefExp(), SgAddOp(SgIntVal(){["rose_data", [["value",1], ["other",99]]]},
+                                                                SgIntVal(){["rose_data", [["other",99],["value",2 ]]]}
+                                                               )
+                                         )
+                              )
+            ]
+          )
+        )
+      )
+    ]
+  )
+, NULL()
+, NULL()
+, NULL()
+)
