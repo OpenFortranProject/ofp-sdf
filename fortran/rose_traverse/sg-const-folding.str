@@ -29,6 +29,6 @@ sg-const-fold =
    ;  debug(!"SG_ADD_OP:----- ")
    ;  <sg-get-annotation(|"value")> rhs_annotations => rval
    ;  debug(!"SG_ADD_OP:----- ")
-   ;  !SgIntVal(){["value",<addi>(lval,rval)]}
+   ;  !SgIntVal(){["rose_data", [["value",<addi>(lval,rval)]]]}
    ;  debug(!"SG_ADD_OP: ")
 }
