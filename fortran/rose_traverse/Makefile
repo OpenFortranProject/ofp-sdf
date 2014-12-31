@@ -29,7 +29,10 @@ EXES = fast-to-rose build_classes build_includes build_traversals \
 
 #all: $(OBJS) traverse
 
-all : fast-to-rose ofp-simplify
+all : sg-const-folding
+
+sg-const-folding : sg-const-folding.str
+	$(ST_PATH)/strc -i sg-const-folding.str $(CFLAGS) $(LDFLAGS) --main io-sg-const-folding
 
 fast-to-rose : fast-to-rose.str
 	$(ST_PATH)/strc -i fast-to-rose.str $(CFLAGS) $(LDFLAGS) --main io-fast-to-rose
