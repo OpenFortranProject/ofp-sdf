@@ -404,7 +404,7 @@
    NEQV                          -- _1 KW[" .NEQV. "] _2,
    DefUnaryExpr                  -- H hs=1[_1 _2],
    DefBinExpr                    -- _1 _2 _3,
-   Power                         -- H hs=1[H hs=0["("_1")"] KW["**"] _2],
+   Power                         -- H hs=1[H hs=0[_1] KW["**"] _2],
    Mult                          -- _1 "*" _2,
    Div                           -- _1 "/" _2,
    Concat                        -- H hs=1[_1 "//" _2],
@@ -728,7 +728,7 @@
    Rename                        -- KW[", "] H hs=0[_1 KW["=>"] _2],
 
    #R1116 --,
-   OfpSubmodule                  -- _1 _2,
+   PpSubmodule                   -- _1,
 
    #R1117 --,
    SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3 _4],
