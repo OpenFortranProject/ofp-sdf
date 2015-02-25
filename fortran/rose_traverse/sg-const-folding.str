@@ -2,14 +2,10 @@ module sg-const-folding
 
 imports
    libstratego-lib
+   generated_sdf_tree_grammar
 
 signature
   constructors
-
-   SgAddOp    : SgIntVal * SgIntVal -> SgAddOp
-   SgIntVal   : SgIntVal
-   SgAssignOp : ref * op            -> SgAssignOp
-
 
 strategies //=================START OF STRATEGIES============================
 
@@ -28,11 +24,11 @@ rules //========================START OF RULES===============================
 
 sg-const-fold =
 {lval,rval
-   :  ?SgAddOp(SgIntVal{lhs_annotations},SgIntVal{rhs_annotations})
+   :  ?SgAddOp(SgIntVal(){lhs_annotations},SgIntVal(){rhs_annotations})
    ;  <sg-get-annotation(|"value")> lhs_annotations => lval
-   ;  debug(!"SG_ADD_OP: ")
+   ;  debug(!"SG_ADD_OP:----- ")
    ;  <sg-get-annotation(|"value")> rhs_annotations => rval
-   ;  debug(!"SG_ADD_OP: ")
-   ;  !SgIntVal{["value",<addi>(lval,rval)]}
+   ;  debug(!"SG_ADD_OP:----- ")
+   ;  !SgIntVal(){["rose_data", [["value",<addi>(lval,rval)]]]}
    ;  debug(!"SG_ADD_OP: ")
 }
