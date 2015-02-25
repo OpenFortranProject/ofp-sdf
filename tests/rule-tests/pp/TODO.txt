@@ -14,9 +14,9 @@ R524.f90
 
 Files to check
 These 700's are mostly perfectly pretty~ Check first
-R701.f90
-R702.f90
-R704.f90
+R701.f90     - DONE, 2015.02.21
+R702.f90     - DONE, 2015.02.21 (R702.fxx)
+R704.f90     - DONE, 2015.02.25
 R705.f90
 R706.f90
 R710.f90
