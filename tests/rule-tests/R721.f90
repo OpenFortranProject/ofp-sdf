@@ -1,10 +1,11 @@
 !! R721 equiv-op
 !    is .EQV.
 !    or .NEQV.
+logical :: a, b, c, d
 
-a = 1 .EQV. 2
-a = 1.neqv.2
-a = 1 .NEQV. 2 .eqv. 3 .and. 4
-a = 1 .AND. 2 .eqv. .not. 3
+a = b .EQV. c
+a = b.neqv.c
+a = a .NEQV. b .eqv. c .and. d
+a = b .AND. c .eqv. .not. d
 
 end
