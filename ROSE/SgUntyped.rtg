@@ -1,0 +1,80 @@
+regular tree grammar
+start SgNode
+productions
+
+SgNode -> SgLocatedNode
+SgLocatedNode -> SgLocatedNodeSupport
+
+SgLocatedNodeSupport -> SgUntypedNode
+SgUntypedNode -> SgUntypedExpression
+SgUntypedNode -> SgUntypedStatement
+SgUntypedNode -> SgUntypedType
+SgUntypedNode -> SgUntypedAttribute
+SgUntypedAttribute -> SgUntypedAttribute (<int>, <string>)
+SgUntypedNode -> SgUntypedInitializedName
+SgUntypedInitializedName -> SgUntypedInitializedName (SgUntypedType, <string>)
+SgUntypedNode -> SgUntypedFile
+SgUntypedFile -> SgUntypedFile (SgUntypedGlobalScope)
+SgUntypedNode -> SgUntypedStatementList
+SgUntypedStatementList -> SgUntypedStatementList (ListStarOfSgUntypedStatement)
+SgUntypedNode -> SgUntypedDeclarationList
+SgUntypedDeclarationList -> SgUntypedDeclarationList (ListStarOfSgUntypedDeclarationStatement)
+SgUntypedNode -> SgUntypedFunctionDeclarationList
+SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration)
+SgUntypedNode -> SgUntypedInitializedNameList
+SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName)
+SgUntypedExpression -> SgUntypedUnaryOperator
+SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, SgToken::ROSE_Fortran_Operators, <string>, SgUntypedExpression)
+SgUntypedExpression -> SgUntypedBinaryOperator
+SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, SgToken::ROSE_Fortran_Operators, <string>, SgUntypedExpression, SgUntypedExpression)
+SgUntypedExpression -> SgUntypedValueExpression
+SgUntypedValueExpression -> SgUntypedValueExpression (<int>, <string>, SgUntypedType)
+SgUntypedExpression -> SgUntypedArrayReferenceExpression
+SgUntypedArrayReferenceExpression -> SgUntypedArrayReferenceExpression (<int>)
+SgUntypedExpression -> SgUntypedOtherExpression
+SgUntypedOtherExpression -> SgUntypedOtherExpression (<int>)
+SgUntypedExpression -> SgUntypedFunctionCallOrArrayReferenceExpression
+SgUntypedFunctionCallOrArrayReferenceExpression -> SgUntypedFunctionCallOrArrayReferenceExpression (<int>)
+SgUntypedExpression -> SgUntypedReferenceExpression
+SgUntypedReferenceExpression -> SgUntypedReferenceExpression (<int>, <string>)
+SgUntypedStatement -> SgUntypedDeclarationStatement
+SgUntypedStatement -> SgUntypedAssignmentStatement
+SgUntypedAssignmentStatement -> SgUntypedAssignmentStatement (<string>, <int>, SgUntypedExpression, SgUntypedExpression)
+SgUntypedStatement -> SgUntypedFunctionCallStatement
+SgUntypedFunctionCallStatement -> SgUntypedFunctionCallStatement (<string>, <int>)
+SgUntypedStatement -> SgUntypedBlockStatement
+SgUntypedBlockStatement -> SgUntypedBlockStatement (<string>, <int>, SgUntypedScope)
+SgUntypedStatement -> SgUntypedNamedStatement
+SgUntypedNamedStatement -> SgUntypedNamedStatement (<string>, <int>, <string>)
+SgUntypedStatement -> SgUntypedOtherStatement
+SgUntypedOtherStatement -> SgUntypedOtherStatement (<string>, <int>)
+SgUntypedStatement -> SgUntypedScope
+SgUntypedDeclarationStatement -> SgUntypedImplicitDeclaration
+SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration (<string>, <int>)
+SgUntypedDeclarationStatement -> SgUntypedVariableDeclaration
+SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (<string>, <int>, SgUntypedType, SgUntypedInitializedNameList)
+SgUntypedDeclarationStatement -> SgUntypedFunctionDeclaration
+SgUntypedDeclarationStatement -> SgUntypedModuleDeclaration
+SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration (<string>, <int>, SgUntypedModuleScope, SgUntypedNamedStatement)
+SgUntypedFunctionDeclaration -> SgUntypedProgramHeaderDeclaration
+SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
+SgUntypedFunctionDeclaration -> SgUntypedSubroutineDeclaration
+SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
+SgUntypedScope -> SgUntypedFunctionScope
+SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedScope -> SgUntypedModuleScope
+SgUntypedModuleScope -> SgUntypedModuleScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedScope -> SgUntypedGlobalScope
+SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedType -> SgUntypedArrayType
+SgUntypedArrayType -> SgUntypedArrayType (<string>, SgUntypedExpression, bool, bool, bool, bool, bool, bool, SgUntypedExpression, <string>, bool)
+ListStarOfSgUntypedDeclaration -> <nil>()
+ListStarOfSgUntypedDeclaration -> <cons>(SgUntypedDeclaration,ListStarOfSgUntypedDeclaration)
+ListStarOfSgUntypedDeclarationStatement -> <nil>()
+ListStarOfSgUntypedDeclarationStatement -> <cons>(SgUntypedDeclarationStatement,ListStarOfSgUntypedDeclarationStatement)
+ListStarOfSgUntypedFunctionDeclaration -> <nil>()
+ListStarOfSgUntypedFunctionDeclaration -> <cons>(SgUntypedFunctionDeclaration,ListStarOfSgUntypedFunctionDeclaration)
+ListStarOfSgUntypedInitializedName -> <nil>()
+ListStarOfSgUntypedInitializedName -> <cons>(SgUntypedInitializedName,ListStarOfSgUntypedInitializedName)
+ListStarOfSgUntypedStatement -> <nil>()
+ListStarOfSgUntypedStatement -> <cons>(SgUntypedStatement,ListStarOfSgUntypedStatement)
