@@ -1,6 +1,6 @@
 
 regular tree grammar
-  start OfpProgram Program
+  start Program
   productions
     OptOfpLabel0                      -> <some>(OfpLabel)
     OptOfpLabel0                      -> <none>()
@@ -63,13 +63,13 @@ regular tree grammar
     OptOfpGenericSpec0                -> <none>()
     OptABSTRACT0                      -> <some>(ABSTRACT)
     OptABSTRACT0                      -> <none>()
-    ListStarOfOfpScope0               -> ListPlusOfOfpScope0
-    ListStarOfOfpScope0               -> <nil>()
-    ListStarOfOfpScope0               -> <conc>(ListStarOfOfpScope0,ListStarOfOfpScope0)
-    ListPlusOfOfpScope0               -> <conc>(ListStarOfOfpScope0,ListPlusOfOfpScope0)
-    ListPlusOfOfpScope0               -> <conc>(ListPlusOfOfpScope0,ListStarOfOfpScope0)
-    ListPlusOfOfpScope0               -> <conc>(ListPlusOfOfpScope0,ListPlusOfOfpScope0)
-    ListPlusOfOfpScope0               -> <cons>(OfpScope,ListStarOfOfpScope0)
+    ListStarOfScope0                  -> ListPlusOfScope0
+    ListStarOfScope0                  -> <nil>()
+    ListStarOfScope0                  -> <conc>(ListStarOfScope0,ListStarOfScope0)
+    ListPlusOfScope0                  -> <conc>(ListStarOfScope0,ListPlusOfScope0)
+    ListPlusOfScope0                  -> <conc>(ListPlusOfScope0,ListStarOfScope0)
+    ListPlusOfScope0                  -> <conc>(ListPlusOfScope0,ListPlusOfScope0)
+    ListPlusOfScope0                  -> <cons>(Scope,ListStarOfScope0)
     ListStarOfOfpOnly0                -> ListPlusOfOfpOnly0
     ListStarOfOfpOnly0                -> <nil>()
     ListStarOfOfpOnly0                -> <conc>(ListStarOfOfpOnly0,ListStarOfOfpOnly0)
@@ -935,7 +935,7 @@ regular tree grammar
     OfpBeginStmt                      -> OfpMpSubprogramStmt
     OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptOfpLabel0,OptOfpName0)
     OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptOfpLabel0,OfpName)
-    OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,OfpScope)
+    OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,Scope)
     OfpEndStmt                        -> OfpEndSubroutineStmt
     OfpBeginStmt                      -> OfpSubroutineStmt
     OfpEndSubroutineStmt              -> OfpEndSubroutineStmt(OptOfpLabel0,OptOfpName0)
@@ -944,7 +944,7 @@ regular tree grammar
     OfpDummyArg                       -> STAR(STAR)
     OfpDummyArg                       -> OfpDummyArg(String)
     OfpSubroutineStmt                 -> OfpSubroutineStmt(OptOfpLabel0,OfpName,OfpArgList,OfpPrefix,OfpSuffix)
-    OfpSubroutine                     -> OfpSubroutine(OfpName,OfpScope)
+    OfpSubroutine                     -> OfpSubroutine(OfpName,Scope)
     OfpEndStmt                        -> OfpEndFunctionStmt
     OfpBeginStmt                      -> OfpFunctionStmt
     OfpEndFunctionStmt                -> OfpEndFunctionStmt(OptOfpLabel0,OptOfpName0)
@@ -954,7 +954,7 @@ regular tree grammar
     OfpSuffixSpec                     -> OfpLanguageBinding(OfpLanguageBinding)
     OfpFunctionName                   -> OfpFunctionName(String)
     OfpFunctionStmt                   -> OfpFunctionStmt(OptOfpLabel0,OfpFunctionName,OfpArgList,OfpPrefix,OfpSuffix)
-    OfpFunction                       -> OfpFunction(OfpName,OfpScope)
+    OfpFunction                       -> OfpFunction(OfpName,Scope)
     OfpPrefixSpec                     -> RECURSIVE(RECURSIVE)
     OfpPrefixSpec                     -> PURE(PURE)
     OfpPrefixSpec                     -> MODULE(MODULE)
@@ -992,8 +992,8 @@ regular tree grammar
     OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptOfpLabel0,OptOfpGenericSpec0)
     OfpInterfaceStmt                  -> OfpInterfaceStmt(OptOfpLabel0,OptABSTRACT0,OptOfpGenericSpec0)
     OfpDecl                           -> OfpInterfaceBlock
-    OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfOfpScope0)
-    OfpSubmodule                      -> OfpSubmodule(OptOfpName0,OfpScope)
+    OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfScope0)
+    OfpSubmodule                      -> OfpSubmodule(OptOfpName0,Scope)
     OfpOnlyList                       -> OfpOnlyList(ListStarOfOfpOnly0)
     OfpOnly                           -> OfpOnly(OfpRename)
     OfpOnly                           -> OfpOnly(OfpName)
@@ -1011,12 +1011,15 @@ regular tree grammar
     OfpBeginStmt                      -> OfpModuleStmt
     OfpEndModuleStmt                  -> OfpEndModuleStmt(OptOfpLabel0,OptOfpName0)
     OfpModuleStmt                     -> OfpModuleStmt(OptOfpLabel0,OfpName)
-    OfpModule                         -> OfpModule(OptOfpName0,OfpScope)
-    OfpEndStmt                        -> OfpEndProgramStmt
-    OfpBeginStmt                      -> OfpProgramStmt
-    OfpEndProgramStmt                 -> OfpEndProgramStmt(OptOfpLabel0,OptOfpName0)
-    OfpProgramStmt                    -> OfpProgramStmt(OptOfpLabel0,OfpName)
-    OfpMainProgram                    -> OfpMainProgram(OptOfpName0,OfpScope)
+    OfpModule                         -> OfpModule(OptOfpName0,Scope)
+    OfpEndStmt                        -> EndProgramStmt
+    OfpBeginStmt                      -> ProgramStmt
+
+    ProgramStmt                       -> ProgramStmt(OptOfpLabel0,OfpName)
+    EndProgramStmt                    -> EndProgramStmt(OptOfpLabel0,OptOfpName0)
+
+    MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
+
     OfpStmt                           -> OfpAssignmentStmt
     OfpAssignmentStmt                 -> OfpAssignmentStmt(OptOfpLabel0,OfpVarDef,OfpExpr)
     OfpExpr                           -> OfpPlusExpr(OfpExpr,OfpExpr)
@@ -1096,12 +1099,14 @@ regular tree grammar
     OfpProgramUnit                    -> OfpSubroutine
     OfpProgramUnit                    -> OfpSubmodule
     OfpProgramUnit                    -> OfpModule
-    OfpProgramUnit                    -> OfpMainProgram
-    OfpProgram                        -> OfpProgram(OptOfpFile0,ListPlusOfOfpProgramUnit0)
-    OfpFuncPart                       -> OfpFuncPart(ListStarOfOfpDecl0)
-    OfpExecPart                       -> OfpExecPart(ListStarOfOfpStmt0)
-    OfpSpecPart                       -> OfpSpecPart(ListStarOfOfpDecl0)
-    OfpScope                          -> OfpScope(OfpSpecPart,OfpExecPart,OfpFuncPart,OptOfpBeginStmt0,OptOfpContainsStmt0,OptOfpEndStmt0)
+
+    OfpProgramUnit                    -> MainProgram
+    Program                           -> Program(ListPlusOfOfpProgramUnit0)
+    FuncPart                          -> FuncPart(ListStarOfOfpDecl0)
+    ExecPart                          -> ExecPart(ListStarOfOfpStmt0)
+    SpecPart                          -> SpecPart(ListStarOfOfpDecl0)
+    Scope                             -> Scope(SpecPart,ExecPart,FuncPart,OptOfpBeginStmt0,OptOfpContainsStmt0,OptOfpEndStmt0)
+
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
     OfpName                           -> OfpName(String)
@@ -1305,12 +1310,10 @@ regular tree grammar
     OptProgramName                    -> no-program-name()
     NoProgramName                     -> no-program-name()
     ProgramName                       -> Ident
-    EndProgramStmt                    -> EndProgramStmt(OptLabel,OptProgramName,EOS)
-    EndProgramStmt                    -> EndProgramStmt(OptLabel,NoProgramName,EOS)
-    ProgramStmt                       -> ProgramStmt(OptLabel,ProgramName,EOS)
+
     OptProgramStmt                    -> no-program-stmt()
     OptProgramStmt                    -> ProgramStmt
-    MainProgram                       -> MainProgram(OptProgramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndProgramStmt)
+
     NoKeyword                         -> no-keyword()
     Keyword                           -> Name
     ActionStmt                        -> PauseStmt
@@ -1420,10 +1423,10 @@ regular tree grammar
     ProgramUnit                       -> Submodule
     ProgramUnit                       -> Module
     ProgramUnit                       -> ExternalSubprogram
-    ProgramUnit                       -> MainProgram
+
     OptStartCommentBlock              -> no-comments()
     OptStartCommentBlock              -> StartCommentBlock
-    Program                           -> Program(OptStartCommentBlock,ListPlusOfProgramUnit0)
+
     CharStringEditDesc                -> CS(CharLiteralConstant)
     DecimalEditDesc                   -> DP()
     DecimalEditDesc                   -> DC()
@@ -1733,7 +1736,7 @@ regular tree grammar
     CycleStmt                         -> CycleStmt(OptLabel,DoConstructName,EOS)
     EndDoStmt                         -> EndDoStmt(OptLabel,NoName,EOS)
     EndDoStmt                         -> EndDoStmt(OptLabel,DoConstructName,EOS)
-    ScalarIntVariableName             -> Ident
+    ScalarIntVariableName             -> VarRef(Ident)
     DoVariable                        -> ScalarIntVariableName
     NoExpr                            -> no-expr()
     OptExpr                           -> no-expr()
@@ -1959,7 +1962,7 @@ regular tree grammar
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
-    ScalarVariableName                -> Ident
+    ScalarVariableName                -> VarRef(Ident)
     ParentString                      -> Constant
     ParentString                      -> StructureComponent
     Substring                         -> Substring(ParentString,SubstringRange)
@@ -1967,7 +1970,7 @@ regular tree grammar
     DefaultCharVariable               -> Variable
     CharVariable                      -> Variable
     LogicalVariable                   -> Variable
-    VariableName                      -> Ident
+    VariableName                      -> VarRef(Ident)
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef
