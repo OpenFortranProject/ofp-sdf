@@ -1311,53 +1311,9 @@ regular tree grammar
     NoProgramName                     -> no-program-name()
     ProgramName                       -> Ident
 
-    OptProgramStmt                    -> no-program-stmt()
-    OptProgramStmt                    -> ProgramStmt
-
     NoKeyword                         -> no-keyword()
     Keyword                           -> Name
-    ActionStmt                        -> PauseStmt
-    ActionStmt                        -> EndDoStmt
-    ActionStmt                        -> NonlabelDoStmt
-    ActionStmt                        -> LabelDoStmt
-    ActionStmt                        -> ComputedGotoStmt
-    ActionStmt                        -> ArithmeticIfStmt
-    ActionStmt                        -> WriteStmt
-    ActionStmt                        -> WhereStmt
-    ActionStmt                        -> WaitStmt
-    ActionStmt                        -> UnlockStmt
-    ActionStmt                        -> SyncMemoryStmt
-    ActionStmt                        -> SyncImagesStmt
-    ActionStmt                        -> SyncAllStmt
-    ActionStmt                        -> StopStmt
-    ActionStmt                        -> RewindStmt
-    ActionStmt                        -> ReturnStmt
-    ActionStmt                        -> ReadStmt
-    ActionStmt                        -> PrintStmt
-    ActionStmt                        -> PointerAssignmentStmt
-    ActionStmt                        -> OpenStmt
-    ActionStmt                        -> NullifyStmt
-    ActionStmt                        -> LockStmt
-    ActionStmt                        -> InquireStmt
-    ActionStmt                        -> IfStmt
-    ActionStmt                        -> GotoStmt
-    ActionStmt                        -> ForallStmt
-    ActionStmt                        -> FlushStmt
-    ActionStmt                        -> ExitStmt
-    ActionStmt                        -> ErrorStopStmt
-    ActionStmt                        -> EndfileStmt
-    ActionStmt                        -> EndSubroutineStmt
-    ActionStmt                        -> EndProgramStmt
-    ActionStmt                        -> EndMpSubprogramStmt
-    ActionStmt                        -> EndFunctionStmt
-    ActionStmt                        -> DeallocateStmt
-    ActionStmt                        -> CycleStmt
-    ActionStmt                        -> ContinueStmt
-    ActionStmt                        -> CloseStmt
-    ActionStmt                        -> CallStmt
-    ActionStmt                        -> BackspaceStmt
-    ActionStmt                        -> AssignmentStmt
-    ActionStmt                        -> AllocateStmt
+
     ExecutableConstruct               -> WhereConstruct
     ExecutableConstruct               -> SelectTypeConstruct
     ExecutableConstruct               -> IfConstruct
