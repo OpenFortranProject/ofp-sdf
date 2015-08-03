@@ -1,0 +1,178 @@
+module fast2sage
+
+imports
+   libstratego-lib
+   FAST
+   SgUntyped
+
+signature
+  constructors
+
+    no-label                  : NoLabel         // R312
+    no-program-stmt           : NoProgramStmt   // R1102
+    no-program-name           : NoProgramName   // R1103
+
+strategies
+
+  main =
+    io-wrap(fast2sage)
+
+  fast2sage =
+      innermost(no-to-string)
+    ; innermost(fast-to-sage)
+
+rules
+
+//R204
+//  fast-to-sage:
+//    SpecPart(list)                         -> SgUntypedDeclarationList(list)
+
+//R208
+//  fast-to-sage:
+//    ExecPart(list)                         -> SgUntypedStatementList(list)
+
+//R210,R1107
+//  fast-to-sage:
+//    FuncPart(list)                         -> SgUntypedFunctionDeclarationList(list)
+
+//R503
+//  fast-to-sage:
+//    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
+
+//R510
+//  fast-to-sage:
+//    DimSpec(no-lower-bound(), upper)       -> PpDimSpec(upper)
+//  fast-to-sage:
+//    DimSpec(lower, upper)                  -> PpDimSpec(lower, upper)
+
+//R562
+//  fast-to-sage:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
+//  fast-to-sage:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
+
+//R612
+//  fast-to-sage:
+//    PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
+
+//R631
+//  fast-to-sage:  Allocation(part,[],[])                 -> PpAllocation(part)
+//  fast-to-sage:  Allocation(part,shape,[])              -> PpAllocationShape(part,shape)
+//  fast-to-sage:  Allocation(part,[],coshape)            -> PpAllocationCoshape(part,coshape)
+
+//R633
+//  fast-to-sage:  AllocateShapeSpec(no-lower-bound(),ub) -> PpAllocShapeSpec(ub)
+//  fast-to-sage:  AllocateShapeSpec(lb,ub)               -> PpAllocShapeSpec(lb,ub)
+
+//R637
+//  fast-to-sage:  AllocateCoshapeSpec(no-lower-bound(),ub) -> PpAllocCoshapeSpec(ub)
+//  fast-to-sage:  AllocateCoshapeSpec(lb,ub)               -> PpAllocCoshapeSpec(lb,ub)
+
+//R803
+//  fast-to-sage:
+//    AssociateStmt(label,name,list,eos) -> PpAssociateStmt(label,<append-colon>name,list,eos)
+
+//R817
+//  fast-to-sage:
+//    NonlabelDoStmt(label,name,loopcontrol,eos) -> PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
+
+//R838
+//  fast-to-sage:
+//    SelectCaseStmt(label,name,expr,eos)    -> PpSelectCaseStmt(label,<append-colon>name,expr,eos)
+
+//R847
+//  fast-to-sage:
+//    SelectTypeStmt(label,name,name,selector,eos) -> PpSelectTypeStmt(label,<append-colon>name,name,selector,eos)
+
+//R860
+//  fast-to-sage:
+//    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+
+//R1101
+fast-to-sage =
+{l1,l2,l3
+  :  ?MainProgram(ProgramStmt(label,name),Scope(SpecPart(l1),ExecPart(l2),FuncPart(l3)),end)
+  ;  !SgUntypedProgramHeaderDeclaration(label,
+                                        "main-program",
+                                        name,
+                                        SgUntypedInitializedNameList([]),
+                                        SgUntypedTypeVoid(),
+                                        SgUntypedFunctionScope(label,"main-program",
+                                                               SgUntypedDeclarationList(l1),
+                                                               SgUntypedStatementList(l2),
+                                                               SgUntypedFunctionDeclarationList(l3)),
+                                        end)
+}
+
+//R1102
+  fast-to-sage: no-program-stmt()           -> ProgramStmt("", "")
+
+//R1103
+  fast-to-sage:  EndProgramStmt(label,name) -> SgUntypedNamedStatement(label,"end-program-stmt",name)
+
+//R1104
+//  fast-to-sage:  OfpModule(name, scope)       -> PpModule(scope)
+
+//R1116
+//  fast-to-sage:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
+
+//R1222
+//  fast-to-sage:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
+
+//R1227
+//  fast-to-sage:  OfpFunction(name, scope)     -> PpFunction(scope)
+
+//R1233
+//  fast-to-sage:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
+
+//R1237
+//  fast-to-sage:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
+
+
+  no-to-string: no-label()                   -> ""   // R312
+  no-to-string: no-program-name()            -> ""   // R1103
+//  no-to-none: no-program-stmt()            -> None()   // R1102
+//  no-to-none: no-kind-param()              -> None()   // R408
+//  no-to-none: no-char-selector()           -> None()   // R420
+//  no-to-none: no-char-length()             -> None()   // R503
+//  no-to-none: no-init()                    -> None()   // R503
+//  no-to-none: no-kind()                    -> None()   // R405
+//  no-to-none: no-prefix()                  -> None()   // R1225
+//  no-to-none: no-language-binding()        -> None()   // R1229
+//  no-to-none: no-generic-spec()            -> None()   // R1204
+//  no-to-none: no-module-name()             -> None()   // R1106
+//  no-to-none: no-module-nature()           -> None()   // R1109
+//  no-to-none: no-block-data-name()         -> None()   // R1122
+//  no-to-none: no-proc-interface()          -> None()   // R1212
+//  no-to-none: no-subroutine-name()         -> None()   // R1236
+//  no-to-none: no-binding-name()            -> None()   // R508
+//  no-to-none: no-expr()                    -> None()   // R1241
+//  no-to-none: no-stop-code()               -> None()   // R857
+//  no-to-none: no-r()                       -> None()   // R1004
+//  no-to-none: no-m()                       -> None()   // R1007
+//  no-to-none: no-e()                       -> None()   // R1007
+//  no-to-none: no-name()                    -> None()   // R839, R850
+//  no-to-none: no-parent-submodule-name()   -> None()   // R1118
+//  no-to-none: no-high()                    -> None()   // R844
+//  no-to-none: no-low()                     -> None()   // R844
+//  no-to-none: no-stride()                  -> None()   // R920
+//  no-to-none: no-type-spec()               -> None()   // R626
+//  no-to-none: no-lower-bound()             -> None()   // R633
+//  no-to-none: no-component-name()          -> None()   // R734
+//  no-to-none: no-upper-bounds()            -> None()   // R736
+//  no-to-none: no-type-bound-procedure-part()  -> None()   //R445
+//  no-to-none: no-binding-private-stmt()    -> None()   // R446
+//  no-to-none: no-arg-name()                -> None()   // R451
+//  no-to-none: no-subprogram-part()         -> None()   // R210
+//  no-to-none: no-repeat()                  -> None()   // R541
+//  no-to-none: no-forall-step()             -> None()   // R753
+//  no-to-none: no-mask-expr()               -> None()   // R752
+//  no-to-none: no-else-stmt()               -> None()   // R832
+//  no-to-none: no-loop-control()            -> None()   // R818
+//  no-to-none: no-subscript()               -> None()   // R619
+
+//  no-to-none: PpKeyword(no-keyword())      -> None()   // R215
+
+//  no-to-none: PpArraySpec([])              -> None()   // R515
+//  no-to-none: PpCoarraySpec([])            -> None()   // R509
+
+//  no-to-none: PpSectionSubscripts(no-section-subscripts()) -> None()
+//  no-to-none: PpImageSelector(no-image-selector())         -> None()
