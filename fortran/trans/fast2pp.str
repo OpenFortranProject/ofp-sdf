@@ -9,7 +9,6 @@ signature
 
     PpScope        : SpecPart * ExecPart -> PpScope
 
-    PpModule       : OfpModule       -> PpModule
     PpSubmodule    : OfpSubmodule    -> PpSubmodule
     PpFunction     : OfpFunction     -> PpFunction
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
@@ -132,7 +131,7 @@ rules
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
 
 //R1104
-  ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
+//  ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
 
 //R1116
   ast-to-pp:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
@@ -144,7 +143,7 @@ rules
   ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
 
 //R1233
-  ast-to-pp:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
+//  ast-to-pp:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
 
 //R1237
   ast-to-pp:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
