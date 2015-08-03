@@ -1,6 +1,7 @@
 [
    Comment                       -- _1,
-   None                          -- ,
+
+   no-label                      -- ,
 
    append-colon                  -- _1 KW[": "],
 
@@ -704,6 +705,7 @@
 
    ProgramStmt                   -- H hs=1 [_1 KW["PROGRAM"] _2],
    EndProgramStmt                -- H hs=1 [_1 KW["END PROGRAM"] _2],
+   no-program-name               -- ,
 
    #R1104 --,
    PpModule                      -- _1,
@@ -756,7 +758,7 @@
 
    #R1205 --,
    Scope                         -- V vs=0 [_1 _2 _3],
-   ppScope                       -- V vs=0 [_1 _2],
+   PpScope                       -- V vs=0 [_1 _2],
    xxxScope                      -- V vs=0 [H hs=1[_1] _2 V vs=1 is=0 [_3]],
    xxxInterfaceBody              -- _1 _2 _3,
 
@@ -842,6 +844,5 @@
 
    #R1242 --,
    ContainsStmt                        -- H hs=1[_1 KW["CONTAINS"] _2]
-
 
 ]
