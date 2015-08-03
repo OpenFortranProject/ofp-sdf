@@ -1105,7 +1105,7 @@ regular tree grammar
     FuncPart                          -> FuncPart(ListStarOfOfpDecl0)
     ExecPart                          -> ExecPart(ListStarOfOfpStmt0)
     SpecPart                          -> SpecPart(ListStarOfOfpDecl0)
-    Scope                             -> Scope(SpecPart,ExecPart,FuncPart,OptOfpBeginStmt0,OptOfpContainsStmt0,OptOfpEndStmt0)
+    Scope                             -> Scope(SpecPart,ExecPart,FuncPart)
 
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
