@@ -19,7 +19,8 @@ all : Fortran.tbl
 FAST.def : FAST.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
 
-FAST.rtg : FAST.def
+#FAST.rtg : FAST.def
+FAST.rtg :
 	$(ST_PATH)/sdf2rtg -i FAST.def -m FAST -o FAST.rtg
 
 FAST.str : FAST.rtg
