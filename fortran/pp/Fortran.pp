@@ -708,13 +708,11 @@
    no-program-name               -- ,
 
    #R1104 --,
-   PpModule                      -- _1,
+   Module                        -- V vs=0 [_1 _2 _3],
 
-   #R1105 --, 
-   ModuleStmt                    -- V vs=0 [H hs=1[_1 KW["MODULE"] _2 _3]],
- 
-   #R1106 --, 
-   EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"]_2 _3],
+   ModuleStmt                    -- H hs=1 [_1 KW["MODULE"] _2],
+   EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"] _2],
+   no-module-name                -- ,
 
    #R1109 --,
    UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
