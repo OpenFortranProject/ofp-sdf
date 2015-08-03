@@ -2,6 +2,7 @@
 regular tree grammar
   start Program
   productions
+
     OptOfpLabel0                      -> <some>(OfpLabel)
     OptOfpLabel0                      -> <none>()
     OptOfpName0                       -> <some>(OfpName)
@@ -1638,8 +1639,11 @@ regular tree grammar
     ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef0,Expr,EOS)
     GotoStmt                          -> GotoStmt(OptLabel,LblRef,EOS)
     ConstructName                     -> Ident
+
+    OfpStmt                           -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,NoName,EOS)
     ExitStmt                          -> ExitStmt(OptLabel,ConstructName,EOS)
+
     OptSelectConstructName            -> no-name()
     OptSelectConstructName            -> SelectConstructName
     NoSelectConstructName             -> no-name()

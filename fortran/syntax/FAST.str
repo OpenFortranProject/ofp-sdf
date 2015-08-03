@@ -56,10 +56,6 @@ signature
     OfpShape                    : List(DimSpec) -> OfpShape
     OfpAllocation               : OfpVarRef * Option(OfpShape) * Option(OfpCoshape) -> OfpAllocation
                                 : OfpExpr -> OfpAllocOpt
-                                : OfpCallStmt -> OfpStmt
-                                : OfpUseStmt -> OfpStmt
-                                : OfpAssignmentStmt -> OfpStmt
-                                : OfpAllocateStmt -> OfpStmt
     OfpAllocateStmt             : Option(OfpLabel) * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
     OfpVarRef                   : OfpName -> OfpVarRef
     OfpVarDef                   : OfpName -> OfpVarDef
@@ -171,6 +167,14 @@ signature
                                 : Ident -> ProcedureName
     no-keyword                  : NoKeyword
                                 : Name -> Keyword
+                                : Ident -> ConstructName
+                                : OfpCallStmt -> OfpStmt
+                                : OfpUseStmt -> OfpStmt
+                                : OfpAssignmentStmt -> OfpStmt
+                                : OfpAllocateStmt -> OfpStmt
+                                : ExitStmt -> OfpStmt
+    ExitStmt                    : OptLabel * NoName * EOS -> ExitStmt
+    ExitStmt                    : OptLabel * ConstructName * EOS -> ExitStmt
     VarRef                      : Ident -> ScalarIntVariableName
                                 : ScalarIntVariableName -> DoVariable
     no-expr                     : OptExpr
@@ -330,6 +334,8 @@ signature
     COLON                       : TypeParamValue
     STAR                        : TypeParamValue
                                 : Expr -> TypeParamValue
+    no-label                    : OptLabel
+                                : LblDef -> OptLabel
                                 : LblDef -> Label
                                 : Name -> NamedConstant
                                 : BozLiteralConstant -> LiteralConstant
@@ -339,7 +345,9 @@ signature
                                 : RealLiteralConstant -> LiteralConstant
                                 : IntLiteralConstant -> LiteralConstant
                                 : LiteralConstant -> Constant
+    no-name                     : NoName
                                 : Ident -> Name
+    eos                         : EOStmt -> EOS
                                 : String -> Dop
                                 : String -> HexConstant
                                 : String -> OctalConstant
@@ -349,6 +357,7 @@ signature
                                 : String -> Icon
                                 : String -> Ident
                                 : String -> LblDef
+                                : String -> EOStmt
 
 
 signature
