@@ -3,8 +3,17 @@ module FAST
 signature
   constructors
     OfpMpSubprogram             : Option(OfpName) * Scope -> OfpMpSubprogram
-    OfpSubroutine               : OfpName * Scope -> OfpSubroutine
+    OfpSuffix                   : List(OfpSuffixSpec) -> OfpSuffix
+    OfpResultName               : OfpName -> OfpResultName
+    OfpResultName               : OfpResultName -> OfpSuffixSpec
+    OfpLanguageBinding          : OfpLanguageBinding -> OfpSuffixSpec
     OfpFunction                 : OfpName * Scope -> OfpFunction
+    RECURSIVE                   : RECURSIVE -> OfpPrefixSpec
+    PURE                        : PURE -> OfpPrefixSpec
+    MODULE                      : MODULE -> OfpPrefixSpec
+    IMPURE                      : IMPURE -> OfpPrefixSpec
+    ELEMENTAL                   : ELEMENTAL -> OfpPrefixSpec
+    OfpPrefix                   : List(OfpPrefixSpec) -> OfpPrefix
     OfpArg                      : OfpExpr * OfpKeyword -> OfpArg
     OfpArg                      : OfpExpr -> OfpArg
     OfpProcRef                  : OfpExpr -> OfpProcRef
@@ -40,10 +49,27 @@ signature
     INTRINSIC                   : INTRINSIC -> OfpModuleNature
     OfpUseStmt                  : Option(OfpLabel) * Option(OfpModuleNature) * OfpName * OfpOnlyList -> OfpUseStmt
     OfpUseStmt                  : Option(OfpLabel) * Option(OfpModuleNature) * OfpName * OfpRenameList -> OfpUseStmt
-    OfpModule                   : Option(OfpName) * Scope -> OfpModule
-    ProgramStmt                 : Option(OfpLabel) * OfpName -> ProgramStmt
-    EndProgramStmt              : Option(OfpLabel) * Option(OfpName) -> EndProgramStmt
     MainProgram                 : ProgramStmt * Scope * EndProgramStmt -> MainProgram
+    ProgramStmt                 : OptLabel * Name -> ProgramStmt
+    EndProgramStmt              : OptLabel * OptProgramName -> EndProgramStmt
+                                : ProgramName -> OptProgramName
+    no-program-name             : OptProgramName
+                                : Ident -> ProgramName
+    Module                      : ModuleStmt * Scope * EndModuleStmt -> Module
+    ModuleStmt                  : OptLabel * ModuleName -> ModuleStmt
+    EndModuleStmt               : OptLabel * OptModuleName -> EndModuleStmt
+                                : ModuleName -> OptModuleName
+    no-module-name              : OptModuleName
+                                : Ident -> ModuleName
+    Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
+    SubroutineStmt              : OptLabel * OfpName * OfpArgList * OfpPrefix * OfpSuffix -> SubroutineStmt
+    EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
+                                : SubroutineName -> OptSubroutineName
+    no-subroutine-name          : OptSubroutineName
+                                : Ident -> SubroutineName
+    OfpArgList                  : List(OfpDummyArg) -> OfpArgList
+    STAR                        : STAR -> OfpDummyArg
+    OfpDummyArg                 : String -> OfpDummyArg
     OfpAssignmentStmt           : Option(OfpLabel) * OfpVarDef * OfpExpr -> OfpAssignmentStmt
     GE                          : GE
     GT                          : GT
@@ -84,6 +110,7 @@ signature
     DimSpec                     : OfpExpr * OfpExpr -> DimSpec
     OfpExplicitShape            : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape          : List(DimSpec) -> OfpExplicitCoshape
+    OfpLanguageBinding          : Option(OfpName) -> OfpLanguageBinding
                                 : String -> OfpInitialization
                                 : String -> OfpCharLength
                                 : String -> OfpCoarraySpec
@@ -121,9 +148,9 @@ signature
                                 : EQ -> OfpOp
     OfpOp                       : String -> OfpOp
                                 : OfpFunction -> OfpProgramUnit
-                                : OfpSubroutine -> OfpProgramUnit
+                                : Subroutine -> OfpProgramUnit
                                 : OfpSubmodule -> OfpProgramUnit
-                                : OfpModule -> OfpProgramUnit
+                                : Module -> OfpProgramUnit
                                 : MainProgram -> OfpProgramUnit
     Program                     : List(OfpProgramUnit) -> Program
     FuncPart                    : List(OfpDecl) -> FuncPart
@@ -135,6 +162,13 @@ signature
     OfpName                     : String -> OfpName
     OfpKeyword                  : String -> OfpKeyword
     OfpLabel                    : String -> OfpLabel
+    STAR                        : STAR
+                                : String -> STAR
+                                : String -> RECURSIVE
+                                : String -> PURE
+                                : String -> MODULE
+                                : String -> IMPURE
+                                : String -> ELEMENTAL
     ASSIGNMENT                  : ASSIGNMENT
                                 : String -> ASSIGNMENT
                                 : String -> ABSTRACT
@@ -346,6 +380,7 @@ signature
                                 : IntLiteralConstant -> LiteralConstant
                                 : LiteralConstant -> Constant
     no-name                     : NoName
+    Name                        : String -> Name
                                 : Ident -> Name
     eos                         : EOStmt -> EOS
                                 : String -> Dop

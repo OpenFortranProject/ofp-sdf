@@ -937,15 +937,7 @@ regular tree grammar
     OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptOfpLabel0,OptOfpName0)
     OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptOfpLabel0,OfpName)
     OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,Scope)
-    OfpEndStmt                        -> OfpEndSubroutineStmt
-    OfpBeginStmt                      -> OfpSubroutineStmt
-    OfpEndSubroutineStmt              -> OfpEndSubroutineStmt(OptOfpLabel0,OptOfpName0)
-    OfpArgList                        -> OfpArgList(ListStarOfOfpDummyArg0)
-    STAR                              -> STAR()
-    OfpDummyArg                       -> STAR(STAR)
-    OfpDummyArg                       -> OfpDummyArg(String)
-    OfpSubroutineStmt                 -> OfpSubroutineStmt(OptOfpLabel0,OfpName,OfpArgList,OfpPrefix,OfpSuffix)
-    OfpSubroutine                     -> OfpSubroutine(OfpName,Scope)
+
     OfpEndStmt                        -> OfpEndFunctionStmt
     OfpBeginStmt                      -> OfpFunctionStmt
     OfpEndFunctionStmt                -> OfpEndFunctionStmt(OptOfpLabel0,OptOfpName0)
@@ -1008,18 +1000,41 @@ regular tree grammar
     OfpStmt                           -> OfpUseStmt
     OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpOnlyList)
     OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpRenameList)
-    OfpEndStmt                        -> OfpEndModuleStmt
-    OfpBeginStmt                      -> OfpModuleStmt
-    OfpEndModuleStmt                  -> OfpEndModuleStmt(OptOfpLabel0,OptOfpName0)
-    OfpModuleStmt                     -> OfpModuleStmt(OptOfpLabel0,OfpName)
-    OfpModule                         -> OfpModule(OptOfpName0,Scope)
-    OfpEndStmt                        -> EndProgramStmt
-    OfpBeginStmt                      -> ProgramStmt
-
-    ProgramStmt                       -> ProgramStmt(OptOfpLabel0,OfpName)
-    EndProgramStmt                    -> EndProgramStmt(OptOfpLabel0,OptOfpName0)
 
     MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
+    OfpBeginStmt                      -> ProgramStmt
+    ProgramStmt                       -> ProgramStmt(OptLabel,Name)
+    OfpEndStmt                        -> EndProgramStmt
+    EndProgramStmt                    -> EndProgramStmt(OptLabel,OptProgramName)
+
+    OptProgramName                    -> ProgramName
+    OptProgramName                    -> no-program-name()
+    ProgramName                       -> Ident
+
+    Module                            -> Module(ModuleStmt,Scope,EndModuleStmt)
+    OfpBeginStmt                      -> ModuleStmt
+    ModuleStmt                        -> ModuleStmt(OptLabel,ModuleName)
+    OfpEndStmt                        -> EndModuleStmt
+    EndModuleStmt                     -> EndModuleStmt(OptLabel,OptModuleName)
+
+    OptModuleName                     -> ModuleName
+    OptModuleName                     -> no-module-name()
+    ModuleName                        -> Ident
+
+    Subroutine                        -> Subroutine(SubroutineStmt,Scope,EndSubroutineStmt)
+    OfpBeginStmt                      -> SubroutineStmt
+    SubroutineStmt                    -> SubroutineStmt(OptLabel,OfpName,OfpArgList,OfpPrefix,OfpSuffix)
+    OfpEndStmt                        -> EndSubroutineStmt
+    EndSubroutineStmt                 -> EndSubroutineStmt(OptLabel,OptSubroutineName)
+
+    OptSubroutineName                 -> SubroutineName
+    OptSubroutineName                 -> no-subroutine-name()
+    SubroutineName                    -> Ident
+
+    OfpArgList                        -> OfpArgList(ListStarOfOfpDummyArg0)
+    STAR                              -> STAR()
+    OfpDummyArg                       -> STAR(STAR)
+    OfpDummyArg                       -> OfpDummyArg(String)
 
     OfpStmt                           -> OfpAssignmentStmt
     OfpAssignmentStmt                 -> OfpAssignmentStmt(OptOfpLabel0,OfpVarDef,OfpExpr)
@@ -1097,9 +1112,9 @@ regular tree grammar
     OfpOp                             -> OfpOp(String)
     OfpLiteral                        -> OfpLiteral(String,OfpType)
     OfpProgramUnit                    -> OfpFunction
-    OfpProgramUnit                    -> OfpSubroutine
+    OfpProgramUnit                    -> Subroutine
     OfpProgramUnit                    -> OfpSubmodule
-    OfpProgramUnit                    -> OfpModule
+    OfpProgramUnit                    -> Module
 
     OfpProgramUnit                    -> MainProgram
     Program                           -> Program(ListPlusOfOfpProgramUnit0)
@@ -1111,6 +1126,7 @@ regular tree grammar
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
     OfpName                           -> OfpName(String)
+    Name                              -> Name(String)
     OfpKeyword                        -> OfpKeyword(String)
     OfpLabel                          -> OfpLabel(String)
     STAR                              -> <string>
@@ -1134,20 +1150,14 @@ regular tree grammar
     EndMpSubprogramStmt               -> EndMpSubprogramStmt(OptLabel,NoProcedureName,EOS)
     MpSubprogramStmt                  -> MpSubprogramStmt(OptLabel,ProcedureName,EOS)
     SeparateModuleSubprogram          -> SeparateModuleSubprogram(MpSubprogramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
-    OptSubroutineName                 -> SubroutineName
-    OptSubroutineName                 -> no-subroutine-name()
-    NoSubroutineName                  -> no-subroutine-name()
-    SubroutineName                    -> Ident
-    EndSubroutineStmt                 -> EndSubroutineStmt(OptLabel,OptSubroutineName,EOS)
-    EndSubroutineStmt                 -> EndSubroutineStmt(OptLabel,NoSubroutineName,EOS)
+
     NoDummyArgList                    -> no-list()
     OptDummyArgList                   -> no-list()
     OptDummyArgList                   -> DummyArgList
     DummyArgList                      -> ListPlusOfDummyArg0
     DummyArg                          -> STAR()
     DummyArg                          -> DummyArgName
-    SubroutineStmt                    -> SubroutineStmt(OptLabel,OptPrefix,SubroutineName,NoDummyArgList,NoProcLanguageBindingSpec,EOS)
-    SubroutineStmt                    -> SubroutineStmt(OptLabel,OptPrefix,SubroutineName,OptDummyArgList,OptProcLanguageBindingSpec,EOS)
+
     SubroutineSubprogram              -> SubroutineSubprogram(SubroutineStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndSubroutineStmt)
     OptFunctionName                   -> FunctionName
     OptFunctionName                   -> no-function-name()
@@ -1299,18 +1309,6 @@ regular tree grammar
     OptModuleSubprogramPart           -> no-module-subprogram-part()
     OptModuleSubprogramPart           -> ModuleSubprogramPart
     ModuleSubprogramPart              -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
-    OptModuleName                     -> ModuleName
-    OptModuleName                     -> no-module-name()
-    NoModuleName                      -> no-module-name()
-    ModuleName                        -> Ident
-    EndModuleStmt                     -> EndModuleStmt(OptLabel,OptModuleName,EOS)
-    EndModuleStmt                     -> EndModuleStmt(OptLabel,NoModuleName,EOS)
-    ModuleStmt                        -> ModuleStmt(OptLabel,ModuleName,EOS)
-    Module                            -> Module(ModuleStmt,SpecificationPart,OptModuleSubprogramPart,EndModuleStmt)
-    OptProgramName                    -> ProgramName
-    OptProgramName                    -> no-program-name()
-    NoProgramName                     -> no-program-name()
-    ProgramName                       -> Ident
 
     NoKeyword                         -> no-keyword()
     Keyword                           -> Name
