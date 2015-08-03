@@ -1,9 +1,9 @@
 include ../../make.inc
 
-CFLAGS = $(ST_CFLAGS) -I ../syntax
+CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../../ROSE
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : ofp-simplify ofp2fast fast2pp no-to-none
+all : ofp-simplify ofp2fast fast2pp fast2sage no-to-none
 
 ofp-simplify : ofp-simplify.str
 	$(ST_PATH)/strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
@@ -17,8 +17,14 @@ ofp2fast : ofp2fast.str ofp-simplify no-to-none
 fast2pp : fast2pp.str no-to-none
 	$(ST_PATH)/strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
 
+fast2sage : fast2sage.str no-to-none
+	$(ST_PATH)/strc -i fast2sage.str $(CFLAGS) $(LDFLAGS)
+
 check : ofp-simplify ofp2fast
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
+
+check-sage : fast2sage
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2sage | pp-aterm
 
 unparse : ofp-simplify ofp2fast
 	@echo "------------"
