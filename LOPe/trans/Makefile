@@ -26,10 +26,13 @@ FCFLAGS = -I ForOpenCL
 	$(FC) -c $(FCFLAGS) -o $@ $<
 
 
-all : lope-to-foropencl
+all : lope-to-foropencl sg-const-folding
 
 lope-lower : lope-lower.str
 	$(ST_PATH)/strc -i lope-lower.str $(CFLAGS) $(LDFLAGS) --main io-lope-lower
+
+sg-const-folding : sg-const-folding.str
+	$(ST_PATH)/strc -i sg-const-folding.str $(CFLAGS) $(LDFLAGS) --main io-sg-const-folding
 
 lope-to-foropencl : lope-to-foropencl.str
 	$(ST_PATH)/strc -i lope-to-foropencl.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-foropencl
