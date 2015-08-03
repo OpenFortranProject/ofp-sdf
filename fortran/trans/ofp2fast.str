@@ -19,6 +19,8 @@ signature
   OfpString : A -> B            /* node for a string literal */
   ERROR     : A -> B            /* error reporting for a node */
 
+  comment : A -> B              /* need a better way to remove comments */
+
   COLON     :      COLON
 
 strategies //=================START OF STRATEGIES============================
@@ -27,6 +29,8 @@ strategies //=================START OF STRATEGIES============================
 
   ofp2fast =
       ofp-simplify
+    ; outermost(to-comment)
+    ; outermost(from-comment)
     ; innermost(ofp-to-ast)
     ; topdown(try(fast-fixup-spec-part))
     ; topdown(try(fast-fixup-do-constructs))
@@ -46,15 +50,18 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-char-select = id
   ofp-kind = id
-  ofp-args = !OfpArgList(<id>)
+//  ofp-args = !OfpArgList(<id>)
 
-  ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
-  ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
+//  ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
+//  ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
   ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
   ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
 
 rules //========================START OF RULES===============================
+
+  to-comment:    eos(_)       -> comment("\n")
+  from-comment:  comment(str) -> eos(str)
 
   ofp-extract-name:  no-program-stmt()                      -> None()
   ofp-extract-name:  ModuleStmt       (_,name,_)            -> name
@@ -64,18 +71,14 @@ rules //========================START OF RULES===============================
   ofp-extract-name:  SubroutineStmt   (_,_,name,_,_,_)      -> name
   ofp-extract-name:  FunctionStmt     (_,_,name,_,_,_)      -> name
 
-  ofp-extract-subprograms:  no-subprogram-part()            -> OfpFuncPart([])
-  ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> OfpFuncPart(subprograms)
+  ofp-extract-subprograms:  no-subprogram-part()            -> FuncPart([])
+  ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> FuncPart(subprograms)
 
   ofp-extract-contains:  no-subprogram-part()               -> None()
   ofp-extract-contains:  SubprogramPart(contains,_)         -> contains
 
   ofp-fixup-scope:
-      OfpScope(spec,exec,funcs,begin,_,end)
-         -> OfpScope(spec,exec,<ofp-extract-subprograms>funcs,
-                               <ofp-add-some>begin,
-                               <ofp-extract-contains>funcs,
-                               <ofp-add-some>end)
+      Scope(spec,exec,funcs) -> Scope(spec,exec,<ofp-extract-subprograms>funcs)
 
 // The fast-fixup-spec-part strategy transfers statements in the execution-part to the
 // specification-part.  The statements transferred are in the execution-part because
@@ -85,10 +88,10 @@ rules //========================START OF RULES===============================
 
 fast-fixup-spec-part =
 {spec_list
-  :  ?OfpScope(OfpSpecPart(slist),OfpExecPart(elist),funcs,begin,contains,end)
+  :  ?Scope(SpecPart(slist),ExecPart(elist),funcs)
   ;  <concat>[slist,<take-while(is-specification-part)> elist] => spec_list
   ;  <drop-while(is-specification-part)> elist
-  ;  !OfpScope(OfpSpecPart(spec_list),OfpExecPart(<id>),funcs,begin,contains,end)
+  ;  !Scope(SpecPart(spec_list),ExecPart(<id>),funcs)
 }
 
 // TODO - add derived-type-def, enum-def, interface-block
@@ -108,10 +111,10 @@ is-specification-part =
 //
 fast-fixup-do-constructs =
 {exec_list
-  :  ?OfpScope(spec_part,OfpExecPart(elist),funcs,begin,contains,end)
+  :  ?Scope(spec_part,ExecPart(elist),funcs)
   ;  <fast-fixup-do-construct> ([],elist)
   ;  ?(before,rest)
-  ;  !OfpScope(spec_part,OfpExecPart(<concat>[before,rest]),funcs,begin,contains,end)
+  ;  !Scope(spec_part,ExecPart(<concat>[before,rest]),funcs)
 }
 
 // This strategy uses recursion to build multiple OfpBlockDoConstructs from
@@ -138,18 +141,18 @@ match-end-do =
 
 
 //R201
-  ofp-to-ast:  Program(no-comments(), ProgramUnits) -> OfpProgram(None(),ProgramUnits)
-  ofp-to-ast:  Program(str,           ProgramUnits) -> OfpProgram(None(),ProgramUnits) {Comment(str)}
+  ofp-to-ast:  Program(no-comments(), ProgramUnits) -> Program(ProgramUnits)
+  ofp-to-ast:  Program(str,           ProgramUnits) -> Program(ProgramUnits) {Comment(str)}
 
 //R204
   ofp-to-ast:
-    SpecificationPart(l1)                        -> OfpSpecPart(l1)
+    SpecificationPart(l1)                        -> SpecPart(l1)
 
   ofp-to-ast:
-    InitialSpecPart(l1)                          -> OfpSpecPart(l1)
+    InitialSpecPart(l1)                          -> SpecPart(l1)
 
 //R208
-  ofp-to-ast:  SpecAndExecPart(stmts)            -> OfpExecPart(stmts)
+  ofp-to-ast:  SpecAndExecPart(stmts)            -> ExecPart(stmts)
 
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
@@ -217,24 +220,31 @@ match-end-do =
 
 //R1101
   ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
-                  -> OfpMainProgram(<ofp-extract-name>begin,
-                                    <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
+                  -> MainProgram(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
+
+//R1102
+  ofp-to-ast:  ProgramStmt(label,name,eos("\n")) -> ProgramStmt(label,name)
+  ofp-to-ast:  ProgramStmt(label,name,eos(str) ) -> ProgramStmt(label,name) {Comment(str)}
+
+//R1102
+  ofp-to-ast:  EndProgramStmt(label,name,eos("\n")) -> EndProgramStmt(label,name)
+  ofp-to-ast:  EndProgramStmt(label,name,eos(str) ) -> EndProgramStmt(label,name) {Comment(str)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,no-module-subprogram-part(),end)
                   -> OfpModule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
+                     Scope(spec,ExecPart([]),FuncPart([])))
   ofp-to-ast:  Module(begin,spec,ModuleSubprogramPart(contains,l),end)
                   -> OfpModule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
+                     Scope(spec,ExecPart([]),FuncPart(l)))
 
 //R1116
   ofp-to-ast:  Submodule(begin,spec,no-module-subprogram-part(),end)
                   -> OfpSubmodule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart([]),<ofp-add-some>begin,None(),<ofp-add-some>end))
+                     Scope(spec,ExecPart([]),FuncPart([])))
   ofp-to-ast:  Submodule(begin,spec,ModuleSubprogramPart(contains,l),end)
                   -> OfpSubmodule(<ofp-extract-name>begin,
-                     OfpScope(spec,OfpExecPart([]),OfpFuncPart(l),<ofp-add-some>begin,<ofp-add-some>contains,<ofp-add-some>end))
+                     Scope(spec,ExecPart([]),FuncPart(l)))
 
 //R1207
 //  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
@@ -247,19 +257,18 @@ match-end-do =
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
-                   -> OfpFunction(<ofp-extract-name>begin,
-                                  OfpScope(spec,exec,funcs,<ofp-add-some>begin,None(),<ofp-add-some>end))
+                   -> OfpFunction(<ofp-extract-name>begin,Scope(spec,exec,funcs))
 
 //R1231
-  ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
-  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
+//  ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
+//  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
                    -> OfpSubroutine(<ofp-extract-name>begin,
-                                    <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
+                                    <ofp-fixup-scope>Scope(spec,exec,funcs))
 
 //R1237
   ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
                    -> OfpMpSubprogram(<ofp-extract-name>begin,
-                                      <ofp-fixup-scope>OfpScope(spec,exec,funcs,begin,None(),end))
+                                      <ofp-fixup-scope>Scope(spec,exec,funcs))
