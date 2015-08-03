@@ -1,7 +1,8 @@
 !! R720 or-op
 !    is  .OR.
+logical :: a, b
 
-a=1 .or. 2
-a = 1.or.2 .or. .not. 3
+a = .true. .OR. .false.
+a = a .OR. b .OR. .NOT. .FALSE.
 
 end
