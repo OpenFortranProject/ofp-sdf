@@ -53,6 +53,14 @@ check : $(TBL)
              echo $$file "		FAILED!"; \
            fi; \
         done;
+	@for file in *.fxx ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
 
 test :
 	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
