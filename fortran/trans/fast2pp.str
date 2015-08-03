@@ -9,6 +9,7 @@ signature
 
     PpMainProgram  : OfpMainProgram  -> PpMainProgram
     PpModule       : OfpModule       -> PpModule
+    PpSubmodule    : OfpSubmodule    -> PpSubmodule
     PpFunction     : OfpFunction     -> PpFunction
     PpSubroutine   : OfpSubroutine   -> PpSubroutine
     PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
@@ -129,6 +130,9 @@ rules
 
 //R1104
   ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
+
+//R1116
+  ast-to-pp:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
 
 //R1222
   ast-to-pp:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
