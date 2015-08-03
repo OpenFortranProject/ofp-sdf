@@ -64,11 +64,8 @@ rules //========================START OF RULES===============================
   from-comment:  comment(str) -> eos(str)
 
   ofp-extract-name:  no-program-stmt()                      -> None()
-  ofp-extract-name:  ModuleStmt       (_,name,_)            -> name
   ofp-extract-name:  SubmoduleStmt    (_,_,name,_)          -> name
-  ofp-extract-name:  ProgramStmt      (_,name,_)            -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
-  ofp-extract-name:  SubroutineStmt   (_,_,name,_,_,_)      -> name
   ofp-extract-name:  FunctionStmt     (_,_,name,_,_,_)      -> name
 
   ofp-extract-subprograms:  no-subprogram-part()            -> FuncPart([])
@@ -232,11 +229,17 @@ match-end-do =
 
 //R1104
   ofp-to-ast:  Module(begin,spec,no-module-subprogram-part(),end)
-                  -> OfpModule(<ofp-extract-name>begin,
-                     Scope(spec,ExecPart([]),FuncPart([])))
+                  -> Module(begin, Scope(spec, ExecPart([]), FuncPart([])), end)
   ofp-to-ast:  Module(begin,spec,ModuleSubprogramPart(contains,l),end)
-                  -> OfpModule(<ofp-extract-name>begin,
-                     Scope(spec,ExecPart([]),FuncPart(l)))
+                  -> Module(begin, Scope(spec, ExecPart([]), FuncPart(l)),  end)
+
+//R1105
+  ofp-to-ast:  ModuleStmt(label,name,eos("\n")) -> ModuleStmt(label,name)
+  ofp-to-ast:  ModuleStmt(label,name,eos(str) ) -> ModuleStmt(label,name) {Comment(str)}
+
+//R1106
+  ofp-to-ast:  EndModuleStmt(label,name,eos("\n")) -> EndModuleStmt(label,name)
+  ofp-to-ast:  EndModuleStmt(label,name,eos(str) ) -> EndModuleStmt(label,name) {Comment(str)}
 
 //R1116
   ofp-to-ast:  Submodule(begin,spec,no-module-subprogram-part(),end)
@@ -265,8 +268,16 @@ match-end-do =
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
-                   -> OfpSubroutine(<ofp-extract-name>begin,
-                                    <ofp-fixup-scope>Scope(spec,exec,funcs))
+                   -> Subroutine(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
+
+//R1234
+  ofp-to-ast:  SubroutineStmt(label,name,eos("\n")) -> SubroutineStmt(label,name)
+  ofp-to-ast:  SubroutineStmt(label,name,eos(str) ) -> SubroutineStmt(label,name) {Comment(str)}
+
+//R1236
+  ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
+  ofp-to-ast:  EndSubroutineStmt(label,name,eos(str) ) -> EndSubroutineStmt(label,name) {Comment(str)}
+
 
 //R1237
   ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
