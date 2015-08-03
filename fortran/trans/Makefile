@@ -1,6 +1,6 @@
 include ../../make.inc
 
-CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../../ROSE
+CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
 all : ofp-simplify ofp2fast fast2pp fast2sage no-to-none
