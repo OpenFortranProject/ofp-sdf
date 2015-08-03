@@ -12,6 +12,10 @@ TO_FAST = $(TRANS_DIR)/ofp2fast
 TO_PP   = $(TRANS_DIR)/fast2pp
 PP      = $(PP_DIR)/Fortran.pp
 
+CLC = /System/Library/Frameworks/OpenCL.framework/Versions/Current/Libraries/openclc
+
+FOR_OCL_DIR = /Users/rasmus/ofp-research/opencl/ForOpenCL
+
 CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../../fortran/syntax -I ../../fortran/trans
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
@@ -19,7 +23,7 @@ LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 #  ---------------
 
 FC = ifort
-FCFLAGS = -I ForOpenCL
+FCFLAGS = -g -I $(FOR_OCL_DIR)
 
 %.o: %.f90
 	@echo 'Building for OS $(OSUPPER) file: $<'
@@ -27,6 +31,12 @@ FCFLAGS = -I ForOpenCL
 
 
 all : lope-to-foropencl sg-const-folding
+
+elemental_add_1d : elemental_add_1d.f90
+	$(FC) elemental_add_1d.f90 -o elemental_add_1d $(FCFLAGS) -Wl,-no_pie -L$(FOR_OCL_DIR) -lforopencl -framework OpenCL
+
+elemental_add_2d : elemental_add_2d.f90
+	$(FC) elemental_add_2d.f90 -o elemental_add_2d $(FCFLAGS) -Wl,-no_pie -L$(FOR_OCL_DIR) -lforopencl -framework OpenCL
 
 lope-lower : lope-lower.str
 	$(ST_PATH)/strc -i lope-lower.str $(CFLAGS) $(LDFLAGS) --main io-lope-lower
