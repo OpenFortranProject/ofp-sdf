@@ -28,15 +28,13 @@
    PARAMETER                     -- ", " KW["PARAMETER"],
 
    #R201 --,
-   OfpProgram                    -- V vs=1 is=0 [_1 _2],
-   OfpProgram.1:opt              -- ,
+   Program                       -- V vs=1 is=0 [_1],
+   Program.1:opt                 -- ,
 
    #R204 --,
-   OfpSpecPart                   -- V vs=0 is=0[_1],
-   
-   #R208 --,
-   OfpExecPart                   -- V vs=0 is=0[_1],
-   OfpFuncPart                   -- V vs=1 is=0[_1],
+   SpecPart                      -- V vs=0 is=0[_1],
+   ExecPart                      -- V vs=0 is=0[_1],
+   FuncPart                      -- V vs=1 is=0[KW["CONTAINS"] _1],
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
@@ -74,7 +72,7 @@
    RealLiteralConstant           -- _1 _2,
 
    #R421 --,
-   LengthSelector                -- "(" KW["LEN = "] _1")",
+   LengthSelector                -- "(" KW["LEN="] _1")",
 
    #R423 --,
    CharLiteralConstant           -- _1 _2,
@@ -403,7 +401,7 @@
    EQV                           -- _1 KW[" .EQV. "] _2,
    NEQV                          -- _1 KW[" .NEQV. "] _2,
    DefUnaryExpr                  -- H hs=1[_1 _2],
-   DefBinExpr                    -- _1 _2 _3,
+   DefBinExpr                    -- _1 " " _2 " " _3,
    Power                         -- H hs=1[H hs=0[_1] KW["**"] _2],
    Mult                          -- _1 "*" _2,
    Div                           -- _1 "/" _2,
@@ -701,11 +699,11 @@
 
 
    #R1101 --,
-   PpMainProgram                 -- V vs=0 [_1],
-   PpMainProgram.1:opt           -- ,
+   MainProgram                   -- V vs=0 [_1 _2 _3],
+   MainProgram.1:opt             -- ,
 
-   ProgramStmt                   -- _1 KW["PROGRAM"] _2 _3,
-   EndProgramStmt                -- H hs=1[_1 "END PROGRAM" _2 _3],
+   ProgramStmt                   -- H hs=1 [_1 KW["PROGRAM"] _2],
+   EndProgramStmt                -- H hs=1 [_1 KW["END PROGRAM"] _2],
 
    #R1104 --,
    PpModule                      -- _1,
@@ -757,8 +755,10 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
-   OfpScope                      -- V vs=0[H hs=1[_4] _1 _2 V vs=1 is=0 [_5 _3 _6]],
-   InterfaceBody                 -- _1 _2 _3,
+   Scope                         -- V vs=0 [_1 _2 _3],
+   ppScope                       -- V vs=0 [_1 _2],
+   xxxScope                      -- V vs=0 [H hs=1[_1] _2 V vs=1 is=0 [_3]],
+   xxxInterfaceBody              -- _1 _2 _3,
 
    OfpPrefix                           -- _1,
    OfpPrefix.1:iter-star               -- _1,
