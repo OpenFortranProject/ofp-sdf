@@ -3,11 +3,11 @@ round trip testing.
 
 # convert to aterms
 #
-sglri -p ../../../fortran/syntax/Fortran.tbl -i ../R1201.f90 | ../../../fortran/trans/ofp-simplify | pp-aterm
+sglri -p ../../../fortran/syntax/Fortran.tbl -i ../R1201.f90 | ../../../fortran/trans/ofp2fast | pp-aterm
 
 # run the unparser with (for example)
 #
-sglri -p ../../../fortran/syntax/Fortran.tbl -i ../R1201.f90 | ../../../fortran/trans/ofp-simplify | ../../../fortran/trans/ast2pp | ast2text -p ../../../fortran/pp/Fortran.pp
+sglri -p ../../../fortran/syntax/Fortran.tbl -i ../R1201.f90 | ../../../fortran/trans/ofp2fast | ../../../fortran/trans/ast2pp | ast2text -p ../../../fortran/pp/Fortran.pp
 
 
 ast2text -p ../../../fortran/pp/Fortran.pp -i ../ast-aterms/R1201.f90.aterm
