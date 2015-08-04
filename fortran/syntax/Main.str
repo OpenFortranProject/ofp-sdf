@@ -949,8 +949,8 @@ signature
                                     : List(DeferredCoshapeSpec) -> CoarraySpec
     no-binding-name                 : OptLanguageBindingName
                                     : LanguageBindingName -> OptLanguageBindingName
-    language-binding-name           : Ident -> LanguageBindingName
-    LanguageBindingSpec             : OptLanguageBindingName -> LanguageBindingSpec
+    BindingName                     : Scon -> LanguageBindingName
+    LanguageBinding                 : OptLanguageBindingName -> LanguageBindingSpec
     PRIVATE                         : AccessSpec
     PUBLIC                          : AccessSpec
     NullInit                        : FunctionReference -> NullInit

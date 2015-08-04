@@ -1747,9 +1747,8 @@ regular tree grammar
     CoarraySpec                       -> ListPlusOfDeferredCoshapeSpec0
     OptLanguageBindingName            -> no-binding-name()
     OptLanguageBindingName            -> LanguageBindingName
-    LanguageBindingName               -> language-binding-name(Ident)
-    LanguageBindingName               -> language-binding-name(Ident)
-    LanguageBindingSpec               -> LanguageBindingSpec(OptLanguageBindingName)
+    LanguageBindingName               -> BindingName(Scon)
+    LanguageBindingSpec               -> LanguageBinding(OptLanguageBindingName)
     AccessSpec                        -> PRIVATE()
     AccessSpec                        -> PUBLIC()
     NullInit                          -> NullInit(FunctionReference)

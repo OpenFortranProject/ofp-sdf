@@ -1343,9 +1343,9 @@ context-free syntax
 %%R508
 %%       Ident with quotes substituted for scalar-default-char-constant-expr
 %%
-  'BIND' '(' 'C' OptLanguageBindingName ')'             -> LanguageBindingSpec  {cons("LanguageBindingSpec")}
-  ',' 'NAME' '=' '"' Ident '"'                          -> LanguageBindingName  {cons("language-binding-name")}
-  ',' 'NAME' '=' "'" Ident "'"                          -> LanguageBindingName  {cons("language-binding-name")}
+  'BIND' '(' 'C' OptLanguageBindingName ')'             -> LanguageBindingSpec  {cons("LanguageBinding")}
+  ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("BindingName")}
+  ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("BindingName")}
 
   LanguageBindingName                                   -> OptLanguageBindingName
   % empty %                                             -> OptLanguageBindingName {cons("no-binding-name")}
