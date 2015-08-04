@@ -223,8 +223,10 @@
    PUBLIC                        -- KW["PUBLIC"],
    
    #R508 --, 
-   LanguageBinding               -- " BIND(" _1 ")",
-   LanguageBinding               -- " BIND(" _1 ", NAME=" _2 ")",
+   LanguageBinding               -- " BIND(C" _1 ")",
+   BindingName                   -- ",NAME=" _1,
+   no-language-binding           -- ,
+   no-binding-name               -- ,
    
    #R511 --,
    OfpExplicitCoshape            -- _1,
@@ -802,10 +804,13 @@
    ProcDecl                            -- _1 _2,
 
    #R1217 --,
-   PpFunction                          -- _1,
-   FunctionStmt                        -- H hs=1[_1 "FUNCTION" H hs=0[_2 _3 "("_4")" _5 _6]],
+   Function                            -- V vs=0 [_1 _2 _3],
+   FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
    FunctionStmt.4:iter-sep             -- _1 ", ",
-   EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2 _3],
+   EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2],
+   no-function-name                    -- ,
+   Result                              -- " RESULT(" _1 ")",
+   no-result                           -- ,
 
    #R1218 --,
    IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC ::"] H hs=0[_2 _3]],
@@ -831,7 +836,7 @@
 
    #R1233 --,
    Subroutine                          -- V vs=0 [_1 _2 _3],
-   SubroutineStmt                      -- H hs=1 [_1 _4 KW["SUBROUTINE"] H hs=0[_2 "("_3")" _5]],
+   SubroutineStmt                      -- H hs=1 [_1 _2 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5]],
    SubroutineStmt.3:iter-sep           -- _1 ",",
    EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE" _2],
 
@@ -840,8 +845,6 @@
    OfpArgList.1:iter-star-sep          -- _1 ",",
 
    no-prefix                           -- ,
-   no-language-binding                 -- ,
-   no-binding-name                     -- ,
    no-subroutine-name                  -- ,
 
    #R1241 --,
