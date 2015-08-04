@@ -90,7 +90,7 @@ rules
 //    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
 
 //R508
-  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
+//  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
   ast-to-pp:
@@ -149,7 +149,7 @@ rules
   ast-to-pp:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
 
 //R1227
-  ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
+//  ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
 
 //R1233
 //  ast-to-pp:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
