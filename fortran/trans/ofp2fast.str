@@ -64,8 +64,13 @@ rules //========================START OF RULES===============================
   to-comment:    eos(_)       -> comment("\n")
   from-comment:  comment(str) -> eos(str)
 
+  fast-cleanup:  SpecPart(lst) -> lst
+  fast-cleanup:  ExecPart(lst) -> lst
+  fast-cleanup:  FuncPart(lst) -> lst
+
   fast-cleanup:    xFunctionStmt(label,prefix,name,args,result,binding)
                 ->  FunctionStmt(label,prefix,name,args,result,binding)
+
 
   ofp-extract-name:  SubmoduleStmt    (_,_,name,_)          -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
@@ -164,9 +169,6 @@ match-end-do =
 
 //R208
   ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
-
-//R508
-  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding(BindingName("name"))
 
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
