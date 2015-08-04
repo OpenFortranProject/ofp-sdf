@@ -29,7 +29,7 @@ check-ofp : ofp-simplify
 check-sage : fast2sage
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2sage | pp-aterm
 
-unparse : ofp-simplify ofp2fast
+unparse : ofp-simplify ofp2fast fast2pp
 	@echo "------------"
 	@$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2pp | ast2text -p ../pp/Fortran.pp
 
