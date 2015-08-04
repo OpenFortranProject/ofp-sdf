@@ -788,14 +788,15 @@ regular tree grammar
     FunctionName                      -> Ident
     EndFunctionStmt                   -> EndFunctionStmt(OptLabel,OptFunctionName,EOS)
     EndFunctionStmt                   -> EndFunctionStmt(OptLabel,NoFunctionName,EOS)
-    NoResultName                      -> no-result-name()
+    NoResultName                      -> no-result()
     ResultName                        -> Ident
     NoSuffix                          -> no-suffix()
     OptSuffix                         -> no-suffix()
     OptSuffix                         -> Suffix
-    Suffix                            -> Suffix(ResultName,ProcLanguageBindingSpec)
-    Suffix                            -> Suffix(ResultName,NoProcLanguageBindingSpec)
-    Suffix                            -> Suffix(ProcLanguageBindingSpec,ResultName)
+    Result                            -> Result(ResultName)
+    Suffix                            -> Suffix(Result,ProcLanguageBindingSpec)
+    Suffix                            -> Suffix(Result,NoProcLanguageBindingSpec)
+    Suffix                            -> Suffix(ProcLanguageBindingSpec,Result)
     Suffix                            -> Suffix(ProcLanguageBindingSpec,NoResultName)
     DummyArgName                      -> Ident
     NoProcLanguageBindingSpec         -> no-language-binding()

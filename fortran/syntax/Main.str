@@ -33,14 +33,15 @@ signature
                                     : Ident -> FunctionName
     EndFunctionStmt                 : OptLabel * OptFunctionName * EOS -> EndFunctionStmt
     EndFunctionStmt                 : OptLabel * NoFunctionName * EOS -> EndFunctionStmt
-    no-result-name                  : NoResultName
+    no-result                       : NoResultName
                                     : Ident -> ResultName
     no-suffix                       : NoSuffix
     no-suffix                       : OptSuffix
                                     : Suffix -> OptSuffix
-    Suffix                          : ResultName * ProcLanguageBindingSpec -> Suffix
-    Suffix                          : ResultName * NoProcLanguageBindingSpec -> Suffix
-    Suffix                          : ProcLanguageBindingSpec * ResultName -> Suffix
+    Result                          : ResultName -> Result
+    Suffix                          : Result * ProcLanguageBindingSpec -> Suffix
+    Suffix                          : Result * NoProcLanguageBindingSpec -> Suffix
+    Suffix                          : ProcLanguageBindingSpec * Result -> Suffix
     Suffix                          : ProcLanguageBindingSpec * NoResultName -> Suffix
                                     : Ident -> DummyArgName
     no-language-binding             : NoProcLanguageBindingSpec

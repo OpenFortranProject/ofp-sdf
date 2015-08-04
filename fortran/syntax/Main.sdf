@@ -742,7 +742,7 @@ sorts
   OptGenericSpec  OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec
   NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
-  NoProcedureName NoSuffix OptSuffix
+  NoProcedureName NoSuffix OptSuffix Result
   OptStartCommentBlock
 
 %% Identifier aliases
@@ -3698,16 +3698,18 @@ context-free syntax
 
 %%R1231
   ProcLanguageBindingSpec NoResultName                  -> Suffix       {cons("Suffix")}
-  ProcLanguageBindingSpec 'RESULT' '(' ResultName ')'   -> Suffix       {cons("Suffix")}
-  'RESULT' '(' ResultName ')' NoProcLanguageBindingSpec -> Suffix       {cons("Suffix")}
-  'RESULT' '(' ResultName ')' ProcLanguageBindingSpec   -> Suffix       {cons("Suffix")}
+  ProcLanguageBindingSpec Result                        -> Suffix       {cons("Suffix")}
+  Result NoProcLanguageBindingSpec                      -> Suffix       {cons("Suffix")}
+  Result ProcLanguageBindingSpec                        -> Suffix       {cons("Suffix")}
+
+  'RESULT' '(' ResultName ')'                           -> Result       {cons("Result")}
 
   Suffix                                                -> OptSuffix
   % empty %                                             -> OptSuffix    {cons("no-suffix")}
   % empty %                                             -> NoSuffix     {cons("no-suffix")}
 
   Ident                                                 -> ResultName
-  % empty %                                             -> NoResultName {cons("no-result-name")}
+  % empty %                                             -> NoResultName {cons("no-result")}
 
 %%R1232
   OptLabel 'END'            NoFunctionName          EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
