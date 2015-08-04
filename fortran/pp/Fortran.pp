@@ -223,7 +223,8 @@
    PUBLIC                        -- KW["PUBLIC"],
    
    #R508 --, 
-   LanguageBindingSpec           -- _1 KW[" BIND(C)"],
+   LanguageBinding               -- " BIND(" _1 ")",
+   LanguageBinding               -- " BIND(" _1 ", NAME=" _2 ")",
    
    #R511 --,
    OfpExplicitCoshape            -- _1,
@@ -755,8 +756,9 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
+   Scope                         -- V vs=0 [_1 _2],
    Scope                         -- V vs=0 [_1 _2 _3],
-   PpScope                       -- V vs=0 [_1 _2],
+
    xxxScope                      -- V vs=0 [H hs=1[_1] _2 V vs=1 is=0 [_3]],
    xxxInterfaceBody              -- _1 _2 _3,
 
@@ -828,14 +830,19 @@
    AltReturnSpec                       -- KW["*"] _1,
 
    #R1233 --,
-   PpSubroutine                        -- _1,
-   SubroutineStmt                      -- H hs=1[_2 _1 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5 _6]],
-   SubroutineStmt.4:iter-sep           -- _1 ",",
-   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE" _2 _3],
+   Subroutine                          -- V vs=0 [_1 _2 _3],
+   SubroutineStmt                      -- H hs=1 [_1 _4 KW["SUBROUTINE"] H hs=0[_2 "("_3")" _5]],
+   SubroutineStmt.3:iter-sep           -- _1 ",",
+   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE" _2],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
    OfpArgList.1:iter-star-sep          -- _1 ",",
+
+   no-prefix                           -- ,
+   no-language-binding                 -- ,
+   no-binding-name                     -- ,
+   no-subroutine-name                  -- ,
 
    #R1241 --,
    ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3],
