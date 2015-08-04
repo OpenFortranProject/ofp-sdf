@@ -64,8 +64,8 @@ rules //========================START OF RULES===============================
   to-comment:    eos(_)       -> comment("\n")
   from-comment:  comment(str) -> eos(str)
 
-  fast-cleanup:    xFunctionStmt(label,name,args,prefix,result,binding)
-                ->  FunctionStmt(label,name,args,prefix,result,binding)
+  fast-cleanup:    xFunctionStmt(label,prefix,name,args,result,binding)
+                ->  FunctionStmt(label,prefix,name,args,result,binding)
 
   ofp-extract-name:  SubmoduleStmt    (_,_,name,_)          -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
@@ -73,8 +73,8 @@ rules //========================START OF RULES===============================
   ofp-extract-result:   no-suffix()                         -> no-result()
   ofp-extract-result:   Suffix(_,no-result())               -> no-result()
   ofp-extract-result:   Suffix(no-result(),_)               -> no-result()
-  ofp-extract-result:   Suffix(Result(name),_)              -> name
-  ofp-extract-result:   Suffix(_,Result(name))              -> name
+  ofp-extract-result:   Suffix(Result(name),_)              -> Result(name)
+  ofp-extract-result:   Suffix(_,Result(name))              -> Result(name)
 
   ofp-extract-binding:  no-suffix()                         -> no-language-binding()
   ofp-extract-binding:  Suffix(_,no-language-binding())     -> no-language-binding()
@@ -166,7 +166,7 @@ match-end-do =
   ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
 
 //R508
-  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding(name)
+  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding(BindingName("name"))
 
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
@@ -281,12 +281,9 @@ match-end-do =
 
 //R1228
   ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
-                   -> xFunctionStmt(label,name,args,prefix,<ofp-extract-result> suffix,
+                   -> xFunctionStmt(label,prefix,name,args,<ofp-extract-result> suffix,
                                                            <ofp-extract-binding>suffix)
-
-//R1231
-//  ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
-//  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
+  ofp-to-ast:  no-prefix -> []
 
 //R1232
   ofp-to-ast:  EndFunctionStmt(label,name,eos("\n")) -> EndFunctionStmt(label,name)
@@ -298,9 +295,9 @@ match-end-do =
 
 //R1234
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos("\n"))
-                   -> SubroutineStmt(label,name,args,prefix,binding)
+                   -> SubroutineStmt(label,prefix,name,args,binding)
   ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos(str) )
-                   -> SubroutineStmt(label,name,args,prefix,binding) {Comment(str)}
+                   -> SubroutineStmt(label,prefix,name,args,binding) {Comment(str)}
 
 //R1236
   ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
