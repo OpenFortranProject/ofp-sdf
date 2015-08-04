@@ -707,14 +707,14 @@
    MainProgram.1:opt             -- ,
 
    ProgramStmt                   -- H hs=1 [_1 KW["PROGRAM"] _2],
-   EndProgramStmt                -- H hs=1 [_1 KW["END PROGRAM"] _2],
+   EndProgramStmt                -- H hs=1 [_1 "END PROGRAM\n" _2],
    no-program-name               -- ,
 
    #R1104 --,
    Module                        -- V vs=0 [_1 _2 _3],
 
    ModuleStmt                    -- H hs=1 [_1 KW["MODULE"] _2],
-   EndModuleStmt                 -- H hs=1 [_1 KW["END MODULE"] _2],
+   EndModuleStmt                 -- H hs=1 [_1 "END MODULE\n" _2],
    no-module-name                -- ,
 
    #R1109 --,
@@ -738,7 +738,7 @@
    ParentIdentifier              -- _1 _2,
 
    #R1119 --,
-   EndSubmoduleStmt              -- H hs=1[_1 KW["END SUBMODULE"] H hs=0[_2 _3]],
+   EndSubmoduleStmt              -- H hs=1[_1 "END SUBMODULE\n" H hs=0[_2 _3]],
 
    #R1120 --,
    BlockData                     -- _1 _2 _3,
@@ -807,7 +807,7 @@
    Function                            -- V vs=0 [_1 _2 _3],
    FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
    FunctionStmt.4:iter-sep             -- _1 ", ",
-   EndFunctionStmt                     -- H hs=1[_1 KW["END FUNCTION"] _2],
+   EndFunctionStmt                     -- H hs=1[_1 "END FUNCTION\n" _2],
    no-function-name                    -- ,
    Result                              -- " RESULT(" _1 ")",
    no-result                           -- ,
@@ -838,7 +838,7 @@
    Subroutine                          -- V vs=0 [_1 _2 _3],
    SubroutineStmt                      -- H hs=1 [_1 _2 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5]],
    SubroutineStmt.3:iter-sep           -- _1 ",",
-   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE" _2],
+   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE\n" _2],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
