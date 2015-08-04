@@ -23,6 +23,9 @@ fast2sage : fast2sage.str no-to-none
 check : ofp-simplify ofp2fast
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | pp-aterm
 
+check-ofp : ofp-simplify
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp-simplify | pp-aterm
+
 check-sage : fast2sage
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ofp2fast | fast2sage | pp-aterm
 
