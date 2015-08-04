@@ -143,13 +143,16 @@ match-end-do =
 
 //R204
   ofp-to-ast:
-    SpecificationPart(l1)                        -> SpecPart(l1)
+    SpecificationPart(l1)                       -> SpecPart(l1)
 
   ofp-to-ast:
-    InitialSpecPart(l1)                          -> SpecPart(l1)
+    InitialSpecPart(l1)                         -> SpecPart(l1)
 
 //R208
-  ofp-to-ast:  SpecAndExecPart(stmts)            -> ExecPart(stmts)
+  ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
+
+//R508
+  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding("C",name)
 
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
@@ -271,8 +274,10 @@ match-end-do =
                    -> Subroutine(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
 
 //R1234
-  ofp-to-ast:  SubroutineStmt(label,name,eos("\n")) -> SubroutineStmt(label,name)
-  ofp-to-ast:  SubroutineStmt(label,name,eos(str) ) -> SubroutineStmt(label,name) {Comment(str)}
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,suffix,eos("\n"))
+                   -> SubroutineStmt(label,name,args,prefix,suffix)
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,suffix,eos(str) )
+                   -> SubroutineStmt(label,name,args,prefix,suffix) {Comment(str)}
 
 //R1236
   ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
