@@ -3,17 +3,18 @@ module FAST
 signature
   constructors
     OfpMpSubprogram             : Option(OfpName) * Scope -> OfpMpSubprogram
-    OfpSuffix                   : List(OfpSuffixSpec) -> OfpSuffix
     OfpResultName               : OfpName -> OfpResultName
     OfpResultName               : OfpResultName -> OfpSuffixSpec
-    OfpLanguageBinding          : OfpLanguageBinding -> OfpSuffixSpec
+    LanguageBinding             : String * OptLanguageBindingName -> OfpSuffixSpec
+    no-binding-name             : OptLanguageBindingName
+                                : LanguageBindingName -> OptLanguageBindingName
+                                : Ident -> LanguageBindingName
     OfpFunction                 : OfpName * Scope -> OfpFunction
     RECURSIVE                   : RECURSIVE -> OfpPrefixSpec
     PURE                        : PURE -> OfpPrefixSpec
     MODULE                      : MODULE -> OfpPrefixSpec
     IMPURE                      : IMPURE -> OfpPrefixSpec
     ELEMENTAL                   : ELEMENTAL -> OfpPrefixSpec
-    OfpPrefix                   : List(OfpPrefixSpec) -> OfpPrefix
     OfpArg                      : OfpExpr * OfpKeyword -> OfpArg
     OfpArg                      : OfpExpr -> OfpArg
     OfpProcRef                  : OfpExpr -> OfpProcRef
@@ -62,12 +63,12 @@ signature
     no-module-name              : OptModuleName
                                 : Ident -> ModuleName
     Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
-    SubroutineStmt              : OptLabel * OfpName * OfpArgList * OfpPrefix * OfpSuffix -> SubroutineStmt
+    SubroutineStmt              : OptLabel * Name * ArgList * Prefix * Suffix -> SubroutineStmt
     EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
                                 : SubroutineName -> OptSubroutineName
     no-subroutine-name          : OptSubroutineName
                                 : Ident -> SubroutineName
-    OfpArgList                  : List(OfpDummyArg) -> OfpArgList
+    ArgList                     : List(OfpDummyArg) -> ArgList
     STAR                        : STAR -> OfpDummyArg
     OfpDummyArg                 : String -> OfpDummyArg
     OfpAssignmentStmt           : Option(OfpLabel) * OfpVarDef * OfpExpr -> OfpAssignmentStmt
@@ -110,7 +111,6 @@ signature
     DimSpec                     : OfpExpr * OfpExpr -> DimSpec
     OfpExplicitShape            : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape          : List(DimSpec) -> OfpExplicitCoshape
-    OfpLanguageBinding          : Option(OfpName) -> OfpLanguageBinding
                                 : String -> OfpInitialization
                                 : String -> OfpCharLength
                                 : String -> OfpCoarraySpec
@@ -173,7 +173,18 @@ signature
                                 : String -> ASSIGNMENT
                                 : String -> ABSTRACT
                                 : String -> String
-                                : LanguageBindingSpec -> ProcLanguageBindingSpec
+                                : Ident -> ResultName
+    Suffix                      : List(OfpSuffixSpec) -> Suffix
+    Suffix                      : ResultName * NoProcLanguageBindingSpec -> Suffix
+    no-language-binding         : NoProcLanguageBindingSpec
+    RECURSIVE                   : PrefixSpec
+    PURE                        : PrefixSpec
+    MODULE                      : PrefixSpec
+    IMPURE                      : PrefixSpec
+    ELEMENTAL                   : PrefixSpec
+                                : DeclarationTypeSpec -> PrefixSpec
+    Prefix                      : List(OfpPrefixSpec) -> Prefix
+                                : List(PrefixSpec) -> Prefix
     AltReturnSpec               : Label -> AltReturnSpec
                                 : AltReturnSpec -> ActualArg
                                 : Expr -> ActualArg
@@ -194,7 +205,6 @@ signature
     POINTER                     : ProcAttrSpec
     OPTIONAL                    : ProcAttrSpec
     INTENT                      : IntentSpec -> ProcAttrSpec
-                                : ProcLanguageBindingSpec -> ProcAttrSpec
                                 : AccessSpec -> ProcAttrSpec
                                 : DeclarationTypeSpec -> ProcInterface
                                 : InterfaceName -> ProcInterface
@@ -278,10 +288,6 @@ signature
     INOUT                       : IntentSpec
     OUT                         : IntentSpec
     IN                          : IntentSpec
-    no-binding-name             : OptLanguageBindingName
-                                : LanguageBindingName -> OptLanguageBindingName
-    language-binding-name       : Ident -> LanguageBindingName
-    LanguageBindingSpec         : OptLanguageBindingName -> LanguageBindingSpec
     PRIVATE                     : AccessSpec
     PUBLIC                      : AccessSpec
     NullInit                    : FunctionReference -> NullInit
