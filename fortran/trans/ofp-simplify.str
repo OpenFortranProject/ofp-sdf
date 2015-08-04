@@ -91,9 +91,6 @@ ofp-simplify-ast:  opt-array-spec(spec)           -> spec
 ofp-simplify-ast:  opt-coarray-spec(spec)         -> spec
 ofp-simplify-ast:  opt-char-length(length)        -> length
 
-//R508
-ofp-simplify-ast:  language-binding-name(str)     -> str
-
 //R511
 ofp-simplify-ast:  explicit-coshape-spec-list(list,final)   -> <conc>(list, [final])
 ofp-simplify-ast:  final-cobounds-entry(lower)              -> ExplicitCoshape(no-lower-bound(),STAR())
