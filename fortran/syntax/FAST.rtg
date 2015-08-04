@@ -929,7 +929,7 @@ regular tree grammar
     Expr                              -> Mult(Expr,Expr)
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
-    OfpContainsStmt                   -> OfpContainsStmt(OptOfpLabel0)
+
     OfpDecl                           -> OfpMpSubprogram
     OfpEndStmt                        -> OfpEndMpSubprogramStmt
     OfpBeginStmt                      -> OfpMpSubprogramStmt
@@ -937,22 +937,26 @@ regular tree grammar
     OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptOfpLabel0,OfpName)
     OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,Scope)
 
-    OfpEndStmt                        -> OfpEndFunctionStmt
-    OfpBeginStmt                      -> OfpFunctionStmt
-    OfpEndFunctionStmt                -> OfpEndFunctionStmt(OptOfpLabel0,OptOfpName0)
+    Function        -> Function(FunctionStmt,Scope,EndFunctionStmt)
+    OfpBeginStmt    -> FunctionStmt
+    FunctionStmt    -> FunctionStmt(OptLabel,FunctionName,ArgList,Prefix,OptResult,OptLanguageBinding)
+    OfpEndStmt      -> EndFunctionStmt
+    EndFunctionStmt -> EndFunctionStmt(OptLabel,OptFunctionName)
 
-    Suffix                            -> Suffix(ListStarOfOfpSuffixSpec0)
-    OfpResultName                     -> OfpResultName(OfpName)
-    OfpSuffixSpec                     -> OfpResultName(OfpResultName)
-    OfpSuffixSpec                     -> LanguageBinding(String,OptLanguageBindingName)
+    OptFunctionName                   -> no-function-name()
+    OptFunctionName                   -> FunctionName
+    FunctionName                      -> <string>
 
+    OptResult                         -> no-result()
+    OptResult                         -> Result
+    Result                            -> <string>
+
+    OptLanguageBinding                -> no-language-binding()
+    OptLanguageBinding                -> LanguageBinding
+    LanguageBinding                   -> LanguageBinding(OptLanguageBindingName)
     OptLanguageBindingName            -> no-binding-name()
     OptLanguageBindingName            -> LanguageBindingName
-    LanguageBindingName               -> Ident
-
-    OfpFunctionName                   -> OfpFunctionName(String)
-    OfpFunctionStmt                   -> OfpFunctionStmt(OptOfpLabel0,OfpFunctionName,ArgList,Prefix,Suffix)
-    OfpFunction                       -> OfpFunction(OfpName,Scope)
+    LanguageBindingName               -> <string>
 
     OfpPrefixSpec                     -> RECURSIVE(RECURSIVE)
     OfpPrefixSpec                     -> PURE(PURE)
@@ -1027,11 +1031,11 @@ regular tree grammar
     OptModuleName                     -> no-module-name()
     ModuleName                        -> Ident
 
-    Subroutine                        -> Subroutine(SubroutineStmt,Scope,EndSubroutineStmt)
-    OfpBeginStmt                      -> SubroutineStmt
-    SubroutineStmt                    -> SubroutineStmt(OptLabel,Name,ArgList,Prefix,Suffix)
-    OfpEndStmt                        -> EndSubroutineStmt
-    EndSubroutineStmt                 -> EndSubroutineStmt(OptLabel,OptSubroutineName)
+    Subroutine           -> Subroutine(SubroutineStmt,Scope,EndSubroutineStmt)
+    OfpBeginStmt         -> SubroutineStmt
+    SubroutineStmt       -> SubroutineStmt(OptLabel,SubroutineName,ArgList,Prefix,OptLanguageBinding)
+    OfpEndStmt           -> EndSubroutineStmt
+    EndSubroutineStmt    -> EndSubroutineStmt(OptLabel,OptSubroutineName)
 
     OptSubroutineName                 -> SubroutineName
     OptSubroutineName                 -> no-subroutine-name()
@@ -1116,7 +1120,7 @@ regular tree grammar
     INTEGER                           -> INTEGER()
     OfpOp                             -> OfpOp(String)
     OfpLiteral                        -> OfpLiteral(String,OfpType)
-    OfpProgramUnit                    -> OfpFunction
+    OfpProgramUnit                    -> Function
     OfpProgramUnit                    -> Subroutine
     OfpProgramUnit                    -> OfpSubmodule
     OfpProgramUnit                    -> Module
@@ -1144,7 +1148,6 @@ regular tree grammar
     ABSTRACT                          -> <string>
     StrChar                           -> <string>
     String                            -> <string>
-    ContainsStmt                      -> ContainsStmt(OptLabel,EOS)
     ReturnStmt                        -> ReturnStmt(OptLabel,NoExpr,EOS)
     ReturnStmt                        -> ReturnStmt(OptLabel,Expr,EOS)
     EntryName                         -> Ident
@@ -1163,12 +1166,6 @@ regular tree grammar
     DummyArg                          -> STAR()
     DummyArg                          -> DummyArgName
 
-    OptFunctionName                   -> FunctionName
-    OptFunctionName                   -> no-function-name()
-    NoFunctionName                    -> no-function-name()
-    FunctionName                      -> Ident
-    EndFunctionStmt                   -> EndFunctionStmt(OptLabel,OptFunctionName,EOS)
-    EndFunctionStmt                   -> EndFunctionStmt(OptLabel,NoFunctionName,EOS)
     NoResultName                      -> no-result-name()
     ResultName                        -> Ident
     NoSuffix                          -> no-suffix()
@@ -1179,12 +1176,9 @@ regular tree grammar
     Suffix                            -> Suffix(ProcLanguageBindingSpec,ResultName)
     Suffix                            -> Suffix(ProcLanguageBindingSpec,NoResultName)
     DummyArgName                      -> Ident
-    NoProcLanguageBindingSpec         -> no-language-binding()
-    OptProcLanguageBindingSpec        -> no-language-binding()
     OptProcLanguageBindingSpec        -> ProcLanguageBindingSpec
     ProcLanguageBindingSpec           -> LanguageBindingSpec
-    FunctionStmt                      -> FunctionStmt(OptLabel,OptPrefix,FunctionName,ListStarOfDummyArgName0,OptSuffix,EOS)
-    FunctionSubprogram                -> FunctionSubprogram(FunctionStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndFunctionStmt)
+
     PrefixSpec                        -> RECURSIVE()
     PrefixSpec                        -> PURE()
     PrefixSpec                        -> MODULE()

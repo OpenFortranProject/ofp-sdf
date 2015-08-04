@@ -3,13 +3,21 @@ module FAST
 signature
   constructors
     OfpMpSubprogram             : Option(OfpName) * Scope -> OfpMpSubprogram
-    OfpResultName               : OfpName -> OfpResultName
-    OfpResultName               : OfpResultName -> OfpSuffixSpec
-    LanguageBinding             : String * OptLanguageBindingName -> OfpSuffixSpec
+    Function                    : FunctionStmt * Scope * EndFunctionStmt -> Function
+    FunctionStmt                : OptLabel * FunctionName * ArgList * Prefix * OptResult * OptLanguageBinding -> FunctionStmt
+    EndFunctionStmt             : OptLabel * OptFunctionName -> EndFunctionStmt
+    no-function-name            : OptFunctionName
+                                : FunctionName -> OptFunctionName
+                                : String -> FunctionName
+    no-result                   : OptResult
+                                : Result -> OptResult
+                                : String -> Result
+    no-language-binding         : OptLanguageBinding
+                                : LanguageBinding -> OptLanguageBinding
+    LanguageBinding             : OptLanguageBindingName -> LanguageBinding
     no-binding-name             : OptLanguageBindingName
                                 : LanguageBindingName -> OptLanguageBindingName
-                                : Ident -> LanguageBindingName
-    OfpFunction                 : OfpName * Scope -> OfpFunction
+                                : String -> LanguageBindingName
     RECURSIVE                   : RECURSIVE -> OfpPrefixSpec
     PURE                        : PURE -> OfpPrefixSpec
     MODULE                      : MODULE -> OfpPrefixSpec
@@ -63,7 +71,7 @@ signature
     no-module-name              : OptModuleName
                                 : Ident -> ModuleName
     Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
-    SubroutineStmt              : OptLabel * Name * ArgList * Prefix * Suffix -> SubroutineStmt
+    SubroutineStmt              : OptLabel * SubroutineName * ArgList * Prefix * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
                                 : SubroutineName -> OptSubroutineName
     no-subroutine-name          : OptSubroutineName
@@ -147,7 +155,7 @@ signature
                                 : NE -> OfpOp
                                 : EQ -> OfpOp
     OfpOp                       : String -> OfpOp
-                                : OfpFunction -> OfpProgramUnit
+                                : Function -> OfpProgramUnit
                                 : Subroutine -> OfpProgramUnit
                                 : OfpSubmodule -> OfpProgramUnit
                                 : Module -> OfpProgramUnit
@@ -173,10 +181,6 @@ signature
                                 : String -> ASSIGNMENT
                                 : String -> ABSTRACT
                                 : String -> String
-                                : Ident -> ResultName
-    Suffix                      : List(OfpSuffixSpec) -> Suffix
-    Suffix                      : ResultName * NoProcLanguageBindingSpec -> Suffix
-    no-language-binding         : NoProcLanguageBindingSpec
     RECURSIVE                   : PrefixSpec
     PURE                        : PrefixSpec
     MODULE                      : PrefixSpec
