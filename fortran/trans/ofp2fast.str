@@ -13,7 +13,7 @@ signature
   amb : list -> choice
 
   OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
-
+  xFunctionStmt       : label * name * args * prefix * result * binding -> xFunctionStmt
 
   Comment   : A -> B            /* comments are put in annotations */
   OfpString : A -> B            /* node for a string literal */
@@ -29,11 +29,12 @@ strategies //=================START OF STRATEGIES============================
 
   ofp2fast =
       ofp-simplify
-    ; outermost(to-comment)
-    ; outermost(from-comment)
+//    ; outermost(to-comment)
+//    ; outermost(from-comment)
     ; innermost(ofp-to-ast)
     ; topdown(try(fast-fixup-spec-part))
     ; topdown(try(fast-fixup-do-constructs))
+    ; topdown(try(fast-cleanup))
 
 
 // TODO - try to remove usage of Some()
@@ -50,10 +51,10 @@ strategies //=================START OF STRATEGIES============================
 
   ofp-char-select = id
   ofp-kind = id
-//  ofp-args = !OfpArgList(<id>)
+//ofp-args = !OfpArgList(<id>)
 
-//  ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
-//  ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
+//ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
+//ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
   ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
   ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
@@ -63,10 +64,23 @@ rules //========================START OF RULES===============================
   to-comment:    eos(_)       -> comment("\n")
   from-comment:  comment(str) -> eos(str)
 
-  ofp-extract-name:  no-program-stmt()                      -> None()
+  fast-cleanup:    xFunctionStmt(label,name,args,prefix,result,binding)
+                ->  FunctionStmt(label,name,args,prefix,result,binding)
+
   ofp-extract-name:  SubmoduleStmt    (_,_,name,_)          -> name
   ofp-extract-name:  MpSubprogramStmt (_,name,_)            -> name
-  ofp-extract-name:  FunctionStmt     (_,_,name,_,_,_)      -> name
+
+  ofp-extract-result:   no-suffix()                         -> no-result()
+  ofp-extract-result:   Suffix(_,no-result())               -> no-result()
+  ofp-extract-result:   Suffix(no-result(),_)               -> no-result()
+  ofp-extract-result:   Suffix(Result(name),_)              -> name
+  ofp-extract-result:   Suffix(_,Result(name))              -> name
+
+  ofp-extract-binding:  no-suffix()                         -> no-language-binding()
+  ofp-extract-binding:  Suffix(_,no-language-binding())     -> no-language-binding()
+  ofp-extract-binding:  Suffix(no-language-binding(),_)     -> no-language-binding()
+  ofp-extract-binding:  Suffix(_,LanguageBinding(name))     -> LanguageBinding(name)
+  ofp-extract-binding:  Suffix(LanguageBinding(name),_)     -> LanguageBinding(name)
 
   ofp-extract-subprograms:  no-subprogram-part()            -> FuncPart([])
   ofp-extract-subprograms:  SubprogramPart(_,subprograms)   -> FuncPart(subprograms)
@@ -152,7 +166,7 @@ match-end-do =
   ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
 
 //R508
-  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding("C",name)
+  ofp-to-ast:  LanguageBindingSpec(name)        -> LanguageBinding(name)
 
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
@@ -263,21 +277,30 @@ match-end-do =
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
-                   -> OfpFunction(<ofp-extract-name>begin,Scope(spec,exec,funcs))
+                   -> Function(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
+
+//R1228
+  ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
+                   -> xFunctionStmt(label,name,args,prefix,<ofp-extract-result> suffix,
+                                                           <ofp-extract-binding>suffix)
 
 //R1231
 //  ofp-to-ast:  Suffix(a,b)                      -> OfpSuffix([a,b])
 //  ofp-to-ast:  no-suffix()                      -> OfpSuffix([])
+
+//R1232
+  ofp-to-ast:  EndFunctionStmt(label,name,eos("\n")) -> EndFunctionStmt(label,name)
+  ofp-to-ast:  EndFunctionStmt(label,name,eos(str) ) -> EndFunctionStmt(label,name) {Comment(str)}
 
 //R1233
   ofp-to-ast:  SubroutineSubprogram(begin,spec,exec,funcs,end)
                    -> Subroutine(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
 
 //R1234
-  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,suffix,eos("\n"))
-                   -> SubroutineStmt(label,name,args,prefix,suffix)
-  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,suffix,eos(str) )
-                   -> SubroutineStmt(label,name,args,prefix,suffix) {Comment(str)}
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos("\n"))
+                   -> SubroutineStmt(label,name,args,prefix,binding)
+  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos(str) )
+                   -> SubroutineStmt(label,name,args,prefix,binding) {Comment(str)}
 
 //R1236
   ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
