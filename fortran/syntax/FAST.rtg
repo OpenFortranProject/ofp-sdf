@@ -939,7 +939,7 @@ regular tree grammar
 
     Function        -> Function(FunctionStmt,Scope,EndFunctionStmt)
     OfpBeginStmt    -> FunctionStmt
-    FunctionStmt    -> FunctionStmt(OptLabel,FunctionName,ArgList,Prefix,OptResult,OptLanguageBinding)
+    FunctionStmt    -> FunctionStmt(OptLabel,Prefix,FunctionName,ArgList,OptResult,OptLanguageBinding)
     OfpEndStmt      -> EndFunctionStmt
     EndFunctionStmt -> EndFunctionStmt(OptLabel,OptFunctionName)
 
@@ -949,14 +949,14 @@ regular tree grammar
 
     OptResult                         -> no-result()
     OptResult                         -> Result
-    Result                            -> <string>
+    Result                            -> Result(<string>)
 
     OptLanguageBinding                -> no-language-binding()
     OptLanguageBinding                -> LanguageBinding
     LanguageBinding                   -> LanguageBinding(OptLanguageBindingName)
     OptLanguageBindingName            -> no-binding-name()
-    OptLanguageBindingName            -> LanguageBindingName
-    LanguageBindingName               -> <string>
+    OptLanguageBindingName            -> BindingName
+    BindingName                       -> BindingName(<string>)
 
     OfpPrefixSpec                     -> RECURSIVE(RECURSIVE)
     OfpPrefixSpec                     -> PURE(PURE)
@@ -1033,7 +1033,7 @@ regular tree grammar
 
     Subroutine           -> Subroutine(SubroutineStmt,Scope,EndSubroutineStmt)
     OfpBeginStmt         -> SubroutineStmt
-    SubroutineStmt       -> SubroutineStmt(OptLabel,SubroutineName,ArgList,Prefix,OptLanguageBinding)
+    SubroutineStmt       -> SubroutineStmt(OptLabel,Prefix,SubroutineName,ArgList,OptLanguageBinding)
     OfpEndStmt           -> EndSubroutineStmt
     EndSubroutineStmt    -> EndSubroutineStmt(OptLabel,OptSubroutineName)
 

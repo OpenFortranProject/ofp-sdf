@@ -4,20 +4,19 @@ signature
   constructors
     OfpMpSubprogram             : Option(OfpName) * Scope -> OfpMpSubprogram
     Function                    : FunctionStmt * Scope * EndFunctionStmt -> Function
-    FunctionStmt                : OptLabel * FunctionName * ArgList * Prefix * OptResult * OptLanguageBinding -> FunctionStmt
+    FunctionStmt                : OptLabel * Prefix * FunctionName * ArgList * OptResult * OptLanguageBinding -> FunctionStmt
     EndFunctionStmt             : OptLabel * OptFunctionName -> EndFunctionStmt
     no-function-name            : OptFunctionName
                                 : FunctionName -> OptFunctionName
                                 : String -> FunctionName
     no-result                   : OptResult
                                 : Result -> OptResult
-                                : String -> Result
+    Result                      : String -> Result
     no-language-binding         : OptLanguageBinding
                                 : LanguageBinding -> OptLanguageBinding
     LanguageBinding             : OptLanguageBindingName -> LanguageBinding
     no-binding-name             : OptLanguageBindingName
-                                : LanguageBindingName -> OptLanguageBindingName
-                                : String -> LanguageBindingName
+                                : BindingName -> OptLanguageBindingName
     RECURSIVE                   : RECURSIVE -> OfpPrefixSpec
     PURE                        : PURE -> OfpPrefixSpec
     MODULE                      : MODULE -> OfpPrefixSpec
@@ -71,7 +70,7 @@ signature
     no-module-name              : OptModuleName
                                 : Ident -> ModuleName
     Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
-    SubroutineStmt              : OptLabel * SubroutineName * ArgList * Prefix * OptLanguageBinding -> SubroutineStmt
+    SubroutineStmt              : OptLabel * Prefix * SubroutineName * ArgList * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
                                 : SubroutineName -> OptSubroutineName
     no-subroutine-name          : OptSubroutineName
@@ -316,6 +315,7 @@ signature
     no-list                     : OptTypeParamSpecList
     paren-list                  : List(TypeParamSpec) -> OptTypeParamSpecList
     DerivedTypeSpec             : TypeName * OptTypeParamSpecList -> DerivedTypeSpec
+    BindingName                 : String -> BindingName
                                 : Ident -> BindingName
                                 : Ident -> TypeName
     no-kind-param               : OptKindParam
