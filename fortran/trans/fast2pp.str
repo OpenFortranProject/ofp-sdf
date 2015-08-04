@@ -7,7 +7,13 @@ imports
 signature
   constructors
 
-    PpScope        : SpecPart * ExecPart -> PpScope
+    // These extra constructors are not part of FAST but required for unparsing
+    //
+
+    Scope           : SpecPart * ExecPart -> Scope
+    LanguageBinding : Language            -> LanguageBinding
+
+
 
     PpSubmodule    : OfpSubmodule    -> PpSubmodule
     PpFunction     : OfpFunction     -> PpFunction
@@ -77,11 +83,14 @@ rules
 // statement to be unparsed when the FuncPart is present.
 //
   ast-to-pp:
-    Scope(decls,exes,FuncPart([]))         -> PpScope(decls,exes)
+    Scope(decls,exes,FuncPart([]))         -> Scope(decls,exes)
 
 //R503
 //  ast-to-pp:
 //    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
+
+//R508
+  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
   ast-to-pp:
