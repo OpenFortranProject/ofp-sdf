@@ -262,11 +262,17 @@ match-end-do =
 
 //R1116
   ofp-to-ast:  Submodule(begin,spec,no-module-subprogram-part(),end)
-                  -> OfpSubmodule(<ofp-extract-name>begin,
-                     Scope(spec,ExecPart([]),FuncPart([])))
+                  -> Submodule(begin, Scope(spec,ExecPart([]),FuncPart([])), end)
   ofp-to-ast:  Submodule(begin,spec,ModuleSubprogramPart(contains,l),end)
-                  -> OfpSubmodule(<ofp-extract-name>begin,
-                     Scope(spec,ExecPart([]),FuncPart(l)))
+                  -> Submodule(begin, Scope(spec,ExecPart([]),FuncPart(l)), end)
+
+//R1117
+  ofp-to-ast:  SubmoduleStmt(label,parent,name,eos("\n")) -> SubmoduleStmt(label,parent,name)
+  ofp-to-ast:  SubmoduleStmt(label,parent,name,eos(str) ) -> SubmoduleStmt(label,parent,name) {Comment(str)}
+
+//R1119
+  ofp-to-ast:  EndSubmoduleStmt(label,name,eos("\n")) -> EndSubmoduleStmt(label,name)
+  ofp-to-ast:  EndSubmoduleStmt(label,name,eos(str) ) -> EndSubmoduleStmt(label,name) {Comment(str)}
 
 //R1207
 //  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
