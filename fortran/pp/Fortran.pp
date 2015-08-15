@@ -707,14 +707,14 @@
    MainProgram.1:opt             -- ,
 
    ProgramStmt                   -- H hs=1 [_1 KW["PROGRAM"] _2],
-   EndProgramStmt                -- H hs=1 [_1 "END PROGRAM\n" _2],
+   EndProgramStmt                -- H hs=1 [_1 "END PROGRAM" _2],
    no-program-name               -- ,
 
    #R1104 --,
    Module                        -- V vs=0 [_1 _2 _3],
 
    ModuleStmt                    -- H hs=1 [_1 KW["MODULE"] _2],
-   EndModuleStmt                 -- H hs=1 [_1 "END MODULE\n" _2],
+   EndModuleStmt                 -- H hs=1 [_1 "END MODULE" _2],
    no-module-name                -- ,
 
    #R1109 --,
@@ -729,16 +729,13 @@
    Rename                        -- KW[", "] H hs=0[_1 KW["=>"] _2],
 
    #R1116 --,
-   PpSubmodule                   -- _1,
+   Submodule                     -- V vs=0 [_1 _2 _3],
 
-   #R1117 --,
-   SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3 _4],
+   SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3],
+   EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" H hs=0[_2]],
+   no-parent-submodule-name      -- ,
 
-   #R1118 --,
    ParentIdentifier              -- _1 _2,
-
-   #R1119 --,
-   EndSubmoduleStmt              -- H hs=1[_1 "END SUBMODULE\n" H hs=0[_2 _3]],
 
    #R1120 --,
    BlockData                     -- _1 _2 _3,
@@ -758,8 +755,8 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
-   Scope                         -- V vs=0 [_1 _2],
-   Scope                         -- V vs=0 [_1 _2 _3],
+   ppScope                       -- V vs=0 [_1 _2],
+   ppScope                       -- V vs=0 [_1 _2 _3],
 
    xxxScope                      -- V vs=0 [H hs=1[_1] _2 V vs=1 is=0 [_3]],
    xxxInterfaceBody              -- _1 _2 _3,
@@ -807,7 +804,7 @@
    Function                            -- V vs=0 [_1 _2 _3],
    FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
    FunctionStmt.4:iter-sep             -- _1 ", ",
-   EndFunctionStmt                     -- H hs=1[_1 "END FUNCTION\n" _2],
+   EndFunctionStmt                     -- H hs=1[_1 "END FUNCTION" _2],
    no-function-name                    -- ,
    Result                              -- " RESULT(" _1 ")",
    no-result                           -- ,
