@@ -10,10 +10,9 @@ signature
     // These extra constructors are not part of FAST but required for unparsing
     //
 
-    Scope           : SpecPart * ExecPart -> Scope
-    LanguageBinding : Language            -> LanguageBinding
-
-
+    ppScope         : SpecPart * ExecPart            -> Scope
+    ppScope         : SpecPart * ExecPart * FuncPart -> Scope
+    LanguageBinding : Language                       -> LanguageBinding
 
     PpSubmodule    : OfpSubmodule    -> PpSubmodule
     PpFunction     : OfpFunction     -> PpFunction
@@ -83,7 +82,10 @@ rules
 // statement to be unparsed when the FuncPart is present.
 //
   ast-to-pp:
-    Scope(decls,exes,FuncPart([]))         -> Scope(decls,exes)
+    Scope(decls,exes,[])                     -> ppScope(decls,exes)
+
+  ast-to-pp:
+    Scope(decls,exes,funcs)                  -> ppScope(decls,exes,FuncPart(funcs))
 
 //R503
 //  ast-to-pp:
@@ -143,7 +145,7 @@ rules
 //  ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
 
 //R1116
-  ast-to-pp:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
+//  ast-to-pp:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
 
 //R1222
   ast-to-pp:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
