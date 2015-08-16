@@ -22,9 +22,9 @@ signature
     MODULE                      : MODULE -> OfpPrefixSpec
     IMPURE                      : IMPURE -> OfpPrefixSpec
     ELEMENTAL                   : ELEMENTAL -> OfpPrefixSpec
-    OfpArg                      : OfpExpr * OfpKeyword -> OfpArg
-    OfpArg                      : OfpExpr -> OfpArg
-    OfpProcRef                  : OfpExpr -> OfpProcRef
+    OfpArg                      : Expr * OfpKeyword -> OfpArg
+    OfpArg                      : Expr -> OfpArg
+    OfpProcRef                  : Expr -> OfpProcRef
     OfpCallStmt                 : Option(OfpLabel) * OfpProcRef * List(OfpArg) -> OfpCallStmt
     OfpIntrinsicStmt            : Option(OfpLabel) * List(OfpName) -> OfpIntrinsicStmt
     OfpProcedureDeclarationStmt : Option(OfpLabel) * Option(ProcInterface) * List(ProcAttrSpec) * List(ProcDecl) -> OfpProcedureDeclarationStmt
@@ -88,7 +88,7 @@ signature
     ArgList                     : List(OfpDummyArg) -> ArgList
     STAR                        : STAR -> OfpDummyArg
     OfpDummyArg                 : String -> OfpDummyArg
-    OfpAssignmentStmt           : Option(OfpLabel) * OfpVarDef * OfpExpr -> OfpAssignmentStmt
+    AssignmentStmt              : OptLabel * VarDef * Expr -> AssignmentStmt
     GE                          : GE
     GT                          : GT
     LE                          : LE
@@ -99,19 +99,10 @@ signature
     OfpCoshape                  : List(DimSpec) -> OfpCoshape
     OfpShape                    : List(DimSpec) -> OfpShape
     OfpAllocation               : OfpVarRef * Option(OfpShape) * Option(OfpCoshape) -> OfpAllocation
-                                : OfpExpr -> OfpAllocOpt
+                                : Expr -> OfpAllocOpt
     OfpAllocateStmt             : Option(OfpLabel) * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
     OfpVarRef                   : OfpName -> OfpVarRef
-    OfpVarDef                   : OfpName -> OfpVarDef
-    OfpPlusExpr                 : OfpExpr * OfpExpr -> OfpExpr
-    OfpExpr                     : OfpVarRef -> OfpExpr
-    OfpExpr                     : OfpLiteral -> OfpExpr
-                                : OfpAssumedRank -> OfpExpr
-                                : OfpImpliedShape -> OfpExpr
-                                : OfpExplicitShape -> OfpExpr
-                                : OfpExplicitCoshape -> OfpExpr
-                                : OfpAssumedSize -> OfpExpr
-                                : OfpAssumedOrDeferredShape -> OfpExpr
+    VarDef                      : OfpName -> VarDef
     INOUT                       : INOUT
     OUT                         : OUT
     IN                          : IN
@@ -123,8 +114,8 @@ signature
     OfpImpliedShape             : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize              : List(DimSpec) -> OfpAssumedSize
     OfpAssumedOrDeferredShape   : List(DimSpec) -> OfpAssumedOrDeferredShape
-    DimSpec                     : OfpExpr * String -> DimSpec
-    DimSpec                     : OfpExpr * OfpExpr -> DimSpec
+    DimSpec                     : Expr * String -> DimSpec
+    DimSpec                     : Expr * Expr -> DimSpec
     OfpExplicitShape            : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape          : List(DimSpec) -> OfpExplicitCoshape
                                 : String -> OfpInitialization
@@ -134,21 +125,33 @@ signature
     OfpEntityDecl               : OfpName * Option(OfpArraySpec) * Option(OfpCoarraySpec) * Option(OfpCharLength) * Option(OfpInitialization) -> OfpEntityDecl
     OfpIntent                   : OfpIntent -> OfpAttrSpec
     ALLOCATABLE                 : OfpAttrSpec
-                                : OfpMpSubprogram -> OfpDecl
-                                : OfpIntrinsicStmt -> OfpDecl
-                                : OfpProcedureDeclarationStmt -> OfpDecl
-                                : OfpExternalStmt -> OfpDecl
-                                : OfpInterfaceBlock -> OfpDecl
-                                : ImplicitStmt -> OfpDecl
-                                : TypeDeclarationStmt -> OfpDecl
-    TypeDeclarationStmt         : OptLabel * OfpType * List(OfpAttrSpec) * List(OfpEntityDecl) -> TypeDeclarationStmt
-    OfpType                     : DOUBLECOMPLEX * Option(OfpExpr) -> OfpType
-    OfpType                     : LOGICAL * Option(OfpExpr) -> OfpType
-    OfpType                     : CHARACTER * Option(OfpExpr) -> OfpType
-    OfpType                     : COMPLEX * Option(OfpExpr) -> OfpType
-    OfpType                     : DOUBLEPRECISION * Option(OfpExpr) -> OfpType
-    OfpType                     : REAL * Option(OfpExpr) -> OfpType
-    OfpType                     : INTEGER * Option(OfpExpr) -> OfpType
+                                : OfpMpSubprogram -> Decl
+                                : OfpIntrinsicStmt -> Decl
+                                : OfpProcedureDeclarationStmt -> Decl
+                                : OfpExternalStmt -> Decl
+                                : OfpInterfaceBlock -> Decl
+                                : ImplicitStmt -> Decl
+                                : TypeDeclarationStmt -> Decl
+    TypeDeclarationStmt         : OptLabel * Type * List(OfpAttrSpec) * List(OfpEntityDecl) -> TypeDeclarationStmt
+                                : IntrinsicType -> Type
+    DOUBLECOMPLEX               : IntrinsicType
+    LOGICAL                     : OptKindSelector -> IntrinsicType
+    CHARACTER                   : OptCharSelector -> IntrinsicType
+    COMPLEX                     : OptKindSelector -> IntrinsicType
+    DOUBLEPRECISION             : IntrinsicType
+    REAL                        : OptKindSelector -> IntrinsicType
+    INTEGER                     : OptKindSelector -> IntrinsicType
+    no-kind                     : OptKindSelector
+                                : KindSelector -> OptKindSelector
+    KindSelector_STAR           : Icon -> KindSelector
+    KindSelector                : Expr -> KindSelector
+    OfpType                     : DOUBLECOMPLEX * OptExpr -> OfpType
+    OfpType                     : LOGICAL * OptExpr -> OfpType
+    OfpType                     : CHARACTER * OptExpr -> OfpType
+    OfpType                     : COMPLEX * OptExpr -> OfpType
+    OfpType                     : DOUBLEPRECISION * OptExpr -> OfpType
+    OfpType                     : REAL * OptExpr -> OfpType
+    OfpType                     : INTEGER * OptExpr -> OfpType
     DOUBLECOMPLEX               : DOUBLECOMPLEX
     LOGICAL                     : LOGICAL
     CHARACTER                   : CHARACTER
@@ -169,10 +172,7 @@ signature
                                 : Subroutine -> ProgramUnit
                                 : MainProgram -> ProgramUnit
     Program                     : List(ProgramUnit) -> Program
-    FuncPart                    : List(OfpDecl) -> FuncPart
-    ExecPart                    : List(OfpStmt) -> ExecPart
-    SpecPart                    : List(OfpDecl) -> SpecPart
-    Scope                       : SpecPart * ExecPart * FuncPart -> Scope
+    Scope                       : List(Decl) * List(Stmt) * List(Decl) -> Scope
     OfpLiteral                  : String * OfpType -> OfpLiteral
     OfpLiteral                  : String -> OfpLiteral
     OfpName                     : String -> OfpName
@@ -224,11 +224,11 @@ signature
     no-keyword                  : NoKeyword
                                 : Name -> Keyword
                                 : Ident -> ConstructName
-                                : OfpCallStmt -> OfpStmt
-                                : OfpUseStmt -> OfpStmt
-                                : OfpAssignmentStmt -> OfpStmt
-                                : OfpAllocateStmt -> OfpStmt
-                                : ExitStmt -> OfpStmt
+                                : OfpCallStmt -> Stmt
+                                : OfpUseStmt -> Stmt
+                                : AssignmentStmt -> Stmt
+                                : OfpAllocateStmt -> Stmt
+                                : ExitStmt -> Stmt
     ExitStmt                    : OptLabel * NoName * EOS -> ExitStmt
     ExitStmt                    : OptLabel * ConstructName * EOS -> ExitStmt
     VarRef                      : Ident -> ScalarIntVariableName
@@ -261,6 +261,15 @@ signature
     Mult                        : Expr * Expr -> Expr
     Power                       : Expr * Expr -> Expr
     DefUnaryExpr                : DefinedUnaryOp * Expr -> Expr
+    OfpPlusExpr                 : Expr * Expr -> Expr
+    Expr                        : OfpVarRef -> Expr
+    Expr                        : OfpLiteral -> Expr
+                                : OfpAssumedRank -> Expr
+                                : OfpImpliedShape -> Expr
+                                : OfpExplicitShape -> Expr
+                                : OfpExplicitCoshape -> Expr
+                                : OfpAssumedSize -> Expr
+                                : OfpAssumedOrDeferredShape -> Expr
                                 : Primary -> Expr
                                 : Dop -> DefinedUnaryOp
     Parens                      : Expr -> Primary
@@ -372,25 +381,11 @@ signature
                                 : DigitString -> IntLiteralConstant
     SignedIntLiteralConstant    : Sign * IntLiteralConstant -> SignedIntLiteralConstant
                                 : IntLiteralConstant -> SignedIntLiteralConstant
-    no-kind                     : NoKindSelector
-    no-kind                     : OptKindSelector
-                                : KindSelector -> OptKindSelector
-    KindSelector_STAR           : Icon -> KindSelector
-    KindSelector                : Expr -> KindSelector
-    DOUBLECOMPLEX               : NoKindSelector -> IntrinsicTypeSpec
-    LOGICAL                     : OptKindSelector -> IntrinsicTypeSpec
-    CHARACTER                   : OptCharSelector -> IntrinsicTypeSpec
-    COMPLEX                     : OptKindSelector -> IntrinsicTypeSpec
-    DOUBLEPRECISION             : NoKindSelector -> IntrinsicTypeSpec
-    REAL                        : OptKindSelector -> IntrinsicTypeSpec
-    INTEGER                     : OptKindSelector -> IntrinsicTypeSpec
     AssumedType                 : DeclarationTypeSpec
     AssumedClass                : DeclarationTypeSpec
     class-type-spec             : DerivedTypeSpec -> DeclarationTypeSpec
     derived-type-spec           : DerivedTypeSpec -> DeclarationTypeSpec
-    IntrinsicType               : IntrinsicTypeSpec -> DeclarationTypeSpec
                                 : DerivedTypeSpec -> TypeSpec
-                                : IntrinsicTypeSpec -> TypeSpec
     COLON                       : TypeParamValue
     STAR                        : TypeParamValue
                                 : Expr -> TypeParamValue
