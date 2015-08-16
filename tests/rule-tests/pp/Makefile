@@ -7,6 +7,8 @@ TO_FAST = $(TRANS_DIR)/ofp2fast
 TO_PP   = $(TRANS_DIR)/fast2pp
 PP      = ../../../fortran/pp/Fortran.pp
 
+CHECK_LIST = R1101a.f90 R1101b.f90 R1101c.f90 R1101d.f90 R1101e.f90 R1101f.f90 R1101g.f90
+
 all : check
 
 $(TBL) :
@@ -61,6 +63,21 @@ check : $(TBL)
              echo $$file "		FAILED!"; \
            fi; \
         done;
+
+check-list : $(TBL)
+	@for file in $(CHECK_LIST) ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+           gfortran -c tmp/$$file -o tmp/$$file.o; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
+
 
 test :
 	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
