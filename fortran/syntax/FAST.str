@@ -140,8 +140,8 @@ signature
                                 : OfpExternalStmt -> OfpDecl
                                 : OfpInterfaceBlock -> OfpDecl
                                 : ImplicitStmt -> OfpDecl
-                                : OfpTypeDeclarationStmt -> OfpDecl
-     OfpTypeDeclarationStmt     : Option(OfpLabel) * OfpType * List(OfpAttrSpec) * List(OfpEntityDecl) -> OfpTypeDeclarationStmt
+                                : TypeDeclarationStmt -> OfpDecl
+    TypeDeclarationStmt         : OptLabel * OfpType * List(OfpAttrSpec) * List(OfpEntityDecl) -> TypeDeclarationStmt
     OfpType                     : DOUBLECOMPLEX * Option(OfpExpr) -> OfpType
     OfpType                     : LOGICAL * Option(OfpExpr) -> OfpType
     OfpType                     : CHARACTER * Option(OfpExpr) -> OfpType

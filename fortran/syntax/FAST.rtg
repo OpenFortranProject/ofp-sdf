@@ -128,20 +128,7 @@ regular tree grammar
     OptOfpCoarraySpec0                -> <none>()
     OptOfpArraySpec0                  -> <some>(OfpArraySpec)
     OptOfpArraySpec0                  -> <none>()
-    ListStarOfOfpEntityDecl0          -> ListPlusOfOfpEntityDecl0
-    ListStarOfOfpEntityDecl0          -> <nil>()
-    ListStarOfOfpEntityDecl0          -> <conc>(ListStarOfOfpEntityDecl0,ListStarOfOfpEntityDecl0)
-    ListPlusOfOfpEntityDecl0          -> <conc>(ListStarOfOfpEntityDecl0,ListPlusOfOfpEntityDecl0)
-    ListPlusOfOfpEntityDecl0          -> <conc>(ListPlusOfOfpEntityDecl0,ListStarOfOfpEntityDecl0)
-    ListPlusOfOfpEntityDecl0          -> <conc>(ListPlusOfOfpEntityDecl0,ListPlusOfOfpEntityDecl0)
-    ListPlusOfOfpEntityDecl0          -> <cons>(OfpEntityDecl,ListStarOfOfpEntityDecl0)
-    ListStarOfOfpAttrSpec0            -> ListPlusOfOfpAttrSpec0
-    ListStarOfOfpAttrSpec0            -> <nil>()
-    ListStarOfOfpAttrSpec0            -> <conc>(ListStarOfOfpAttrSpec0,ListStarOfOfpAttrSpec0)
-    ListPlusOfOfpAttrSpec0            -> <conc>(ListStarOfOfpAttrSpec0,ListPlusOfOfpAttrSpec0)
-    ListPlusOfOfpAttrSpec0            -> <conc>(ListPlusOfOfpAttrSpec0,ListStarOfOfpAttrSpec0)
-    ListPlusOfOfpAttrSpec0            -> <conc>(ListPlusOfOfpAttrSpec0,ListPlusOfOfpAttrSpec0)
-    ListPlusOfOfpAttrSpec0            -> <cons>(OfpAttrSpec,ListStarOfOfpAttrSpec0)
+
     OptOfpExpr0                       -> <some>(OfpExpr)
     OptOfpExpr0                       -> <none>()
 
@@ -731,20 +718,7 @@ regular tree grammar
     ListPlusOfDeferredCoshapeSpec0    -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListStarOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0    -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListPlusOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0    -> <cons>(DeferredCoshapeSpec,ListStarOfDeferredCoshapeSpec0)
-    ListStarOfAttrSpec0               -> ListPlusOfAttrSpec0
-    ListStarOfAttrSpec0               -> <nil>()
-    ListStarOfAttrSpec0               -> <conc>(ListStarOfAttrSpec0,ListStarOfAttrSpec0)
-    ListPlusOfAttrSpec0               -> <conc>(ListStarOfAttrSpec0,ListPlusOfAttrSpec0)
-    ListPlusOfAttrSpec0               -> <conc>(ListPlusOfAttrSpec0,ListStarOfAttrSpec0)
-    ListPlusOfAttrSpec0               -> <conc>(ListPlusOfAttrSpec0,ListPlusOfAttrSpec0)
-    ListPlusOfAttrSpec0               -> <cons>(AttrSpec,ListStarOfAttrSpec0)
-    ListStarOfEntityDecl0             -> ListPlusOfEntityDecl0
-    ListStarOfEntityDecl0             -> <nil>()
-    ListStarOfEntityDecl0             -> <conc>(ListStarOfEntityDecl0,ListStarOfEntityDecl0)
-    ListPlusOfEntityDecl0             -> <conc>(ListStarOfEntityDecl0,ListPlusOfEntityDecl0)
-    ListPlusOfEntityDecl0             -> <conc>(ListPlusOfEntityDecl0,ListStarOfEntityDecl0)
-    ListPlusOfEntityDecl0             -> <conc>(ListPlusOfEntityDecl0,ListPlusOfEntityDecl0)
-    ListPlusOfEntityDecl0             -> <cons>(EntityDecl,ListStarOfEntityDecl0)
+
     ListStarOfAcValue0                -> ListPlusOfAcValue0
     ListStarOfAcValue0                -> <nil>()
     ListStarOfAcValue0                -> <conc>(ListStarOfAcValue0,ListStarOfAcValue0)
@@ -1104,8 +1078,10 @@ regular tree grammar
     OfpEntityDecl                     -> OfpEntityDecl(OfpName,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
     OfpAttrSpec                       -> OfpIntent(OfpIntent)
     OfpAttrSpec                       -> ALLOCATABLE()
-    OfpDecl                           -> OfpTypeDeclarationStmt
-    OfpTypeDeclarationStmt            -> [ OfpTypeDeclarationStmt](OptOfpLabel0,OfpType,ListStarOfOfpAttrSpec0,ListPlusOfOfpEntityDecl0)
+
+    OfpDecl                           -> TypeDeclarationStmt
+    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,OfpType,ListStarOfAttrSpec,ListPlusOfEntityDecl)
+
     OfpType                           -> OfpType(DOUBLECOMPLEX,OptOfpExpr0)
     OfpType                           -> OfpType(LOGICAL,OptOfpExpr0)
     OfpType                           -> OfpType(CHARACTER,OptOfpExpr0)
@@ -2082,11 +2058,10 @@ regular tree grammar
     AttrSpec                          -> ASYNCHRONOUS()
     AttrSpec                          -> ALLOCATABLE()
     AttrSpec                          -> AccessSpec
-    OptAttrSpecList                   -> comma-list(ListPlusOfAttrSpec0)
+    OptAttrSpecList                   -> comma-list(ListPlusOfAttrSpec)
     OptAttrSpecList                   -> no-list()
     NoAttrSpecList                    -> no-list()
-    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,OptAttrSpecList,ListPlusOfEntityDecl0,EOS)
-    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,DeclarationTypeSpec,NoAttrSpecList,ListPlusOfEntityDecl0,EOS)
+
     AcDoVariable                      -> DoVariable
     AcImpliedDoControl                -> AcImpliedDoControl(AcDoVariable,Expr,Expr,OptExpr)
     AcImpliedDo                       -> AcImpliedDo(ListPlusOfAcValue0,AcImpliedDoControl)
@@ -2319,3 +2294,19 @@ regular tree grammar
     ListPlusOfProgramUnit             -> <conc>(ListPlusOfProgramUnit,ListStarOfProgramUnit)
     ListPlusOfProgramUnit             -> <conc>(ListPlusOfProgramUnit,ListPlusOfProgramUnit)
     ListPlusOfProgramUnit             -> <cons>(ProgramUnit,ListStarOfProgramUnit)
+
+    ListStarOfAttrSpec                -> ListPlusOfAttrSpec
+    ListStarOfAttrSpec                -> <nil>()
+    ListStarOfAttrSpec                -> <conc>(ListStarOfAttrSpec,ListStarOfAttrSpec)
+    ListPlusOfAttrSpec                -> <conc>(ListStarOfAttrSpec,ListPlusOfAttrSpec)
+    ListPlusOfAttrSpec                -> <conc>(ListPlusOfAttrSpec,ListStarOfAttrSpec)
+    ListPlusOfAttrSpec                -> <conc>(ListPlusOfAttrSpec,ListPlusOfAttrSpec)
+    ListPlusOfAttrSpec                -> <cons>(OfpAttrSpec,ListStarOfAttrSpec)
+
+    ListStarOfEntityDecl              -> ListPlusOfEntityDecl
+    ListStarOfEntityDecl              -> <nil>()
+    ListStarOfEntityDecl              -> <conc>(ListStarOfEntityDecl,ListStarOfEntityDecl)
+    ListPlusOfEntityDecl              -> <conc>(ListStarOfEntityDecl,ListPlusOfEntityDecl)
+    ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListStarOfEntityDecl)
+    ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListPlusOfEntityDecl)
+    ListPlusOfEntityDecl              -> <cons>(OfpEntityDecl,ListStarOfEntityDecl)
