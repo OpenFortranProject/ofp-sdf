@@ -9,7 +9,13 @@ imports
 signature
   constructors
 
-// Ambiguities
+  // These extra constructors are not part of FAST but used in intermediate stages
+  //
+  SpecPart : ListStarOfDecl -> SpecPart
+  ExecPart : ListStarOfStmt -> ExecPart
+  FuncPart : ListStarOfDecl -> FuncPart
+
+  // Ambiguities
   amb : list -> choice
 
   OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
@@ -56,8 +62,8 @@ strategies //=================START OF STRATEGIES============================
 //ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
 //ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
-  ofp-var-def = is-string < !OfpVarDef(OfpName(<id>)) + !ERROR(<id>)
-  ofp-var-ref = is-string < !OfpVarRef(OfpName(<id>)) + id
+  ofp-var-def = is-string < !VarDef(OfpName(<id>)) + !ERROR(<id>)
+  ofp-var-ref = is-string < !VarRef(OfpName(<id>)) + id
 
 rules //========================START OF RULES===============================
 
@@ -242,6 +248,10 @@ match-end-do =
 
 //R723
 //  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
+
+//R732
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
+  ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
 
 //R1101
   ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
