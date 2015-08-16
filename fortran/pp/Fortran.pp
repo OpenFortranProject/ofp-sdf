@@ -35,7 +35,7 @@
    #R204 --,
    SpecPart                      -- V vs=0 is=0[_1],
    ExecPart                      -- V vs=0 is=0[_1],
-   FuncPart                      -- V vs=0 is=0[KW["CONTAINS"] _1],
+   FuncPart                      -- V ["\nCONTAINS\n" _1],
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
@@ -420,8 +420,7 @@
    PLUS                          -- "+",
 
    #R732 --,
-   AssignmentStmt                -- H hs=1[_1 H hs=0[_2 KW[" = "] _3 _4]],
-   AssignmentStmt.2:opt          -- ,
+   AssignmentStmt                -- H [_1 _2 "=" _3],
 
    #R733 --,
    PointerAssignmentStmt         -- H hs=1[_1 H hs=0[_2 "("_3")" KW[" => "] _4 _5]],
@@ -736,7 +735,7 @@
    Submodule                     -- V vs=0 [_1 _2 _3],
 
    SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3],
-   EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" H hs=0[_2]],
+   EndSubmoduleStmt              -- H hs=1[_1 "END SUBMODULE" H hs=0[_2]],
    no-parent-submodule-name      -- ,
 
    ParentIdentifier              -- _1 _2,
@@ -836,10 +835,10 @@
    AltReturnSpec                       -- KW["*"] _1,
 
    #R1233 --,
-   Subroutine                          -- V vs=0 [_1 _2 _3],
-   SubroutineStmt                      -- H hs=1 [_1 _2 KW["SUBROUTINE"] H hs=0[_3 "("_4")" _5]],
+   Subroutine                          -- V [_1 _2 _3],
+   SubroutineStmt                      -- H [_1 _2 "SUBROUTINE" H hs=0[_3 "("_4")" _5]],
    SubroutineStmt.3:iter-sep           -- _1 ",",
-   EndSubroutineStmt                   -- H hs=1[_1 "END SUBROUTINE\n" _2],
+   EndSubroutineStmt                   -- H hs=0 [H hs=1[_1 "END SUBROUTINE" _2] "\n"],
 
    STAR                                -- "*",
    OfpArgList                          -- _1,
@@ -849,9 +848,6 @@
    no-subroutine-name                  -- ,
 
    #R1241 --,
-   ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3],
-
-   #R1242 --,
-   ContainsStmt                        -- H hs=1[_1 KW["CONTAINS"] _2]
+   ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3]
 
 ]
