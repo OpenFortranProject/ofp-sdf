@@ -29,13 +29,13 @@
    PARAMETER                     -- ", " KW["PARAMETER"],
 
    #R201 --,
-   Program                       -- V vs=1 is=0 [_1],
+   Program                       -- V vs=0 is=0 [_1],
    Program.1:opt                 -- ,
 
    #R204 --,
    SpecPart                      -- V vs=0 is=0[_1],
    ExecPart                      -- V vs=0 is=0[_1],
-   FuncPart                      -- V vs=1 is=0[KW["CONTAINS"] _1],
+   FuncPart                      -- V vs=0 is=0[KW["CONTAINS"] _1],
 
    #R303 --,
    OfpName                       -- H hs=1[_1],
@@ -65,6 +65,7 @@
 
    #R405 --,
    KindSelector                  -- "(" KW["KIND="] _1")",
+   no-kind                       -- ,
    
    #R407 --,
    ppLiteral                     -- H hs=1[_1],
@@ -194,7 +195,7 @@
    AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
    #R501 --,
-   TypeDeclarationStmt             -- H hs=0[_1 H hs=0[_2] H hs=0[_3 " :: "] H hs=0[_4 _5]],
+   TypeDeclarationStmt             -- H hs=0 [_1 H hs=0[_2] H hs=0[_3 " :: "] H hs=0[_4]],
    TypeDeclarationStmt.4:iter-sep  -- _1 ", ",
 
    #R502 --,
@@ -208,15 +209,17 @@
    INOUT                         -- KW["INOUT"],
 
    #R503 --,
-   ppEntityDecl                  -- _1 _2 _3 _4 _5,
-   ppArraySpec                   -- "(" _1 ")",
-   ppArraySpec.1:iter-sep        -- _1 ",",
-   ppCoarraySpec                 -- "[" _1 "]",
-   ppCoarraySpec.1:iter-sep      -- _1 ",",
+   EntityDecl                    -- _1 _2 _3 _4 _5,
+   XXXppArraySpec                   -- "(" _1 ")",
+   XXXppArraySpec.1:iter-sep        -- _1 ",",
+   XXXppCoarraySpec                 -- "[" _1 "]",
+   XXXppCoarraySpec.1:iter-sep      -- _1 ",",
+   no-char-length                -- ,
 
    #R505 --,
    Initialization                -- KW[" = "] _1,
    Init                          -- KW[" = "] _1,
+   no-init                       -- ,
 
    #R507 --,
    PRIVATE                       -- KW["PRIVATE"],
@@ -703,11 +706,12 @@
 
 
    #R1101 --,
-   MainProgram                   -- V vs=0 [_1 _2 _3],
+   MainProgram                   -- V [_1 _2 _3],
    MainProgram.1:opt             -- ,
 
-   ProgramStmt                   -- H hs=1 [_1 KW["PROGRAM"] _2],
-   EndProgramStmt                -- H hs=1 [_1 "END PROGRAM" _2],
+   ProgramStmt                   -- H [_1 KW["PROGRAM"] _2],
+   EndProgramStmt                -- H [_1 "END PROGRAM" _2],
+   no-program-stmt               -- ,
    no-program-name               -- ,
 
    #R1104 --,
@@ -755,10 +759,10 @@
    AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
 
    #R1205 --,
-   ppScope                       -- V vs=0 [_1 _2],
-   ppScope                       -- V vs=0 [_1 _2 _3],
+   ppScope                       -- _1 _2,
+   ppScope                       -- _1 _2 _3,
 
-   xxxScope                      -- V vs=0 [H hs=1[_1] _2 V vs=1 is=0 [_3]],
+   xxxScope                      -- V vs=0 [H hs=1 [_1] V vs=0 is=0 [_3]],
    xxxInterfaceBody              -- _1 _2 _3,
 
    OfpPrefix                           -- _1,
