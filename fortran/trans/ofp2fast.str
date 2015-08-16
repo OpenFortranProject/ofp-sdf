@@ -169,6 +169,12 @@ match-end-do =
 //R208
   ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
 
+//R501
+  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,entities,eos("\n"))
+              -> TypeDeclarationStmt(label,type,attrs,entities)
+  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,entities,eos(str))
+              -> TypeDeclarationStmt(label,type,attrs,entities)           {Comment(str)}
+
 //R510
   ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
 
