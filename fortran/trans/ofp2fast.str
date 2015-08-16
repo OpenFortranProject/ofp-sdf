@@ -117,8 +117,7 @@ fast-fixup-spec-part =
 // statements.
 //
 is-specification-part =
-     ?ImplicitStmt(_,_,_)
- +>  ?ImplicitNoneStmt(_,_)
+     ?ImplicitStmt(_,_)
  +>  ?ParameterStmt(_,_,_)
  +>  ?TypeDeclarationStmt(_,_,_,_,_)
 
@@ -219,6 +218,10 @@ match-end-do =
   ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
 // Operators...
+
+//R560 - TODO: implicit-spec-list
+  ofp-to-ast:  ImplicitNoneStmt(label,eos("\n")) -> ImplicitStmt(label,[])
+  ofp-to-ast:  ImplicitNoneStmt(label,eos(str) ) -> ImplicitStmt(label,[]) {Comment(str)}
 
 //R703
 //  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
