@@ -10,9 +10,12 @@ signature
     // These extra constructors are not part of FAST but required for unparsing
     //
 
+    LanguageBinding : Language                       -> LanguageBinding
+
+    FuncPart        : ListStarOfDecl                 -> FuncPart
+
     ppScope         : SpecPart * ExecPart            -> ppScope
     ppScope         : SpecPart * ExecPart * FuncPart -> ppScope
-    LanguageBinding : Language                       -> LanguageBinding
 
     ppImplicitStmt  : Label          -> ppImplicitStmt
 
