@@ -129,25 +129,9 @@ regular tree grammar
     OptOfpArraySpec0                  -> <some>(OfpArraySpec)
     OptOfpArraySpec0                  -> <none>()
 
-    OptOfpExpr0                       -> <some>(OfpExpr)
-    OptOfpExpr0                       -> <none>()
-
     OptOfpFile0                       -> <some>(OfpFile)
     OptOfpFile0                       -> <none>()
-    ListStarOfOfpDecl0                -> ListPlusOfOfpDecl0
-    ListStarOfOfpDecl0                -> <nil>()
-    ListStarOfOfpDecl0                -> <conc>(ListStarOfOfpDecl0,ListStarOfOfpDecl0)
-    ListPlusOfOfpDecl0                -> <conc>(ListStarOfOfpDecl0,ListPlusOfOfpDecl0)
-    ListPlusOfOfpDecl0                -> <conc>(ListPlusOfOfpDecl0,ListStarOfOfpDecl0)
-    ListPlusOfOfpDecl0                -> <conc>(ListPlusOfOfpDecl0,ListPlusOfOfpDecl0)
-    ListPlusOfOfpDecl0                -> <cons>(OfpDecl,ListStarOfOfpDecl0)
-    ListStarOfOfpStmt0                -> ListPlusOfOfpStmt0
-    ListStarOfOfpStmt0                -> <nil>()
-    ListStarOfOfpStmt0                -> <conc>(ListStarOfOfpStmt0,ListStarOfOfpStmt0)
-    ListPlusOfOfpStmt0                -> <conc>(ListStarOfOfpStmt0,ListPlusOfOfpStmt0)
-    ListPlusOfOfpStmt0                -> <conc>(ListPlusOfOfpStmt0,ListStarOfOfpStmt0)
-    ListPlusOfOfpStmt0                -> <conc>(ListPlusOfOfpStmt0,ListPlusOfOfpStmt0)
-    ListPlusOfOfpStmt0                -> <cons>(OfpStmt,ListStarOfOfpStmt0)
+
     OptOfpEndStmt0                    -> <some>(OfpEndStmt)
     OptOfpEndStmt0                    -> <none>()
     OptOfpContainsStmt0               -> <some>(OfpContainsStmt)
@@ -893,7 +877,7 @@ regular tree grammar
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
 
-    OfpDecl                           -> OfpMpSubprogram
+    Decl                              -> OfpMpSubprogram
     OfpEndStmt                        -> OfpEndMpSubprogramStmt
     OfpBeginStmt                      -> OfpMpSubprogramStmt
     OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptOfpLabel0,OptOfpName0)
@@ -926,16 +910,16 @@ regular tree grammar
     OfpPrefixSpec                     -> IMPURE(IMPURE)
     OfpPrefixSpec                     -> ELEMENTAL(ELEMENTAL)
     Prefix                            -> Prefix(ListStarOfOfpPrefixSpec0)
-    OfpArg                            -> OfpArg(OfpExpr,OfpKeyword)
-    OfpArg                            -> OfpArg(OfpExpr)
-    OfpProcRef                        -> OfpProcRef(OfpExpr)
-    OfpStmt                           -> OfpCallStmt
+    OfpArg                            -> OfpArg(Expr,OfpKeyword)
+    OfpArg                            -> OfpArg(Expr)
+    OfpProcRef                        -> OfpProcRef(Expr)
+    Stmt                              -> OfpCallStmt
     OfpCallStmt                       -> OfpCallStmt(OptOfpLabel0,OfpProcRef,ListPlusOfOfpArg0)
-    OfpDecl                           -> OfpIntrinsicStmt
+    Decl                              -> OfpIntrinsicStmt
     OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptOfpLabel0,ListPlusOfOfpName0)
-    OfpDecl                           -> OfpProcedureDeclarationStmt
+    Decl                              -> OfpProcedureDeclarationStmt
     OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptOfpLabel0,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
-    OfpDecl                           -> OfpExternalStmt
+    Decl                              -> OfpExternalStmt
     OfpExternalStmt                   -> OfpExternalStmt(OptOfpLabel0,ListPlusOfOfpName0)
     WRITEUNFORMATTED                  -> WRITEUNFORMATTED()
     WRITEFORMATTED                    -> WRITEFORMATTED()
@@ -956,7 +940,7 @@ regular tree grammar
     OfpBeginStmt                      -> OfpInterfaceStmt
     OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptOfpLabel0,OptOfpGenericSpec0)
     OfpInterfaceStmt                  -> OfpInterfaceStmt(OptOfpLabel0,OptABSTRACT0,OptOfpGenericSpec0)
-    OfpDecl                           -> OfpInterfaceBlock
+    Decl                              -> OfpInterfaceBlock
     OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfScope0)
 
     OfpOnlyList                       -> OfpOnlyList(ListStarOfOfpOnly0)
@@ -969,7 +953,7 @@ regular tree grammar
     INTRINSIC                         -> INTRINSIC()
     OfpModuleNature                   -> NONINTRINSIC(NONINTRINSIC)
     OfpModuleNature                   -> INTRINSIC(INTRINSIC)
-    OfpStmt                           -> OfpUseStmt
+    Stmt                              -> OfpUseStmt
     OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpOnlyList)
     OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpRenameList)
 
@@ -1020,11 +1004,12 @@ regular tree grammar
     OfpDummyArg                       -> STAR(STAR)
     OfpDummyArg                       -> OfpDummyArg(String)
 
-    OfpStmt                           -> OfpAssignmentStmt
-    OfpAssignmentStmt                 -> OfpAssignmentStmt(OptOfpLabel0,OfpVarDef,OfpExpr)
-    OfpExpr                           -> OfpPlusExpr(OfpExpr,OfpExpr)
-    OfpExpr                           -> OfpExpr(OfpVarRef)
-    OfpExpr                           -> OfpExpr(OfpLiteral)
+    Stmt                              -> AssignmentStmt
+    AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
+
+    Expr                              -> OfpPlusExpr(Expr,Expr)
+    Expr                              -> Expr(OfpVarRef)
+    Expr                              -> Expr(OfpLiteral)
     OfpOp                             -> GE
     OfpOp                             -> GT
     OfpOp                             -> LE
@@ -1041,21 +1026,22 @@ regular tree grammar
     OfpCoshape                        -> OfpCoshape(ListPlusOfDimSpec0)
     OfpShape                          -> OfpShape(ListPlusOfDimSpec0)
     OfpAllocation                     -> OfpAllocation(OfpVarRef,OptOfpShape0,OptOfpCoshape0)
-    OfpAllocOpt                       -> OfpExpr
-    OfpStmt                           -> OfpAllocateStmt
+    OfpAllocOpt                       -> Expr
+    Stmt                              -> OfpAllocateStmt
     OfpAllocateStmt                   -> OfpAllocateStmt(OptOfpLabel0,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
     OfpVarRef                         -> OfpVarRef(OfpName)
-    OfpVarDef                         -> OfpVarDef(OfpName)
+    VarDef                            -> VarDef(OfpName)
 
-    OfpDecl                           -> ImplicitStmt
+    Decl                              -> ImplicitStmt
     ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfOfpType0)
 
-    OfpExpr                           -> OfpAssumedRank
-    OfpExpr                           -> OfpImpliedShape
-    OfpExpr                           -> OfpExplicitShape
-    OfpExpr                           -> OfpExplicitCoshape
-    OfpExpr                           -> OfpAssumedSize
-    OfpExpr                           -> OfpAssumedOrDeferredShape
+    Expr                              -> OfpAssumedRank
+    Expr                              -> OfpImpliedShape
+    Expr                              -> OfpExplicitShape
+    Expr                              -> OfpExplicitCoshape
+    Expr                              -> OfpAssumedSize
+    Expr                              -> OfpAssumedOrDeferredShape
+
     OfpIntent                         -> INOUT
     OfpIntent                         -> OUT
     OfpIntent                         -> IN
@@ -1067,8 +1053,8 @@ regular tree grammar
     OfpImpliedShape                   -> OfpImpliedShape(ListPlusOfDimSpec0)
     OfpAssumedSize                    -> OfpAssumedSize(ListPlusOfDimSpec0)
     OfpAssumedOrDeferredShape         -> OfpAssumedOrDeferredShape(ListPlusOfDimSpec0)
-    DimSpec                           -> DimSpec(OfpExpr,String)
-    DimSpec                           -> DimSpec(OfpExpr,OfpExpr)
+    DimSpec                           -> DimSpec(Expr,String)
+    DimSpec                           -> DimSpec(Expr,Expr)
     OfpExplicitShape                  -> OfpExplicitShape(ListPlusOfDimSpec0)
     OfpExplicitCoshape                -> OfpExplicitCoshape(ListPlusOfDimSpec0)
     OfpInitialization                 -> String
@@ -1079,16 +1065,32 @@ regular tree grammar
     OfpAttrSpec                       -> OfpIntent(OfpIntent)
     OfpAttrSpec                       -> ALLOCATABLE()
 
-    OfpDecl                           -> TypeDeclarationStmt
-    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,OfpType,ListStarOfAttrSpec,ListPlusOfEntityDecl)
+    Decl                              -> TypeDeclarationStmt
+    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
 
-    OfpType                           -> OfpType(DOUBLECOMPLEX,OptOfpExpr0)
-    OfpType                           -> OfpType(LOGICAL,OptOfpExpr0)
-    OfpType                           -> OfpType(CHARACTER,OptOfpExpr0)
-    OfpType                           -> OfpType(COMPLEX,OptOfpExpr0)
-    OfpType                           -> OfpType(DOUBLEPRECISION,OptOfpExpr0)
-    OfpType                           -> OfpType(REAL,OptOfpExpr0)
-    OfpType                           -> OfpType(INTEGER,OptOfpExpr0)
+    Type                              -> IntrinsicType
+
+    IntrinsicType                     -> DOUBLECOMPLEX()
+    IntrinsicType                     -> LOGICAL(OptKindSelector)
+    IntrinsicType                     -> CHARACTER(OptCharSelector)
+    IntrinsicType                     -> COMPLEX(OptKindSelector)
+    IntrinsicType                     -> DOUBLEPRECISION()
+    IntrinsicType                     -> REAL(OptKindSelector)
+    IntrinsicType                     -> INTEGER(OptKindSelector)
+
+    OptKindSelector                   -> no-kind()
+    OptKindSelector                   -> KindSelector
+    KindSelector                      -> KindSelector_STAR(Icon)
+    KindSelector                      -> KindSelector(Expr)
+    KindSelector                      -> KindSelector(Expr)
+
+    OfpType                           -> OfpType(DOUBLECOMPLEX,OptExpr)
+    OfpType                           -> OfpType(LOGICAL,OptExpr)
+    OfpType                           -> OfpType(CHARACTER,OptExpr)
+    OfpType                           -> OfpType(COMPLEX,OptExpr)
+    OfpType                           -> OfpType(DOUBLEPRECISION,OptExpr)
+    OfpType                           -> OfpType(REAL,OptExpr)
+    OfpType                           -> OfpType(INTEGER,OptExpr)
     DOUBLECOMPLEX                     -> DOUBLECOMPLEX()
     LOGICAL                           -> LOGICAL()
     CHARACTER                         -> CHARACTER()
@@ -1101,10 +1103,7 @@ regular tree grammar
 
     ProgramUnit                       -> MainProgram
     Program                           -> Program(ListPlusOfProgramUnit)
-    FuncPart                          -> FuncPart(ListStarOfOfpDecl0)
-    ExecPart                          -> ExecPart(ListStarOfOfpStmt0)
-    SpecPart                          -> SpecPart(ListStarOfOfpDecl0)
-    Scope                             -> Scope(SpecPart,ExecPart,FuncPart)
+    Scope                             -> Scope(ListStarOfDecl,ListStarOfStmt,ListStarOfDecl)
 
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
@@ -1595,7 +1594,7 @@ regular tree grammar
     GotoStmt                          -> GotoStmt(OptLabel,LblRef,EOS)
     ConstructName                     -> Ident
 
-    OfpStmt                           -> ExitStmt
+    Stmt                              -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,NoName,EOS)
     ExitStmt                          -> ExitStmt(OptLabel,ConstructName,EOS)
 
@@ -1754,7 +1753,6 @@ regular tree grammar
     OptBoundsRemappingList            -> no-list()
     OptBoundsRemappingList            -> paren-list(ListPlusOfBoundsRemapping0)
     PointerAssignmentStmt             -> PointerAssignmentStmt(OptLabel,DataPointerObject,OptBoundsRemappingList,DataTarget,EOS)
-    AssignmentStmt                    -> AssignmentStmt(OptLabel,Variable,Expr,EOS)
     IntConstantExpr                   -> IntExpr
     DefaultCharConstantExpr           -> DefaultCharExpr
     ConstantExpr                      -> Expr
@@ -2222,19 +2220,7 @@ regular tree grammar
     IntLiteralConstant                -> DigitString
     SignedIntLiteralConstant          -> SignedIntLiteralConstant(Sign,IntLiteralConstant)
     SignedIntLiteralConstant          -> IntLiteralConstant
-    NoKindSelector                    -> no-kind()
-    OptKindSelector                   -> no-kind()
-    OptKindSelector                   -> KindSelector
-    KindSelector                      -> KindSelector_STAR(Icon)
-    KindSelector                      -> KindSelector(Expr)
-    KindSelector                      -> KindSelector(Expr)
-    IntrinsicTypeSpec                 -> DOUBLECOMPLEX(NoKindSelector)
-    IntrinsicTypeSpec                 -> LOGICAL(OptKindSelector)
-    IntrinsicTypeSpec                 -> CHARACTER(OptCharSelector)
-    IntrinsicTypeSpec                 -> COMPLEX(OptKindSelector)
-    IntrinsicTypeSpec                 -> DOUBLEPRECISION(NoKindSelector)
-    IntrinsicTypeSpec                 -> REAL(OptKindSelector)
-    IntrinsicTypeSpec                 -> INTEGER(OptKindSelector)
+
     DeclarationTypeSpec               -> AssumedType()
     DeclarationTypeSpec               -> AssumedClass()
     DeclarationTypeSpec               -> class-type-spec(DerivedTypeSpec)
@@ -2294,6 +2280,22 @@ regular tree grammar
     ListPlusOfProgramUnit             -> <conc>(ListPlusOfProgramUnit,ListStarOfProgramUnit)
     ListPlusOfProgramUnit             -> <conc>(ListPlusOfProgramUnit,ListPlusOfProgramUnit)
     ListPlusOfProgramUnit             -> <cons>(ProgramUnit,ListStarOfProgramUnit)
+
+    ListStarOfStmt                    -> ListPlusOfStmt
+    ListStarOfStmt                    -> <nil>()
+    ListStarOfStmt                    -> <conc>(ListStarOfStmt,ListStarOfStmt)
+    ListPlusOfStmt                    -> <conc>(ListStarOfStmt,ListPlusOfStmt)
+    ListPlusOfStmt                    -> <conc>(ListPlusOfStmt,ListStarOfStmt)
+    ListPlusOfStmt                    -> <conc>(ListPlusOfStmt,ListPlusOfStmt)
+    ListPlusOfStmt                    -> <cons>(Stmt,ListStarOfStmt)
+
+    ListStarOfDecl                    -> ListPlusOfDecl
+    ListStarOfDecl                    -> <nil>()
+    ListStarOfDecl                    -> <conc>(ListStarOfDecl,ListStarOfDecl)
+    ListPlusOfDecl                    -> <conc>(ListStarOfDecl,ListPlusOfDecl)
+    ListPlusOfDecl                    -> <conc>(ListPlusOfDecl,ListStarOfDecl)
+    ListPlusOfDecl                    -> <conc>(ListPlusOfDecl,ListPlusOfDecl)
+    ListPlusOfDecl                    -> <cons>(Decl,ListStarOfDecl)
 
     ListStarOfAttrSpec                -> ListPlusOfAttrSpec
     ListStarOfAttrSpec                -> <nil>()
