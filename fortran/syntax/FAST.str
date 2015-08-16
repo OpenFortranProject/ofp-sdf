@@ -44,7 +44,6 @@ signature
     OfpEndInterfaceStmt         : Option(OfpLabel) * Option(OfpGenericSpec) -> OfpEndInterfaceStmt
     OfpInterfaceStmt            : Option(OfpLabel) * Option(ABSTRACT) * Option(OfpGenericSpec) -> OfpInterfaceStmt
     OfpInterfaceBlock           : OfpInterfaceStmt * OfpEndInterfaceStmt * List(Scope) -> OfpInterfaceBlock
-    OfpSubmodule                : Option(OfpName) * Scope -> OfpSubmodule
     OfpOnlyList                 : List(OfpOnly) -> OfpOnlyList
     OfpOnly                     : OfpRename -> OfpOnly
     OfpOnly                     : OfpName -> OfpOnly
@@ -69,6 +68,17 @@ signature
                                 : ModuleName -> OptModuleName
     no-module-name              : OptModuleName
                                 : Ident -> ModuleName
+    Submodule                   : SubmoduleStmt * Scope * EndSubmoduleStmt -> Submodule
+    SubmoduleStmt               : OptLabel * ParentIdentifier * SubmoduleName -> SubmoduleStmt
+    EndSubmoduleStmt            : OptLabel * OptSubmoduleName -> EndSubmoduleStmt
+                                : SubmoduleName -> OptSubmoduleName
+    no-submodule-name           : OptSubmoduleName
+                                : Ident -> SubmoduleName
+    ParentIdentifier            : AncestorModuleName * OptParentSubmoduleName -> ParentIdentifier
+                                : Ident -> AncestorModuleName
+                                : ParentSubmoduleName -> OptParentSubmoduleName
+    no-parent-submodule-name    : OptParentSubmoduleName
+                                : Ident -> ParentSubmoduleName
     Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
     SubroutineStmt              : OptLabel * Prefix * SubroutineName * ArgList * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
@@ -93,7 +103,6 @@ signature
     OfpAllocateStmt             : Option(OfpLabel) * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
     OfpVarRef                   : OfpName -> OfpVarRef
     OfpVarDef                   : OfpName -> OfpVarDef
-    OfpImplicitStmt             : Option(OfpLabel) * List(OfpType) -> OfpImplicitStmt
     OfpPlusExpr                 : OfpExpr * OfpExpr -> OfpExpr
     OfpExpr                     : OfpVarRef -> OfpExpr
     OfpExpr                     : OfpLiteral -> OfpExpr
@@ -130,7 +139,7 @@ signature
                                 : OfpProcedureDeclarationStmt -> OfpDecl
                                 : OfpExternalStmt -> OfpDecl
                                 : OfpInterfaceBlock -> OfpDecl
-                                : OfpImplicitStmt -> OfpDecl
+                                : ImplicitStmt -> OfpDecl
                                 : OfpTypeDeclarationStmt -> OfpDecl
      OfpTypeDeclarationStmt     : Option(OfpLabel) * OfpType * List(OfpAttrSpec) * List(OfpEntityDecl) -> OfpTypeDeclarationStmt
     OfpType                     : DOUBLECOMPLEX * Option(OfpExpr) -> OfpType
@@ -154,12 +163,12 @@ signature
                                 : NE -> OfpOp
                                 : EQ -> OfpOp
     OfpOp                       : String -> OfpOp
-                                : Function -> OfpProgramUnit
-                                : Subroutine -> OfpProgramUnit
-                                : OfpSubmodule -> OfpProgramUnit
-                                : Module -> OfpProgramUnit
-                                : MainProgram -> OfpProgramUnit
-    Program                     : List(OfpProgramUnit) -> Program
+                                : Function -> ProgramUnit
+                                : Module -> ProgramUnit
+                                : Submodule -> ProgramUnit
+                                : Subroutine -> ProgramUnit
+                                : MainProgram -> ProgramUnit
+    Program                     : List(ProgramUnit) -> Program
     FuncPart                    : List(OfpDecl) -> FuncPart
     ExecPart                    : List(OfpStmt) -> ExecPart
     SpecPart                    : List(OfpDecl) -> SpecPart
@@ -288,6 +297,13 @@ signature
     Substring                   : ParentString * SubstringRange -> Substring
                                 : Substring -> Designator
                                 : DataRef -> Designator
+    no-letter                   : NoLetter
+    LetterSpec                  : Letter * NoLetter -> LetterSpec
+    LetterSpec                  : Letter * Letter -> LetterSpec
+    ImplicitSpec                : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
+    ImplicitStmt                : OptLabel * List(OfpType) -> ImplicitStmt
+    ImplicitNoneStmt            : OptLabel * EOS -> ImplicitStmt
+    ImplicitStmt                : OptLabel * List(ImplicitSpec) * EOS -> ImplicitStmt
     INOUT                       : IntentSpec
     OUT                         : IntentSpec
     IN                          : IntentSpec
@@ -401,6 +417,7 @@ signature
                                 : String -> Scon
                                 : String -> Icon
                                 : String -> Ident
+                                : String -> Letter
                                 : String -> LblDef
                                 : String -> EOStmt
 
