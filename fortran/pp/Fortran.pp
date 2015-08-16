@@ -67,7 +67,7 @@
    KindSelector                  -- "(" KW["KIND="] _1")",
    
    #R407 --,
-   PpLiteral                     -- H hs=1[_1],
+   ppLiteral                     -- H hs=1[_1],
 
    #R413 --,
    RealLiteralConstant           -- _1 _2,
@@ -208,11 +208,11 @@
    INOUT                         -- KW["INOUT"],
 
    #R503 --,
-   PpEntityDecl                  -- _1 _2 _3 _4 _5,
-   PpArraySpec                   -- "(" _1 ")",
-   PpArraySpec.1:iter-sep        -- _1 ",",
-   PpCoarraySpec                 -- "[" _1 "]",
-   PpCoarraySpec.1:iter-sep      -- _1 ",",
+   ppEntityDecl                  -- _1 _2 _3 _4 _5,
+   ppArraySpec                   -- "(" _1 ")",
+   ppArraySpec.1:iter-sep        -- _1 ",",
+   ppCoarraySpec                 -- "[" _1 "]",
+   ppCoarraySpec.1:iter-sep      -- _1 ",",
 
    #R505 --,
    Initialization                -- KW[" = "] _1,
@@ -232,8 +232,8 @@
    OfpExplicitCoshape            -- _1,
 
    #R517 --,
-   PpDimSpec                     -- _1,
-   PpDimSpec                     -- _1 ":" _2,
+   ppDimSpec                     -- _1,
+   ppDimSpec                     -- _1 ":" _2,
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
@@ -305,7 +305,7 @@
    VolatileStmt.2:iter-sep       -- _1 ", ",
 
    #R560 --,
-   ImplicitNoneStmt              -- H hs=1[_1 KW["IMPLICIT NONE"] _2],
+   ppImplicitStmt                -- H hs=1[_1 KW["IMPLICIT NONE"]],
    ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=0[_2 _3]],
    ImplicitStmt.2:iter-sep       -- _1 ", ",
 
@@ -315,8 +315,8 @@
 
    #R562 --,
    LetterSpec                    -- _1 _2,
-   PpLetterSpec                  -- _1,
-   PpLetterSpec                  -- _1 KW["-"] _2,
+   ppLetterSpec                  -- _1,
+   ppLetterSpec                  -- _1 KW["-"] _2,
 
    #R563 --,
    NamelistStmt                  -- H hs=1[_1 KW["NAMELIST"] H hs=0[_2] _3],
@@ -346,11 +346,11 @@
    #R612 --,
    VarDef                           -- _1,
    VarRef                           -- _1,
-   PpPartRef                        -- _1 _2 _3,
-   PpSectionSubscripts              -- "(" _1 ")",
-   PpSectionSubscripts.1:iter-sep   -- _1 ",",
-   PpImageSelector                  -- "[" _1 "]",
-   PpImageSelector.1:iter-sep       -- _1 ",",
+   ppPartRef                        -- _1 _2 _3,
+   ppSectionSubscripts              -- "(" _1 ")",
+   ppSectionSubscripts.1:iter-sep   -- _1 ",",
+   ppImageSelector                  -- "[" _1 "]",
+   ppImageSelector.1:iter-sep       -- _1 ",",
 
    #R626 --,
    AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
@@ -367,18 +367,18 @@
    Allocation                    -- _1 "("_2")" "["_3"]",
    Allocation.2:iter-sep         -- _1 ",",
    Allocation.3:iter-sep         -- _1 ",",
-   PpAllocation                  -- _1,
-   PpAllocationShape             -- _1 "("_2")",
-   PpAllocationShape.2:iter-sep  -- _1 ",",
-   PpAllocationCoshape           -- _1 "["_2"]",
-   PpAllocationCoshape.2:iter-sep-- _1 ",",
+   ppAllocation                  -- _1,
+   ppAllocationShape             -- _1 "("_2")",
+   ppAllocationShape.2:iter-sep  -- _1 ",",
+   ppAllocationCoshape           -- _1 "["_2"]",
+   ppAllocationCoshape.2:iter-sep-- _1 ",",
    Triplet                       -- _1 ":" _2 _3,
 
-   PpAllocShapeSpec              -- _1,
-   PpAllocShapeSpec              -- _1 ":" _2,
+   ppAllocShapeSpec              -- _1,
+   ppAllocShapeSpec              -- _1 ":" _2,
 
-   PpAllocCoshapeSpec            -- _1,
-   PpAllocCoshapeSpec            -- _1 ":" _2,
+   ppAllocCoshapeSpec            -- _1,
+   ppAllocCoshapeSpec            -- _1 ":" _2,
 
    #R638 --,
    NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
@@ -456,8 +456,8 @@
    AssociateConstruct            -- _1 _2 _3,
 
    #R803 --,
-   PpAssociateStmt                 -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
-   PpAssociateStmt.3:iter-sep      -- _1 ", ",
+   ppAssociateStmt                 -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
+   ppAssociateStmt.3:iter-sep      -- _1 ", ",
 
    #R804 --,
    Association                   -- _1 KW["=>"] _2,
@@ -477,7 +477,7 @@
    #R816 --,
    LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
 
-   PpNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
+   ppNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
 
    OfpBlockDoConstruct           -- V vs=0 is=2 [_1 _2] _3,
 
@@ -517,7 +517,7 @@
    CaseStmtBlock                 -- _1 _2,
 
    #R839 --,
-   PpSelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
+   ppSelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
 
    #R840 --,
    CaseStmt                      -- H hs=1[_1 KW["CASE"] H hs=0["("_2")"] H hs=0[_3 _4]],
@@ -825,8 +825,8 @@
    ProcedureDesignator                 -- _1,
 
    #R1222 --,
-   PpActualArgSpec                     -- _1 _2,
-   PpKeyword                           -- _1 "=",
+   ppActualArgSpec                     -- _1 _2,
+   ppKeyword                           -- _1 "=",
 
    #R1224 --,
    AltReturnSpec                       -- KW["*"] _1,
