@@ -10,49 +10,51 @@ signature
     // These extra constructors are not part of FAST but required for unparsing
     //
 
-    ppScope         : SpecPart * ExecPart            -> Scope
-    ppScope         : SpecPart * ExecPart * FuncPart -> Scope
+    ppScope         : SpecPart * ExecPart            -> ppScope
+    ppScope         : SpecPart * ExecPart * FuncPart -> ppScope
     LanguageBinding : Language                       -> LanguageBinding
 
-    PpSubmodule    : OfpSubmodule    -> PpSubmodule
-    PpFunction     : OfpFunction     -> PpFunction
-    PpSubroutine   : OfpSubroutine   -> PpSubroutine
-    PpMpSubprogram : OfpMpSubprogram -> PpMpSubprogram
+    ppImplicitStmt  : Label          -> ppImplicitStmt
 
-    PpEntityDecl   : name * PpArraySpec * PpCoarraySpec * CharLength * Initialization -> PpEntityDecl
-    PpArraySpec    : ArraySpec       -> PpArraySpec
-    PpCoarraySpec  : CoarraySpec     -> PpCoarraySpec
+    ppSubmodule    : OfpSubmodule    -> ppSubmodule
+    ppFunction     : OfpFunction     -> ppFunction
+    ppSubroutine   : OfpSubroutine   -> ppSubroutine
+    ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
 
-    PpActualArgSpec: PpKeyword * arg -> PpActualArgSpec
-    PpKeyword      : keyword         -> PpKeyword
+    ppEntityDecl   : name * ppArraySpec * ppCoarraySpec * CharLength * Initialization -> ppEntityDecl
+    ppArraySpec    : ArraySpec       -> ppArraySpec
+    ppCoarraySpec  : CoarraySpec     -> ppCoarraySpec
 
-    PpDimSpec      : upper            -> PpDimSpec
-    PpDimSpec      : lower * upper    -> PpDimSpec
+    ppActualArgSpec: ppKeyword * arg -> ppActualArgSpec
+    ppKeyword      : keyword         -> ppKeyword
 
-    PpLetterSpec   : Spec            -> PpLetterSpec
-    PpLetterSpec   : Spec * Spec     -> PpLetterSpec
+    ppDimSpec      : upper            -> ppDimSpec
+    ppDimSpec      : lower * upper    -> ppDimSpec
 
-    PpPartRef           : name * ss * is -> PpPartRef
-    PpSectionSubscripts : ss             -> PpSectionSubscripts
-    PpImageSelector     : ss             -> PpImageSelector
+    ppLetterSpec   : Spec            -> ppLetterSpec
+    ppLetterSpec   : Spec * Spec     -> ppLetterSpec
 
-    PpAllocation        : PpPartRef           -> PpAllocation
-    PpAllocationShape   : PpPartRef * shape   -> PpAllocationShape
-    PpAllocationCoshape : PpPartRef * coshape -> PpAllocationCoshape
-    PpAllocShapeSpec    : upper               -> PpAllocShapeSpec
-    PpAllocShapeSpec    : lower * upper       -> PpAllocShapeSpec
-    PpAllocCoshapeSpec  : upper               -> PpAllocCoshapeSpec
-    PpAllocCoshapeSpec  : lower * upper       -> PpAllocCoshapeSpec
+    ppPartRef           : name * ss * is -> ppPartRef
+    ppSectionSubscripts : ss             -> ppSectionSubscripts
+    ppImageSelector     : ss             -> ppImageSelector
+
+    ppAllocation        : ppPartRef           -> ppAllocation
+    ppAllocationShape   : ppPartRef * shape   -> ppAllocationShape
+    ppAllocationCoshape : ppPartRef * coshape -> ppAllocationCoshape
+    ppAllocShapeSpec    : upper               -> ppAllocShapeSpec
+    ppAllocShapeSpec    : lower * upper       -> ppAllocShapeSpec
+    ppAllocCoshapeSpec  : upper               -> ppAllocCoshapeSpec
+    ppAllocCoshapeSpec  : lower * upper       -> ppAllocCoshapeSpec
 
     eos            : EOStmt          -> EOS
 
-    PpSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> PpSelectCaseStmt    // R838
+    ppSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> ppSelectCaseStmt    // R838
 
-    PpNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl * EOS -> PpNonlabelDoStmt  //R817
+    ppNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl * EOS -> ppNonlabelDoStmt  //R817
 
-    PpAssociateStmt  : OptLabel * NoName * List(Association) * EOS -> PpAssociateStmt        //R803
+    ppAssociateStmt  : OptLabel * NoName * List(Association) * EOS -> ppAssociateStmt        //R803
 
-//    PpSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector * EOS -> PpSelectTypeStmt  //R847
+//    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector * EOS -> ppSelectTypeStmt  //R847
 
     opt-list       : list            -> opt-list
     append-colon   : name            -> append-colon
@@ -89,75 +91,79 @@ rules
 
 //R503
 //  ast-to-pp:
-//    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
+//    EntityDecl(name,as,cs,cl,init)         -> ppEntityDecl(name,ppArraySpec(as),ppCoarraySpec(cs),cl,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
   ast-to-pp:
-    DimSpec(no-lower-bound(), upper)       -> PpDimSpec(upper)
+    DimSpec(no-lower-bound(), upper)       -> ppDimSpec(upper)
   ast-to-pp:
-    DimSpec(lower, upper)                  -> PpDimSpec(lower, upper)
+    DimSpec(lower, upper)                  -> ppDimSpec(lower, upper)
+
+//R560
+  ast-to-pp:
+    ImplicitStmt(label,[])                 -> ppImplicitStmt(label)
 
 //R562
-//  ast-to-pp:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
-//  ast-to-pp:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
+//  ast-to-pp:  LetterSpec(s1,no-letter())   -> ppLetterSpec(s1)
+//  ast-to-pp:  LetterSpec(s1,s2)            -> ppLetterSpec(s1,s2)
 
 //R612
   ast-to-pp:
-    PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
+    PartRef(name,ss,is) -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
 
 //R631
-//  ast-to-pp:  Allocation(part,[],[])                 -> PpAllocation(part)
-//  ast-to-pp:  Allocation(part,shape,[])              -> PpAllocationShape(part,shape)
-//  ast-to-pp:  Allocation(part,[],coshape)            -> PpAllocationCoshape(part,coshape)
+//  ast-to-pp:  Allocation(part,[],[])                 -> ppAllocation(part)
+//  ast-to-pp:  Allocation(part,shape,[])              -> ppAllocationShape(part,shape)
+//  ast-to-pp:  Allocation(part,[],coshape)            -> ppAllocationCoshape(part,coshape)
 
 //R633
-//  ast-to-pp:  AllocateShapeSpec(no-lower-bound(),ub) -> PpAllocShapeSpec(ub)
-//  ast-to-pp:  AllocateShapeSpec(lb,ub)               -> PpAllocShapeSpec(lb,ub)
+//  ast-to-pp:  AllocateShapeSpec(no-lower-bound(),ub) -> ppAllocShapeSpec(ub)
+//  ast-to-pp:  AllocateShapeSpec(lb,ub)               -> ppAllocShapeSpec(lb,ub)
 
 //R637
-//  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound(),ub) -> PpAllocCoshapeSpec(ub)
-//  ast-to-pp:  AllocateCoshapeSpec(lb,ub)               -> PpAllocCoshapeSpec(lb,ub)
+//  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound(),ub) -> ppAllocCoshapeSpec(ub)
+//  ast-to-pp:  AllocateCoshapeSpec(lb,ub)               -> ppAllocCoshapeSpec(lb,ub)
 
 //R803
 //  ast-to-pp:
-//    AssociateStmt(label,name,list,eos) -> PpAssociateStmt(label,<append-colon>name,list,eos)
+//    AssociateStmt(label,name,list,eos) -> ppAssociateStmt(label,<append-colon>name,list,eos)
 
 //R817
 //  ast-to-pp:
-//    NonlabelDoStmt(label,name,loopcontrol,eos) -> PpNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
+//    NonlabelDoStmt(label,name,loopcontrol,eos) -> ppNonlabelDoStmt(label,<append-colon>name,loopcontrol,eos)
 
 //R838
 //  ast-to-pp:
-//    SelectCaseStmt(label,name,expr,eos)    -> PpSelectCaseStmt(label,<append-colon>name,expr,eos)
+//    SelectCaseStmt(label,name,expr,eos)    -> ppSelectCaseStmt(label,<append-colon>name,expr,eos)
 
 //R847
 //  ast-to-pp:
-//    SelectTypeStmt(label,name,name,selector,eos) -> PpSelectTypeStmt(label,<append-colon>name,name,selector,eos)
+//    SelectTypeStmt(label,name,name,selector,eos) -> ppSelectTypeStmt(label,<append-colon>name,name,selector,eos)
 
 //R860
 //  ast-to-pp:
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
 
 //R1104
-//  ast-to-pp:  OfpModule(name, scope)       -> PpModule(scope)
+//  ast-to-pp:  OfpModule(name, scope)       -> ppModule(scope)
 
 //R1116
-//  ast-to-pp:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
+//  ast-to-pp:  OfpSubmodule(name, scope)    -> ppSubmodule(scope)
 
 //R1222
-  ast-to-pp:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
+  ast-to-pp:  ActualArgSpec(keyword, arg)  -> ppActualArgSpec(ppKeyword(keyword), arg)
 
 //R1227
-//  ast-to-pp:  OfpFunction(name, scope)     -> PpFunction(scope)
+//  ast-to-pp:  OfpFunction(name, scope)     -> ppFunction(scope)
 
 //R1233
-//  ast-to-pp:  OfpSubroutine(name, scope)   -> PpSubroutine(scope)
+//  ast-to-pp:  OfpSubroutine(name, scope)   -> ppSubroutine(scope)
 
 //R1237
-  ast-to-pp:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
+  ast-to-pp:  OfpMpSubprogram(name, scope) -> ppMpSubprogram(scope)
 
 
 //  no-to-none: no-kind-param()              -> None()   // R408
@@ -199,10 +205,10 @@ rules
 //  no-to-none: no-loop-control()            -> None()   // R818
 //  no-to-none: no-subscript()               -> None()   // R619
 
-  no-to-none: PpKeyword(no-keyword())      -> None()   // R215
+  no-to-none: ppKeyword(no-keyword())      -> None()   // R215
 
-  no-to-none: PpArraySpec([])              -> None()   // R515
-  no-to-none: PpCoarraySpec([])            -> None()   // R509
+  no-to-none: ppArraySpec([])              -> None()   // R515
+  no-to-none: ppCoarraySpec([])            -> None()   // R509
 
-  no-to-none: PpSectionSubscripts(no-section-subscripts()) -> None()
-  no-to-none: PpImageSelector(no-image-selector())         -> None()
+  no-to-none: ppSectionSubscripts(no-section-subscripts()) -> None()
+  no-to-none: ppImageSelector(no-image-selector())         -> None()
