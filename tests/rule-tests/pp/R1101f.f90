@@ -1,4 +1,5 @@
 PROGRAM my_prog
+
 CONTAINS
 
 SUBROUTINE sub()

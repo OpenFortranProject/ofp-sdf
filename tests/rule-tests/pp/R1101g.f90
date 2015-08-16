@@ -1,6 +1,7 @@
 PROGRAM my_prog
 REAL :: i
 i = 1
+
 CONTAINS
 
 SUBROUTINE sub()
