@@ -2,13 +2,18 @@ module FAST
 
 signature
   constructors
-    OfpMpSubprogram             : Option(OfpName) * Scope -> OfpMpSubprogram
+                                : Label -> OptLabel
+    no-label                    : OptLabel
+                                : String -> Label
+                                : Name -> OptName
+    no-name                     : OptName
+    OfpMpSubprogram             : OptName * Scope -> OfpMpSubprogram
     Function                    : FunctionStmt * Scope * EndFunctionStmt -> Function
     FunctionStmt                : OptLabel * Prefix * FunctionName * ArgList * OptResult * OptLanguageBinding -> FunctionStmt
     EndFunctionStmt             : OptLabel * OptFunctionName -> EndFunctionStmt
     no-function-name            : OptFunctionName
                                 : FunctionName -> OptFunctionName
-                                : String -> FunctionName
+                                : Name -> FunctionName
     no-result                   : OptResult
                                 : Result -> OptResult
     Result                      : String -> Result
@@ -25,10 +30,10 @@ signature
     OfpArg                      : Expr * OfpKeyword -> OfpArg
     OfpArg                      : Expr -> OfpArg
     OfpProcRef                  : Expr -> OfpProcRef
-    OfpCallStmt                 : Option(OfpLabel) * OfpProcRef * List(OfpArg) -> OfpCallStmt
-    OfpIntrinsicStmt            : Option(OfpLabel) * List(OfpName) -> OfpIntrinsicStmt
-    OfpProcedureDeclarationStmt : Option(OfpLabel) * Option(ProcInterface) * List(ProcAttrSpec) * List(ProcDecl) -> OfpProcedureDeclarationStmt
-    OfpExternalStmt             : Option(OfpLabel) * List(OfpName) -> OfpExternalStmt
+    OfpCallStmt                 : OptLabel * OfpProcRef * List(OfpArg) -> OfpCallStmt
+    OfpIntrinsicStmt            : OptLabel * List(Name) -> OfpIntrinsicStmt
+    OfpProcedureDeclarationStmt : OptLabel * Option(ProcInterface) * List(ProcAttrSpec) * List(ProcDecl) -> OfpProcedureDeclarationStmt
+    OfpExternalStmt             : OptLabel * List(Name) -> OfpExternalStmt
     WRITEUNFORMATTED            : WRITEUNFORMATTED
     WRITEFORMATTED              : WRITEFORMATTED
     READUNFORMATTED             : READUNFORMATTED
@@ -40,51 +45,51 @@ signature
     ASSIGNMENT                  : ASSIGNMENT -> OfpGenericSpec
     OfpDefinedOp                : OfpDefinedOp -> OfpGenericSpec
     OfpOp                       : OfpOp -> OfpGenericSpec
-    OfpGenericSpec              : OfpName -> OfpGenericSpec
-    OfpEndInterfaceStmt         : Option(OfpLabel) * Option(OfpGenericSpec) -> OfpEndInterfaceStmt
-    OfpInterfaceStmt            : Option(OfpLabel) * Option(ABSTRACT) * Option(OfpGenericSpec) -> OfpInterfaceStmt
+    OfpGenericSpec              : Name -> OfpGenericSpec
+    OfpEndInterfaceStmt         : OptLabel * Option(OfpGenericSpec) -> OfpEndInterfaceStmt
+    OfpInterfaceStmt            : OptLabel * Option(ABSTRACT) * Option(OfpGenericSpec) -> OfpInterfaceStmt
     OfpInterfaceBlock           : OfpInterfaceStmt * OfpEndInterfaceStmt * List(Scope) -> OfpInterfaceBlock
     OfpOnlyList                 : List(OfpOnly) -> OfpOnlyList
     OfpOnly                     : OfpRename -> OfpOnly
-    OfpOnly                     : OfpName -> OfpOnly
+    OfpOnly                     : Name -> OfpOnly
     OfpOnly                     : OfpGenericSpec -> OfpOnly
     OfpRenameList               : List(OfpRename) -> OfpRenameList
-    OfpRename                   : OfpName * OfpName -> OfpRename
+    OfpRename                   : Name * Name -> OfpRename
     NONINTRINSIC                : NONINTRINSIC
     INTRINSIC                   : INTRINSIC
     NONINTRINSIC                : NONINTRINSIC -> OfpModuleNature
     INTRINSIC                   : INTRINSIC -> OfpModuleNature
-    OfpUseStmt                  : Option(OfpLabel) * Option(OfpModuleNature) * OfpName * OfpOnlyList -> OfpUseStmt
-    OfpUseStmt                  : Option(OfpLabel) * Option(OfpModuleNature) * OfpName * OfpRenameList -> OfpUseStmt
+    OfpUseStmt                  : OptLabel * Option(OfpModuleNature) * Name * OfpOnlyList -> OfpUseStmt
+    OfpUseStmt                  : OptLabel * Option(OfpModuleNature) * Name * OfpRenameList -> OfpUseStmt
     MainProgram                 : ProgramStmt * Scope * EndProgramStmt -> MainProgram
     ProgramStmt                 : OptLabel * Name -> ProgramStmt
     EndProgramStmt              : OptLabel * OptProgramName -> EndProgramStmt
                                 : ProgramName -> OptProgramName
     no-program-name             : OptProgramName
-                                : Ident -> ProgramName
+                                : Name -> ProgramName
     Module                      : ModuleStmt * Scope * EndModuleStmt -> Module
     ModuleStmt                  : OptLabel * ModuleName -> ModuleStmt
     EndModuleStmt               : OptLabel * OptModuleName -> EndModuleStmt
                                 : ModuleName -> OptModuleName
     no-module-name              : OptModuleName
-                                : Ident -> ModuleName
+                                : Name -> ModuleName
     Submodule                   : SubmoduleStmt * Scope * EndSubmoduleStmt -> Submodule
     SubmoduleStmt               : OptLabel * ParentIdentifier * SubmoduleName -> SubmoduleStmt
     EndSubmoduleStmt            : OptLabel * OptSubmoduleName -> EndSubmoduleStmt
                                 : SubmoduleName -> OptSubmoduleName
     no-submodule-name           : OptSubmoduleName
-                                : Ident -> SubmoduleName
+                                : Name -> SubmoduleName
     ParentIdentifier            : AncestorModuleName * OptParentSubmoduleName -> ParentIdentifier
-                                : Ident -> AncestorModuleName
+                                : Name -> AncestorModuleName
                                 : ParentSubmoduleName -> OptParentSubmoduleName
     no-parent-submodule-name    : OptParentSubmoduleName
-                                : Ident -> ParentSubmoduleName
+                                : Name -> ParentSubmoduleName
     Subroutine                  : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
     SubroutineStmt              : OptLabel * Prefix * SubroutineName * ArgList * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt           : OptLabel * OptSubroutineName -> EndSubroutineStmt
                                 : SubroutineName -> OptSubroutineName
     no-subroutine-name          : OptSubroutineName
-                                : Ident -> SubroutineName
+                                : Name -> SubroutineName
     ArgList                     : List(OfpDummyArg) -> ArgList
     STAR                        : STAR -> OfpDummyArg
     OfpDummyArg                 : String -> OfpDummyArg
@@ -100,16 +105,9 @@ signature
     OfpShape                    : List(DimSpec) -> OfpShape
     OfpAllocation               : OfpVarRef * Option(OfpShape) * Option(OfpCoshape) -> OfpAllocation
                                 : Expr -> OfpAllocOpt
-    OfpAllocateStmt             : Option(OfpLabel) * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
-    OfpVarRef                   : OfpName -> OfpVarRef
-    VarDef                      : OfpName -> VarDef
-    INOUT                       : INOUT
-    OUT                         : OUT
-    IN                          : IN
-                                : INOUT -> OfpIntent
-                                : OUT -> OfpIntent
-                                : IN -> OfpIntent
-    OfpIntent                   : String -> OfpIntent
+    OfpAllocateStmt             : OptLabel * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
+    OfpVarRef                   : Name -> OfpVarRef
+    VarDef                      : Name -> VarDef
     OfpAssumedRank              : List(DimSpec) -> OfpAssumedRank
     OfpImpliedShape             : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize              : List(DimSpec) -> OfpAssumedSize
@@ -118,13 +116,6 @@ signature
     DimSpec                     : Expr * Expr -> DimSpec
     OfpExplicitShape            : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape          : List(DimSpec) -> OfpExplicitCoshape
-                                : String -> OfpInitialization
-                                : String -> OfpCharLength
-                                : String -> OfpCoarraySpec
-                                : String -> OfpArraySpec
-    OfpEntityDecl               : OfpName * Option(OfpArraySpec) * Option(OfpCoarraySpec) * Option(OfpCharLength) * Option(OfpInitialization) -> OfpEntityDecl
-    OfpIntent                   : OfpIntent -> OfpAttrSpec
-    ALLOCATABLE                 : OfpAttrSpec
                                 : OfpMpSubprogram -> Decl
                                 : OfpIntrinsicStmt -> Decl
                                 : OfpProcedureDeclarationStmt -> Decl
@@ -132,7 +123,7 @@ signature
                                 : OfpInterfaceBlock -> Decl
                                 : ImplicitStmt -> Decl
                                 : TypeDeclarationStmt -> Decl
-    TypeDeclarationStmt         : OptLabel * Type * List(OfpAttrSpec) * List(OfpEntityDecl) -> TypeDeclarationStmt
+    TypeDeclarationStmt         : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
                                 : IntrinsicType -> Type
     DOUBLECOMPLEX               : IntrinsicType
     LOGICAL                     : OptKindSelector -> IntrinsicType
@@ -175,9 +166,7 @@ signature
     Scope                       : List(Decl) * List(Stmt) * List(Decl) -> Scope
     OfpLiteral                  : String * OfpType -> OfpLiteral
     OfpLiteral                  : String -> OfpLiteral
-    OfpName                     : String -> OfpName
     OfpKeyword                  : String -> OfpKeyword
-    OfpLabel                    : String -> OfpLabel
     STAR                        : STAR
                                 : String -> STAR
                                 : String -> RECURSIVE
@@ -238,6 +227,8 @@ signature
     no-type-spec                : OptTypeSpec
     type-spec-colon             : TypeSpec -> OptTypeSpec
     no-upper-bounds             : NoUpperBoundExpr
+                                : Expr -> ConstantExpr
+                                : IntExpr -> SpecificationExpr
                                 : Expr -> IntExpr
                                 : Dop -> DefinedBinaryOp
     DefBinExpr                  : Expr * DefinedBinaryOp * Expr -> Expr
@@ -316,9 +307,69 @@ signature
     INOUT                       : IntentSpec
     OUT                         : IntentSpec
     IN                          : IntentSpec
+    AssumedOrImpliedSpec        : LowerBound -> AssumedOrImpliedSpec
+    AssumedOrImpliedSpec        : NoLowerBound -> AssumedOrImpliedSpec
+    ImpliedShapeSpecList        : AssumedOrImpliedSpec * List(AssumedOrImpliedSpec) -> ImpliedShapeSpecList
+    AssumedRank                 : AssumedRankSpec
+    AssumedSize                 : List(ExplicitShapeSpec) * LowerBound -> AssumedSizeSpec
+    AssumedSize                 : List(ExplicitShapeSpec) -> AssumedSizeSpec
+    AssumedShape                : LowerBound -> AssumedShapeSpec
+    AssumedShape                : NoLowerBound -> AssumedShapeSpec
+                                : SpecificationExpr -> UpperBound
+    no-lower-bound              : NoLowerBound
+                                : SpecificationExpr -> LowerBound
+    ExplicitShape               : LowerBound * UpperBound -> ExplicitShapeSpec
+    ExplicitShape               : NoLowerBound * UpperBound -> ExplicitShapeSpec
+                                : AssumedRankSpec -> ArraySpec
+                                : ImpliedShapeSpecList -> ArraySpec
+                                : AssumedOrImpliedSpec -> ArraySpec
+                                : AssumedSizeSpec -> ArraySpec
+                                : List(AssumedShapeSpec) -> ArraySpec
+                                : List(ExplicitShapeSpec) -> ArraySpec
+                                : SpecificationExpr -> UpperCobound
+    no-lower-bound              : NoLowerCobound
+    LowerCobound                : SpecificationExpr -> LowerCobound
+    final-cobounds-entry        : LowerCobound -> FinalCoboundsEntry
+    final-cobounds-entry        : NoLowerCobound -> FinalCoboundsEntry
+    ExplicitCoshape             : LowerCobound * UpperCobound -> CoboundsEntry
+    ExplicitCoshape             : NoLowerCobound * UpperCobound -> CoboundsEntry
+    explicit-coshape-spec-list  : List(CoboundsEntry) * FinalCoboundsEntry -> ExplicitCoshapeSpec
+    DeferredCoshape             : DeferredCoshapeSpec
+                                : ExplicitCoshapeSpec -> CoarraySpec
+                                : List(DeferredCoshapeSpec) -> CoarraySpec
     PRIVATE                     : AccessSpec
     PUBLIC                      : AccessSpec
     NullInit                    : FunctionReference -> NullInit
+    PointerInit                 : InitialDataTarget -> Initialization
+    PointerInit                 : NullInit -> Initialization
+    Init                        : ConstantExpr -> Initialization
+    no-init                     : OptInitialization
+                                : Initialization -> OptInitialization
+    no-char-length              : OptCharLength
+    opt-char-length             : CharLength -> OptCharLength
+    no-list                     : OptCoarraySpec
+    opt-coarray-spec            : CoarraySpec -> OptCoarraySpec
+    no-list                     : OptArraySpec
+    opt-array-spec              : ArraySpec -> OptArraySpec
+                                : Ident -> ObjectName
+    EntityDecl                  : ObjectName * OptArraySpec * OptCoarraySpec * OptCharLength * OptInitialization -> EntityDecl
+    VOLATILE                    : AttrSpec
+    VALUE                       : AttrSpec
+    TARGET                      : AttrSpec
+    SAVE                        : AttrSpec
+    PROTECTED                   : AttrSpec
+    POINTER                     : AttrSpec
+    PARAMETER                   : AttrSpec
+    OPTIONAL                    : AttrSpec
+    INTRINSIC                   : AttrSpec
+    Intent                      : IntentSpec -> AttrSpec
+    EXTERNAL                    : AttrSpec
+    Dimension                   : ArraySpec -> AttrSpec
+    CONTIGUOUS                  : AttrSpec
+    Codimension                 : CoarraySpec -> AttrSpec
+    ASYNCHRONOUS                : AttrSpec
+    ALLOCATABLE                 : AttrSpec
+                                : AccessSpec -> AttrSpec
                                 : DoVariable -> AcDoVariable
     AcImpliedDoControl          : AcDoVariable * Expr * Expr * OptExpr -> AcImpliedDoControl
     AcImpliedDo                 : List(AcValue) * AcImpliedDoControl -> AcImpliedDo
@@ -342,6 +393,7 @@ signature
     DerivedTypeSpec             : TypeName * OptTypeParamSpecList -> DerivedTypeSpec
     BindingName                 : String -> BindingName
                                 : Ident -> BindingName
+                                : Designator -> InitialDataTarget
                                 : Ident -> TypeName
     no-kind-param               : OptKindParam
     opt-kind-param              : KindParam -> OptKindParam
@@ -389,9 +441,6 @@ signature
     COLON                       : TypeParamValue
     STAR                        : TypeParamValue
                                 : Expr -> TypeParamValue
-    no-label                    : OptLabel
-                                : LblDef -> OptLabel
-                                : LblDef -> Label
                                 : Name -> NamedConstant
                                 : BozLiteralConstant -> LiteralConstant
                                 : CharLiteralConstant -> LiteralConstant
@@ -401,7 +450,7 @@ signature
                                 : IntLiteralConstant -> LiteralConstant
                                 : LiteralConstant -> Constant
     no-name                     : NoName
-    Name                        : String -> Name
+                                : String -> Name
                                 : Ident -> Name
     eos                         : EOStmt -> EOS
                                 : String -> Dop
@@ -413,7 +462,6 @@ signature
                                 : String -> Icon
                                 : String -> Ident
                                 : String -> Letter
-                                : String -> LblDef
                                 : String -> EOStmt
 
 

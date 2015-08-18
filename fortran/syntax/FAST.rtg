@@ -6,8 +6,10 @@ regular tree grammar
     OptLabel                          -> no-label()
     Label                             -> <string>
 
-    OptOfpName0                       -> <some>(OfpName)
-    OptOfpName0                       -> <none>()
+    OptName                           -> Name
+    OptName                           -> no-name()
+    Name                              -> <string>
+
     ListStarOfOfpDummyArg0            -> ListPlusOfOfpDummyArg0
     ListStarOfOfpDummyArg0            -> <nil>()
     ListStarOfOfpDummyArg0            -> <conc>(ListStarOfOfpDummyArg0,ListStarOfOfpDummyArg0)
@@ -36,13 +38,6 @@ regular tree grammar
     ListPlusOfOfpArg0                 -> <conc>(ListPlusOfOfpArg0,ListStarOfOfpArg0)
     ListPlusOfOfpArg0                 -> <conc>(ListPlusOfOfpArg0,ListPlusOfOfpArg0)
     ListPlusOfOfpArg0                 -> <cons>(OfpArg,ListStarOfOfpArg0)
-    ListStarOfOfpName0                -> ListPlusOfOfpName0
-    ListStarOfOfpName0                -> <nil>()
-    ListStarOfOfpName0                -> <conc>(ListStarOfOfpName0,ListStarOfOfpName0)
-    ListPlusOfOfpName0                -> <conc>(ListStarOfOfpName0,ListPlusOfOfpName0)
-    ListPlusOfOfpName0                -> <conc>(ListPlusOfOfpName0,ListStarOfOfpName0)
-    ListPlusOfOfpName0                -> <conc>(ListPlusOfOfpName0,ListPlusOfOfpName0)
-    ListPlusOfOfpName0                -> <cons>(OfpName,ListStarOfOfpName0)
     ListStarOfProcDecl0               -> ListPlusOfProcDecl0
     ListStarOfProcDecl0               -> <nil>()
     ListStarOfProcDecl0               -> <conc>(ListStarOfProcDecl0,ListStarOfProcDecl0)
@@ -882,9 +877,9 @@ regular tree grammar
     Decl                              -> OfpMpSubprogram
     OfpEndStmt                        -> OfpEndMpSubprogramStmt
     OfpBeginStmt                      -> OfpMpSubprogramStmt
-    OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptLabel,OptOfpName0)
-    OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptLabel,OfpName)
-    OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,Scope)
+    OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptLabel,OptName)
+    OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptLabel,Name)
+    OfpMpSubprogram                   -> OfpMpSubprogram(OptName,Scope)
 
     ProgramUnit     -> Function
     Function        -> Function(FunctionStmt,Scope,EndFunctionStmt)
@@ -893,7 +888,7 @@ regular tree grammar
 
     OptFunctionName                   -> no-function-name()
     OptFunctionName                   -> FunctionName
-    FunctionName                      -> <string>
+    FunctionName                      -> Name
 
     OptResult                         -> no-result()
     OptResult                         -> Result
@@ -918,11 +913,11 @@ regular tree grammar
     Stmt                              -> OfpCallStmt
     OfpCallStmt                       -> OfpCallStmt(OptLabel,OfpProcRef,ListPlusOfOfpArg0)
     Decl                              -> OfpIntrinsicStmt
-    OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptLabel,ListPlusOfOfpName0)
+    OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptLabel,ListPlusOfName)
     Decl                              -> OfpProcedureDeclarationStmt
     OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptLabel,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
     Decl                              -> OfpExternalStmt
-    OfpExternalStmt                   -> OfpExternalStmt(OptLabel,ListPlusOfOfpName0)
+    OfpExternalStmt                   -> OfpExternalStmt(OptLabel,ListPlusOfName)
     WRITEUNFORMATTED                  -> WRITEUNFORMATTED()
     WRITEFORMATTED                    -> WRITEFORMATTED()
     READUNFORMATTED                   -> READUNFORMATTED()
@@ -935,9 +930,9 @@ regular tree grammar
     OfpGenericSpec                    -> ASSIGNMENT(ASSIGNMENT)
     OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
     OfpGenericSpec                    -> OfpOp(OfpOp)
-    OfpGenericSpec                    -> OfpGenericSpec(OfpName)
+    OfpGenericSpec                    -> OfpGenericSpec(Name)
     OfpBeginStmt                      -> OfpProcedureStmt
-    OfpProcedureStmt                  -> OfpProcedureStmt(OptLabel,OptMODULE0,ListPlusOfOfpName0)
+    OfpProcedureStmt                  -> OfpProcedureStmt(OptLabel,OptMODULE0,ListPlusOfName)
     OfpEndStmt                        -> OfpEndInterfaceStmt
     OfpBeginStmt                      -> OfpInterfaceStmt
     OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptLabel,OptOfpGenericSpec0)
@@ -947,17 +942,17 @@ regular tree grammar
 
     OfpOnlyList                       -> OfpOnlyList(ListStarOfOfpOnly0)
     OfpOnly                           -> OfpOnly(OfpRename)
-    OfpOnly                           -> OfpOnly(OfpName)
+    OfpOnly                           -> OfpOnly(Name)
     OfpOnly                           -> OfpOnly(OfpGenericSpec)
     OfpRenameList                     -> OfpRenameList(ListStarOfOfpRename0)
-    OfpRename                         -> OfpRename(OfpName,OfpName)
+    OfpRename                         -> OfpRename(Name,Name)
     NONINTRINSIC                      -> NONINTRINSIC()
     INTRINSIC                         -> INTRINSIC()
     OfpModuleNature                   -> NONINTRINSIC(NONINTRINSIC)
     OfpModuleNature                   -> INTRINSIC(INTRINSIC)
     Stmt                              -> OfpUseStmt
-    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,OfpName,OfpOnlyList)
-    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,OfpName,OfpRenameList)
+    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,Name,OfpOnlyList)
+    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,Name,OfpRenameList)
 
     MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
     ProgramStmt                       -> ProgramStmt(OptLabel,Name)
@@ -965,7 +960,7 @@ regular tree grammar
 
     OptProgramName                    -> ProgramName
     OptProgramName                    -> no-program-name()
-    ProgramName                       -> Ident
+    ProgramName                       -> Name
 
     ProgramUnit                       -> Module
     Module                            -> Module(ModuleStmt,Scope,EndModuleStmt)
@@ -974,7 +969,7 @@ regular tree grammar
 
     OptModuleName                     -> ModuleName
     OptModuleName                     -> no-module-name()
-    ModuleName                        -> Ident
+    ModuleName                        -> Name
 
     ProgramUnit                       -> Submodule
     Submodule                         -> Submodule(SubmoduleStmt,Scope,EndSubmoduleStmt)
@@ -983,14 +978,14 @@ regular tree grammar
 
     OptSubmoduleName                  -> SubmoduleName
     OptSubmoduleName                  -> no-submodule-name()
-    SubmoduleName                     -> Ident
+    SubmoduleName                     -> Name
 
     ParentIdentifier                  -> ParentIdentifier(AncestorModuleName,OptParentSubmoduleName)
-    AncestorModuleName                -> Ident
+    AncestorModuleName                -> Name
 
     OptParentSubmoduleName            -> ParentSubmoduleName
     OptParentSubmoduleName            -> no-parent-submodule-name()
-    ParentSubmoduleName               -> Ident
+    ParentSubmoduleName               -> Name
 
     ProgramUnit          -> Subroutine
     Subroutine           -> Subroutine(SubroutineStmt,Scope,EndSubroutineStmt)
@@ -999,7 +994,7 @@ regular tree grammar
 
     OptSubroutineName                 -> SubroutineName
     OptSubroutineName                 -> no-subroutine-name()
-    SubroutineName                    -> Ident
+    SubroutineName                    -> Name
 
     ArgList                           -> ArgList(ListStarOfOfpDummyArg0)
     STAR                              -> STAR()
@@ -1031,8 +1026,8 @@ regular tree grammar
     OfpAllocOpt                       -> Expr
     Stmt                              -> OfpAllocateStmt
     OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
-    OfpVarRef                         -> OfpVarRef(OfpName)
-    VarDef                            -> VarDef(OfpName)
+    OfpVarRef                         -> OfpVarRef(Name)
+    VarDef                            -> VarDef(Name)
 
     Decl                              -> ImplicitStmt
     ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfOfpType0)
@@ -1063,7 +1058,7 @@ regular tree grammar
     OfpCharLength                     -> String
     OfpCoarraySpec                    -> String
     OfpArraySpec                      -> String
-    OfpEntityDecl                     -> OfpEntityDecl(OfpName,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
+    OfpEntityDecl                     -> OfpEntityDecl(Name,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
     OfpAttrSpec                       -> OfpIntent(OfpIntent)
     OfpAttrSpec                       -> ALLOCATABLE()
 
@@ -1109,8 +1104,6 @@ regular tree grammar
 
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
-    OfpName                           -> OfpName(String)
-    Name                              -> Name(String)
     OfpKeyword                        -> OfpKeyword(String)
     STAR                              -> <string>
     RECURSIVE                         -> <string>
@@ -2271,6 +2264,14 @@ regular tree grammar
 
 
 
+    ListStarOfName                    -> ListPlusOfName
+    ListStarOfName                    -> <nil>()
+    ListStarOfName                    -> <conc>(ListStarOfName,ListStarOfName)
+    ListPlusOfName                    -> <conc>(ListStarOfName,ListPlusOfName)
+    ListPlusOfName                    -> <conc>(ListPlusOfName,ListStarOfName)
+    ListPlusOfName                    -> <conc>(ListPlusOfName,ListPlusOfName)
+    ListPlusOfName                    -> <cons>(Name,ListStarOfName)
+
     ListStarOfProgramUnit             -> ListPlusOfProgramUnit
     ListStarOfProgramUnit             -> <nil>()
     ListStarOfProgramUnit             -> <conc>(ListStarOfProgramUnit,ListStarOfProgramUnit)
@@ -2301,7 +2302,7 @@ regular tree grammar
     ListPlusOfAttrSpec                -> <conc>(ListStarOfAttrSpec,ListPlusOfAttrSpec)
     ListPlusOfAttrSpec                -> <conc>(ListPlusOfAttrSpec,ListStarOfAttrSpec)
     ListPlusOfAttrSpec                -> <conc>(ListPlusOfAttrSpec,ListPlusOfAttrSpec)
-    ListPlusOfAttrSpec                -> <cons>(OfpAttrSpec,ListStarOfAttrSpec)
+    ListPlusOfAttrSpec                -> <cons>(AttrSpec,ListStarOfAttrSpec)
 
     ListStarOfEntityDecl              -> ListPlusOfEntityDecl
     ListStarOfEntityDecl              -> <nil>()
@@ -2309,4 +2310,4 @@ regular tree grammar
     ListPlusOfEntityDecl              -> <conc>(ListStarOfEntityDecl,ListPlusOfEntityDecl)
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListStarOfEntityDecl)
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListPlusOfEntityDecl)
-    ListPlusOfEntityDecl              -> <cons>(OfpEntityDecl,ListStarOfEntityDecl)
+    ListPlusOfEntityDecl              -> <cons>(EntityDecl,ListStarOfEntityDecl)
