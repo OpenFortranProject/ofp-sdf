@@ -2,8 +2,10 @@ regular tree grammar
   start Program
   productions
 
-    OptOfpLabel0                      -> <some>(OfpLabel)
-    OptOfpLabel0                      -> <none>()
+    OptLabel                          -> Label
+    OptLabel                          -> no-label()
+    Label                             -> <string>
+
     OptOfpName0                       -> <some>(OfpName)
     OptOfpName0                       -> <none>()
     ListStarOfOfpDummyArg0            -> ListPlusOfOfpDummyArg0
@@ -880,8 +882,8 @@ regular tree grammar
     Decl                              -> OfpMpSubprogram
     OfpEndStmt                        -> OfpEndMpSubprogramStmt
     OfpBeginStmt                      -> OfpMpSubprogramStmt
-    OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptOfpLabel0,OptOfpName0)
-    OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptOfpLabel0,OfpName)
+    OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptLabel,OptOfpName0)
+    OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptLabel,OfpName)
     OfpMpSubprogram                   -> OfpMpSubprogram(OptOfpName0,Scope)
 
     ProgramUnit     -> Function
@@ -914,13 +916,13 @@ regular tree grammar
     OfpArg                            -> OfpArg(Expr)
     OfpProcRef                        -> OfpProcRef(Expr)
     Stmt                              -> OfpCallStmt
-    OfpCallStmt                       -> OfpCallStmt(OptOfpLabel0,OfpProcRef,ListPlusOfOfpArg0)
+    OfpCallStmt                       -> OfpCallStmt(OptLabel,OfpProcRef,ListPlusOfOfpArg0)
     Decl                              -> OfpIntrinsicStmt
-    OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptOfpLabel0,ListPlusOfOfpName0)
+    OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptLabel,ListPlusOfOfpName0)
     Decl                              -> OfpProcedureDeclarationStmt
-    OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptOfpLabel0,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
+    OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptLabel,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
     Decl                              -> OfpExternalStmt
-    OfpExternalStmt                   -> OfpExternalStmt(OptOfpLabel0,ListPlusOfOfpName0)
+    OfpExternalStmt                   -> OfpExternalStmt(OptLabel,ListPlusOfOfpName0)
     WRITEUNFORMATTED                  -> WRITEUNFORMATTED()
     WRITEFORMATTED                    -> WRITEFORMATTED()
     READUNFORMATTED                   -> READUNFORMATTED()
@@ -935,11 +937,11 @@ regular tree grammar
     OfpGenericSpec                    -> OfpOp(OfpOp)
     OfpGenericSpec                    -> OfpGenericSpec(OfpName)
     OfpBeginStmt                      -> OfpProcedureStmt
-    OfpProcedureStmt                  -> OfpProcedureStmt(OptOfpLabel0,OptMODULE0,ListPlusOfOfpName0)
+    OfpProcedureStmt                  -> OfpProcedureStmt(OptLabel,OptMODULE0,ListPlusOfOfpName0)
     OfpEndStmt                        -> OfpEndInterfaceStmt
     OfpBeginStmt                      -> OfpInterfaceStmt
-    OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptOfpLabel0,OptOfpGenericSpec0)
-    OfpInterfaceStmt                  -> OfpInterfaceStmt(OptOfpLabel0,OptABSTRACT0,OptOfpGenericSpec0)
+    OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptLabel,OptOfpGenericSpec0)
+    OfpInterfaceStmt                  -> OfpInterfaceStmt(OptLabel,OptABSTRACT0,OptOfpGenericSpec0)
     Decl                              -> OfpInterfaceBlock
     OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfScope0)
 
@@ -954,8 +956,8 @@ regular tree grammar
     OfpModuleNature                   -> NONINTRINSIC(NONINTRINSIC)
     OfpModuleNature                   -> INTRINSIC(INTRINSIC)
     Stmt                              -> OfpUseStmt
-    OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpOnlyList)
-    OfpUseStmt                        -> OfpUseStmt(OptOfpLabel0,OptOfpModuleNature0,OfpName,OfpRenameList)
+    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,OfpName,OfpOnlyList)
+    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,OfpName,OfpRenameList)
 
     MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
     ProgramStmt                       -> ProgramStmt(OptLabel,Name)
@@ -1028,7 +1030,7 @@ regular tree grammar
     OfpAllocation                     -> OfpAllocation(OfpVarRef,OptOfpShape0,OptOfpCoshape0)
     OfpAllocOpt                       -> Expr
     Stmt                              -> OfpAllocateStmt
-    OfpAllocateStmt                   -> OfpAllocateStmt(OptOfpLabel0,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
+    OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
     OfpVarRef                         -> OfpVarRef(OfpName)
     VarDef                            -> VarDef(OfpName)
 
@@ -1110,7 +1112,6 @@ regular tree grammar
     OfpName                           -> OfpName(String)
     Name                              -> Name(String)
     OfpKeyword                        -> OfpKeyword(String)
-    OfpLabel                          -> OfpLabel(String)
     STAR                              -> <string>
     RECURSIVE                         -> <string>
     PURE                              -> <string>
@@ -2232,9 +2233,6 @@ regular tree grammar
     TypeParamValue                    -> COLON()
     TypeParamValue                    -> STAR()
     TypeParamValue                    -> Expr
-    OptLabel                          -> no-label()
-    OptLabel                          -> LblDef
-    Label                             -> LblDef
     CharConstant                      -> Constant
     IntConstant                       -> Constant
     NamedConstant                     -> Name
