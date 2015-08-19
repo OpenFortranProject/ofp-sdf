@@ -112,10 +112,14 @@ signature
     OfpImpliedShape             : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize              : List(DimSpec) -> OfpAssumedSize
     OfpAssumedOrDeferredShape   : List(DimSpec) -> OfpAssumedOrDeferredShape
-    DimSpec                     : Expr * String -> DimSpec
-    DimSpec                     : Expr * Expr -> DimSpec
     OfpExplicitShape            : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape          : List(DimSpec) -> OfpExplicitCoshape
+                                : Range -> DimSpec
+    STAR                        : DimSpec
+    COLON                       : DimSpec
+    Range                       : Expr * Expr -> Range
+    Var                         : Name * Type * OptInitialization -> Var
+    ArrayVar                    : Name * ArrayType * OptInitialization -> ArrayVar
                                 : OfpMpSubprogram -> Decl
                                 : OfpIntrinsicStmt -> Decl
                                 : OfpProcedureDeclarationStmt -> Decl
@@ -124,18 +128,21 @@ signature
                                 : ImplicitStmt -> Decl
                                 : TypeDeclarationStmt -> Decl
     TypeDeclarationStmt         : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
+                                : Var -> EntityDecl
+                                : ArrayVar -> EntityDecl
                                 : IntrinsicType -> Type
+    unknown-type                : Type
+    ArrayType                   : Type * ArraySpec * CoarraySpec -> ArrayType
     DOUBLECOMPLEX               : IntrinsicType
-    LOGICAL                     : OptKindSelector -> IntrinsicType
+    LOGICAL                     : OptKind -> IntrinsicType
     CHARACTER                   : OptCharSelector -> IntrinsicType
-    COMPLEX                     : OptKindSelector -> IntrinsicType
+    COMPLEX                     : OptKind -> IntrinsicType
     DOUBLEPRECISION             : IntrinsicType
-    REAL                        : OptKindSelector -> IntrinsicType
-    INTEGER                     : OptKindSelector -> IntrinsicType
-    no-kind                     : OptKindSelector
-                                : KindSelector -> OptKindSelector
-    KindSelector_STAR           : Icon -> KindSelector
-    KindSelector                : Expr -> KindSelector
+    REAL                        : OptKind -> IntrinsicType
+    INTEGER                     : OptKind -> IntrinsicType
+    no-kind                     : OptKind
+                                : Kind -> OptKind
+    Kind                        : Expr -> Kind
     OfpType                     : DOUBLECOMPLEX * OptExpr -> OfpType
     OfpType                     : LOGICAL * OptExpr -> OfpType
     OfpType                     : CHARACTER * OptExpr -> OfpType
@@ -340,19 +347,12 @@ signature
     PRIVATE                     : AccessSpec
     PUBLIC                      : AccessSpec
     NullInit                    : FunctionReference -> NullInit
+                                : Expr -> Initialization
     PointerInit                 : InitialDataTarget -> Initialization
     PointerInit                 : NullInit -> Initialization
     Init                        : ConstantExpr -> Initialization
     no-init                     : OptInitialization
                                 : Initialization -> OptInitialization
-    no-char-length              : OptCharLength
-    opt-char-length             : CharLength -> OptCharLength
-    no-list                     : OptCoarraySpec
-    opt-coarray-spec            : CoarraySpec -> OptCoarraySpec
-    no-list                     : OptArraySpec
-    opt-array-spec              : ArraySpec -> OptArraySpec
-                                : Ident -> ObjectName
-    EntityDecl                  : ObjectName * OptArraySpec * OptCoarraySpec * OptCharLength * OptInitialization -> EntityDecl
     VOLATILE                    : AttrSpec
     VALUE                       : AttrSpec
     TARGET                      : AttrSpec
@@ -401,6 +401,7 @@ signature
     TRUE                        : OptKindParam -> LogicalLiteralConstant
                                 : Scon -> CharLiteralConstant
     CharLiteralConstant         : KindParam * Scon -> CharLiteralConstant
+                                : Expr -> CharLength
                                 : Icon -> CharLength
     CharLength                  : TypeParamValue -> CharLength
     LengthSelector_STAR         : CharLength -> LengthSelector

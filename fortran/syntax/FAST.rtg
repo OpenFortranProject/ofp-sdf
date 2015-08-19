@@ -1087,18 +1087,16 @@ regular tree grammar
     ArrayType                         -> ArrayType(Type,ArraySpec,CoarraySpec)
 
     IntrinsicType                     -> DOUBLECOMPLEX()
-    IntrinsicType                     -> LOGICAL(OptKindSelector)
+    IntrinsicType                     -> LOGICAL(OptKind)
     IntrinsicType                     -> CHARACTER(OptCharSelector)
-    IntrinsicType                     -> COMPLEX(OptKindSelector)
+    IntrinsicType                     -> COMPLEX(OptKind)
     IntrinsicType                     -> DOUBLEPRECISION()
-    IntrinsicType                     -> REAL(OptKindSelector)
-    IntrinsicType                     -> INTEGER(OptKindSelector)
+    IntrinsicType                     -> REAL(OptKind)
+    IntrinsicType                     -> INTEGER(OptKind)
 
-    OptKindSelector                   -> no-kind()
-    OptKindSelector                   -> KindSelector
-    KindSelector                      -> KindSelector_STAR(Icon)
-    KindSelector                      -> KindSelector(Expr)
-    KindSelector                      -> KindSelector(Expr)
+    OptKind                           -> no-kind()
+    OptKind                           -> Kind
+    Kind                              -> Kind(Expr)
 
     OfpType                           -> OfpType(DOUBLECOMPLEX,OptExpr)
     OfpType                           -> OfpType(LOGICAL,OptExpr)
@@ -2167,7 +2165,7 @@ regular tree grammar
     TypeParamAttrSpec                 -> LEN()
     TypeParamAttrSpec                 -> KIND()
     TypeParamDecl                     -> TypeParamDecl(TypeParamName,OptEqualsExpr)
-    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKindSelector,TypeParamAttrSpec,ListPlusOfTypeParamDecl0,EOS)
+    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl0,EOS)
     SequenceStmt                      -> SequenceStmt(OptLabel,EOS)
     EndTypeStmt                       -> EndTypeStmt(OptLabel,OptTypeName,EOS)
     PrivateOrSequence                 -> SequenceStmt
