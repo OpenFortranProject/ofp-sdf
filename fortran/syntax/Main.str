@@ -718,8 +718,8 @@ signature
     Concat                          : Expr * Expr -> Expr
     Minus                           : Expr * Expr -> Expr
     Plus                            : Expr * Expr -> Expr
-    Minus                           : Expr -> Expr
-    Plus                            : Expr -> Expr
+    UnaryMinus                      : Expr -> Expr
+    UnaryPlus                       : Expr -> Expr
     Div                             : Expr * Expr -> Expr
     Mult                            : Expr * Expr -> Expr
     Power                           : Expr * Expr -> Expr
