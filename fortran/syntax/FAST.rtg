@@ -1086,17 +1086,30 @@ regular tree grammar
     Type                              -> unknown-type()
     ArrayType                         -> ArrayType(Type,ArraySpec,CoarraySpec)
 
-    IntrinsicType                     -> DOUBLECOMPLEX()
-    IntrinsicType                     -> LOGICAL(OptKind)
-    IntrinsicType                     -> CHARACTER(OptCharSelector)
-    IntrinsicType                     -> COMPLEX(OptKind)
+    IntrinsicType                     -> INTEGER()
+    IntrinsicType                     -> INTEGER(Kind)
+    IntrinsicType                     -> REAL()
+    IntrinsicType                     -> REAL(Kind)
     IntrinsicType                     -> DOUBLEPRECISION()
-    IntrinsicType                     -> REAL(OptKind)
-    IntrinsicType                     -> INTEGER(OptKind)
+    IntrinsicType                     -> COMPLEX()
+    IntrinsicType                     -> COMPLEX(Kind)
+    IntrinsicType                     -> DOUBLECOMPLEX()
+    IntrinsicType                     -> CHARACTER()
+    IntrinsicType                     -> CHARACTER(CharSelector)
+    IntrinsicType                     -> LOGICAL()
+    IntrinsicType                     -> LOGICAL(Kind)
 
     OptKind                           -> no-kind()
     OptKind                           -> Kind
     Kind                              -> Kind(Expr)
+
+    Expr                              -> IntVal
+    IntVal                            -> IntVal(<string>)
+    IntVal                            -> IntVal(<string>,Kind)
+
+    Expr                              -> RealVal
+    RealVal                           -> RealVal(<string>)
+    RealVal                           -> RealVal(<string>,Kind)
 
     OfpType                           -> OfpType(DOUBLECOMPLEX,OptExpr)
     OfpType                           -> OfpType(LOGICAL,OptExpr)
@@ -2213,21 +2226,12 @@ regular tree grammar
     RealPart                          -> SignedRealLiteralConstant
     RealPart                          -> SignedIntLiteralConstant
     ComplexLiteralConstant            -> ComplexLiteralConstant(RealPart,ImagPart)
-    RealLiteralConstant               -> RealLiteralConstant(Rcon,KindParam)
-    RealLiteralConstant               -> RealLiteralConstant(Rcon,NoKindParam)
-    SignedRealLiteralConstant         -> SignedRealLiteralConstant(Sign,RealLiteralConstant)
-    SignedRealLiteralConstant         -> RealLiteralConstant
     Sign                              -> MINUS()
     Sign                              -> PLUS()
     DigitString                       -> Icon
     SignedDigitString                 -> SignedDigitString(Sign,DigitString)
     SignedDigitString                 -> DigitString
     ScalarIntConstantName             -> Ident
-    KindParam                         -> ScalarIntConstantName
-    KindParam                         -> DigitString
-    NoKindParam                       -> no-kind-param()
-    IntLiteralConstant                -> IntLiteralConstant(DigitString,KindParam)
-    IntLiteralConstant                -> DigitString
     SignedIntLiteralConstant          -> SignedIntLiteralConstant(Sign,IntLiteralConstant)
     SignedIntLiteralConstant          -> IntLiteralConstant
 
@@ -2249,7 +2253,6 @@ regular tree grammar
     LiteralConstant                   -> CharLiteralConstant
     LiteralConstant                   -> LogicalLiteralConstant
     LiteralConstant                   -> ComplexLiteralConstant
-    LiteralConstant                   -> RealLiteralConstant
     LiteralConstant                   -> IntLiteralConstant
     Constant                          -> LiteralConstant
     NoName                            -> no-name()
