@@ -93,6 +93,7 @@ signature
     ArgList                     : List(OfpDummyArg) -> ArgList
     STAR                        : STAR -> OfpDummyArg
     OfpDummyArg                 : String -> OfpDummyArg
+    ParameterStmt               : OptLabel * List(NamedConstantDef) -> ParameterStmt
     AssignmentStmt              : OptLabel * VarDef * Expr -> AssignmentStmt
     GE                          : GE
     GT                          : GT
@@ -229,6 +230,7 @@ signature
                                 : Ident -> ConstructName
                                 : OfpCallStmt -> Stmt
                                 : OfpUseStmt -> Stmt
+                                : ParameterStmt -> Stmt
                                 : AssignmentStmt -> Stmt
                                 : OfpAllocateStmt -> Stmt
                                 : ExitStmt -> Stmt
@@ -260,13 +262,12 @@ signature
     Concat                      : Expr * Expr -> Expr
     Minus                       : Expr * Expr -> Expr
     Plus                        : Expr * Expr -> Expr
-    Minus                       : Expr -> Expr
-    Plus                        : Expr -> Expr
+    UnaryMinus                  : Expr -> Expr
+    UnaryPlus                   : Expr -> Expr
     Div                         : Expr * Expr -> Expr
     Mult                        : Expr * Expr -> Expr
     Power                       : Expr * Expr -> Expr
     DefUnaryExpr                : DefinedUnaryOp * Expr -> Expr
-    OfpPlusExpr                 : Expr * Expr -> Expr
     Expr                        : OfpVarRef -> Expr
     Expr                        : OfpLiteral -> Expr
                                 : OfpAssumedRank -> Expr
@@ -320,6 +321,7 @@ signature
     ImplicitStmt                : OptLabel * List(OfpType) -> ImplicitStmt
     ImplicitNoneStmt            : OptLabel * EOS -> ImplicitStmt
     ImplicitStmt                : OptLabel * List(ImplicitSpec) * EOS -> ImplicitStmt
+    NamedConstantDef            : NamedConstant * ConstantExpr -> NamedConstantDef
     INOUT                       : IntentSpec
     OUT                         : IntentSpec
     IN                          : IntentSpec

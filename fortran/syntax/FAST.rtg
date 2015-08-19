@@ -129,12 +129,8 @@ regular tree grammar
     OptOfpFile0                       -> <some>(OfpFile)
     OptOfpFile0                       -> <none>()
 
-    OptOfpEndStmt0                    -> <some>(OfpEndStmt)
-    OptOfpEndStmt0                    -> <none>()
     OptOfpContainsStmt0               -> <some>(OfpContainsStmt)
     OptOfpContainsStmt0               -> <none>()
-    OptOfpBeginStmt0                  -> <some>(OfpBeginStmt)
-    OptOfpBeginStmt0                  -> <none>()
     ListStarOfStrChar0                -> <string>
     ListPlusOfStrChar0                -> <string>
     ListStarOfDummyArg0               -> ListPlusOfDummyArg0
@@ -846,6 +842,7 @@ regular tree grammar
     OptComment0                       -> <string>
     OptComment_EOL0                   -> <(1)>(<string>)
     OptComment_EOL_Lit0               -> <string>
+
     Expr                              -> DefBinExpr(Expr,DefinedBinaryOp,Expr)
     Expr                              -> NEQV(Expr,Expr)
     Expr                              -> EQV(Expr,Expr)
@@ -867,16 +864,14 @@ regular tree grammar
     Expr                              -> Concat(Expr,Expr)
     Expr                              -> Minus(Expr,Expr)
     Expr                              -> Plus(Expr,Expr)
-    Expr                              -> Minus(Expr)
-    Expr                              -> Plus(Expr)
+    Expr                              -> UnaryMinus(Expr)
+    Expr                              -> UnaryPlus(Expr)
     Expr                              -> Div(Expr,Expr)
     Expr                              -> Mult(Expr,Expr)
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
 
     Decl                              -> OfpMpSubprogram
-    OfpEndStmt                        -> OfpEndMpSubprogramStmt
-    OfpBeginStmt                      -> OfpMpSubprogramStmt
     OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptLabel,OptName)
     OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptLabel,Name)
     OfpMpSubprogram                   -> OfpMpSubprogram(OptName,Scope)
@@ -931,10 +926,7 @@ regular tree grammar
     OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
     OfpGenericSpec                    -> OfpOp(OfpOp)
     OfpGenericSpec                    -> OfpGenericSpec(Name)
-    OfpBeginStmt                      -> OfpProcedureStmt
     OfpProcedureStmt                  -> OfpProcedureStmt(OptLabel,OptMODULE0,ListPlusOfName)
-    OfpEndStmt                        -> OfpEndInterfaceStmt
-    OfpBeginStmt                      -> OfpInterfaceStmt
     OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptLabel,OptOfpGenericSpec0)
     OfpInterfaceStmt                  -> OfpInterfaceStmt(OptLabel,OptABSTRACT0,OptOfpGenericSpec0)
     Decl                              -> OfpInterfaceBlock
@@ -1007,7 +999,6 @@ regular tree grammar
     Stmt                              -> AssignmentStmt
     AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
 
-    Expr                              -> OfpPlusExpr(Expr,Expr)
     Expr                              -> Expr(OfpVarRef)
     Expr                              -> Expr(OfpLiteral)
     OfpOp                             -> GE
