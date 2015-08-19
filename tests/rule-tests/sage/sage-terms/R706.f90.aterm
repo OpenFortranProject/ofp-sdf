@@ -1,0 +1,64 @@
+SgUntypedFile(
+  SgUntypedGlobalScope(
+    ""
+  , FORTRAN_UNKNOWN()
+  , SgUntypedDeclarationList([])
+  , SgUntypedStatementList([])
+  , SgUntypedFunctionDeclarationList(
+      [ SgUntypedProgramHeaderDeclaration(
+          ""
+        , FORTRAN_PROGRAM()
+        , ""
+        , SgUntypedInitializedNameList([])
+        , SgUntypedTypeVoid()
+        , SgUntypedFunctionScope(
+            ""
+          , FORTRAN_PROGRAM()
+          , SgUntypedDeclarationList([])
+          , SgUntypedStatementList(
+              [ SgUntypedAssignmentStatement(
+                  ""
+                , FORTRAN_UNKNOWN()
+                , SgUntypedReferenceExpression(FORTRAN_UNKNOWN(), "a")
+                , SgUntypedUnaryOperator(FORTRAN_UNKNOWN(), FORTRAN_INTRINSIC_PLUS(), "+", SgUntypedValueExpression(FORTRAN_UNKNOWN(), "1", SgUntypedTypeInt()))
+                )
+              , SgUntypedAssignmentStatement(
+                  ""
+                , FORTRAN_UNKNOWN()
+                , SgUntypedReferenceExpression(FORTRAN_UNKNOWN(), "a")
+                , SgUntypedBinaryOperator(
+                    FORTRAN_UNKNOWN()
+                  , FORTRAN_INTRINSIC_MINUS()
+                  , "-"
+                  , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "3", SgUntypedTypeInt())
+                  , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "1", SgUntypedTypeInt())
+                  )
+                )
+              , SgUntypedAssignmentStatement(
+                  ""
+                , FORTRAN_UNKNOWN()
+                , SgUntypedReferenceExpression(FORTRAN_UNKNOWN(), "a")
+                , SgUntypedBinaryOperator(
+                    FORTRAN_UNKNOWN()
+                  , FORTRAN_INTRINSIC_PLUS()
+                  , "+"
+                  , SgUntypedBinaryOperator(
+                      FORTRAN_UNKNOWN()
+                    , FORTRAN_INTRINSIC_MINUS()
+                    , "-"
+                    , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "3", SgUntypedTypeInt())
+                    , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "1", SgUntypedTypeInt())
+                    )
+                  , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "2", SgUntypedTypeInt())
+                  )
+                )
+              ]
+            )
+          , SgUntypedFunctionDeclarationList([])
+          )
+        , SgUntypedNamedStatement("", FORTRAN_END_PROGRAM(), "")
+        )
+      ]
+    )
+  )
+)
