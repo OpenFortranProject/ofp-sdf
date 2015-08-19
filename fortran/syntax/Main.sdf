@@ -2650,8 +2650,8 @@ context-free syntax
   % empty %                                             -> OptSelectConstructName {cons("no-name")}
 
 %%R850
-  OptLabel 'EXIT' ConstructName                   EOS -> ExitStmt             {cons("ExitStmt")}
-  OptLabel 'EXIT'        NoName                   EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT' ConstructName                     EOS -> ExitStmt             {cons("ExitStmt")}
+  OptLabel 'EXIT'        NoName                     EOS -> ExitStmt             {cons("ExitStmt")}
 
   Ident                                                 -> ConstructName
 
