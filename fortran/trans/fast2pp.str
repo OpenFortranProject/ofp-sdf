@@ -34,6 +34,9 @@ signature
     ppDimSpec      : upper            -> ppDimSpec
     ppDimSpec      : lower * upper    -> ppDimSpec
 
+    ppVar          : name * init      -> ppVar
+    ppLiteralKind  : val              -> ppLiteralKind
+
     ppLetterSpec   : Spec            -> ppLetterSpec
     ppLetterSpec   : Spec * Spec     -> ppLetterSpec
 
@@ -92,18 +95,22 @@ rules
   ast-to-pp:
     Scope(decls,exes,funcs)                  -> ppScope(decls,exes,FuncPart(funcs))
 
+//R408
+ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
+
 //R503
 //  ast-to-pp:
 //    EntityDecl(name,as,cs,cl,init)         -> ppEntityDecl(name,ppArraySpec(as),ppCoarraySpec(cs),cl,init)
+  ast-to-pp:  Var(name,type,init)            -> ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
-  ast-to-pp:
-    DimSpec(no-lower-bound(), upper)       -> ppDimSpec(upper)
-  ast-to-pp:
-    DimSpec(lower, upper)                  -> ppDimSpec(lower, upper)
+//  ast-to-pp:
+//    DimSpec(no-lower-bound(), upper)       -> ppDimSpec(upper)
+//  ast-to-pp:
+//    DimSpec(lower, upper)                  -> ppRange(lower, upper)
 
 //R560
   ast-to-pp:
