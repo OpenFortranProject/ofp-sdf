@@ -1,0 +1,26 @@
+SgUntypedFile(
+  SgUntypedGlobalScope(
+    ""
+  , FORTRAN_UNKNOWN()
+  , SgUntypedDeclarationList([])
+  , SgUntypedStatementList([])
+  , SgUntypedFunctionDeclarationList(
+      [ SgUntypedProgramHeaderDeclaration(
+          ""
+        , FORTRAN_PROGRAM()
+        , ""
+        , SgUntypedInitializedNameList([])
+        , SgUntypedTypeVoid()
+        , SgUntypedFunctionScope(
+            ""
+          , FORTRAN_PROGRAM()
+          , SgUntypedDeclarationList([])
+          , SgUntypedStatementList([])
+          , SgUntypedFunctionDeclarationList([])
+          )
+        , SgUntypedNamedStatement("13", FORTRAN_END_PROGRAM(), "")
+        )
+      ]
+    )
+  )
+)
