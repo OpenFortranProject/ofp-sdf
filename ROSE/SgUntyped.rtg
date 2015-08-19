@@ -50,16 +50,16 @@ SgUntypedStatement -> SgUntypedOtherStatement
 SgUntypedOtherStatement -> SgUntypedOtherStatement (<string>, <int>)
 SgUntypedStatement -> SgUntypedScope
 SgUntypedDeclarationStatement -> SgUntypedImplicitDeclaration
-SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration (<string>, <int>)
+SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration (<string>, <string>)
 SgUntypedDeclarationStatement -> SgUntypedVariableDeclaration
-SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (<string>, <int>, SgUntypedType, SgUntypedInitializedNameList)
+SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (<string>, <string>, SgUntypedType, SgUntypedInitializedNameList)
 SgUntypedDeclarationStatement -> SgUntypedFunctionDeclaration
 SgUntypedDeclarationStatement -> SgUntypedModuleDeclaration
-SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration (<string>, <int>, SgUntypedModuleScope, SgUntypedNamedStatement)
+SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration (<string>, <string>, <string>, SgUntypedModuleScope, SgUntypedNamedStatement)
 SgUntypedFunctionDeclaration -> SgUntypedProgramHeaderDeclaration
 SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>, <string>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
 SgUntypedFunctionDeclaration -> SgUntypedSubroutineDeclaration
-SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
+SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <string>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
 SgUntypedScope -> SgUntypedFunctionScope
 SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <string>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
 SgUntypedScope -> SgUntypedModuleScope
@@ -79,5 +79,17 @@ ListStarOfSgUntypedInitializedName -> <cons>(SgUntypedInitializedName,ListStarOf
 ListStarOfSgUntypedStatement -> <nil>()
 ListStarOfSgUntypedStatement -> <cons>(SgUntypedStatement,ListStarOfSgUntypedStatement)
 
-SgUntypedType -> SgUntypedTypeVoid
-SgUntypedTypeVoid -> SgUntypedTypeVoid()
+SgUntypedType             -> SgUntypedTypeVoid
+SgUntypedTypeVoid         -> SgUntypedTypeVoid()
+
+SgUntypedType             -> SgUntypedTypeUnknown
+SgUntypedTypeVoid         -> SgUntypedTypeUnknown()
+
+SgUntypedType             -> SgUntypedTypeInt
+SgUntypedTypeInt          -> SgUntypedTypeInt()
+
+SgUntypedType             -> SgUntypedTypeFloat
+SgUntypedTypeFloat        -> SgUntypedTypeFloat()
+
+SgUntypedType             -> SgUntypedTypeDouble
+SgUntypedTypeDouble       -> SgUntypedTypeDouble()
