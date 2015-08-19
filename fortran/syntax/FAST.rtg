@@ -1050,22 +1050,41 @@ regular tree grammar
     OfpImpliedShape                   -> OfpImpliedShape(ListPlusOfDimSpec0)
     OfpAssumedSize                    -> OfpAssumedSize(ListPlusOfDimSpec0)
     OfpAssumedOrDeferredShape         -> OfpAssumedOrDeferredShape(ListPlusOfDimSpec0)
-    DimSpec                           -> DimSpec(Expr,String)
-    DimSpec                           -> DimSpec(Expr,Expr)
+
     OfpExplicitShape                  -> OfpExplicitShape(ListPlusOfDimSpec0)
     OfpExplicitCoshape                -> OfpExplicitCoshape(ListPlusOfDimSpec0)
-    OfpInitialization                 -> String
-    OfpCharLength                     -> String
-    OfpCoarraySpec                    -> String
-    OfpArraySpec                      -> String
-    OfpEntityDecl                     -> OfpEntityDecl(Name,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
+
+    OptInitialization                 -> no-init()
+    OptInitialization                 -> Initialization
+    Initialization                    -> Expr
+
+    OptCharLength                     -> no-char-length()
+    OptCharLength                     -> CharLength
+    CharLength                        -> Expr
+
+    ArraySpec                         -> ListStarOfDimSpec
+    CoarraySpec                       -> ListStarOfDimSpec
+    DimSpec                           -> Range
+    DimSpec                           -> STAR()
+    DimSpec                           -> COLON()
+    Range                             -> Range(Expr,Expr)
+
+    Var                               -> Var(Name,Type,OptInitialization)
+    ArrayVar                          -> ArrayVar(Name,ArrayType,OptInitialization)
+
     OfpAttrSpec                       -> OfpIntent(OfpIntent)
     OfpAttrSpec                       -> ALLOCATABLE()
 
     Decl                              -> TypeDeclarationStmt
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
 
+    EntityDecl                        -> Var
+    EntityDecl                        -> ArrayVar
+    xxxEntityDecl                     -> EntityDecl(Name,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
+
     Type                              -> IntrinsicType
+    Type                              -> unknown-type()
+    ArrayType                         -> ArrayType(Type,ArraySpec,CoarraySpec)
 
     IntrinsicType                     -> DOUBLECOMPLEX()
     IntrinsicType                     -> LOGICAL(OptKindSelector)
@@ -2031,7 +2050,6 @@ regular tree grammar
     OptCoarraySpec                    -> opt-coarray-spec(CoarraySpec)
     OptArraySpec                      -> opt-array-spec(ArraySpec)
     ObjectName                        -> Ident
-    EntityDecl                        -> EntityDecl(ObjectName,OptArraySpec,OptCoarraySpec,OptCharLength,OptInitialization)
     AttrSpec                          -> VOLATILE()
     AttrSpec                          -> VALUE()
     AttrSpec                          -> TARGET()
