@@ -2319,8 +2319,8 @@ context-free priorities
   }
   >
   {
-    '+' Expr            -> Expr {cons("Plus")}
-    '-' Expr            -> Expr {cons("Minus")}
+    '+' Expr            -> Expr {cons("UnaryPlus")}
+    '-' Expr            -> Expr {cons("UnaryMinus")}
   }
   >
   { left:
