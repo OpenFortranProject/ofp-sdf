@@ -1187,6 +1187,25 @@ regular tree grammar
     ProcedureDesignator               -> ProcedureDesignator(DataRef,BindingName)
     ProcedureDesignator               -> ProcedureDesignator(ProcedureName)
     NoActualArgSpecList               -> no-list()
+
+    Stmt                              -> ExitStmt
+    ExitStmt                          -> ExitStmt(OptLabel,ConstructName)
+    ConstructName                     -> <string>
+
+    Stmt                              -> ContinueStmt
+    ContinueStmt                      -> ContinueStmt(OptLabel)
+
+
+
+
+
+
+
+
+
+
+
+
     CallStmt                          -> CallStmt(OptLabel,ProcedureDesignator,ListStarOfActualArgSpec0,EOS)
     CallStmt                          -> CallStmt(OptLabel,ProcedureDesignator,NoActualArgSpecList,EOS)
     FunctionReference                 -> FunctionReference(ProcedureDesignator,ListStarOfActualArgSpec0)
@@ -1291,15 +1310,6 @@ regular tree grammar
     NoKeyword                         -> no-keyword()
     Keyword                           -> Name
 
-    ExecutableConstruct               -> WhereConstruct
-    ExecutableConstruct               -> SelectTypeConstruct
-    ExecutableConstruct               -> IfConstruct
-    ExecutableConstruct               -> ForallConstruct
-    ExecutableConstruct               -> CriticalConstruct
-    ExecutableConstruct               -> CaseConstruct
-    ExecutableConstruct               -> BlockConstruct
-    ExecutableConstruct               -> AssociateConstruct
-    ExecutableConstruct               -> ActionStmt
     OtherSpecificationStmt            -> ValueStmt
     OtherSpecificationStmt            -> VolatileStmt
     OtherSpecificationStmt            -> TargetStmt
@@ -1326,8 +1336,6 @@ regular tree grammar
     OptInternalSubprogramPart         -> no-subprogram-part()
     OptInternalSubprogramPart         -> InternalSubprogramPart
     InternalSubprogramPart            -> SubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
-    ExecutionPartConstruct            -> ExecutableConstruct
-    SpecAndExecConstruct              -> ExecutableConstruct
     SpecAndExecConstruct              -> DeclarationConstruct
     SpecAndExecConstruct              -> ImplicitStmt
     ExecutionPart                     -> ExecutionPart(ListStarOfExecutionPartConstruct0)
@@ -1603,16 +1611,11 @@ regular tree grammar
     StopCode                          -> Expr
     ErrorStopStmt                     -> ErrorStopStmt(OptLabel,OptStopCode,EOS)
     StopStmt                          -> StopStmt(OptLabel,OptStopCode,EOS)
-    ContinueStmt                      -> ContinueStmt(OptLabel,EOS)
     ArithmeticIfStmt                  -> ArithmeticIfStmt(OptLabel,Expr,LblRef,LblRef,LblRef,EOS)
     ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef0,Expr,EOS)
     ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef0,Expr,EOS)
     GotoStmt                          -> GotoStmt(OptLabel,LblRef,EOS)
-    ConstructName                     -> Ident
 
-    Stmt                              -> ExitStmt
-    ExitStmt                          -> ExitStmt(OptLabel,NoName,EOS)
-    ExitStmt                          -> ExitStmt(OptLabel,ConstructName,EOS)
 
     OptSelectConstructName            -> no-name()
     OptSelectConstructName            -> SelectConstructName
