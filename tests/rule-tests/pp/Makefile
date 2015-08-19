@@ -8,7 +8,7 @@ TO_PP   = $(TRANS_DIR)/fast2pp
 PP      = ../../../fortran/pp/Fortran.pp
 
 CHECK_LIST = R1101a.f90 R1101b.f90 R1101c.f90 R1101d.f90 R1101e.f90 R1101f.f90 R1101g.f90\
-             R704.f90 R706.f90 #R1206.f90 R452.f90
+             R704.f90 R706.f90 R854.f90 #R1206.f90 R452.f90
 
 all : check
 
