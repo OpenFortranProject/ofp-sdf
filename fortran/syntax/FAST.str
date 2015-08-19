@@ -133,16 +133,23 @@ signature
                                 : IntrinsicType -> Type
     unknown-type                : Type
     ArrayType                   : Type * ArraySpec * CoarraySpec -> ArrayType
-    DOUBLECOMPLEX               : IntrinsicType
-    LOGICAL                     : OptKind -> IntrinsicType
-    CHARACTER                   : OptCharSelector -> IntrinsicType
-    COMPLEX                     : OptKind -> IntrinsicType
+    INTEGER                     : IntrinsicType
+    INTEGER                     : Kind -> IntrinsicType
+    REAL                        : IntrinsicType
+    REAL                        : Kind -> IntrinsicType
     DOUBLEPRECISION             : IntrinsicType
-    REAL                        : OptKind -> IntrinsicType
-    INTEGER                     : OptKind -> IntrinsicType
-    no-kind                     : OptKind
-                                : Kind -> OptKind
+    COMPLEX                     : IntrinsicType
+    COMPLEX                     : Kind -> IntrinsicType
+    DOUBLECOMPLEX               : IntrinsicType
+    CHARACTER                   : IntrinsicType
+    CHARACTER                   : CharSelector -> IntrinsicType
+    LOGICAL                     : IntrinsicType
+    LOGICAL                     : Kind -> IntrinsicType
     Kind                        : Expr -> Kind
+    IntVal                      : String -> IntVal
+    IntVal                      : String * Kind -> IntVal
+    RealVal                     : String -> RealVal
+    RealVal                     : String * Kind -> RealVal
     OfpType                     : DOUBLECOMPLEX * OptExpr -> OfpType
     OfpType                     : LOGICAL * OptExpr -> OfpType
     OfpType                     : CHARACTER * OptExpr -> OfpType
@@ -268,6 +275,8 @@ signature
                                 : OfpExplicitCoshape -> Expr
                                 : OfpAssumedSize -> Expr
                                 : OfpAssumedOrDeferredShape -> Expr
+                                : IntVal -> Expr
+                                : RealVal -> Expr
                                 : Primary -> Expr
                                 : Dop -> DefinedUnaryOp
     Parens                      : Expr -> Primary
@@ -396,44 +405,21 @@ signature
                                 : Designator -> InitialDataTarget
                                 : Ident -> TypeName
     no-kind-param               : OptKindParam
-    opt-kind-param              : KindParam -> OptKindParam
     FALSE                       : OptKindParam -> LogicalLiteralConstant
     TRUE                        : OptKindParam -> LogicalLiteralConstant
                                 : Scon -> CharLiteralConstant
-    CharLiteralConstant         : KindParam * Scon -> CharLiteralConstant
                                 : Expr -> CharLength
                                 : Icon -> CharLength
     CharLength                  : TypeParamValue -> CharLength
     LengthSelector_STAR         : CharLength -> LengthSelector
     LengthSelector              : TypeParamValue -> LengthSelector
-    no-char-selector            : OptCharSelector
-                                : CharSelector -> OptCharSelector
     CharSelector_KIND           : Expr -> CharSelector
     CharSelector_KIND_LEN       : Expr * TypeParamValue -> CharSelector
     CharSelector_LEN_KIND       : TypeParamValue * Expr -> CharSelector
                                 : LengthSelector -> CharSelector
                                 : NamedConstant -> ImagPart
-                                : SignedRealLiteralConstant -> ImagPart
-                                : SignedIntLiteralConstant -> ImagPart
                                 : NamedConstant -> RealPart
-                                : SignedRealLiteralConstant -> RealPart
-                                : SignedIntLiteralConstant -> RealPart
     ComplexLiteralConstant      : RealPart * ImagPart -> ComplexLiteralConstant
-    RealLiteralConstant         : Rcon * KindParam -> RealLiteralConstant
-    RealLiteralConstant         : Rcon * NoKindParam -> RealLiteralConstant
-    SignedRealLiteralConstant   : Sign * RealLiteralConstant -> SignedRealLiteralConstant
-                                : RealLiteralConstant -> SignedRealLiteralConstant
-    MINUS                       : Sign
-    PLUS                        : Sign
-                                : Icon -> DigitString
-                                : Ident -> ScalarIntConstantName
-                                : ScalarIntConstantName -> KindParam
-                                : DigitString -> KindParam
-    no-kind-param               : NoKindParam
-    IntLiteralConstant          : DigitString * KindParam -> IntLiteralConstant
-                                : DigitString -> IntLiteralConstant
-    SignedIntLiteralConstant    : Sign * IntLiteralConstant -> SignedIntLiteralConstant
-                                : IntLiteralConstant -> SignedIntLiteralConstant
     AssumedType                 : DeclarationTypeSpec
     AssumedClass                : DeclarationTypeSpec
     class-type-spec             : DerivedTypeSpec -> DeclarationTypeSpec
@@ -447,8 +433,6 @@ signature
                                 : CharLiteralConstant -> LiteralConstant
                                 : LogicalLiteralConstant -> LiteralConstant
                                 : ComplexLiteralConstant -> LiteralConstant
-                                : RealLiteralConstant -> LiteralConstant
-                                : IntLiteralConstant -> LiteralConstant
                                 : LiteralConstant -> Constant
     no-name                     : NoName
                                 : String -> Name
@@ -458,7 +442,6 @@ signature
                                 : String -> HexConstant
                                 : String -> OctalConstant
                                 : String -> BinaryConstant
-                                : String -> Rcon
                                 : String -> Scon
                                 : String -> Icon
                                 : String -> Ident
