@@ -1001,6 +1001,9 @@ regular tree grammar
     OfpDummyArg                       -> STAR(STAR)
     OfpDummyArg                       -> OfpDummyArg(String)
 
+    Stmt                              -> ParameterStmt
+    ParameterStmt                     -> ParameterStmt(OptLabel,ListPlusOfNamedConstantDef0)
+
     Stmt                              -> AssignmentStmt
     AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
 
@@ -1340,7 +1343,6 @@ regular tree grammar
     DeclarationConstruct              -> TypeDeclarationStmt
     DeclarationConstruct              -> OtherSpecificationStmt
     DeclarationConstruct              -> ProcedureDeclarationStmt
-    DeclarationConstruct              -> ParameterStmt
     DeclarationConstruct              -> InterfaceBlock
     DeclarationConstruct              -> FormatStmt
     DeclarationConstruct              -> EnumDef
@@ -1348,7 +1350,6 @@ regular tree grammar
     DeclarationConstruct              -> DerivedTypeDef
     ImplicitPartStmt                  -> EntryStmt
     ImplicitPartStmt                  -> FormatStmt
-    ImplicitPartStmt                  -> ParameterStmt
     ImplicitPartStmt                  -> ImplicitStmt
     OptImplicitPart                   -> no-implicit-part()
     OptImplicitPart                   -> ImplicitPart
@@ -1956,7 +1957,6 @@ regular tree grammar
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
     NamedConstantDef                  -> NamedConstantDef(NamedConstant,ConstantExpr)
-    ParameterStmt                     -> ParameterStmt(OptLabel,ListPlusOfNamedConstantDef0,EOS)
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
