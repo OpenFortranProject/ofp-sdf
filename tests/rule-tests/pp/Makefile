@@ -87,6 +87,6 @@ aterm :
 
 clean :
 	rm -f *.mod
-	rm -f tmp/*.f90 tmp/*.f77 tmp/*.f08 tmp/*.o
+	rm -f tmp/*.f90 tmp/*.f77 tmp/*.f08 tmp/*.fxx tmp/*.o
 	rm -f tmp-simple/*.aterm
 	rm -f tmp-fast/*.aterm
