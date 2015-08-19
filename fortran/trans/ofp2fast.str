@@ -127,8 +127,8 @@ fast-fixup-spec-part =
 //
 is-specification-part =
      ?ImplicitStmt(_,_)
- +>  ?ParameterStmt(_,_,_)
- +>  ?TypeDeclarationStmt(_,_,_,_,_)
+ +>  ?ParameterStmt(_,_)
+ +>  ?TypeDeclarationStmt(_,_,_,_)
 
 // Call the recursive strategy fast-fixup-do-construct (directly below) to build multiple
 // OfpBlockDoConstructs from a series of do statements.
