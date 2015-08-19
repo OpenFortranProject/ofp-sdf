@@ -42,18 +42,21 @@ strategies //=================START OF STRATEGIES============================
     ; topdown(try(fast-fixup-do-constructs))
     ; topdown(try(fast-cleanup))
 
+transfer-type(|type) =
+     ?Var(name,unknown-type(),init)
+  ;  !Var(name,type,init)
 
 // TODO - try to remove usage of Some()
 //ofp-add-some = ?None() < id + !Some(<id>)
   ofp-add-some = id
 
-  ofp-name       = is-string < !OfpName (<id>)       + !None()
-  ofp-name-some  = is-string < !Some(OfpName (<id>)) + !None()
-  ofp-name-fail  = is-string ; !OfpName (<id>)
+//  ofp-name       = is-string < !OfpName (<id>)       + !None()
+//  ofp-name-some  = is-string < !Some(OfpName (<id>)) + !None()
+//  ofp-name-fail  = is-string ; !OfpName (<id>)
 
-  ofp-label      = is-string < !Label(<id>) + !None()
+//  ofp-label      = is-string < !Label(<id>) + !None()
 
-  ofp-spec       = is-string < !Some(OfpGenericSpec(OfpName(<id>))) + !None()
+//  ofp-spec       = is-string < !Some(OfpGenericSpec(Name(<id>))) + !None()
 
   ofp-char-select = id
   ofp-kind = id
@@ -62,8 +65,8 @@ strategies //=================START OF STRATEGIES============================
 //ofp-prefix = is-list < !OfpPrefix(<id>) + !OfpPrefix([])
 //ofp-suffix = ?no-language-binding() < !OfpSuffix([]) + !OfpSuffix(<id>)
 
-  ofp-var-def = is-string < !VarDef(OfpName(<id>)) + !ERROR(<id>)
-  ofp-var-ref = is-string < !VarRef(OfpName(<id>)) + id
+//  ofp-var-def = is-string < !VarDef(Name(<id>)) + !ERROR(<id>)
+//  ofp-var-ref = is-string < !VarRef(Name(<id>)) + id
 
 rules //========================START OF RULES===============================
 
@@ -175,29 +178,59 @@ match-end-do =
 //R208
   ofp-to-ast:  SpecAndExecPart(stmts)           -> ExecPart(stmts)
 
+//R404
+ofp-to-ast:  IntrinsicType(type)                -> type
+
+ofp-to-ast:  INTEGER(no-kind())                 -> INTEGER()
+ofp-to-ast:  REAL(no-kind())                    -> REAL()
+ofp-to-ast:  COMPLEX(no-kind())                 -> COMPLEX()
+ofp-to-ast:  CHARACTER(no-char-selector)        -> CHARACTER()
+ofp-to-ast:  LOGICAL(no-kind())                 -> LOGICAL()
+
+//R405
+ofp-to-ast:  KindSelector(k)                    -> Kind(k)
+ofp-to-ast:  KindSelector_STAR(k)               -> Kind(k)
+
+//R408
+ofp-to-ast:
+  IntLiteralConstant(val,no-kind-param())       -> IntVal(val)
+ofp-to-ast:
+  IntLiteralConstant(val,kind)                  -> IntVal(val,Kind(kind))
+
+//R413
+ofp-to-ast:
+  RealLiteralConstant(val,no-kind-param())      -> RealVal(val)
+ofp-to-ast:
+  RealLiteralConstant(val,kind)                 -> RealVal(val,Kind(kind))
+
 //R501
-  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,entities,eos("\n"))
-              -> TypeDeclarationStmt(label,type,attrs,entities)
-  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,entities,eos(str))
-              -> TypeDeclarationStmt(label,type,attrs,entities)           {Comment(str)}
+  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
+              -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
+  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
+              -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
+
+//R503
+  ofp-to-ast:  EntityDecl(name,[],[],no-char-length(),init)
+                                                -> Var(name,unknown-type(),init)
 
 //R510
-  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
+//  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
+  ofp-to-ast:  DeferredCoshape()                -> COLON()
 
 //R511
-  ofp-to-ast:  ExplicitCoshape(lower,upper)     -> DimSpec(lower,upper)
+  ofp-to-ast:  ExplicitCoshape(lower,upper)     -> Range(lower,upper)
 
 //R516
-  ofp-to-ast:  ExplicitShape(lower,upper)       -> DimSpec(lower,upper)
+  ofp-to-ast:  ExplicitShape(lower,upper)       -> Range(lower,upper)
 //  ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
 
 //R519
 //  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> DimSpec(None(),":")
-  ofp-to-ast:  AssumedShape(lower)              -> DimSpec(lower,":")
-//  ofp-to-ast:  AssumedShapeSpecList(list)                     -> OfpAssumedOrDeferredShape(list)
+//  ofp-to-ast:  AssumedShape(lower)              -> DimSpec(lower,":")
 
 //R520
-  ofp-to-ast:  DeferredShape()                  -> DimSpec(no-lower-bound(), COLON())
+//  ofp-to-ast:  DeferredShape()                  -> DimSpec(no-lower-bound(), COLON())
+  ofp-to-ast:  DeferredShape()                  -> COLON()
 
 //R521
 //  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
@@ -294,7 +327,7 @@ match-end-do =
   ofp-to-ast:  EndSubmoduleStmt(label,name,eos(str) ) -> EndSubmoduleStmt(label,name) {Comment(str)}
 
 //R1207
-//  ofp-to-ast:  GenericSpec(OfpName(name))     -> OfpGenericSpec(OfpName(name))
+//  ofp-to-ast:  GenericSpec(Name(name))        -> OfpGenericSpec(Name(name))
 //  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
@@ -310,7 +343,7 @@ match-end-do =
   ofp-to-ast:  FunctionStmt(label,prefix,name,args,suffix,eos)
                    -> xFunctionStmt(label,prefix,name,args,<ofp-extract-result> suffix,
                                                            <ofp-extract-binding>suffix)
-  ofp-to-ast:  no-prefix -> []
+  ofp-to-ast:  no-prefix() -> []
 
 //R1232
   ofp-to-ast:  EndFunctionStmt(label,name,eos("\n")) -> EndFunctionStmt(label,name)
