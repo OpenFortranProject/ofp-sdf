@@ -14,8 +14,7 @@ SgUntypedFile(
         , SgUntypedFunctionScope(
             ""
           , FORTRAN_PROGRAM()
-          , SgUntypedDeclarationList([])
-          , SgUntypedStatementList(
+          , SgUntypedDeclarationList(
               [SgUntypedVariableDeclaration(
                  ""
                , FORTRAN_UNKNOWN()
@@ -23,6 +22,7 @@ SgUntypedFile(
                , SgUntypedInitializedNameList([SgUntypedInitializedName(SgUntypedTypeFloat(), "a")])
                )]
             )
+          , SgUntypedStatementList([])
           , SgUntypedFunctionDeclarationList([])
           )
         , SgUntypedNamedStatement("", FORTRAN_END_PROGRAM(), "my_prog")
