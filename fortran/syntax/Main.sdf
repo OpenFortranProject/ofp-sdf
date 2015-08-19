@@ -865,14 +865,14 @@ context-free syntax
   Sign IntLiteralConstant            -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
-  DigitString                           -> IntLiteralConstant
+  DigitString   NoKindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
   DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
 
   % empty %                             -> NoKindParam         {cons("no-kind-param")}
 
 %%R408
-  DigitString                           -> KindParam
-  ScalarIntConstantName                 -> KindParam
+  DigitString NoKindParam               -> KindParam           {cons("IntLiteralConstant")}
+  ScalarIntConstantName                 -> KindParam           {cons("VarRef")}
 
   Ident                                 -> ScalarIntConstantName
 

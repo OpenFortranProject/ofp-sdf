@@ -1131,11 +1131,11 @@ signature
     PLUS                            : Sign
                                     : Icon -> DigitString
                                     : Ident -> ScalarIntConstantName
-                                    : ScalarIntConstantName -> KindParam
-                                    : DigitString -> KindParam
+    VarRef                          : ScalarIntConstantName -> KindParam
+    IntLiteralConstant              : DigitString * NoKindParam -> KindParam
     no-kind-param                   : NoKindParam
     IntLiteralConstant              : DigitString * KindParam -> IntLiteralConstant
-                                    : DigitString -> IntLiteralConstant
+    IntLiteralConstant              : DigitString * NoKindParam -> IntLiteralConstant
     SignedIntLiteralConstant        : Sign * IntLiteralConstant -> SignedIntLiteralConstant
                                     : IntLiteralConstant -> SignedIntLiteralConstant
     no-kind                         : NoKindSelector

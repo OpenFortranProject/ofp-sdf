@@ -1941,11 +1941,11 @@ regular tree grammar
     SignedDigitString                 -> SignedDigitString(Sign,DigitString)
     SignedDigitString                 -> DigitString
     ScalarIntConstantName             -> Ident
-    KindParam                         -> ScalarIntConstantName
-    KindParam                         -> DigitString
+    KindParam                         -> VarRef(ScalarIntConstantName)
+    KindParam                         -> IntLiteralConstant(DigitString,NoKindParam)
     NoKindParam                       -> no-kind-param()
     IntLiteralConstant                -> IntLiteralConstant(DigitString,KindParam)
-    IntLiteralConstant                -> DigitString
+    IntLiteralConstant                -> IntLiteralConstant(DigitString,NoKindParam)
     SignedIntLiteralConstant          -> SignedIntLiteralConstant(Sign,IntLiteralConstant)
     SignedIntLiteralConstant          -> IntLiteralConstant
     NoKindSelector                    -> no-kind()
