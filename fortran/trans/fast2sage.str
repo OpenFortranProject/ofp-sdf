@@ -12,6 +12,162 @@ signature
     no-program-stmt           : NoProgramStmt   // R1102
     no-program-name           : NoProgramName   // R1103
 
+    // SgToken:ROSE_Fortran_Keywords
+    //
+    FORTRAN_ABSTRACT          : FORTRAN_ABSTRACT
+    FORTRAN_ACCESS            : FORTRAN_ACCESS
+    FORTRAN_ACTION            : FORTRAN_ACTION
+    FORTRAN_ALLOCATE          : FORTRAN_ALLOCATE
+    FORTRAN_ALLOCATABLE       : FORTRAN_ALLOCATABLE
+    FORTRAN_ASSIGN            : FORTRAN_ASSIGN
+    FORTRAN_ASSOCIATE         : FORTRAN_ASSOCIATE
+    FORTRAN_ASYNCHRONOUS      : FORTRAN_ASYNCHRONOUS
+    FORTRAN_BACKSPACE         : FORTRAN_BACKSPACE
+    FORTRAN_BIND              : FORTRAN_BIND
+    FORTRAN_BLANK             : FORTRAN_BLANK
+    FORTRAN_BLOCK_DATA        : FORTRAN_BLOCK_DATA
+    FORTRAN_CALL              : FORTRAN_CALL
+    FORTRAN_CHARACTER         : FORTRAN_CHARACTER
+    FORTRAN_CLASS             : FORTRAN_CLASS
+    FORTRAN_CLOSE             : FORTRAN_CLOSE
+    FORTRAN_CONTINUE          : FORTRAN_CONTINUE
+    FORTRAN_CYCLE             : FORTRAN_CYCLE
+    FORTRAN_CASE              : FORTRAN_CASE
+    FORTRAN_COMMON            : FORTRAN_COMMON
+    FORTRAN_COMPLEX           : FORTRAN_COMPLEX
+    FORTRAN_CONTAINS          : FORTRAN_CONTAINS
+    FORTRAN_DEALLOCATE        : FORTRAN_DEALLOCATE
+    FORTRAN_DATA              : FORTRAN_DATA
+    FORTRAN_DEFERRED          : FORTRAN_DEFERRED
+    FORTRAN_DELIM             : FORTRAN_DELIM
+    FORTRAN_DIMENSION         : FORTRAN_DIMENSION
+    FORTRAN_DO                : FORTRAN_DO
+    FORTRAN_DT                : FORTRAN_DT
+    FORTRAN_DOUBLEPRECISION   : FORTRAN_DOUBLEPRECISION
+    FORTRAN_ENCODING          : FORTRAN_ENCODING
+    FORTRAN_END_CASE          : FORTRAN_END_CASE
+    FORTRAN_ENDDO             : FORTRAN_ENDDO
+    FORTRAN_END_FILE          : FORTRAN_END_FILE
+    FORTRAN_END_ENUM          : FORTRAN_END_ENUM
+    FORTRAN_END_INTERFACE     : FORTRAN_END_INTERFACE
+    FORTRAN_END_TYPE          : FORTRAN_END_TYPE
+    FORTRAN_ERR               : FORTRAN_ERR
+    FORTRAN_ERRMSG            : FORTRAN_ERRMSG
+    FORTRAN_EXIT              : FORTRAN_EXIT
+    FORTRAN_ELSE              : FORTRAN_ELSE
+    FORTRAN_ELSEWHERE         : FORTRAN_ELSEWHERE
+    FORTRAN_ELSEIF            : FORTRAN_ELSEIF
+    FORTRAN_ENDIF             : FORTRAN_ENDIF
+    FORTRAN_ENTRY             : FORTRAN_ENTRY
+    FORTRAN_END               : FORTRAN_END
+    FORTRAN_ENUM              : FORTRAN_ENUM
+    FORTRAN_ENUMERATOR        : FORTRAN_ENUMERATOR
+    FORTRAN_EQUIVALENCE       : FORTRAN_EQUIVALENCE
+    FORTRAN_EXTERNAL          : FORTRAN_EXTERNAL
+    FORTRAN_EXTENDS           : FORTRAN_EXTENDS
+    FORTRAN_FILE              : FORTRAN_FILE
+    FORTRAN_FINAL             : FORTRAN_FINAL
+    FORTRAN_FMT               : FORTRAN_FMT
+    FORTRAN_FORALL            : FORTRAN_FORALL
+    FORTRAN_FORM              : FORTRAN_FORM
+    FORTRAN_FORMATTED         : FORTRAN_FORMATTED
+    FORTRAN_FORMAT            : FORTRAN_FORMAT
+    FORTRAN_FLUSH             : FORTRAN_FLUSH
+    FORTRAN_FUNCTION          : FORTRAN_FUNCTION
+    FORTRAN_GENERIC           : FORTRAN_GENERIC
+    FORTRAN_GOTO              : FORTRAN_GOTO
+    FORTRAN_ID                : FORTRAN_ID
+    FORTRAN_IF                : FORTRAN_IF
+    FORTRAN_INQUIRE           : FORTRAN_INQUIRE
+    FORTRAN_INTEGER           : FORTRAN_INTEGER
+    FORTRAN_IOMSG             : FORTRAN_IOMSG
+    FORTRAN_IOSTAT            : FORTRAN_IOSTAT
+    FORTRAN_IMPLICIT          : FORTRAN_IMPLICIT
+    FORTRAN_IMPLICIT_NONE     : FORTRAN_IMPLICIT_NONE
+    FORTRAN_IMPORT            : FORTRAN_IMPORT
+    FORTRAN_INTERFACE         : FORTRAN_INTERFACE
+    FORTRAN_INTENT            : FORTRAN_INTENT
+    FORTRAN_INTRINSIC         : FORTRAN_INTRINSIC
+    FORTRAN_LEN               : FORTRAN_LEN
+    FORTRAN_LOGICAL           : FORTRAN_LOGICAL
+    FORTRAN_KIND              : FORTRAN_KIND
+    FORTRAN_MODULE_PROC       : FORTRAN_MODULE_PROC
+    FORTRAN_MODULE            : FORTRAN_MODULE
+    FORTRAN_NON_INTRINSIC     : FORTRAN_NON_INTRINSIC
+    FORTRAN_NON_OVERRIDABLE   : FORTRAN_NON_OVERRIDABLE
+    FORTRAN_NULL              : FORTRAN_NULL
+    FORTRAN_NULLIFY           : FORTRAN_NULLIFY
+    FORTRAN_NAMELIST          : FORTRAN_NAMELIST
+    FORTRAN_NML               : FORTRAN_NML
+    FORTRAN_NONE              : FORTRAN_NONE
+    FORTRAN_NOPASS            : FORTRAN_NOPASS
+    FORTRAN_ONLY              : FORTRAN_ONLY
+    FORTRAN_OPEN              : FORTRAN_OPEN
+    FORTRAN_OPTIONAL          : FORTRAN_OPTIONAL
+    FORTRAN_PARAMETER         : FORTRAN_PARAMETER
+    FORTRAN_PASS              : FORTRAN_PASS
+    FORTRAN_PAUSE             : FORTRAN_PAUSE
+    FORTRAN_POINTER           : FORTRAN_POINTER
+    FORTRAN_PRINT             : FORTRAN_PRINT
+    FORTRAN_PRIVATE           : FORTRAN_PRIVATE
+    FORTRAN_PROCEDURE         : FORTRAN_PROCEDURE
+    FORTRAN_PROGRAM           : FORTRAN_PROGRAM
+    FORTRAN_PROTECTED         : FORTRAN_PROTECTED
+    FORTRAN_READ              : FORTRAN_READ
+    FORTRAN_REAL              : FORTRAN_REAL
+    FORTRAN_RETURN            : FORTRAN_RETURN
+    FORTRAN_REWIND            : FORTRAN_REWIND
+    FORTRAN_ROUND             : FORTRAN_ROUND
+    FORTRAN_SELECTCASE        : FORTRAN_SELECTCASE
+    FORTRAN_SELECTTYPE        : FORTRAN_SELECTTYPE
+    FORTRAN_SEQUENCE          : FORTRAN_SEQUENCE
+    FORTRAN_SAVE              : FORTRAN_SAVE
+    FORTRAN_SIGN              : FORTRAN_SIGN
+    FORTRAN_SIZE              : FORTRAN_SIZE
+    FORTRAN_SOURCE            : FORTRAN_SOURCE
+    FORTRAN_STAT              : FORTRAN_STAT
+    FORTRAN_STOP              : FORTRAN_STOP
+    FORTRAN_SUBROUTINE        : FORTRAN_SUBROUTINE
+    FORTRAN_TARGET            : FORTRAN_TARGET
+    FORTRAN_THEN              : FORTRAN_THEN
+    FORTRAN_DERIVED_DECL      : FORTRAN_DERIVED_DECL
+    FORTRAN_TYPEIS            : FORTRAN_TYPEIS
+    FORTRAN_UNFORMATTED       : FORTRAN_UNFORMATTED
+    FORTRAN_UNIT              : FORTRAN_UNIT
+    FORTRAN_USE               : FORTRAN_USE
+    FORTRAN_VALUE             : FORTRAN_VALUE
+    FORTRAN_VOLATILE          : FORTRAN_VOLATILE
+    FORTRAN_WAIT              : FORTRAN_WAIT
+    FORTRAN_WHERE             : FORTRAN_WHERE
+    FORTRAN_WRITE             : FORTRAN_WRITE
+    FORTRAN_END_PROGRAM       : FORTRAN_END_PROGRAM
+    FORTRAN_END_FUNCTION      : FORTRAN_END_FUNCTION
+    FORTRAN_END_SUBROUTINE    : FORTRAN_END_SUBROUTINE
+    FORTRAN_END_MODULE        : FORTRAN_END_MODULE
+    FORTRAN_DOUBLE_COMPLEX    : FORTRAN_DOUBLE_COMPLEX
+    FORTRAN_TYPE              : FORTRAN_TYPE
+    FORTRAN_UNKNOWN           : FORTRAN_UNKNOWN
+
+    // SgToken:ROSE_Fortran_Operators
+    //
+    FORTRAN_INTRINSIC_PLUS    : FORTRAN_INTRINSIC_PLUS
+    FORTRAN_INTRINSIC_MINUS   : FORTRAN_INTRINSIC_MINUS
+    FORTRAN_INTRINSIC_POWER   : FORTRAN_INTRINSIC_POWER
+    FORTRAN_INTRINSIC_CONCAT  : FORTRAN_INTRINSIC_CONCAT
+    FORTRAN_INTRINSIC_TIMES   : FORTRAN_INTRINSIC_TIMES
+    FORTRAN_INTRINSIC_DIVIDE  : FORTRAN_INTRINSIC_DIVIDE
+    FORTRAN_INTRINSIC_AND     : FORTRAN_INTRINSIC_AND
+    FORTRAN_INTRINSIC_OR      : FORTRAN_INTRINSIC_OR
+    FORTRAN_INTRINSIC_EQV     : FORTRAN_INTRINSIC_EQV
+    FORTRAN_INTRINSIC_NEQV    : FORTRAN_INTRINSIC_NEQV
+    FORTRAN_INTRINSIC_EQ      : FORTRAN_INTRINSIC_EQ
+    FORTRAN_INTRINSIC_NE      : FORTRAN_INTRINSIC_NE
+    FORTRAN_INTRINSIC_GE      : FORTRAN_INTRINSIC_GE
+    FORTRAN_INTRINSIC_LE      : FORTRAN_INTRINSIC_LE
+    FORTRAN_INTRINSIC_LT      : FORTRAN_INTRINSIC_LT
+    FORTRAN_INTRINSIC_GT      : FORTRAN_INTRINSIC_GT
+    FORTRAN_INTRINSIC_NOT     : FORTRAN_INTRINSIC_NOT
+
 strategies
 
   main =
@@ -23,7 +179,7 @@ strategies
 
 rules
 
-  sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedTypeUnknown,name)
+  sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedTypeUnknown(),name)
 
 //R204
 //  fast-to-sage:
@@ -37,9 +193,28 @@ rules
 //  fast-to-sage:
 //    FuncPart(list)                         -> SgUntypedFunctionDeclarationList(list)
 
+//R404
+fast-to-sage:  INTEGER()                     -> SgUntypedTypeInt()
+fast-to-sage:  REAL()                        -> SgUntypedTypeFloat()
+fast-to-sage:  DOUBLEPRECISION()             -> SgUntypedTypeDouble()
+fast-to-sage:  LOGICAL()                     -> SgUntypedTypeBool()
+
+//R407
+fast-to-sage:  IntVal(val)
+               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedTypeInt())
+
+//R413
+fast-to-sage:  RealVal(val)
+               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedTypeFloat())
+
+
+//R501
+fast-to-sage:  TypeDeclarationStmt(label,type,attrs,entities)
+               -> SgUntypedVariableDeclaration(label,FORTRAN_UNKNOWN(),type,
+                                               SgUntypedInitializedNameList(entities))
+
 //R503
-//  fast-to-sage:
-//    EntityDecl(name,as,cs,cl,init)         -> PpEntityDecl(name,PpArraySpec(as),PpCoarraySpec(cs),cl,init)
+fast-to-sage:  Var(name,type,init)           -> SgUntypedInitializedName(type,name)
 
 //R510
 //  fast-to-sage:
@@ -48,7 +223,7 @@ rules
 //    DimSpec(lower, upper)                  -> PpDimSpec(lower, upper)
 
 //R560 - TODO: implicit-spec-list
-  fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label, "implicit-stmt")
+fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,FORTRAN_IMPLICIT())
 
 //R562
 //  fast-to-sage:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
@@ -70,6 +245,26 @@ rules
 //R637
 //  fast-to-sage:  AllocateCoshapeSpec(no-lower-bound(),ub) -> PpAllocCoshapeSpec(ub)
 //  fast-to-sage:  AllocateCoshapeSpec(lb,ub)               -> PpAllocCoshapeSpec(lb,ub)
+
+fast-to-sage:  VarDef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
+fast-to-sage:  VarRef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
+
+// Binary Operators
+//
+fast-to-sage:
+  Plus(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(),"+",e1,e2)
+fast-to-sage:
+  Minus(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",e1,e2)
+fast-to-sage:
+  Mult(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_TIMES(),"*",e1,e2)
+fast-to-sage:
+  Div(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_DIVIDE(),"/",e1,e2)
+fast-to-sage:
+  LT(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LT(),"<",e1,e2)
+
+//R732
+fast-to-sage:
+  AssignmentStmt(label,var,expr) -> SgUntypedAssignmentStatement(label,FORTRAN_UNKNOWN(),var,expr)
 
 //R803
 //  fast-to-sage:
@@ -96,11 +291,11 @@ fast-to-sage =
 {l1,l2,l3
   :  ?MainProgram(ProgramStmt(label,name),Scope(l1,l2,l3),end)
   ;  !SgUntypedProgramHeaderDeclaration(label,
-                                        "main-program",
+                                        FORTRAN_PROGRAM(),
                                         name,
                                         SgUntypedInitializedNameList([]),
                                         SgUntypedTypeVoid(),
-                                        SgUntypedFunctionScope(label,"main-program",
+                                        SgUntypedFunctionScope(label,FORTRAN_PROGRAM(),
                                                                SgUntypedDeclarationList(l1),
                                                                SgUntypedStatementList(l2),
                                                                SgUntypedFunctionDeclarationList(l3)),
@@ -108,19 +303,20 @@ fast-to-sage =
 }
 
 //R1102
-  fast-to-sage: no-program-stmt()           -> ProgramStmt("", "")
+//  fast-to-sage: no-program-stmt()           -> ProgramStmt("", "")
 
 //R1103
-  fast-to-sage:  EndProgramStmt(label,name) -> SgUntypedNamedStatement(label,"end-program-stmt",name)
+fast-to-sage:
+  EndProgramStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_PROGRAM(),name)
 
 //R1104
 fast-to-sage =
 {l1,l2,l3
   :  ?Module(ModuleStmt(label,name),Scope(l1,l2,l3),end)
   ;  !SgUntypedModuleDeclaration(label,
-                                 "module",
+                                 FORTRAN_MODULE(),
                                  name,
-                                 SgUntypedModuleScope(label,"module",
+                                 SgUntypedModuleScope(label,FORTRAN_MODULE(),
                                                       SgUntypedDeclarationList(l1),
                                                       SgUntypedStatementList(l2),
                                                       SgUntypedFunctionDeclarationList(l3)),
@@ -128,7 +324,7 @@ fast-to-sage =
 }
 
 //R1104
-  fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,"end-module-stmt",name)
+fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_MODULE(),name)
 
 //R1116
 //  fast-to-sage:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
@@ -141,11 +337,11 @@ fast-to-sage =
 //{l1,l2,l3
 //  :  ?Function(FunctionStmt(label,prefix,name,args,binding),Scope(l1,l2,l3),end)
 //  ;  !SgUntypedFunctionDeclaration(label,
-//                                     "subroutine",
+//                                     FORTRAN_FUNCTION(),
 //                                     name,
 //                                     <map(sg-initialized-name)>args,
 //                                     SgUntypedTypeVoid(),
-//                                     SgUntypedFunctionScope(label,"subroutine",
+//                                     SgUntypedFunctionScope(label,FORTRAN_FUNCTION(),
 //                                                            SgUntypedDeclarationList(l1),
 //                                                            SgUntypedStatementList(l2),
 //                                                            SgUntypedFunctionDeclarationList(l3)),
@@ -157,11 +353,11 @@ fast-to-sage =
 {l1,l2,l3
   :  ?Subroutine(SubroutineStmt(label,prefix,name,args,binding),Scope(l1,l2,l3),end)
   ;  !SgUntypedSubroutineDeclaration(label,
-                                     "subroutine",
+                                     FORTRAN_SUBROUTINE(),
                                      name,
                                      <map(sg-initialized-name)>args,
                                      SgUntypedTypeVoid(),
-                                     SgUntypedFunctionScope(label,"subroutine",
+                                     SgUntypedFunctionScope(label,FORTRAN_SUBROUTINE(),
                                                             SgUntypedDeclarationList(l1),
                                                             SgUntypedStatementList(l2),
                                                             SgUntypedFunctionDeclarationList(l3)),
@@ -169,7 +365,8 @@ fast-to-sage =
 }
 
 //R1236
-  fast-to-sage:  EndSubroutineStmt(label,name) -> SgUntypedNamedStatement(label,"end-subroutine-stmt",name)
+fast-to-sage:
+  EndSubroutineStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_SUBROUTINE(),name)
 
 //R1237
 //  fast-to-sage:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
