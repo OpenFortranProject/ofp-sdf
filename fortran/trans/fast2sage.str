@@ -244,18 +244,58 @@ fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,
 fast-to-sage:  VarDef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
 fast-to-sage:  VarRef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
 
+// Unary Operators
+//
+fast-to-sage:
+  UnaryPlus(expr)  -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(),"+",expr)
+fast-to-sage:
+  UnaryMinus(expr) -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",expr)
+fast-to-sage:
+  NOT(expr)        -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NOT(),".NOT.",expr)
+
 // Binary Operators
 //
 fast-to-sage:
-  Plus(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(),"+",e1,e2)
+  Power(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_POWER(),"**",e1,e2)
+
 fast-to-sage:
-  Minus(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",e1,e2)
+  Mult(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_TIMES(), "*",e1,e2)
 fast-to-sage:
-  Mult(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_TIMES(),"*",e1,e2)
+  Div(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_DIVIDE(),"/",e1,e2)
+
 fast-to-sage:
-  Div(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_DIVIDE(),"/",e1,e2)
+  Plus(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(), "+",e1,e2)
 fast-to-sage:
-  LT(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LT(),"<",e1,e2)
+  Minus(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",e1,e2)
+
+fast-to-sage:
+  Concat(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_CONCAT(),"//",e1,e2)
+
+fast-to-sage:
+  EQ(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_EQ(),"==",e1,e2)
+fast-to-sage:
+  NE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NE(),"/=",e1,e2)
+fast-to-sage:
+  LT(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LT(),"<",e1,e2)
+fast-to-sage:
+  LE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LE(),"<=",e1,e2)
+fast-to-sage:
+  GT(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_GT(),">",e1,e2)
+fast-to-sage:
+  GE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_GE(),">=",e1,e2)
+
+fast-to-sage:
+  AND(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_AND(),".AND.",e1,e2)
+fast-to-sage:
+  OR(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_OR(), ".OR.", e1,e2)
+
+fast-to-sage:
+  EQV(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_EQV(), ".EQV.", e1,e2)
+fast-to-sage:
+  NEQV(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NEQV(),".NEQV.",e1,e2)
+
+fast-to-sage:
+  Parens(expr)  -> expr
 
 //R732
 fast-to-sage:
