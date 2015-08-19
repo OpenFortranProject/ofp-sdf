@@ -183,10 +183,10 @@ rules
 
 //R201
 fast-to-sage:  Program(units)
-             -> SgUntypedFile(SgUntypedGlobalScope("",FORTRAN_UNKNOWN(),
-                                                      SgUntypedDeclarationList([]),
-                                                      SgUntypedStatementList([]),
-                                                      SgUntypedFunctionDeclarationList(units)))
+               -> SgUntypedFile(SgUntypedGlobalScope("",FORTRAN_UNKNOWN(),
+                                                        SgUntypedDeclarationList([]),
+                                                        SgUntypedStatementList([]),
+                                                        SgUntypedFunctionDeclarationList(units)))
 
 //R404
 fast-to-sage:  INTEGER()                     -> SgUntypedTypeInt()
