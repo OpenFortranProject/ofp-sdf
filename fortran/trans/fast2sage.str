@@ -181,17 +181,12 @@ rules
 
   sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedTypeUnknown(),name)
 
-//R204
-//  fast-to-sage:
-//    SpecPart(list)                         -> SgUntypedDeclarationList(list)
-
-//R208
-//  fast-to-sage:
-//    ExecPart(list)                         -> SgUntypedStatementList(list)
-
-//R210,R1107
-//  fast-to-sage:
-//    FuncPart(list)                         -> SgUntypedFunctionDeclarationList(list)
+//R201
+fast-to-sage:  Program(units)
+             -> SgUntypedFile(SgUntypedGlobalScope("",FORTRAN_UNKNOWN(),
+                                                      SgUntypedDeclarationList([]),
+                                                      SgUntypedStatementList([]),
+                                                      SgUntypedFunctionDeclarationList(units)))
 
 //R404
 fast-to-sage:  INTEGER()                     -> SgUntypedTypeInt()
@@ -289,7 +284,18 @@ fast-to-sage:
 //R1101
 fast-to-sage =
 {l1,l2,l3
-  :  ?MainProgram(ProgramStmt(label,name),Scope(l1,l2,l3),end)
+  :  ?MainProgram(no-program-stmt(),Scope(l1,l2,l3),end)
+  ;  !SgUntypedProgramHeaderDeclaration("",
+                                        FORTRAN_PROGRAM(),
+                                        "",
+                                        SgUntypedInitializedNameList([]),
+                                        SgUntypedTypeVoid(),
+                                        SgUntypedFunctionScope("",FORTRAN_PROGRAM(),
+                                                               SgUntypedDeclarationList(l1),
+                                                               SgUntypedStatementList(l2),
+                                                               SgUntypedFunctionDeclarationList(l3)),
+                                        end)
+ <+  ?MainProgram(ProgramStmt(label,name),Scope(l1,l2,l3),end)
   ;  !SgUntypedProgramHeaderDeclaration(label,
                                         FORTRAN_PROGRAM(),
                                         name,
