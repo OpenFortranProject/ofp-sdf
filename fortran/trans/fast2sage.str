@@ -25,6 +25,9 @@ signature
     FORTRAN_BACKSPACE         : FORTRAN_BACKSPACE
     FORTRAN_BIND              : FORTRAN_BIND
     FORTRAN_BLANK             : FORTRAN_BLANK
+
+    FORTRAN_BLOCK             : FORTRAN_BLOCK        // TODO: add to ROSE
+
     FORTRAN_BLOCK_DATA        : FORTRAN_BLOCK_DATA
     FORTRAN_CALL              : FORTRAN_CALL
     FORTRAN_CHARACTER         : FORTRAN_CHARACTER
@@ -144,6 +147,9 @@ signature
     FORTRAN_END_FUNCTION      : FORTRAN_END_FUNCTION
     FORTRAN_END_SUBROUTINE    : FORTRAN_END_SUBROUTINE
     FORTRAN_END_MODULE        : FORTRAN_END_MODULE
+
+    FORTRAN_END_BLOCK         : FORTRAN_END_BLOCK       // TODO: add to ROSE
+
     FORTRAN_DOUBLE_COMPLEX    : FORTRAN_DOUBLE_COMPLEX
     FORTRAN_TYPE              : FORTRAN_TYPE
     FORTRAN_UNKNOWN           : FORTRAN_UNKNOWN
@@ -304,6 +310,24 @@ fast-to-sage:
 //R803
 //  fast-to-sage:
 //    AssociateStmt(label,name,list,eos) -> PpAssociateStmt(label,<append-colon>name,list,eos)
+
+//R807
+fast-to-sage =
+{l1,l2,l3
+  :  ?Block(label,name,Scope(l1,l2,l3),end)
+  ;  !SgUntypedBlockStatement(label,
+                              FORTRAN_BLOCK(),
+                              name,
+                              SgUntypedBlockScope(label,FORTRAN_BLOCK(),
+                                                        SgUntypedDeclarationList(l1),
+                                                        SgUntypedStatementList(l2),
+                                                        SgUntypedFunctionDeclarationList(l3)),
+                              end)
+}
+
+//R809
+fast-to-sage:
+  EndBlockStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_BLOCK(),name)
 
 //R817
 //  fast-to-sage:
