@@ -24,7 +24,7 @@ SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOf
 SgUntypedNode -> SgUntypedInitializedNameList
 SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName)
 SgUntypedExpression -> SgUntypedUnaryOperator
-SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, SgToken_ROSE_Fortran_Operators, <string>, SgUntypedExpression)
+SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
 SgUntypedExpression -> SgUntypedBinaryOperator
 SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, <int>, <string>, SgUntypedExpression, SgUntypedExpression)
 SgUntypedExpression -> SgUntypedValueExpression
