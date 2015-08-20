@@ -23,10 +23,11 @@ SgUntypedNode -> SgUntypedFunctionDeclarationList
 SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration)
 SgUntypedNode -> SgUntypedInitializedNameList
 SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName)
+
 SgUntypedExpression -> SgUntypedUnaryOperator
-SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
+
 SgUntypedExpression -> SgUntypedBinaryOperator
-SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, <int>, <string>, SgUntypedExpression, SgUntypedExpression)
+
 SgUntypedExpression -> SgUntypedValueExpression
 SgUntypedValueExpression -> SgUntypedValueExpression (<int>, <string>, SgUntypedType)
 SgUntypedExpression -> SgUntypedArrayReferenceExpression
@@ -43,7 +44,7 @@ SgUntypedAssignmentStatement -> SgUntypedAssignmentStatement (<string>, <int>, S
 SgUntypedStatement -> SgUntypedFunctionCallStatement
 SgUntypedFunctionCallStatement -> SgUntypedFunctionCallStatement (<string>, <int>)
 SgUntypedStatement -> SgUntypedBlockStatement
-SgUntypedBlockStatement -> SgUntypedBlockStatement (<string>, <int>, SgUntypedScope)
+
 SgUntypedStatement -> SgUntypedNamedStatement
 SgUntypedNamedStatement -> SgUntypedNamedStatement (<string>, <int>, <string>)
 SgUntypedStatement -> SgUntypedOtherStatement
@@ -96,3 +97,13 @@ SgUntypedTypeDouble       -> SgUntypedTypeDouble()
 
 SgUntypedType             -> SgUntypedTypeBool
 SgUntypedTypeBool         -> SgUntypedTypeBool()
+
+
+SgUntypedScope -> SgUntypedBlockScope
+SgUntypedBlockScope -> SgUntypedBlockScope(<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+
+SgUntypedBlockStatement -> SgUntypedBlockStatement(<string>, <int>, <string>, SgUntypedBlockScope, SgUntypedNamedStatement)
+
+SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
+
+SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, <int>, <string>, SgUntypedExpression, SgUntypedExpression)
