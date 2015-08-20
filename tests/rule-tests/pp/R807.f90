@@ -1,9 +1,5 @@
 named_block : BLOCK
-USE, INTRINSIC :: ISO_C_BINDING, ONLY: C_PTR
-USE ISO_C_BINDING
-VOLATILE :: a
 INTEGER :: b
-TYPE(C_PTR) :: c
 a = 3
 END BLOCK named_block
 END PROGRAM
