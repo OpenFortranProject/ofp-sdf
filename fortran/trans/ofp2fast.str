@@ -184,7 +184,7 @@ ofp-to-ast:  IntrinsicType(type)                -> type
 ofp-to-ast:  INTEGER(no-kind())                 -> INTEGER()
 ofp-to-ast:  REAL(no-kind())                    -> REAL()
 ofp-to-ast:  COMPLEX(no-kind())                 -> COMPLEX()
-ofp-to-ast:  CHARACTER(no-char-selector)        -> CHARACTER()
+ofp-to-ast:  CHARACTER(no-char-selector())      -> CHARACTER()
 ofp-to-ast:  LOGICAL(no-kind())                 -> LOGICAL()
 
 //R405
@@ -264,6 +264,10 @@ ofp-to-ast:
 
 // Operators...
 
+//R559
+ofp-to-ast:  VolatileStmt(label,names,eos("\n")) -> VolatileStmt(label,names)
+ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {Comment(str)}
+
 //R560 - TODO: implicit-spec-list
   ofp-to-ast:  ImplicitNoneStmt(label,eos("\n")) -> ImplicitStmt(label,[])
   ofp-to-ast:  ImplicitNoneStmt(label,eos(str) ) -> ImplicitStmt(label,[]) {Comment(str)}
@@ -285,6 +289,23 @@ ofp-to-ast:
 //R732
   ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
   ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
+
+//R801
+ofp-to-ast:  Block(execs) -> execs
+
+//R807
+ofp-to-ast:  BlockConstruct(BlockStmt(label,name,eos("\n")),specs,execs,end)
+             -> Block(label,name,Scope(specs,execs,[]),end)
+ofp-to-ast:  BlockConstruct(BlockStmt(label,name,eos(str)),specs,execs,end)
+             -> Block(label,name,Scope(specs,execs,[]),end) {Comment(str)}
+
+//R809
+ofp-to-ast:  EndBlockStmt(label,name,eos("\n")) -> EndBlockStmt(label,name)
+ofp-to-ast:  EndBlockStmt(label,name,eos(str) ) -> EndBlockStmt(label,name) {Comment(str)}
+
+//R854
+ofp-to-ast:  ContinueStmt(label,eos("\n")) -> ContinueStmt(label)
+ofp-to-ast:  ContinueStmt(label,eos(str) ) -> ContinueStmt(label) {Comment(str)}
 
 //R1101
   ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
@@ -312,6 +333,16 @@ ofp-to-ast:
   ofp-to-ast:  EndModuleStmt(label,name,eos("\n")) -> EndModuleStmt(label,name)
   ofp-to-ast:  EndModuleStmt(label,name,eos(str) ) -> EndModuleStmt(label,name) {Comment(str)}
 
+//R1109
+ofp-to-ast:
+  UseStmt(label,nature,name,list,eos("\n"))     -> UseStmt(label,nature,name,list)
+ofp-to-ast:
+  UseStmt(label,nature,name,list,eos(str))      -> UseStmt(label,nature,name,list) {Comment(str)}
+ofp-to-ast:
+  UseOnlyStmt(label,nature,name,list,eos("\n")) -> UseOnlyStmt(label,nature,name,list)
+ofp-to-ast:
+  UseOnlyStmt(label,nature,name,list,eos(str))  -> UseOnlyStmt(label,nature,name,list) {Comment(str)}
+
 //R1116
   ofp-to-ast:  Submodule(begin,spec,no-module-subprogram-part(),end)
                   -> Submodule(begin, Scope(spec,ExecPart([]),FuncPart([])), end)
@@ -331,9 +362,13 @@ ofp-to-ast:
 //  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
+//R1209
+ofp-to-ast:  ImportStmt(label,names,eos("\n"))   -> ImportStmt(label,names)
+ofp-to-ast:  ImportStmt(label,names,eos(str))    -> ImportStmt(label,names) {Comment(str)}
+
 //R1211
 //ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
-//              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)            {Comment(eos)}
+//              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)      {Comment(eos)}
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
