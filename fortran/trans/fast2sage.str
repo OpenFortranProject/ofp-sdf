@@ -299,7 +299,7 @@ fast-to-sage:
 
 //R732
 fast-to-sage:
-  AssignmentStmt(label,var,expr) -> SgUntypedAssignmentStatement(label,FORTRAN_UNKNOWN(),var,expr)
+  AssignmentStmt(label,var,expr)    -> SgUntypedAssignmentStatement(label,FORTRAN_UNKNOWN(),var,expr)
 
 //R803
 //  fast-to-sage:
@@ -316,6 +316,10 @@ fast-to-sage:
 //R847
 //  fast-to-sage:
 //    SelectTypeStmt(label,name,name,selector,eos) -> PpSelectTypeStmt(label,<append-colon>name,name,selector,eos)
+
+//R854
+fast-to-sage:
+  ContinueStmt(label)               -> SgUntypedOtherStatement(label,FORTRAN_CONTINUE())
 
 //R860
 //  fast-to-sage:
