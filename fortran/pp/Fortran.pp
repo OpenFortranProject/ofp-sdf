@@ -24,9 +24,9 @@
 
    clMemObject                   -- "clMemObject(" _1 ")",
 
-   INTRINSIC                     -- KW["INTRINSIC"] " :: ",
-   NON_INTRINSIC                 -- KW["NON_INTRINSIC"] " :: ",
-   PARAMETER                     -- ", " KW["PARAMETER"],
+   INTRINSIC                     -- "INTRINSIC" " :: ",
+   NON_INTRINSIC                 -- "NON_INTRINSIC" " :: ",
+   PARAMETER                     -- ", " "PARAMETER",
 
    #R201 --,
    Program                       -- V vs=0 is=0 [_1],
@@ -308,7 +308,7 @@
    TargetDecl.3:iter-sep         -- _1 ", ",
 
    #R559 --,
-   VolatileStmt                  -- H hs=1[_1 KW["VOLATILE ::"] H hs=0[_2 _3]],
+   VolatileStmt                  -- H hs=1[_1 KW["VOLATILE ::"] H hs=0[_2]],
    VolatileStmt.2:iter-sep       -- _1 ", ",
 
    #R560 --,
@@ -456,36 +456,22 @@
    EndForallStmt                 -- H hs=1[_1 KW["END FORALL"] H hs=0[_2 _3]],
 
    #R801 --,
-   Block                         -- _1,
-
-   #R802 --,
    AssociateConstruct            -- _1 _2 _3,
 
-   #R803 --,
-   ppAssociateStmt                 -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
-   ppAssociateStmt.3:iter-sep      -- _1 ", ",
-
-   #R804 --,
-   Association                   -- _1 KW["=>"] _2,
-
-   #R806 --,
+   ppAssociateStmt               -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
+   ppAssociateStmt.3:iter-sep    -- _1 ", ",
    EndAssociateStmt              -- H hs=1[_1 KW["END ASSOCIATE"] H hs=0[_2 _3]],
 
-   #R807 --,
-   BlockConstruct                -- _1 _2 _3 _4,
+   Association                   -- _1 KW["=>"] _2,
 
-   #R808 --,
-   BlockStmt                     -- H hs=1[_1 _2 KW["BLOCK"] H hs=0[_3]],
-
-   #R809 --,
-   EndBlockStmt                  -- H hs=1[_1 KW["END BLOCK"] H hs=0[_2 _3]],
+   Block                         -- H [_1 _2 ":" "BLOCK"] _3 _4,
+   ppBlock                       -- H [_1 "BLOCK"] _2 _3,
+   EndBlockStmt                  -- H [_1 "END BLOCK" _2],
 
    #R816 --,
    LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
 
    ppNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
-
-   OfpBlockDoConstruct           -- V vs=0 is=2 [_1 _2] _3,
 
    #R818 --,
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
@@ -570,7 +556,7 @@
    ArithmeticIfStmt              -- H hs=1[H hs=0[_1 KW["IF"] "("_2")"] H hs=0 [_3 KW[", "] _4 KW[", "] _5 _6]],
      
    #R854 --,
-   ContinueStmt                  -- H hs=1[_1 KW["CONTINUE"] _2],
+   ContinueStmt                  -- H hs=1[_1 "CONTINUE"],
 
    #R855 --,
    StopStmt                      -- H hs=1[_1 KW["STOP"] _2 _3],
@@ -725,15 +711,16 @@
    no-module-name                -- ,
 
    #R1109 --,
-   UseStmt                       -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 _4 _5]],
-   UseOnlyStmt                   -- H hs=1[_1 KW["USE"] H hs=0[_2 _3 ", ONLY: " _4 _5]],
+   UseStmt                       -- H hs=1[_1 "USE" H hs=0[_2 _3 _4]],
+   UseOnlyStmt                   -- H hs=1[_1 H hs=0["USE" _2 _3 ", ONLY: " _4]],
    OnlyList                      -- _1,
 
    #R1110 --,
-   ModuleNature                  -- KW[", "] _1,
+   ModuleNature                  -- ", " _1,
+   no-module-nature              --,
 
    #R1111 --,
-   Rename                        -- KW[", "] H hs=0[_1 KW["=>"] _2],
+   Rename                        -- ", " H hs=0[_1 "=>" _2],
 
    #R1116 --,
    Submodule                     -- V vs=0 [_1 _2 _3],
@@ -793,7 +780,7 @@
    OPERATOR                            -- KW ["OPERATOR"] "("_1")",
 
    #R1209 --,
-   ImportStmt                          -- H hs=1[_1 KW["IMPORT ::"] H hs=0[_2 _3]],
+   ImportStmt                          -- H hs=1[_1 "IMPORT" H hs=0[_2]],
    ImportStmt.2:iter-sep               -- _1 ", ",
 
    #R1210 --,
@@ -817,7 +804,7 @@
    no-result                           -- ,
 
    #R1218 --,
-   IntrinsicStmt                       -- H hs=1[_1 KW["INTRINSIC ::"] H hs=0[_2 _3]],
+   IntrinsicStmt                       -- H hs=1[_1 "INTRINSIC ::" H hs=0[_2 _3]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    %%R1219 --,
