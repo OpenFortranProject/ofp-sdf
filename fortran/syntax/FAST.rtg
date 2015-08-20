@@ -67,22 +67,6 @@ regular tree grammar
     ListPlusOfScope0                  -> <conc>(ListPlusOfScope0,ListStarOfScope0)
     ListPlusOfScope0                  -> <conc>(ListPlusOfScope0,ListPlusOfScope0)
     ListPlusOfScope0                  -> <cons>(Scope,ListStarOfScope0)
-    ListStarOfOfpOnly0                -> ListPlusOfOfpOnly0
-    ListStarOfOfpOnly0                -> <nil>()
-    ListStarOfOfpOnly0                -> <conc>(ListStarOfOfpOnly0,ListStarOfOfpOnly0)
-    ListPlusOfOfpOnly0                -> <conc>(ListStarOfOfpOnly0,ListPlusOfOfpOnly0)
-    ListPlusOfOfpOnly0                -> <conc>(ListPlusOfOfpOnly0,ListStarOfOfpOnly0)
-    ListPlusOfOfpOnly0                -> <conc>(ListPlusOfOfpOnly0,ListPlusOfOfpOnly0)
-    ListPlusOfOfpOnly0                -> <cons>(OfpOnly,ListStarOfOfpOnly0)
-    ListStarOfOfpRename0              -> ListPlusOfOfpRename0
-    ListStarOfOfpRename0              -> <nil>()
-    ListStarOfOfpRename0              -> <conc>(ListStarOfOfpRename0,ListStarOfOfpRename0)
-    ListPlusOfOfpRename0              -> <conc>(ListStarOfOfpRename0,ListPlusOfOfpRename0)
-    ListPlusOfOfpRename0              -> <conc>(ListPlusOfOfpRename0,ListStarOfOfpRename0)
-    ListPlusOfOfpRename0              -> <conc>(ListPlusOfOfpRename0,ListPlusOfOfpRename0)
-    ListPlusOfOfpRename0              -> <cons>(OfpRename,ListStarOfOfpRename0)
-    OptOfpModuleNature0               -> <some>(OfpModuleNature)
-    OptOfpModuleNature0               -> <none>()
     ListStarOfDimSpec0                -> ListPlusOfDimSpec0
     ListStarOfDimSpec0                -> <nil>()
     ListStarOfDimSpec0                -> <conc>(ListStarOfDimSpec0,ListStarOfDimSpec0)
@@ -182,13 +166,7 @@ regular tree grammar
     ListPlusOfExternalName0           -> <conc>(ListPlusOfExternalName0,ListStarOfExternalName0)
     ListPlusOfExternalName0           -> <conc>(ListPlusOfExternalName0,ListPlusOfExternalName0)
     ListPlusOfExternalName0           -> <cons>(ExternalName,ListStarOfExternalName0)
-    ListStarOfImportName0             -> ListPlusOfImportName0
-    ListStarOfImportName0             -> <nil>()
-    ListStarOfImportName0             -> <conc>(ListStarOfImportName0,ListStarOfImportName0)
-    ListPlusOfImportName0             -> <conc>(ListStarOfImportName0,ListPlusOfImportName0)
-    ListPlusOfImportName0             -> <conc>(ListPlusOfImportName0,ListStarOfImportName0)
-    ListPlusOfImportName0             -> <conc>(ListPlusOfImportName0,ListPlusOfImportName0)
-    ListPlusOfImportName0             -> <cons>(ImportName,ListStarOfImportName0)
+
     ListStarOfProcedureName0          -> ListPlusOfProcedureName0
     ListStarOfProcedureName0          -> <nil>()
     ListStarOfProcedureName0          -> <conc>(ListStarOfProcedureName0,ListStarOfProcedureName0)
@@ -203,20 +181,7 @@ regular tree grammar
     ListPlusOfInterfaceSpecification0 -> <conc>(ListPlusOfInterfaceSpecification0,ListStarOfInterfaceSpecification0)
     ListPlusOfInterfaceSpecification0 -> <conc>(ListPlusOfInterfaceSpecification0,ListPlusOfInterfaceSpecification0)
     ListPlusOfInterfaceSpecification0 -> <cons>(InterfaceSpecification,ListStarOfInterfaceSpecification0)
-    ListStarOfOnly0                   -> ListPlusOfOnly0
-    ListStarOfOnly0                   -> <nil>()
-    ListStarOfOnly0                   -> <conc>(ListStarOfOnly0,ListStarOfOnly0)
-    ListPlusOfOnly0                   -> <conc>(ListStarOfOnly0,ListPlusOfOnly0)
-    ListPlusOfOnly0                   -> <conc>(ListPlusOfOnly0,ListStarOfOnly0)
-    ListPlusOfOnly0                   -> <conc>(ListPlusOfOnly0,ListPlusOfOnly0)
-    ListPlusOfOnly0                   -> <cons>(Only,ListStarOfOnly0)
-    ListStarOfRename0                 -> ListPlusOfRename0
-    ListStarOfRename0                 -> <nil>()
-    ListStarOfRename0                 -> <conc>(ListStarOfRename0,ListStarOfRename0)
-    ListPlusOfRename0                 -> <conc>(ListStarOfRename0,ListPlusOfRename0)
-    ListPlusOfRename0                 -> <conc>(ListPlusOfRename0,ListStarOfRename0)
-    ListPlusOfRename0                 -> <conc>(ListPlusOfRename0,ListPlusOfRename0)
-    ListPlusOfRename0                 -> <cons>(Rename,ListStarOfRename0)
+
     ListStarOfModuleSubprogram0       -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0       -> <nil>()
     ListStarOfModuleSubprogram0       -> <conc>(ListStarOfModuleSubprogram0,ListStarOfModuleSubprogram0)
@@ -224,56 +189,6 @@ regular tree grammar
     ListPlusOfModuleSubprogram0       -> <conc>(ListPlusOfModuleSubprogram0,ListStarOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0       -> <conc>(ListPlusOfModuleSubprogram0,ListPlusOfModuleSubprogram0)
     ListPlusOfModuleSubprogram0       -> <cons>(ModuleSubprogram,ListStarOfModuleSubprogram0)
-    ListStarOfInternalSubprogram0     -> ListPlusOfInternalSubprogram0
-    ListStarOfInternalSubprogram0     -> <nil>()
-    ListStarOfInternalSubprogram0     -> <conc>(ListStarOfInternalSubprogram0,ListStarOfInternalSubprogram0)
-    ListPlusOfInternalSubprogram0     -> <conc>(ListStarOfInternalSubprogram0,ListPlusOfInternalSubprogram0)
-    ListPlusOfInternalSubprogram0     -> <conc>(ListPlusOfInternalSubprogram0,ListStarOfInternalSubprogram0)
-    ListPlusOfInternalSubprogram0     -> <conc>(ListPlusOfInternalSubprogram0,ListPlusOfInternalSubprogram0)
-    ListPlusOfInternalSubprogram0     -> <cons>(InternalSubprogram,ListStarOfInternalSubprogram0)
-    ListStarOfSpecAndExecConstruct0   -> ListPlusOfSpecAndExecConstruct0
-    ListStarOfSpecAndExecConstruct0   -> <nil>()
-    ListStarOfSpecAndExecConstruct0   -> <conc>(ListStarOfSpecAndExecConstruct0,ListStarOfSpecAndExecConstruct0)
-    ListPlusOfSpecAndExecConstruct0   -> <conc>(ListStarOfSpecAndExecConstruct0,ListPlusOfSpecAndExecConstruct0)
-    ListPlusOfSpecAndExecConstruct0   -> <conc>(ListPlusOfSpecAndExecConstruct0,ListStarOfSpecAndExecConstruct0)
-    ListPlusOfSpecAndExecConstruct0   -> <conc>(ListPlusOfSpecAndExecConstruct0,ListPlusOfSpecAndExecConstruct0)
-    ListPlusOfSpecAndExecConstruct0   -> <cons>(SpecAndExecConstruct,ListStarOfSpecAndExecConstruct0)
-    ListStarOfExecutionPartConstruct0 -> ListPlusOfExecutionPartConstruct0
-    ListStarOfExecutionPartConstruct0 -> <nil>()
-    ListStarOfExecutionPartConstruct0 -> <conc>(ListStarOfExecutionPartConstruct0,ListStarOfExecutionPartConstruct0)
-    ListPlusOfExecutionPartConstruct0 -> <conc>(ListStarOfExecutionPartConstruct0,ListPlusOfExecutionPartConstruct0)
-    ListPlusOfExecutionPartConstruct0 -> <conc>(ListPlusOfExecutionPartConstruct0,ListStarOfExecutionPartConstruct0)
-    ListPlusOfExecutionPartConstruct0 -> <conc>(ListPlusOfExecutionPartConstruct0,ListPlusOfExecutionPartConstruct0)
-    ListPlusOfExecutionPartConstruct0 -> <cons>(ExecutionPartConstruct,ListStarOfExecutionPartConstruct0)
-    ListStarOfImplicitPartStmt0       -> ListPlusOfImplicitPartStmt0
-    ListStarOfImplicitPartStmt0       -> <nil>()
-    ListStarOfImplicitPartStmt0       -> <conc>(ListStarOfImplicitPartStmt0,ListStarOfImplicitPartStmt0)
-    ListPlusOfImplicitPartStmt0       -> <conc>(ListStarOfImplicitPartStmt0,ListPlusOfImplicitPartStmt0)
-    ListPlusOfImplicitPartStmt0       -> <conc>(ListPlusOfImplicitPartStmt0,ListStarOfImplicitPartStmt0)
-    ListPlusOfImplicitPartStmt0       -> <conc>(ListPlusOfImplicitPartStmt0,ListPlusOfImplicitPartStmt0)
-    ListPlusOfImplicitPartStmt0       -> <cons>(ImplicitPartStmt,ListStarOfImplicitPartStmt0)
-    ListStarOfDeclarationConstruct0   -> ListPlusOfDeclarationConstruct0
-    ListStarOfDeclarationConstruct0   -> <nil>()
-    ListStarOfDeclarationConstruct0   -> <conc>(ListStarOfDeclarationConstruct0,ListStarOfDeclarationConstruct0)
-    ListPlusOfDeclarationConstruct0   -> <conc>(ListStarOfDeclarationConstruct0,ListPlusOfDeclarationConstruct0)
-    ListPlusOfDeclarationConstruct0   -> <conc>(ListPlusOfDeclarationConstruct0,ListStarOfDeclarationConstruct0)
-    ListPlusOfDeclarationConstruct0   -> <conc>(ListPlusOfDeclarationConstruct0,ListPlusOfDeclarationConstruct0)
-    ListPlusOfDeclarationConstruct0   -> <cons>(DeclarationConstruct,ListStarOfDeclarationConstruct0)
-    ListStarOfImportStmt0             -> ListPlusOfImportStmt0
-    ListStarOfImportStmt0             -> <nil>()
-    ListStarOfImportStmt0             -> <conc>(ListStarOfImportStmt0,ListStarOfImportStmt0)
-    ListPlusOfImportStmt0             -> <conc>(ListStarOfImportStmt0,ListPlusOfImportStmt0)
-    ListPlusOfImportStmt0             -> <conc>(ListPlusOfImportStmt0,ListStarOfImportStmt0)
-    ListPlusOfImportStmt0             -> <conc>(ListPlusOfImportStmt0,ListPlusOfImportStmt0)
-    ListPlusOfImportStmt0             -> <cons>(ImportStmt,ListStarOfImportStmt0)
-
-    ListStarOfUseStmt0                -> ListPlusOfUseStmt0
-    ListStarOfUseStmt0                -> <nil>()
-    ListStarOfUseStmt0                -> <conc>(ListStarOfUseStmt0,ListStarOfUseStmt0)
-    ListPlusOfUseStmt0                -> <conc>(ListStarOfUseStmt0,ListPlusOfUseStmt0)
-    ListPlusOfUseStmt0                -> <conc>(ListPlusOfUseStmt0,ListStarOfUseStmt0)
-    ListPlusOfUseStmt0                -> <conc>(ListPlusOfUseStmt0,ListPlusOfUseStmt0)
-    ListPlusOfUseStmt0                -> <cons>(UseStmt,ListStarOfUseStmt0)
 
     ListStarOfVEditDesc0              -> ListPlusOfVEditDesc0
     ListStarOfVEditDesc0              -> <nil>()
@@ -555,13 +470,7 @@ regular tree grammar
     ListPlusOfImplicitSpec0           -> <conc>(ListPlusOfImplicitSpec0,ListStarOfImplicitSpec0)
     ListPlusOfImplicitSpec0           -> <conc>(ListPlusOfImplicitSpec0,ListPlusOfImplicitSpec0)
     ListPlusOfImplicitSpec0           -> <cons>(ImplicitSpec,ListStarOfImplicitSpec0)
-    ListStarOfObjectName0             -> ListPlusOfObjectName0
-    ListStarOfObjectName0             -> <nil>()
-    ListStarOfObjectName0             -> <conc>(ListStarOfObjectName0,ListStarOfObjectName0)
-    ListPlusOfObjectName0             -> <conc>(ListStarOfObjectName0,ListPlusOfObjectName0)
-    ListPlusOfObjectName0             -> <conc>(ListPlusOfObjectName0,ListStarOfObjectName0)
-    ListPlusOfObjectName0             -> <conc>(ListPlusOfObjectName0,ListPlusOfObjectName0)
-    ListPlusOfObjectName0             -> <cons>(ObjectName,ListStarOfObjectName0)
+
     ListStarOfDummyArgName0           -> ListPlusOfDummyArgName0
     ListStarOfDummyArgName0           -> <nil>()
     ListStarOfDummyArgName0           -> <conc>(ListStarOfDummyArgName0,ListStarOfDummyArgName0)
@@ -932,20 +841,6 @@ regular tree grammar
     Decl                              -> OfpInterfaceBlock
     OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfScope0)
 
-    OfpOnlyList                       -> OfpOnlyList(ListStarOfOfpOnly0)
-    OfpOnly                           -> OfpOnly(OfpRename)
-    OfpOnly                           -> OfpOnly(Name)
-    OfpOnly                           -> OfpOnly(OfpGenericSpec)
-    OfpRenameList                     -> OfpRenameList(ListStarOfOfpRename0)
-    OfpRename                         -> OfpRename(Name,Name)
-    NONINTRINSIC                      -> NONINTRINSIC()
-    INTRINSIC                         -> INTRINSIC()
-    OfpModuleNature                   -> NONINTRINSIC(NONINTRINSIC)
-    OfpModuleNature                   -> INTRINSIC(INTRINSIC)
-    Stmt                              -> OfpUseStmt
-    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,Name,OfpOnlyList)
-    OfpUseStmt                        -> OfpUseStmt(OptLabel,OptOfpModuleNature0,Name,OfpRenameList)
-
     MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
     ProgramStmt                       -> ProgramStmt(OptLabel,Name)
     EndProgramStmt                    -> EndProgramStmt(OptLabel,OptProgramName)
@@ -1022,6 +917,9 @@ regular tree grammar
     OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
     OfpVarRef                         -> OfpVarRef(Name)
     VarDef                            -> VarDef(Name)
+
+    Decl                              -> VolatileStmt
+    VolatileStmt                      -> VolatileStmt(OptLabel,ListStarOfName)
 
     Decl                              -> ImplicitStmt
     ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfOfpType0)
@@ -1192,8 +1090,36 @@ regular tree grammar
     ExitStmt                          -> ExitStmt(OptLabel,ConstructName)
     ConstructName                     -> <string>
 
+    Stmt                              -> Block
+    Block                             -> Block(OptLabel,OptName,Scope,EndBlockStmt)
+    Stmt                              -> EndBlockStmt
+    EndBlockStmt                      -> EndBlockStmt(OptLabel,OptName)
+
     Stmt                              -> ContinueStmt
     ContinueStmt                      -> ContinueStmt(OptLabel)
+
+    Stmt                              -> UseStmt
+    UseStmt                           -> UseStmt(OptLabel,OptModuleNature,Name,ListStarOfRename)
+
+    Stmt                              -> UseOnlyStmt
+    UseOnlyStmt                       -> UseOnlyStmt(OptLabel,OptModuleNature,Name,ListStarOfOnly)
+
+    OptModuleNature                   -> ModuleNature
+    OptModuleNature                   -> no-module-nature()
+    ModuleNature                      -> INTRINSIC()
+    ModuleNature                      -> NONINTRINSIC()
+
+    Rename                            -> Rename(Name,Name)
+    Rename                            -> RenameOp(LocalDefinedOperator,UseDefinedOperator)
+
+    Only                              -> Only(OfpGenericSpec)
+    Only                              -> Only(Name)
+    Only                              -> Only(Rename)
+
+    Stmt                              -> ImportStmt
+    ImportStmt                        -> ImportStmt(OptLabel,ListStarOfName)
+
+
 
 
 
@@ -1238,9 +1164,6 @@ regular tree grammar
     ExternalName                      -> Ident
     ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
     ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
-    ImportName                        -> Ident
-    ImportStmt                        -> ImportStmt(OptLabel,ListStarOfImportName0,EOS)
-    ImportStmt                        -> ImportStmt(OptLabel,ListPlusOfImportName0,EOS)
     DefinedIoGenericSpec              -> WRITE_UNFORMATTED()
     DefinedIoGenericSpec              -> WRITE_FORMATTED()
     DefinedIoGenericSpec              -> READ_UNFORMATTED()
@@ -1279,28 +1202,7 @@ regular tree grammar
     UseDefinedOperator                -> UseDefinedOperator_DUO(DefinedUnaryOp)
     LocalDefinedOperator              -> LocalDefinedOperator_DBO(DefinedBinaryOp)
     LocalDefinedOperator              -> LocalDefinedOperator_DUO(DefinedUnaryOp)
-    OnlyUseName                       -> OnlyUseName(Ident)
-    Only                              -> Rename
-    Only                              -> GenericSpec
-    LocalName                         -> Ident
-    UseName                           -> Ident
-    Rename                            -> RenameOp(LocalDefinedOperator,UseDefinedOperator)
-    Rename                            -> Rename(LocalName,UseName)
-    ModuleNature                      -> NON_INTRINSIC()
-    ModuleNature                      -> INTRINSIC()
-    OptOnlyList                       -> OnlyList(ListStarOfOnly0)
-    OptRenameList                     -> comma-list(ListPlusOfRename0)
-    NoRenameList                      -> no-list()
-    NoModuleNature                    -> no-module-nature()
-    OptModuleNature                   -> NoModuleNature
-    OptModuleNature                   -> ModuleNature(ModuleNature)
-    UseStmt                           -> UseOnlyStmt(OptLabel,OptModuleNature,ModuleName,OptOnlyList,EOS)
-    UseStmt                           -> UseOnlyStmt(OptLabel,NoModuleNature,ModuleName,OptOnlyList,EOS)
-    UseStmt                           -> UseStmt(OptLabel,OptModuleNature,ModuleName,OptRenameList,EOS)
-    UseStmt                           -> UseStmt(OptLabel,OptModuleNature,ModuleName,NoRenameList,EOS)
-    UseStmt                           -> UseStmt(OptLabel,NoModuleNature,ModuleName,OptRenameList,EOS)
-    UseStmt                           -> UseStmt(OptLabel,NoModuleNature,ModuleName,NoRenameList,EOS)
-    ModuleSubprogram                  -> SeparateModuleSubprogram
+
     ModuleSubprogram                  -> SubroutineSubprogram
     ModuleSubprogram                  -> FunctionSubprogram
     OptModuleSubprogramPart           -> no-module-subprogram-part()
@@ -1310,52 +1212,12 @@ regular tree grammar
     NoKeyword                         -> no-keyword()
     Keyword                           -> Name
 
-    OtherSpecificationStmt            -> ValueStmt
-    OtherSpecificationStmt            -> VolatileStmt
-    OtherSpecificationStmt            -> TargetStmt
-    OtherSpecificationStmt            -> SaveStmt
-    OtherSpecificationStmt            -> ProtectedStmt
-    OtherSpecificationStmt            -> PointerStmt
-    OtherSpecificationStmt            -> OptionalStmt
-    OtherSpecificationStmt            -> NamelistStmt
-    OtherSpecificationStmt            -> IntrinsicStmt
-    OtherSpecificationStmt            -> IntentStmt
-    OtherSpecificationStmt            -> ExternalStmt
-    OtherSpecificationStmt            -> EquivalenceStmt
-    OtherSpecificationStmt            -> DimensionStmt
-    OtherSpecificationStmt            -> DataStmt
-    OtherSpecificationStmt            -> CommonStmt
-    OtherSpecificationStmt            -> ContiguousStmt
-    OtherSpecificationStmt            -> CodimensionStmt
-    OtherSpecificationStmt            -> BindStmt
-    OtherSpecificationStmt            -> AsynchronousStmt
-    OtherSpecificationStmt            -> AllocatableStmt
-    OtherSpecificationStmt            -> AccessStmt
     InternalSubprogram                -> SubroutineSubprogram
     InternalSubprogram                -> FunctionSubprogram
     OptInternalSubprogramPart         -> no-subprogram-part()
     OptInternalSubprogramPart         -> InternalSubprogramPart
     InternalSubprogramPart            -> SubprogramPart(ContainsStmt,ListStarOfInternalSubprogram0)
-    SpecAndExecConstruct              -> DeclarationConstruct
-    SpecAndExecConstruct              -> ImplicitStmt
-    ExecutionPart                     -> ExecutionPart(ListStarOfExecutionPartConstruct0)
-    DeclarationConstruct              -> TypeDeclarationStmt
-    DeclarationConstruct              -> OtherSpecificationStmt
-    DeclarationConstruct              -> ProcedureDeclarationStmt
-    DeclarationConstruct              -> InterfaceBlock
-    DeclarationConstruct              -> FormatStmt
-    DeclarationConstruct              -> EnumDef
-    DeclarationConstruct              -> EntryStmt
-    DeclarationConstruct              -> DerivedTypeDef
-    ImplicitPartStmt                  -> EntryStmt
-    ImplicitPartStmt                  -> FormatStmt
-    ImplicitPartStmt                  -> ImplicitStmt
-    OptImplicitPart                   -> no-implicit-part()
-    OptImplicitPart                   -> ImplicitPart
-    ImplicitPart                      -> ImplicitPart(ListStarOfImplicitPartStmt0,ImplicitStmt)
-    SpecAndExecPart                   -> SpecAndExecPart(ListStarOfSpecAndExecConstruct0)
-    SpecificationPart                 -> SpecificationPart(ListStarOfUseStmt0,ListStarOfImportStmt0,OptImplicitPart,ListStarOfDeclarationConstruct0)
-    InitialSpecPart                   -> initial-spec-part(ListStarOfUseStmt0,ListStarOfImportStmt0)
+
     ExternalSubprogram                -> SubroutineSubprogram
     ExternalSubprogram                -> FunctionSubprogram
 
@@ -1694,12 +1556,6 @@ regular tree grammar
     CriticalStmt                      -> CriticalStmt(OptLabel,NoName,EOS)
     CriticalStmt                      -> CriticalStmt(OptLabel,CriticalConstructName,EOS)
     CriticalConstruct                 -> CriticalConstruct(CriticalStmt,Block,EndCriticalStmt)
-    BlockConstructName                -> Ident
-    EndBlockStmt                      -> EndBlockStmt(OptLabel,NoName,EOS)
-    EndBlockStmt                      -> EndBlockStmt(OptLabel,BlockConstructName,EOS)
-    BlockStmt                         -> BlockStmt(OptLabel,NoName,EOS)
-    BlockStmt                         -> BlockStmt(OptLabel,BlockConstructName,EOS)
-    BlockConstruct                    -> BlockConstruct(BlockStmt,SpecificationPart,Block,EndBlockStmt)
     EndAssociateStmt                  -> EndAssociateStmt(OptLabel,NoName,EOS)
     EndAssociateStmt                  -> EndAssociateStmt(OptLabel,AssociateConstructName,EOS)
     Selector                          -> Expr
@@ -1709,7 +1565,7 @@ regular tree grammar
     AssociateStmt                     -> AssociateStmt(OptLabel,NoName,ListPlusOfAssociation0,EOS)
     AssociateStmt                     -> AssociateStmt(OptLabel,AssociateConstructName,ListPlusOfAssociation0,EOS)
     AssociateConstruct                -> AssociateConstruct(AssociateStmt,Block,EndAssociateStmt)
-    Block                             -> Block(ListStarOfExecutionPartConstruct0)
+
     ForallStmt                        -> ForallStmt(OptLabel,ForallHeader,ForallAssignmentStmt)
     EndForallStmt                     -> EndForallStmt(OptLabel,NoName,EOS)
     EndForallStmt                     -> EndForallStmt(OptLabel,ForallConstructName,EOS)
@@ -1929,10 +1785,6 @@ regular tree grammar
     LetterSpec                        -> LetterSpec(Letter,NoLetter)
     LetterSpec                        -> LetterSpec(Letter,Letter)
     ImplicitSpec                      -> ImplicitSpec(DeclarationTypeSpec,ListPlusOfLetterSpec0)
-    ImplicitStmt                      -> ImplicitNoneStmt(OptLabel,EOS)
-    ImplicitStmt                      -> ImplicitStmt(OptLabel,ListPlusOfImplicitSpec0,EOS)
-    VolatileStmt                      -> VolatileStmt(OptLabel,ListPlusOfObjectName0,EOS)
-    VolatileStmt                      -> VolatileStmt(OptLabel,ListPlusOfObjectName0,EOS)
     ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     TargetDecl                        -> TargetDecl(ObjectName,OptArraySpec,OptCoarraySpec)
@@ -2324,3 +2176,19 @@ regular tree grammar
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListStarOfEntityDecl)
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListPlusOfEntityDecl)
     ListPlusOfEntityDecl              -> <cons>(EntityDecl,ListStarOfEntityDecl)
+
+    ListStarOfOnly                    -> ListPlusOfOnly
+    ListStarOfOnly                    -> <nil>()
+    ListStarOfOnly                    -> <conc>(ListStarOfOnly,ListStarOfOnly)
+    ListPlusOfOnly                    -> <conc>(ListStarOfOnly,ListPlusOfOnly)
+    ListPlusOfOnly                    -> <conc>(ListPlusOfOnly,ListStarOfOnly)
+    ListPlusOfOnly                    -> <conc>(ListPlusOfOnly,ListPlusOfOnly)
+    ListPlusOfOnly                    -> <cons>(OfpOnly,ListStarOfOnly)
+
+    ListStarOfRename                 -> ListPlusOfRename
+    ListStarOfRename                 -> <nil>()
+    ListStarOfRename                 -> <conc>(ListStarOfRename,ListStarOfRename)
+    ListPlusOfRename                 -> <conc>(ListStarOfRename,ListPlusOfRename)
+    ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListStarOfRename)
+    ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListPlusOfRename)
+    ListPlusOfRename                 -> <cons>(OfpRename,ListStarOfRename)

@@ -49,18 +49,6 @@ signature
     OfpEndInterfaceStmt         : OptLabel * Option(OfpGenericSpec) -> OfpEndInterfaceStmt
     OfpInterfaceStmt            : OptLabel * Option(ABSTRACT) * Option(OfpGenericSpec) -> OfpInterfaceStmt
     OfpInterfaceBlock           : OfpInterfaceStmt * OfpEndInterfaceStmt * List(Scope) -> OfpInterfaceBlock
-    OfpOnlyList                 : List(OfpOnly) -> OfpOnlyList
-    OfpOnly                     : OfpRename -> OfpOnly
-    OfpOnly                     : Name -> OfpOnly
-    OfpOnly                     : OfpGenericSpec -> OfpOnly
-    OfpRenameList               : List(OfpRename) -> OfpRenameList
-    OfpRename                   : Name * Name -> OfpRename
-    NONINTRINSIC                : NONINTRINSIC
-    INTRINSIC                   : INTRINSIC
-    NONINTRINSIC                : NONINTRINSIC -> OfpModuleNature
-    INTRINSIC                   : INTRINSIC -> OfpModuleNature
-    OfpUseStmt                  : OptLabel * Option(OfpModuleNature) * Name * OfpOnlyList -> OfpUseStmt
-    OfpUseStmt                  : OptLabel * Option(OfpModuleNature) * Name * OfpRenameList -> OfpUseStmt
     MainProgram                 : ProgramStmt * Scope * EndProgramStmt -> MainProgram
     ProgramStmt                 : OptLabel * Name -> ProgramStmt
     EndProgramStmt              : OptLabel * OptProgramName -> EndProgramStmt
@@ -109,6 +97,8 @@ signature
     OfpAllocateStmt             : OptLabel * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
     OfpVarRef                   : Name -> OfpVarRef
     VarDef                      : Name -> VarDef
+    VolatileStmt                : OptLabel * List(Name) -> VolatileStmt
+    ImplicitStmt                : OptLabel * List(OfpType) -> ImplicitStmt
     OfpAssumedRank              : List(DimSpec) -> OfpAssumedRank
     OfpImpliedShape             : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize              : List(DimSpec) -> OfpAssumedSize
@@ -126,6 +116,7 @@ signature
                                 : OfpProcedureDeclarationStmt -> Decl
                                 : OfpExternalStmt -> Decl
                                 : OfpInterfaceBlock -> Decl
+                                : VolatileStmt -> Decl
                                 : ImplicitStmt -> Decl
                                 : TypeDeclarationStmt -> Decl
     TypeDeclarationStmt         : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
@@ -208,6 +199,29 @@ signature
     ActualArgSpec               : NoKeyword * ActualArg -> ActualArgSpec
     ProcedureDesignator         : DataRef * BindingName -> ProcedureDesignator
     ProcedureDesignator         : ProcedureName -> ProcedureDesignator
+    ExitStmt                    : OptLabel * ConstructName -> ExitStmt
+                                : String -> ConstructName
+    Block                       : OptLabel * OptName * Scope * EndBlockStmt -> Block
+    EndBlockStmt                : OptLabel * OptName -> EndBlockStmt
+    ContinueStmt                : OptLabel -> ContinueStmt
+    UseStmt                     : OptLabel * OptModuleNature * Name * ListStarOfRename -> UseStmt
+    UseOnlyStmt                 : OptLabel * OptModuleNature * Name * ListStarOfOnly -> UseOnlyStmt
+                                : ModuleNature -> OptModuleNature
+    no-module-nature            : OptModuleNature
+    INTRINSIC                   : ModuleNature
+    NONINTRINSIC                : ModuleNature
+                                : OfpCallStmt -> Stmt
+                                : ParameterStmt -> Stmt
+                                : AssignmentStmt -> Stmt
+                                : OfpAllocateStmt -> Stmt
+                                : ExitStmt -> Stmt
+                                : Block -> Stmt
+                                : EndBlockStmt -> Stmt
+                                : ContinueStmt -> Stmt
+                                : UseStmt -> Stmt
+                                : UseOnlyStmt -> Stmt
+                                : ImportStmt -> Stmt
+    ImportStmt                  : OptLabel * List(Name) -> ImportStmt
     FunctionReference           : ProcedureDesignator * List(ActualArgSpec) -> FunctionReference
                                 : ProcedureName -> InitialProcTarget
     no-init                     : NoProcPointerInit
@@ -227,15 +241,6 @@ signature
                                 : Ident -> ProcedureName
     no-keyword                  : NoKeyword
                                 : Name -> Keyword
-                                : Ident -> ConstructName
-                                : OfpCallStmt -> Stmt
-                                : OfpUseStmt -> Stmt
-                                : ParameterStmt -> Stmt
-                                : AssignmentStmt -> Stmt
-                                : OfpAllocateStmt -> Stmt
-                                : ExitStmt -> Stmt
-    ExitStmt                    : OptLabel * NoName * EOS -> ExitStmt
-    ExitStmt                    : OptLabel * ConstructName * EOS -> ExitStmt
     VarRef                      : Ident -> ScalarIntVariableName
                                 : ScalarIntVariableName -> DoVariable
     no-expr                     : OptExpr
@@ -314,13 +319,6 @@ signature
     Substring                   : ParentString * SubstringRange -> Substring
                                 : Substring -> Designator
                                 : DataRef -> Designator
-    no-letter                   : NoLetter
-    LetterSpec                  : Letter * NoLetter -> LetterSpec
-    LetterSpec                  : Letter * Letter -> LetterSpec
-    ImplicitSpec                : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
-    ImplicitStmt                : OptLabel * List(OfpType) -> ImplicitStmt
-    ImplicitNoneStmt            : OptLabel * EOS -> ImplicitStmt
-    ImplicitStmt                : OptLabel * List(ImplicitSpec) * EOS -> ImplicitStmt
     NamedConstantDef            : NamedConstant * ConstantExpr -> NamedConstantDef
     INOUT                       : IntentSpec
     OUT                         : IntentSpec
@@ -436,10 +434,8 @@ signature
                                 : LogicalLiteralConstant -> LiteralConstant
                                 : ComplexLiteralConstant -> LiteralConstant
                                 : LiteralConstant -> Constant
-    no-name                     : NoName
                                 : String -> Name
                                 : Ident -> Name
-    eos                         : EOStmt -> EOS
                                 : String -> Dop
                                 : String -> HexConstant
                                 : String -> OctalConstant
@@ -447,8 +443,6 @@ signature
                                 : String -> Scon
                                 : String -> Icon
                                 : String -> Ident
-                                : String -> Letter
-                                : String -> EOStmt
 
 
 signature
