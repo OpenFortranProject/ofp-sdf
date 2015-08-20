@@ -1,0 +1,56 @@
+SgUntypedFile(
+  SgUntypedGlobalScope(
+    ""
+  , FORTRAN_UNKNOWN()
+  , SgUntypedDeclarationList([])
+  , SgUntypedStatementList([])
+  , SgUntypedFunctionDeclarationList(
+      [ SgUntypedProgramHeaderDeclaration(
+          ""
+        , FORTRAN_PROGRAM()
+        , ""
+        , SgUntypedInitializedNameList([])
+        , SgUntypedTypeVoid()
+        , SgUntypedFunctionScope(
+            ""
+          , FORTRAN_PROGRAM()
+          , SgUntypedDeclarationList([])
+          , SgUntypedStatementList(
+              [ SgUntypedBlockStatement(
+                  ""
+                , FORTRAN_BLOCK()
+                , "named_block"
+                , SgUntypedBlockScope(
+                    ""
+                  , FORTRAN_BLOCK()
+                  , SgUntypedDeclarationList(
+                      [SgUntypedVariableDeclaration(
+                         ""
+                       , FORTRAN_UNKNOWN()
+                       , SgUntypedTypeInt()
+                       , SgUntypedInitializedNameList([SgUntypedInitializedName(SgUntypedTypeInt(), "b")])
+                       )]
+                    )
+                  , SgUntypedStatementList(
+                      [ SgUntypedAssignmentStatement(
+                          ""
+                        , FORTRAN_UNKNOWN()
+                        , SgUntypedReferenceExpression(FORTRAN_UNKNOWN(), "a")
+                        , SgUntypedValueExpression(FORTRAN_UNKNOWN(), "3", SgUntypedTypeInt())
+                        )
+                      ]
+                    )
+                  , SgUntypedFunctionDeclarationList([])
+                  )
+                , SgUntypedNamedStatement("", FORTRAN_END_BLOCK(), "named_block")
+                )
+              ]
+            )
+          , SgUntypedFunctionDeclarationList([])
+          )
+        , SgUntypedNamedStatement("", FORTRAN_END_PROGRAM(), "")
+        )
+      ]
+    )
+  )
+)
