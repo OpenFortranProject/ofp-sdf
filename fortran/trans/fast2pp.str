@@ -52,15 +52,15 @@ signature
     ppAllocCoshapeSpec  : upper               -> ppAllocCoshapeSpec
     ppAllocCoshapeSpec  : lower * upper       -> ppAllocCoshapeSpec
 
-    eos            : EOStmt          -> EOS
+    ppSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
 
-    ppSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr * EOS -> ppSelectCaseStmt    // R838
+    ppNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl -> ppNonlabelDoStmt    // R817
 
-    ppNonlabelDoStmt : OptLabel * DoConstructName * OptLoopControl * EOS -> ppNonlabelDoStmt  //R817
+    ppBlock          : OptLabel * Scope * EndBlockStmt             -> ppBlock
 
-    ppAssociateStmt  : OptLabel * NoName * List(Association) * EOS -> ppAssociateStmt        //R803
+    ppAssociateStmt  : OptLabel * NoName * List(Association)       -> ppAssociateStmt     // R803
 
-//    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector * EOS -> ppSelectTypeStmt  //R847
+//    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
     opt-list       : list            -> opt-list
     append-colon   : name            -> append-colon
@@ -81,10 +81,6 @@ strategies
   append-colon = ?no-name() < id + !append-colon(<id>)
 
 rules
-
-// Don't print EOS and associated comments
-//
-  ast-to-pp:  eos(_)                       -> None()
 
 // Make a separate scope without FuncPart when empty.  This will allow the implied contains
 // statement to be unparsed when the FuncPart is present.
@@ -140,6 +136,9 @@ ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
 //R803
 //  ast-to-pp:
 //    AssociateStmt(label,name,list,eos) -> ppAssociateStmt(label,<append-colon>name,list,eos)
+
+//R807
+  ast-to-pp:  Block(label,no-name(),scope,end) -> ppBlock(label,scope,end)
 
 //R817
 //  ast-to-pp:
