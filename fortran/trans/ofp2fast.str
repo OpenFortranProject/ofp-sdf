@@ -203,15 +203,37 @@ ofp-to-ast:
 ofp-to-ast:
   RealLiteralConstant(val,kind)                 -> RealVal(val,Kind(kind))
 
+//R426
+ofp-to-ast:    DerivedTypeStmt(label,attrs,name,params,eos("\n"))
+            -> DerivedTypeStmt(label,attrs,name,params)
+ofp-to-ast:    DerivedTypeStmt(label,attrs,name,params,eos(str))
+            -> DerivedTypeStmt(label,attrs,name,params) {Comment(str)}
+
+//R429
+ofp-to-ast:    EndTypeStmt(label,name,eos("\n"))
+            -> EndTypeStmt(label,name)
+ofp-to-ast:    EndTypeStmt(label,name,eos(str))
+            -> EndTypeStmt(label,name) {Comment(str)}
+
+//R445
+ofp-to-ast:    TypeBoundProcedurePart(contains,private,bindings)
+            -> TypeBoundProcPart(private,bindings)
+
+//R452
+ofp-to-ast:    FinalProcedureStmt(label,names,eos("\n"))
+            -> FinalProcedureStmt(label,names)
+ofp-to-ast:    FinalProcedureStmt(label,names,eos(str))
+            -> FinalProcedureStmt(label,names) {Comment(str)}
+
 //R501
-  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
-              -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
-  ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
-              -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
+ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
+            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
+ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
+            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
 
 //R503
-  ofp-to-ast:  EntityDecl(name,[],[],no-char-length(),init)
-                                                -> Var(name,unknown-type(),init)
+ofp-to-ast:    EntityDecl(name,[],[],no-char-length(),init)
+            -> Var(name,unknown-type(),init)
 
 //R510
 //  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
