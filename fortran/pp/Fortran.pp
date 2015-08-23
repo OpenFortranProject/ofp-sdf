@@ -2,6 +2,7 @@
    Comment                       -- _1,
 
    no-label                      -- ,
+   no-name                       -- ,
 
    append-colon                  -- _1 KW[": "],
 
@@ -91,18 +92,16 @@
    #R425 --,
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
 
-   #R426 --,
-   DerivedTypeStmt               -- H hs=1[_1 KW["TYPE"] H hs=0[_2 _3 _4 _5]],
+   DerivedTypeStmt               -- H hs=1[_1 "TYPE" H hs=0[_2 _3 _4]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
    DerivedTypeStmt.4:iter-sep    -- _1 ", ",
+
+   EndTypeStmt                   -- H hs=1[_1 "END TYPE" H hs=0[_2]],
 
    #R427 --,
    ABSTRACT                      -- KW["ABSTRACT"],
    Extends                       -- KW["EXTENDS"] _1,
    BIND                          -- KW["BIND(C)"],
-
-   #R429 --,
-   EndTypeStmt                   -- H hs=1[_1 KW["END TYPE"] H hs=0[_2 _3 "\n" ]],
 
    #R431 --,
    TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
@@ -130,24 +129,24 @@
    ProcComponentDefStmt.3:iter-sep   -- _1 ", ",
 
    #R441 --,
-   POINTER                       -- KW["POINTER"],
-   PASS                          -- KW["PASS"],
+   POINTER                       -- "POINTER",
+   PASS                          -- "PASS",
 
    #R442 --,
    ComponentInit                 -- _1,
 
    #R445 --,
-   TypeBoundProcedurePart        -- _1 _2 _3,
+   TypeBoundProcPart             -- "CONTAINS" _1 _2,
 
-   #R448 --,
-   TypeBoundProcedureStmt        -- H hs=1[H hs=0[_1 KW["PROCEDURE"] _2 _3 _4]],
-   TypeBoundProcedureInterfaceStmt    -- H hs=1[H hs=0[_1 KW["PROCEDURE"] "("_2")" _3 _4 _5]],
+   BindingPrivateStmt            -- _1 "PRIVATE",
+   no-binding-private-stmt       --,
+
+   TypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE" _2 _3 _4]],
+   TypeBoundProcedureInterfaceStmt    -- H hs=1[H hs=0[_1 "PROCEDURE" "("_2")" _3 _4 _5]],
    TypeBoundProcedureInterfaceStmt.3:iter-sep  -- _1 ", ",
    TypeBoundProcedureInterfaceStmt.4:iter-sep  -- _1 ", ",
 
-
-   #R449 --,
-   TypeBoundProcDecl             -- _1 KW[" => "] _2,
+   TypeBoundProcDecl             -- _1 " => " _2,
 
    #R451 --,
    Pass                          -- KW["PASS"] _1,
@@ -155,7 +154,7 @@
    DEFERRED                      -- KW["DEFERRED"],
 
    #R452 --,
-   FinalProcedureStmt            -- H hs=1[_1 KW["FINAL ::"] H hs=0[_2 _3]],
+   FinalProcedureStmt            -- H hs=1[_1 "FINAL ::" H hs=0[_2]],
    FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
    #R453 --,
