@@ -11,7 +11,7 @@ ofp-simplify : ofp-simplify.str
 no-to-none : no-to-none.str
 	$(ST_PATH)/strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
 
-ofp2fast : ofp2fast.str ofp-simplify no-to-none
+ofp2fast : ofp2fast.str ofp-simplify no-to-none ../syntax/FAST.str
 	$(ST_PATH)/strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS)
 
 fast2pp : fast2pp.str no-to-none
