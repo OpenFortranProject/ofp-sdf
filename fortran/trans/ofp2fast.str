@@ -357,6 +357,20 @@ ofp-to-ast:
   ofp-to-ast:  EndSubmoduleStmt(label,name,eos("\n")) -> EndSubmoduleStmt(label,name)
   ofp-to-ast:  EndSubmoduleStmt(label,name,eos(str) ) -> EndSubmoduleStmt(label,name) {Comment(str)}
 
+//R1203
+  ofp-to-ast:  InterfaceStmt(label,spec,eos("\n"))    -> InterfaceStmt(label,spec)
+  ofp-to-ast:  InterfaceStmt(label,spec,eos(str) )    -> InterfaceStmt(label,spec) {Comment(str)}
+
+//R1204
+  ofp-to-ast:  EndInterfaceStmt(label,spec,eos("\n")) -> EndInterfaceStmt(label,spec)
+  ofp-to-ast:  EndInterfaceStmt(label,spec,eos(str) ) -> EndInterfaceStmt(label,spec) {Comment(str)}
+
+//R1206
+  ofp-to-ast:  ProcedureStmt(label,spec,eos("\n"))       -> ProcedureStmt(label,spec)
+  ofp-to-ast:  ProcedureStmt(label,spec,eos(str) )       -> ProcedureStmt(label,spec) {Comment(str)}
+  ofp-to-ast:  ModuleProcedureStmt(label,spec,eos("\n")) -> ModuleProcedureStmt(label,spec)
+  ofp-to-ast:  ModuleProcedureStmt(label,spec,eos(str) ) -> ModuleProcedureStmt(label,spec) {Comment(str)}
+
 //R1207
 //  ofp-to-ast:  GenericSpec(Name(name))        -> OfpGenericSpec(Name(name))
 //  ofp-to-ast:  GenericSpec_AE()               -> OfpGenericSpec(ASSIGNMENT())
