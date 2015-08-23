@@ -167,21 +167,6 @@ regular tree grammar
     ListPlusOfExternalName0           -> <conc>(ListPlusOfExternalName0,ListPlusOfExternalName0)
     ListPlusOfExternalName0           -> <cons>(ExternalName,ListStarOfExternalName0)
 
-    ListStarOfProcedureName0          -> ListPlusOfProcedureName0
-    ListStarOfProcedureName0          -> <nil>()
-    ListStarOfProcedureName0          -> <conc>(ListStarOfProcedureName0,ListStarOfProcedureName0)
-    ListPlusOfProcedureName0          -> <conc>(ListStarOfProcedureName0,ListPlusOfProcedureName0)
-    ListPlusOfProcedureName0          -> <conc>(ListPlusOfProcedureName0,ListStarOfProcedureName0)
-    ListPlusOfProcedureName0          -> <conc>(ListPlusOfProcedureName0,ListPlusOfProcedureName0)
-    ListPlusOfProcedureName0          -> <cons>(ProcedureName,ListStarOfProcedureName0)
-    ListStarOfInterfaceSpecification0 -> ListPlusOfInterfaceSpecification0
-    ListStarOfInterfaceSpecification0 -> <nil>()
-    ListStarOfInterfaceSpecification0 -> <conc>(ListStarOfInterfaceSpecification0,ListStarOfInterfaceSpecification0)
-    ListPlusOfInterfaceSpecification0 -> <conc>(ListStarOfInterfaceSpecification0,ListPlusOfInterfaceSpecification0)
-    ListPlusOfInterfaceSpecification0 -> <conc>(ListPlusOfInterfaceSpecification0,ListStarOfInterfaceSpecification0)
-    ListPlusOfInterfaceSpecification0 -> <conc>(ListPlusOfInterfaceSpecification0,ListPlusOfInterfaceSpecification0)
-    ListPlusOfInterfaceSpecification0 -> <cons>(InterfaceSpecification,ListStarOfInterfaceSpecification0)
-
     ListStarOfModuleSubprogram0       -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0       -> <nil>()
     ListStarOfModuleSubprogram0       -> <conc>(ListStarOfModuleSubprogram0,ListStarOfModuleSubprogram0)
@@ -822,24 +807,9 @@ regular tree grammar
     OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptLabel,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
     Decl                              -> OfpExternalStmt
     OfpExternalStmt                   -> OfpExternalStmt(OptLabel,ListPlusOfName)
-    WRITEUNFORMATTED                  -> WRITEUNFORMATTED()
-    WRITEFORMATTED                    -> WRITEFORMATTED()
-    READUNFORMATTED                   -> READUNFORMATTED()
-    READFORMATTED                     -> READFORMATTED()
-    OfpGenericSpec                    -> WRITEUNFORMATTED(WRITEUNFORMATTED)
-    OfpGenericSpec                    -> WRITEFORMATTED(WRITEFORMATTED)
-    OfpGenericSpec                    -> READUNFORMATTED(READUNFORMATTED)
-    OfpGenericSpec                    -> READFORMATTED(READFORMATTED)
+
     ASSIGNMENT                        -> ASSIGNMENT()
-    OfpGenericSpec                    -> ASSIGNMENT(ASSIGNMENT)
-    OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
-    OfpGenericSpec                    -> OfpOp(OfpOp)
-    OfpGenericSpec                    -> OfpGenericSpec(Name)
-    OfpProcedureStmt                  -> OfpProcedureStmt(OptLabel,OptMODULE0,ListPlusOfName)
-    OfpEndInterfaceStmt               -> OfpEndInterfaceStmt(OptLabel,OptOfpGenericSpec0)
-    OfpInterfaceStmt                  -> OfpInterfaceStmt(OptLabel,OptABSTRACT0,OptOfpGenericSpec0)
-    Decl                              -> OfpInterfaceBlock
-    OfpInterfaceBlock                 -> OfpInterfaceBlock(OfpInterfaceStmt,OfpEndInterfaceStmt,ListStarOfScope0)
+
 
     MainProgram                       -> MainProgram(ProgramStmt,Scope,EndProgramStmt)
     ProgramStmt                       -> ProgramStmt(OptLabel,Name)
@@ -1048,6 +1018,9 @@ regular tree grammar
     MpSubprogramStmt                  -> MpSubprogramStmt(OptLabel,ProcedureName,EOS)
     SeparateModuleSubprogram          -> SeparateModuleSubprogram(MpSubprogramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
 
+    ProcedureName                     -> Ident
+    NoProcedureName                   -> no-procedure-name()
+
     NoDummyArgList                    -> no-list()
     OptDummyArgList                   -> no-list()
     OptDummyArgList                   -> DummyArgList
@@ -1116,12 +1089,52 @@ regular tree grammar
     Only                              -> Only(Name)
     Only                              -> Only(Rename)
 
+    Decl                              -> InterfaceBlock
+    InterfaceBlock                    -> InterfaceBlock(InterfaceStmt,
+                                                          ListStarOfInterfaceSpecification,
+                                                        EndInterfaceStmt)
+
+    Decl                              -> InterfaceSpecification
+    InterfaceSpecification            -> InterfaceBody
+    InterfaceSpecification            -> ProcedureStmt
+
+    Stmt                              -> InterfaceStmt
+    InterfaceStmt                     -> InterfaceStmt(OptLabel,OptGenericSpec)
+
+    Stmt                              -> AbstractInterfaceStmt
+    AbstractInterfaceStmt             -> AbstractInterfaceStmt(OptLabel)
+
+    Stmt                              -> EndInterfaceStmt
+    EndInterfaceStmt                  -> EndInterfaceStmt(OptLabel,OptGenericSpec)
+
+    Decl                              -> InterfaceBody
+    InterfaceBody                     -> InterfaceBody(FunctionStmt,SpecificationPart,EndFunctionStmt)
+    InterfaceBody                     -> InterfaceBody(SubroutineStmt,SpecificationPart,EndSubroutineStmt)
+
+    Decl                              -> ProcedureStmt
+    ProcedureStmt                     -> ProcedureStmt(OptLabel,ListPlusOfName)
+
+    Stmt                              -> ModuleProcedureStmt
+    ProcedureStmt                     -> ModuleProcedureStmt(OptLabel,ListPlusOfName)
+
+    OptGenericSpec                    -> no-generic-spec()
+    OptGenericSpec                    -> GenericSpec
+
+    GenericSpec                       -> Name
+    GenericSpec                       -> OPERATOR(DefinedOperator)
+    GenericSpec                       -> ASSIGNMENT()
+    GenericSpec                       -> DefinedIoGenericSpec
+
+    OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
+    OfpGenericSpec                    -> OfpOp(OfpOp)
+
+    DefinedIoGenericSpec              -> READ_FORMATTED()
+    DefinedIoGenericSpec              -> READ_UNFORMATTED()
+    DefinedIoGenericSpec              -> WRITE_FORMATTED()
+    DefinedIoGenericSpec              -> WRITE_UNFORMATTED()
+
     Stmt                              -> ImportStmt
     ImportStmt                        -> ImportStmt(OptLabel,ListStarOfName)
-
-
-
-
 
 
 
@@ -1142,7 +1155,6 @@ regular tree grammar
     NoProcPointerInit                 -> no-init()
     ProcPointerInit                   -> InitialProcTarget
     ProcPointerInit                   -> NullInit
-    InterfaceName                     -> Ident
     ProcedureEntityName               -> Ident
     ProcDecl                          -> ProcDecl(ProcedureEntityName,ProcPointerInit)
     ProcDecl                          -> ProcDecl(ProcedureEntityName,NoProcPointerInit)
@@ -1164,31 +1176,7 @@ regular tree grammar
     ExternalName                      -> Ident
     ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
     ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
-    DefinedIoGenericSpec              -> WRITE_UNFORMATTED()
-    DefinedIoGenericSpec              -> WRITE_FORMATTED()
-    DefinedIoGenericSpec              -> READ_UNFORMATTED()
-    DefinedIoGenericSpec              -> READ_FORMATTED()
-    GenericName                       -> Ident
-    GenericSpec                       -> DefinedIoGenericSpec
-    GenericSpec                       -> ASSIGNMENT()
-    GenericSpec                       -> OPERATOR(DefinedOperator)
-    GenericSpec                       -> GenericName
-    NoProcedureName                   -> no-procedure-name()
-    ProcedureName                     -> Ident
-    ProcedureStmt                     -> ProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
-    ProcedureStmt                     -> ProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
-    ProcedureStmt                     -> ModuleProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
-    ProcedureStmt                     -> ModuleProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
-    InterfaceBody                     -> InterfaceBody(SubroutineStmt,SpecificationPart,EndSubroutineStmt)
-    InterfaceBody                     -> InterfaceBody(FunctionStmt,SpecificationPart,EndFunctionStmt)
-    OptGenericSpec                    -> no-generic-spec()
-    OptGenericSpec                    -> GenericSpec
-    EndInterfaceStmt                  -> EndInterfaceStmt(OptLabel,OptGenericSpec,EOS)
-    InterfaceStmt                     -> AbstractInterfaceStmt(OptLabel,EOS)
-    InterfaceStmt                     -> InterfaceStmt(OptLabel,OptGenericSpec,EOS)
-    InterfaceSpecification            -> ProcedureStmt
-    InterfaceSpecification            -> InterfaceBody
-    InterfaceBlock                    -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)
+
     BlockDataName                     -> Ident
     NoBlockDataName                   -> no-block-data-name()
     OptBlockDataName                  -> no-block-data-name()
@@ -2192,3 +2180,11 @@ regular tree grammar
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListStarOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListPlusOfRename)
     ListPlusOfRename                 -> <cons>(OfpRename,ListStarOfRename)
+
+    ListStarOfInterfaceSpecification -> ListPlusOfInterfaceSpecification
+    ListStarOfInterfaceSpecification -> <nil>()
+    ListStarOfInterfaceSpecification -> <conc>(ListStarOfInterfaceSpecification,ListStarOfInterfaceSpecification)
+    ListPlusOfInterfaceSpecification -> <conc>(ListStarOfInterfaceSpecification,ListPlusOfInterfaceSpecification)
+    ListPlusOfInterfaceSpecification -> <conc>(ListPlusOfInterfaceSpecification,ListStarOfInterfaceSpecification)
+    ListPlusOfInterfaceSpecification -> <conc>(ListPlusOfInterfaceSpecification,ListPlusOfInterfaceSpecification)
+    ListPlusOfInterfaceSpecification -> <cons>(InterfaceSpecification,ListStarOfInterfaceSpecification0)
