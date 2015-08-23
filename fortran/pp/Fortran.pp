@@ -742,11 +742,10 @@
 
    #R1201 --,
    InterfaceBlock             -- V vs=0 [_1 _2 _3],
-   InterfaceStmt              -- H hs=1 [_1 KW["INTERFACE"] _2 _3],
-   EndInterfaceStmt           -- H hs=1 [_1 KW["END INTERFACE"] _2 _3],
-   
-   #R1203 --,
-   AbstractInterfaceStmt      -- _1 KW["ABSTRACT INTERFACE"] _2,
+   InterfaceStmt              -- H hs=1 [_1 "INTERFACE" _2],
+   AbstractInterfaceStmt      -- H hs=1 [_1 "ABSTRACT INTERFACE" _2],
+   EndInterfaceStmt           -- H hs=1 [_1 "END INTERFACE" _2],
+   no-generic-spec            --,
 
    #R1205 --,
    ppScope                       -- _1 _2,
@@ -769,9 +768,9 @@
    OfpSuffix.1:iter-star               -- _1,
 
    #R1206 --,
-   ProcedureStmt                       -- H hs=1[_1 KW["PROCEDURE ::"] H hs=0[_2 _3]],
+   ProcedureStmt                       -- H hs=1[_1 "PROCEDURE ::" H hs=0[_2]],
    ProcedureStmt.2:iter-sep            -- _1 ", ",
-   ModuleProcedureStmt                 -- H hs=1[_1 KW["MODULE PROCEDURE ::"] H hs=0[_2 _3]],
+   ModuleProcedureStmt                 -- H hs=1[_1 "MODULE PROCEDURE ::" H hs=0[_2]],
    ModuleProcedureStmt.2:iter-sep            -- _1 ", ",
 
    #R1207 --,
@@ -828,7 +827,7 @@
    #R1233 --,
    Subroutine                          -- V [_1 _2 _3],
    SubroutineStmt                      -- H [_1 _2 "SUBROUTINE" H hs=0[_3 "("_4")" _5]],
-   SubroutineStmt.3:iter-sep           -- _1 ",",
+   SubroutineStmt.4:iter-sep           -- _1 ",",
    EndSubroutineStmt                   -- H hs=0 [H hs=1[_1 "END SUBROUTINE" _2] "\n"],
 
    STAR                                -- "*",
