@@ -653,13 +653,7 @@ regular tree grammar
     ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
     ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
     ListPlusOfTypeBoundProcDecl0      -> <cons>(TypeBoundProcDecl,ListStarOfTypeBoundProcDecl0)
-    ListStarOfTypeBoundProcBinding0   -> ListPlusOfTypeBoundProcBinding0
-    ListStarOfTypeBoundProcBinding0   -> <nil>()
-    ListStarOfTypeBoundProcBinding0   -> <conc>(ListStarOfTypeBoundProcBinding0,ListStarOfTypeBoundProcBinding0)
-    ListPlusOfTypeBoundProcBinding0   -> <conc>(ListStarOfTypeBoundProcBinding0,ListPlusOfTypeBoundProcBinding0)
-    ListPlusOfTypeBoundProcBinding0   -> <conc>(ListPlusOfTypeBoundProcBinding0,ListStarOfTypeBoundProcBinding0)
-    ListPlusOfTypeBoundProcBinding0   -> <conc>(ListPlusOfTypeBoundProcBinding0,ListPlusOfTypeBoundProcBinding0)
-    ListPlusOfTypeBoundProcBinding0   -> <cons>(TypeBoundProcBinding,ListStarOfTypeBoundProcBinding0)
+
     ListStarOfProcComponentAttrSpec0  -> ListPlusOfProcComponentAttrSpec0
     ListStarOfProcComponentAttrSpec0  -> <nil>()
     ListStarOfProcComponentAttrSpec0  -> <conc>(ListStarOfProcComponentAttrSpec0,ListStarOfProcComponentAttrSpec0)
@@ -702,6 +696,7 @@ regular tree grammar
     ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListStarOfTypeParamDecl0)
     ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListPlusOfTypeParamDecl0)
     ListPlusOfTypeParamDecl0          -> <cons>(TypeParamDecl,ListStarOfTypeParamDecl0)
+
     ListStarOfTypeParamName0          -> ListPlusOfTypeParamName0
     ListStarOfTypeParamName0          -> <nil>()
     ListStarOfTypeParamName0          -> <conc>(ListStarOfTypeParamName0,ListStarOfTypeParamName0)
@@ -709,27 +704,7 @@ regular tree grammar
     ListPlusOfTypeParamName0          -> <conc>(ListPlusOfTypeParamName0,ListStarOfTypeParamName0)
     ListPlusOfTypeParamName0          -> <conc>(ListPlusOfTypeParamName0,ListPlusOfTypeParamName0)
     ListPlusOfTypeParamName0          -> <cons>(TypeParamName,ListStarOfTypeParamName0)
-    ListStarOfTypeAttrSpec0           -> ListPlusOfTypeAttrSpec0
-    ListStarOfTypeAttrSpec0           -> <nil>()
-    ListStarOfTypeAttrSpec0           -> <conc>(ListStarOfTypeAttrSpec0,ListStarOfTypeAttrSpec0)
-    ListPlusOfTypeAttrSpec0           -> <conc>(ListStarOfTypeAttrSpec0,ListPlusOfTypeAttrSpec0)
-    ListPlusOfTypeAttrSpec0           -> <conc>(ListPlusOfTypeAttrSpec0,ListStarOfTypeAttrSpec0)
-    ListPlusOfTypeAttrSpec0           -> <conc>(ListPlusOfTypeAttrSpec0,ListPlusOfTypeAttrSpec0)
-    ListPlusOfTypeAttrSpec0           -> <cons>(TypeAttrSpec,ListStarOfTypeAttrSpec0)
-    ListStarOfPrivateOrSequence0      -> ListPlusOfPrivateOrSequence0
-    ListStarOfPrivateOrSequence0      -> <nil>()
-    ListStarOfPrivateOrSequence0      -> <conc>(ListStarOfPrivateOrSequence0,ListStarOfPrivateOrSequence0)
-    ListPlusOfPrivateOrSequence0      -> <conc>(ListStarOfPrivateOrSequence0,ListPlusOfPrivateOrSequence0)
-    ListPlusOfPrivateOrSequence0      -> <conc>(ListPlusOfPrivateOrSequence0,ListStarOfPrivateOrSequence0)
-    ListPlusOfPrivateOrSequence0      -> <conc>(ListPlusOfPrivateOrSequence0,ListPlusOfPrivateOrSequence0)
-    ListPlusOfPrivateOrSequence0      -> <cons>(PrivateOrSequence,ListStarOfPrivateOrSequence0)
-    ListStarOfTypeParamDefStmt0       -> ListPlusOfTypeParamDefStmt0
-    ListStarOfTypeParamDefStmt0       -> <nil>()
-    ListStarOfTypeParamDefStmt0       -> <conc>(ListStarOfTypeParamDefStmt0,ListStarOfTypeParamDefStmt0)
-    ListPlusOfTypeParamDefStmt0       -> <conc>(ListStarOfTypeParamDefStmt0,ListPlusOfTypeParamDefStmt0)
-    ListPlusOfTypeParamDefStmt0       -> <conc>(ListPlusOfTypeParamDefStmt0,ListStarOfTypeParamDefStmt0)
-    ListPlusOfTypeParamDefStmt0       -> <conc>(ListPlusOfTypeParamDefStmt0,ListPlusOfTypeParamDefStmt0)
-    ListPlusOfTypeParamDefStmt0       -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt0)
+
     ListStarOfLetter0                 -> <string>
     ListPlusOfLetter0                 -> <string>
     SconSingle_SconDouble0            -> <string>
@@ -960,6 +935,32 @@ regular tree grammar
     IntrinsicType                     -> CHARACTER(CharSelector)
     IntrinsicType                     -> LOGICAL()
     IntrinsicType                     -> LOGICAL(Kind)
+
+    Decl                              -> DerivedTypeDef
+    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ComponentPart,OptTypeBoundProcPart,EndTypeStmt)
+
+    Stmt                              -> DerivedTypeStmt
+    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
+
+    Stmt                              -> EndTypeStmt
+    EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
+
+    TypeAttrSpec                      -> ABSTRACT()
+    TypeAttrSpec                      -> AccessSpec
+    TypeAttrSpec                      -> BIND()
+    TypeAttrSpec                      -> Extends(ParentTypeName)
+
+    Decl                              -> TypeBoundProcPart
+    TypeBoundProcPart                 -> TypeBoundProcPart(OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding)
+
+    OptTypeBoundProcPart              -> TypeBoundProcPart
+    OptTypeBoundProcPart              -> no-type-bound-procedure-part()
+
+    Stmt                              -> PrivateComponentsStmt
+    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel)
+
+    Stmt                              -> FinalProcedureStmt
+    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
 
     OptKind                           -> no-kind()
     OptKind                           -> Kind
@@ -1947,9 +1948,7 @@ regular tree grammar
     OptTypeParamSpecList              -> no-list()
     OptTypeParamSpecList              -> paren-list(ListPlusOfTypeParamSpec0)
     DerivedTypeSpec                   -> DerivedTypeSpec(TypeName,OptTypeParamSpecList)
-    FinalSubroutineName               -> Ident
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
+
     NoArgName                         -> no-arg-name()
     ArgName                           -> Ident
     BindingAttr                       -> AccessSpec
@@ -1975,10 +1974,7 @@ regular tree grammar
     OptBindingPrivateStmt             -> no-binding-private-stmt()
     OptBindingPrivateStmt             -> BindingPrivateStmt
     BindingPrivateStmt                -> BindingPrivateStmt(OptLabel,EOS)
-    OptTypeBoundProcedurePart         -> no-type-bound-procedure-part()
-    OptTypeBoundProcedurePart         -> TypeBoundProcedurePart
-    TypeBoundProcedurePart            -> TypeBoundProcedurePart(ContainsStmt,OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding0)
-    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel,EOS)
+
     InitialDataTarget                 -> Designator
     ComponentInitialization           -> ComponentPointerInit(InitialDataTarget)
     ComponentInitialization           -> ComponentPointerInit(NullInit)
@@ -2011,28 +2007,13 @@ regular tree grammar
     ComponentPart                     -> ListStarOfComponentDefStmt0
     TypeParamAttrSpec                 -> LEN()
     TypeParamAttrSpec                 -> KIND()
-    TypeParamDecl                     -> TypeParamDecl(TypeParamName,OptEqualsExpr)
-    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl0,EOS)
+
     SequenceStmt                      -> SequenceStmt(OptLabel,EOS)
-    EndTypeStmt                       -> EndTypeStmt(OptLabel,OptTypeName,EOS)
+
     PrivateOrSequence                 -> SequenceStmt
     PrivateOrSequence                 -> PrivateComponentsStmt
     ParentTypeName                    -> Ident
-    TypeAttrSpec                      -> Extends(ParentTypeName)
-    TypeAttrSpec                      -> BIND()
-    TypeAttrSpec                      -> AccessSpec
-    TypeAttrSpec                      -> ABSTRACT()
-    OptTypeName                       -> no-name()
-    OptTypeName                       -> TypeName
-    TypeName                          -> Ident
-    OptTypeParamNameList              -> no-list()
-    OptTypeParamNameList              -> paren-list(ListPlusOfTypeParamName0)
-    TypeParamName                     -> Ident
-    OptTypeAttrSpecList               -> no-list()
-    OptTypeAttrSpecList               -> no-list()
-    OptTypeAttrSpecList               -> comma-list(ListPlusOfTypeAttrSpec0)
-    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,OptTypeAttrSpecList,TypeName,OptTypeParamNameList,EOS)
-    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt0,ListStarOfPrivateOrSequence0,ComponentPart,OptTypeBoundProcedurePart,EndTypeStmt)
+
     OptKindParam                      -> no-kind-param()
     OptKindParam                      -> opt-kind-param(KindParam)
     LogicalLiteralConstant            -> FALSE(OptKindParam)
@@ -2149,6 +2130,38 @@ regular tree grammar
     ListPlusOfDecl                    -> <conc>(ListPlusOfDecl,ListPlusOfDecl)
     ListPlusOfDecl                    -> <cons>(Decl,ListStarOfDecl)
 
+    ListStarOfTypeParamDefStmt        -> ListPlusOfTypeParamDefStmt
+    ListStarOfTypeParamDefStmt        -> <nil>()
+    ListStarOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt)
+
+    ListStarOfPrivateOrSequence       -> ListPlusOfPrivateOrSequence
+    ListStarOfPrivateOrSequence       -> <nil>()
+    ListStarOfPrivateOrSequence       -> <conc>(ListStarOfPrivateOrSequence,ListStarOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListStarOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListStarOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <cons>(PrivateOrSequence,ListStarOfPrivateOrSequence)
+
+    ListStarOfTypeAttrSpec            -> ListPlusOfTypeAttrSpec
+    ListStarOfTypeAttrSpec            -> <nil>()
+    ListStarOfTypeAttrSpec            -> <conc>(ListStarOfTypeAttrSpec,ListStarOfTypeAttrSpec)
+    ListPlusOfTypeAttrSpec            -> <conc>(ListStarOfTypeAttrSpec,ListPlusOfTypeAttrSpec)
+    ListPlusOfTypeAttrSpec            -> <conc>(ListPlusOfTypeAttrSpec,ListStarOfTypeAttrSpec)
+    ListPlusOfTypeAttrSpec            -> <conc>(ListPlusOfTypeAttrSpec,ListPlusOfTypeAttrSpec)
+    ListPlusOfTypeAttrSpec            -> <cons>(TypeAttrSpec,ListStarOfTypeAttrSpec)
+
+    ListStarOfTypeBoundProcBinding   -> ListPlusOfTypeBoundProcBinding
+    ListStarOfTypeBoundProcBinding   -> <nil>()
+    ListStarOfTypeBoundProcBinding   -> <conc>(ListStarOfTypeBoundProcBinding,ListStarOfTypeBoundProcBinding)
+    ListPlusOfTypeBoundProcBinding   -> <conc>(ListStarOfTypeBoundProcBinding,ListPlusOfTypeBoundProcBinding)
+    ListPlusOfTypeBoundProcBinding   -> <conc>(ListPlusOfTypeBoundProcBinding,ListStarOfTypeBoundProcBinding)
+    ListPlusOfTypeBoundProcBinding   -> <conc>(ListPlusOfTypeBoundProcBinding,ListPlusOfTypeBoundProcBinding)
+    ListPlusOfTypeBoundProcBinding   -> <cons>(TypeBoundProcBinding,ListStarOfTypeBoundProcBinding)
+
     ListStarOfAttrSpec                -> ListPlusOfAttrSpec
     ListStarOfAttrSpec                -> <nil>()
     ListStarOfAttrSpec                -> <conc>(ListStarOfAttrSpec,ListStarOfAttrSpec)
@@ -2187,4 +2200,4 @@ regular tree grammar
     ListPlusOfInterfaceSpecification -> <conc>(ListStarOfInterfaceSpecification,ListPlusOfInterfaceSpecification)
     ListPlusOfInterfaceSpecification -> <conc>(ListPlusOfInterfaceSpecification,ListStarOfInterfaceSpecification)
     ListPlusOfInterfaceSpecification -> <conc>(ListPlusOfInterfaceSpecification,ListPlusOfInterfaceSpecification)
-    ListPlusOfInterfaceSpecification -> <cons>(InterfaceSpecification,ListStarOfInterfaceSpecification0)
+    ListPlusOfInterfaceSpecification -> <cons>(InterfaceSpecification,ListStarOfInterfaceSpecification)
