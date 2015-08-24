@@ -45,6 +45,8 @@ strategies //=================START OF STRATEGIES============================
 transfer-type(|type) =
      ?Var(name,unknown-type(),init)
   ;  !Var(name,type,init)
+ +>  ?Var(name,ArrayType(unknown-type,dims,codims),init)
+  ;  !Var(name,ArrayType(type,dims,codims),init)
 
 // TODO - try to remove usage of Some()
 //ofp-add-some = ?None() < id + !Some(<id>)
@@ -234,6 +236,8 @@ ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
 //R503
 ofp-to-ast:    EntityDecl(name,[],[],no-char-length(),init)
             -> Var(name,unknown-type(),init)
+ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
+            -> Var(name,ArrayType(unknown-type(),dims,codims),init)
 
 //R510
 //  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
