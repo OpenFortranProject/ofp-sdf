@@ -24,9 +24,13 @@ signature
     ppSubroutine   : OfpSubroutine   -> ppSubroutine
     ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
 
-    ppEntityDecl   : name * ppArraySpec * ppCoarraySpec * CharLength * Initialization -> ppEntityDecl
-    ppArraySpec    : ArraySpec       -> ppArraySpec
-    ppCoarraySpec  : CoarraySpec     -> ppCoarraySpec
+    ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
+    ppRange        : upper-bound                       -> ppRange
+
+    ppArrayType    : ListStarOfRange                   -> ppArrayType
+    ppArrayType    : ListStorOfRange * ListStarOfRange -> ppArrayType
+
+    ppCoarrayType  : ListStarOfRange -> ppArrayType
 
     ppActualArgSpec: ppKeyword * arg -> ppActualArgSpec
     ppKeyword      : keyword         -> ppKeyword
@@ -95,22 +99,24 @@ rules
 ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
 
 //R503
-//  ast-to-pp:
-//    EntityDecl(name,as,cs,cl,init)         -> ppEntityDecl(name,ppArraySpec(as),ppCoarraySpec(cs),cl,init)
-  ast-to-pp:  Var(name,type,init)            -> ppVar(name,init)
+ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
+           -> ppArrayVar(name,ppArrayType(dims),init)
+ast-to-pp:    Var(name,ArrayType(type,[],codims),init)
+           -> ppArrayVar(name,ppArrayType(codims),init)
+ast-to-pp:    Var(name,ArrayType(type,dims,codims),init)
+           -> ppArrayVar(name,ppArrayType(dims,codims),init)
+
+ast-to-pp:    Var(name,type,init)
+           -> ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
-//  ast-to-pp:
-//    DimSpec(no-lower-bound(), upper)       -> ppDimSpec(upper)
-//  ast-to-pp:
-//    DimSpec(lower, upper)                  -> ppRange(lower, upper)
+ast-to-pp:  Range(no-lower-bound(), upper)   -> ppRange(upper)
 
 //R560
-  ast-to-pp:
-    ImplicitStmt(label,[])                 -> ppImplicitStmt(label)
+ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
 
 //R562
 //  ast-to-pp:  LetterSpec(s1,no-letter())   -> ppLetterSpec(s1)
@@ -215,9 +221,6 @@ ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
 //  no-to-none: no-subscript()               -> None()   // R619
 
   no-to-none: ppKeyword(no-keyword())      -> None()   // R215
-
-  no-to-none: ppArraySpec([])              -> None()   // R515
-  no-to-none: ppCoarraySpec([])            -> None()   // R509
 
   no-to-none: ppSectionSubscripts(no-section-subscripts()) -> None()
   no-to-none: ppImageSelector(no-image-selector())         -> None()
