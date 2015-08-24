@@ -263,7 +263,7 @@
    IN                            -- KW["IN"],
 
    #R524 --,
-   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3 _4]],
+   AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3]],
    AccessStmt.3:iter-sep         -- _1 ", ",
 
    #R526 --,
@@ -759,6 +759,7 @@
    InterfaceStmt              -- H hs=1 [_1 "INTERFACE" _2],
    AbstractInterfaceStmt      -- H hs=1 [_1 "ABSTRACT INTERFACE" _2],
    EndInterfaceStmt           -- H hs=1 [_1 "END INTERFACE" _2],
+   InterfaceBody              -- _1 _2 _3,
    no-generic-spec            --,
 
    #R1205 --,
@@ -766,7 +767,7 @@
    ppScope                       -- _1 _2 _3,
 
    xxxScope                      -- V vs=0 [H hs=1 [_1] V vs=0 is=0 [_3]],
-   xxxInterfaceBody              -- _1 _2 _3,
+
 
    OfpPrefix                           -- _1,
    OfpPrefix.1:iter-star               -- _1,
@@ -788,9 +789,9 @@
    ModuleProcedureStmt.2:iter-sep            -- _1 ", ",
 
    #R1207 --,
-   OfpGenericSpec                      -- _1,
-   ASSIGNMENT                          -- KW["ASSIGNMENT(=)"],
-   OPERATOR                            -- KW ["OPERATOR"] "("_1")",
+   OfpGenericSpec                         -- _1,
+   ASSIGNMENT                          -- "ASSIGNMENT(=)",
+   OPERATOR                            -- H hs=0[ "OPERATOR" "(" _1 ")" ],
 
    #R1209 --,
    ImportStmt                          -- H hs=1[_1 "IMPORT" H hs=0[_2]],
@@ -810,7 +811,7 @@
    #R1217 --,
    Function                            -- V vs=0 [_1 _2 _3],
    FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
-   FunctionStmt.4:iter-sep             -- _1 ", ",
+   FunctionStmt.4:iter-sep             -- _1 ",",
    EndFunctionStmt                     -- H hs=1[_1 "END FUNCTION" _2],
    no-function-name                    -- ,
    Result                              -- " RESULT(" _1 ")",
