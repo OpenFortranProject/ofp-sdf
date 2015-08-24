@@ -65,6 +65,18 @@
    LOGICAL                       -- "LOGICAL" _1,
    COMPLEX                       -- "COMPLEX :: " _1,
 
+   ppArrayType                   -- "("_1")",
+   ppArrayType                   -- "("_1")" "["_2"]",
+   ppArrayType.1:iter-sep        -- _1 ",",
+   ppArrayType.2:iter-sep        -- _1 ",",
+
+   ppCoarrayType                 -- "("_1")",
+   ppCoarrayType.1:iter-sep      -- _1 ",",
+
+   ppRange                       -- _1,
+   Range                         -- _1 ":" _2,
+   no-lower-bound                --,
+
    #R403 --,
    Class                         -- _1 KW["CLASS"] "("_2")",
 
@@ -96,7 +108,7 @@
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
    DerivedTypeStmt.4:iter-sep    -- _1 ", ",
 
-   EndTypeStmt                   -- H hs=1[_1 "END TYPE" H hs=0[_2]],
+   EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE" _2]],
 
    #R427 --,
    ABSTRACT                      -- KW["ABSTRACT"],
@@ -107,7 +119,7 @@
    TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
 
    #R432 --,
-   TypeParamDecl                 -- _1 KW[" = "] _2,
+   TypeParamDecl                 -- _1 " = " _2,
 
    #R433 --,
    KIND                          -- KW["KIND"],
@@ -159,7 +171,7 @@
 
    #R453 --,
    DerivedTypeSpec               -- _1 _2,
-   DerivedType                   -- KW["TYPE"] "("_1")" _2,
+   DerivedType                   -- "TYPE" "("_1")" _2,
 
    #R454 --,
    TypeParamSpec                 -- _1 KW["="] "("_2")",
@@ -213,11 +225,7 @@
 
    #R503 --,
    ppVar                         -- _1 _2,
-
-   XXXppArraySpec                   -- "(" _1 ")",
-   XXXppArraySpec.1:iter-sep        -- _1 ",",
-   XXXppCoarraySpec                 -- "[" _1 "]",
-   XXXppCoarraySpec.1:iter-sep      -- _1 ",",
+   ppArrayVar                    -- _1 _2 _3,
 
    #R505 --,
    Initialization                -- KW[" = "] _1,
