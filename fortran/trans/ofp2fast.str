@@ -45,7 +45,7 @@ strategies //=================START OF STRATEGIES============================
 transfer-type(|type) =
      ?Var(name,unknown-type(),init)
   ;  !Var(name,type,init)
- +>  ?Var(name,ArrayType(unknown-type,dims,codims),init)
+ +>  ?Var(name,ArrayType(unknown-type(),dims,codims),init)
   ;  !Var(name,ArrayType(type,dims,codims),init)
 
 // TODO - try to remove usage of Some()
@@ -186,8 +186,11 @@ ofp-to-ast:  IntrinsicType(type)                -> type
 ofp-to-ast:  INTEGER(no-kind())                 -> INTEGER()
 ofp-to-ast:  REAL(no-kind())                    -> REAL()
 ofp-to-ast:  COMPLEX(no-kind())                 -> COMPLEX()
-ofp-to-ast:  CHARACTER(no-char-selector())      -> CHARACTER()
 ofp-to-ast:  LOGICAL(no-kind())                 -> LOGICAL()
+
+ofp-to-ast:  CHARACTER(no-char-selector())           -> CHARACTER()
+ofp-to-ast:  CHARACTER(CharSelector(len,no-kind()))  -> CHARACTER(len)
+ofp-to-ast:  CHARACTER(CharSelector(len,kind))       -> CHARACTER(len,kind)
 
 //R405
 ofp-to-ast:  KindSelector(k)                    -> Kind(k)
@@ -198,6 +201,13 @@ ofp-to-ast:
   IntLiteralConstant(val,no-kind-param())       -> IntVal(val)
 ofp-to-ast:
   IntLiteralConstant(val,kind)                  -> IntVal(val,Kind(kind))
+
+//R420
+ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)
+
+//R421
+ofp-to-ast: LengthSelector(expr)                -> expr
+ofp-to-ast: no-length-selector()                -> no-char-length()
 
 //R413
 ofp-to-ast:
