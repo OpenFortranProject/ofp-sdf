@@ -1,3 +1,5 @@
+FC = gfortran
+
 SYNTAX_DIR = ../../../fortran/syntax
 TRANS_DIR  = ../../../fortran/trans
 
@@ -35,7 +37,7 @@ check-all : $(TBL)
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
-           gfortran -c tmp/$$file -o tmp/$$file.o; \
+           $(FC) -c tmp/$$file -o tmp/$$file.o; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
@@ -73,7 +75,7 @@ check : $(TBL)
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
-           gfortran -c tmp/$$file -o tmp/$$file.o; \
+           $(FC) -c tmp/$$file -o tmp/$$file.o; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
