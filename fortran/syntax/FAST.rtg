@@ -92,29 +92,7 @@ regular tree grammar
     ListPlusOfOfpAllocation0          -> <conc>(ListPlusOfOfpAllocation0,ListStarOfOfpAllocation0)
     ListPlusOfOfpAllocation0          -> <conc>(ListPlusOfOfpAllocation0,ListPlusOfOfpAllocation0)
     ListPlusOfOfpAllocation0          -> <cons>(OfpAllocation,ListStarOfOfpAllocation0)
-    OptOfpType0                       -> <some>(OfpType)
-    OptOfpType0                       -> <none>()
-    ListStarOfOfpType0                -> ListPlusOfOfpType0
-    ListStarOfOfpType0                -> <nil>()
-    ListStarOfOfpType0                -> <conc>(ListStarOfOfpType0,ListStarOfOfpType0)
-    ListPlusOfOfpType0                -> <conc>(ListStarOfOfpType0,ListPlusOfOfpType0)
-    ListPlusOfOfpType0                -> <conc>(ListPlusOfOfpType0,ListStarOfOfpType0)
-    ListPlusOfOfpType0                -> <conc>(ListPlusOfOfpType0,ListPlusOfOfpType0)
-    ListPlusOfOfpType0                -> <cons>(OfpType,ListStarOfOfpType0)
-    OptOfpInitialization0             -> <some>(OfpInitialization)
-    OptOfpInitialization0             -> <none>()
-    OptOfpCharLength0                 -> <some>(OfpCharLength)
-    OptOfpCharLength0                 -> <none>()
-    OptOfpCoarraySpec0                -> <some>(OfpCoarraySpec)
-    OptOfpCoarraySpec0                -> <none>()
-    OptOfpArraySpec0                  -> <some>(OfpArraySpec)
-    OptOfpArraySpec0                  -> <none>()
 
-    OptOfpFile0                       -> <some>(OfpFile)
-    OptOfpFile0                       -> <none>()
-
-    OptOfpContainsStmt0               -> <some>(OfpContainsStmt)
-    OptOfpContainsStmt0               -> <none>()
     ListStarOfStrChar0                -> <string>
     ListPlusOfStrChar0                -> <string>
     ListStarOfDummyArg0               -> ListPlusOfDummyArg0
@@ -448,13 +426,6 @@ regular tree grammar
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListStarOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListPlusOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <cons>(LetterSpec,ListStarOfLetterSpec0)
-    ListStarOfImplicitSpec0           -> ListPlusOfImplicitSpec0
-    ListStarOfImplicitSpec0           -> <nil>()
-    ListStarOfImplicitSpec0           -> <conc>(ListStarOfImplicitSpec0,ListStarOfImplicitSpec0)
-    ListPlusOfImplicitSpec0           -> <conc>(ListStarOfImplicitSpec0,ListPlusOfImplicitSpec0)
-    ListPlusOfImplicitSpec0           -> <conc>(ListPlusOfImplicitSpec0,ListStarOfImplicitSpec0)
-    ListPlusOfImplicitSpec0           -> <conc>(ListPlusOfImplicitSpec0,ListPlusOfImplicitSpec0)
-    ListPlusOfImplicitSpec0           -> <cons>(ImplicitSpec,ListStarOfImplicitSpec0)
 
     ListStarOfDummyArgName0           -> ListPlusOfDummyArgName0
     ListStarOfDummyArgName0           -> <nil>()
@@ -859,7 +830,7 @@ regular tree grammar
     OfpAllocation                     -> OfpAllocation(OfpVarRef,OptOfpShape0,OptOfpCoshape0)
     OfpAllocOpt                       -> Expr
     Stmt                              -> OfpAllocateStmt
-    OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptOfpType0,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
+    OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptType,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
     OfpVarRef                         -> OfpVarRef(Name)
     VarDef                            -> VarDef(Name)
 
@@ -867,7 +838,7 @@ regular tree grammar
     VolatileStmt                      -> VolatileStmt(OptLabel,ListStarOfName)
 
     Decl                              -> ImplicitStmt
-    ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfOfpType0)
+    ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfImplicitSpec)
 
     Expr                              -> OfpAssumedRank
     Expr                              -> OfpImpliedShape
@@ -898,6 +869,8 @@ regular tree grammar
     OptCharLength                     -> no-char-length()
     OptCharLength                     -> CharLength
     CharLength                        -> Expr
+    CharLength                        -> STAR()
+    CharLength                        -> COLON()
 
     ArraySpec                         -> ListStarOfDimSpec
     CoarraySpec                       -> ListStarOfDimSpec
@@ -917,7 +890,6 @@ regular tree grammar
 
     EntityDecl                        -> Var
     EntityDecl                        -> ArrayVar
-    xxxEntityDecl                     -> EntityDecl(Name,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
 
     Type                              -> unknown-type()
     Type                              -> IntrinsicType
@@ -932,8 +904,9 @@ regular tree grammar
     IntrinsicType                     -> LOGICAL()
     IntrinsicType                     -> LOGICAL(Kind)
 
-    Type                              -> CharType
-    CharType                          -> CharType(Kind,CharSelector)
+    IntrinsicType                     -> CHARACTER(CharLength,Kind)
+    IntrinsicType                     -> CHARACTER(CharLength)
+    IntrinsicType                     -> CHARACTER()
 
     Type                              -> DerivedType
     DerivedType                       -> DerivedType(name)
@@ -981,22 +954,8 @@ regular tree grammar
     RealVal                           -> RealVal(<string>)
     RealVal                           -> RealVal(<string>,Kind)
 
-    OfpType                           -> OfpType(DOUBLECOMPLEX,OptExpr)
-    OfpType                           -> OfpType(LOGICAL,OptExpr)
-    OfpType                           -> OfpType(CHARACTER,OptExpr)
-    OfpType                           -> OfpType(COMPLEX,OptExpr)
-    OfpType                           -> OfpType(DOUBLEPRECISION,OptExpr)
-    OfpType                           -> OfpType(REAL,OptExpr)
-    OfpType                           -> OfpType(INTEGER,OptExpr)
-    DOUBLECOMPLEX                     -> DOUBLECOMPLEX()
-    LOGICAL                           -> LOGICAL()
-    CHARACTER                         -> CHARACTER()
-    COMPLEX                           -> COMPLEX()
-    DOUBLEPRECISION                   -> DOUBLEPRECISION()
-    REAL                              -> REAL()
-    INTEGER                           -> INTEGER()
     OfpOp                             -> OfpOp(String)
-    OfpLiteral                        -> OfpLiteral(String,OfpType)
+    OfpLiteral                        -> OfpLiteral(String,Type)
 
     ProgramUnit                       -> MainProgram
     Program                           -> Program(ListPlusOfProgramUnit)
@@ -1895,11 +1854,11 @@ regular tree grammar
     Initialization                    -> PointerInit(NullInit)
     Initialization                    -> Init(ConstantExpr)
     OptInitialization                 -> no-init()
-    OptCharLength                     -> no-char-length()
+
     OptCoarraySpec                    -> no-list()
     OptArraySpec                      -> no-list()
     OptInitialization                 -> Initialization
-    OptCharLength                     -> opt-char-length(CharLength)
+
     OptCoarraySpec                    -> opt-coarray-spec(CoarraySpec)
     OptArraySpec                      -> opt-array-spec(ArraySpec)
     ObjectName                        -> Ident
@@ -2027,20 +1986,7 @@ regular tree grammar
     LogicalLiteralConstant            -> TRUE(OptKindParam)
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
-    CharLength                        -> Icon
-    CharLength                        -> CharLength(TypeParamValue)
-    LengthSelector                    -> LengthSelector_STAR(CharLength)
-    LengthSelector                    -> LengthSelector_STAR(CharLength)
-    LengthSelector                    -> LengthSelector(TypeParamValue)
-    LengthSelector                    -> LengthSelector(TypeParamValue)
-    OptCharSelector                   -> no-char-selector()
-    OptCharSelector                   -> CharSelector
-    CharSelector                      -> CharSelector_KIND(Expr)
-    CharSelector                      -> CharSelector_KIND_LEN(Expr,TypeParamValue)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> LengthSelector
+
     ImagPart                          -> NamedConstant
     ImagPart                          -> SignedRealLiteralConstant
     ImagPart                          -> SignedIntLiteralConstant
@@ -2193,13 +2139,21 @@ regular tree grammar
     ListPlusOfRange                   -> <conc>(ListPlusOfRange,ListPlusOfRange)
     ListPlusOfRange                   -> <cons>(Range,ListStarOfRange)
 
+    ListStarOfImplicitSpec            -> ListPlusOfImplicitSpec
+    ListStarOfImplicitSpec            -> <nil>()
+    ListStarOfImplicitSpec            -> <conc>(ListStarOfImplicitSpec,ListStarOfImplicitSpec)
+    ListPlusOfImplicitSpec            -> <conc>(ListStarOfImplicitSpec,ListPlusOfImplicitSpec)
+    ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListStarOfImplicitSpec)
+    ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListPlusOfImplicitSpec)
+    ListPlusOfImplicitSpec            -> <cons>(ImplicitSpec,ListStarOfImplicitSpec)
+
     ListStarOfOnly                    -> ListPlusOfOnly
     ListStarOfOnly                    -> <nil>()
     ListStarOfOnly                    -> <conc>(ListStarOfOnly,ListStarOfOnly)
     ListPlusOfOnly                    -> <conc>(ListStarOfOnly,ListPlusOfOnly)
     ListPlusOfOnly                    -> <conc>(ListPlusOfOnly,ListStarOfOnly)
     ListPlusOfOnly                    -> <conc>(ListPlusOfOnly,ListPlusOfOnly)
-    ListPlusOfOnly                    -> <cons>(OfpOnly,ListStarOfOnly)
+    ListPlusOfOnly                    -> <cons>(Only,ListStarOfOnly)
 
     ListStarOfRename                 -> ListPlusOfRename
     ListStarOfRename                 -> <nil>()

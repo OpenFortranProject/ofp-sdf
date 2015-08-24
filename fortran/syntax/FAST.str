@@ -68,21 +68,28 @@ signature
     OfpDummyArg                  : String -> OfpDummyArg
     ParameterStmt                : OptLabel * List(NamedConstantDef) -> ParameterStmt
     AssignmentStmt               : OptLabel * VarDef * Expr -> AssignmentStmt
-    OfpCoshape                   : List(DimSpec) -> OfpCoshape
-    OfpShape                     : List(DimSpec) -> OfpShape
-    OfpAllocation                : OfpVarRef * Option(OfpShape) * Option(OfpCoshape) -> OfpAllocation
-                                 : Expr -> OfpAllocOpt
-    OfpAllocateStmt              : OptLabel * Option(OfpType) * List(OfpAllocation) * List(OfpAllocOpt) -> OfpAllocateStmt
+    GE                           : GE
+    GT                           : GT
+    LE                           : LE
+    LT                           : LT
+    NE                           : NE
+    EQ                           : EQ
+    OfpDefinedOp                 : String -> OfpDefinedOp
     OfpVarRef                    : Name -> OfpVarRef
     VarDef                       : Name -> VarDef
     VolatileStmt                 : OptLabel * List(Name) -> VolatileStmt
-    ImplicitStmt                 : OptLabel * List(OfpType) -> ImplicitStmt
+    ImplicitStmt                 : OptLabel * List(ImplicitSpec) -> ImplicitStmt
     OfpAssumedRank               : List(DimSpec) -> OfpAssumedRank
     OfpImpliedShape              : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize               : List(DimSpec) -> OfpAssumedSize
     OfpAssumedOrDeferredShape    : List(DimSpec) -> OfpAssumedOrDeferredShape
     OfpExplicitShape             : List(DimSpec) -> OfpExplicitShape
     OfpExplicitCoshape           : List(DimSpec) -> OfpExplicitCoshape
+    no-char-length               : OptCharLength
+                                 : CharLength -> OptCharLength
+                                 : Expr -> CharLength
+    STAR                         : CharLength
+    COLON                        : CharLength
                                  : Range -> DimSpec
     STAR                         : DimSpec
     COLON                        : DimSpec
@@ -102,11 +109,12 @@ signature
     DOUBLECOMPLEX                : IntrinsicType
     LOGICAL                      : IntrinsicType
     LOGICAL                      : Kind -> IntrinsicType
-    CharType                     : Kind * CharSelector -> CharType
+    CHARACTER                    : CharLength * Kind -> IntrinsicType
+    CHARACTER                    : CharLength -> IntrinsicType
+    CHARACTER                    : IntrinsicType
     ArrayType                    : Type * List(Range) * List(Range) -> ArrayType
     unknown-type                 : Type
                                  : IntrinsicType -> Type
-                                 : CharType -> Type
                                  : ArrayType -> Type
                                  : DerivedTypeDef -> Type
     DerivedTypeDef               : DerivedTypeStmt * ListStarOfTypeParamDefStmt * List(PrivateOrSequence) * ComponentPart * OptTypeBoundProcPart * EndTypeStmt -> DerivedTypeDef
@@ -126,20 +134,13 @@ signature
     IntVal                       : String * Kind -> IntVal
     RealVal                      : String -> RealVal
     RealVal                      : String * Kind -> RealVal
-    OfpType                      : DOUBLECOMPLEX * OptExpr -> OfpType
-    OfpType                      : LOGICAL * OptExpr -> OfpType
-    OfpType                      : CHARACTER * OptExpr -> OfpType
-    OfpType                      : COMPLEX * OptExpr -> OfpType
-    OfpType                      : DOUBLEPRECISION * OptExpr -> OfpType
-    OfpType                      : REAL * OptExpr -> OfpType
-    OfpType                      : INTEGER * OptExpr -> OfpType
-    DOUBLECOMPLEX                : DOUBLECOMPLEX
-    LOGICAL                      : LOGICAL
-    CHARACTER                    : CHARACTER
-    COMPLEX                      : COMPLEX
-    DOUBLEPRECISION              : DOUBLEPRECISION
-    REAL                         : REAL
-    INTEGER                      : INTEGER
+                                 : GE -> OfpOp
+                                 : GT -> OfpOp
+                                 : LE -> OfpOp
+                                 : LT -> OfpOp
+                                 : NE -> OfpOp
+                                 : EQ -> OfpOp
+    OfpOp                        : String -> OfpOp
                                  : Function -> ProgramUnit
                                  : Module -> ProgramUnit
                                  : Submodule -> ProgramUnit
@@ -147,7 +148,7 @@ signature
                                  : MainProgram -> ProgramUnit
     Program                      : List(ProgramUnit) -> Program
     Scope                        : List(Decl) * List(Stmt) * List(Decl) -> Scope
-    OfpLiteral                   : String * OfpType -> OfpLiteral
+    OfpLiteral                   : String * Type -> OfpLiteral
     OfpLiteral                   : String -> OfpLiteral
     OfpKeyword                   : String -> OfpKeyword
     STAR                         : STAR
@@ -181,11 +182,16 @@ signature
     EndBlockStmt                 : OptLabel * OptName -> EndBlockStmt
     ContinueStmt                 : OptLabel -> ContinueStmt
     UseStmt                      : OptLabel * OptModuleNature * Name * ListStarOfRename -> UseStmt
-    UseOnlyStmt                  : OptLabel * OptModuleNature * Name * ListStarOfOnly -> UseOnlyStmt
+    UseOnlyStmt                  : OptLabel * OptModuleNature * Name * List(Only) -> UseOnlyStmt
                                  : ModuleNature -> OptModuleNature
     no-module-nature             : OptModuleNature
     INTRINSIC                    : ModuleNature
     NONINTRINSIC                 : ModuleNature
+    Rename                       : Name * Name -> Rename
+    RenameOp                     : LocalDefinedOperator * UseDefinedOperator -> Rename
+    Only                         : OfpGenericSpec -> Only
+    Only                         : Name -> Only
+    Only                         : Rename -> Only
     InterfaceBlock               : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
                                  : ProcedureStmt -> InterfaceSpecification
     InterfaceStmt                : OptLabel * OptGenericSpec -> InterfaceStmt
@@ -210,6 +216,8 @@ signature
     OPERATOR                     : DefinedOperator -> GenericSpec
     ASSIGNMENT                   : GenericSpec
                                  : DefinedIoGenericSpec -> GenericSpec
+    OfpDefinedOp                 : OfpDefinedOp -> OfpGenericSpec
+    OfpOp                        : OfpOp -> OfpGenericSpec
     READ_FORMATTED               : DefinedIoGenericSpec
     READ_UNFORMATTED             : DefinedIoGenericSpec
     WRITE_FORMATTED              : DefinedIoGenericSpec
@@ -217,7 +225,6 @@ signature
                                  : OfpCallStmt -> Stmt
                                  : ParameterStmt -> Stmt
                                  : AssignmentStmt -> Stmt
-                                 : OfpAllocateStmt -> Stmt
                                  : DerivedTypeStmt -> Stmt
                                  : EndTypeStmt -> Stmt
                                  : PrivateComponentsStmt -> Stmt
@@ -249,6 +256,10 @@ signature
     no-proc-interface            : OptProcInterface
                                  : ProcInterface -> OptProcInterface
                                  : DeclarationTypeSpec -> ProcInterface
+    UseDefinedOperator_DBO       : DefinedBinaryOp -> UseDefinedOperator
+    UseDefinedOperator_DUO       : DefinedUnaryOp -> UseDefinedOperator
+    LocalDefinedOperator_DBO     : DefinedBinaryOp -> LocalDefinedOperator
+    LocalDefinedOperator_DUO     : DefinedUnaryOp -> LocalDefinedOperator
     no-keyword                   : NoKeyword
                                  : Name -> Keyword
     VarRef                       : Ident -> ScalarIntVariableName
@@ -357,6 +368,10 @@ signature
     Substring                    : ParentString * SubstringRange -> Substring
                                  : Substring -> Designator
                                  : DataRef -> Designator
+    no-letter                    : NoLetter
+    LetterSpec                   : Letter * NoLetter -> LetterSpec
+    LetterSpec                   : Letter * Letter -> LetterSpec
+    ImplicitSpec                 : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
     NamedConstantDef             : NamedConstant * ConstantExpr -> NamedConstantDef
     INOUT                        : IntentSpec
     OUT                          : IntentSpec
@@ -402,9 +417,6 @@ signature
     Init                         : ConstantExpr -> Initialization
     no-init                      : OptInitialization
                                  : Initialization -> OptInitialization
-                                 : CharLength -> OptCharLength
-    no-char-length               : OptCharLength
-    opt-char-length              : CharLength -> OptCharLength
     no-list                      : OptCoarraySpec
     opt-coarray-spec             : CoarraySpec -> OptCoarraySpec
     VOLATILE                     : AttrSpec
@@ -495,23 +507,11 @@ signature
     FALSE                        : OptKindParam -> LogicalLiteralConstant
     TRUE                         : OptKindParam -> LogicalLiteralConstant
                                  : Scon -> CharLiteralConstant
-                                 : Expr -> CharLength
-                                 : Icon -> CharLength
-    CharLength                   : TypeParamValue -> CharLength
-    LengthSelector_STAR          : CharLength -> LengthSelector
-    LengthSelector               : TypeParamValue -> LengthSelector
-    CharSelector_KIND            : Expr -> CharSelector
-    CharSelector_KIND_LEN        : Expr * TypeParamValue -> CharSelector
-    CharSelector_LEN_KIND        : TypeParamValue * Expr -> CharSelector
-                                 : LengthSelector -> CharSelector
                                  : NamedConstant -> ImagPart
                                  : NamedConstant -> RealPart
     ComplexLiteralConstant       : RealPart * ImagPart -> ComplexLiteralConstant
     AssumedType                  : DeclarationTypeSpec
     AssumedClass                 : DeclarationTypeSpec
-    COLON                        : TypeParamValue
-    STAR                         : TypeParamValue
-                                 : Expr -> TypeParamValue
                                  : Name -> NamedConstant
                                  : BozLiteralConstant -> LiteralConstant
                                  : CharLiteralConstant -> LiteralConstant
@@ -526,8 +526,8 @@ signature
                                  : String -> OctalConstant
                                  : String -> BinaryConstant
                                  : String -> Scon
-                                 : String -> Icon
                                  : String -> Ident
+                                 : String -> Letter
                                  : String -> EOStmt
 
 
