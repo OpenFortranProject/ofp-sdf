@@ -99,7 +99,7 @@ sorts
   LogicalLiteralConstant              %% R424
 
   NoKindParam OptKindParam OptKindSelector
-  NoKindSelector OptCharSelector
+  NoKindSelector OptCharSelector NoLengthSelector
 
 %% 4.5 Derived types
 
@@ -842,11 +842,11 @@ context-free syntax
 %%R404
   'INTEGER'            OptKindSelector  -> IntrinsicTypeSpec    {cons("INTEGER")}
   'REAL'               OptKindSelector  -> IntrinsicTypeSpec    {cons("REAL")}
-  'DOUBLE' 'PRECISION'  NoKindSelector  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
+  'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
   'COMPLEX'            OptKindSelector  -> IntrinsicTypeSpec    {cons("COMPLEX")}
   'CHARACTER'          OptCharSelector  -> IntrinsicTypeSpec    {cons("CHARACTER")}
   'LOGICAL'            OptKindSelector  -> IntrinsicTypeSpec    {cons("LOGICAL")}
-  'DOUBLE' 'COMPLEX'    NoKindSelector  -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
+  'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
@@ -916,16 +916,18 @@ context-free syntax
 
 %%R420
 %%       expr substituted for scalar-int-constant-expr
-%%
-  LengthSelector                                               -> CharSelector
-  '(' 'LEN'  '=' TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
-  '('            TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
-  '('            TypeParamValue ','             Expr ')'       -> CharSelector    {cons("CharSelector_LEN_KIND")}
-  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue   ')'       -> CharSelector    {cons("CharSelector_KIND_LEN")}
-  '(' 'KIND' '=' Expr                                ')'       -> CharSelector    {cons("CharSelector_KIND")}
+
+  LengthSelector NoKindSelector                                -> CharSelector     {cons("CharSelector")}
+  '(' 'LEN'  '=' TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector     {cons("CharSelector")}
+  '('            TypeParamValue ',' 'KIND'  '=' Expr ')'       -> CharSelector     {cons("CharSelector")}
+  '('            TypeParamValue ','             Expr ')'       -> CharSelector     {cons("CharSelector")}
+  '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue   ')'       -> CharSelector     {cons("CharSelector_KIND_LEN")}
+  '(' 'KIND' '=' Expr               NoLengthSelector ')'       -> CharSelector     {cons("CharSelector_KIND_LEN")}
+
+  % empty %                                                    -> NoLengthSelector {cons("no-length-selector")}
 
   CharSelector                                                 -> OptCharSelector
-  % empty %                                                    -> OptCharSelector {cons("no-char-selector")}
+  % empty %                                                    -> OptCharSelector  {cons("no-char-selector")}
 
 %%R421
   '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector")}

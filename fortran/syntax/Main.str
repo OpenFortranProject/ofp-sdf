@@ -1112,10 +1112,11 @@ signature
     LengthSelector                  : TypeParamValue -> LengthSelector
     no-char-selector                : OptCharSelector
                                     : CharSelector -> OptCharSelector
-    CharSelector_KIND               : Expr -> CharSelector
+    no-length-selector              : NoLengthSelector
+    CharSelector_KIND_LEN           : Expr * NoLengthSelector -> CharSelector
     CharSelector_KIND_LEN           : Expr * TypeParamValue -> CharSelector
-    CharSelector_LEN_KIND           : TypeParamValue * Expr -> CharSelector
-                                    : LengthSelector -> CharSelector
+    CharSelector                    : TypeParamValue * Expr -> CharSelector
+    CharSelector                    : LengthSelector * NoKindSelector -> CharSelector
                                     : NamedConstant -> ImagPart
                                     : SignedRealLiteralConstant -> ImagPart
                                     : SignedIntLiteralConstant -> ImagPart
@@ -1143,11 +1144,11 @@ signature
                                     : KindSelector -> OptKindSelector
     KindSelector_STAR               : Icon -> KindSelector
     KindSelector                    : Expr -> KindSelector
-    DOUBLECOMPLEX                   : NoKindSelector -> IntrinsicTypeSpec
+    DOUBLECOMPLEX                   : IntrinsicTypeSpec
     LOGICAL                         : OptKindSelector -> IntrinsicTypeSpec
     CHARACTER                       : OptCharSelector -> IntrinsicTypeSpec
     COMPLEX                         : OptKindSelector -> IntrinsicTypeSpec
-    DOUBLEPRECISION                 : NoKindSelector -> IntrinsicTypeSpec
+    DOUBLEPRECISION                 : IntrinsicTypeSpec
     REAL                            : OptKindSelector -> IntrinsicTypeSpec
     INTEGER                         : OptKindSelector -> IntrinsicTypeSpec
     AssumedType                     : DeclarationTypeSpec
