@@ -1,4 +1,4 @@
-FC = gfortran
+FC = ifort
 
 SYNTAX_DIR = ../../../fortran/syntax
 TRANS_DIR  = ../../../fortran/trans
@@ -10,7 +10,8 @@ TO_PP   = $(TRANS_DIR)/fast2pp
 PP      = ../../../fortran/pp/Fortran.pp
 
 CHECK_LIST = R1101a.f90 R1101b.f90 R1101c.f90 R1101d.f90 R1101e.f90 R1101f.f90 R1101g.f90\
-             R452.f90 R704.f90 R706.f90 R807.f90 R854.f90 R1206.f90
+             R452.f90 R704.f90 R706.f90 R807.f90 R854.f90 R1206.f90 \
+             R404.f90 R710.f90
 
 all : check
 
@@ -82,10 +83,12 @@ check : $(TBL)
         done;
 
 
-test :
-	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
-aterm :
-	sglri -p $(TBL) -i test.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
+check-test :
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
+check-fast :
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+check-pp :
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
 
 clean :
 	rm -f *.mod
