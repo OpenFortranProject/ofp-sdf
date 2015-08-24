@@ -275,7 +275,7 @@ ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
 //                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
 
 //R522
-  ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
+ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
 //  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
@@ -284,6 +284,10 @@ ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
 //  ofp-to-ast:  IN()                    -> OfpIntent(IN())
 //  ofp-to-ast:  OUT()                   -> OfpIntent(OUT())
 //  ofp-to-ast:  INOUT()                 -> OfpIntent(INOUT())
+
+//R524
+ofp-to-ast:  AccessStmt(label,spec,list,eos("\n"))  -> AccessStmt(label,spec,list)
+ofp-to-ast:  AccessStmt(label,spec,list,eos(str))   -> AccessStmt(label,spec,list)  {Comment(str)}
 
 // assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
 //    - The following four rules remove the ambiguity by choosing assumed-size over
