@@ -41,6 +41,8 @@ signature
     ppVar          : name * init      -> ppVar
     ppLiteralKind  : val              -> ppLiteralKind
 
+    ppCharNoLen    : kind             -> ppCharNoLen
+
     ppLetterSpec   : Spec            -> ppLetterSpec
     ppLetterSpec   : Spec * Spec     -> ppLetterSpec
 
@@ -89,11 +91,12 @@ rules
 // Make a separate scope without FuncPart when empty.  This will allow the implied contains
 // statement to be unparsed when the FuncPart is present.
 //
-  ast-to-pp:
-    Scope(decls,exes,[])                     -> ppScope(decls,exes)
+ast-to-pp:  Scope(decls,exes,[])             -> ppScope(decls,exes)
 
-  ast-to-pp:
-    Scope(decls,exes,funcs)                  -> ppScope(decls,exes,FuncPart(funcs))
+ast-to-pp:  Scope(decls,exes,funcs)          -> ppScope(decls,exes,FuncPart(funcs))
+
+//R404
+ast-to-pp:  CHARACTER(no-char-length(),kind) -> ppCharNoLen(kind)
 
 //R408
 ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
