@@ -525,13 +525,7 @@ regular tree grammar
     ListPlusOfAllocatableDecl0        -> <conc>(ListPlusOfAllocatableDecl0,ListStarOfAllocatableDecl0)
     ListPlusOfAllocatableDecl0        -> <conc>(ListPlusOfAllocatableDecl0,ListPlusOfAllocatableDecl0)
     ListPlusOfAllocatableDecl0        -> <cons>(AllocatableDecl,ListStarOfAllocatableDecl0)
-    ListStarOfAccessId0               -> ListPlusOfAccessId0
-    ListStarOfAccessId0               -> <nil>()
-    ListStarOfAccessId0               -> <conc>(ListStarOfAccessId0,ListStarOfAccessId0)
-    ListPlusOfAccessId0               -> <conc>(ListStarOfAccessId0,ListPlusOfAccessId0)
-    ListPlusOfAccessId0               -> <conc>(ListPlusOfAccessId0,ListStarOfAccessId0)
-    ListPlusOfAccessId0               -> <conc>(ListPlusOfAccessId0,ListPlusOfAccessId0)
-    ListPlusOfAccessId0               -> <cons>(AccessId,ListStarOfAccessId0)
+
     ListStarOfAssumedOrImpliedSpec0   -> ListPlusOfAssumedOrImpliedSpec0
     ListStarOfAssumedOrImpliedSpec0   -> <nil>()
     ListStarOfAssumedOrImpliedSpec0   -> <conc>(ListStarOfAssumedOrImpliedSpec0,ListStarOfAssumedOrImpliedSpec0)
@@ -941,6 +935,11 @@ regular tree grammar
 
     Stmt                              -> FinalProcedureStmt
     FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
+
+    Stmt                              -> AccessStmt
+    AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId)
+
+    AccessId                          -> GenericSpec
 
     OptKind                           -> no-kind()
     OptKind                           -> Kind
@@ -1808,9 +1807,7 @@ regular tree grammar
     AllocatableDecl                   -> AllocatableDecl(ObjectName,OptArraySpec,OptCoarraySpec)
     AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl0,EOS)
     AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl0,EOS)
-    AccessId                          -> GenericSpec
-    AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId0,EOS)
-    AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListPlusOfAccessId0,EOS)
+
     IntentSpec                        -> INOUT()
     IntentSpec                        -> OUT()
     IntentSpec                        -> IN()
@@ -2098,6 +2095,14 @@ regular tree grammar
     ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListStarOfPrivateOrSequence)
     ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
     ListPlusOfPrivateOrSequence       -> <cons>(PrivateOrSequence,ListStarOfPrivateOrSequence)
+
+    ListStarOfAccessId                -> ListPlusOfAccessId
+    ListStarOfAccessId                -> <nil>()
+    ListStarOfAccessId                -> <conc>(ListStarOfAccessId,ListStarOfAccessId)
+    ListPlusOfAccessId                -> <conc>(ListStarOfAccessId,ListPlusOfAccessId)
+    ListPlusOfAccessId                -> <conc>(ListPlusOfAccessId,ListStarOfAccessId)
+    ListPlusOfAccessId                -> <conc>(ListPlusOfAccessId,ListPlusOfAccessId)
+    ListPlusOfAccessId                -> <cons>(AccessId,ListStarOfAccessId)
 
     ListStarOfTypeAttrSpec            -> ListPlusOfTypeAttrSpec
     ListStarOfTypeAttrSpec            -> <nil>()
