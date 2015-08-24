@@ -1918,12 +1918,13 @@ regular tree grammar
     LengthSelector                    -> LengthSelector(TypeParamValue)
     OptCharSelector                   -> no-char-selector()
     OptCharSelector                   -> CharSelector
-    CharSelector                      -> CharSelector_KIND(Expr)
+    NoLengthSelector                  -> no-length-selector()
+    CharSelector                      -> CharSelector_KIND_LEN(Expr,NoLengthSelector)
     CharSelector                      -> CharSelector_KIND_LEN(Expr,TypeParamValue)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> CharSelector_LEN_KIND(TypeParamValue,Expr)
-    CharSelector                      -> LengthSelector
+    CharSelector                      -> CharSelector(TypeParamValue,Expr)
+    CharSelector                      -> CharSelector(TypeParamValue,Expr)
+    CharSelector                      -> CharSelector(TypeParamValue,Expr)
+    CharSelector                      -> CharSelector(LengthSelector,NoKindSelector)
     ImagPart                          -> NamedConstant
     ImagPart                          -> SignedRealLiteralConstant
     ImagPart                          -> SignedIntLiteralConstant
@@ -1954,11 +1955,11 @@ regular tree grammar
     KindSelector                      -> KindSelector_STAR(Icon)
     KindSelector                      -> KindSelector(Expr)
     KindSelector                      -> KindSelector(Expr)
-    IntrinsicTypeSpec                 -> DOUBLECOMPLEX(NoKindSelector)
+    IntrinsicTypeSpec                 -> DOUBLECOMPLEX()
     IntrinsicTypeSpec                 -> LOGICAL(OptKindSelector)
     IntrinsicTypeSpec                 -> CHARACTER(OptCharSelector)
     IntrinsicTypeSpec                 -> COMPLEX(OptKindSelector)
-    IntrinsicTypeSpec                 -> DOUBLEPRECISION(NoKindSelector)
+    IntrinsicTypeSpec                 -> DOUBLEPRECISION()
     IntrinsicTypeSpec                 -> REAL(OptKindSelector)
     IntrinsicTypeSpec                 -> INTEGER(OptKindSelector)
     DeclarationTypeSpec               -> AssumedType()
