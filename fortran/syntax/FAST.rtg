@@ -919,10 +919,8 @@ regular tree grammar
     EntityDecl                        -> ArrayVar
     xxxEntityDecl                     -> EntityDecl(Name,OptOfpArraySpec0,OptOfpCoarraySpec0,OptOfpCharLength0,OptOfpInitialization0)
 
-    Type                              -> IntrinsicType
     Type                              -> unknown-type()
-    ArrayType                         -> ArrayType(Type,ArraySpec,CoarraySpec)
-
+    Type                              -> IntrinsicType
     IntrinsicType                     -> INTEGER()
     IntrinsicType                     -> INTEGER(Kind)
     IntrinsicType                     -> REAL()
@@ -931,12 +929,21 @@ regular tree grammar
     IntrinsicType                     -> COMPLEX()
     IntrinsicType                     -> COMPLEX(Kind)
     IntrinsicType                     -> DOUBLECOMPLEX()
-    IntrinsicType                     -> CHARACTER()
-    IntrinsicType                     -> CHARACTER(CharSelector)
     IntrinsicType                     -> LOGICAL()
     IntrinsicType                     -> LOGICAL(Kind)
 
-    Decl                              -> DerivedTypeDef
+    Type                              -> CharType
+    CharType                          -> CharType(Kind,CharSelector)
+
+    Type                              -> DerivedType
+    DerivedType                       -> DerivedType(name)
+
+    Type                              -> ArrayType
+    ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
+
+    ArraySpec                         -> ArraySpec(ListStarOfRange)
+
+    Type                              -> DerivedTypeDef
     DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ComponentPart,OptTypeBoundProcPart,EndTypeStmt)
 
     Stmt                              -> DerivedTypeStmt
@@ -2177,6 +2184,14 @@ regular tree grammar
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListStarOfEntityDecl)
     ListPlusOfEntityDecl              -> <conc>(ListPlusOfEntityDecl,ListPlusOfEntityDecl)
     ListPlusOfEntityDecl              -> <cons>(EntityDecl,ListStarOfEntityDecl)
+
+    ListStarOfRange                   -> ListPlusOfRange
+    ListStarOfRange                   -> <nil>()
+    ListStarOfRange                   -> <conc>(ListStarOfRange,ListStarOfRange)
+    ListPlusOfRange                   -> <conc>(ListStarOfRange,ListPlusOfRange)
+    ListPlusOfRange                   -> <conc>(ListPlusOfRange,ListStarOfRange)
+    ListPlusOfRange                   -> <conc>(ListPlusOfRange,ListPlusOfRange)
+    ListPlusOfRange                   -> <cons>(Range,ListStarOfRange)
 
     ListStarOfOnly                    -> ListPlusOfOnly
     ListStarOfOnly                    -> <nil>()
