@@ -227,6 +227,18 @@ ofp-to-ast:    EndTypeStmt(label,name,eos("\n"))
 ofp-to-ast:    EndTypeStmt(label,name,eos(str))
             -> EndTypeStmt(label,name) {Comment(str)}
 
+//R436
+ofp-to-ast:    DataComponentDefStmt(label,type,attrs,components,eos("\n"))
+            -> DataComponentDefStmt(label,type,attrs,<map(transfer-type(|type))>components)
+ofp-to-ast:    DataComponentDefStmt(label,type,attrs,components,eos(str))
+            -> DataComponentDefStmt(label,type,attrs,<map(transfer-type(|type))>components) {Comment(str)}
+
+//R438
+ofp-to-ast:    ComponentDecl(name,[],[],no-char-length(),init)
+            -> Var(name,unknown-type(),init)
+ofp-to-ast:    ComponentDecl(name,dims,codims,no-char-length(),init)
+            -> Var(name,ArrayType(unknown-type(),dims,codims),init)
+
 //R445
 ofp-to-ast:    TypeBoundProcedurePart(contains,private,bindings)
             -> TypeBoundProcPart(private,bindings)
