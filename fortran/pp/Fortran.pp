@@ -115,7 +115,7 @@
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
    DerivedTypeStmt.4:iter-sep    -- _1 ", ",
 
-   EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE" _2]],
+   EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE"] _2],
 
    #R427 --,
    ABSTRACT                      -- KW["ABSTRACT"],
@@ -133,8 +133,9 @@
    LEN                           -- KW["LEN"],
 
    #R436 --,
-   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3] H hs=0[_4 _5]],
-   DataComponentDefStmt.4:iter-sep   -- _1 ", ",
+   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 " :: " _4]],
+   DataComponentDefStmt.4:iter-sep  -- _1 ", ",
+   no-type-bound-procedure-part     --,
 
    #R437 --,
    Codimension                   -- ", " KW["CODIMENSION"] "["_1"]",
@@ -361,7 +362,7 @@
    CommonBlockObject             -- _1 _2,
 
    #R611 --,
-   DataRef                       -- _1,
+   DataRef                       -- H hs=0 [_1],
    DataRef.1:iter-sep            -- _1 "%",
 
    #R612 --,
@@ -445,10 +446,10 @@
    PointerAssignmentStmt.3:iter-sep  -- _1 ", ",
 
    #R734 --,
-   DataPointerObject             -- _1 KW["%"] _2,
+   DataPointerObject             -- _1 "%" _2,
 
    #R736 --,
-   BoundsRemapping               -- _1 KW[":"] _2,
+   BoundsRemapping               -- _1 ":" _2,
 
    #R741 --,
    WhereStmt                     -- H hs=1[_1 KW["WHERE"] H hs=0["("_2")"] H hs=0[_3]],
@@ -821,7 +822,7 @@
    IntrinsicStmt                       -- H hs=1[_1 "INTRINSIC ::" H hs=0[_2 _3]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
-   %%R1219 --,
+   #R1219 --,
    FunctionReference                   -- _1 "("_2")",
    FunctionReference.2:iter-sep        -- _1 ",",
 
