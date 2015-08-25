@@ -1067,7 +1067,8 @@ context-free syntax
 
 %%R441
   'POINTER'                                   -> ProcComponentAttrSpec     {cons("POINTER")}
-  'PASS'                                      -> ProcComponentAttrSpec     {cons("PASS")}
+  'PASS'   NoArgName                          -> ProcComponentAttrSpec     {cons("Pass")}
+  'PASS' '(' ArgName ')'                      -> ProcComponentAttrSpec     {cons("Pass")}
   'NOPASS'                                    -> ProcComponentAttrSpec     {cons("NOPASS")}
   AccessSpec                                  -> ProcComponentAttrSpec
 

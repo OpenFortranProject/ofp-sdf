@@ -1054,7 +1054,8 @@ signature
     ComponentInit                   : Expr -> ComponentInitialization
                                     : AccessSpec -> ProcComponentAttrSpec
     NOPASS                          : ProcComponentAttrSpec
-    PASS                            : ProcComponentAttrSpec
+    Pass                            : ArgName -> ProcComponentAttrSpec
+    Pass                            : NoArgName -> ProcComponentAttrSpec
     POINTER                         : ProcComponentAttrSpec
     ProcComponentDefStmt            : OptLabel * OptProcInterface * List(ProcComponentAttrSpec) * List(ProcDecl) * EOS -> ProcComponentDefStmt
                                     : List(DeferredShapeSpec) -> ComponentArraySpec
