@@ -1856,7 +1856,8 @@ regular tree grammar
     ComponentInitialization           -> ComponentInit(Expr)
     ProcComponentAttrSpec             -> AccessSpec
     ProcComponentAttrSpec             -> NOPASS()
-    ProcComponentAttrSpec             -> PASS()
+    ProcComponentAttrSpec             -> Pass(ArgName)
+    ProcComponentAttrSpec             -> Pass(NoArgName)
     ProcComponentAttrSpec             -> POINTER()
     ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec0,ListPlusOfProcDecl0,EOS)
     ComponentArraySpec                -> ListPlusOfDeferredShapeSpec0
