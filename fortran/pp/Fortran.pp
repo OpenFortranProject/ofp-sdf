@@ -105,8 +105,10 @@
    CharLiteralConstant           -- _1 _2,
 
    #R424 --,
-   TRUE                          -- ".TRUE."  _1,
-   FALSE                         -- ".FALSE." _1,
+   TRUE                          -- ".TRUE.",
+   FALSE                         -- ".FALSE.",
+   TRUE                          -- H hs=0[".TRUE."  "_" _1],
+   FALSE                         -- H hs=0[".FALSE." "_" _1],
 
    #R425 --,
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
