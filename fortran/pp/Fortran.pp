@@ -82,13 +82,14 @@
 
    ppRange                       -- _1,
    Range                         -- _1 ":" _2,
-   no-lower-bound                --,
+   no-lower-bound                -- ,
 
-   #R403 --,
-   Class                         -- _1 KW["CLASS"] "("_2")",
+   #R402 --,
+   no-type-spec                  -- ,
 
-   #R405 --,
-   Kind                          -- "(" "KIND=" _1")",
+   Class                         -- _1 "CLASS" "(" _2" )",
+
+   Kind                          -- "(" "KIND=" _1 ")",
    ppLiteralKind                 -- H hs=0["_" _1],
    no-kind                       -- ,
    
@@ -104,9 +105,8 @@
    CharLiteralConstant           -- _1 _2,
 
    #R424 --,
-   TRUE                          -- KW[".TRUE."] _1,
-
-   FALSE                         -- KW[".FALSE."] _1,
+   TRUE                          -- ".TRUE."  _1,
+   FALSE                         -- ".FALSE." _1,
 
    #R425 --,
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
@@ -127,10 +127,6 @@
 
    #R432 --,
    TypeParamDecl                 -- _1 " = " _2,
-
-   #R433 --,
-   KIND                          -- KW["KIND"],
-   LEN                           -- KW["LEN"],
 
    #R436 --,
    DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 " :: " _4]],
@@ -205,11 +201,11 @@
    EndEnumStmt                   -- H hs=1[_1 KW["END ENUM"] _2],
 
    #R468 --,
-   ArrayConstructor              -- "["_1"]",
+   ArrayConstructor              -- H hs=0["[" _1 "]"],
 
    #R469 --,
    AcSpec                        -- _1 _2,
-   AcSpec.2:iter-sep             -- _1 ", ",
+   AcSpec.2:iter-sep             -- _1 ",",
 
    #R473 --,
    AcImpliedDo                   -- "("_1 KW[", "] _2")",
@@ -368,11 +364,12 @@
    #R612 --,
    VarDef                           -- _1,
    VarRef                           -- _1,
-   ppPartRef                        -- _1 _2 _3,
+   ppPartRef                        -- H hs=0[_1 _2 _3],
    ppSectionSubscripts              -- "(" _1 ")",
    ppSectionSubscripts.1:iter-sep   -- _1 ",",
    ppImageSelector                  -- "[" _1 "]",
    ppImageSelector.1:iter-sep       -- _1 ",",
+   no-image-selector                -- ,
 
    #R626 --,
    AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
