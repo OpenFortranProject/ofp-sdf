@@ -1101,10 +1101,10 @@ signature
     comma-list                      : List(TypeAttrSpec) -> OptTypeAttrSpecList
     DerivedTypeStmt                 : OptLabel * OptTypeAttrSpecList * TypeName * OptTypeParamNameList * EOS -> DerivedTypeStmt
     DerivedTypeDef                  : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * ComponentPart * OptTypeBoundProcedurePart * EndTypeStmt -> DerivedTypeDef
-    no-kind-param                   : OptKindParam
-    opt-kind-param                  : KindParam -> OptKindParam
-    FALSE                           : OptKindParam -> LogicalLiteralConstant
-    TRUE                            : OptKindParam -> LogicalLiteralConstant
+    FALSE                           : KindParam -> LogicalLiteralConstant
+    FALSE                           : NoKindParam -> LogicalLiteralConstant
+    TRUE                            : KindParam -> LogicalLiteralConstant
+    TRUE                            : NoKindParam -> LogicalLiteralConstant
                                     : Scon -> CharLiteralConstant
     CharLiteralConstant             : KindParam * Scon -> CharLiteralConstant
                                     : Icon -> CharLength
@@ -1135,7 +1135,7 @@ signature
                                     : Ident -> ScalarIntConstantName
     VarRef                          : ScalarIntConstantName -> KindParam
     IntLiteralConstant              : DigitString * NoKindParam -> KindParam
-    no-kind-param                   : NoKindParam
+    no-kind                         : NoKindParam
     IntLiteralConstant              : DigitString * KindParam -> IntLiteralConstant
     IntLiteralConstant              : DigitString * NoKindParam -> IntLiteralConstant
     SignedIntLiteralConstant        : Sign * IntLiteralConstant -> SignedIntLiteralConstant

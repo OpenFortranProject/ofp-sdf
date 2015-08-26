@@ -1905,10 +1905,10 @@ regular tree grammar
     OptTypeAttrSpecList               -> comma-list(ListPlusOfTypeAttrSpec0)
     DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,OptTypeAttrSpecList,TypeName,OptTypeParamNameList,EOS)
     DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt0,ListStarOfPrivateOrSequence0,ComponentPart,OptTypeBoundProcedurePart,EndTypeStmt)
-    OptKindParam                      -> no-kind-param()
-    OptKindParam                      -> opt-kind-param(KindParam)
-    LogicalLiteralConstant            -> FALSE(OptKindParam)
-    LogicalLiteralConstant            -> TRUE(OptKindParam)
+    LogicalLiteralConstant            -> FALSE(KindParam)
+    LogicalLiteralConstant            -> FALSE(NoKindParam)
+    LogicalLiteralConstant            -> TRUE(KindParam)
+    LogicalLiteralConstant            -> TRUE(NoKindParam)
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
     CharLength                        -> Icon
@@ -1945,7 +1945,7 @@ regular tree grammar
     ScalarIntConstantName             -> Ident
     KindParam                         -> VarRef(ScalarIntConstantName)
     KindParam                         -> IntLiteralConstant(DigitString,NoKindParam)
-    NoKindParam                       -> no-kind-param()
+    NoKindParam                       -> no-kind()
     IntLiteralConstant                -> IntLiteralConstant(DigitString,KindParam)
     IntLiteralConstant                -> IntLiteralConstant(DigitString,NoKindParam)
     SignedIntLiteralConstant          -> SignedIntLiteralConstant(Sign,IntLiteralConstant)
