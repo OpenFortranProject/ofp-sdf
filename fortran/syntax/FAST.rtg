@@ -1922,8 +1922,10 @@ regular tree grammar
 
     OptKindParam                      -> no-kind-param()
     OptKindParam                      -> opt-kind-param(KindParam)
-    LogicalLiteralConstant            -> FALSE(OptKindParam)
-    LogicalLiteralConstant            -> TRUE(OptKindParam)
+    LogicalLiteralConstant            -> TRUE()
+    LogicalLiteralConstant            -> TRUE(KindParam)
+    LogicalLiteralConstant            -> FALSE()
+    LogicalLiteralConstant            -> FALSE(KindParam)
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
 
