@@ -198,9 +198,15 @@ ofp-to-ast:  KindSelector_STAR(k)               -> Kind(k)
 
 //R408
 ofp-to-ast:
-  IntLiteralConstant(val,no-kind-param())       -> IntVal(val)
+  IntLiteralConstant(val,no-kind)               -> IntVal(val)
 ofp-to-ast:
   IntLiteralConstant(val,kind)                  -> IntVal(val,Kind(kind))
+
+//R413
+ofp-to-ast:
+  RealLiteralConstant(val,no-kind())            -> RealVal(val)
+ofp-to-ast:
+  RealLiteralConstant(val,kind)                 -> RealVal(val,Kind(kind))
 
 //R420
 ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)
@@ -209,11 +215,9 @@ ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)
 ofp-to-ast: LengthSelector(expr)                -> expr
 ofp-to-ast: no-length-selector()                -> no-char-length()
 
-//R413
-ofp-to-ast:
-  RealLiteralConstant(val,no-kind-param())      -> RealVal(val)
-ofp-to-ast:
-  RealLiteralConstant(val,kind)                 -> RealVal(val,Kind(kind))
+//R424
+ofp-to-ast:  TRUE(no-kind())                    -> TRUE()
+ofp-to-ast:  FALSE(no-kind())                   -> FALSE()
 
 //R426
 ofp-to-ast:    DerivedTypeStmt(label,attrs,name,params,eos("\n"))
