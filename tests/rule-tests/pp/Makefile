@@ -13,9 +13,10 @@ CHECK_LIST = R1101a.f90 R1101b.f90 R1101c.f90 R1101d.f90 R1101e.f90 R1101f.f90 R
              R404.f90 R452.f90 \
              R524.f90 \
              R611.f90 \
-             R701.f90 R704.f90 R706.f90 R710.f90 \
+             R701.f90 R702.fxx R704.f90 R705.f90 R706.f90 R710.f90 R713.f90 R719.f90 \
+             R720.f90 R721.f90          R723.fxx \
              R807.f90 R854.f90 \
-             R1206.f90
+             R1203.f90 R1206.f90
 
 all : check
 
@@ -87,7 +88,7 @@ check : $(TBL)
         done;
 
 
-check-test :
+test :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
