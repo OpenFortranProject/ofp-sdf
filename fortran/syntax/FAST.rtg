@@ -536,13 +536,6 @@ regular tree grammar
     ListPlusOfDeferredCoshapeSpec0    -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListPlusOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0    -> <cons>(DeferredCoshapeSpec,ListStarOfDeferredCoshapeSpec0)
 
-    ListStarOfAcValue0                -> ListPlusOfAcValue0
-    ListStarOfAcValue0                -> <nil>()
-    ListStarOfAcValue0                -> <conc>(ListStarOfAcValue0,ListStarOfAcValue0)
-    ListPlusOfAcValue0                -> <conc>(ListStarOfAcValue0,ListPlusOfAcValue0)
-    ListPlusOfAcValue0                -> <conc>(ListPlusOfAcValue0,ListStarOfAcValue0)
-    ListPlusOfAcValue0                -> <conc>(ListPlusOfAcValue0,ListPlusOfAcValue0)
-    ListPlusOfAcValue0                -> <cons>(AcValue,ListStarOfAcValue0)
     ListStarOfEnumerator0             -> ListPlusOfEnumerator0
     ListStarOfEnumerator0             -> <nil>()
     ListStarOfEnumerator0             -> <conc>(ListStarOfEnumerator0,ListStarOfEnumerator0)
@@ -751,6 +744,9 @@ regular tree grammar
     STAR                              -> STAR()
     OfpDummyArg                       -> STAR(STAR)
     OfpDummyArg                       -> OfpDummyArg(String)
+
+    ArrayConstructor                  -> ArrayConstructor(AcSpec)
+    AcSpec                            -> AcSpec(OptTypeSpec,ListStarOfAcValue)
 
     Stmt                              -> ParameterStmt
     ParameterStmt                     -> ParameterStmt(OptLabel,ListPlusOfNamedConstantDef0)
@@ -1863,14 +1859,11 @@ regular tree grammar
 
     AcDoVariable                      -> DoVariable
     AcImpliedDoControl                -> AcImpliedDoControl(AcDoVariable,Expr,Expr,OptExpr)
-    AcImpliedDo                       -> AcImpliedDo(ListPlusOfAcValue0,AcImpliedDoControl)
+    AcImpliedDo                       -> AcImpliedDo(ListPlusOfAcValue,AcImpliedDoControl)
     AcValue                           -> AcImpliedDo
     AcValue                           -> Expr
     NoAcValueList                     -> no-list()
-    AcSpec                            -> AcSpec(OptTypeSpec,ListPlusOfAcValue0)
-    AcSpec                            -> AcSpec(TypeSpec,NoAcValueList)
-    ArrayConstructor                  -> ArrayConstructor(AcSpec)
-    ArrayConstructor                  -> ArrayConstructor(AcSpec)
+
     BozLiteralConstant                -> BozLiteralConstant_HC(HexConstant)
     BozLiteralConstant                -> BozLiteralConstant_OC(OctalConstant)
     BozLiteralConstant                -> BozLiteralConstant_BC(BinaryConstant)
@@ -2029,6 +2022,14 @@ regular tree grammar
     ListPlusOfDecl                    -> <conc>(ListPlusOfDecl,ListStarOfDecl)
     ListPlusOfDecl                    -> <conc>(ListPlusOfDecl,ListPlusOfDecl)
     ListPlusOfDecl                    -> <cons>(Decl,ListStarOfDecl)
+
+    ListStarOfAcValue                 -> ListPlusOfAcValue
+    ListStarOfAcValue                 -> <nil>()
+    ListStarOfAcValue                 -> <conc>(ListStarOfAcValue,ListStarOfAcValue)
+    ListPlusOfAcValue                 -> <conc>(ListStarOfAcValue,ListPlusOfAcValue)
+    ListPlusOfAcValue                 -> <conc>(ListPlusOfAcValue,ListStarOfAcValue)
+    ListPlusOfAcValue                 -> <conc>(ListPlusOfAcValue,ListPlusOfAcValue)
+    ListPlusOfAcValue                 -> <cons>(AcValue,ListStarOfAcValue)
 
     ListStarOfTypeParamDefStmt        -> ListPlusOfTypeParamDefStmt
     ListStarOfTypeParamDefStmt        -> <nil>()
