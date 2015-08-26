@@ -226,4 +226,4 @@ ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
   no-to-none: ppKeyword(no-keyword())      -> None()   // R215
 
   no-to-none: ppSectionSubscripts(no-section-subscripts()) -> None()
-  no-to-none: ppImageSelector(no-image-selector())         -> None()
+  no-to-none: ppImageSelector(no-image-selector())         -> no-image-selector()
