@@ -198,7 +198,7 @@ ofp-to-ast:  KindSelector_STAR(k)               -> Kind(k)
 
 //R408
 ofp-to-ast:
-  IntLiteralConstant(val,no-kind)               -> IntVal(val)
+  IntLiteralConstant(val,no-kind())             -> IntVal(val)
 ofp-to-ast:
   IntLiteralConstant(val,kind)                  -> IntVal(val,Kind(kind))
 
@@ -273,15 +273,15 @@ ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
   ofp-to-ast:  ExplicitCoshape(lower,upper)     -> Range(lower,upper)
 
 //R516
-  ofp-to-ast:  ExplicitShape(lower,upper)       -> Range(lower,upper)
-//  ofp-to-ast:  ExplicitShapeSpecList(list)      -> OfpExplicitShape(list)
+ofp-to-ast:  ExplicitShape(lower,upper)         -> Range(lower,upper)
+//  ofp-to-ast:  ExplicitShapeSpecList(list)    -> OfpExplicitShape(list)
 
 //R519
 //  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> DimSpec(None(),":")
-//  ofp-to-ast:  AssumedShape(lower)              -> DimSpec(lower,":")
+ofp-to-ast:  AssumedShape(lower)                -> Range(lower,COLON())
 
 //R520
-//  ofp-to-ast:  DeferredShape()                  -> DimSpec(no-lower-bound(), COLON())
+//  ofp-to-ast:  DeferredShape()                -> DimSpec(no-lower-bound(), COLON())
   ofp-to-ast:  DeferredShape()                  -> COLON()
 
 //R521
@@ -305,6 +305,20 @@ ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spe
 ofp-to-ast:  AccessStmt(label,spec,list,eos("\n"))  -> AccessStmt(label,spec,list)
 ofp-to-ast:  AccessStmt(label,spec,list,eos(str))   -> AccessStmt(label,spec,list)  {Comment(str)}
 
+//R526
+ofp-to-ast:  AllocatableStmt(label,list,eos("\n"))  -> AllocatableStmt(label,list)
+ofp-to-ast:  AllocatableStmt(label,list,eos(str))   -> AllocatableStmt(label,list)  {Comment(str)}
+
+//R527
+ofp-to-ast =
+      ?AllocatableDecl(name,[],[])                  ;  !Var(name,unknown-type(),no-init())
+  <+  ?AllocatableDecl(name,dims,codims)            ;  !Var(name,ArrayType(unknown-type(),dims,codims),no-init())
+
+//R528
+ofp-to-ast:  AsynchronousStmt(label,list,eos("\n")) -> AsynchronousStmt(label,list)
+ofp-to-ast:  AsynchronousStmt(label,list,eos(str))  -> AsynchronousStmt(label,list)  {Comment(str)}
+
+
 // assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
 //    - The following four rules remove the ambiguity by choosing assumed-size over
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
@@ -314,9 +328,9 @@ ofp-to-ast:  AccessStmt(label,spec,list,eos(str))   -> AccessStmt(label,spec,lis
 //  ofp-to-ast:  AssumedOrImpliedSpec(lower)
 //                            -> OfpAssumedSize([DimSpec(lower,"*")])
 
-  rm-assumed-size: OfpAssumedSize([l]) -> l
+//  rm-assumed-size: OfpAssumedSize([l]) -> l
 
-  ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
+//  ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
 // Operators...
 
