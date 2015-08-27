@@ -26,6 +26,7 @@ signature
 
     ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
     ppRange        : upper-bound                       -> ppRange
+    ppTriplet      : lb * ub * OptColon * stride       -> ppTriplet
 
     ppArrayType    : ListStarOfRange                   -> ppArrayType
     ppArrayType    : ListStorOfRange * ListStarOfRange -> ppArrayType
@@ -126,8 +127,12 @@ ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
 //  ast-to-pp:  LetterSpec(s1,s2)            -> ppLetterSpec(s1,s2)
 
 //R612
-  ast-to-pp:
-    PartRef(name,ss,is) -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
+ast-to-pp:  PartRef(name,ss,is)            -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
+
+stride-separator = ?no-stride < !"" + !":"
+
+//R621
+ast-to-pp:  Triplet(lb,ub,stride)          -> ppTriplet(lb,ub,<stride-separator>stride,stride)
 
 //R631
 //  ast-to-pp:  Allocation(part,[],[])                 -> ppAllocation(part)
