@@ -499,13 +499,6 @@ regular tree grammar
     ListPlusOfBindEntity0             -> <conc>(ListPlusOfBindEntity0,ListStarOfBindEntity0)
     ListPlusOfBindEntity0             -> <conc>(ListPlusOfBindEntity0,ListPlusOfBindEntity0)
     ListPlusOfBindEntity0             -> <cons>(BindEntity,ListStarOfBindEntity0)
-    ListStarOfAllocatableDecl0        -> ListPlusOfAllocatableDecl0
-    ListStarOfAllocatableDecl0        -> <nil>()
-    ListStarOfAllocatableDecl0        -> <conc>(ListStarOfAllocatableDecl0,ListStarOfAllocatableDecl0)
-    ListPlusOfAllocatableDecl0        -> <conc>(ListStarOfAllocatableDecl0,ListPlusOfAllocatableDecl0)
-    ListPlusOfAllocatableDecl0        -> <conc>(ListPlusOfAllocatableDecl0,ListStarOfAllocatableDecl0)
-    ListPlusOfAllocatableDecl0        -> <conc>(ListPlusOfAllocatableDecl0,ListPlusOfAllocatableDecl0)
-    ListPlusOfAllocatableDecl0        -> <cons>(AllocatableDecl,ListStarOfAllocatableDecl0)
 
     ListStarOfAssumedOrImpliedSpec0   -> ListPlusOfAssumedOrImpliedSpec0
     ListStarOfAssumedOrImpliedSpec0   -> <nil>()
@@ -824,7 +817,6 @@ regular tree grammar
     Range                             -> Range(Expr,Expr)
 
     Var                               -> Var(Name,Type,OptInitialization)
-    ArrayVar                          -> ArrayVar(Name,ArrayType,OptInitialization)
 
     OfpAttrSpec                       -> OfpIntent(OfpIntent)
     OfpAttrSpec                       -> ALLOCATABLE()
@@ -833,7 +825,6 @@ regular tree grammar
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
 
     EntityDecl                        -> Var
-    EntityDecl                        -> ArrayVar
 
     Type                              -> unknown-type()
     Type                              -> IntrinsicType
@@ -920,6 +911,13 @@ regular tree grammar
     AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId)
 
     AccessId                          -> GenericSpec
+
+    Stmt                              -> AllocatableStmt
+    AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl)
+    AllocatableDecl                   -> Var
+
+    Stmt                              -> AsynchronousStmt
+    AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfName)
 
     OptKind                           -> no-kind()
     OptKind                           -> Kind
@@ -1782,11 +1780,6 @@ regular tree grammar
     BindEntity                        -> EntityName
     BindStmt                          -> BindStmt(OptLabel,LanguageBindingSpec,ListPlusOfBindEntity0,EOS)
     BindStmt                          -> BindStmt(OptLabel,LanguageBindingSpec,ListPlusOfBindEntity0,EOS)
-    AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfObjectName0,EOS)
-    AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfObjectName0,EOS)
-    AllocatableDecl                   -> AllocatableDecl(ObjectName,OptArraySpec,OptCoarraySpec)
-    AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl0,EOS)
-    AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl0,EOS)
 
     IntentSpec                        -> INOUT()
     IntentSpec                        -> OUT()
@@ -2144,6 +2137,14 @@ regular tree grammar
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListStarOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListPlusOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <cons>(ImplicitSpec,ListStarOfImplicitSpec)
+
+    ListStarOfAllocatableDecl        -> ListPlusOfAllocatableDecl
+    ListStarOfAllocatableDecl        -> <nil>()
+    ListStarOfAllocatableDecl        -> <conc>(ListStarOfAllocatableDecl,ListStarOfAllocatableDecl)
+    ListPlusOfAllocatableDecl        -> <conc>(ListStarOfAllocatableDecl,ListPlusOfAllocatableDecl)
+    ListPlusOfAllocatableDecl        -> <conc>(ListPlusOfAllocatableDecl,ListStarOfAllocatableDecl)
+    ListPlusOfAllocatableDecl        -> <conc>(ListPlusOfAllocatableDecl,ListPlusOfAllocatableDecl)
+    ListPlusOfAllocatableDecl        -> <cons>(AllocatableDecl,ListStarOfAllocatableDecl)
 
     ListStarOfOnly                    -> ListPlusOfOnly
     ListStarOfOnly                    -> <nil>()
