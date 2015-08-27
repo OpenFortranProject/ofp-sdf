@@ -266,19 +266,15 @@
    AccessStmt.3:iter-sep         -- _1 ", ",
 
    #R526 --,
-   AllocatableStmt               -- H hs=1[_1 KW["ALLOCATABLE ::"] H hs=0[_2 _3]],
+   AllocatableStmt               -- H hs=1[_1 "ALLOCATABLE ::" H hs=0[_2]],
    AllocatableStmt.2:iter-sep    -- _1 ", ",
 
-   #R527 --,
-   AllocatableDecl               -- _1 "("_2")" _3,
-   AllocatableDecl.2:iter-sep    -- _1 ", ",
-
    #R529 --,
-   BindStmt                      -- H hs=1[_1 H hs=0[_2 KW[" :: "] _3 _4]],
+   BindStmt                      -- H hs=1[_1 H hs=0[_2 " :: " _3 _4]],
    BindStmt.3:iter-sep           -- _1 ", ",
 
    #R531 --,
-   CodimensionStmt               -- H hs=1[_1 KW["CODIMENSION ::"] H hs=0[_2 _3]],
+   CodimensionStmt               -- H hs=1[_1 "CODIMENSION ::" H hs=0[_2 _3]],
    CodimensionStmt.2:iter-sep    -- _1 ", ",
 
    #R532 --,
@@ -372,6 +368,10 @@
    ppImageSelector                  -- "[" _1 "]",
    ppImageSelector.1:iter-sep       -- _1 ",",
    no-image-selector                -- ,
+
+   ppTriplet                        -- _1 ":" _2 _3 _4,
+   no-subscript                     -- ,
+   no-stride                        -- ,
 
    #R626 --,
    AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
@@ -837,7 +837,7 @@
    ppKeyword                           -- _1 "=",
 
    #R1224 --,
-   AltReturnSpec                       -- KW["*"] _1,
+   AltReturnSpec                       -- "*" _1,
 
    #R1233 --,
    Subroutine                          -- V [_1 _2 _3],
