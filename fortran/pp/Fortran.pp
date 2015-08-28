@@ -832,18 +832,14 @@
    FunctionReference.2:iter-sep        -- _1 ",",
 
    #R1220 --,
-   CallStmt                            -- H hs=1[_1 KW["CALL"] H hs=0[_2 "("_3")" _4]],
+   CallStmt                            -- H hs=1[_1 "CALL" H hs=0[_2 "("_3")"]],
    CallStmt.3:iter-sep                 -- _1 ",",
 
-   #R1221 --,
-   ProcedureDesignator                 -- _1,
-
-   #R1222 --,
-   ppActualArgSpec                     -- _1 _2,
-   ppKeyword                           -- _1 "=",
-
-   #R1224 --,
-   AltReturnSpec                       -- "*" _1,
+   Arg                                 -- _1,
+   Arg                                 -- _1 "=" _2,
+   ppArg                               -- _1,
+   AltReturn                           -- "*" _1,
+   no-keyword                          -- ,
 
    #R1233 --,
    Subroutine                          -- V [_1 _2 _3],
@@ -852,8 +848,6 @@
    EndSubroutineStmt                   -- H hs=0 [H hs=1[_1 "END SUBROUTINE" _2] "\n"],
 
    STAR                                -- "*",
-   OfpArgList                          -- _1,
-   OfpArgList.1:iter-star-sep          -- _1 ",",
 
    no-prefix                           -- ,
    no-subroutine-name                  -- ,
