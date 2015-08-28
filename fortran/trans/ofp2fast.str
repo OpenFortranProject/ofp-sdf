@@ -357,8 +357,20 @@ ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {C
 //  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
-  ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
+ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
+ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
+
+//R733
+ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos("\n"))
+            -> PointerAssignmentStmt(label,obj,list,expr)
+ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos(str) )
+            -> PointerAssignmentStmt(label,obj,list,expr) {Comment(str)}
+
+//R734
+ofp-to-ast:  no-component-name()                      -> no-name()
+
+//R735
+ofp-to-ast:  BoundsRemapping(lb,ub)                   -> Triplet(lb,ub,no-stride())
 
 //R801
 ofp-to-ast:  Block(execs) -> execs
