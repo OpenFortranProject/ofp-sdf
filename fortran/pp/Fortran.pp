@@ -113,9 +113,18 @@
    #R425 --,
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
 
-   DerivedTypeStmt               -- H hs=1[_1 "TYPE" H hs=0[_2 _3 _4]],
+   DerivedTypeStmt               -- H hs=1[_1 "TYPE," H hs=0[_2 " :: " _3 "(" _4 ")"]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
-   DerivedTypeStmt.4:iter-sep    -- _1 ", ",
+   DerivedTypeStmt.4:iter-sep    -- _1 ",",
+
+   ppDerivedTypeStmt             -- H hs=1[_1 "TYPE" _2],
+
+   ppDerivedTypeStmt_attrs              -- H hs=1[_1 "TYPE," H hs=0[_2 " :: " _3]],
+   ppDerivedTypeStmt_attrs.2:iter-sep   -- _1 ", ",
+
+   ppDerivedTypeStmt_params             -- H hs=1[_1 "TYPE" H hs=0[" :: " _2 "(" _3 ")"]],
+   ppDerivedTypeStmt_params.3:iter-sep  -- _1 ",",
+
 
    EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE"] _2],
 
@@ -440,15 +449,12 @@
    #R732 --,
    AssignmentStmt                -- H [_1 _2 "=" _3],
 
-   #R733 --,
-   PointerAssignmentStmt         -- H hs=1[_1 H hs=0[_2 "("_3")" KW[" => "] _4 _5]],
-   PointerAssignmentStmt.3:iter-sep  -- _1 ", ",
+   ppPointerAssignmentStmt       -- H hs=1[_1 H hs=0[_2          " => " _3]],
+   ppPointerAssignmentStmt       -- H hs=1[_1 H hs=0[_2 "("_3")" " => " _4]],
+   ppPointerAssignmentStmt.3:iter-sep  -- _1 ",",
 
-   #R734 --,
-   DataPointerObject             -- _1 "%" _2,
-
-   #R736 --,
-   BoundsRemapping               -- _1 ":" _2,
+   ppDataPointerObject           -- _1,
+     DataPointerObject           -- _1 "%" _2,
 
    #R741 --,
    WhereStmt                     -- H hs=1[_1 KW["WHERE"] H hs=0["("_2")"] H hs=0[_3]],
