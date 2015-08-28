@@ -459,12 +459,32 @@ ofp-to-ast:
 //  ofp-to-ast:  GenericSpec(spec)              -> OfpGenericSpec(spec)
 
 //R1209
-ofp-to-ast:  ImportStmt(label,names,eos("\n"))   -> ImportStmt(label,names)
-ofp-to-ast:  ImportStmt(label,names,eos(str))    -> ImportStmt(label,names) {Comment(str)}
+ofp-to-ast =  ?ImportStmt(label,names,eos("\n"))    ;  !ImportStmt(label,names)
+          <+  ?ImportStmt(label,names,eos(str) )    ;  !ImportStmt(label,names) {Comment(str)}
+
+//R1210
+ofp-to-ast =  ?ExternalStmt(label,names,eos("\n"))  ;  !ExternalStmt(label,names)
+          <+  ?ExternalStmt(label,names,eos(str) )  ;  !ExternalStmt(label,names) {Comment(str)}
 
 //R1211
 //ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
 //              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)      {Comment(eos)}
+
+//R1218
+ofp-to-ast =  ?IntrinsicStmt(label,names,eos("\n")) ;  !IntrinsicStmt(label,names)
+          <+  ?IntrinsicStmt(label,names,eos(str) ) ;  !IntrinsicStmt(label,names) {Comment(str)}
+
+//R1219
+ofp-to-ast:  ProcedureDesignator(expr)              ->  expr
+
+//R1220
+ofp-to-ast =  ?CallStmt(label,proc,args,eos("\n"))  ;  !CallStmt(label,proc,args)
+          <+  ?CallStmt(label,proc,args,eos(str) )  ;  !CallStmt(label,proc,args) {Comment(str)}
+
+//R1222
+ofp-to-ast =  ?ActualArgSpec(keyword,AltReturnSpec(label))  ;  !Arg(keyword,AltReturn(label))
+          <+  ?ActualArgSpec(no-keyword(),expr)             ;  !expr
+          <+  ?ActualArgSpec(   keyword  ,expr)             ;  !Arg(keyword,expr)
 
 //R1227
   ofp-to-ast:  FunctionSubprogram(begin,spec,exec,funcs,end)
