@@ -69,6 +69,9 @@ signature
     AcSpec                    : OptTypeSpec * List(AcValue) -> AcSpec
     ParameterStmt             : OptLabel * List(NamedConstantDef) -> ParameterStmt
     AssignmentStmt            : OptLabel * VarDef * Expr -> AssignmentStmt
+    PointerAssignmentStmt     : OptLabel * DataPointerObject * List(Range) * Expr -> PointerAssignmentStmt
+    DataPointerObject         : Var * NoName -> DataPointerObject
+    DataPointerObject         : Var * Name -> DataPointerObject
     GE                        : GE
     GT                        : GT
     LE                        : LE
@@ -96,10 +99,8 @@ signature
     COLON                     : DimSpec
     Range                     : Expr * Expr -> Range
     Var                       : Name * Type * OptInitialization -> Var
-    ArrayVar                  : Name * ArrayType * OptInitialization -> ArrayVar
     TypeDeclarationStmt       : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
                               : Var -> EntityDecl
-                              : ArrayVar -> EntityDecl
     INTEGER                   : IntrinsicType
     INTEGER                   : Kind -> IntrinsicType
     REAL                      : IntrinsicType
@@ -145,6 +146,9 @@ signature
     FinalProcedureStmt        : OptLabel * List(Name) -> FinalProcedureStmt
     AccessStmt                : OptLabel * AccessSpec * List(AccessId) -> AccessStmt
                               : GenericSpec -> AccessId
+    AllocatableStmt           : OptLabel * List(AllocatableDecl) -> AllocatableStmt
+                              : Var -> AllocatableDecl
+    AsynchronousStmt          : OptLabel * List(Name) -> AsynchronousStmt
     Kind                      : Expr -> Kind
     IntVal                    : String -> IntVal
     IntVal                    : String * Kind -> IntVal
@@ -242,6 +246,7 @@ signature
                               : OfpCallStmt -> Stmt
                               : ParameterStmt -> Stmt
                               : AssignmentStmt -> Stmt
+                              : PointerAssignmentStmt -> Stmt
                               : DerivedTypeStmt -> Stmt
                               : EndTypeStmt -> Stmt
                               : DataComponentDefStmt -> Stmt
@@ -249,6 +254,8 @@ signature
                               : PrivateComponentsStmt -> Stmt
                               : FinalProcedureStmt -> Stmt
                               : AccessStmt -> Stmt
+                              : AllocatableStmt -> Stmt
+                              : AsynchronousStmt -> Stmt
                               : ExitStmt -> Stmt
                               : Block -> Stmt
                               : EndBlockStmt -> Stmt
@@ -483,6 +490,7 @@ signature
                               : LogicalLiteralConstant -> LiteralConstant
                               : ComplexLiteralConstant -> LiteralConstant
                               : LiteralConstant -> Constant
+    no-name                   : NoName
                               : String -> Name
                               : Ident -> Name
     eos                       : EOStmt -> EOS

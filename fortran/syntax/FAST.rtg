@@ -747,6 +747,12 @@ regular tree grammar
     Stmt                              -> AssignmentStmt
     AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
 
+    Stmt                              -> PointerAssignmentStmt
+    PointerAssignmentStmt             -> PointerAssignmentStmt(OptLabel,DataPointerObject,ListStarOfRange,Expr)
+
+    DataPointerObject                 -> DataPointerObject(Var,NoName)
+    DataPointerObject                 -> DataPointerObject(Var,Name)
+
     Expr                              -> Expr(OfpVarRef)
     Expr                              -> Expr(OfpLiteral)
     OfpOp                             -> GE
@@ -1549,17 +1555,11 @@ regular tree grammar
     ProcTarget                        -> Expr
     ProcedureComponentName            -> Ident
     ProcComponentRef                  -> ProcComponentRef(Variable,ProcedureComponentName)
-    DataTarget                        -> Expr
     NoUpperBoundExpr                  -> no-upper-bounds()
     BoundsRemapping                   -> BoundsRemapping(LowerBoundExpr,UpperBoundExpr)
     BoundsRemapping                   -> BoundsRemapping(LowerBoundExpr,NoUpperBoundExpr)
     NoDataPointerComponentName        -> no-component-name()
-    DataPointerComponentName          -> Ident
-    DataPointerObject                 -> DataPointerObject(Variable,DataPointerComponentName)
-    DataPointerObject                 -> DataPointerObject(VariableName,NoDataPointerComponentName)
-    OptBoundsRemappingList            -> no-list()
-    OptBoundsRemappingList            -> paren-list(ListPlusOfBoundsRemapping0)
-    PointerAssignmentStmt             -> PointerAssignmentStmt(OptLabel,DataPointerObject,OptBoundsRemappingList,DataTarget,EOS)
+
     IntConstantExpr                   -> IntExpr
     DefaultCharConstantExpr           -> DefaultCharExpr
     ConstantExpr                      -> Expr
