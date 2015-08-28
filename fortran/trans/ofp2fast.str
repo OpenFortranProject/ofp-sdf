@@ -467,8 +467,11 @@ ofp-to-ast =  ?ExternalStmt(label,names,eos("\n"))  ;  !ExternalStmt(label,names
           <+  ?ExternalStmt(label,names,eos(str) )  ;  !ExternalStmt(label,names) {Comment(str)}
 
 //R1211
-//ofp-to-ast: ProcedureDeclarationStmt(label,intr,specs,decls,eos)
-//              -> OfpProcedureDeclarationStmt(<ofp-label>label,intr,specs,decls)      {Comment(eos)}
+ofp-to-ast =
+      ?ProcedureDeclarationStmt(label,intr,specs,decls,eos("\n"))
+   ;  !ProcedureDeclarationStmt(label,intr,specs,decls)
+  <+  ?ProcedureDeclarationStmt(label,intr,specs,decls,eos(str))
+   ;  !ProcedureDeclarationStmt(label,intr,specs,decls) {Comment(str)}
 
 //R1218
 ofp-to-ast =  ?IntrinsicStmt(label,names,eos("\n")) ;  !IntrinsicStmt(label,names)
