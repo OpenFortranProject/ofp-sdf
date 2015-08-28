@@ -614,10 +614,10 @@ regular tree grammar
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
 
-    Decl                              -> OfpMpSubprogram
-    OfpEndMpSubprogramStmt            -> OfpEndMpSubprogramStmt(OptLabel,OptName)
-    OfpMpSubprogramStmt               -> OfpMpSubprogramStmt(OptLabel,Name)
-    OfpMpSubprogram                   -> OfpMpSubprogram(OptName,Scope)
+    Decl                              -> MpSubprogram
+    MpSubprogram                      -> MpSubprogram(MpSubprogramStmt,Scope,EndMpSubprogramStmt)
+    MpSubprogramStmt                  -> MpSubprogramStmt(OptLabel,Name)
+    EndMpSubprogramStmt               -> EndMpSubprogramStmt(OptLabel,OptName)
 
     ProgramUnit     -> Function
     Function        -> Function(FunctionStmt,Scope,EndFunctionStmt)
