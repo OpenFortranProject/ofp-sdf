@@ -508,17 +508,23 @@ ofp-to-ast =  ?ActualArgSpec(keyword,AltReturnSpec(label))  ;  !Arg(keyword,AltR
                    -> Subroutine(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
 
 //R1234
-  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos("\n"))
+ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos("\n"))
                    -> SubroutineStmt(label,prefix,name,args,binding)
-  ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos(str) )
+ofp-to-ast:  SubroutineStmt(label,prefix,name,args,binding,eos(str) )
                    -> SubroutineStmt(label,prefix,name,args,binding) {Comment(str)}
 
 //R1236
-  ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
-  ofp-to-ast:  EndSubroutineStmt(label,name,eos(str) ) -> EndSubroutineStmt(label,name) {Comment(str)}
-
+ofp-to-ast:  EndSubroutineStmt(label,name,eos("\n")) -> EndSubroutineStmt(label,name)
+ofp-to-ast:  EndSubroutineStmt(label,name,eos(str) ) -> EndSubroutineStmt(label,name) {Comment(str)}
 
 //R1237
-  ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
-                   -> OfpMpSubprogram(<ofp-extract-name>begin,
-                                      <ofp-fixup-scope>Scope(spec,exec,funcs))
+ofp-to-ast:  SeparateModuleSubprogram(begin,spec,exec,funcs,end)
+                      -> MpSubprogram(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
+
+//R1238
+ofp-to-ast =  ?MpSubprogramStmt(label,name,eos("\n"))     ;  !MpSubprogramStmt(label,name)
+          <+  ?MpSubprogramStmt(label,name,eos(str) )     ;  !MpSubprogramStmt(label,name) {Comment(str)}
+
+//R1239
+ofp-to-ast =  ?EndMpSubprogramStmt(label,name,eos("\n"))  ;  !EndMpSubprogramStmt(label,name)
+          <+  ?EndMpSubprogramStmt(label,name,eos(str) )  ;  !EndMpSubprogramStmt(label,name) {Comment(str)}
