@@ -33,8 +33,7 @@ signature
 
     ppCoarrayType  : ListStarOfRange -> ppArrayType
 
-    ppActualArgSpec: ppKeyword * arg -> ppActualArgSpec
-    ppKeyword      : keyword         -> ppKeyword
+    ppArg          : arg             -> ppArg
 
     ppVar          : name * init      -> ppVar
     ppLiteralKind  : val              -> ppLiteralKind
@@ -190,14 +189,8 @@ ast-to-pp:  DataPointerObject(var,no-name())       ->  ppDataPointerObject(var)
 //  ast-to-pp:
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
 
-//R1104
-//  ast-to-pp:  OfpModule(name, scope)       -> ppModule(scope)
-
-//R1116
-//  ast-to-pp:  OfpSubmodule(name, scope)    -> ppSubmodule(scope)
-
 //R1222
-  ast-to-pp:  ActualArgSpec(keyword, arg)  -> ppActualArgSpec(ppKeyword(keyword), arg)
+ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
 
 //R1227
 //  ast-to-pp:  OfpFunction(name, scope)     -> ppFunction(scope)
@@ -247,8 +240,6 @@ ast-to-pp:  DataPointerObject(var,no-name())       ->  ppDataPointerObject(var)
 //  no-to-none: no-else-stmt()               -> None()   // R832
 //  no-to-none: no-loop-control()            -> None()   // R818
 //  no-to-none: no-subscript()               -> None()   // R619
-
-  no-to-none: ppKeyword(no-keyword())      -> None()   // R215
 
   no-to-none: ppSectionSubscripts(no-section-subscripts()) -> None()
   no-to-none: ppImageSelector(no-image-selector())         -> no-image-selector()
