@@ -31,23 +31,7 @@ regular tree grammar
     ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListStarOfOfpPrefixSpec0)
     ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListPlusOfOfpPrefixSpec0)
     ListPlusOfOfpPrefixSpec0          -> <cons>(OfpPrefixSpec,ListStarOfOfpPrefixSpec0)
-    ListStarOfOfpArg0                 -> ListPlusOfOfpArg0
-    ListStarOfOfpArg0                 -> <nil>()
-    ListStarOfOfpArg0                 -> <conc>(ListStarOfOfpArg0,ListStarOfOfpArg0)
-    ListPlusOfOfpArg0                 -> <conc>(ListStarOfOfpArg0,ListPlusOfOfpArg0)
-    ListPlusOfOfpArg0                 -> <conc>(ListPlusOfOfpArg0,ListStarOfOfpArg0)
-    ListPlusOfOfpArg0                 -> <conc>(ListPlusOfOfpArg0,ListPlusOfOfpArg0)
-    ListPlusOfOfpArg0                 -> <cons>(OfpArg,ListStarOfOfpArg0)
 
-    ListStarOfProcAttrSpec0           -> ListPlusOfProcAttrSpec0
-    ListStarOfProcAttrSpec0           -> <nil>()
-    ListStarOfProcAttrSpec0           -> <conc>(ListStarOfProcAttrSpec0,ListStarOfProcAttrSpec0)
-    ListPlusOfProcAttrSpec0           -> <conc>(ListStarOfProcAttrSpec0,ListPlusOfProcAttrSpec0)
-    ListPlusOfProcAttrSpec0           -> <conc>(ListPlusOfProcAttrSpec0,ListStarOfProcAttrSpec0)
-    ListPlusOfProcAttrSpec0           -> <conc>(ListPlusOfProcAttrSpec0,ListPlusOfProcAttrSpec0)
-    ListPlusOfProcAttrSpec0           -> <cons>(ProcAttrSpec,ListStarOfProcAttrSpec0)
-    OptProcInterface0                 -> <some>(ProcInterface)
-    OptProcInterface0                 -> <none>()
     OptMODULE0                        -> <some>(MODULE)
     OptMODULE0                        -> <none>()
     OptOfpGenericSpec0                -> <some>(OfpGenericSpec)
@@ -110,21 +94,6 @@ regular tree grammar
     ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
     ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
     ListPlusOfActualArgSpec0          -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
-    ListStarOfIntrinsicProcedureName0 -> ListPlusOfIntrinsicProcedureName0
-    ListStarOfIntrinsicProcedureName0 -> <nil>()
-    ListStarOfIntrinsicProcedureName0 -> <conc>(ListStarOfIntrinsicProcedureName0,ListStarOfIntrinsicProcedureName0)
-    ListPlusOfIntrinsicProcedureName0 -> <conc>(ListStarOfIntrinsicProcedureName0,ListPlusOfIntrinsicProcedureName0)
-    ListPlusOfIntrinsicProcedureName0 -> <conc>(ListPlusOfIntrinsicProcedureName0,ListStarOfIntrinsicProcedureName0)
-    ListPlusOfIntrinsicProcedureName0 -> <conc>(ListPlusOfIntrinsicProcedureName0,ListPlusOfIntrinsicProcedureName0)
-    ListPlusOfIntrinsicProcedureName0 -> <cons>(IntrinsicProcedureName,ListStarOfIntrinsicProcedureName0)
-
-    ListStarOfExternalName0           -> ListPlusOfExternalName0
-    ListStarOfExternalName0           -> <nil>()
-    ListStarOfExternalName0           -> <conc>(ListStarOfExternalName0,ListStarOfExternalName0)
-    ListPlusOfExternalName0           -> <conc>(ListStarOfExternalName0,ListPlusOfExternalName0)
-    ListPlusOfExternalName0           -> <conc>(ListPlusOfExternalName0,ListStarOfExternalName0)
-    ListPlusOfExternalName0           -> <conc>(ListPlusOfExternalName0,ListPlusOfExternalName0)
-    ListPlusOfExternalName0           -> <cons>(ExternalName,ListStarOfExternalName0)
 
     ListStarOfModuleSubprogram0       -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0       -> <nil>()
@@ -676,17 +645,6 @@ regular tree grammar
     OfpPrefixSpec                     -> IMPURE(IMPURE)
     OfpPrefixSpec                     -> ELEMENTAL(ELEMENTAL)
     Prefix                            -> Prefix(ListStarOfOfpPrefixSpec0)
-    OfpArg                            -> OfpArg(Expr,OfpKeyword)
-    OfpArg                            -> OfpArg(Expr)
-    OfpProcRef                        -> OfpProcRef(Expr)
-    Stmt                              -> OfpCallStmt
-    OfpCallStmt                       -> OfpCallStmt(OptLabel,OfpProcRef,ListPlusOfOfpArg0)
-    Decl                              -> OfpIntrinsicStmt
-    OfpIntrinsicStmt                  -> OfpIntrinsicStmt(OptLabel,ListPlusOfName)
-    Decl                              -> OfpProcedureDeclarationStmt
-    OfpProcedureDeclarationStmt       -> OfpProcedureDeclarationStmt(OptLabel,OptProcInterface0,ListStarOfProcAttrSpec0,ListPlusOfProcDecl0)
-    Decl                              -> OfpExternalStmt
-    OfpExternalStmt                   -> OfpExternalStmt(OptLabel,ListPlusOfName)
 
     ASSIGNMENT                        -> ASSIGNMENT()
 
@@ -891,6 +849,13 @@ regular tree grammar
     Stmt                              -> ProcComponentDefStmt
     ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec,ListPlusOfProcDecl)
 
+    ProcDecl                          -> ProcDecl(Name,ProcPointerInit)
+    ProcDecl                          -> ProcDecl(Name,NoProcPointerInit)
+
+    NoProcPointerInit                 -> no-init()
+    ProcPointerInit                   -> InitialProcTarget
+    ProcPointerInit                   -> NullInit
+
     ProcComponentAttrSpec             -> POINTER()
     ProcComponentAttrSpec             -> PASS()
     ProcComponentAttrSpec             -> NOPASS()
@@ -946,7 +911,7 @@ regular tree grammar
 
     OfpFile                           -> OfpFile(String)
     OfpLiteral                        -> OfpLiteral(String)
-    OfpKeyword                        -> OfpKeyword(String)
+
     STAR                              -> <string>
     RECURSIVE                         -> <string>
     PURE                              -> <string>
@@ -1000,14 +965,6 @@ regular tree grammar
     OptPrefix                         -> no-prefix()
     OptPrefix                         -> Prefix
     Prefix                            -> ListPlusOfPrefixSpec0
-    AltReturnSpec                     -> AltReturnSpec(Label)
-    ActualArg                         -> AltReturnSpec
-    ActualArg                         -> Expr
-    ActualArgSpec                     -> ActualArgSpec(Keyword,ActualArg)
-    ActualArgSpec                     -> ActualArgSpec(NoKeyword,ActualArg)
-    ProcedureDesignator               -> ProcedureDesignator(DataRef,BindingName)
-    ProcedureDesignator               -> ProcedureDesignator(ProcedureName)
-    NoActualArgSpecList               -> no-list()
 
     Stmt                              -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,ConstructName)
@@ -1083,9 +1040,36 @@ regular tree grammar
     DefinedIoGenericSpec              -> WRITE_FORMATTED()
     DefinedIoGenericSpec              -> WRITE_UNFORMATTED()
 
-    Stmt                              -> ImportStmt
+    Decl                              -> ImportStmt
     ImportStmt                        -> ImportStmt(OptLabel,ListStarOfName)
 
+    Decl                              -> ExternalStmt
+    ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfName)
+
+    Decl                              -> ProcedureDeclarationStmt
+    ProcedureDeclarationStmt          -> ProcedureDeclarationStmt(OptLabel,OptProcInterface,ListStarOfProcAttrSpec,ListPlusOfProcDecl)
+
+    OptProcInterface                  -> no-proc-interface()
+    OptProcInterface                  -> ProcInterface
+    ProcInterface                     -> DeclarationTypeSpec
+    ProcInterface                     -> Name
+
+    Decl                              -> IntrinsicStmt
+    IntrinsicStmt                     -> IntrinsicStmt(OptLabel,ListPlusOfName)
+
+    Stmt                              -> CallStmt
+    CallStmt                          -> CallStmt(OptLabel,ProcRef,ListPlusOfArg)
+
+    ProcRef                           -> Expr
+    Arg                               -> Expr
+    Arg                               -> Arg(Keyword,Expr)
+    Arg                               -> Arg(OptKeyword,AltReturn)
+
+    OptKeyword                        -> no-keyword()
+    OptKeyword                        -> Keyword
+    Keyword                           -> <string>
+
+    AltReturn                         -> AltReturn(Label)
 
 
 
@@ -1093,21 +1077,10 @@ regular tree grammar
 
 
 
-
-
-    CallStmt                          -> CallStmt(OptLabel,ProcedureDesignator,ListStarOfActualArgSpec0,EOS)
-    CallStmt                          -> CallStmt(OptLabel,ProcedureDesignator,NoActualArgSpecList,EOS)
     FunctionReference                 -> FunctionReference(ProcedureDesignator,ListStarOfActualArgSpec0)
     IntrinsicProcedureName            -> Ident
-    IntrinsicStmt                     -> IntrinsicStmt(OptLabel,ListPlusOfIntrinsicProcedureName0,EOS)
-    IntrinsicStmt                     -> IntrinsicStmt(OptLabel,ListPlusOfIntrinsicProcedureName0,EOS)
     InitialProcTarget                 -> ProcedureName
-    NoProcPointerInit                 -> no-init()
-    ProcPointerInit                   -> InitialProcTarget
-    ProcPointerInit                   -> NullInit
-    ProcedureEntityName               -> Ident
-    ProcDecl                          -> ProcDecl(ProcedureEntityName,ProcPointerInit)
-    ProcDecl                          -> ProcDecl(ProcedureEntityName,NoProcPointerInit)
+
     NoProcAttrSpecList                -> no-list()
     OptProcAttrSpecList               -> no-list()
     OptProcAttrSpecList               -> comma-list(ListPlusOfProcAttrSpec1)
@@ -1117,15 +1090,8 @@ regular tree grammar
     ProcAttrSpec                      -> INTENT(IntentSpec)
     ProcAttrSpec                      -> ProcLanguageBindingSpec
     ProcAttrSpec                      -> AccessSpec
-    OptProcInterface                  -> no-proc-interface()
-    OptProcInterface                  -> ProcInterface
-    ProcInterface                     -> DeclarationTypeSpec
-    ProcInterface                     -> InterfaceName
-    ProcedureDeclarationStmt          -> ProcedureDeclarationStmt(OptLabel,OptProcInterface,OptProcAttrSpecList,ListPlusOfProcDecl,EOS)
-    ProcedureDeclarationStmt          -> ProcedureDeclarationStmt(OptLabel,OptProcInterface,NoProcAttrSpecList,ListPlusOfProcDecl,EOS)
+
     ExternalName                      -> Ident
-    ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
-    ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfExternalName0,EOS)
 
     BlockDataName                     -> Ident
     NoBlockDataName                   -> no-block-data-name()
@@ -1146,9 +1112,6 @@ regular tree grammar
     OptModuleSubprogramPart           -> no-module-subprogram-part()
     OptModuleSubprogramPart           -> ModuleSubprogramPart
     ModuleSubprogramPart              -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
-
-    NoKeyword                         -> no-keyword()
-    Keyword                           -> Name
 
     InternalSubprogram                -> SubroutineSubprogram
     InternalSubprogram                -> FunctionSubprogram
@@ -2138,6 +2101,14 @@ regular tree grammar
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListPlusOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <cons>(ImplicitSpec,ListStarOfImplicitSpec)
 
+    ListStarOfProcAttrSpec            -> ListPlusOfProcAttrSpec
+    ListStarOfProcAttrSpec            -> <nil>()
+    ListStarOfProcAttrSpec            -> <conc>(ListStarOfProcAttrSpec,ListStarOfProcAttrSpec)
+    ListPlusOfProcAttrSpec            -> <conc>(ListStarOfProcAttrSpec,ListPlusOfProcAttrSpec)
+    ListPlusOfProcAttrSpec            -> <conc>(ListPlusOfProcAttrSpec,ListStarOfProcAttrSpec)
+    ListPlusOfProcAttrSpec            -> <conc>(ListPlusOfProcAttrSpec,ListPlusOfProcAttrSpec)
+    ListPlusOfProcAttrSpec            -> <cons>(ProcAttrSpec,ListStarOfProcAttrSpec)
+
     ListStarOfAllocatableDecl        -> ListPlusOfAllocatableDecl
     ListStarOfAllocatableDecl        -> <nil>()
     ListStarOfAllocatableDecl        -> <conc>(ListStarOfAllocatableDecl,ListStarOfAllocatableDecl)
@@ -2161,6 +2132,14 @@ regular tree grammar
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListStarOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListPlusOfRename)
     ListPlusOfRename                 -> <cons>(OfpRename,ListStarOfRename)
+
+    ListStarOfArg                    -> ListPlusOfArg
+    ListStarOfArg                    -> <nil>()
+    ListStarOfArg                    -> <conc>(ListStarOfArg,ListStarOfArg)
+    ListPlusOfArg                    -> <conc>(ListStarOfArg,ListPlusOfArg)
+    ListPlusOfArg                    -> <conc>(ListPlusOfArg,ListStarOfArg)
+    ListPlusOfArg                    -> <conc>(ListPlusOfArg,ListPlusOfArg)
+    ListPlusOfArg                    -> <cons>(Arg,ListStarOfArg)
 
     ListStarOfInterfaceSpecification -> ListPlusOfInterfaceSpecification
     ListStarOfInterfaceSpecification -> <nil>()
