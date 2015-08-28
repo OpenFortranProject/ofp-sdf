@@ -804,12 +804,13 @@
    ImportStmt.2:iter-sep               -- _1 ", ",
 
    #R1210 --,
-   ExternalStmt                        -- H hs=1[_1 KW["EXTERNAL ::"] H hs=0[_2 _3]],
+   ExternalStmt                        -- H hs=1[_1 "EXTERNAL ::" H hs=0[_2]],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
    #R1211 --,
-   ProcedureDeclarationStmt            --H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] H hs=0[_4 _5]],
-   ProcedureDeclarationStmt.4:iter-sep    -- _1 ", ",
+   ProcedureDeclarationStmt            --H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] H hs=0[_4]],
+   ProcedureDeclarationStmt.4:iter-sep -- _1 ", ",
+   no-proc-interface                   -- ,
   
    #R1214 --,
    ProcDecl                            -- _1 _2,
@@ -824,7 +825,7 @@
    no-result                           -- ,
 
    #R1218 --,
-   IntrinsicStmt                       -- H hs=1[_1 "INTRINSIC ::" H hs=0[_2 _3]],
+   IntrinsicStmt                       -- H hs=1[_1 "INTRINSIC ::" H hs=0[_2]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    #R1219 --,
