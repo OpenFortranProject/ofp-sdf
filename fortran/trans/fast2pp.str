@@ -36,9 +36,6 @@ signature
     ppActualArgSpec: ppKeyword * arg -> ppActualArgSpec
     ppKeyword      : keyword         -> ppKeyword
 
-    ppDimSpec      : upper            -> ppDimSpec
-    ppDimSpec      : lower * upper    -> ppDimSpec
-
     ppVar          : name * init      -> ppVar
     ppLiteralKind  : val              -> ppLiteralKind
 
@@ -51,6 +48,11 @@ signature
     ppSectionSubscripts : ss             -> ppSectionSubscripts
     ppImageSelector     : ss             -> ppImageSelector
 
+    ppDerivedTypeStmt        : label * name           -> ppDerivedTypeStmt
+    ppDerivedTypeStmt_attrs  : label * attrs * name   -> ppDerivedTypeStmt_attrs
+    ppDerivedTypeStmt_params : label * name * params  -> ppDerivedTypeStmt_params
+
+
     ppAllocation        : ppPartRef           -> ppAllocation
     ppAllocationShape   : ppPartRef * shape   -> ppAllocationShape
     ppAllocationCoshape : ppPartRef * coshape -> ppAllocationCoshape
@@ -58,6 +60,10 @@ signature
     ppAllocShapeSpec    : lower * upper       -> ppAllocShapeSpec
     ppAllocCoshapeSpec  : upper               -> ppAllocCoshapeSpec
     ppAllocCoshapeSpec  : lower * upper       -> ppAllocCoshapeSpec
+
+    ppPointerAssignmentStmt : label * obj * expr           -> ppPointerAssignmentStmt
+    ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
+    ppDataPointerObject     : var                          -> ppDataPointObject
 
     ppSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
 
@@ -102,6 +108,12 @@ ast-to-pp:  CHARACTER(no-char-length(),kind) -> ppCharNoLen(kind)
 //R408
 ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
 
+//R426
+ast-to-pp =
+      ?DerivedTypeStmt(label,[],name,[])      ;  !ppDerivedTypeStmt(label,name)
+  <+  ?DerivedTypeStmt(label,attrs,name,[])   ;  !ppDerivedTypeStmt_attrs(label,attrs,name)
+  <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
+
 //R503
 ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
            -> ppArrayVar(name,ppArrayType(dims),init)
@@ -129,7 +141,7 @@ ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
 //R612
 ast-to-pp:  PartRef(name,ss,is)            -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
 
-stride-separator = ?no-stride < !"" + !":"
+stride-separator = ?no-stride() < !"" + !":"
 
 //R621
 ast-to-pp:  Triplet(lb,ub,stride)          -> ppTriplet(lb,ub,<stride-separator>stride,stride)
@@ -146,6 +158,14 @@ ast-to-pp:  Triplet(lb,ub,stride)          -> ppTriplet(lb,ub,<stride-separator>
 //R637
 //  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound(),ub) -> ppAllocCoshapeSpec(ub)
 //  ast-to-pp:  AllocateCoshapeSpec(lb,ub)               -> ppAllocCoshapeSpec(lb,ub)
+
+//R733
+ast-to-pp =
+      ?PointerAssignmentStmt(label,obj,[],  expr)  ;  !ppPointerAssignmentStmt(label,obj     ,expr)
+  <+  ?PointerAssignmentStmt(label,obj,list,expr)  ;  !ppPointerAssignmentStmt(label,obj,list,expr)
+
+//R734
+ast-to-pp:  DataPointerObject(var,no-name())       ->  ppDataPointerObject(var)
 
 //R803
 //  ast-to-pp:
