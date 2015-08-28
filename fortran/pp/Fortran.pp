@@ -853,6 +853,12 @@
    no-prefix                           -- ,
    no-subroutine-name                  -- ,
 
+   #R1237 --,
+   MpSubprogram                        -- _1 _2 _3,
+   MpSubprogramStmt                    -- H hs=1[_1 "MODULE PROCEDURE" _2],
+   EndMpSubprogramStmt                 -- H hs=1[_1 "END PROCEDURE" _2],
+   no-procedure-name                   -- ,
+
    #R1241 --,
    ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3]
 
