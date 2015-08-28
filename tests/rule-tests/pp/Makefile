@@ -17,7 +17,7 @@ CHECK_LIST = R1101a.f90 R1101b.f90 R1101c.f90 R1101d.f90 R1101e.f90 R1101f.f90 R
              R720.f90 R721.f90 R722.fxx R723.fxx R733.fxx \
              R807.f90 R854.f90 \
              R1203.f90 R1206.f90 R1209.f90 R1210.f90 R1214.f90 R1218.f90 R1220.fxx \
-             R1234.f90
+             R1234.f90 R1237.fxx
 
 all : check
 
