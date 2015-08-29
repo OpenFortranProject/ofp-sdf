@@ -383,11 +383,20 @@ ofp-to-ast =  ?EndForallStmt(label,name,eos("\n"))             ;  !EndForallStmt
 //R801
 ofp-to-ast:  Block(execs) -> execs
 
+//R803
+ofp-to-ast =  ?AssociateStmt(label,name,list,eos("\n"))  ;  !AssociateStmt(label,name,list)
+          <+  ?AssociateStmt(label,name,list,eos(str) )  ;  !AssociateStmt(label,name,list) {Comment(str)}
+
+//R806
+ofp-to-ast =  ?EndAssociateStmt(label,name,eos("\n"))    ;  !EndAssociateStmt(label,name)
+          <+  ?EndAssociateStmt(label,name,eos(str) )    ;  !EndAssociateStmt(label,name) {Comment(str)}
+
 //R807
-ofp-to-ast:  BlockConstruct(BlockStmt(label,name,eos("\n")),specs,execs,end)
-             -> Block(label,name,Scope(specs,execs,[]),end)
-ofp-to-ast:  BlockConstruct(BlockStmt(label,name,eos(str)),specs,execs,end)
-             -> Block(label,name,Scope(specs,execs,[]),end) {Comment(str)}
+ofp-to-ast =
+      ?BlockConstruct(BlockStmt(label,name,eos("\n")),specs,execs,end)
+   ;  !Block(label,name,Scope(specs,execs,[]),end)
+  <+  ?BlockConstruct(BlockStmt(label,name,eos(str)),specs,execs,end)
+   ;  !Block(label,name,Scope(specs,execs,[]),end) {Comment(str)}
 
 //R809
 ofp-to-ast =  ?EndBlockStmt(label,name,eos("\n"))    ;  !EndBlockStmt(label,name)
