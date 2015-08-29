@@ -199,7 +199,7 @@ ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
 //  ast-to-pp:  OfpSubroutine(name, scope)   -> ppSubroutine(scope)
 
 //R1237
-  ast-to-pp:  OfpMpSubprogram(name, scope) -> ppMpSubprogram(scope)
+//ast-to-pp:  MpSubprogram(name, scope)        -> ppMpSubprogram(scope)
 
 
 //  no-to-none: no-kind-param()              -> None()   // R408
