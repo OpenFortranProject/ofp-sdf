@@ -462,18 +462,16 @@
    #R750 --,
    ForallConstruct               -- _1 _2 _3,
 
-   #R751 --,
-   ForallConstructStmt           -- H hs=1[_1 _2 KW["FORALL"] H hs=0[_3 _4]],
+   ForallConstructStmt           -- H hs=1[_1 _2 "FORALL" H hs=0[_3]],
 
-   #R752 --,
    ForallHeader                  -- "("_1 _2 _3")",
    ForallHeader.2:iter-sep       -- _1 ", ",
+   no-mask-expr                  -- ,
 
-   #R753 --,
    ForallTripletSpec             -- _1 "=" _2 ":" _3 _4,
+   no-forall-step                -- ,
 
-   #R758 --,
-   EndForallStmt                 -- H hs=1[_1 KW["END FORALL"] H hs=0[_2 _3]],
+   EndForallStmt                 -- H hs=1[_1 "END FORALL" H hs=0[_2]],
 
    #R801 --,
    AssociateConstruct            -- _1 _2 _3,
@@ -631,14 +629,14 @@
    PrintStmt.3:iter-sep          -- _1 ",",
 
    #R913 --,
-   FMT                           -- KW["FMT="] _1,
-   DECIMAL                       -- KW["DECIMAL="] _1,
-   SIZE                          -- KW["SIZE="] _1,
-   ADVANCE                       -- KW["ADVANCE="] _1,
-   REC                           -- KW["REC="] _1,
+   FMT                           -- "FMT=" _1,
+   DECIMAL                       -- "DECIMAL=" _1,
+   SIZE                          -- "SIZE=" _1,
+   ADVANCE                       -- "ADVANCE=" _1,
+   REC                           -- "REC=" _1,
 
    #R915 --,
-   Format_STAR                   -- KW["*"],
+   Format_STAR                   -- "*",
    Format                        -- _1,
 
    #R917 --,
@@ -685,34 +683,29 @@
    ASYNCHRONOUS                  -- KW ["ASYNCHRONOUS="] _1,
 
    #R1001 --,
-   FormatStmt                    -- H hs=1[_1 KW["FORMAT"] H hs=0 ["("_2")" _3]],
+   FormatStmt                    -- H hs=1[_1 H hs=0 ["FORMAT" "("_2")"]],
+   FormatStmt.2:iter-sep         -- _1 ",",
 
-   FormatStmt.1:iter-sep         -- _1 ", ",
-
-   R#1002 --,
    FormatSpec                    -- _1 _2,
-   FormatSpec.1:iter-sep         -- _1 ", ",
+   FormatSpec.1:iter-sep         -- _1 ",",
 
-   R#1004 --,
    R                             -- _1 "("_2")",
-   R.2:iter-sep                  -- _1 ", ",
+   R.2:iter-sep                  -- _1 ",",
+   no-r                          -- ,
+   no-m                          -- ,
 
-   R#1007 --,
-   I                             -- _1 KW["I"] _2 _3,
-   E                             -- _1 KW["E"] _2 KW["."] _3 _4,
-   F                             -- _1 KW["F"] _2 KW["."] _3,
+   I                             -- _1 "I" _2 _3,
+   E                             -- _1 "E" _2 "." _3 _4,
+   F                             -- _1 "F" _2 "." _3,
+   no-e                          -- ,
 
-   #R1013 --,
-   P                             -- _1 KW["P"],
-   SLASH                         -- KW ["/ "] _1,
-   COLON_ED                      -- KW[":"],
+   P                             -- _1 "P",
+   SLASH                         -- "/" _1,
+   COLON_ED                      -- ":",
 
-   #R1015 --,
-   X                             -- _1 KW["X"],
+   X                             -- _1 "X",
 
-   #R1021 --,
    CS                            -- _1,
-
 
    #R1101 --,
    MainProgram                   -- V [_1 _2 _3],
@@ -731,8 +724,8 @@
    no-module-name                -- ,
 
    #R1109 --,
-   UseStmt                       -- H hs=1[_1 "USE" H hs=0[_2 _3 _4]],
-   UseOnlyStmt                   -- H hs=1[_1 H hs=0["USE" _2 _3 ", ONLY: " _4]],
+   UseStmt                       -- H hs=1 [_1 "USE" H hs=0[_2 _3 _4]],
+   UseOnlyStmt                   -- H hs=1 [_1 "USE" H hs=0[_2 _3 ", ONLY: " _4]],
    OnlyList                      -- _1,
 
    #R1110 --,
@@ -745,8 +738,8 @@
    #R1116 --,
    Submodule                     -- V vs=0 [_1 _2 _3],
 
-   SubmoduleStmt                 -- H hs=1[_1 KW["SUBMODULE"] H hs=0["("_2")"] _3],
-   EndSubmoduleStmt              -- H hs=1[_1 "END SUBMODULE" H hs=0[_2]],
+   SubmoduleStmt                 -- H hs=1 [_1 "SUBMODULE" H hs=0["("_2")"] _3],
+   EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" H hs=0[_2]],
    no-parent-submodule-name      -- ,
 
    ParentIdentifier              -- _1 _2,
@@ -754,16 +747,14 @@
    #R1120 --,
    BlockData                     -- _1 _2 _3,
 
-   #R1121 --, 
-   BlockDataStmt                 -- _1 KW["BLOCK DATA"] _2 _3,
-
-   #R1122 --,
-   EndBlockDataStmt              -- _1 KW["END BLOCK DATA"] _2 _3,
+   BlockDataStmt                 -- _1 "BLOCK DATA" _2,
+   EndBlockDataStmt              -- _1 "END BLOCK DATA" _2,
+   no-block-data-name            -- ,
 
    #R1201 --,
    InterfaceBlock             -- V vs=0 [_1 _2 _3],
    InterfaceStmt              -- H hs=1 [_1 "INTERFACE" _2],
-   AbstractInterfaceStmt      -- H hs=1 [_1 "ABSTRACT INTERFACE" _2],
+   AbstractInterfaceStmt      -- H hs=1 [_1 "ABSTRACT INTERFACE"],
    EndInterfaceStmt           -- H hs=1 [_1 "END INTERFACE" _2],
    InterfaceBody              -- _1 _2 _3,
    no-generic-spec            --,
@@ -771,9 +762,6 @@
    #R1205 --,
    ppScope                       -- _1 _2,
    ppScope                       -- _1 _2 _3,
-
-   xxxScope                      -- V vs=0 [H hs=1 [_1] V vs=0 is=0 [_3]],
-
 
    OfpPrefix                           -- _1,
    OfpPrefix.1:iter-star               -- _1,
@@ -855,11 +843,11 @@
 
    #R1237 --,
    MpSubprogram                        -- _1 _2 _3,
-   MpSubprogramStmt                    -- H hs=1[_1 "MODULE PROCEDURE" _2],
-   EndMpSubprogramStmt                 -- H hs=1[_1 "END PROCEDURE" _2],
+   MpSubprogramStmt                    -- H hs=1 [_1 "MODULE PROCEDURE" _2],
+   EndMpSubprogramStmt                 -- H hs=1 [_1 "END PROCEDURE" _2],
    no-procedure-name                   -- ,
 
-   #R1241 --,
-   ReturnStmt                          -- H hs=1[_1 KW["RETURN"] _2 _3]
+   ReturnStmt                          -- H hs=1 [_1 "RETURN" _2],
+   no-expr                             --
 
 ]
