@@ -209,13 +209,6 @@ regular tree grammar
     ListPlusOfElseIfStmtAndBlock0     -> <conc>(ListPlusOfElseIfStmtAndBlock0,ListStarOfElseIfStmtAndBlock0)
     ListPlusOfElseIfStmtAndBlock0     -> <conc>(ListPlusOfElseIfStmtAndBlock0,ListPlusOfElseIfStmtAndBlock0)
     ListPlusOfElseIfStmtAndBlock0     -> <cons>(ElseIfStmtAndBlock,ListStarOfElseIfStmtAndBlock0)
-    ListStarOfAssociation0            -> ListPlusOfAssociation0
-    ListStarOfAssociation0            -> <nil>()
-    ListStarOfAssociation0            -> <conc>(ListStarOfAssociation0,ListStarOfAssociation0)
-    ListPlusOfAssociation0            -> <conc>(ListStarOfAssociation0,ListPlusOfAssociation0)
-    ListPlusOfAssociation0            -> <conc>(ListPlusOfAssociation0,ListStarOfAssociation0)
-    ListPlusOfAssociation0            -> <conc>(ListPlusOfAssociation0,ListPlusOfAssociation0)
-    ListPlusOfAssociation0            -> <cons>(Association,ListStarOfAssociation0)
 
     ListStarOfWhereBodyConstruct0     -> ListPlusOfWhereBodyConstruct0
     ListStarOfWhereBodyConstruct0     -> <nil>()
@@ -984,6 +977,17 @@ regular tree grammar
     OptMaskExpr                       -> MaskExpr
     MaskExpr                          -> LogicalExpr
 
+    AssociateConstruct                -> AssociateConstruct(AssociateStmt,Block,EndAssociateStmt)
+
+    Stmt                              -> AssociateStmt
+    AssociateStmt                     -> AssociateStmt(OptLabel,OptName,ListPlusOfAssociation)
+
+    Association                       -> Association(Name,Selector)
+    Selector                          -> Expr
+
+    Stmt                              -> EndAssociateStmt
+    EndAssociateStmt                  -> EndAssociateStmt(OptLabel,OptName)
+
     Stmt                              -> Block
     Block                             -> Block(OptLabel,OptName,Scope,EndBlockStmt)
     Stmt                              -> EndBlockStmt
@@ -1410,8 +1414,7 @@ regular tree grammar
     TypeGuardStmt                     -> DefaultGuardStmt(OptLabel,OptSelectConstructName,EOS)
     TypeGuardStmt                     -> ClassGuardStmt(OptLabel,DerivedTypeSpec,OptSelectConstructName,EOS)
     TypeGuardStmt                     -> TypeGuardStmt(OptLabel,TypeSpec,OptSelectConstructName,EOS)
-    OptAssociateName                  -> no-name()
-    OptAssociateName                  -> a-name(AssociateName)
+
     SelectTypeStmt                    -> SelectTypeStmt(OptLabel,NoSelectConstructName,OptAssociateName,Selector,EOS)
     SelectTypeStmt                    -> SelectTypeStmt(OptLabel,SelectConstructName,OptAssociateName,Selector,EOS)
     TypeGuardStmtAndBlock             -> TypeGuardStmtBlock(TypeGuardStmt,Block)
@@ -1477,15 +1480,6 @@ regular tree grammar
     CriticalStmt                      -> CriticalStmt(OptLabel,NoName,EOS)
     CriticalStmt                      -> CriticalStmt(OptLabel,CriticalConstructName,EOS)
     CriticalConstruct                 -> CriticalConstruct(CriticalStmt,Block,EndCriticalStmt)
-    EndAssociateStmt                  -> EndAssociateStmt(OptLabel,NoName,EOS)
-    EndAssociateStmt                  -> EndAssociateStmt(OptLabel,AssociateConstructName,EOS)
-    Selector                          -> Expr
-    AssociateName                     -> Ident
-    Association                       -> Association(AssociateName,Selector)
-    AssociateConstructName            -> Ident
-    AssociateStmt                     -> AssociateStmt(OptLabel,NoName,ListPlusOfAssociation0,EOS)
-    AssociateStmt                     -> AssociateStmt(OptLabel,AssociateConstructName,ListPlusOfAssociation0,EOS)
-    AssociateConstruct                -> AssociateConstruct(AssociateStmt,Block,EndAssociateStmt)
 
     EndWhereStmt                      -> EndWhereStmt(OptLabel,NoName,EOS)
     EndWhereStmt                      -> EndWhereStmt(OptLabel,WhereConstructName,EOS)
@@ -2128,6 +2122,14 @@ regular tree grammar
     ListPlusOfForallTripletSpec       -> <conc>(ListPlusOfForallTripletSpec,ListStarOfForallTripletSpec)
     ListPlusOfForallTripletSpec       -> <conc>(ListPlusOfForallTripletSpec,ListPlusOfForallTripletSpec)
     ListPlusOfForallTripletSpec       -> <cons>(ForallTripletSpec,ListStarOfForallTripletSpec)
+
+    ListStarOfAssociation             -> ListPlusOfAssociation
+    ListStarOfAssociation             -> <nil>()
+    ListStarOfAssociation             -> <conc>(ListStarOfAssociation,ListStarOfAssociation)
+    ListPlusOfAssociation             -> <conc>(ListStarOfAssociation,ListPlusOfAssociation)
+    ListPlusOfAssociation             -> <conc>(ListPlusOfAssociation,ListStarOfAssociation)
+    ListPlusOfAssociation             -> <conc>(ListPlusOfAssociation,ListPlusOfAssociation)
+    ListPlusOfAssociation             -> <cons>(Association,ListStarOfAssociation)
 
     ListStarOfAllocatableDecl        -> ListPlusOfAllocatableDecl
     ListStarOfAllocatableDecl        -> <nil>()
