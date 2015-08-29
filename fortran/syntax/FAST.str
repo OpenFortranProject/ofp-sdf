@@ -7,9 +7,11 @@ signature
                               : String -> Label
                               : Name -> OptName
     no-name                   : OptName
-    OfpMpSubprogram           : OptName * Scope -> OfpMpSubprogram
+    MpSubprogram              : MpSubprogramStmt * Scope * EndMpSubprogramStmt -> MpSubprogram
+    MpSubprogramStmt          : OptLabel * Name -> MpSubprogramStmt
+    EndMpSubprogramStmt       : OptLabel * OptName -> EndMpSubprogramStmt
     Function                  : FunctionStmt * Scope * EndFunctionStmt -> Function
-    FunctionStmt              : OptLabel * Prefix * FunctionName * ArgList * OptResult * OptLanguageBinding -> FunctionStmt
+    FunctionStmt              : OptLabel * Prefix * FunctionName * List(Arg) * OptResult * OptLanguageBinding -> FunctionStmt
     EndFunctionStmt           : OptLabel * OptFunctionName -> EndFunctionStmt
     no-function-name          : OptFunctionName
                               : FunctionName -> OptFunctionName
@@ -22,17 +24,6 @@ signature
     LanguageBinding           : OptLanguageBindingName -> LanguageBinding
     no-binding-name           : OptLanguageBindingName
                               : BindingName -> OptLanguageBindingName
-    RECURSIVE                 : RECURSIVE -> OfpPrefixSpec
-    PURE                      : PURE -> OfpPrefixSpec
-    MODULE                    : MODULE -> OfpPrefixSpec
-    IMPURE                    : IMPURE -> OfpPrefixSpec
-    ELEMENTAL                 : ELEMENTAL -> OfpPrefixSpec
-    OfpArg                    : Expr * OfpKeyword -> OfpArg
-    OfpArg                    : Expr -> OfpArg
-    OfpProcRef                : Expr -> OfpProcRef
-    OfpCallStmt               : OptLabel * OfpProcRef * List(OfpArg) -> OfpCallStmt
-    OfpIntrinsicStmt          : OptLabel * List(Name) -> OfpIntrinsicStmt
-    OfpExternalStmt           : OptLabel * List(Name) -> OfpExternalStmt
     MainProgram               : ProgramStmt * Scope * EndProgramStmt -> MainProgram
     ProgramStmt               : OptLabel * Name -> ProgramStmt
     EndProgramStmt            : OptLabel * OptProgramName -> EndProgramStmt
@@ -56,17 +47,20 @@ signature
                               : ParentSubmoduleName -> OptParentSubmoduleName
     no-parent-submodule-name  : OptParentSubmoduleName
                               : Name -> ParentSubmoduleName
+    BlockDataStmt             : OptLabel * OptBlockDataName -> BlockDataStmt
+    EndBlockDataStmt          : OptLabel * OptBlockDataName -> EndBlockDataStmt
+    no-block-data-name        : OptBlockDataName
+                              : BlockDataName -> OptBlockDataName
+                              : Name -> BlockDataName
     Subroutine                : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
-    SubroutineStmt            : OptLabel * Prefix * SubroutineName * ArgList * OptLanguageBinding -> SubroutineStmt
+    SubroutineStmt            : OptLabel * Prefix * SubroutineName * List(Arg) * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt         : OptLabel * OptSubroutineName -> EndSubroutineStmt
                               : SubroutineName -> OptSubroutineName
     no-subroutine-name        : OptSubroutineName
                               : Name -> SubroutineName
-    ArgList                   : List(OfpDummyArg) -> ArgList
-    STAR                      : STAR -> OfpDummyArg
-    OfpDummyArg               : String -> OfpDummyArg
     ArrayConstructor          : AcSpec -> ArrayConstructor
     AcSpec                    : OptTypeSpec * List(AcValue) -> AcSpec
+    no-type-spec              : OptTypeSpec
     ParameterStmt             : OptLabel * List(NamedConstantDef) -> ParameterStmt
     AssignmentStmt            : OptLabel * VarDef * Expr -> AssignmentStmt
     PointerAssignmentStmt     : OptLabel * DataPointerObject * List(Range) * Expr -> PointerAssignmentStmt
@@ -134,6 +128,10 @@ signature
     POINTER                   : ComponentAttrSpec
     ComponentDecl             : Name * List(Range) * List(Range) * OptCharLength * OptComponentInitialization -> ComponentDecl
     ProcComponentDefStmt      : OptLabel * OptProcInterface * List(ProcComponentAttrSpec) * List(ProcDecl) -> ProcComponentDefStmt
+    ProcDecl                  : Name * ProcPointerInit -> ProcDecl
+    ProcDecl                  : Name * NoProcPointerInit -> ProcDecl
+    no-init                   : NoProcPointerInit
+                              : InitialProcTarget -> ProcPointerInit
     POINTER                   : ProcComponentAttrSpec
     PASS                      : ProcComponentAttrSpec
     NOPASS                    : ProcComponentAttrSpec
@@ -150,10 +148,15 @@ signature
                               : Var -> AllocatableDecl
     AsynchronousStmt          : OptLabel * List(Name) -> AsynchronousStmt
     Kind                      : Expr -> Kind
+                              : IntVal -> IntExpr
     IntVal                    : String -> IntVal
     IntVal                    : String * Kind -> IntVal
+                              : RealVal -> RealExpr
     RealVal                   : String -> RealVal
     RealVal                   : String * Kind -> RealVal
+                              : LogicalVal -> LogicalExpr
+    LogicalVal                : String -> LogicalVal
+    LogicalVal                : String * Kind -> LogicalVal
                               : GE -> OfpOp
                               : GT -> OfpOp
                               : LE -> OfpOp
@@ -170,36 +173,38 @@ signature
     Scope                     : List(Decl) * List(Stmt) * List(Decl) -> Scope
     OfpLiteral                : String * Type -> OfpLiteral
     OfpLiteral                : String -> OfpLiteral
-    OfpKeyword                : String -> OfpKeyword
-    STAR                      : STAR
-                              : String -> STAR
-                              : String -> RECURSIVE
-                              : String -> PURE
-                              : String -> MODULE
-                              : String -> IMPURE
-                              : String -> ELEMENTAL
                               : String -> String
                               : Ident -> ProcedureName
     no-procedure-name         : NoProcedureName
+    STAR                      : DummyArg
+                              : DummyArgName -> DummyArg
+    no-suffix                 : OptSuffix
+                              : Ident -> DummyArgName
     RECURSIVE                 : PrefixSpec
     PURE                      : PrefixSpec
     MODULE                    : PrefixSpec
     IMPURE                    : PrefixSpec
     ELEMENTAL                 : PrefixSpec
                               : DeclarationTypeSpec -> PrefixSpec
-    Prefix                    : List(OfpPrefixSpec) -> Prefix
                               : List(PrefixSpec) -> Prefix
-    AltReturnSpec             : Label -> AltReturnSpec
-                              : AltReturnSpec -> ActualArg
-                              : Expr -> ActualArg
-    ActualArgSpec             : Keyword * ActualArg -> ActualArgSpec
-    ActualArgSpec             : NoKeyword * ActualArg -> ActualArgSpec
-    ProcedureDesignator       : DataRef * BindingName -> ProcedureDesignator
-    ProcedureDesignator       : ProcedureName -> ProcedureDesignator
-    ExitStmt                  : OptLabel * ConstructName -> ExitStmt
-                              : String -> ConstructName
+    ForallConstructStmt       : OptLabel * OptName * ForallHeader -> ForallConstructStmt
+    ForallHeader              : OptTypeSpec * List(ForallTripletSpec) * OptMaskExpr -> ForallHeader
+    ForallTripletSpec         : IndexName * Triplet -> ForallTripletSpec
+                              : String -> IndexName
+    Triplet                   : OptIntExpr * OptIntExpr * OptIntExpr -> Triplet
+    no-forall-step            : OptIntExpr
+    no-expr                   : OptIntExpr
+                              : IntExpr -> OptIntExpr
+                              : PointerAssignmentStmt -> ForallAssignmentStmt
+                              : AssignmentStmt -> ForallAssignmentStmt
+    EndForallStmt             : OptLabel * OptName -> EndForallStmt
+    ForallStmt                : OptLabel * ForallHeader * ForallAssignmentStmt -> ForallStmt
+    no-mask-expr              : OptMaskExpr
+                              : MaskExpr -> OptMaskExpr
+                              : LogicalExpr -> MaskExpr
     Block                     : OptLabel * OptName * Scope * EndBlockStmt -> Block
     EndBlockStmt              : OptLabel * OptName -> EndBlockStmt
+    ExitStmt                  : OptLabel * Name -> ExitStmt
     ContinueStmt              : OptLabel -> ContinueStmt
     UseStmt                   : OptLabel * OptModuleNature * Name * ListStarOfRename -> UseStmt
     UseOnlyStmt               : OptLabel * OptModuleNature * Name * List(Only) -> UseOnlyStmt
@@ -217,20 +222,8 @@ signature
     InterfaceStmt             : OptLabel * OptGenericSpec -> InterfaceStmt
     AbstractInterfaceStmt     : OptLabel -> AbstractInterfaceStmt
     EndInterfaceStmt          : OptLabel * OptGenericSpec -> EndInterfaceStmt
-                              : OfpMpSubprogram -> Decl
-                              : OfpIntrinsicStmt -> Decl
-                              : OfpExternalStmt -> Decl
-                              : VolatileStmt -> Decl
-                              : ImplicitStmt -> Decl
-                              : TypeDeclarationStmt -> Decl
-                              : ComponentDefStmt -> Decl
-                              : ComponentDecl -> Decl
-                              : TypeBoundProcPart -> Decl
-                              : InterfaceBlock -> Decl
-                              : InterfaceSpecification -> Decl
-                              : ProcedureStmt -> Decl
     ProcedureStmt             : OptLabel * List(Name) -> ProcedureStmt
-    ModuleProcedureStmt       : OptLabel * List(Name) -> ProcedureStmt
+    ModuleProcedureStmt       : OptLabel * List(Name) -> ModuleProcedureStmt
     no-generic-spec           : OptGenericSpec
                               : GenericSpec -> OptGenericSpec
                               : Name -> GenericSpec
@@ -243,7 +236,56 @@ signature
     READ_UNFORMATTED          : DefinedIoGenericSpec
     WRITE_FORMATTED           : DefinedIoGenericSpec
     WRITE_UNFORMATTED         : DefinedIoGenericSpec
-                              : OfpCallStmt -> Stmt
+    FormatStmt                : Label * FormatSpecification -> FormatStmt
+    FormatSpec                : FormatItems * UnlimitedFormatItem -> FormatSpecification
+    UnlimitedFormatItem       : FormatItems -> UnlimitedFormatItem
+    no-r                      : NoR
+    no-r                      : OptR
+    R                         : OptR * FormatItems -> FormatItem
+                              : CharStringEditDesc -> FormatItem
+                              : ControlEditDesc -> FormatItem
+                              : DataEditDesc -> FormatItem
+    format-items              : FormatItems * FormatItem -> FormatItems
+    format-items-first        : FormatItem -> FormatItems
+    ImportStmt                : OptLabel * List(Name) -> ImportStmt
+    ExternalStmt              : OptLabel * List(Name) -> ExternalStmt
+    ProcedureDeclarationStmt  : OptLabel * OptProcInterface * List(ProcAttrSpec) * List(ProcDecl) -> ProcedureDeclarationStmt
+    no-proc-interface         : OptProcInterface
+                              : ProcInterface -> OptProcInterface
+                              : DeclarationTypeSpec -> ProcInterface
+                              : Name -> ProcInterface
+                              : MpSubprogram -> Decl
+                              : BlockDataStmt -> Decl
+                              : EndBlockDataStmt -> Decl
+                              : VolatileStmt -> Decl
+                              : ImplicitStmt -> Decl
+                              : TypeDeclarationStmt -> Decl
+                              : ComponentDefStmt -> Decl
+                              : ComponentDecl -> Decl
+                              : TypeBoundProcPart -> Decl
+                              : InterfaceBlock -> Decl
+                              : InterfaceSpecification -> Decl
+                              : ProcedureStmt -> Decl
+                              : FormatStmt -> Decl
+                              : ImportStmt -> Decl
+                              : ExternalStmt -> Decl
+                              : ProcedureDeclarationStmt -> Decl
+                              : IntrinsicStmt -> Decl
+    IntrinsicStmt             : OptLabel * List(Name) -> IntrinsicStmt
+    CallStmt                  : OptLabel * ProcRef * List(Arg) -> CallStmt
+                              : Expr -> ProcRef
+                              : Expr -> Arg
+    Arg                       : Keyword * Expr -> Arg
+    Arg                       : OptKeyword * AltReturn -> Arg
+    no-keyword                : OptKeyword
+                              : Keyword -> OptKeyword
+                              : String -> Keyword
+    AltReturn                 : Label -> AltReturn
+    EntryStmt                 : OptLabel * Name * List(DummyArg) * OptSuffix -> EntryStmt
+                              : FunctionStmt -> Stmt
+                              : EndFunctionStmt -> Stmt
+                              : SubroutineStmt -> Stmt
+    EndSubroutineStmt         : OptLabel * OptSubroutineName -> Stmt
                               : ParameterStmt -> Stmt
                               : AssignmentStmt -> Stmt
                               : PointerAssignmentStmt -> Stmt
@@ -256,43 +298,65 @@ signature
                               : AccessStmt -> Stmt
                               : AllocatableStmt -> Stmt
                               : AsynchronousStmt -> Stmt
-                              : ExitStmt -> Stmt
+                              : ForallConstructStmt -> Stmt
+                              : EndForallStmt -> Stmt
+                              : ForallStmt -> Stmt
                               : Block -> Stmt
                               : EndBlockStmt -> Stmt
+                              : ExitStmt -> Stmt
                               : ContinueStmt -> Stmt
                               : UseStmt -> Stmt
                               : UseOnlyStmt -> Stmt
                               : InterfaceStmt -> Stmt
                               : AbstractInterfaceStmt -> Stmt
                               : EndInterfaceStmt -> Stmt
-                              : ImportStmt -> Stmt
-    ImportStmt                : OptLabel * List(Name) -> ImportStmt
-    FunctionReference         : ProcedureDesignator * List(ActualArgSpec) -> FunctionReference
+                              : ModuleProcedureStmt -> Stmt
+                              : CallStmt -> Stmt
+                              : EntryStmt -> Stmt
+                              : ReturnStmt -> Stmt
+    ReturnStmt                : OptLabel * OptExpr -> ReturnStmt
+    no-expr                   : OptExpr
+                              : Expr -> OptExpr
                               : ProcedureName -> InitialProcTarget
-    no-init                   : NoProcPointerInit
-                              : InitialProcTarget -> ProcPointerInit
-                              : NullInit -> ProcPointerInit
-                              : Ident -> ProcedureEntityName
-    ProcDecl                  : ProcedureEntityName * ProcPointerInit -> ProcDecl
-    ProcDecl                  : ProcedureEntityName * NoProcPointerInit -> ProcDecl
-    no-proc-interface         : OptProcInterface
-                              : ProcInterface -> OptProcInterface
-                              : DeclarationTypeSpec -> ProcInterface
+    SAVE                      : ProcAttrSpec
+    POINTER                   : ProcAttrSpec
+    OPTIONAL                  : ProcAttrSpec
+    INTENT                    : IntentSpec -> ProcAttrSpec
+                              : AccessSpec -> ProcAttrSpec
     UseDefinedOperator_DBO    : DefinedBinaryOp -> UseDefinedOperator
     UseDefinedOperator_DUO    : DefinedUnaryOp -> UseDefinedOperator
     LocalDefinedOperator_DBO  : DefinedBinaryOp -> LocalDefinedOperator
     LocalDefinedOperator_DUO  : DefinedUnaryOp -> LocalDefinedOperator
-    no-keyword                : NoKeyword
-                              : Name -> Keyword
+    CS                        : CharLiteralConstant -> CharStringEditDesc
+    DP                        : DecimalEditDesc
+    DC                        : DecimalEditDesc
+    RP                        : RoundEditDesc
+    RC                        : RoundEditDesc
+    RN                        : RoundEditDesc
+    RZ                        : RoundEditDesc
+    RD                        : RoundEditDesc
+    RU                        : RoundEditDesc
+    BZ                        : BlankInterpEditDesc
+    BN                        : BlankInterpEditDesc
+    S                         : SignEditDesc
+    SP                        : SignEditDesc
+    SS                        : SignEditDesc
+                              : DecimalEditDesc -> ControlEditDesc
+                              : RoundEditDesc -> ControlEditDesc
+                              : BlankInterpEditDesc -> ControlEditDesc
+                              : SignEditDesc -> ControlEditDesc
+    COLON_ED                  : ControlEditDesc
+    SLASH                     : NoR -> ControlEditDesc
+    no-list                   : OptVList
+    no-iotype                 : OptIOType
+    opt-iotype                : CharLiteralConstant -> OptIOType
+    no-w                      : OptW
+    DT                        : OptR * OptIOType * OptVList -> DataEditDesc
+    A                         : OptR * OptW -> DataEditDesc
     VarRef                    : Ident -> ScalarIntVariableName
                               : ScalarIntVariableName -> DoVariable
-    no-expr                   : OptExpr
-    opt-expr                  : Expr -> OptExpr
-    no-type-spec              : OptTypeSpec
     no-upper-bounds           : NoUpperBoundExpr
-                              : Expr -> ConstantExpr
                               : IntExpr -> SpecificationExpr
-                              : Expr -> IntExpr
                               : Dop -> DefinedBinaryOp
     DefBinExpr                : Expr * DefinedBinaryOp * Expr -> Expr
     NEQV                      : Expr * Expr -> Expr
@@ -323,8 +387,10 @@ signature
                               : OfpExplicitCoshape -> Expr
                               : OfpAssumedSize -> Expr
                               : OfpAssumedOrDeferredShape -> Expr
-                              : IntVal -> Expr
-                              : RealVal -> Expr
+                              : IntExpr -> Expr
+                              : RealExpr -> Expr
+                              : LogicalExpr -> Expr
+                              : ConstantExpr -> Expr
                               : Primary -> Expr
     EquivOp_NEQV              : EquivOp
     EquivOp_EQV               : EquivOp
@@ -347,7 +413,7 @@ signature
     Parens                    : Expr -> Primary
                               : ArrayConstructor -> Primary
                               : Designator -> Primary
-                              : Constant -> Primary
+                              : ConstantExpr -> Primary
                               : IntrinsicOperator -> ExtendedIntrinsicOp
                               : ExtendedIntrinsicOp -> DefinedOperator
                               : DefinedBinaryOp -> DefinedOperator
@@ -385,7 +451,7 @@ signature
     SubstringRange            : NoLowerBoundExpr * IntExpr -> SubstringRange
     SubstringRange            : IntExpr * NoUpperBoundExpr -> SubstringRange
     SubstringRange            : NoLowerBoundExpr * NoUpperBoundExpr -> SubstringRange
-                              : Constant -> ParentString
+                              : ConstantExpr -> ParentString
                               : StructureComponent -> ParentString
     Substring                 : ParentString * SubstringRange -> Substring
                               : Substring -> Designator
@@ -420,10 +486,8 @@ signature
                               : List(ExplicitShapeSpec) -> ArraySpec
     PRIVATE                   : AccessSpec
     PUBLIC                    : AccessSpec
-    NullInit                  : FunctionReference -> NullInit
                               : Expr -> Initialization
     PointerInit               : InitialDataTarget -> Initialization
-    PointerInit               : NullInit -> Initialization
     Init                      : ConstantExpr -> Initialization
     no-init                   : OptInitialization
                               : Initialization -> OptInitialization
@@ -489,7 +553,7 @@ signature
                               : CharLiteralConstant -> LiteralConstant
                               : LogicalLiteralConstant -> LiteralConstant
                               : ComplexLiteralConstant -> LiteralConstant
-                              : LiteralConstant -> Constant
+                              : LiteralConstant -> ConstantExpr
     no-name                   : NoName
                               : String -> Name
                               : Ident -> Name
