@@ -129,9 +129,9 @@
    EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE"] _2],
 
    #R427 --,
-   ABSTRACT                      -- KW["ABSTRACT"],
-   Extends                       -- KW["EXTENDS"] _1,
-   BIND                          -- KW["BIND(C)"],
+   ABSTRACT                      -- "ABSTRACT",
+   Extends                       -- "EXTENDS" "(" _1 ")",
+   BIND                          -- "BIND(C)",
 
    #R431 --,
    TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
