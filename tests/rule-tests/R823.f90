@@ -1,4 +1,4 @@
-!! R831 nonblock-do-construct
+!! R823 nonblock-do-construct
 !    is  action-term-do-construct
 !    or  outer-shared-do-construct
 !
