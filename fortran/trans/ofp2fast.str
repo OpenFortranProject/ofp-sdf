@@ -372,6 +372,14 @@ ofp-to-ast:  no-component-name()                      -> no-name()
 //R735
 ofp-to-ast:  BoundsRemapping(lb,ub)                   -> Triplet(lb,ub,no-stride())
 
+//R751
+ofp-to-ast =  ?ForallConstructStmt(label,name,header,eos("\n")); !ForallConstructStmt(label,name,header)
+          <+  ?ForallConstructStmt(label,name,header,eos(str) ); !ForallConstructStmt(label,name,header) {Comment(str)}
+
+//R758
+ofp-to-ast =  ?EndForallStmt(label,name,eos("\n"))             ;  !EndForallStmt(label,name)
+          <+  ?EndForallStmt(label,name,eos(str) )             ;  !EndForallStmt(label,name) {Comment(str)}
+
 //R801
 ofp-to-ast:  Block(execs) -> execs
 
@@ -382,24 +390,28 @@ ofp-to-ast:  BlockConstruct(BlockStmt(label,name,eos(str)),specs,execs,end)
              -> Block(label,name,Scope(specs,execs,[]),end) {Comment(str)}
 
 //R809
-ofp-to-ast:  EndBlockStmt(label,name,eos("\n")) -> EndBlockStmt(label,name)
-ofp-to-ast:  EndBlockStmt(label,name,eos(str) ) -> EndBlockStmt(label,name) {Comment(str)}
+ofp-to-ast =  ?EndBlockStmt(label,name,eos("\n"))    ;  !EndBlockStmt(label,name)
+          <+  ?EndBlockStmt(label,name,eos(str) )    ;  !EndBlockStmt(label,name) {Comment(str)}
 
 //R854
-ofp-to-ast:  ContinueStmt(label,eos("\n")) -> ContinueStmt(label)
-ofp-to-ast:  ContinueStmt(label,eos(str) ) -> ContinueStmt(label) {Comment(str)}
+ofp-to-ast =  ?ContinueStmt(label,eos("\n"))         ;  !ContinueStmt(label)
+          <+  ?ContinueStmt(label,eos(str) )         ;  !ContinueStmt(label) {Comment(str)}
+
+//R1001
+ofp-to-ast =  ?FormatStmt(label,fspec,eos("\n"))     ;  !FormatStmt(label,fspec)
+          <+  ?FormatStmt(label,fspec,eos(str) )     ;  !FormatStmt(label,fspec) {Comment(str)}
 
 //R1101
-  ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
-                  -> MainProgram(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
+ofp-to-ast:  MainProgram(begin,spec,exec,funcs,end)
+               -> MainProgram(begin,<ofp-fixup-scope>Scope(spec,exec,funcs),end)
 
 //R1102
-  ofp-to-ast:  ProgramStmt(label,name,eos("\n")) -> ProgramStmt(label,name)
-  ofp-to-ast:  ProgramStmt(label,name,eos(str) ) -> ProgramStmt(label,name) {Comment(str)}
+ofp-to-ast =  ?ProgramStmt(label,name,eos("\n"))     ;  !ProgramStmt(label,name)
+          <+  ?ProgramStmt(label,name,eos(str) )     ;  !ProgramStmt(label,name) {Comment(str)}
 
 //R1102
-  ofp-to-ast:  EndProgramStmt(label,name,eos("\n")) -> EndProgramStmt(label,name)
-  ofp-to-ast:  EndProgramStmt(label,name,eos(str) ) -> EndProgramStmt(label,name) {Comment(str)}
+ofp-to-ast =  ?EndProgramStmt(label,name,eos("\n"))  ;  !EndProgramStmt(label,name)
+          <+  ?EndProgramStmt(label,name,eos(str) )  ;  !EndProgramStmt(label,name) {Comment(str)}
 
 //R1104
   ofp-to-ast:  Module(begin,spec,no-module-subprogram-part(),end)
@@ -439,19 +451,31 @@ ofp-to-ast:
   ofp-to-ast:  EndSubmoduleStmt(label,name,eos("\n")) -> EndSubmoduleStmt(label,name)
   ofp-to-ast:  EndSubmoduleStmt(label,name,eos(str) ) -> EndSubmoduleStmt(label,name) {Comment(str)}
 
+//R1121
+ofp-to-ast =  ?BlockDataStmt(label,name,eos("\n"))    ;  !BlockDataStmt(label,name)
+          <+  ?BlockDataStmt(label,name,eos(str) )    ;  !BlockDataStmt(label,name) {Comment(str)}
+
+//R1122
+ofp-to-ast =  ?EndBlockDataStmt(label,name,eos("\n")) ;  !EndBlockDataStmt(label,name)
+          <+  ?EndBlockDataStmt(label,name,eos(str) ) ;  !EndBlockDataStmt(label,name) {Comment(str)}
+
 //R1203
-  ofp-to-ast:  InterfaceStmt(label,spec,eos("\n"))    -> InterfaceStmt(label,spec)
-  ofp-to-ast:  InterfaceStmt(label,spec,eos(str) )    -> InterfaceStmt(label,spec) {Comment(str)}
+ofp-to-ast =  ?InterfaceStmt(label,spec,eos("\n"))    ;  !InterfaceStmt(label,spec)
+          <+  ?InterfaceStmt(label,spec,eos(str) )    ;  !InterfaceStmt(label,spec) {Comment(str)}
+
+ofp-to-ast =  ?AbstractInterfaceStmt(label,eos("\n")) ;  !AbstractInterfaceStmt(label)
+          <+  ?AbstractInterfaceStmt(label,eos(str) ) ;  !AbstractInterfaceStmt(label) {Comment(str)}
 
 //R1204
-  ofp-to-ast:  EndInterfaceStmt(label,spec,eos("\n")) -> EndInterfaceStmt(label,spec)
-  ofp-to-ast:  EndInterfaceStmt(label,spec,eos(str) ) -> EndInterfaceStmt(label,spec) {Comment(str)}
+ofp-to-ast =  ?EndInterfaceStmt(label,spec,eos("\n")) ;  !EndInterfaceStmt(label,spec)
+          <+  ?EndInterfaceStmt(label,spec,eos(str) ) ;  !EndInterfaceStmt(label,spec) {Comment(str)}
 
 //R1206
-  ofp-to-ast:  ProcedureStmt(label,spec,eos("\n"))       -> ProcedureStmt(label,spec)
-  ofp-to-ast:  ProcedureStmt(label,spec,eos(str) )       -> ProcedureStmt(label,spec) {Comment(str)}
-  ofp-to-ast:  ModuleProcedureStmt(label,spec,eos("\n")) -> ModuleProcedureStmt(label,spec)
-  ofp-to-ast:  ModuleProcedureStmt(label,spec,eos(str) ) -> ModuleProcedureStmt(label,spec) {Comment(str)}
+ofp-to-ast =  ?ProcedureStmt(label,spec,eos("\n"))    ;  !ProcedureStmt(label,spec)
+          <+  ?ProcedureStmt(label,spec,eos(str) )    ;  !ProcedureStmt(label,spec) {Comment(str)}
+
+ofp-to-ast =  ?ModuleProcedureStmt(label,spec,eos("\n"))  ;  !ModuleProcedureStmt(label,spec)
+          <+  ?ModuleProcedureStmt(label,spec,eos(str) )  ;  !ModuleProcedureStmt(label,spec) {Comment(str)}
 
 //R1207
 //  ofp-to-ast:  GenericSpec(Name(name))        -> OfpGenericSpec(Name(name))
@@ -528,3 +552,11 @@ ofp-to-ast =  ?MpSubprogramStmt(label,name,eos("\n"))     ;  !MpSubprogramStmt(l
 //R1239
 ofp-to-ast =  ?EndMpSubprogramStmt(label,name,eos("\n"))  ;  !EndMpSubprogramStmt(label,name)
           <+  ?EndMpSubprogramStmt(label,name,eos(str) )  ;  !EndMpSubprogramStmt(label,name) {Comment(str)}
+
+//R1240
+ofp-to-ast =  ?EntryStmt(label,name,args,suffix,eos("\n"));  !EntryStmt(label,name,args,suffix)
+          <+  ?EntryStmt(label,name,args,suffix,eos(str) );  !EntryStmt(label,name,args,suffix) {Comment(str)}
+
+//R1241
+ofp-to-ast =  ?ReturnStmt(label,expr,eos("\n"))           ;  !ReturnStmt(label,expr)
+          <+  ?ReturnStmt(label,expr,eos(str) )           ;  !ReturnStmt(label,expr) {Comment(str)}
