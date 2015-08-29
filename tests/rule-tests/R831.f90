@@ -1,4 +1,4 @@
-!! R839 cycle-stmt
+!! R831 cycle-stmt
 !      cycle-stmt  is  CYCLE [ do-construct-name ]
 
 do i = 1, 10
