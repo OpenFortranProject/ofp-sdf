@@ -476,11 +476,11 @@
    #R801 --,
    AssociateConstruct            -- _1 _2 _3,
 
-   ppAssociateStmt               -- H hs=1[_1 H hs=0[_2 KW["ASSOCIATE"] "("_3")" _4]],
-   ppAssociateStmt.3:iter-sep    -- _1 ", ",
-   EndAssociateStmt              -- H hs=1[_1 KW["END ASSOCIATE"] H hs=0[_2 _3]],
+   AssociateStmt                 -- H hs=1[_1 H hs=0[_2 "ASSOCIATE" "("_3")"]],
+   AssociateStmt.3:iter-sep      -- _1 ", ",
+   EndAssociateStmt              -- H hs=1 [_1 "END ASSOCIATE" H hs=0[_2]],
 
-   Association                   -- _1 KW["=>"] _2,
+   Association                   -- _1 "=>" _2,
 
    Block                         -- H [_1 _2 ":" "BLOCK"] _3 _4,
    ppBlock                       -- H [_1 "BLOCK"] _2 _3,
