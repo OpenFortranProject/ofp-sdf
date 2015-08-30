@@ -9,7 +9,7 @@ TO_FAST = $(TRANS_DIR)/ofp2fast
 TO_PP   = $(TRANS_DIR)/fast2pp
 PP      = ../../../fortran/pp/Fortran.pp
 
-CHECK_LIST = R1101a.f90
+CHECK_LIST = R432.f90
 
 all : check
 
