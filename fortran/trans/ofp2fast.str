@@ -18,7 +18,6 @@ signature
   // Ambiguities
   amb : list -> choice
 
-  OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
   xFunctionStmt       : label * name * args * prefix * result * binding -> xFunctionStmt
 
   Comment   : A -> B            /* comments are put in annotations */
@@ -133,7 +132,7 @@ is-specification-part =
  +>  ?TypeDeclarationStmt(_,_,_,_)
 
 // Call the recursive strategy fast-fixup-do-construct (directly below) to build multiple
-// OfpBlockDoConstructs from a series of do statements.
+// BlockDoConstructs from a series of do statements.
 //
 fast-fixup-do-constructs =
 {exec_list
@@ -143,8 +142,8 @@ fast-fixup-do-constructs =
   ;  !Scope(spec_part,ExecPart(<concat>[before,rest]),funcs)
 }
 
-// This strategy uses recursion to build multiple OfpBlockDoConstructs from
-// a series of do statements.  Each pass attempts to build one OfpBlockDoConstruct.
+// This strategy uses recursion to build multiple BlockDoConstructs from
+// a series of do statements.  Each pass attempts to build one BlockDoConstruct.
 // It exits the recursive loop when the try(<fast-fixup-do-construct>) recursion
 // fails.
 //
@@ -154,16 +153,15 @@ fast-fixup-do-construct =
   ;  ?(before,begin_do,after)
   ;  <split-fetch-keep(match-end-do)> after
   ;  ?(block,end_do,rest)
-  ;  !OfpBlockDoConstruct(begin_do,block,end_do)
+  ;  !BlockDoConstruct(begin_do,block,end_do)
   ;  !(<concat>[exec_list,before,[<id>]], rest)
   ;  try(<fast-fixup-do-construct> <id>)
 
-
 match-begin-block-do =
-     ?NonlabelDoStmt(label,name,control,eos)
+     ?NonlabelDoStmt(label,name,control)
 
 match-end-do =
-     ?EndDoStmt(label,name,eos)
+     ?EndDoStmt(label,name)
 
 
 //R201
@@ -402,9 +400,96 @@ ofp-to-ast =
 ofp-to-ast =  ?EndBlockStmt(label,name,eos("\n"))    ;  !EndBlockStmt(label,name)
           <+  ?EndBlockStmt(label,name,eos(str) )    ;  !EndBlockStmt(label,name) {Comment(str)}
 
+//R817
+ofp-to-ast =  ?NonlabelDoStmt(label,name,control,eos("\n")) ;  !NonlabelDoStmt(label,name,control)
+          <+  ?NonlabelDoStmt(label,name,control,eos(str) ) ;  !NonlabelDoStmt(label,name,control) {Comment(str)}
+
+//R822
+ofp-to-ast =  ?EndDoStmt(label,name,eos("\n"))       ;  !EndDoStmt(label,name)
+          <+  ?EndDoStmt(label,name,eos(str) )       ;  !EndDoStmt(label,name) {Comment(str)}
+
+//R831
+ofp-to-ast =  ?CycleStmt(label,name,eos("\n"))       ;  !CycleStmt(label,name)
+          <+  ?CycleStmt(label,name,eos(str) )       ;  !CycleStmt(label,name) {Comment(str)}
+
+//R850
+ofp-to-ast =  ?ExitStmt(label,name,eos("\n"))        ;  !ExitStmt(label,name)
+          <+  ?ExitStmt(label,name,eos(str) )        ;  !ExitStmt(label,name) {Comment(str)}
+
+//R851
+ofp-to-ast =  ?GotoStmt(label,name,eos("\n"))        ;  !GotoStmt(label,name)
+          <+  ?GotoStmt(label,name,eos(str) )        ;  !GotoStmt(label,name) {Comment(str)}
+
+//R852
+ofp-to-ast =  ?ComputedGotoStmt(label,list,expr,eos("\n"));  !ComputedGotoStmt(label,list,expr)
+          <+  ?ComputedGotoStmt(label,list,expr,eos(str) );  !ComputedGotoStmt(label,list,expr) {Comment(str)}
+
+//R853
+ofp-to-ast =  ?ArithmeticIfStmt(label,expr,l1,l2,l3,eos("\n"));  !ArithmeticIfStmt(label,expr,l1,l2,l3)
+          <+  ?ArithmeticIfStmt(label,expr,l1,l2,l3,eos(str) );  !ArithmeticIfStmt(label,expr,l1,l2,l3) {Comment(str)}
+
 //R854
 ofp-to-ast =  ?ContinueStmt(label,eos("\n"))         ;  !ContinueStmt(label)
           <+  ?ContinueStmt(label,eos(str) )         ;  !ContinueStmt(label) {Comment(str)}
+
+//R855
+ofp-to-ast =  ?StopStmt(label,code,eos("\n"))        ;  !StopStmt(label,code)
+          <+  ?StopStmt(label,code,eos(str) )        ;  !StopStmt(label,code) {Comment(str)}
+
+//R856
+ofp-to-ast =  ?ErrorStopStmt(label,code,eos("\n"))   ;  !ErrorStopStmt(label,code)
+          <+  ?ErrorStopStmt(label,code,eos(str) )   ;  !ErrorStopStmt(label,code) {Comment(str)}
+
+//F77
+ofp-to-ast =  ?PauseStmt(label,code,eos("\n"))       ;  !PauseStmt(label,code)
+          <+  ?PauseStmt(label,code,eos(str) )       ;  !PauseStmt(label,code) {Comment(str)}
+
+//R858
+ofp-to-ast =  ?SyncAllStmt(label,list,eos("\n"))        ;  !SyncAllStmt(label,list)
+          <+  ?SyncAllStmt(label,list,eos(str) )        ;  !SyncAllStmt(label,list) {Comment(str)}
+
+//R860
+ofp-to-ast =  ?SyncImagesStmt(label,set,list,eos("\n")) ;  !SyncImagesStmt(label,set,list)
+          <+  ?SyncImagesStmt(label,set,list,eos(str) ) ;  !SyncImagesStmt(label,set,list) {Comment(str)}
+
+//R862
+ofp-to-ast =  ?SyncMemoryStmt(label,list,eos("\n"))     ;  !SyncMemoryStmt(label,list)
+          <+  ?SyncMemoryStmt(label,list,eos(str) )     ;  !SyncMemoryStmt(label,list) {Comment(str)}
+
+//R863
+ofp-to-ast =  ?LockStmt(label,var,list,eos("\n"))       ;  !LockStmt(label,var,list)
+          <+  ?LockStmt(label,var,list,eos(str) )       ;  !LockStmt(label,var,list) {Comment(str)}
+
+//R865
+ofp-to-ast =  ?UnlockStmt(label,var,list,eos("\n"))     ;  !UnlockStmt(label,var,list)
+          <+  ?UnlockStmt(label,var,list,eos(str) )     ;  !UnlockStmt(label,var,list) {Comment(str)}
+
+//R911
+ofp-to-ast =  ?WriteStmt(label,iocontrol,out,eos("\n")) ;  !WriteStmt(label,iocontrol,out)
+          <+  ?WriteStmt(label,iocontrol,out,eos(str) ) ;  !WriteStmt(label,iocontrol,out) {Comment(str)}
+
+//R922
+ofp-to-ast =  ?WaitStmt(label,list,eos("\n"))        ;  !WaitStmt(label,list)
+          <+  ?WaitStmt(label,list,eos(str) )        ;  !WaitStmt(label,list) {Comment(str)}
+
+//R924
+ofp-to-ast =  ?BackspaceStmt(label,list,eos("\n"))   ;  !BackspaceStmt(label,list)
+          <+  ?BackspaceStmt(label,list,eos(str) )   ;  !BackspaceStmt(label,list) {Comment(str)}
+
+//R926
+ofp-to-ast =  ?RewindStmt(label,list,eos("\n"))      ;  !RewindStmt(label,list)
+          <+  ?RewindStmt(label,list,eos(str) )      ;  !RewindStmt(label,list) {Comment(str)}
+
+//R928
+ofp-to-ast =  ?FlushStmt(label,list,eos("\n"))       ;  !FlushStmt(label,list)
+          <+  ?FlushStmt(label,list,eos(str) )       ;  !FlushStmt(label,list) {Comment(str)}
+
+//R930
+ofp-to-ast =  ?InquireStmt(label,list,eos("\n"))     ;  !InquireStmt(label,list)
+          <+  ?InquireStmt(label,list,eos(str) )     ;  !InquireStmt(label,list) {Comment(str)}
+
+ofp-to-ast =  ?InquireLengthStmt(label,var,list,eos("\n")) ;  !InquireLengthStmt(label,var,list)
+          <+  ?InquireLengthStmt(label,var,list,eos(str) ) ;  !InquireLengthStmt(label,var,list) {Comment(str)}
 
 //R1001
 ofp-to-ast =  ?FormatStmt(label,fspec,eos("\n"))     ;  !FormatStmt(label,fspec)
