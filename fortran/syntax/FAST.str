@@ -118,6 +118,8 @@ signature
                               : AccessSpec -> TypeAttrSpec
     BIND                      : TypeAttrSpec
     Extends                   : ParentTypeName -> TypeAttrSpec
+    TypeParamDefStmt          : OptLabel * OptKind * TypeParamAttrSpec * List(TypeParamDecl) -> TypeParamDefStmt
+    TypeParamDecl             : Name * OptEqualsExpr -> TypeParamDecl
                               : DataComponentDefStmt -> ComponentDefStmt
                               : ProcComponentDefStmt -> ComponentDefStmt
     DataComponentDefStmt      : OptLabel * DeclarationTypeSpec * List(ComponentAttrSpec) * List(ComponentDecl) -> DataComponentDefStmt
@@ -147,6 +149,8 @@ signature
     AllocatableStmt           : OptLabel * List(AllocatableDecl) -> AllocatableStmt
                               : Var -> AllocatableDecl
     AsynchronousStmt          : OptLabel * List(Name) -> AsynchronousStmt
+    no-kind                   : OptKind
+                              : Kind -> OptKind
     Kind                      : Expr -> Kind
                               : IntVal -> IntExpr
     IntVal                    : String -> IntVal
@@ -360,6 +364,7 @@ signature
                               : PointerAssignmentStmt -> Stmt
                               : DerivedTypeStmt -> Stmt
                               : EndTypeStmt -> Stmt
+                              : TypeParamDefStmt -> Stmt
                               : DataComponentDefStmt -> Stmt
                               : ProcComponentDefStmt -> Stmt
                               : PrivateComponentsStmt -> Stmt
@@ -645,6 +650,8 @@ signature
     BozLiteralConstant_HC     : HexConstant -> BozLiteralConstant
     BozLiteralConstant_OC     : OctalConstant -> BozLiteralConstant
     BozLiteralConstant_BC     : BinaryConstant -> BozLiteralConstant
+                              : IntExpr -> OptEqualsExpr
+    no-expr                   : OptEqualsExpr
     no-arg-name               : NoArgName
                               : Ident -> ArgName
                               : AccessSpec -> BindingAttr
@@ -669,6 +676,8 @@ signature
     no-binding-private-stmt   : OptBindingPrivateStmt
                               : BindingPrivateStmt -> OptBindingPrivateStmt
     BindingPrivateStmt        : OptLabel * EOS -> BindingPrivateStmt
+    LEN                       : TypeParamAttrSpec
+    KIND                      : TypeParamAttrSpec
                               : Ident -> ParentTypeName
     TRUE                      : LogicalLiteralConstant
     FALSE                     : LogicalLiteralConstant

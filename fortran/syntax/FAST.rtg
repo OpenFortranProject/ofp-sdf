@@ -477,14 +477,6 @@ regular tree grammar
     ListPlusOfDeferredShapeSpec0      -> <conc>(ListPlusOfDeferredShapeSpec0,ListPlusOfDeferredShapeSpec0)
     ListPlusOfDeferredShapeSpec0      -> <cons>(DeferredShapeSpec,ListStarOfDeferredShapeSpec0)
 
-    ListStarOfTypeParamDecl0          -> ListPlusOfTypeParamDecl0
-    ListStarOfTypeParamDecl0          -> <nil>()
-    ListStarOfTypeParamDecl0          -> <conc>(ListStarOfTypeParamDecl0,ListStarOfTypeParamDecl0)
-    ListPlusOfTypeParamDecl0          -> <conc>(ListStarOfTypeParamDecl0,ListPlusOfTypeParamDecl0)
-    ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListStarOfTypeParamDecl0)
-    ListPlusOfTypeParamDecl0          -> <conc>(ListPlusOfTypeParamDecl0,ListPlusOfTypeParamDecl0)
-    ListPlusOfTypeParamDecl0          -> <cons>(TypeParamDecl,ListStarOfTypeParamDecl0)
-
     ListStarOfTypeParamName0          -> ListPlusOfTypeParamName0
     ListStarOfTypeParamName0          -> <nil>()
     ListStarOfTypeParamName0          -> <conc>(ListStarOfTypeParamName0,ListStarOfTypeParamName0)
@@ -759,6 +751,14 @@ regular tree grammar
     TypeAttrSpec                      -> AccessSpec
     TypeAttrSpec                      -> BIND()
     TypeAttrSpec                      -> Extends(ParentTypeName)
+
+    Stmt                              -> TypeParamDefStmt
+    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl)
+
+    TypeParamDecl                     -> TypeParamDecl(Name,OptEqualsExpr)
+
+    OptEqualsExpr                     -> no-expr()
+    OptEqualsExpr                     -> IntExpr
 
     Decl                              -> ComponentDefStmt
     ComponentDefStmt                  -> DataComponentDefStmt
@@ -2050,6 +2050,14 @@ regular tree grammar
     ListPlusOfTypeAttrSpec            -> <conc>(ListPlusOfTypeAttrSpec,ListStarOfTypeAttrSpec)
     ListPlusOfTypeAttrSpec            -> <conc>(ListPlusOfTypeAttrSpec,ListPlusOfTypeAttrSpec)
     ListPlusOfTypeAttrSpec            -> <cons>(TypeAttrSpec,ListStarOfTypeAttrSpec)
+
+    ListStarOfTypeParamDecl           -> ListPlusOfTypeParamDecl
+    ListStarOfTypeParamDecl           -> <nil>()
+    ListStarOfTypeParamDecl           -> <conc>(ListStarOfTypeParamDecl,ListStarOfTypeParamDecl)
+    ListPlusOfTypeParamDecl           -> <conc>(ListStarOfTypeParamDecl,ListPlusOfTypeParamDecl)
+    ListPlusOfTypeParamDecl           -> <conc>(ListPlusOfTypeParamDecl,ListStarOfTypeParamDecl)
+    ListPlusOfTypeParamDecl           -> <conc>(ListPlusOfTypeParamDecl,ListPlusOfTypeParamDecl)
+    ListPlusOfTypeParamDecl           -> <cons>(TypeParamDecl,ListStarOfTypeParamDecl)
 
     ListStarOfTypeBoundProcBinding   -> ListPlusOfTypeBoundProcBinding
     ListStarOfTypeBoundProcBinding   -> <nil>()
