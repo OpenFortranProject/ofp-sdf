@@ -229,6 +229,12 @@ ofp-to-ast:    EndTypeStmt(label,name,eos("\n"))
 ofp-to-ast:    EndTypeStmt(label,name,eos(str))
             -> EndTypeStmt(label,name) {Comment(str)}
 
+//R432
+ofp-to-ast:    TypeParamDefStmt(label,kind,attrs,decls,eos("\n"))
+            -> TypeParamDefStmt(label,kind,attrs,decls)
+ofp-to-ast:    TypeParamDefStmt(label,kind,attrs,decls,eos(str))
+            -> TypeParamDefStmt(label,kind,attrs,decls) {Comment(str)}
+
 //R436
 ofp-to-ast:    DataComponentDefStmt(label,type,attrs,components,eos("\n"))
             -> DataComponentDefStmt(label,type,attrs,<map(transfer-type(|type))>components)
