@@ -89,8 +89,11 @@
 
    Class                         -- _1 "CLASS" "(" _2" )",
 
-   Kind                          -- "(" "KIND=" _1 ")",
-   ppLiteralKind                 -- H hs=0["_" _1],
+   KIND                          -- "KIND",
+   LEN                           -- "LEN",
+
+   Kind                          -- H hs=0 ["(" "KIND=" _1 ")"],
+   ppLiteralKind                 -- H hs=0 ["_" _1],
    no-kind                       -- ,
    
    IntVal                        -- _1,
@@ -122,7 +125,7 @@
    ppDerivedTypeStmt_attrs              -- H hs=1[_1 "TYPE," H hs=0[_2 " :: " _3]],
    ppDerivedTypeStmt_attrs.2:iter-sep   -- _1 ", ",
 
-   ppDerivedTypeStmt_params             -- H hs=1[_1 "TYPE" H hs=0[" :: " _2 "(" _3 ")"]],
+   ppDerivedTypeStmt_params             -- H hs=1[_1 "TYPE" H hs=0[":: " _2 "(" _3 ")"]],
    ppDerivedTypeStmt_params.3:iter-sep  -- _1 ",",
 
 
@@ -134,12 +137,11 @@
    BIND                          -- "BIND(C)",
 
    #R431 --,
-   TypeParamDefStmt              -- H hs=1[_1 KW["INTEGER"] H hs=0[_2 KW[", "] _3 KW[" :: "] _4 _5]],
+   TypeParamDefStmt              -- _1 H hs=0 ["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]],
+   TypeParamDefStmt.4:iter-sep   -- _1 ", ",
 
-   #R432 --,
    TypeParamDecl                 -- _1 " = " _2,
 
-   #R436 --,
    DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 " :: " _4]],
    DataComponentDefStmt.4:iter-sep  -- _1 ", ",
    no-type-bound-procedure-part     --,
