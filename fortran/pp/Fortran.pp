@@ -486,10 +486,13 @@
    ppBlock                       -- H [_1 "BLOCK"] _2 _3,
    EndBlockStmt                  -- H [_1 "END BLOCK" _2],
 
-   #R816 --,
+   #R814 --,
+   BlockDoConstruct              -- V is=2 [_1 _2] _3,
+
    LabelDoStmt                   -- H hs=1[_1 _2 KW["DO"] H hs=0[_3] H hs=0[_4 _5]],
 
-   ppNonlabelDoStmt              -- H hs=0[_1 _2 KW["DO"] _3 _4],
+   NonlabelDoStmt                -- H hs=0[_1 _2 ": DO" _3],
+   ppNonlabelDoStmt              -- H hs=0[_1      "DO" _2],
 
    #R818 --,
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
@@ -497,10 +500,10 @@
    LoopConcurrentControl         -- " " KW["CONCURRENT"] _1,
 
    #R822 --,
-   EndDoStmt                     -- H hs=1[_1 KW["END DO"] H hs=0[_2 _3]],
+   EndDoStmt                     -- H hs=1 [_1 "END DO" H hs=0[_2]],
 
    #R831 --,
-   CycleStmt                     -- H hs=1[_1 KW["CYCLE"] H hs=0[_2 _3]],
+   CycleStmt                     -- H hs=1 [_1 "CYCLE" H hs=0[_2]],
 
    #R832 --,
    IfConstruct                   -- V vs=0 is=2 [_1 _2 _3 _4] _5,
@@ -558,84 +561,69 @@
    DefaultGuardStmt              -- H hs=1[_1 KW["CLASS DEFAULT"] H hs=0[_2 _3]],
 
    #R849 --,
-   EndSelectTypeStmt             -- H hs=1[_1 KW["END SELECT"] H hs=0[_2 _3]],
+   EndSelectTypeStmt             -- H hs=1[_1 "END SELECT" H hs=0[_2 _3]],
 
    #R850 --,
-   ExitStmt                      -- H hs=1[_1 KW["EXIT"] H hs=0[_2 _3]],
+   ExitStmt                      -- H hs=1 [_1 "EXIT" H hs=0[_2]],
 
-   #R851 --,
-   GotoStmt                      -- H hs=1[_1 KW["GO TO"] _2 _3],
+   GotoStmt                      -- H hs=1 [_1 "GO TO" _2],
 
-   #R852 --,
-   ComputedGotoStmt              -- H hs=1[_1 KW["GO TO"] H hs=0["("_2")"] H hs=0[_3] _4],
+   ComputedGotoStmt              -- H hs=1 [_1 "GO TO" H hs=0["("_2")"] H hs=0[_3]],
    ComputedGotoStmt.2:iter-sep   -- _1 ", ",
 
-   R#853 --,
-   ArithmeticIfStmt              -- H hs=1[H hs=0[_1 KW["IF"] "("_2")"] H hs=0 [_3 KW[", "] _4 KW[", "] _5 _6]],
+   ArithmeticIfStmt              -- H hs=1 [H hs=0[_1 "IF" "("_2")"] H hs=0 [_3 ", " _4 ", " _5]],
      
-   #R854 --,
-   ContinueStmt                  -- H hs=1[_1 "CONTINUE"],
+   ContinueStmt                  -- H hs=1 [_1 "CONTINUE"],
 
-   #R855 --,
-   StopStmt                      -- H hs=1[_1 KW["STOP"] _2 _3],
+   StopStmt                      -- H hs=1 [_1 "STOP" _2],
+   no-stop-code                  -- ,
 
-   #R856 --,
-   ErrorStopStmt                 -- H hs=1[_1 KW["ERROR STOP"] _2 _3],
+   ErrorStopStmt                 -- H hs=1 [_1 "ERROR STOP" _2],
 
-   #R858 --,
-   SyncAllStmt                   -- H hs=1[_1 KW["SYNC ALL"] H hs=0 ["("_2 _3")"]],
+   PauseStmt                     -- H hs=1 [_1 "PAUSE" H hs=0 [_2]],
+
+   SyncAllStmt                   -- H hs=1 [_1 "SYNC ALL" H hs=0 ["(" _2 ")"]],
    SyncAllStmt.2:iter-sep        -- _1 ", ",
 
    #R860 --,
-   SyncImagesStmt                -- H hs=1[_1 KW["SYNC IMAGES"] H hs=0["("_2 _3")"] _4],
+   SyncImagesStmt                -- H hs=1 [_1 "SYNC IMAGES" H hs=0 ["(" _2 _3 ")"]],
    SyncImagesStmt.3:iter-sep     -- _1 ", ",
  
-   #R862 --,
-   SyncMemoryStmt                -- H hs=1[_1 KW["SYNC MEMORY"] H hs=0["("_2")"] _3],
+   SyncMemoryStmt                -- H hs=1 [_1 "SYNC MEMORY" H hs=0 ["("_2")"]],
    SyncMemoryStmt.2:iter-sep     -- _1 ", ",
 
-   #R863 --,
-   LockStmt                      -- H hs=1[_1 KW["LOCK"] H hs=0["("_2 _3")"] _4],
+   LockStmt                      -- H hs=1 [_1 "LOCK" H hs=0 ["("_2 _3")"]],
    LockStmt.3:iter-sep           -- _1 ", ",
 
-   #R864 --,
-   ACQUIRED_LOCK                 -- KW["ACQUIRED_LOCK="] _1,
+   ACQUIRED_LOCK                 -- "ACQUIRED_LOCK=" _1,
 
-   #R865 --,
-   UnlockStmt                    -- H hs=1[_1 KW["UNLOCK"] H hs=0["("_2 _3")"] _4],
-
-   #R866 --,
-   PauseStmt                     -- H hs=1[_1 KW["PAUSE"] H hs=0 [_2 _3]],
+   UnlockStmt                    -- H hs=1 [_1 "UNLOCK" H hs=0 ["("_2 _3")"]],
 
    #R900 --,
-   IOMSG                         -- KW["IOMSG="]_1,
-   UNIT                          -- KW["UNIT="]_1,
-   ERR                           -- KW["ERR="]_1,
-   IOSTAT                        -- KW["IOSTAT="]_1,
-   END                           -- KW["END="]_1,
-   EOR                           -- KW["EOR="]_1,
+   IOMSG                         -- "IOMSG="  _1,
+   UNIT                          -- "UNIT="   _1,
+   ERR                           -- "ERR="    _1,
+   IOSTAT                        -- "IOSTAT=" _1,
+   END                           -- "END="    _1,
+   EOR                           -- "EOR="    _1,
 
    #R910 --,
-   ReadStmt                      -- H hs=1[_1 KW["READ"] H hs=0["("_2")" KW[", "] _3 _4]],
+   ReadStmt                      -- H hs=1 [_1 H hs=0["READ" "("_2")" ", " _3]],
    ReadStmt.3:iter-sep           -- _1 ", ",
 
-   #R911 --,
-   WriteStmt                     -- H hs=1[_1 KW["WRITE"] H hs=0 ["("_2")"] H hs=0[_3 _4]],
-   WriteStmt.2:iter-sep          -- _1 ", ",
+   WriteStmt                     -- H hs=1 [_1 H hs=0["WRITE" "("_2") " _3]],
+   WriteStmt.2:iter-sep          -- _1 ",",
    WriteStmt.3:iter-sep          -- _1 ", ",
 
-   #R912 --,
    PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 ", " _3 _4]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
-   #R913 --,
    FMT                           -- "FMT=" _1,
    DECIMAL                       -- "DECIMAL=" _1,
    SIZE                          -- "SIZE=" _1,
    ADVANCE                       -- "ADVANCE=" _1,
    REC                           -- "REC=" _1,
 
-   #R915 --,
    Format_STAR                   -- "*",
    Format                        -- _1,
 
@@ -653,25 +641,25 @@
    IoImpliedDoControl            -- _1 KW["="] _2 KW[","] _3 KW[","] _4,
 
    #R922 --,
-   WaitStmt                      -- H hs=1[_1 KW["WAIT"] H hs=0["("_2")"] _3],
+   WaitStmt                      -- H hs=1 [_1 "WAIT" H hs=0["("_2")"]],
    WaitStmt.2:iter-sep           -- _1 ", ",
 
    #R924 --,
-   BackspaceStmt                 -- H hs=1[_1 KW["BACKSPACE"] H hs=0 ["("_2")" _3]],
+   BackspaceStmt                 -- H hs=1 [_1 "BACKSPACE" H hs=0 ["("_2")"]],
    BackspaceStmt.2:iter-sep      -- _1 ", ",
 
    #R926 --,
-   RewindStmt                    -- H hs=1[_1 KW["REWIND"] H hs=0["("_2")" _3]],
+   RewindStmt                    -- H hs=1 [_1 "REWIND" H hs=0["("_2")"]],
    RewindStmt.2:iter-sep         -- _1 ", ",
 
    #R928 --,
-   FlushStmt                     -- H hs=1[_1 KW["FLUSH"] H hs=0["("_2")" _3]],
+   FlushStmt                     -- H hs=1 [_1 "FLUSH" H hs=0["("_2")"]],
    FlushStmt.2:iter-sep          -- _1 ", ",
 
    #R930 --,
-   InquireStmt                   -- H hs=1[_1 KW["INQUIRE"] H hs=0["("_2")" _3]],
+   InquireStmt                   -- H hs=1 [_1 "INQUIRE" H hs=0["("_2")"]],
    InquireStmt.2:iter-sep        -- _1 ", ",
-   InquireLengthStmt             -- H hs=1[_1 KW["INQUIRE"] H hs=0["("KW["IOLENGTH="] _2")"] H hs=0[_3 _4]],
+   InquireLengthStmt             -- H hs=1 [_1 "INQUIRE" H hs=0["(" "IOLENGTH=" _2 ")"] H hs=0[_3]],
    InquireLengthStmt.3:iter-sep  -- _1 ", ",
 
    #R931 --,
