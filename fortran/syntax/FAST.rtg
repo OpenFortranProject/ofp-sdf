@@ -97,34 +97,7 @@ regular tree grammar
     ListPlusOfVEditDesc0              -> <conc>(ListPlusOfVEditDesc0,ListStarOfVEditDesc0)
     ListPlusOfVEditDesc0              -> <conc>(ListPlusOfVEditDesc0,ListPlusOfVEditDesc0)
     ListPlusOfVEditDesc0              -> <cons>(VEditDesc,ListStarOfVEditDesc0)
-    ListStarOfInquireSpec0            -> ListPlusOfInquireSpec0
-    ListStarOfInquireSpec0            -> <nil>()
-    ListStarOfInquireSpec0            -> <conc>(ListStarOfInquireSpec0,ListStarOfInquireSpec0)
-    ListPlusOfInquireSpec0            -> <conc>(ListStarOfInquireSpec0,ListPlusOfInquireSpec0)
-    ListPlusOfInquireSpec0            -> <conc>(ListPlusOfInquireSpec0,ListStarOfInquireSpec0)
-    ListPlusOfInquireSpec0            -> <conc>(ListPlusOfInquireSpec0,ListPlusOfInquireSpec0)
-    ListPlusOfInquireSpec0            -> <cons>(InquireSpec,ListStarOfInquireSpec0)
-    ListStarOfFlushSpec0              -> ListPlusOfFlushSpec0
-    ListStarOfFlushSpec0              -> <nil>()
-    ListStarOfFlushSpec0              -> <conc>(ListStarOfFlushSpec0,ListStarOfFlushSpec0)
-    ListPlusOfFlushSpec0              -> <conc>(ListStarOfFlushSpec0,ListPlusOfFlushSpec0)
-    ListPlusOfFlushSpec0              -> <conc>(ListPlusOfFlushSpec0,ListStarOfFlushSpec0)
-    ListPlusOfFlushSpec0              -> <conc>(ListPlusOfFlushSpec0,ListPlusOfFlushSpec0)
-    ListPlusOfFlushSpec0              -> <cons>(FlushSpec,ListStarOfFlushSpec0)
-    ListStarOfPositionSpec0           -> ListPlusOfPositionSpec0
-    ListStarOfPositionSpec0           -> <nil>()
-    ListStarOfPositionSpec0           -> <conc>(ListStarOfPositionSpec0,ListStarOfPositionSpec0)
-    ListPlusOfPositionSpec0           -> <conc>(ListStarOfPositionSpec0,ListPlusOfPositionSpec0)
-    ListPlusOfPositionSpec0           -> <conc>(ListPlusOfPositionSpec0,ListStarOfPositionSpec0)
-    ListPlusOfPositionSpec0           -> <conc>(ListPlusOfPositionSpec0,ListPlusOfPositionSpec0)
-    ListPlusOfPositionSpec0           -> <cons>(PositionSpec,ListStarOfPositionSpec0)
-    ListStarOfWaitSpec0               -> ListPlusOfWaitSpec0
-    ListStarOfWaitSpec0               -> <nil>()
-    ListStarOfWaitSpec0               -> <conc>(ListStarOfWaitSpec0,ListStarOfWaitSpec0)
-    ListPlusOfWaitSpec0               -> <conc>(ListStarOfWaitSpec0,ListPlusOfWaitSpec0)
-    ListPlusOfWaitSpec0               -> <conc>(ListPlusOfWaitSpec0,ListStarOfWaitSpec0)
-    ListPlusOfWaitSpec0               -> <conc>(ListPlusOfWaitSpec0,ListPlusOfWaitSpec0)
-    ListPlusOfWaitSpec0               -> <cons>(WaitSpec,ListStarOfWaitSpec0)
+
     ListStarOfIoControlSpec0          -> ListPlusOfIoControlSpec0
     ListStarOfIoControlSpec0          -> <nil>()
     ListStarOfIoControlSpec0          -> <conc>(ListStarOfIoControlSpec0,ListStarOfIoControlSpec0)
@@ -132,13 +105,7 @@ regular tree grammar
     ListPlusOfIoControlSpec0          -> <conc>(ListPlusOfIoControlSpec0,ListStarOfIoControlSpec0)
     ListPlusOfIoControlSpec0          -> <conc>(ListPlusOfIoControlSpec0,ListPlusOfIoControlSpec0)
     ListPlusOfIoControlSpec0          -> <cons>(IoControlSpec,ListStarOfIoControlSpec0)
-    ListStarOfOutputItem0             -> ListPlusOfOutputItem0
-    ListStarOfOutputItem0             -> <nil>()
-    ListStarOfOutputItem0             -> <conc>(ListStarOfOutputItem0,ListStarOfOutputItem0)
-    ListPlusOfOutputItem0             -> <conc>(ListStarOfOutputItem0,ListPlusOfOutputItem0)
-    ListPlusOfOutputItem0             -> <conc>(ListPlusOfOutputItem0,ListStarOfOutputItem0)
-    ListPlusOfOutputItem0             -> <conc>(ListPlusOfOutputItem0,ListPlusOfOutputItem0)
-    ListPlusOfOutputItem0             -> <cons>(OutputItem,ListStarOfOutputItem0)
+
     ListStarOfInputItem0              -> ListPlusOfInputItem0
     ListStarOfInputItem0              -> <nil>()
     ListStarOfInputItem0              -> <conc>(ListStarOfInputItem0,ListStarOfInputItem0)
@@ -160,27 +127,7 @@ regular tree grammar
     ListPlusOfConnectSpec0            -> <conc>(ListPlusOfConnectSpec0,ListStarOfConnectSpec0)
     ListPlusOfConnectSpec0            -> <conc>(ListPlusOfConnectSpec0,ListPlusOfConnectSpec0)
     ListPlusOfConnectSpec0            -> <cons>(ConnectSpec,ListStarOfConnectSpec0)
-    ListStarOfLockStat0               -> ListPlusOfLockStat0
-    ListStarOfLockStat0               -> <nil>()
-    ListStarOfLockStat0               -> <conc>(ListStarOfLockStat0,ListStarOfLockStat0)
-    ListPlusOfLockStat0               -> <conc>(ListStarOfLockStat0,ListPlusOfLockStat0)
-    ListPlusOfLockStat0               -> <conc>(ListPlusOfLockStat0,ListStarOfLockStat0)
-    ListPlusOfLockStat0               -> <conc>(ListPlusOfLockStat0,ListPlusOfLockStat0)
-    ListPlusOfLockStat0               -> <cons>(LockStat,ListStarOfLockStat0)
-    ListStarOfSyncStat0               -> ListPlusOfSyncStat0
-    ListStarOfSyncStat0               -> <nil>()
-    ListStarOfSyncStat0               -> <conc>(ListStarOfSyncStat0,ListStarOfSyncStat0)
-    ListPlusOfSyncStat0               -> <conc>(ListStarOfSyncStat0,ListPlusOfSyncStat0)
-    ListPlusOfSyncStat0               -> <conc>(ListPlusOfSyncStat0,ListStarOfSyncStat0)
-    ListPlusOfSyncStat0               -> <conc>(ListPlusOfSyncStat0,ListPlusOfSyncStat0)
-    ListPlusOfSyncStat0               -> <cons>(SyncStat,ListStarOfSyncStat0)
-    ListStarOfLblRef0                 -> ListPlusOfLblRef0
-    ListStarOfLblRef0                 -> <nil>()
-    ListStarOfLblRef0                 -> <conc>(ListStarOfLblRef0,ListStarOfLblRef0)
-    ListPlusOfLblRef0                 -> <conc>(ListStarOfLblRef0,ListPlusOfLblRef0)
-    ListPlusOfLblRef0                 -> <conc>(ListPlusOfLblRef0,ListStarOfLblRef0)
-    ListPlusOfLblRef0                 -> <conc>(ListPlusOfLblRef0,ListPlusOfLblRef0)
-    ListPlusOfLblRef0                 -> <cons>(LblRef,ListStarOfLblRef0)
+
     ListStarOfTypeGuardStmtAndBlock0  -> ListPlusOfTypeGuardStmtAndBlock0
     ListStarOfTypeGuardStmtAndBlock0  -> <nil>()
     ListStarOfTypeGuardStmtAndBlock0  -> <conc>(ListStarOfTypeGuardStmtAndBlock0,ListStarOfTypeGuardStmtAndBlock0)
@@ -695,7 +642,6 @@ regular tree grammar
     DataPointerObject                 -> DataPointerObject(Var,NoName)
     DataPointerObject                 -> DataPointerObject(Var,Name)
 
-    Expr                              -> Expr(OfpVarRef)
     Expr                              -> Expr(OfpLiteral)
     OfpOp                             -> GE
     OfpOp                             -> GT
@@ -712,11 +658,12 @@ regular tree grammar
     OfpDefinedOp                      -> OfpDefinedOp(String)
     OfpCoshape                        -> OfpCoshape(ListPlusOfDimSpec0)
     OfpShape                          -> OfpShape(ListPlusOfDimSpec0)
-    OfpAllocation                     -> OfpAllocation(OfpVarRef,OptOfpShape0,OptOfpCoshape0)
+    OfpAllocation                     -> OfpAllocation(VarRef,OptOfpShape0,OptOfpCoshape0)
     OfpAllocOpt                       -> Expr
     Stmt                              -> OfpAllocateStmt
     OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptType,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
-    OfpVarRef                         -> OfpVarRef(Name)
+
+    VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
 
     Decl                              -> VolatileStmt
@@ -993,12 +940,177 @@ regular tree grammar
     Stmt                              -> EndBlockStmt
     EndBlockStmt                      -> EndBlockStmt(OptLabel,OptName)
 
+    CriticalConstruct                 -> CriticalConstruct(CriticalStmt,Block,EndCriticalStmt)
+
+    Stmt                              -> CriticalStmt
+    CriticalStmt                      -> CriticalStmt(OptLabel,OptName)
+
+    Stmt                              -> EndCriticalStmt
+    EndCriticalStmt                   -> EndCriticalStmt(OptLabel,OptName)
+
+    Stmt                              -> BlockDoConstruct
+    BlockDoConstruct                  -> BlockDoConstruct(NonlabelDoStmt,Block,EndDoStmt)
+
+    Stmt                              -> LabelDoStmt
+    LabelDoStmt                       -> LabelDoStmt(OptLabel,OptName,LblRef,OptLoopControl)
+
+    Stmt                              -> NonlabelDoStmt
+    NonlabelDoStmt                    -> NonlabelDoStmt(OptLabel,OptName,OptLoopControl)
+
+    OptLoopControl                    -> no-loop-control()
+    OptLoopControl                    -> LoopControl
+
+    LoopControl                       -> LoopConcurrentControl(ForallHeader)
+    LoopControl                       -> LoopWhileControl(Expr)
+    LoopControl                       -> LoopControl(DoVariable,Expr,Expr,OptExpr)
+    DoVariable                        -> Name
+
+    Stmt                              -> EndDoStmt
+    EndDoStmt                         -> EndDoStmt(OptLabel,OptName)
+
+    Stmt                              -> CycleStmt
+    CycleStmt                         -> CycleStmt(OptLabel,OptName)
+
     Stmt                              -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,Name)
-    Name                              -> <string>
+
+    Stmt                              -> GotoStmt
+    GotoStmt                          -> GotoStmt(OptLabel,LblRef)
+
+    Stmt                              -> ComputedGotoStmt
+    ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef,Expr)
+
+    Stmt                              -> ArithmeticIfStmt
+    ArithmeticIfStmt                  -> ArithmeticIfStmt(OptLabel,Expr,LblRef,LblRef,LblRef)
 
     Stmt                              -> ContinueStmt
     ContinueStmt                      -> ContinueStmt(OptLabel)
+
+    Stmt                              -> StopStmt
+    StopStmt                          -> StopStmt(OptLabel,OptStopCode)
+
+    Stmt                              -> ErrorStopStmt
+    ErrorStopStmt                     -> ErrorStopStmt(OptLabel,OptStopCode)
+
+    OptStopCode                       -> no-stop-code()
+    OptStopCode                       -> StopCode
+    StopCode                          -> Expr
+
+    Stmt                              -> PauseStmt(OptLabel,OptStopCode)
+    PauseStmt                         -> PauseStmt(OptLabel,OptStopCode)
+
+    Stmt                              -> SyncAllStmt
+    SyncAllStmt                       -> SyncAllStmt(OptLabel,ListStarOfSyncStat)
+
+    SyncStat                          -> ERRMSG(ErrmsgVariable)
+    SyncStat                          -> STAT(StatVariable)
+
+    Stmt                              -> SyncImagesStmt
+    SyncImagesStmt                    -> SyncImagesStmt(OptLabel,ImageSet,ListStarOfSyncStat)
+
+    ImageSet                          -> IntExpr
+    ImageSet                          -> STAR()
+
+    Stmt                              -> SyncMemoryStmt
+    SyncMemoryStmt                    -> SyncMemoryStmt(OptLabel,ListStarOfSyncStat)
+
+    Stmt                              -> LockStmt
+    LockStmt                          -> LockStmt(OptLabel,LockVariable,ListStarOfLockStat)
+
+    LockStat                          -> ACQUIRED_LOCK(LogicalVariable)
+    LockStat                          -> SyncStat
+
+    Stmt                              -> UnlockStmt
+    UnlockStmt                        -> UnlockStmt(OptLabel,LockVariable,ListStarOfSyncStat)
+
+    LockVariable                      -> Variable
+
+    FileUnitNumber                    -> IntExpr
+    IomsgVariable                     -> DefaultCharExpr
+
+    ReadStmt                          -> ReadStmt(OptLabel,ReadFormat,OptInputItemList,EOS)
+    ReadStmt                          -> ReadStmt(OptLabel,IoControlSpecList,ListStarOfInputItem0,EOS)
+
+    ReadFormat                        -> read-format(Format)
+
+    Stmt                              -> WriteStmt
+    WriteStmt                         -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem)
+
+    Stmt                              -> WaitStmt
+    WaitStmt                          -> WaitStmt(OptLabel,ListPlusOfWaitSpec)
+
+    WaitSpec                          -> IOSTAT(IntExpr)
+    WaitSpec                          -> IOMSG(IomsgVariable)
+    WaitSpec                          -> ID(IntExpr)
+    WaitSpec                          -> ERR(LblRef)
+    WaitSpec                          -> EOR(LblRef)
+    WaitSpec                          -> END(LblRef)
+    WaitSpec                          -> UNIT(FileUnitNumber)
+    WaitSpec                          -> UNIT(FileUnitNumber)
+
+    Stmt                              -> BackspaceStmt
+    BackspaceStmt                     -> BackspaceStmt(OptLabel,ListPlusOfPositionSpec)
+
+    Stmt                              -> RewindStmt
+    RewindStmt                        -> RewindStmt(OptLabel,ListPlusOfPositionSpec)
+
+    PositionSpec                      -> UNIT(FileUnitNumber)
+    PositionSpec                      -> IOMSG(IomsgVariable)
+    PositionSpec                      -> IOSTAT(IntVariable)
+    PositionSpec                      -> ERR(LblRef)
+
+    Stmt                              -> FlushStmt
+    FlushStmt                         -> FlushStmt(OptLabel,ListPlusOfFlushSpec)
+
+    FlushSpec                         -> ERR(LblRef)
+    FlushSpec                         -> IOMSG(IomsgVariable)
+    FlushSpec                         -> IOSTAT(IntVariable)
+    FlushSpec                         -> UNIT(FileUnitNumber)
+    FlushSpec                         -> UNIT(FileUnitNumber)
+
+    Stmt                              -> InquireStmt
+    InquireStmt                       -> InquireStmt(OptLabel,ListPlusOfInquireSpec)
+
+    Stmt                              -> InquireLengthStmt
+    InquireStmt                       -> InquireLengthStmt(OptLabel,VarRef,ListPlusOfOutputItem)
+
+    InquireSpec                       -> WRITE(DefaultCharExpr)
+    InquireSpec                       -> UNFORMATTED(DefaultCharExpr)
+    InquireSpec                       -> STREAM(DefaultCharExpr)
+    InquireSpec                       -> SIZE(IntVariable)
+    InquireSpec                       -> SIGN(DefaultCharExpr)
+    InquireSpec                       -> SEQUENTIAL(DefaultCharExpr)
+    InquireSpec                       -> ROUND(DefaultCharExpr)
+    InquireSpec                       -> RECL(IntVariable)
+    InquireSpec                       -> READWRITE(DefaultCharExpr)
+    InquireSpec                       -> READ(DefaultCharExpr)
+    InquireSpec                       -> POSITION(DefaultCharExpr)
+    InquireSpec                       -> POS(IntVariable)
+    InquireSpec                       -> PENDING(LogicalVariable)
+    InquireSpec                       -> PAD(DefaultCharExpr)
+    InquireSpec                       -> OPENED(LogicalVariable)
+    InquireSpec                       -> NUMBER(IntVariable)
+    InquireSpec                       -> NEXTREC(IntVariable)
+    InquireSpec                       -> NAMED(LogicalVariable)
+    InquireSpec                       -> NAME(DefaultCharExpr)
+    InquireSpec                       -> IOSTAT(IntVariable)
+    InquireSpec                       -> IOMSG(IomsgVariable)
+    InquireSpec                       -> ID(IntExpr)
+    InquireSpec                       -> FORMATTED(DefaultCharExpr)
+    InquireSpec                       -> FORM(DefaultCharExpr)
+    InquireSpec                       -> EXIST(LogicalVariable)
+    InquireSpec                       -> ERR(LblRef)
+    InquireSpec                       -> ENCODING(DefaultCharExpr)
+    InquireSpec                       -> DIRECT(DefaultCharExpr)
+    InquireSpec                       -> DELIM(DefaultCharExpr)
+    InquireSpec                       -> DECIMAL(DefaultCharExpr)
+    InquireSpec                       -> BLANK(DefaultCharExpr)
+    InquireSpec                       -> ASYNCHRONOUS(DefaultCharExpr)
+    InquireSpec                       -> ACTION(DefaultCharExpr)
+    InquireSpec                       -> ACCESS(DefaultCharExpr)
+    InquireSpec                       -> FILE(FileNameExpr)
+    InquireSpec                       -> UNIT(FileUnitNumber)
+    InquireSpec                       -> UNIT(FileUnitNumber)
 
     Stmt                              -> UseStmt
     UseStmt                           -> UseStmt(OptLabel,OptModuleNature,Name,ListStarOfRename)
@@ -1223,84 +1335,21 @@ regular tree grammar
     DataEditDesc                      -> B(OptR,IntLiteralConstant,OptM)
     DataEditDesc                      -> I(OptR,IntLiteralConstant,OptM)
 
-    InquireSpec                       -> WRITE(DefaultCharExpr)
-    InquireSpec                       -> UNFORMATTED(DefaultCharExpr)
-    InquireSpec                       -> STREAM(DefaultCharExpr)
-    InquireSpec                       -> SIZE(IntVariable)
-    InquireSpec                       -> SIGN(DefaultCharExpr)
-    InquireSpec                       -> SEQUENTIAL(DefaultCharExpr)
-    InquireSpec                       -> ROUND(DefaultCharExpr)
-    InquireSpec                       -> RECL(IntVariable)
-    InquireSpec                       -> READWRITE(DefaultCharExpr)
-    InquireSpec                       -> READ(DefaultCharExpr)
-    InquireSpec                       -> POSITION(DefaultCharExpr)
-    InquireSpec                       -> POS(IntVariable)
-    InquireSpec                       -> PENDING(LogicalVariable)
-    InquireSpec                       -> PAD(DefaultCharExpr)
-    InquireSpec                       -> OPENED(LogicalVariable)
-    InquireSpec                       -> NUMBER(IntVariable)
-    InquireSpec                       -> NEXTREC(IntVariable)
-    InquireSpec                       -> NAMED(LogicalVariable)
-    InquireSpec                       -> NAME(DefaultCharExpr)
-    InquireSpec                       -> IOSTAT(IntVariable)
-    InquireSpec                       -> IOMSG(IomsgVariable)
-    InquireSpec                       -> ID(IntExpr)
-    InquireSpec                       -> FORMATTED(DefaultCharExpr)
-    InquireSpec                       -> FORM(DefaultCharExpr)
-    InquireSpec                       -> EXIST(LogicalVariable)
-    InquireSpec                       -> ERR(LblRef)
-    InquireSpec                       -> ENCODING(DefaultCharExpr)
-    InquireSpec                       -> DIRECT(DefaultCharExpr)
-    InquireSpec                       -> DELIM(DefaultCharExpr)
-    InquireSpec                       -> DECIMAL(DefaultCharExpr)
-    InquireSpec                       -> BLANK(DefaultCharExpr)
-    InquireSpec                       -> ASYNCHRONOUS(DefaultCharExpr)
-    InquireSpec                       -> ACTION(DefaultCharExpr)
-    InquireSpec                       -> ACCESS(DefaultCharExpr)
-    InquireSpec                       -> FILE(FileNameExpr)
-    InquireSpec                       -> UNIT(FileUnitNumber)
-    InquireSpec                       -> UNIT(FileUnitNumber)
-    InquireStmt                       -> InquireLengthStmt(OptLabel,IntVariable,ListPlusOfOutputItem0,EOS)
-    InquireStmt                       -> InquireStmt(OptLabel,ListPlusOfInquireSpec0,EOS)
-    FlushSpec                         -> ERR(LblRef)
-    FlushSpec                         -> IOMSG(IomsgVariable)
-    FlushSpec                         -> IOSTAT(IntVariable)
-    FlushSpec                         -> UNIT(FileUnitNumber)
-    FlushSpec                         -> UNIT(FileUnitNumber)
-    FlushStmt                         -> FlushStmt(OptLabel,ListPlusOfFlushSpec0,EOS)
-    FlushStmt                         -> flush-unit-stmt(OptLabel,FileUnitNumber,EOS)
-    PositionSpec                      -> ERR(LblRef)
-    PositionSpec                      -> IOMSG(IomsgVariable)
-    PositionSpec                      -> IOSTAT(IntVariable)
-    PositionSpec                      -> UNIT(FileUnitNumber)
-    PositionSpec                      -> UNIT(FileUnitNumber)
-    RewindStmt                        -> RewindStmt(OptLabel,ListPlusOfPositionSpec0,EOS)
-    RewindStmt                        -> rewind-unit-stmt(OptLabel,FileUnitNumber,EOS)
-    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec0,EOS)
+    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec,EOS)
     EndfileStmt                       -> endfile-unit-stmt(OptLabel,FileUnitNumber,EOS)
-    BackspaceStmt                     -> BackspaceStmt(OptLabel,ListPlusOfPositionSpec0,EOS)
-    BackspaceStmt                     -> backspace-unit-stmt(OptLabel,FileUnitNumber,EOS)
-    WaitSpec                          -> IOSTAT(IntExpr)
-    WaitSpec                          -> IOMSG(IomsgVariable)
-    WaitSpec                          -> ID(IntExpr)
-    WaitSpec                          -> ERR(LblRef)
-    WaitSpec                          -> EOR(LblRef)
-    WaitSpec                          -> END(LblRef)
-    WaitSpec                          -> UNIT(FileUnitNumber)
-    WaitSpec                          -> UNIT(FileUnitNumber)
-    WaitStmt                          -> WaitStmt(OptLabel,ListPlusOfWaitSpec0,EOS)
+
     NoStride                          -> no-stride()
     IoImpliedDoControl                -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,NoStride)
     IoImpliedDoControl                -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,IntExpr)
     IoImpliedDoObject                 -> OutputItem
     IoImpliedDoObject                 -> InputItem
-    IoImpliedDoOutput                 -> IoImpliedDo(ListPlusOfOutputItem0,IoImpliedDoControl)
-    IoImpliedDoInput                  -> IoImpliedDo(ListPlusOfInputItem0,IoImpliedDoControl)
+    IoImpliedDoOutput                 -> IoImpliedDo(ListPlusOfOutputItem,IoImpliedDoControl)
+    IoImpliedDoInput                  -> IoImpliedDo(ListPlusOfInputItem,IoImpliedDoControl)
     OptOutputItemList                 -> no-list()
-    OptOutputItemList                 -> comma-list(ListPlusOfOutputItem0)
+    OptOutputItemList                 -> comma-list(ListPlusOfOutputItem)
     OutputItem                        -> IoImpliedDoOutput
     OutputItem                        -> Expr
-    OptInputItemList                  -> comma-list(ListPlusOfInputItem0)
+    OptInputItemList                  -> comma-list(ListPlusOfInputItem)
     InputItem                         -> IoImpliedDoInput
     InputItem                         -> Variable
     Format                            -> STAR()
@@ -1336,10 +1385,7 @@ regular tree grammar
     IoControlSpec                     -> FMT(Format)
     IoControlSpec                     -> UNIT(IoUnit)
     PrintStmt                         -> PrintStmt(OptLabel,Format,OptOutputItemList,EOS)
-    WriteStmt                         -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem0,EOS)
-    ReadFormat                        -> read-format(Format)
-    ReadStmt                          -> ReadStmt(OptLabel,ReadFormat,OptInputItemList,EOS)
-    ReadStmt                          -> ReadStmt(OptLabel,IoControlSpecList,ListStarOfInputItem0,EOS)
+
     CloseSpec                         -> STATUS(DefaultCharExpr)
     CloseSpec                         -> ERR(LblRef)
     CloseSpec                         -> IOMSG(IomsgVariable)
@@ -1347,7 +1393,7 @@ regular tree grammar
     CloseSpec                         -> UNIT(FileUnitNumber)
     CloseSpec                         -> UNIT(FileUnitNumber)
     CloseStmt                         -> CloseStmt(OptLabel,ListPlusOfCloseSpec0,EOS)
-    IomsgVariable                     -> DefaultCharExpr
+
     FileNameExpr                      -> DefaultCharExpr
     ConnectSpec                       -> STATUS(DefaultCharExpr)
     ConnectSpec                       -> SIGN(DefaultCharExpr)
@@ -1375,35 +1421,6 @@ regular tree grammar
     FileUnitNumber                    -> IntExpr
     IoUnit                            -> STAR()
     IoUnit                            -> IntExpr
-    PauseStmt                         -> PauseStmt(OptLabel,OptStopCode,EOS)
-    LockVariable                      -> Variable
-    UnlockStmt                        -> UnlockStmt(OptLabel,LockVariable,OptSyncStatList,EOS)
-    OptLockStatList                   -> no-list()
-    OptLockStatList                   -> comma-list(ListPlusOfLockStat0)
-    LockStat                          -> SyncStat
-    LockStat                          -> ACQUIRED_LOCK(LogicalVariable)
-    LockStmt                          -> LockStmt(OptLabel,LockVariable,OptLockStatList,EOS)
-    SyncMemoryStmt                    -> SyncMemoryStmt(OptLabel,NoSyncStatList,EOS)
-    SyncMemoryStmt                    -> SyncMemoryStmt(OptLabel,ListStarOfSyncStat0,EOS)
-    ImageSet                          -> STAR()
-    ImageSet                          -> IntExpr
-    SyncImagesStmt                    -> SyncImagesStmt(OptLabel,ImageSet,OptSyncStatList,EOS)
-    NoSyncStatList                    -> no-list()
-    OptSyncStatList                   -> no-list()
-    OptSyncStatList                   -> comma-list(ListPlusOfSyncStat0)
-    SyncStat                          -> ERRMSG(ErrmsgVariable)
-    SyncStat                          -> STAT(StatVariable)
-    SyncAllStmt                       -> SyncAllStmt(OptLabel,NoSyncStatList,EOS)
-    SyncAllStmt                       -> SyncAllStmt(OptLabel,ListStarOfSyncStat0,EOS)
-    OptStopCode                       -> no-stop-code()
-    OptStopCode                       -> StopCode
-    StopCode                          -> Expr
-    ErrorStopStmt                     -> ErrorStopStmt(OptLabel,OptStopCode,EOS)
-    StopStmt                          -> StopStmt(OptLabel,OptStopCode,EOS)
-    ArithmeticIfStmt                  -> ArithmeticIfStmt(OptLabel,Expr,LblRef,LblRef,LblRef,EOS)
-    ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef0,Expr,EOS)
-    ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef0,Expr,EOS)
-    GotoStmt                          -> GotoStmt(OptLabel,LblRef,EOS)
 
 
     OptSelectConstructName            -> no-name()
@@ -1453,33 +1470,8 @@ regular tree grammar
     ElseStmtAndBlock                  -> ElseStmtBlock(ElseStmt,Block)
     ElseIfStmtAndBlock                -> ElseIfStmtBlock(ElseIfStmt,Block)
     IfConstruct                       -> IfConstruct(IfThenStmt,Block,ListStarOfElseIfStmtAndBlock0,OptElseStmtAndBlock,EndIfStmt)
-    CycleStmt                         -> CycleStmt(OptLabel,NoName,EOS)
-    CycleStmt                         -> CycleStmt(OptLabel,DoConstructName,EOS)
-    EndDoStmt                         -> EndDoStmt(OptLabel,NoName,EOS)
-    EndDoStmt                         -> EndDoStmt(OptLabel,DoConstructName,EOS)
-    ScalarIntVariableName             -> VarRef(Ident)
-    DoVariable                        -> ScalarIntVariableName
 
-    OptLoopControl                    -> no-loop-control()
-    OptLoopControl                    -> LoopControl
-    LoopControl                       -> LoopConcurrentControl(ForallHeader)
-    LoopControl                       -> LoopConcurrentControl(ForallHeader)
-    LoopControl                       -> LoopWhileControl(Expr)
-    LoopControl                       -> LoopWhileControl(Expr)
-    LoopControl                       -> LoopControl(DoVariable,Expr,Expr,OptExpr)
-    LoopControl                       -> LoopControl(DoVariable,Expr,Expr,OptExpr)
-    NonlabelDoStmt                    -> NonlabelDoStmt(OptLabel,NoName,OptLoopControl,EOS)
-    NonlabelDoStmt                    -> NonlabelDoStmt(OptLabel,DoConstructName,OptLoopControl,EOS)
-    DoConstructName                   -> Ident
-    LabelDoStmt                       -> LabelDoStmt(OptLabel,NoName,LblRef,OptLoopControl,EOS)
-    LabelDoStmt                       -> LabelDoStmt(OptLabel,DoConstructName,LblRef,OptLoopControl,EOS)
-    OptCriticalConstructName          -> no-name()
-    OptCriticalConstructName          -> CriticalConstructName
-    CriticalConstructName             -> Ident
-    EndCriticalStmt                   -> EndCriticalStmt(OptLabel,OptCriticalConstructName,EOS)
-    CriticalStmt                      -> CriticalStmt(OptLabel,NoName,EOS)
-    CriticalStmt                      -> CriticalStmt(OptLabel,CriticalConstructName,EOS)
-    CriticalConstruct                 -> CriticalConstruct(CriticalStmt,Block,EndCriticalStmt)
+    ScalarIntVariableName             -> VarRef(Name)
 
     EndWhereStmt                      -> EndWhereStmt(OptLabel,NoName,EOS)
     EndWhereStmt                      -> EndWhereStmt(OptLabel,WhereConstructName,EOS)
@@ -1641,7 +1633,7 @@ regular tree grammar
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
-    ScalarVariableName                -> VarRef(Ident)
+    ScalarVariableName                -> VarRef(Name)
     ParentString                      -> ConstantExpr
     ParentString                      -> StructureComponent
     Substring                         -> Substring(ParentString,SubstringRange)
@@ -1649,7 +1641,7 @@ regular tree grammar
     DefaultCharVariable               -> Variable
     CharVariable                      -> Variable
     LogicalVariable                   -> Variable
-    VariableName                      -> VarRef(Ident)
+    VariableName                      -> VarRef(Name)
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef
@@ -2131,13 +2123,77 @@ regular tree grammar
     ListPlusOfAssociation             -> <conc>(ListPlusOfAssociation,ListPlusOfAssociation)
     ListPlusOfAssociation             -> <cons>(Association,ListStarOfAssociation)
 
-    ListStarOfAllocatableDecl        -> ListPlusOfAllocatableDecl
-    ListStarOfAllocatableDecl        -> <nil>()
-    ListStarOfAllocatableDecl        -> <conc>(ListStarOfAllocatableDecl,ListStarOfAllocatableDecl)
-    ListPlusOfAllocatableDecl        -> <conc>(ListStarOfAllocatableDecl,ListPlusOfAllocatableDecl)
-    ListPlusOfAllocatableDecl        -> <conc>(ListPlusOfAllocatableDecl,ListStarOfAllocatableDecl)
-    ListPlusOfAllocatableDecl        -> <conc>(ListPlusOfAllocatableDecl,ListPlusOfAllocatableDecl)
-    ListPlusOfAllocatableDecl        -> <cons>(AllocatableDecl,ListStarOfAllocatableDecl)
+    ListStarOfLblRef                  -> ListPlusOfLblRef
+    ListStarOfLblRef                  -> <nil>()
+    ListStarOfLblRef                  -> <conc>(ListStarOfLblRef,ListStarOfLblRef)
+    ListPlusOfLblRef                  -> <conc>(ListStarOfLblRef,ListPlusOfLblRef)
+    ListPlusOfLblRef                  -> <conc>(ListPlusOfLblRef,ListStarOfLblRef)
+    ListPlusOfLblRef                  -> <conc>(ListPlusOfLblRef,ListPlusOfLblRef)
+    ListPlusOfLblRef                  -> <cons>(LblRef,ListStarOfLblRef)
+
+    ListStarOfAllocatableDecl         -> ListPlusOfAllocatableDecl
+    ListStarOfAllocatableDecl         -> <nil>()
+    ListStarOfAllocatableDecl         -> <conc>(ListStarOfAllocatableDecl,ListStarOfAllocatableDecl)
+    ListPlusOfAllocatableDecl         -> <conc>(ListStarOfAllocatableDecl,ListPlusOfAllocatableDecl)
+    ListPlusOfAllocatableDecl         -> <conc>(ListPlusOfAllocatableDecl,ListStarOfAllocatableDecl)
+    ListPlusOfAllocatableDecl         -> <conc>(ListPlusOfAllocatableDecl,ListPlusOfAllocatableDecl)
+    ListPlusOfAllocatableDecl         -> <cons>(AllocatableDecl,ListStarOfAllocatableDecl)
+
+    ListStarOfSyncStat                -> ListPlusOfSyncStat
+    ListStarOfSyncStat                -> <nil>()
+    ListStarOfSyncStat                -> <conc>(ListStarOfSyncStat,ListStarOfSyncStat)
+    ListPlusOfSyncStat                -> <conc>(ListStarOfSyncStat,ListPlusOfSyncStat)
+    ListPlusOfSyncStat                -> <conc>(ListPlusOfSyncStat,ListStarOfSyncStat)
+    ListPlusOfSyncStat                -> <conc>(ListPlusOfSyncStat,ListPlusOfSyncStat)
+    ListPlusOfSyncStat                -> <cons>(SyncStat,ListStarOfSyncStat)
+
+    ListStarOfLockStat                -> ListPlusOfLockStat
+    ListStarOfLockStat                -> <nil>()
+    ListStarOfLockStat                -> <conc>(ListStarOfLockStat,ListStarOfLockStat)
+    ListPlusOfLockStat                -> <conc>(ListStarOfLockStat,ListPlusOfLockStat)
+    ListPlusOfLockStat                -> <conc>(ListPlusOfLockStat,ListStarOfLockStat)
+    ListPlusOfLockStat                -> <conc>(ListPlusOfLockStat,ListPlusOfLockStat)
+    ListPlusOfLockStat                -> <cons>(LockStat,ListStarOfLockStat)
+
+    ListStarOfOutputItem              -> ListPlusOfOutputItem
+    ListStarOfOutputItem              -> <nil>()
+    ListStarOfOutputItem              -> <conc>(ListStarOfOutputItem,ListStarOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListStarOfOutputItem,ListPlusOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
+    ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
+
+    ListStarOfWaitSpec                -> ListPlusOfWaitSpec
+    ListStarOfWaitSpec                -> <nil>()
+    ListStarOfWaitSpec                -> <conc>(ListStarOfWaitSpec,ListStarOfWaitSpec)
+    ListPlusOfWaitSpec                -> <conc>(ListStarOfWaitSpec,ListPlusOfWaitSpec)
+    ListPlusOfWaitSpec                -> <conc>(ListPlusOfWaitSpec,ListStarOfWaitSpec)
+    ListPlusOfWaitSpec                -> <conc>(ListPlusOfWaitSpec,ListPlusOfWaitSpec)
+    ListPlusOfWaitSpec                -> <cons>(WaitSpec,ListStarOfWaitSpec)
+
+    ListStarOfInquireSpec             -> ListPlusOfInquireSpec
+    ListStarOfInquireSpec             -> <nil>()
+    ListStarOfInquireSpec             -> <conc>(ListStarOfInquireSpec,ListStarOfInquireSpec)
+    ListPlusOfInquireSpec             -> <conc>(ListStarOfInquireSpec,ListPlusOfInquireSpec)
+    ListPlusOfInquireSpec             -> <conc>(ListPlusOfInquireSpec,ListStarOfInquireSpec)
+    ListPlusOfInquireSpec             -> <conc>(ListPlusOfInquireSpec,ListPlusOfInquireSpec)
+    ListPlusOfInquireSpec             -> <cons>(InquireSpec,ListStarOfInquireSpec)
+
+    ListStarOfFlushSpec               -> ListPlusOfFlushSpec
+    ListStarOfFlushSpec               -> <nil>()
+    ListStarOfFlushSpec               -> <conc>(ListStarOfFlushSpec,ListStarOfFlushSpec)
+    ListPlusOfFlushSpec               -> <conc>(ListStarOfFlushSpec,ListPlusOfFlushSpec)
+    ListPlusOfFlushSpec               -> <conc>(ListPlusOfFlushSpec,ListStarOfFlushSpec)
+    ListPlusOfFlushSpec               -> <conc>(ListPlusOfFlushSpec,ListPlusOfFlushSpec)
+    ListPlusOfFlushSpec               -> <cons>(FlushSpec,ListStarOfFlushSpec)
+
+    ListStarOfPositionSpec            -> ListPlusOfPositionSpec
+    ListStarOfPositionSpec            -> <nil>()
+    ListStarOfPositionSpec            -> <conc>(ListStarOfPositionSpec,ListStarOfPositionSpec)
+    ListPlusOfPositionSpec            -> <conc>(ListStarOfPositionSpec,ListPlusOfPositionSpec)
+    ListPlusOfPositionSpec            -> <conc>(ListPlusOfPositionSpec,ListStarOfPositionSpec)
+    ListPlusOfPositionSpec            -> <conc>(ListPlusOfPositionSpec,ListPlusOfPositionSpec)
+    ListPlusOfPositionSpec            -> <cons>(PositionSpec,ListStarOfPositionSpec)
 
     ListStarOfOnly                    -> ListPlusOfOnly
     ListStarOfOnly                    -> <nil>()

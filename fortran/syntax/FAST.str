@@ -73,7 +73,7 @@ signature
     NE                        : NE
     EQ                        : EQ
     OfpDefinedOp              : String -> OfpDefinedOp
-    OfpVarRef                 : Name -> OfpVarRef
+    VarRef                    : Name -> VarRef
     VarDef                    : Name -> VarDef
     VolatileStmt              : OptLabel * List(Name) -> VolatileStmt
     ImplicitStmt              : OptLabel * List(ImplicitSpec) -> ImplicitStmt
@@ -202,10 +202,79 @@ signature
     no-mask-expr              : OptMaskExpr
                               : MaskExpr -> OptMaskExpr
                               : LogicalExpr -> MaskExpr
+    AssociateStmt             : OptLabel * OptName * List(Association) -> AssociateStmt
+    Association               : Name * Selector -> Association
+                              : Expr -> Selector
+    EndAssociateStmt          : OptLabel * OptName -> EndAssociateStmt
     Block                     : OptLabel * OptName * Scope * EndBlockStmt -> Block
     EndBlockStmt              : OptLabel * OptName -> EndBlockStmt
+    CriticalStmt              : OptLabel * OptName -> CriticalStmt
+    EndCriticalStmt           : OptLabel * OptName -> EndCriticalStmt
+    BlockDoConstruct          : NonlabelDoStmt * Block * EndDoStmt -> BlockDoConstruct
+    LabelDoStmt               : OptLabel * OptName * LblRef * OptLoopControl -> LabelDoStmt
+    NonlabelDoStmt            : OptLabel * OptName * OptLoopControl -> NonlabelDoStmt
+    no-loop-control           : OptLoopControl
+                              : LoopControl -> OptLoopControl
+    LoopConcurrentControl     : ForallHeader -> LoopControl
+    LoopWhileControl          : Expr -> LoopControl
+    LoopControl               : DoVariable * Expr * Expr * OptExpr -> LoopControl
+                              : Name -> DoVariable
+    EndDoStmt                 : OptLabel * OptName -> EndDoStmt
+    CycleStmt                 : OptLabel * OptName -> CycleStmt
     ExitStmt                  : OptLabel * Name -> ExitStmt
+    GotoStmt                  : OptLabel * LblRef -> GotoStmt
+    ComputedGotoStmt          : OptLabel * List(LblRef) * Expr -> ComputedGotoStmt
+    ArithmeticIfStmt          : OptLabel * Expr * LblRef * LblRef * LblRef -> ArithmeticIfStmt
     ContinueStmt              : OptLabel -> ContinueStmt
+    StopStmt                  : OptLabel * OptStopCode -> StopStmt
+    ErrorStopStmt             : OptLabel * OptStopCode -> ErrorStopStmt
+    no-stop-code              : OptStopCode
+                              : StopCode -> OptStopCode
+                              : Expr -> StopCode
+    SyncAllStmt               : OptLabel * List(SyncStat) -> SyncAllStmt
+    ERRMSG                    : ErrmsgVariable -> SyncStat
+    STAT                      : StatVariable -> SyncStat
+    SyncImagesStmt            : OptLabel * ImageSet * List(SyncStat) -> SyncImagesStmt
+                              : IntExpr -> ImageSet
+    STAR                      : ImageSet
+    SyncMemoryStmt            : OptLabel * List(SyncStat) -> SyncMemoryStmt
+    LockStmt                  : OptLabel * LockVariable * List(LockStat) -> LockStmt
+    ACQUIRED_LOCK             : LogicalVariable -> LockStat
+                              : SyncStat -> LockStat
+    UnlockStmt                : OptLabel * LockVariable * List(SyncStat) -> UnlockStmt
+                              : Variable -> LockVariable
+    WriteStmt                 : OptLabel * IoControlSpecList * List(OutputItem) -> WriteStmt
+    WaitStmt                  : OptLabel * List(WaitSpec) -> WaitStmt
+    IOSTAT                    : IntExpr -> WaitSpec
+    ID                        : IntExpr -> WaitSpec
+    ERR                       : LblRef -> WaitSpec
+    EOR                       : LblRef -> WaitSpec
+    END                       : LblRef -> WaitSpec
+    UNIT                      : FileUnitNumber -> WaitSpec
+    BackspaceStmt             : OptLabel * List(PositionSpec) -> BackspaceStmt
+    RewindStmt                : OptLabel * List(PositionSpec) -> RewindStmt
+    UNIT                      : FileUnitNumber -> PositionSpec
+    IOSTAT                    : IntVariable -> PositionSpec
+    ERR                       : LblRef -> PositionSpec
+    FlushStmt                 : OptLabel * List(FlushSpec) -> FlushStmt
+    ERR                       : LblRef -> FlushSpec
+    IOSTAT                    : IntVariable -> FlushSpec
+    UNIT                      : FileUnitNumber -> FlushSpec
+    InquireStmt               : OptLabel * List(InquireSpec) -> InquireStmt
+    InquireLengthStmt         : OptLabel * VarRef * List(OutputItem) -> InquireStmt
+    SIZE                      : IntVariable -> InquireSpec
+    RECL                      : IntVariable -> InquireSpec
+    POS                       : IntVariable -> InquireSpec
+    PENDING                   : LogicalVariable -> InquireSpec
+    OPENED                    : LogicalVariable -> InquireSpec
+    NUMBER                    : IntVariable -> InquireSpec
+    NEXTREC                   : IntVariable -> InquireSpec
+    NAMED                     : LogicalVariable -> InquireSpec
+    IOSTAT                    : IntVariable -> InquireSpec
+    ID                        : IntExpr -> InquireSpec
+    EXIST                     : LogicalVariable -> InquireSpec
+    ERR                       : LblRef -> InquireSpec
+    UNIT                      : FileUnitNumber -> InquireSpec
     UseStmt                   : OptLabel * OptModuleNature * Name * ListStarOfRename -> UseStmt
     UseOnlyStmt               : OptLabel * OptModuleNature * Name * List(Only) -> UseOnlyStmt
                               : ModuleNature -> OptModuleNature
@@ -301,10 +370,36 @@ signature
                               : ForallConstructStmt -> Stmt
                               : EndForallStmt -> Stmt
                               : ForallStmt -> Stmt
+                              : AssociateStmt -> Stmt
+                              : EndAssociateStmt -> Stmt
                               : Block -> Stmt
                               : EndBlockStmt -> Stmt
+                              : CriticalStmt -> Stmt
+                              : EndCriticalStmt -> Stmt
+                              : BlockDoConstruct -> Stmt
+                              : LabelDoStmt -> Stmt
+                              : NonlabelDoStmt -> Stmt
+                              : EndDoStmt -> Stmt
+                              : CycleStmt -> Stmt
                               : ExitStmt -> Stmt
+                              : GotoStmt -> Stmt
+                              : ComputedGotoStmt -> Stmt
+                              : ArithmeticIfStmt -> Stmt
                               : ContinueStmt -> Stmt
+                              : StopStmt -> Stmt
+                              : ErrorStopStmt -> Stmt
+    PauseStmt                 : OptLabel * OptStopCode -> Stmt
+                              : SyncAllStmt -> Stmt
+                              : SyncImagesStmt -> Stmt
+                              : SyncMemoryStmt -> Stmt
+                              : LockStmt -> Stmt
+                              : UnlockStmt -> Stmt
+                              : WriteStmt -> Stmt
+                              : WaitStmt -> Stmt
+                              : BackspaceStmt -> Stmt
+                              : RewindStmt -> Stmt
+                              : FlushStmt -> Stmt
+                              : InquireStmt -> Stmt
                               : UseStmt -> Stmt
                               : UseOnlyStmt -> Stmt
                               : InterfaceStmt -> Stmt
@@ -353,8 +448,37 @@ signature
     no-w                      : OptW
     DT                        : OptR * OptIOType * OptVList -> DataEditDesc
     A                         : OptR * OptW -> DataEditDesc
-    VarRef                    : Ident -> ScalarIntVariableName
-                              : ScalarIntVariableName -> DoVariable
+    no-stride                 : NoStride
+    IoImpliedDoControl        : DoVariable * IntExpr * IntExpr * NoStride -> IoImpliedDoControl
+    IoImpliedDoControl        : DoVariable * IntExpr * IntExpr * IntExpr -> IoImpliedDoControl
+    IoImpliedDo               : List(OutputItem) * IoImpliedDoControl -> IoImpliedDoOutput
+                              : IoImpliedDoOutput -> OutputItem
+                              : Expr -> OutputItem
+    STAR                      : Format
+    IdVariable                : IntVariable -> IdVariable
+    NML                       : NamelistGroupName -> NameListNoKW
+    FMT                       : Format -> FormatNoKW
+    UNIT                      : IoUnit -> IoUnitNoKW
+    no-list                   : OptIoControlSpecList
+    a-list                    : List(IoControlSpec) -> OptIoControlSpecList
+    io-control-spec-list      : IoUnitNoKW * NameListNoKW * OptIoControlSpecList -> IoControlSpecList
+    io-control-spec-list      : IoUnitNoKW * FormatNoKW * OptIoControlSpecList -> IoControlSpecList
+    io-control-spec-list      : IoUnitNoKW * OptIoControlSpecList -> IoControlSpecList
+    io-control-spec-list      : List(IoControlSpec) -> IoControlSpecList
+    SIZE                      : IntVariable -> IoControlSpec
+    REC                       : Expr -> IoControlSpec
+    POS                       : Expr -> IoControlSpec
+    IOSTAT                    : IntVariable -> IoControlSpec
+    ID                        : IdVariable -> IoControlSpec
+    ERR                       : LblRef -> IoControlSpec
+    EOR                       : LblRef -> IoControlSpec
+    END                       : LblRef -> IoControlSpec
+    NML                       : NamelistGroupName -> IoControlSpec
+    FMT                       : Format -> IoControlSpec
+    UNIT                      : IoUnit -> IoControlSpec
+                              : IntExpr -> FileUnitNumber
+    STAR                      : IoUnit
+                              : IntExpr -> IoUnit
     no-upper-bounds           : NoUpperBoundExpr
                               : IntExpr -> SpecificationExpr
                               : Dop -> DefinedBinaryOp
@@ -379,7 +503,6 @@ signature
     Mult                      : Expr * Expr -> Expr
     Power                     : Expr * Expr -> Expr
     DefUnaryExpr              : DefinedUnaryOp * Expr -> Expr
-    Expr                      : OfpVarRef -> Expr
     Expr                      : OfpLiteral -> Expr
                               : OfpAssumedRank -> Expr
                               : OfpImpliedShape -> Expr
@@ -428,6 +551,8 @@ signature
                               : MultOp -> IntrinsicOperator
                               : PowerOp -> IntrinsicOperator
     no-lower-bound            : NoLowerBoundExpr
+                              : DefaultCharVariable -> ErrmsgVariable
+                              : IntVariable -> StatVariable
                               : IntExpr -> Cosubscript
     no-image-selector         : OptImageSelector
                               : ImageSelector -> OptImageSelector
@@ -454,8 +579,13 @@ signature
                               : ConstantExpr -> ParentString
                               : StructureComponent -> ParentString
     Substring                 : ParentString * SubstringRange -> Substring
+                              : Variable -> IntVariable
+                              : Variable -> DefaultCharVariable
+                              : Variable -> LogicalVariable
+                              : Designator -> Variable
                               : Substring -> Designator
                               : DataRef -> Designator
+                              : Ident -> NamelistGroupName
     no-letter                 : NoLetter
     LetterSpec                : Letter * NoLetter -> LetterSpec
     LetterSpec                : Letter * Letter -> LetterSpec
@@ -558,6 +688,7 @@ signature
                               : String -> Name
                               : Ident -> Name
     eos                       : EOStmt -> EOS
+                              : LblDef -> LblRef
                               : String -> Dop
                               : String -> HexConstant
                               : String -> OctalConstant
@@ -565,6 +696,7 @@ signature
                               : String -> Scon
                               : String -> Ident
                               : String -> Letter
+                              : String -> LblDef
                               : String -> EOStmt
 
 
