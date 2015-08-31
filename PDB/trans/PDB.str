@@ -1,0 +1,23 @@
+module PDB
+
+signature
+  constructors
+    PDBFile    : FileHeader * SourceFile * Routine -> PDBFile
+    FileHeader : Version * Language -> FileHeader
+    Version    : String -> Version
+    Language   : String -> Language
+    SourceFile : String -> SourceFile
+    Routine    : String -> Routine
+
+
+signature
+  constructors
+    Some : a -> Option(a)
+    None : Option(a)
+
+
+signature
+  constructors
+    Cons : a * List(a) -> List(a)
+    Nil  : List(a)
+    Conc : List(a) * List(a) -> List(a)

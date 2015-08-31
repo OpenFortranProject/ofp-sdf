@@ -1,0 +1,13 @@
+regular tree grammar
+  start PDBFile
+  productions
+
+    PDBFile                           -> PDBFile(FileHeader,SourceFile,Routine)
+
+    FileHeader                        -> FileHeader(Version,Language)
+    Version                           -> Version(<string>)
+    Language                          -> Language(<string>)
+
+    SourceFile                        -> SourceFile(<string>)
+
+    Routine                           -> Routine(<string>)

@@ -1,0 +1,71 @@
+//------------------------------------------------------------------
+// Project FAST to PDB
+// Sept 2015
+// Created by Soren Rasmussen, Craig Rasmussen
+// University of Oregon
+// fast-to-pdb.str
+//------------------------------------------------------------------
+
+//------------------------------------------------------------------
+// Copyright (c) 2015 University of Oregon.  All rights reserved.
+//------------------------------------------------------------------
+
+module fast-to-pdb
+
+imports
+   libstratego-lib
+   FAST
+   PDB
+
+signature
+  constructors
+
+strategies //=================START OF STRATEGIES==========================
+  main = io-wrap(
+              ArgOption(
+                 "-n"
+                 , where(<extend-config> ("-n", [<id>]))
+                 , !"-n               File name producing the Fortran AST")
+              , fast-to-pdb-usage
+              , fast-to-pdb-about
+              , do-fast-to-pdb)
+
+  fast-to-pdb-usage =
+    default-system-usage(
+      !["Usage: fast-to-pdb -n file_name"]
+    , !["\n   This program generates a PDB file from Fortran input.\n"]
+    )
+
+  fast-to-pdb-about =
+    <echo> "Written by Soren Rasmussen <soren.rasmussen@aggiemail.usu.edu>"
+
+  io-fast-to-pdb = io-wrap(fast-to-pdb)
+
+do-fast-to-pdb =
+     ?(term)
+  ;  file_name := <get-config> "-n"
+//  ;  routines  := <innermost(pdb-routine)> term
+  ;  debug(!"-------")
+  ;  !term
+  ;  debug(!"-------")
+  ;  outermost(to-pdb)
+  ;  ?(routines)
+  ; debug(!"-------")
+//  ;  !PDBFile(FileHeader(Version("3.0"),Language("fortran"))   ,SourceFile("routines"))
+  ;  !PDBFile(FileHeader(Version("3.0"),Language("fortran")),SourceFile(file_name),Routine(routines))
+     
+//     <fast-to-pdb> Name(term,<removeBrac>binding_name)
+
+//fast-to-pdb = ?Name(input, bind_name)
+
+fast-to-pdb =
+      id
+//   ;  ?Program(_)
+//   ;  debug(!"Found Program")
+//  <+  debug(!"did not match name")
+
+
+  // list of strategies that use rules
+
+to-pdb: Program(program_units)  ->  program_units
+to-pdb: MainProgram(ProgramStmt(_,name),scope,_)  -> name
