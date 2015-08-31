@@ -1,0 +1,24 @@
+<PDB 3.0>
+lang fortran
+
+so#0 R1101d.f90
+
+ro#0 MY_PROG
+rsig ty#0
+rstart so#0 3 1
+rloc so#0 1 1
+rpos so#0 1 1 so#0 1 1 so#0 3 19 so#0 3 19
+rlink f90
+rkind fprog
+rstmt st#0 freturn so#0 3 1 so#0 3 19 NA NA 
+rbody st#0
+
+ty#1 void
+yacs priv
+ykind fvoid
+
+ty#0 void ()
+yacs priv
+ykind ffunc
+yrett ty#1
+
