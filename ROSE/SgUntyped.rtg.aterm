@@ -1,0 +1,343 @@
+RTG(
+  Start([Nonterm("SgNode")])
+, ProdRules(
+    [ ProdRule(Nonterm("SgNode"), [Ref(Nonterm("SgLocatedNode"))])
+    , ProdRule(Nonterm("SgLocatedNode"), [Ref(Nonterm("SgLocatedNodeSupport"))])
+    , ProdRule(Nonterm("SgLocatedNodeSupport"), [Ref(Nonterm("SgUntypedNode"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedExpression"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatement"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedType"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedAttribute"))])
+    , ProdRule(
+        Nonterm("SgUntypedAttribute")
+      , [Appl(Term("SgUntypedAttribute"), [Ref(Int()), Ref(String())])]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedInitializedName"))])
+    , ProdRule(
+        Nonterm("SgUntypedInitializedName")
+      , [Appl(
+           Term("SgUntypedInitializedName")
+         , [Ref(Nonterm("SgUntypedType")), Ref(String())]
+         )]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFile"))])
+    , ProdRule(
+        Nonterm("SgUntypedFile")
+      , [Appl(Term("SgUntypedFile"), [Ref(Nonterm("SgUntypedGlobalScope"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatementList"))])
+    , ProdRule(
+        Nonterm("SgUntypedStatementList")
+      , [Appl(Term("SgUntypedStatementList"), [Ref(Nonterm("ListStarOfSgUntypedStatement"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedDeclarationList"))])
+    , ProdRule(
+        Nonterm("SgUntypedDeclarationList")
+      , [Appl(Term("SgUntypedDeclarationList"), [Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFunctionDeclarationList"))])
+    , ProdRule(
+        Nonterm("SgUntypedFunctionDeclarationList")
+      , [Appl(Term("SgUntypedFunctionDeclarationList"), [Ref(Nonterm("ListStarOfSgUntypedFunctionDeclaration"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedInitializedNameList"))])
+    , ProdRule(
+        Nonterm("SgUntypedInitializedNameList")
+      , [Appl(Term("SgUntypedInitializedNameList"), [Ref(Nonterm("ListStarOfSgUntypedInitializedName"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedUnaryOperator"))])
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedBinaryOperator"))])
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedValueExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedValueExpression")
+      , [ Appl(
+            Term("SgUntypedValueExpression")
+          , [Ref(Int()), Ref(String()), Ref(Nonterm("SgUntypedType"))]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedArrayReferenceExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedArrayReferenceExpression")
+      , [Appl(Term("SgUntypedArrayReferenceExpression"), [Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedOtherExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedOtherExpression")
+      , [Appl(Term("SgUntypedOtherExpression"), [Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedFunctionCallOrArrayReferenceExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedFunctionCallOrArrayReferenceExpression")
+      , [Appl(Term("SgUntypedFunctionCallOrArrayReferenceExpression"), [Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedReferenceExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedReferenceExpression")
+      , [Appl(Term("SgUntypedReferenceExpression"), [Ref(Int()), Ref(String())])]
+      )
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedDeclarationStatement"))])
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedAssignmentStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedAssignmentStatement")
+      , [ Appl(
+            Term("SgUntypedAssignmentStatement")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(Nonterm("SgUntypedExpression"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedFunctionCallStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedFunctionCallStatement")
+      , [Appl(Term("SgUntypedFunctionCallStatement"), [Ref(String()), Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedBlockStatement"))])
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedNamedStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedNamedStatement")
+      , [ Appl(
+            Term("SgUntypedNamedStatement")
+          , [Ref(String()), Ref(Int()), Ref(String())]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedOtherStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedOtherStatement")
+      , [Appl(Term("SgUntypedOtherStatement"), [Ref(String()), Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedScope"))])
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedImplicitDeclaration"))])
+    , ProdRule(
+        Nonterm("SgUntypedImplicitDeclaration")
+      , [Appl(Term("SgUntypedImplicitDeclaration"), [Ref(String()), Ref(Int())])]
+      )
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedVariableDeclaration"))])
+    , ProdRule(
+        Nonterm("SgUntypedVariableDeclaration")
+      , [ Appl(
+            Term("SgUntypedVariableDeclaration")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedType"))
+            , Ref(Nonterm("SgUntypedInitializedNameList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedFunctionDeclaration"))])
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedModuleDeclaration"))])
+    , ProdRule(
+        Nonterm("SgUntypedModuleDeclaration")
+      , [ Appl(
+            Term("SgUntypedModuleDeclaration")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedModuleScope"))
+            , Ref(Nonterm("SgUntypedNamedStatement"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedFunctionDeclaration"), [Ref(Nonterm("SgUntypedProgramHeaderDeclaration"))])
+    , ProdRule(
+        Nonterm("SgUntypedProgramHeaderDeclaration")
+      , [ Appl(
+            Term("SgUntypedProgramHeaderDeclaration")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedInitializedNameList"))
+            , Ref(Nonterm("SgUntypedType"))
+            , Ref(Nonterm("SgUntypedFunctionScope"))
+            , Ref(Nonterm("SgUntypedNamedStatement"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedFunctionDeclaration"), [Ref(Nonterm("SgUntypedSubroutineDeclaration"))])
+    , ProdRule(
+        Nonterm("SgUntypedSubroutineDeclaration")
+      , [ Appl(
+            Term("SgUntypedSubroutineDeclaration")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedInitializedNameList"))
+            , Ref(Nonterm("SgUntypedType"))
+            , Ref(Nonterm("SgUntypedFunctionScope"))
+            , Ref(Nonterm("SgUntypedNamedStatement"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedFunctionScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedFunctionScope")
+      , [ Appl(
+            Term("SgUntypedFunctionScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedModuleScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedModuleScope")
+      , [ Appl(
+            Term("SgUntypedModuleScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedGlobalScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedGlobalScope")
+      , [ Appl(
+            Term("SgUntypedGlobalScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedArrayType"))])
+    , ProdRule(
+        Nonterm("SgUntypedArrayType")
+      , [ Appl(
+            Term("SgUntypedArrayType")
+          , [ Ref(String())
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(String())
+            , Ref(Nonterm("bool"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("ListStarOfSgUntypedDeclaration"), [Appl(NilTerm(), [])])
+    , ProdRule(
+        Nonterm("ListStarOfSgUntypedDeclaration")
+      , [Appl(
+           ConsTerm()
+         , [Ref(Nonterm("SgUntypedDeclaration")), Ref(Nonterm("ListStarOfSgUntypedDeclaration"))]
+         )]
+      )
+    , ProdRule(Nonterm("ListStarOfSgUntypedDeclarationStatement"), [Appl(NilTerm(), [])])
+    , ProdRule(
+        Nonterm("ListStarOfSgUntypedDeclarationStatement")
+      , [Appl(
+           ConsTerm()
+         , [Ref(Nonterm("SgUntypedDeclarationStatement")), Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))]
+         )]
+      )
+    , ProdRule(Nonterm("ListStarOfSgUntypedFunctionDeclaration"), [Appl(NilTerm(), [])])
+    , ProdRule(
+        Nonterm("ListStarOfSgUntypedFunctionDeclaration")
+      , [Appl(
+           ConsTerm()
+         , [Ref(Nonterm("SgUntypedFunctionDeclaration")), Ref(Nonterm("ListStarOfSgUntypedFunctionDeclaration"))]
+         )]
+      )
+    , ProdRule(Nonterm("ListStarOfSgUntypedInitializedName"), [Appl(NilTerm(), [])])
+    , ProdRule(
+        Nonterm("ListStarOfSgUntypedInitializedName")
+      , [Appl(
+           ConsTerm()
+         , [Ref(Nonterm("SgUntypedInitializedName")), Ref(Nonterm("ListStarOfSgUntypedInitializedName"))]
+         )]
+      )
+    , ProdRule(Nonterm("ListStarOfSgUntypedStatement"), [Appl(NilTerm(), [])])
+    , ProdRule(
+        Nonterm("ListStarOfSgUntypedStatement")
+      , [Appl(
+           ConsTerm()
+         , [Ref(Nonterm("SgUntypedStatement")), Ref(Nonterm("ListStarOfSgUntypedStatement"))]
+         )]
+      )
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeVoid"))])
+    , ProdRule(Nonterm("SgUntypedTypeVoid"), [Appl(Term("SgUntypedTypeVoid"), [])])
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeUnknown"))])
+    , ProdRule(Nonterm("SgUntypedTypeUnknown"), [Appl(Term("SgUntypedTypeUnknown"), [])])
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeInt"))])
+    , ProdRule(Nonterm("SgUntypedTypeInt"), [Appl(Term("SgUntypedTypeInt"), [])])
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeFloat"))])
+    , ProdRule(Nonterm("SgUntypedTypeFloat"), [Appl(Term("SgUntypedTypeFloat"), [])])
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeDouble"))])
+    , ProdRule(Nonterm("SgUntypedTypeDouble"), [Appl(Term("SgUntypedTypeDouble"), [])])
+    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeBool"))])
+    , ProdRule(Nonterm("SgUntypedTypeBool"), [Appl(Term("SgUntypedTypeBool"), [])])
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedBlockScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedBlockScope")
+      , [ Appl(
+            Term("SgUntypedBlockScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedBlockStatement")
+      , [ Appl(
+            Term("SgUntypedBlockStatement")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedBlockScope"))
+            , Ref(Nonterm("SgUntypedNamedStatement"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedUnaryOperator")
+      , [ Appl(
+            Term("SgUntypedUnaryOperator")
+          , [Ref(Int()), Ref(Int()), Ref(String()), Ref(Nonterm("SgUntypedExpression"))]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedBinaryOperator")
+      , [ Appl(
+            Term("SgUntypedBinaryOperator")
+          , [ Ref(Int())
+            , Ref(Int())
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(Nonterm("SgUntypedExpression"))
+            ]
+          )
+        ]
+      )
+    ]
+  )
+)
