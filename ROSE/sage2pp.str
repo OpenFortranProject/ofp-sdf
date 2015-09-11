@@ -1,0 +1,84 @@
+module sage2pp
+
+imports
+   libstratego-lib
+
+signature
+  constructors
+
+    // These extra constructors are not part of FAST but required for unparsing
+    //
+
+    Start           : List                           -> Start
+
+
+    Parent          : Name                           -> Parent
+    no-parent       : no-parent
+
+    Classes         : Maros * ClassDecls * ClassDefs -> Classes
+    no-class        : no-class
+
+    ClassDecl       : Name                           -> ClassDecl
+    ClassDecls      : DeclList                       -> ClassDecls
+
+    ClassDef        : Name * Parent * Constructor    -> ClassDef
+    ClassDefs       : DefList                        -> ClassDefs
+
+    Macro           : Name                           -> Macro
+
+    Constructor     : Name * Args                    -> Constructor
+
+    ProdRule        : Nonterm * List                 -> ProdRule
+    ProdRules       : List                           -> ProdRules
+
+    Appl            : Term * List                    -> Appl
+
+    Ref             : Term                           -> Ref
+    Term            : String                         -> Term
+    Nonterm         : String                         -> Nonterm
+    NilTerm         : NilTerm
+    ConsTerm        : ConsTerm
+
+
+strategies
+
+  main =
+    io-wrap(sage2pp)
+
+  sage2pp =
+      innermost(nil-terms-to-pp)
+    ; innermost(ast-to-pp)
+
+  extract-macros() =
+      ?Macro(c)                                             ; id
+
+  extract-decls() =
+      ?ClassDecl(c)                                         ; !ClassDecl(c)
+
+  extract-defs() =
+      ?ClassDef(name,parent,cons)                           ; !ClassDef(name,parent,cons)
+
+rules
+
+ast-to-pp:  Start([root])                                   -> ClassDecl(root)
+
+ast-to-pp =
+{ macros,decls,defs
+   : ?ProdRules(r)
+   ; <filter(extract-macros)> r                => macros
+   ; <filter(extract-decls)> r                 => decls
+   ; <filter(extract-defs )> r                 => defs
+   ; !Classes(macros,decls,defs)
+}
+
+nil-terms-to-pp =
+      ?ProdRule(c, [Appl(NilTerm(),list)])                  ; !Macro(c)
+  +>  ?ProdRule(c, [Appl(ConsTerm(),list)])                 ; !no-class()
+
+ast-to-pp =
+      ?ProdRule(parent,[Ref(c)])                            ; !ClassDecl(c)
+  +>  ?ProdRule(c, [Appl(name,list)]) {Parent(p)}           ; !ClassDef(c,Parent(p),Constructor(name,list))
+  +>  ?ProdRule(c, [Appl(name,list)])                       ; !ClassDef(c,no-parent(),Constructor(name,list))
+
+ast-to-pp:  Term(String)                                    -> String
+ast-to-pp:  Nonterm(String)                                 -> String
