@@ -84,7 +84,7 @@ SgUntypedType             -> SgUntypedTypeVoid
 SgUntypedTypeVoid         -> SgUntypedTypeVoid()
 
 SgUntypedType             -> SgUntypedTypeUnknown
-SgUntypedTypeVoid         -> SgUntypedTypeUnknown()
+SgUntypedTypeUnknown      -> SgUntypedTypeUnknown()
 
 SgUntypedType             -> SgUntypedTypeInt
 SgUntypedTypeInt          -> SgUntypedTypeInt()
