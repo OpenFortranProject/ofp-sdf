@@ -1,0 +1,160 @@
+module sage-to-traverse
+
+imports
+   libstratego-lib
+
+signature
+  constructors
+
+    // These extra constructors are not part of FAST but required for unparsing
+    //
+
+    RTG             : Start * ProdRules              -> RTG
+    Start           : List                           -> Start
+
+    Parent          : Name                           -> Parent
+
+    Traversal       : FunDecl * TermDecls
+                              * ArgDecls
+                              * MatchStmt            -> Traversal
+                              
+
+    Traversals      : TraversalList                  -> Traversals
+
+    FunDecl         : Name                           -> FunDecl
+    TermDecls       : ArgList                        -> TermDecls
+    TypeRef         : Name                           -> TypeRef
+    TypePointer     : Name                           -> TypePointer
+
+    ArgDecl         : Type * Name                    -> ArgDecl
+    ArgDecls        : ArgList                        -> ArgDecls
+    no-decls        : no-decls
+
+    MatchStmt       : Name                           -> MatchStmt
+    NewStmt         : Name * ArgList                 -> NewStmt
+
+//    TraverseStmt    : 
+
+    ClassDecl       : Name                           -> ClassDecl
+    ClassDecls      : DeclList                       -> ClassDecls
+
+    ClassDef        : Name * Constructor             -> ClassDef
+    ClassDefs       : DefList                        -> ClassDefs
+    no-class        : no-class
+
+    Macro           : Name                           -> Macro
+
+    Args            : TypeList                       -> Args
+    Constructor     : Name * Args                    -> Constructor
+
+    ProdRule        : Nonterm * List                 -> ProdRule
+    ProdRules       : List                           -> ProdRules
+
+    Appl            : Term * List                    -> Appl
+
+    Ref             : Term                           -> Ref
+    Term            : String                         -> Term
+    Nonterm         : String                         -> Nonterm
+    NilTerm         : NilTerm
+    ConsTerm        : ConsTerm
+
+
+strategies
+
+  main =
+    io-wrap(sage-to-traverse)
+
+  sage-to-traverse() =
+      innermost(nil-terms-to-pp)
+    ; innermost(ast-to-pp)
+    ; outermost(cleanup-pp)
+
+  extract-traversals() =
+      ?Traversal(fdecl,tdecl,adecls,match)
+    ; !Traversal(fdecl,tdecl,adecls,match)
+
+  is-nonterminal() =
+      ?TypeRef(Nonterm(_))
+
+  retain-nonterm() =
+       ?TypeRef(Nonterm(name))
+    <+ ![]
+
+  terminal-to-type() =
+      ?"String"                       ; !"char*"
+   <+ ?"Int"                          ; !"int"
+
+  terminal-to-term-type() =
+      ?"String"                       ; !"<str>"
+   <+ ?"Int"                          ; !"<int>"
+
+  arg-type() =
+      ?TypeRef(Nonterm(name))         ; !TypePointer(name)
+   <+ ?TypeRef(terminal)              ; <terminal-to-type> <write-to-string> terminal
+
+  term-type() =
+      ?TypeRef(Nonterm(name))         ; !"<term>"
+   <+ ?TypeRef(terminal)              ; <terminal-to-term-type> <write-to-string> terminal
+
+  term-arg-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <is-nonterminal> head
+           ; <term-arg-list(|<addS>(count,"1"),
+                             <concat>[new,[<concat-strings>["term", <addS>(count,"1")]]])> tail
+   <+ ?[head|tail]
+           ; <term-arg-list(|<addS>(count,"1"),new)> tail
+
+  arg-decl(|count) =
+      ?type
+    ; !ArgDecl(<arg-type> type, <concat-strings>["arg", <addS>(count,"1")])
+    ; debug(!"arg-decl.............: ")
+
+  arg-decl-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <arg-decl-list(|<addS>(count,"1"),
+                             <concat>[new,[<arg-decl(|count)> head]])> tail
+
+rules
+
+//ast-to-pp:  Start([root])                                   -> ClassDecl(root)
+
+ast-to-pp =
+{ t
+   : ?ProdRules(r)
+   ; <filter(extract-traversals)> r             => t
+   ; !Traversals(t)
+}
+
+nil-terms-to-pp =
+      ?ProdRule(c, [Appl(NilTerm(),list)])      ; !Macro(c)
+  +>  ?ProdRule(c, [Appl(ConsTerm(),list)])     ; !no-class()
+
+cleanup-pp =
+      ?TermDecls([])                            ; !no-decls()
+
+ast-to-pp =
+{ arg_types, term_types
+   :  ?ProdRule(parent,[Ref(c)])                ; !ClassDecl(c)
+  +>  ?ProdRule(Nonterm(name), [Appl(_,args)])
+    ;  <map(arg-type)>  args       => arg_types
+    ;  debug(!"arg-types: ")
+    ;  <map(term-type)> args       => term_types
+    ;  debug(!"term-types: ")
+    ; !Traversal(
+                                                     FunDecl(name)
+                                                   , TermDecls(<term-arg-list(|"0",[])> args)
+                                                   , ArgDecls (<arg-decl-list(|"0",[])> args)
+//                                                   , ArgDecls(<try(flatten-list)>
+//                                                              <map(retain-nonterm)> args)
+                                                   , MatchStmt(name)
+                                                   )
+}
+
+ast-to-pp:  RTG(_,Traversals(list))             -> Traversals(list)
+
+ast-to-pp:  Ref(type)                           -> TypeRef(type)
+
+//ast-to-pp:  Term(String)                        -> String
+//ast-to-pp:  Nonterm(String)                     -> String
