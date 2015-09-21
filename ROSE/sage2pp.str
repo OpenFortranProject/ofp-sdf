@@ -50,17 +50,17 @@ strategies
     ; innermost(ast-to-pp)
 
   extract-macros() =
-      ?Macro(c)                                             ; id
+      ?Macro(c)                                             ; ![]
 
   extract-decls() =
       ?ClassDecl(c)                                         ; !ClassDecl(c)
 
   extract-defs() =
-      ?ClassDef(name,parent,cons)                           ; !ClassDef(name,parent,cons)
+      ?ClassDef(name,parent,cons)                           ; ![]
 
 rules
 
-ast-to-pp:  Start([root])                                   -> ClassDecl(root)
+ast-to-pp:  Start([root])                                   -> []
 
 ast-to-pp =
 { macros,decls,defs
