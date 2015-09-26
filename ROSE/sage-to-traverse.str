@@ -14,26 +14,32 @@ signature
 
     Parent          : Name                           -> Parent
 
-    Traversal       : FunDecl * TermDecls
+    Traversal       : FunDecl * Debug
+                              * TermDecls
                               * ArgDecls
-                              * MatchStmt            -> Traversal
+                              * MatchConstruct
+                              * Build                -> Traversal
                               
 
     Traversals      : TraversalList                  -> Traversals
 
     FunDecl         : Name                           -> FunDecl
+    Debug           : Name                           -> Debug
     TermDecls       : ArgList                        -> TermDecls
     TypeRef         : Name                           -> TypeRef
     TypePointer     : Name                           -> TypePointer
+    Address         : Name                           -> Address
 
     ArgDecl         : Type * Name                    -> ArgDecl
     ArgDecls        : ArgList                        -> ArgDecls
     no-decls        : no-decls
 
-    MatchStmt       : Name                           -> MatchStmt
-    NewStmt         : Name * ArgList                 -> NewStmt
+    MatchConstruct  : Name * TermList * ArgList * TraverseArgs  -> MatchConstruct
 
-//    TraverseStmt    : 
+    TraverseArg     : Name * Term * Arg              -> TraverseArg
+    TraverseArgs    : TraverseArgList                -> TraverseArgs
+
+    NewStmt         : Name * ArgList                 -> NewStmt
 
     ClassDecl       : Name                           -> ClassDecl
     ClassDecls      : DeclList                       -> ClassDecls
@@ -70,8 +76,8 @@ strategies
     ; outermost(cleanup-pp)
 
   extract-traversals() =
-      ?Traversal(fdecl,tdecl,adecls,match)
-    ; !Traversal(fdecl,tdecl,adecls,match)
+      ?Traversal(fdecl,debug,tdecl,adecls,match,build)
+    ; !Traversal(fdecl,debug,tdecl,adecls,match,build)
 
   is-nonterminal() =
       ?TypeRef(Nonterm(_))
@@ -96,25 +102,47 @@ strategies
       ?TypeRef(Nonterm(name))         ; !"<term>"
    <+ ?TypeRef(terminal)              ; <terminal-to-term-type> <write-to-string> terminal
 
-  term-arg-list(|count,new) =
+  term-decl-list(|count,new) =
       ?[]  ; !new
    <+ ?[head|tail]
            ; <is-nonterminal> head
-           ; <term-arg-list(|<addS>(count,"1"),
-                             <concat>[new,[<concat-strings>["term", <addS>(count,"1")]]])> tail
+           ; <term-decl-list(|<addS>(count,"1"),
+                              <concat>[new,[<concat-strings>["term", count]]])> tail
    <+ ?[head|tail]
-           ; <term-arg-list(|<addS>(count,"1"),new)> tail
+           ; <term-decl-list(|<addS>(count,"1"),new)> tail
 
   arg-decl(|count) =
       ?type
-    ; !ArgDecl(<arg-type> type, <concat-strings>["arg", <addS>(count,"1")])
-    ; debug(!"arg-decl.............: ")
+    ; !ArgDecl(<arg-type> type, <concat-strings>["arg", count])
 
   arg-decl-list(|count,new) =
       ?[]  ; !new
    <+ ?[head|tail]
            ; <arg-decl-list(|<addS>(count,"1"),
                              <concat>[new,[<arg-decl(|count)> head]])> tail
+
+  arg-name(|count) =
+      ?TypeRef(Nonterm(_))         ; <concat-strings>["term", count]
+   <+ ?TypeRef(_)                  ; <concat-strings>["arg",  count]
+
+  arg-name-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <arg-name-list(|<addS>(count,"1"),
+                             <concat>[new,[<arg-name(|count)> head]])> tail
+
+  traverse-arg(|count) =
+      ?TypeRef(Nonterm(name))      ; !TraverseArg(name,<concat-strings>["term",count]
+                                                      ,<concat-strings>["arg" ,count])
+   <+ ?TypeRef(_)                  ; ![]
+
+  traverse-arg-list(|count,new) =
+      ?[]  ; <flatten-list> new
+   <+ ?[head|tail]
+           ; <traverse-arg-list(|<addS>(count,"1"),
+                                 <concat>[new,[<traverse-arg(|count)> head]])> tail
+
+  address-of() = !Address(<id>)
 
 rules
 
@@ -135,21 +163,21 @@ cleanup-pp =
       ?TermDecls([])                            ; !no-decls()
 
 ast-to-pp =
-{ arg_types, term_types
+{ arg_types, term_types, arg_names
    :  ?ProdRule(parent,[Ref(c)])                ; !ClassDecl(c)
   +>  ?ProdRule(Nonterm(name), [Appl(_,args)])
-    ;  <map(arg-type)>  args       => arg_types
-    ;  debug(!"arg-types: ")
     ;  <map(term-type)> args       => term_types
-    ;  debug(!"term-types: ")
+//    ;  <map(arg-type)>  args       => arg_types
+    ;  <arg-name-list(|"1",[])> args => arg_names
     ; !Traversal(
-                                                     FunDecl(name)
-                                                   , TermDecls(<term-arg-list(|"0",[])> args)
-                                                   , ArgDecls (<arg-decl-list(|"0",[])> args)
-//                                                   , ArgDecls(<try(flatten-list)>
-//                                                              <map(retain-nonterm)> args)
-                                                   , MatchStmt(name)
-                                                   )
+                    FunDecl(name)
+                  , Debug(name)
+                  , TermDecls(<term-decl-list(|"1",[])> args)
+                  , ArgDecls (<arg-decl-list (|"1",[])> args)
+                  , MatchConstruct(name,term_types,<map(address-of)>arg_names,
+                                   TraverseArgs(<traverse-arg-list(|"1",[])> args))
+                  , []
+                )
 }
 
 ast-to-pp:  RTG(_,Traversals(list))             -> Traversals(list)
