@@ -4,6 +4,7 @@
    Traversal                           -- _1 
          "{"
                                           V is=2 [_2 _3 _4 _5 _6]
+         "\n  return ATtrue;"
          "}\n",
 
    FunDecl                             -- H hs=0 [
@@ -38,6 +39,9 @@
    TraverseArg                         -- H hs=0
       ["  if (traverse_"_1 "(" _2 ", &"_3 ")) {\n      // " _1 "\n    } else return ATfalse;"
       ],
+
+   BuildStmt                           -- H hs=0 ["*"_1 " = new sage::" _1 "("_2 ");"],
+   BuildStmt.2:iter-sep           -- _1 ",",
 
    TypeRef                             -- _1,
 
