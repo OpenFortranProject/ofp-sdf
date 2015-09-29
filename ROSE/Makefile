@@ -52,7 +52,7 @@ check-traverse : sage2pp
 
 
 clean :
-	rm -f traverse
+	rm -f traverse sage-to-traverse
 	rm -f sage-traverse sage-to-traverse.c
 	rm -f sage2pp sage2pp.c
 	rm -f *.o *.dep *.lo
