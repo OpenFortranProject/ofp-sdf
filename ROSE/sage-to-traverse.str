@@ -39,7 +39,7 @@ signature
     TraverseArg     : Name * Term * Arg              -> TraverseArg
     TraverseArgs    : TraverseArgList                -> TraverseArgs
 
-    NewStmt         : Name * ArgList                 -> NewStmt
+    BuildStmt       : Name * ArgList                 -> BuildStmt
 
     ClassDecl       : Name                           -> ClassDecl
     ClassDecls      : DeclList                       -> ClassDecls
@@ -131,6 +131,14 @@ strategies
            ; <arg-name-list(|<addS>(count,"1"),
                              <concat>[new,[<arg-name(|count)> head]])> tail
 
+  builder-arg-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <builder-arg-list(|<addS>(count,"1"),
+                                <concat>[new,[<concat-strings>["arg", count]]])> tail
+   <+ ?[head|tail]
+           ; <builder-arg-list(|<addS>(count,"1"),new)> tail
+
   traverse-arg(|count) =
       ?TypeRef(Nonterm(name))      ; !TraverseArg(name,<concat-strings>["term",count]
                                                       ,<concat-strings>["arg" ,count])
@@ -163,11 +171,10 @@ cleanup-pp =
       ?TermDecls([])                            ; !no-decls()
 
 ast-to-pp =
-{ arg_types, term_types, arg_names
+{ term_types, arg_names
    :  ?ProdRule(parent,[Ref(c)])                ; !ClassDecl(c)
   +>  ?ProdRule(Nonterm(name), [Appl(_,args)])
     ;  <map(term-type)> args       => term_types
-//    ;  <map(arg-type)>  args       => arg_types
     ;  <arg-name-list(|"1",[])> args => arg_names
     ; !Traversal(
                     FunDecl(name)
@@ -176,7 +183,7 @@ ast-to-pp =
                   , ArgDecls (<arg-decl-list (|"1",[])> args)
                   , MatchConstruct(name,term_types,<map(address-of)>arg_names,
                                    TraverseArgs(<traverse-arg-list(|"1",[])> args))
-                  , []
+                  , BuildStmt(name,<builder-arg-list (|"1",[])> args)
                 )
 }
 
