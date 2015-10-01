@@ -41,6 +41,7 @@ strategies //=================START OF STRATEGIES============================
     ; topdown(try(fast-fixup-do-constructs))
     ; topdown(try(fast-cleanup))
 
+//TODO check to see if +> should goto <+ (AND ELSEWHERE)
 transfer-type(|type) =
      ?Var(name,unknown-type(),init)
   ;  !Var(name,type,init)
@@ -346,6 +347,20 @@ ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {C
   ofp-to-ast:  ImplicitNoneStmt(label,eos("\n")) -> ImplicitStmt(label,[])
   ofp-to-ast:  ImplicitNoneStmt(label,eos(str) ) -> ImplicitStmt(label,[]) {Comment(str)}
 
+//R626
+ofp-to-ast =
+     ?AllocateStmt(label,type,allocations,opts,eos("\n"))
+  ;  !AllocateStmt(label,type,allocations,opts)
+ <+  ?AllocateStmt(label,type,allocations,opts,eos(str))
+  ;  !AllocateStmt(label,type,allocations,opts)  {Comment(str)}
+
+//R640
+ofp-to-ast =
+     ?DeallocateStmt(label,objects,opts,eos("\n"))
+  ;  !DeallocateStmt(label,objects,opts)
+ <+  ?DeallocateStmt(label,objects,opts,eos(str))
+  ;  !DeallocateStmt(label,objects,opts)  {Comment(str)}
+
 //R703
 //  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
 
@@ -418,6 +433,14 @@ ofp-to-ast =  ?EndDoStmt(label,name,eos("\n"))       ;  !EndDoStmt(label,name)
 ofp-to-ast =  ?CycleStmt(label,name,eos("\n"))       ;  !CycleStmt(label,name)
           <+  ?CycleStmt(label,name,eos(str) )       ;  !CycleStmt(label,name) {Comment(str)}
 
+//R833
+ofp-to-ast =  ?IfThenStmt(label,name,expr,eos("\n")) ;  !IfThenStmt(label,name,expr)
+          <+  ?IfThenStmt(label,name,expr,eos(str))  ;  !IfThenStmt(label,name,expr) {Comment(str)}
+
+//R836
+ofp-to-ast =  ?EndIfStmt(label,name,eos("\n"))       ;  !EndIfStmt(label,name)
+          <+  ?EndIfStmt(label,name,eos(str))        ;  !EndIfStmt(label,name) {Comment(str)}
+
 //R850
 ofp-to-ast =  ?ExitStmt(label,name,eos("\n"))        ;  !ExitStmt(label,name)
           <+  ?ExitStmt(label,name,eos(str) )        ;  !ExitStmt(label,name) {Comment(str)}
@@ -473,6 +496,10 @@ ofp-to-ast =  ?UnlockStmt(label,var,list,eos("\n"))     ;  !UnlockStmt(label,var
 //R911
 ofp-to-ast =  ?WriteStmt(label,iocontrol,out,eos("\n")) ;  !WriteStmt(label,iocontrol,out)
           <+  ?WriteStmt(label,iocontrol,out,eos(str) ) ;  !WriteStmt(label,iocontrol,out) {Comment(str)}
+
+//R912
+ofp-to-ast =  ?PrintStmt(label,format,out,eos("\n")) ;  !PrintStmt(label,format,out)
+          <+  ?PrintStmt(label,format,out,eos(str) ) ;  !PrintStmt(label,format,out) {Comment(str)}
 
 //R922
 ofp-to-ast =  ?WaitStmt(label,list,eos("\n"))        ;  !WaitStmt(label,list)
