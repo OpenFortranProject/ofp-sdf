@@ -50,6 +50,9 @@ lope-to-foropencl : lope-to-foropencl.str
 check : lope-to-foropencl
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
 
+check-fast :
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+
 check-last : lope-to-foropencl
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | pp-aterm
 
