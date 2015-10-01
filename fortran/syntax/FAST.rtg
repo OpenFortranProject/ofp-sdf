@@ -49,20 +49,6 @@ regular tree grammar
     OptOfpCoshape0                    -> <none>()
     OptOfpShape0                      -> <some>(OfpShape)
     OptOfpShape0                      -> <none>()
-    ListStarOfOfpAllocOpt0            -> ListPlusOfOfpAllocOpt0
-    ListStarOfOfpAllocOpt0            -> <nil>()
-    ListStarOfOfpAllocOpt0            -> <conc>(ListStarOfOfpAllocOpt0,ListStarOfOfpAllocOpt0)
-    ListPlusOfOfpAllocOpt0            -> <conc>(ListStarOfOfpAllocOpt0,ListPlusOfOfpAllocOpt0)
-    ListPlusOfOfpAllocOpt0            -> <conc>(ListPlusOfOfpAllocOpt0,ListStarOfOfpAllocOpt0)
-    ListPlusOfOfpAllocOpt0            -> <conc>(ListPlusOfOfpAllocOpt0,ListPlusOfOfpAllocOpt0)
-    ListPlusOfOfpAllocOpt0            -> <cons>(OfpAllocOpt,ListStarOfOfpAllocOpt0)
-    ListStarOfOfpAllocation0          -> ListPlusOfOfpAllocation0
-    ListStarOfOfpAllocation0          -> <nil>()
-    ListStarOfOfpAllocation0          -> <conc>(ListStarOfOfpAllocation0,ListStarOfOfpAllocation0)
-    ListPlusOfOfpAllocation0          -> <conc>(ListStarOfOfpAllocation0,ListPlusOfOfpAllocation0)
-    ListPlusOfOfpAllocation0          -> <conc>(ListPlusOfOfpAllocation0,ListStarOfOfpAllocation0)
-    ListPlusOfOfpAllocation0          -> <conc>(ListPlusOfOfpAllocation0,ListPlusOfOfpAllocation0)
-    ListPlusOfOfpAllocation0          -> <cons>(OfpAllocation,ListStarOfOfpAllocation0)
 
     ListStarOfStrChar0                -> <string>
     ListPlusOfStrChar0                -> <string>
@@ -178,20 +164,7 @@ regular tree grammar
     ListPlusOfBoundsRemapping0        -> <conc>(ListPlusOfBoundsRemapping0,ListStarOfBoundsRemapping0)
     ListPlusOfBoundsRemapping0        -> <conc>(ListPlusOfBoundsRemapping0,ListPlusOfBoundsRemapping0)
     ListPlusOfBoundsRemapping0        -> <cons>(BoundsRemapping,ListStarOfBoundsRemapping0)
-    ListStarOfDeallocOpt0             -> ListPlusOfDeallocOpt0
-    ListStarOfDeallocOpt0             -> <nil>()
-    ListStarOfDeallocOpt0             -> <conc>(ListStarOfDeallocOpt0,ListStarOfDeallocOpt0)
-    ListPlusOfDeallocOpt0             -> <conc>(ListStarOfDeallocOpt0,ListPlusOfDeallocOpt0)
-    ListPlusOfDeallocOpt0             -> <conc>(ListPlusOfDeallocOpt0,ListStarOfDeallocOpt0)
-    ListPlusOfDeallocOpt0             -> <conc>(ListPlusOfDeallocOpt0,ListPlusOfDeallocOpt0)
-    ListPlusOfDeallocOpt0             -> <cons>(DeallocOpt,ListStarOfDeallocOpt0)
-    ListStarOfAllocateObject0         -> ListPlusOfAllocateObject0
-    ListStarOfAllocateObject0         -> <nil>()
-    ListStarOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListStarOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListStarOfAllocateObject0,ListPlusOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListStarOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <conc>(ListPlusOfAllocateObject0,ListPlusOfAllocateObject0)
-    ListPlusOfAllocateObject0         -> <cons>(AllocateObject,ListStarOfAllocateObject0)
+
     ListStarOfPointerObject0          -> ListPlusOfPointerObject0
     ListStarOfPointerObject0          -> <nil>()
     ListStarOfPointerObject0          -> <conc>(ListStarOfPointerObject0,ListStarOfPointerObject0)
@@ -199,34 +172,7 @@ regular tree grammar
     ListPlusOfPointerObject0          -> <conc>(ListPlusOfPointerObject0,ListStarOfPointerObject0)
     ListPlusOfPointerObject0          -> <conc>(ListPlusOfPointerObject0,ListPlusOfPointerObject0)
     ListPlusOfPointerObject0          -> <cons>(PointerObject,ListStarOfPointerObject0)
-    ListStarOfAllocateCoshapeSpec0    -> ListPlusOfAllocateCoshapeSpec0
-    ListStarOfAllocateCoshapeSpec0    -> <nil>()
-    ListStarOfAllocateCoshapeSpec0    -> <conc>(ListStarOfAllocateCoshapeSpec0,ListStarOfAllocateCoshapeSpec0)
-    ListPlusOfAllocateCoshapeSpec0    -> <conc>(ListStarOfAllocateCoshapeSpec0,ListPlusOfAllocateCoshapeSpec0)
-    ListPlusOfAllocateCoshapeSpec0    -> <conc>(ListPlusOfAllocateCoshapeSpec0,ListStarOfAllocateCoshapeSpec0)
-    ListPlusOfAllocateCoshapeSpec0    -> <conc>(ListPlusOfAllocateCoshapeSpec0,ListPlusOfAllocateCoshapeSpec0)
-    ListPlusOfAllocateCoshapeSpec0    -> <cons>(AllocateCoshapeSpec,ListStarOfAllocateCoshapeSpec0)
-    ListStarOfAllocateShapeSpec0      -> ListPlusOfAllocateShapeSpec0
-    ListStarOfAllocateShapeSpec0      -> <nil>()
-    ListStarOfAllocateShapeSpec0      -> <conc>(ListStarOfAllocateShapeSpec0,ListStarOfAllocateShapeSpec0)
-    ListPlusOfAllocateShapeSpec0      -> <conc>(ListStarOfAllocateShapeSpec0,ListPlusOfAllocateShapeSpec0)
-    ListPlusOfAllocateShapeSpec0      -> <conc>(ListPlusOfAllocateShapeSpec0,ListStarOfAllocateShapeSpec0)
-    ListPlusOfAllocateShapeSpec0      -> <conc>(ListPlusOfAllocateShapeSpec0,ListPlusOfAllocateShapeSpec0)
-    ListPlusOfAllocateShapeSpec0      -> <cons>(AllocateShapeSpec,ListStarOfAllocateShapeSpec0)
-    ListStarOfAllocOpt0               -> ListPlusOfAllocOpt0
-    ListStarOfAllocOpt0               -> <nil>()
-    ListStarOfAllocOpt0               -> <conc>(ListStarOfAllocOpt0,ListStarOfAllocOpt0)
-    ListPlusOfAllocOpt0               -> <conc>(ListStarOfAllocOpt0,ListPlusOfAllocOpt0)
-    ListPlusOfAllocOpt0               -> <conc>(ListPlusOfAllocOpt0,ListStarOfAllocOpt0)
-    ListPlusOfAllocOpt0               -> <conc>(ListPlusOfAllocOpt0,ListPlusOfAllocOpt0)
-    ListPlusOfAllocOpt0               -> <cons>(AllocOpt,ListStarOfAllocOpt0)
-    ListStarOfAllocation0             -> ListPlusOfAllocation0
-    ListStarOfAllocation0             -> <nil>()
-    ListStarOfAllocation0             -> <conc>(ListStarOfAllocation0,ListStarOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListStarOfAllocation0,ListPlusOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListStarOfAllocation0)
-    ListPlusOfAllocation0             -> <conc>(ListPlusOfAllocation0,ListPlusOfAllocation0)
-    ListPlusOfAllocation0             -> <cons>(Allocation,ListStarOfAllocation0)
+
     ListStarOfCosubscript0            -> ListPlusOfCosubscript0
     ListStarOfCosubscript0            -> <nil>()
     ListStarOfCosubscript0            -> <conc>(ListStarOfCosubscript0,ListStarOfCosubscript0)
@@ -650,10 +596,7 @@ regular tree grammar
     OfpDefinedOp                      -> OfpDefinedOp(String)
     OfpCoshape                        -> OfpCoshape(ListPlusOfDimSpec0)
     OfpShape                          -> OfpShape(ListPlusOfDimSpec0)
-    OfpAllocation                     -> OfpAllocation(VarRef,OptOfpShape0,OptOfpCoshape0)
     OfpAllocOpt                       -> Expr
-    Stmt                              -> OfpAllocateStmt
-    OfpAllocateStmt                   -> OfpAllocateStmt(OptLabel,OptType,ListPlusOfOfpAllocation0,ListStarOfOfpAllocOpt0)
 
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
@@ -821,6 +764,39 @@ regular tree grammar
     Stmt                              -> AsynchronousStmt
     AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfName)
 
+    Stmt                              -> AllocateStmt
+    AllocateStmt                      -> AllocateStmt(OptLabel,OptTypeSpec,ListPlusOfAllocation,ListStarOfAllocOpt)
+
+    AllocOpt                          -> ERRMSG(ErrmsgVariable)
+    AllocOpt                          -> MOLD(Expr)
+    AllocOpt                          -> SOURCE(Expr)
+    AllocOpt                          -> STAT(StatVariable)
+
+    StatVariable                      -> IntVariable
+    ErrmsgVariable                    -> DefaultCharVariable
+
+    Allocation                        -> Allocation(AllocateObject,ListStarOfAllocateShapeSpec,ListStarOfAllocateCoshapeSpec)
+
+    AllocateShapeSpec                 -> AllocateShapeSpec(OptLowerBoundExpr,UpperBoundExpr)
+
+    OptLowerBoundExpr                 -> LowerBoundExpr
+    OptLowerBoundExpr                 -> no-lower-bound()
+
+    LowerBoundExpr                    -> IntExpr
+    UpperBoundExpr                    -> IntExpr
+
+    AllocateCoshapeSpec               -> AllocateCoshapeSpec(OptLowerBoundExpr,UpperBoundExpr)
+
+    AllocateObject                    -> StructureComponent
+
+    Stmt                              -> DeallocateStmt
+    DeallocateStmt                    -> DeallocateStmt(OptLabel,ListPlusOfAllocateObject,ListStarOfDeallocOpt)
+
+    DeallocOpt                        -> STAT(StatVariable)
+    DeallocOpt                        -> ERRMSG(ErrmsgVariable)
+
+    NoTypeSpec                        -> no-type-spec()
+
     OptKind                           -> no-kind()
     OptKind                           -> Kind
     Kind                              -> Kind(Expr)
@@ -971,6 +947,12 @@ regular tree grammar
     Stmt                              -> CycleStmt
     CycleStmt                         -> CycleStmt(OptLabel,OptName)
 
+    Stmt                              -> IfThenStmt
+    IfThenStmt                        -> IfThenStmt(OptLabel,OptName,LogicalExpr)
+
+    Stmt                              -> EndIfStmt
+    EndIfStmt                         -> EndIfStmt(OptLabel,OptName)
+
     Stmt                              -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,Name)
 
@@ -1035,6 +1017,9 @@ regular tree grammar
 
     Stmt                              -> WriteStmt
     WriteStmt                         -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem)
+
+    Stmt                              -> PrintStmt
+    PrintStmt                         -> PrintStmt(OptLabel,Format,ListStarOfOutputItem)
 
     Stmt                              -> WaitStmt
     WaitStmt                          -> WaitStmt(OptLabel,ListPlusOfWaitSpec)
@@ -1384,7 +1369,6 @@ regular tree grammar
     IoControlSpec                     -> NML(NamelistGroupName)
     IoControlSpec                     -> FMT(Format)
     IoControlSpec                     -> UNIT(IoUnit)
-    PrintStmt                         -> PrintStmt(OptLabel,Format,OptOutputItemList,EOS)
 
     CloseSpec                         -> STATUS(DefaultCharExpr)
     CloseSpec                         -> ERR(LblRef)
@@ -1456,15 +1440,14 @@ regular tree grammar
     CaseStmtAndBlock                  -> CaseStmtBlock(CaseStmt,Block)
     CaseConstruct                     -> CaseConstruct(SelectCaseStmt,ListStarOfCaseStmtAndBlock0,EndSelectStmt)
     IfStmt                            -> IfStmt(OptLabel,LogicalExpr,ActionStmt)
-    EndIfStmt                         -> EndIfStmt(OptLabel,NoName,EOS)
-    EndIfStmt                         -> EndIfStmt(OptLabel,IfConstructName,EOS)
+
+
     ElseStmt                          -> ElseStmt(OptLabel,NoName,EOS)
     ElseStmt                          -> ElseStmt(OptLabel,IfConstructName,EOS)
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,NoName,EOS)
     ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,IfConstructName,EOS)
     IfConstructName                   -> Ident
-    IfThenStmt                        -> IfThenStmt(OptLabel,NoName,LogicalExpr,EOS)
-    IfThenStmt                        -> IfThenStmt(OptLabel,IfConstructName,LogicalExpr,EOS)
+
     OptElseStmtAndBlock               -> no-else-stmt()
     OptElseStmtAndBlock               -> ElseStmtAndBlock
     ElseStmtAndBlock                  -> ElseStmtBlock(ElseStmt,Block)
@@ -1563,43 +1546,12 @@ regular tree grammar
     IntrinsicOperator                 -> AddOp
     IntrinsicOperator                 -> MultOp
     IntrinsicOperator                 -> PowerOp
-    DeallocOpt                        -> ERRMSG(ErrmsgVariable)
-    DeallocOpt                        -> STAT(StatVariable)
-    OptDeallocOptList                 -> no-list()
-    OptDeallocOptList                 -> comma-list(ListPlusOfDeallocOpt0)
-    DeallocateStmt                    -> DeallocateStmt(OptLabel,ListPlusOfAllocateObject0,OptDeallocOptList,EOS)
+
+
     PointerObject                     -> StructureComponent
     NullifyStmt                       -> NullifyStmt(OptLabel,ListPlusOfPointerObject0,EOS)
-    NoAllocateCoshapeSpecList         -> no-list()
-    AllocateCoshapeSpec               -> AllocateCoshapeSpec(LowerBoundExpr,UpperBoundExpr)
-    AllocateCoshapeSpec               -> AllocateCoshapeSpec(NoLowerBoundExpr,UpperBoundExpr)
-    AllocateCoarraySpec               -> AllocateCoarraySpec(ListPlusOfAllocateCoshapeSpec0,LowerBoundExpr)
-    AllocateCoarraySpec               -> AllocateCoarraySpec(ListPlusOfAllocateCoshapeSpec0,NoLowerBoundExpr)
-    AllocateCoarraySpec               -> AllocateCoarraySpec(NoAllocateCoshapeSpecList,LowerBoundExpr)
-    AllocateCoarraySpec               -> AllocateCoarraySpec(NoAllocateCoshapeSpecList,NoLowerBoundExpr)
-    UpperBoundExpr                    -> IntExpr
-    LowerBoundExpr                    -> IntExpr
-    NoLowerBoundExpr                  -> no-lower-bound()
-    NoAllocateCoarraySpec             -> no-list()
-    NoAllocateShapeSpecList           -> no-list()
-    AllocateShapeSpec                 -> AllocateShapeSpec(LowerBoundExpr,UpperBoundExpr)
-    AllocateShapeSpec                 -> AllocateShapeSpec(NoLowerBoundExpr,UpperBoundExpr)
-    AllocateObject                    -> StructureComponent
-    Allocation                        -> Allocation(AllocateObject,ListPlusOfAllocateShapeSpec0,AllocateCoarraySpec)
-    Allocation                        -> Allocation(AllocateObject,NoAllocateShapeSpecList,AllocateCoarraySpec)
-    Allocation                        -> Allocation(AllocateObject,ListPlusOfAllocateShapeSpec0,NoAllocateCoarraySpec)
-    Allocation                        -> Allocation(AllocateObject,NoAllocateShapeSpecList,NoAllocateCoarraySpec)
-    ErrmsgVariable                    -> DefaultCharVariable
-    StatVariable                      -> IntVariable
-    OptAllocOptList                   -> no-list()
-    OptAllocOptList                   -> comma-list(ListPlusOfAllocOpt0)
-    AllocOpt                          -> STAT(StatVariable)
-    AllocOpt                          -> SOURCE(Expr)
-    AllocOpt                          -> MOLD(Expr)
-    AllocOpt                          -> ERRMSG(ErrmsgVariable)
-    NoTypeSpec                        -> no-type-spec()
-    AllocateStmt                      -> AllocateStmt(OptLabel,TypeSpec,ListPlusOfAllocation0,OptAllocOptList,EOS)
-    AllocateStmt                      -> AllocateStmt(OptLabel,NoTypeSpec,ListPlusOfAllocation0,OptAllocOptList,EOS)
+
+
     Cosubscript                       -> IntExpr
     OptImageSelector                  -> no-image-selector()
     OptImageSelector                  -> ImageSelector
@@ -1629,10 +1581,13 @@ regular tree grammar
     OptSectionSubscripts              -> no-section-subscripts()
     PartRef                           -> PartRef(PartName,OptSectionSubscripts,OptImageSelector)
     DataRef                           -> DataRef(ListPlusOfPartRef0)
+
     SubstringRange                    -> SubstringRange(IntExpr,IntExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,IntExpr)
     SubstringRange                    -> SubstringRange(IntExpr,NoUpperBoundExpr)
     SubstringRange                    -> SubstringRange(NoLowerBoundExpr,NoUpperBoundExpr)
+    NoLowerBoundExpr                  -> no-lower-bound()
+
     ScalarVariableName                -> VarRef(Name)
     ParentString                      -> ConstantExpr
     ParentString                      -> StructureComponent
@@ -2250,3 +2205,51 @@ regular tree grammar
     ListPlusOfDummyArg               -> <conc>(ListPlusOfDummyArg,ListStarOfDummyArg)
     ListPlusOfDummyArg               -> <conc>(ListPlusOfDummyArg,ListPlusOfDummyArg)
     ListPlusOfDummyArg               -> <cons>(DummyArg,ListStarOfDummyArg)
+
+    ListStarOfAllocation             -> ListPlusOfAllocation
+    ListStarOfAllocation             -> <nil>()
+    ListStarOfAllocation             -> <conc>(ListStarOfAllocation,ListStarOfAllocation)
+    ListPlusOfAllocation             -> <conc>(ListStarOfAllocation,ListPlusOfAllocation)
+    ListPlusOfAllocation             -> <conc>(ListPlusOfAllocation,ListStarOfAllocation)
+    ListPlusOfAllocation             -> <conc>(ListPlusOfAllocation,ListPlusOfAllocation)
+    ListPlusOfAllocation             -> <cons>(Allocation,ListStarOfAllocation)
+
+    ListStarOfAllocOpt               -> ListPlusOfAllocOpt
+    ListStarOfAllocOpt               -> <nil>()
+    ListStarOfAllocOpt               -> <conc>(ListStarOfAllocOpt,ListStarOfAllocOpt)
+    ListPlusOfAllocOpt               -> <conc>(ListStarOfAllocOpt,ListPlusOfAllocOpt)
+    ListPlusOfAllocOpt               -> <conc>(ListPlusOfAllocOpt,ListStarOfAllocOpt)
+    ListPlusOfAllocOpt               -> <conc>(ListPlusOfAllocOpt,ListPlusOfAllocOpt)
+    ListPlusOfAllocOpt               -> <cons>(AllocOpt,ListStarOfAllocOpt)
+
+    ListStarOfAllocateShapeSpec      -> ListPlusOfAllocateShapeSpec
+    ListStarOfAllocateShapeSpec      -> <nil>()
+    ListStarOfAllocateShapeSpec      -> <conc>(ListStarOfAllocateShapeSpec,ListStarOfAllocateShapeSpec)
+    ListPlusOfAllocateShapeSpec      -> <conc>(ListStarOfAllocateShapeSpec,ListPlusOfAllocateShapeSpec)
+    ListPlusOfAllocateShapeSpec      -> <conc>(ListPlusOfAllocateShapeSpec,ListStarOfAllocateShapeSpec)
+    ListPlusOfAllocateShapeSpec      -> <conc>(ListPlusOfAllocateShapeSpec,ListPlusOfAllocateShapeSpec)
+    ListPlusOfAllocateShapeSpec      -> <cons>(AllocateShapeSpec,ListStarOfAllocateShapeSpec)
+
+    ListStarOfAllocateCoshapeSpec    -> ListPlusOfAllocateCoshapeSpec
+    ListStarOfAllocateCoshapeSpec    -> <nil>()
+    ListStarOfAllocateCoshapeSpec    -> <conc>(ListStarOfAllocateCoshapeSpec,ListStarOfAllocateCoshapeSpec)
+    ListPlusOfAllocateCoshapeSpec    -> <conc>(ListStarOfAllocateCoshapeSpec,ListPlusOfAllocateCoshapeSpec)
+    ListPlusOfAllocateCoshapeSpec    -> <conc>(ListPlusOfAllocateCoshapeSpec,ListStarOfAllocateCoshapeSpec)
+    ListPlusOfAllocateCoshapeSpec    -> <conc>(ListPlusOfAllocateCoshapeSpec,ListPlusOfAllocateCoshapeSpec)
+    ListPlusOfAllocateCoshapeSpec    -> <cons>(AllocateCoshapeSpec,ListStarOfAllocateCoshapeSpec)
+
+    ListStarOfAllocateObject         -> ListPlusOfAllocateObject
+    ListStarOfAllocateObject         -> <nil>()
+    ListStarOfAllocateObject         -> <conc>(ListStarOfAllocateObject,ListStarOfAllocateObject)
+    ListPlusOfAllocateObject         -> <conc>(ListStarOfAllocateObject,ListPlusOfAllocateObject)
+    ListPlusOfAllocateObject         -> <conc>(ListPlusOfAllocateObject,ListStarOfAllocateObject)
+    ListPlusOfAllocateObject         -> <conc>(ListPlusOfAllocateObject,ListPlusOfAllocateObject)
+    ListPlusOfAllocateObject         -> <cons>(AllocateObject,ListStarOfAllocateObject)
+
+    ListStarOfDeallocOpt             -> ListPlusOfDeallocOpt
+    ListStarOfDeallocOpt             -> <nil>()
+    ListStarOfDeallocOpt             -> <conc>(ListStarOfDeallocOpt,ListStarOfDeallocOpt)
+    ListPlusOfDeallocOpt             -> <conc>(ListStarOfDeallocOpt,ListPlusOfDeallocOpt)
+    ListPlusOfDeallocOpt             -> <conc>(ListPlusOfDeallocOpt,ListStarOfDeallocOpt)
+    ListPlusOfDeallocOpt             -> <conc>(ListPlusOfDeallocOpt,ListPlusOfDeallocOpt)
+    ListPlusOfDeallocOpt             -> <cons>(DeallocOpt,ListStarOfDeallocOpt)
