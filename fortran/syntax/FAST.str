@@ -156,13 +156,7 @@ signature
     STAT                      : StatVariable -> AllocOpt
                               : IntVariable -> StatVariable
                               : DefaultCharVariable -> ErrmsgVariable
-    Allocation                : AllocateObject * List(AllocateShapeSpec) * List(AllocateCoshapeSpec) -> Allocation
-    AllocateShapeSpec         : OptLowerBoundExpr * UpperBoundExpr -> AllocateShapeSpec
-                              : LowerBoundExpr -> OptLowerBoundExpr
-    no-lower-bound            : OptLowerBoundExpr
-                              : IntExpr -> LowerBoundExpr
-                              : IntExpr -> UpperBoundExpr
-    AllocateCoshapeSpec       : OptLowerBoundExpr * UpperBoundExpr -> AllocateCoshapeSpec
+    Allocation                : AllocateObject * List(Range) * List(Range) -> Allocation
                               : StructureComponent -> AllocateObject
     DeallocateStmt            : OptLabel * List(AllocateObject) * List(DeallocOpt) -> DeallocateStmt
     STAT                      : StatVariable -> DeallocOpt
@@ -244,6 +238,8 @@ signature
     EndDoStmt                 : OptLabel * OptName -> EndDoStmt
     CycleStmt                 : OptLabel * OptName -> CycleStmt
     IfThenStmt                : OptLabel * OptName * LogicalExpr -> IfThenStmt
+    ElseIfStmt                : OptLabel * LogicalExpr * OptName -> ElseIfStmt
+    ElseStmt                  : OptLabel * OptName -> ElseStmt
     EndIfStmt                 : OptLabel * OptName -> EndIfStmt
     ExitStmt                  : OptLabel * Name -> ExitStmt
     GotoStmt                  : OptLabel * LblRef -> GotoStmt
@@ -410,6 +406,8 @@ signature
                               : EndDoStmt -> Stmt
                               : CycleStmt -> Stmt
                               : IfThenStmt -> Stmt
+                              : ElseIfStmt -> Stmt
+                              : ElseStmt -> Stmt
                               : EndIfStmt -> Stmt
                               : ExitStmt -> Stmt
                               : GotoStmt -> Stmt

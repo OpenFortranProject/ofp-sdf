@@ -765,8 +765,7 @@ regular tree grammar
     AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfName)
 
     Stmt                              -> AllocateStmt
-    AllocateStmt                      -> AllocateStmt(OptLabel,OptTypeSpec,ListPlusOfAllocation,ListStarOfAllocOpt)
-
+    AllocateStmt                      -> AllocateStmt(OptLabel,OptTypeSpec,ListStarOfAllocation,ListStarOfAllocOpt)
     AllocOpt                          -> ERRMSG(ErrmsgVariable)
     AllocOpt                          -> MOLD(Expr)
     AllocOpt                          -> SOURCE(Expr)
@@ -775,7 +774,7 @@ regular tree grammar
     StatVariable                      -> IntVariable
     ErrmsgVariable                    -> DefaultCharVariable
 
-    Allocation                        -> Allocation(AllocateObject,ListStarOfAllocateShapeSpec,ListStarOfAllocateCoshapeSpec)
+    Allocation                        -> Allocation(AllocateObject,ListStarOfRange,ListStarOfRange)
 
     AllocateShapeSpec                 -> AllocateShapeSpec(OptLowerBoundExpr,UpperBoundExpr)
 
@@ -949,6 +948,12 @@ regular tree grammar
 
     Stmt                              -> IfThenStmt
     IfThenStmt                        -> IfThenStmt(OptLabel,OptName,LogicalExpr)
+
+    Stmt                              -> ElseIfStmt
+    ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,OptName)
+
+    Stmt                              -> ElseStmt
+    ElseStmt                          -> ElseStmt(OptLabel,OptName)
 
     Stmt                              -> EndIfStmt
     EndIfStmt                         -> EndIfStmt(OptLabel,OptName)
@@ -1440,13 +1445,6 @@ regular tree grammar
     CaseStmtAndBlock                  -> CaseStmtBlock(CaseStmt,Block)
     CaseConstruct                     -> CaseConstruct(SelectCaseStmt,ListStarOfCaseStmtAndBlock0,EndSelectStmt)
     IfStmt                            -> IfStmt(OptLabel,LogicalExpr,ActionStmt)
-
-
-    ElseStmt                          -> ElseStmt(OptLabel,NoName,EOS)
-    ElseStmt                          -> ElseStmt(OptLabel,IfConstructName,EOS)
-    ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,NoName,EOS)
-    ElseIfStmt                        -> ElseIfStmt(OptLabel,LogicalExpr,IfConstructName,EOS)
-    IfConstructName                   -> Ident
 
     OptElseStmtAndBlock               -> no-else-stmt()
     OptElseStmtAndBlock               -> ElseStmtAndBlock
