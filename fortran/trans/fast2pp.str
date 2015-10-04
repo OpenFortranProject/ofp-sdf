@@ -33,44 +33,48 @@ signature
 
     ppCoarrayType  : ListStarOfRange -> ppArrayType
 
-    ppArg          : arg             -> ppArg
+    ppArg          : arg              -> ppArg
 
     ppVar          : name * init      -> ppVar
     ppLiteralKind  : val              -> ppLiteralKind
 
     ppCharNoLen    : kind             -> ppCharNoLen
 
-    ppLetterSpec   : Spec            -> ppLetterSpec
-    ppLetterSpec   : Spec * Spec     -> ppLetterSpec
+    ppLetterSpec   : Spec             -> ppLetterSpec
+    ppLetterSpec   : Spec * Spec      -> ppLetterSpec
+
+    ppTypeSpec     : Spec             -> ppTypeSpec
 
     ppPartRef           : name * ss * is -> ppPartRef
     ppSectionSubscripts : ss             -> ppSectionSubscripts
     ppImageSelector     : ss             -> ppImageSelector
 
-    ppDerivedTypeStmt        : label * name           -> ppDerivedTypeStmt
-    ppDerivedTypeStmt_attrs  : label * attrs * name   -> ppDerivedTypeStmt_attrs
-    ppDerivedTypeStmt_params : label * name * params  -> ppDerivedTypeStmt_params
+    ppDerivedTypeStmt        : label * name            -> ppDerivedTypeStmt
+    ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
+    ppDerivedTypeStmt_params : label * name * params   -> ppDerivedTypeStmt_params
 
-
-    ppAllocation        : ppPartRef           -> ppAllocation
-    ppAllocationShape   : ppPartRef * shape   -> ppAllocationShape
-    ppAllocationCoshape : ppPartRef * coshape -> ppAllocationCoshape
-    ppAllocShapeSpec    : upper               -> ppAllocShapeSpec
-    ppAllocShapeSpec    : lower * upper       -> ppAllocShapeSpec
-    ppAllocCoshapeSpec  : upper               -> ppAllocCoshapeSpec
-    ppAllocCoshapeSpec  : lower * upper       -> ppAllocCoshapeSpec
+    ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
+    ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
+    ppAllocation        : object                       -> ppAllocation
+    ppAllocationShape   : object * shape               -> ppAllocationShape
+    ppAllocationCoshape : object * coshape             -> ppAllocationCoshape
 
     ppPointerAssignmentStmt : label * obj * expr           -> ppPointerAssignmentStmt
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
 
-    ppSelectCaseStmt : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
+    ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
 
-    ppNonlabelDoStmt : OptLabel * OptLoopControl                   -> ppNonlabelDoStmt    // R817
+    ppNonlabelDoStmt  : OptLabel * OptLoopControl                   -> ppNonlabelDoStmt    // R817
 
-    ppBlock          : OptLabel * Scope * EndBlockStmt             -> ppBlock
+    ppBlock           : OptLabel * Scope * EndBlockStmt             -> ppBlock
 
-    ppAssociateStmt  : OptLabel * NoName * List(Association)       -> ppAssociateStmt     // R803
+    ppAssociateStmt   : OptLabel * NoName * List(Association)       -> ppAssociateStmt     // R803
+
+    ppIfThenStmt      : OptLabel * OptName * expr                   -> ppIfThenStmt        // R833
+    ppElseStmt        : OptLabel                                    -> ppElseStmt          // R835
+    ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
+    ppIfConstructName : name                                        -> ppIfConstructName
 
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
@@ -138,25 +142,25 @@ ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
 //  ast-to-pp:  LetterSpec(s1,s2)            -> ppLetterSpec(s1,s2)
 
 //R612
-ast-to-pp:  PartRef(name,ss,is)            -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
+ast-to-pp:  PartRef(name,ss,is)              -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
 
 stride-separator = ?no-stride() < !"" + !":"
 
 //R621
-ast-to-pp:  Triplet(lb,ub,stride)          -> ppTriplet(lb,ub,<stride-separator>stride,stride)
+ast-to-pp:  Triplet(lb,ub,stride)            -> ppTriplet(lb,ub,<stride-separator>stride,stride)
+
+pp-type-spec = ?no-type-spec() < !no-type-spec() + !ppTypeSpec(<id>)
+
+//R626
+ast-to-pp =
+      ?AllocateStmt(label,spec,allocs,[])          ;  !ppAllocateStmt(label,<pp-type-spec>spec,allocs)
+  <+  ?AllocateStmt(label,spec,allocs,opts)        ;  !ppAllocateStmt(label,<pp-type-spec>spec,allocs,opts)
 
 //R631
-//  ast-to-pp:  Allocation(part,[],[])                 -> ppAllocation(part)
-//  ast-to-pp:  Allocation(part,shape,[])              -> ppAllocationShape(part,shape)
-//  ast-to-pp:  Allocation(part,[],coshape)            -> ppAllocationCoshape(part,coshape)
-
-//R633
-//  ast-to-pp:  AllocateShapeSpec(no-lower-bound(),ub) -> ppAllocShapeSpec(ub)
-//  ast-to-pp:  AllocateShapeSpec(lb,ub)               -> ppAllocShapeSpec(lb,ub)
-
-//R637
-//  ast-to-pp:  AllocateCoshapeSpec(no-lower-bound(),ub) -> ppAllocCoshapeSpec(ub)
-//  ast-to-pp:  AllocateCoshapeSpec(lb,ub)               -> ppAllocCoshapeSpec(lb,ub)
+ast-to-pp =
+      ?Allocation(obj,[],[])                       ;  !ppAllocation(obj)
+  <+  ?Allocation(obj,shape,[])                    ;  !ppAllocationShape(obj,shape)
+  <+  ?Allocation(obj,[],coshape)                  ;  !ppAllocationCoshape(obj,coshape)
 
 //R733
 ast-to-pp =
@@ -175,6 +179,17 @@ ast-to-pp:  Block(label,no-name(),scope,end) -> ppBlock(label,scope,end)
 
 //R817
 ast-to-pp:  NonlabelDoStmt(label,no-name(),control) -> ppNonlabelDoStmt(label,control)
+
+//R833
+ast-to-pp =
+      ?IfThenStmt(label,no-name(),expr)            ;  !ppIfThenStmt(label,no-name(),expr)
+  <+  ?IfThenStmt(label,name     ,expr)            ;  !ppIfThenStmt(label,ppIfConstructName(name),expr)
+
+//R835
+ast-to-pp:  ElseStmt(label,no-name())             ->   ppElseStmt(label)
+
+//R836
+ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
 
 //R838
 //  ast-to-pp:
