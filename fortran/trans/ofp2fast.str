@@ -354,6 +354,9 @@ ofp-to-ast =
  <+  ?AllocateStmt(label,type,allocations,opts,eos(str))
   ;  !AllocateStmt(label,type,allocations,opts)  {Comment(str)}
 
+//R631
+ofp-to-ast:  AllocateShapeSpec(lower,upper)      -> Range(lower,upper)
+
 //R640
 ofp-to-ast =
      ?DeallocateStmt(label,objects,opts,eos("\n"))
@@ -436,6 +439,14 @@ ofp-to-ast =  ?CycleStmt(label,name,eos("\n"))       ;  !CycleStmt(label,name)
 //R833
 ofp-to-ast =  ?IfThenStmt(label,name,expr,eos("\n")) ;  !IfThenStmt(label,name,expr)
           <+  ?IfThenStmt(label,name,expr,eos(str))  ;  !IfThenStmt(label,name,expr) {Comment(str)}
+
+//R834
+ofp-to-ast =  ?ElseIfStmt(label,name,expr,eos("\n")) ;  !ElseIfStmt(label,name,expr)
+          <+  ?ElseIfStmt(label,name,expr,eos(str))  ;  !ElseIfStmt(label,name,expr) {Comment(str)}
+
+//R835
+ofp-to-ast =  ?ElseStmt(label,name,eos("\n"))        ;  !ElseStmt(label,name)
+          <+  ?ElseStmt(label,name,eos(str))         ;  !ElseStmt(label,name) {Comment(str)}
 
 //R836
 ofp-to-ast =  ?EndIfStmt(label,name,eos("\n"))       ;  !EndIfStmt(label,name)
