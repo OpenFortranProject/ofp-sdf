@@ -255,5 +255,5 @@ ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
 //  no-to-none: no-loop-control()            -> None()   // R818
 //  no-to-none: no-subscript()               -> None()   // R619
 
-  no-to-none: ppSectionSubscripts(no-section-subscripts()) -> None()
+  no-to-none: ppSectionSubscripts(no-section-subscripts()) -> no-section-subscripts()
   no-to-none: ppImageSelector(no-image-selector())         -> no-image-selector()
