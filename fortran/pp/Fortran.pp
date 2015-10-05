@@ -376,6 +376,7 @@
    ppSectionSubscripts.1:iter-sep   -- _1 ",",
    ppImageSelector                  -- "[" _1 "]",
    ppImageSelector.1:iter-sep       -- _1 ",",
+   no-section-subscripts            -- ,
    no-image-selector                -- ,
 
    ppTriplet                        -- _1 ":" _2 _3 _4,
@@ -383,17 +384,19 @@
    no-stride                        -- ,
 
    #R626 --,
-   ppAllocateStmt                -- H hs=1 [_1 H hs=0[KW["ALLOCATE"] "("_2 _3         ")"]],
-   ppAllocateStmt                -- H hs=1 [_1 H hs=0[KW["ALLOCATE"] "("_2 _3 ", " _4 ")"]],
+   ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3         ")"]],
+   ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3 ", " _4 ")"]],
    ppAllocateStmt.3:iter-sep     -- _1 ",",
    ppAllocateStmt.4:iter-sep     -- _1 ", ",
 
    ppTypeSpec                    -- _1 ":: ",
 
-   ERRMSG                        -- KW["ERRMSG="] _1,
-   MOLD                          -- _1,
-   SOURCE                        -- KW["SOURCE="] _1,
-   STAT                          -- KW["STAT="] _1,
+   ERRMSG                        -- "ERRMSG=" _1,
+   MOLD                          --           _1,
+   SOURCE                        -- "SOURCE=" _1,
+   STAT                          -- "STAT="   _1,
+
+   DeallocateStmt                -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2 _3 ")"]],
 
    Allocation                    -- _1 "("_2")" "["_3"]",
    Allocation.2:iter-sep         -- _1 ",",
@@ -612,7 +615,7 @@
    WriteStmt.2:iter-sep          -- _1 ",",
    WriteStmt.3:iter-sep          -- _1 ", ",
 
-   PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 ", " _3 _4]],
+   PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
    FMT                           -- "FMT=" _1,
