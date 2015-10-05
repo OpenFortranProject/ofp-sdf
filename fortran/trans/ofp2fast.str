@@ -354,8 +354,11 @@ ofp-to-ast =
  <+  ?AllocateStmt(label,type,allocations,opts,eos(str))
   ;  !AllocateStmt(label,type,allocations,opts)  {Comment(str)}
 
-//R631
+//R633
 ofp-to-ast:  AllocateShapeSpec(lower,upper)      -> Range(lower,upper)
+
+//R637
+ofp-to-ast:  AllocateCoshapeSpec(lower,upper)    -> Range(lower,upper)
 
 //R640
 ofp-to-ast =
