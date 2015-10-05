@@ -12,7 +12,7 @@ LDFLAGS = -m32
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 
-all : SgUntyped.str sage2pp traverse
+all : SgUntyped.str sage2pp sage-to-traverse traverse
 
 traverse : traverse_main.o traverse_SgUntypedNodes.o SgUntypedNodes.o
 	c++ -o traverse $(LDFLAGS) traverse_main.o traverse_SgUntypedNodes.o SgUntypedNodes.o $(LIBS)
@@ -38,15 +38,21 @@ pp : SageRTG.pp SgUntyped.rtg.aterm
 sage2pp : sage2pp.str
 	$(ST_PATH)/strc -i sage2pp.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
-check : sage2pp
-	sage2pp -i SgUntyped.rtg.aterm | pp-aterm
+sage-to-traverse : sage-to-traverse.str
+	$(ST_PATH)/strc -i sage-to-traverse.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
-check-pp : sage2pp
-	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p SageRTG.pp
+check : sage-to-traverse
+	sage-to-traverse -i SgUntyped.rtg.aterm | pp-aterm
+
+check-pp : sage-to-traverse
+	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
 
 check-traverse : sage2pp
 	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
 
 
 clean :
-	rm -f traverse sage2pp *.o
+	rm -f traverse sage-to-traverse
+	rm -f sage-traverse sage-to-traverse.c
+	rm -f sage2pp sage2pp.c
+	rm -f *.o *.dep *.lo

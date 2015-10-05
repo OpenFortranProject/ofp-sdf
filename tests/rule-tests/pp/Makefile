@@ -1,4 +1,4 @@
-FC = ifort
+FC = gfortran
 
 SYNTAX_DIR = ../../../fortran/syntax
 TRANS_DIR  = ../../../fortran/trans
@@ -26,6 +26,40 @@ fast : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
 	   sglri -p $(TBL) -i $$file | $(TO_FAST) | pp-aterm -o tmp-fast/$$file.aterm; \
+        done;
+
+check-unparse : $(TBL)
+	@for file in *.f90 ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
+	@for file in *.f77 ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
+	@for file in *.f08 ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
+	@for file in *.fxx ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+           diff $$file tmp/$$file; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
         done;
 
 check : $(TBL)

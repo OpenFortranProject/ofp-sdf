@@ -149,6 +149,18 @@ signature
     AllocatableStmt           : OptLabel * List(AllocatableDecl) -> AllocatableStmt
                               : Var -> AllocatableDecl
     AsynchronousStmt          : OptLabel * List(Name) -> AsynchronousStmt
+    AllocateStmt              : OptLabel * OptTypeSpec * List(Allocation) * List(AllocOpt) -> AllocateStmt
+    ERRMSG                    : ErrmsgVariable -> AllocOpt
+    MOLD                      : Expr -> AllocOpt
+    SOURCE                    : Expr -> AllocOpt
+    STAT                      : StatVariable -> AllocOpt
+                              : IntVariable -> StatVariable
+                              : DefaultCharVariable -> ErrmsgVariable
+    Allocation                : AllocateObject * List(Range) * List(Range) -> Allocation
+                              : StructureComponent -> AllocateObject
+    DeallocateStmt            : OptLabel * List(AllocateObject) * List(DeallocOpt) -> DeallocateStmt
+    STAT                      : StatVariable -> DeallocOpt
+    ERRMSG                    : ErrmsgVariable -> DeallocOpt
     no-kind                   : OptKind
                               : Kind -> OptKind
     Kind                      : Expr -> Kind
@@ -225,6 +237,10 @@ signature
                               : Name -> DoVariable
     EndDoStmt                 : OptLabel * OptName -> EndDoStmt
     CycleStmt                 : OptLabel * OptName -> CycleStmt
+    IfThenStmt                : OptLabel * OptName * LogicalExpr -> IfThenStmt
+    ElseIfStmt                : OptLabel * LogicalExpr * OptName -> ElseIfStmt
+    ElseStmt                  : OptLabel * OptName -> ElseStmt
+    EndIfStmt                 : OptLabel * OptName -> EndIfStmt
     ExitStmt                  : OptLabel * Name -> ExitStmt
     GotoStmt                  : OptLabel * LblRef -> GotoStmt
     ComputedGotoStmt          : OptLabel * List(LblRef) * Expr -> ComputedGotoStmt
@@ -248,6 +264,7 @@ signature
     UnlockStmt                : OptLabel * LockVariable * List(SyncStat) -> UnlockStmt
                               : Variable -> LockVariable
     WriteStmt                 : OptLabel * IoControlSpecList * List(OutputItem) -> WriteStmt
+    PrintStmt                 : OptLabel * Format * List(OutputItem) -> PrintStmt
     WaitStmt                  : OptLabel * List(WaitSpec) -> WaitStmt
     IOSTAT                    : IntExpr -> WaitSpec
     ID                        : IntExpr -> WaitSpec
@@ -372,6 +389,8 @@ signature
                               : AccessStmt -> Stmt
                               : AllocatableStmt -> Stmt
                               : AsynchronousStmt -> Stmt
+                              : AllocateStmt -> Stmt
+                              : DeallocateStmt -> Stmt
                               : ForallConstructStmt -> Stmt
                               : EndForallStmt -> Stmt
                               : ForallStmt -> Stmt
@@ -386,6 +405,10 @@ signature
                               : NonlabelDoStmt -> Stmt
                               : EndDoStmt -> Stmt
                               : CycleStmt -> Stmt
+                              : IfThenStmt -> Stmt
+                              : ElseIfStmt -> Stmt
+                              : ElseStmt -> Stmt
+                              : EndIfStmt -> Stmt
                               : ExitStmt -> Stmt
                               : GotoStmt -> Stmt
                               : ComputedGotoStmt -> Stmt
@@ -400,6 +423,7 @@ signature
                               : LockStmt -> Stmt
                               : UnlockStmt -> Stmt
                               : WriteStmt -> Stmt
+                              : PrintStmt -> Stmt
                               : WaitStmt -> Stmt
                               : BackspaceStmt -> Stmt
                               : RewindStmt -> Stmt
@@ -555,9 +579,6 @@ signature
                               : AddOp -> IntrinsicOperator
                               : MultOp -> IntrinsicOperator
                               : PowerOp -> IntrinsicOperator
-    no-lower-bound            : NoLowerBoundExpr
-                              : DefaultCharVariable -> ErrmsgVariable
-                              : IntVariable -> StatVariable
                               : IntExpr -> Cosubscript
     no-image-selector         : OptImageSelector
                               : ImageSelector -> OptImageSelector
@@ -581,6 +602,7 @@ signature
     SubstringRange            : NoLowerBoundExpr * IntExpr -> SubstringRange
     SubstringRange            : IntExpr * NoUpperBoundExpr -> SubstringRange
     SubstringRange            : NoLowerBoundExpr * NoUpperBoundExpr -> SubstringRange
+    no-lower-bound            : NoLowerBoundExpr
                               : ConstantExpr -> ParentString
                               : StructureComponent -> ParentString
     Substring                 : ParentString * SubstringRange -> Substring

@@ -1,6 +1,8 @@
 [
    Comment                       -- _1,
 
+   eos                           -- _1,
+
    no-label                      -- ,
    no-name                       -- ,
 
@@ -262,10 +264,6 @@
    #R511 --,
    OfpExplicitCoshape            -- _1,
 
-   #R517 --,
-   ppDimSpec                     -- _1,
-   ppDimSpec                     -- _1 ":" _2,
-
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
 
@@ -378,6 +376,7 @@
    ppSectionSubscripts.1:iter-sep   -- _1 ",",
    ppImageSelector                  -- "[" _1 "]",
    ppImageSelector.1:iter-sep       -- _1 ",",
+   no-section-subscripts            -- ,
    no-image-selector                -- ,
 
    ppTriplet                        -- _1 ":" _2 _3 _4,
@@ -385,32 +384,29 @@
    no-stride                        -- ,
 
    #R626 --,
-   AllocateStmt                  -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5]],
-   AllocateStmt.3:iter-sep       -- _1 ",",
-   AllocateStmt.4:iter-sep       -- _1 ", ",
+   ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3         ")"]],
+   ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3 ", " _4 ")"]],
+   ppAllocateStmt.3:iter-sep     -- _1 ",",
+   ppAllocateStmt.4:iter-sep     -- _1 ", ",
 
-   #R627 --,
-   ERRMSG                        -- KW["ERRMSG="] _1,
-   MOLD                          -- _1,
-   SOURCE                        -- KW["SOURCE="] _1,
-   STAT                          -- KW["STAT="] _1,
+   ppTypeSpec                    -- _1 ":: ",
 
-   #R631 --,
+   ERRMSG                        -- "ERRMSG=" _1,
+   MOLD                          --           _1,
+   SOURCE                        -- "SOURCE=" _1,
+   STAT                          -- "STAT="   _1,
+
+   DeallocateStmt                -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2 _3 ")"]],
+
    Allocation                    -- _1 "("_2")" "["_3"]",
    Allocation.2:iter-sep         -- _1 ",",
    Allocation.3:iter-sep         -- _1 ",",
-   ppAllocation                  -- _1,
-   ppAllocationShape             -- _1 "("_2")",
-   ppAllocationShape.2:iter-sep  -- _1 ",",
-   ppAllocationCoshape           -- _1 "["_2"]",
-   ppAllocationCoshape.2:iter-sep-- _1 ",",
+ ppAllocation                    -- _1,
+ ppAllocationShape               -- _1 "("_2")",
+ ppAllocationShape.2:iter-sep    -- _1 ",",
+ ppAllocationCoshape             -- _1 "["_2"]",
+ ppAllocationCoshape.2:iter-sep  -- _1 ",",
    Triplet                       -- _1 ":" _2 _3,
-
-   ppAllocShapeSpec              -- _1,
-   ppAllocShapeSpec              -- _1 ":" _2,
-
-   ppAllocCoshapeSpec            -- _1,
-   ppAllocCoshapeSpec            -- _1 ":" _2,
 
    #R638 --,
    NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
@@ -508,24 +504,26 @@
    CycleStmt                     -- H hs=1 [_1 "CYCLE" H hs=0[_2]],
 
    #R832 --,
-   IfConstruct                   -- V vs=0 is=2 [_1 _2 _3 _4] _5,
-   ElseIfStmtBlock               -- _1 _2,
-   ElseStmtBlock                 -- _1 _2,
+   IfConstruct                   -- V vs=0 is=2 [_1 _2] _3 _4 _5,
+   ElseIfStmtBlock               -- V vs=0 is=2 [_1 _2],
+   ElseStmtBlock                 -- V vs=0 is=2 [_1 _2],
 
-   #R833 --,
-   IfThenStmt                    -- H hs=1[_1 KW["IF"] H hs=0[_2 "("_3")" _4] KW["THEN"]],
+   ppIfThenStmt                  -- H hs=1 [_1    "IF" H hs=0["("_2")"] "THEN"],
+   ppIfThenStmt                  -- H hs=1 [_1 _2 "IF" H hs=0["("_3")"] "THEN"],
+   ppIfConstructName             -- H hs=0 [_1 ":"],
 
-   #R834 --,
-   ElseIfStmt                    -- H hs=1[_1 KW["ELSE IF"] H hs=0["("_2")" _3 _4]],
+   ElseIfStmt                    -- H hs=1 [_1 "ELSE IF" H hs=0["("_2")"] "THEN" _3],
 
-   #R835 --,
-   ElseStmt                      -- H hs=1[_1 KW["ELSE"] H hs=0[_2 _3]],
+   ElseStmt                      -- H hs=1 [_1 "ELSE" H hs=0[_2]],
+ ppElseStmt                      -- H hs=1 [_1 "ELSE"           ],
 
-   #R836 --,
-   EndIfStmt                     -- H hs=1[_1 KW["END IF"] H hs=0[_2 _3]],
+   EndIfStmt                     -- H hs=1 [_1 "END IF" H hs=0[_2]],
+ ppEndIfStmt                     -- H hs=1 [_1 "END IF"           ],
 
    #R837 --,
-   IfStmt                        -- H hs=1[_1 KW["IF"] H hs=0["("_2")"] _3],
+   IfStmt                        -- H hs=1 [_1 KW["IF"] H hs=0["("_2")"] _3],
+
+   no-else-stmt                  -- ,
 
    #R838 --,
    CaseConstruct                 -- _1 _2 _3,
@@ -617,7 +615,7 @@
    WriteStmt.2:iter-sep          -- _1 ",",
    WriteStmt.3:iter-sep          -- _1 ", ",
 
-   PrintStmt                     -- H hs=1[_1 KW["PRINT"] H hs=0[_2 ", " _3 _4]],
+   PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
    FMT                           -- "FMT=" _1,

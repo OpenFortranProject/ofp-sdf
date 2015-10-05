@@ -8,6 +8,25 @@ RTG(
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatement"))])
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedType"))])
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedAttribute"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFile"))])
+    , ProdRule(
+        Nonterm("SgUntypedFile")
+      , [Appl(Term("SgUntypedFile"), [Ref(Nonterm("SgUntypedGlobalScope"))])]
+      )
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedGlobalScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedGlobalScope")
+      , [ Appl(
+            Term("SgUntypedGlobalScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
     , ProdRule(
         Nonterm("SgUntypedAttribute")
       , [Appl(Term("SgUntypedAttribute"), [Ref(Int()), Ref(String())])]
@@ -19,11 +38,6 @@ RTG(
            Term("SgUntypedInitializedName")
          , [Ref(Nonterm("SgUntypedType")), Ref(String())]
          )]
-      )
-    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFile"))])
-    , ProdRule(
-        Nonterm("SgUntypedFile")
-      , [Appl(Term("SgUntypedFile"), [Ref(Nonterm("SgUntypedGlobalScope"))])]
       )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatementList"))])
     , ProdRule(
@@ -195,20 +209,6 @@ RTG(
         Nonterm("SgUntypedModuleScope")
       , [ Appl(
             Term("SgUntypedModuleScope")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationList"))
-            , Ref(Nonterm("SgUntypedStatementList"))
-            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
-            ]
-          )
-        ]
-      )
-    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedGlobalScope"))])
-    , ProdRule(
-        Nonterm("SgUntypedGlobalScope")
-      , [ Appl(
-            Term("SgUntypedGlobalScope")
           , [ Ref(String())
             , Ref(Int())
             , Ref(Nonterm("SgUntypedDeclarationList"))
