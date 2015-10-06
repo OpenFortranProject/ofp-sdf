@@ -59,6 +59,9 @@ signature
     ppAllocationShape   : object * shape               -> ppAllocationShape
     ppAllocationCoshape : object * coshape             -> ppAllocationCoshape
 
+    ppDeallocateStmt    : label * allocs               -> ppDeallocateStmt
+    ppDeallocateStmt    : label * allocs * opts        -> ppDeallocateStmt
+
     ppPointerAssignmentStmt : label * obj * expr           -> ppPointerAssignmentStmt
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
@@ -161,6 +164,11 @@ ast-to-pp =
       ?Allocation(obj,[],[])                       ;  !ppAllocation(obj)
   <+  ?Allocation(obj,shape,[])                    ;  !ppAllocationShape(obj,shape)
   <+  ?Allocation(obj,[],coshape)                  ;  !ppAllocationCoshape(obj,coshape)
+
+//R640
+ast-to-pp =
+      ?DeallocateStmt(label,allocs,[])             ;  !ppDeallocateStmt(label,allocs)
+  <+  ?DeallocateStmt(label,allocs,opts)           ;  !ppDeallocateStmt(label,allocs,opts)
 
 //R733
 ast-to-pp =
