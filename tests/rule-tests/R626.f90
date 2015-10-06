@@ -3,6 +3,9 @@
 !
 ! Tested separately are: type-spec (R402) and allocation-list (R631).
 
+INTEGER, ALLOCATABLE :: a, b, X(:), Y(:,:)
+CHARACTER(4) :: blah = "blah"
+
 10 ALLOCATE(a,b)
 allocate(integer::a,b)
 allocate(a,stat=i, errmsg=blah, source=k)
