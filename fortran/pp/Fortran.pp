@@ -396,7 +396,10 @@
    SOURCE                        -- "SOURCE=" _1,
    STAT                          -- "STAT="   _1,
 
-   DeallocateStmt                -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2 _3 ")"]],
+   ppDeallocateStmt              -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2         ")"]],
+   ppDeallocateStmt              -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2 ", " _3 ")"]],
+   ppDeallocateStmt.2:iter-sep   -- _1 ",",
+   ppDeallocateStmt.3:iter-sep   -- _1 ", ",
 
    Allocation                    -- _1 "("_2")" "["_3"]",
    Allocation.2:iter-sep         -- _1 ",",
