@@ -171,7 +171,7 @@ check-pp :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
 
 clean :
-	rm -f *.mod
+	rm -f *.mod *.o
 	rm -f tmp/*.f90 tmp/*.f77 tmp/*.f08 tmp/*.fxx tmp/*.o
 	rm -f tmp-simple/*.aterm
 	rm -f tmp-fast/*.aterm
