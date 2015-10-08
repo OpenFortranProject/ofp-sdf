@@ -272,7 +272,7 @@ ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
 
 //R510
 //  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
-  ofp-to-ast:  DeferredCoshape()                -> COLON()
+  ofp-to-ast:  DeferredCoshape()                -> Range(no-lower-bound(), COLON())
 
 //R511
   ofp-to-ast:  ExplicitCoshape(lower,upper)     -> Range(lower,upper)
@@ -287,7 +287,7 @@ ofp-to-ast:  AssumedShape(lower)                -> Range(lower,COLON())
 
 //R520
 //  ofp-to-ast:  DeferredShape()                -> DimSpec(no-lower-bound(), COLON())
-  ofp-to-ast:  DeferredShape()                  -> COLON()
+  ofp-to-ast:  DeferredShape()                  -> Range(no-lower-bound(), COLON())
 
 //R521
 //  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
@@ -296,7 +296,7 @@ ofp-to-ast:  AssumedShape(lower)                -> Range(lower,COLON())
 //                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
 
 //R522
-ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
+//ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
 
 //R522a
 //  ofp-to-ast:  AssumedRankSpec()                  -> OfpAssumedRank([DimSpec(None(),<ofp-add-some>"..")])
