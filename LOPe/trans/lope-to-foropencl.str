@@ -14,9 +14,6 @@ signature
 
   clMemObject : symbol -> clMemObject
 
-//TODO - move this to FAST
-  OfpBlockDoConstruct : begin_stmt * block * end_stmt -> OfpBlockDoConstruct
-
 
 strategies //=================START OF STRATEGIES============================
 
@@ -25,10 +22,10 @@ strategies //=================START OF STRATEGIES============================
 
   lope-to-foropencl =
 { st,lt,save
-        :  ?OfpProgram(name, units)
+        :  ?Program(units)
         ;  new-hashtable => st
         ;  new-hashtable => lt
-        ;  !OfpProgram(name, units)
+        ;  !Program(units)
         ;  topdown(try(fast-get-symbols(|st)))
         ;  topdown(try(cafe-get-symbols(|st,lt)))
         ;  bottomup(try(cafe-add-cl(|st,lt)))
@@ -45,24 +42,20 @@ rules //========================START OF RULES===============================
 // Local thread group size
 // TODO - make dependent on dim and device
 opencl-local-size =
-     !["1","1","1"]
+     ![IntVal("1"),IntVal("1"),IntVal("1")]
 
 // FAST strategies (MOVE TO fortran/trans)
 // ---------------
 
 fast-var-name =
-     ?VarRef(name)
-  ;  !name
- <+  ?VarDef(name)
-  ;  !name
+     ?VarRef(name)        ;  !name
+ <+  ?VarDef(name)        ;  !name
 
-// Remove excess list elements inside of OfpSpecPart and OfpExecPart
+// Remove excess list elements inside of a Scope
 //   - occurs when a single statement is replaced by a list of statements
 fast-flatten-scope-parts =
-     ?OfpSpecPart(list)
-  ;  !OfpSpecPart(<flatten-list>list)
- <+  ?OfpExecPart(list)
-  ;  !OfpExecPart(<flatten-list>list)
+     ?Scope(decls,execs,funcs)
+  ;  !Scope(<flatten-list>decls, <flatten-list>execs, <flatten-list>funcs)
 
 fast-allocation-object =
      ?Allocation(object,_,_)
@@ -75,7 +68,7 @@ fast-build-allocation-size(|st,obj) =
   ;  !ub
 
 fast-dim-size =
-     ?DimSpec(lb,ub)
+     ?Range(lb,ub)
   ;  !Parens(Minus(ub,lb))
   ;  !Parens(Plus(<id>,"1"))
 
@@ -83,7 +76,8 @@ fast-dim-size =
 // TODO - add other intrinsic types and support for kinds
 // TODO - could replace kind with size in bytes!!!!
 fast-type-size =
-     ?IntrinsicType(REAL(no-kind())) ; !"4"
+     ?REAL()              ;  !"4"
+ <+  ?INTEGER()           ;  !"4"
 
 fast-mult-op =
      ?(l,r)
@@ -94,7 +88,6 @@ fast-allocation-size(|st) =
   ;  <hashtable-get(|symbol)> st
   ;  ?(type,attrs)
   ;  <fetch-elem(?Dimension(shape))> attrs
-  ;  innermost(fast-var-name)
   ;  <map(fast-dim-size)> shape
   ;  <foldr(!"1",fast-mult-op)> <id>
   ;  <fast-mult-op> (<fast-type-size>type,<id>)
@@ -104,12 +97,12 @@ fast-fix-no-lower-bound =
   ;  !"1"
 
 fast-update-allocation-dim =
-     ?(AllocateShapeSpec(lb,ub),DimSpec(_,_))
-  ;  !DimSpec(lb,ub)
+     ?(Range(lb,ub),Range(_,_))
+  ;  !Range(lb,ub)
 
 fast-update-allocation-codim =
-     ?(AllocateCoshapeSpec(lb,ub),DimSpec(_,_))
-  ;  !DimSpec(lb,ub)
+     ?(Range(lb,ub),Range(_,_))
+  ;  !Range(lb,ub)
 
 // Update the symbol table with information from an allocate statement
 fast-update-allocation-symbol(|st) =
@@ -131,38 +124,37 @@ fast-update-allocation-symbol(|st) =
 
 fast-build-use-stmt =
      ?module_name
-  ;  !UseStmt(no-label(), no-module-nature(), module_name, [], eos("\n"))
+  ;  !UseStmt(no-label(), no-module-nature(), module_name, [])
 
 fast-build-type-decl(|type,attrs) =
      ?object_name
   ;  !TypeDeclarationStmt(  no-label()
                           , type
                           , attrs
-                          , [EntityDecl(object_name,[],[],no-char-length(),no-init())]
-                          , eos("\n"))
+                          , [Var(object_name,type,no-init())]
+                         )
 
 fast-build-block(|decls,execs) =
-     !BlockConstruct(
-              BlockStmt(no-label(),no-name(),eos("\n"))
-            , OfpSpecPart(decls)
-            , Block(execs)
-            , EndBlockStmt(no-label(),no-name(),eos("\n")))
+     !Block(no-label()
+          , no-name()
+          , Scope(decls,execs,[])
+          , EndBlockStmt(no-label(),no-name()))
 
 // Allocate memory on OpenCL device via call to createBuffer()
 opencl-build-create-buffer(|st,device) =
      ?obj
   ;  <fast-allocation-size(|st)> obj
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>,eos("\n"))
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
        , AssignmentStmt(no-label(),<cl-wrap-name> obj
           , FunctionReference("createBuffer"
              , [device,"CL_MEM_READ_WRITE",VarRef("cl_size__")
-               ,"C_NULL_PTR"]),eos("\n"))
+               ,"C_NULL_PTR"]))
       ]
 
 // Deallocate memory on OpenCL device via call to releaseMemObject()
 opencl-build-release-buffer(|st,device) =
     !AssignmentStmt(no-label(),VarDef("cl_status__")
-          , FunctionReference("releaseMemObject", [<cl-wrap-var> <id>]), eos("\n"))
+          , FunctionReference("releaseMemObject", [<cl-wrap-var> <id>]))
 
 // Create an OpenCL kernel object via call to createKernel
 //TODO - check selector against device to ensure they refer to same image
@@ -174,18 +166,18 @@ opencl-build-create-kernel(|ct,device) =
   ;  <lookup> ("args", annotations)
   ;  <map(opencl-build-add-kernel-args(|ct,kernel))> <add-indices> <id>  => kernel_arg_funcs
   ;  !AssignmentStmt(no-label(),kernel
-         , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]),eos("\n"))
+         , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]))
   ;  <flatten-list> [<id>, kernel_arg_funcs]
  <+  ![]
 }
 
 // Add an argument to an OpenCL kernel object via call to setKernelArg
 opencl-build-add-kernel-args(|ct,kernel) =
-     ?(index, ActualArgSpec(_,PartRef(arg,_,selector)))
+     ?(index, PartRef(arg,_,selector))
   ;  <opencl-kernel-arg-type(|ct)> <hashtable-get(|arg)> ct
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("setKernelArg"
-              ,[kernel,<subti>(index,1),<id>]),eos("\n"))
+              ,[kernel,<subti>(index,1),<id>]))
  <+  ![]
 
 opencl-kernel-arg-type(|ct) =
@@ -213,7 +205,7 @@ cl-wrap-var =
   ;  <conc-strings>("cl_", <id>, "_")
 
 ofp-ident
-  :  EntityDecl(ident,_,_,_,_) -> ident
+  :  Var(ident,_,_) -> ident
 
 // add subimage device
 //
@@ -224,8 +216,8 @@ cafe-add-subimage-symbol(|ct,lhs) =
 
 // Add a symbol to the symbol table
 st-add-symbol(|st,type,attrs) =
-     ?symbol
-  ;  <hashtable-put(|symbol,(type,attrs))> st
+     ?var
+  ;  <hashtable-put(|<ofp-ident>var,(type,attrs))> st
 
 // Add a symbol to the CAFe symbol table
 ct-add-symbol(|ct,type,attrs) =
@@ -244,24 +236,24 @@ ct-add-type-decl(|ct) =
 
 // Add declared variables to symbol table
 fast-get-symbols(|st) =
-     ?TypeDeclarationStmt(label,type,attrs,vars,eos)
-  ;  <map(st-add-symbol(|st,type,attrs))> <map(ofp-ident)> vars
-  ;  !TypeDeclarationStmt(label,type,attrs,vars,eos)
+     ?TypeDeclarationStmt(label,type,attrs,vars)
+  ;  <map(st-add-symbol(|st,type,attrs))> vars
+  ;  !TypeDeclarationStmt(label,type,attrs,vars)
 
 // Update symbol table with information from allocate statements
 fast-get-symbols(|st) =
-     ?AllocateStmt(label,type,alloc_list,options,eos)
+     ?AllocateStmt(label,type,alloc_list,options)
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
-  ;  !AllocateStmt(label,type,alloc_list,options,eos)
+  ;  !AllocateStmt(label,type,alloc_list,options)
 
 
 // Get symbols specifically relevant to CAFe
 // -----------------------------------------
 
 cafe-get-symbols(|st,ct) =
-     ?AssignmentStmt(label,lhs,rhs,eos)
+     ?AssignmentStmt(label,lhs,rhs)
   ;  <cafe-add-subimage-symbol(|ct,lhs)> rhs
-  ;  !AssignmentStmt(label,lhs,rhs,eos)
+  ;  !AssignmentStmt(label,lhs,rhs)
 
 cafe-get-symbols(|st,ct) =
      ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
@@ -272,26 +264,26 @@ cafe-get-symbols(|st,ct) =
 
 // Mark DO CONCURRENT loops having an ImageExecutionSelector
 cafe-get-symbols(|st,ct) =
-     ?OfpBlockDoConstruct(begin,stmts,end)
+     ?BlockDoConstruct(begin,stmts,end)
   ;  !begin
-  ;  ?NonlabelDoStmt(_,_,ConcurrentExecControl(_,image),eos)
+  ;  ?NonlabelDoStmt(_,_,ConcurrentExecControl(_,image))
   ;  <map(cafe-get-stmt-symbol(|st,ct))> stmts
-  ;  !OfpBlockDoConstruct(begin,stmts,end) {[("ImageExecutionSelector",<cafe-subimage>image)]}
+  ;  !BlockDoConstruct(begin,stmts,end) {[("ImageExecutionSelector",<cafe-subimage>image)]}
 
 // Unmark DO CONCURRENT loop (assumes no embedded do loops)
-cafe-get-symbols(|st,ct) =
-     ?EndDoStmt(label,name,eos)
-  ;  <hashtable-get(|"cafe_do_concurrent_tmp_")> ct
-  ;  <hashtable-remove(|"cafe_do_concurrent_tmp_")> ct
-  ;  !EndDoStmt(label,name,eos)
+//cafe-get-symbols(|st,ct) =
+//     ?EndDoStmt(label,name)
+//  ;  <hashtable-get(|"cafe_do_concurrent_tmp_")> ct
+//  ;  <hashtable-remove(|"cafe_do_concurrent_tmp_")> ct
+//  ;  !EndDoStmt(label,name)
 
 // Add CONCURRENT subroutine names to CAFe symbols
 cafe-get-stmt-symbol(|st,ct) =
-     ?CallStmt(label, ProcedureDesignator(name), args, eos)
+     ?CallStmt(label, name, args)
   ;  <hashtable-put(|name,(<cl-wrap-name>name
             , DerivedType("CLKernel",[])
             , []){[("args",args)]})> ct
-  ;  !CallStmt(label, ProcedureDesignator(name), args, eos)
+  ;  !CallStmt(label, name, args)
 
 cafe-subimage =
      ?ImageExecutionSelector([VarRef(device)])
@@ -302,40 +294,44 @@ cafe-subimage =
 // ------------------------------
 
 cafe-add-cl(|st,ct) =
-     ?AssignmentStmt(label,VarDef(lhs),PartRef("get_subimage",[arg],_),eos)
+     ?AssignmentStmt(label,VarDef(lhs),PartRef("get_subimage",[arg],_))
   ;  !AssignmentStmt(label,VarDef(lhs),FunctionReference("get_subimage",
-                                      [arg,<cl-wrap-name>lhs]),eos)
+                                      [arg,<cl-wrap-name>lhs]))
 
 // Add variables associated with ForOpenCL calls
 //    cl_status__, cl_size__, ch_ng__(3)
 cafe-add-cl(|st,ct) =
-     ?OfpSpecPart(decls)
+     ?Scope(decls,execs,funcs)
   ;  <concat> [[<fast-build-use-stmt>"ForOpenCL"], decls]
   ;  <concat> [<id>, <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct]
   ;  <concat> [<id>, [<fast-build-type-decl(|
-                       IntrinsicType(INTEGER(KindSelector(VarRef("cl_int")))),[])> "cl_status__"]]
+                          INTEGER(Kind(VarRef("cl_int"  ))),[])> "cl_status__"]]
   ;  <concat> [<id>, [<fast-build-type-decl(|
-                       IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t")))),[])> "cl_size__"]]
+                          INTEGER(Kind(VarRef("c_size_t"))),[])> "cl_size__"]]
   ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t"))))
+                        , INTEGER(Kind(VarRef("c_size_t")))
                         , []
-                        , [EntityDecl("cl_gwo__",[DimSpec(no-lower-bound(), "3")]
-                             ,[],no-char-length(),no-init())]
-                        , eos("\n"))]]
+                        , [Var("cl_gwo__",
+                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
+                                     , [Range(no-lower-bound(), IntVal("3"))],[]), no-init())]
+                        )]]
   ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t"))))
+                        , INTEGER(Kind(VarRef("c_size_t")))
                         , []
-                        , [EntityDecl("cl_gws__",[DimSpec(no-lower-bound(), "3")]
-                             ,[],no-char-length(),no-init())]
-                        , eos("\n"))]]
+                        , [Var("cl_gws__",
+                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
+                                     , [Range(no-lower-bound(), IntVal("3"))],[]), no-init())]
+                        )]]
   ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , IntrinsicType(INTEGER(KindSelector(VarRef("c_size_t"))))
+                        , INTEGER(Kind(VarRef("c_size_t")))
                         , []
-                        , [EntityDecl("cl_lws__",[DimSpec(no-lower-bound(), "3")]
-                             ,[],no-char-length()
-                             ,Init(ArrayConstructor(AcSpec(no-type-spec(),<opencl-local-size>))))]
-                        , eos("\n"))]]
-  ;  !OfpSpecPart(<id>)
+                        , [Var("cl_lws__",
+                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
+                                     , [Range(no-lower-bound(), IntVal("3"))],[])
+                                          , Init(ArrayConstructor(AcSpec(no-type-spec()
+                                                                         ,<opencl-local-size>))))]
+                        )]]
+  ;  !Scope(<id>,execs,funcs)
 
 // Replace coallocate statement with function call to alloc memory on device
 cafe-add-cl(|st,ct) =
@@ -358,25 +354,25 @@ cafe-add-cl(|st,ct) =
 
 // Replace assignment statements with memory transfer with read/writeBuffer
 cafe-add-cl(|st,ct) =
-     ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj),eos)
+     ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj))
   ;  <fast-allocation-size(|st)> var
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>,eos("\n"))
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
        , AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("writeBuffer"
-            ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]),eos("\n"))
+            ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]))
       ]
- +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]),eos)
+ +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]))
   ;  <fast-allocation-size(|st)> obj
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>,eos("\n"))
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
        , AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("readBuffer"
-            ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]),eos("\n"))
+            ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]))
       ]
 
 // Create OpenCL kernels and run them; replacing DO CONCURRENT loop
 cafe-add-cl(|st,ct) =
 {device,triplets
-  :  ?OfpBlockDoConstruct(begin,stmts,end) {annotations}
+  :  ?BlockDoConstruct(begin,stmts,end) {annotations}
   ;  <lookup> ("ImageExecutionSelector", annotations)  => device
   ;  <cafe-forall-triplet> begin                       => triplets
   ;  <flatten-list>  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
@@ -389,7 +385,7 @@ cafe-add-cl(|st,ct) =
 
 // Retrieve list of ForallHeader triplets
 cafe-forall-triplet =
-     ?NonlabelDoStmt(_,_,ConcurrentExecControl(ForallHeader(_,triplet_list,_),_),_)
+     ?NonlabelDoStmt(_,_,ConcurrentExecControl(ForallHeader(_,triplet_list,_),_))
   ;  !triplet_list
 
 // Build AssignmentStmt calculating global offset from a ForallHeader triplet
@@ -397,28 +393,27 @@ cafe-forall-triplet =
 opencl-build-calc-global-offset =
      ?(index, ForallTripletSpec(var,lb,ub,step))
   ;  !AssignmentStmt(no-label(),PartRef("cl_gwo__",[index],no-image-selector())
-         , Minus(lb,1), eos("\n"))
+         , Minus(lb,1))
 
 // Build AssignmentStmt calculating global size from a ForallHeader triplet
 // TODO - incorporate step information
 opencl-build-calc-global-size =
      ?(index, ForallTripletSpec(var,lb,ub,step))
-  ;  <fast-dim-size> DimSpec(lb,ub)
-  ;  !AssignmentStmt(no-label(),PartRef("cl_gws__",[index],no-image-selector())
-         , <id>, eos("\n"))
+  ;  <fast-dim-size> Range(lb,ub)
+  ;  !AssignmentStmt(no-label(),PartRef("cl_gws__",[index],no-image-selector()),<id>)
 
 // Replace subroutine call with running the corresponding OpenCL kernel
 opencl-replace-call-stmt(|bounds) =
-     ?CallStmt(label, ProcedureDesignator(name), args, eos)
+     ?CallStmt(label, name, args)
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
                , FunctionReference("run",[<cl-wrap-name>name
-                  , <length>bounds, VarRef("cl_gwo__"), VarRef("cl_gws__"), VarRef("cl_lws__")]),eos("\n"))
+                  , <length>bounds, VarRef("cl_gwo__"), VarRef("cl_gws__"), VarRef("cl_lws__")]))
 
 // Build the OpenCL kernel finish call
 opencl-build-finish-kernel =
-     ?CallStmt(label, ProcedureDesignator(name), args, eos)
+     ?CallStmt(label, name, args)
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
-         , FunctionReference("clFinish",[<conc-strings>(<cl-wrap-name>name, "%commands")]),eos("\n"))
+         , FunctionReference("clFinish",[<conc-strings>(<cl-wrap-name>name, "%commands")]))
 
 
 // Lower CAF components to serial
@@ -433,8 +428,8 @@ caf-lower-ast =
 
 // This is just used to flatten the attribute list after removing Codimension attribute
 caf-lower-ast =
-     ?TypeDeclarationStmt(label,type,attrs,vars,eos)
-  ;  !TypeDeclarationStmt(label,type,<flatten-list>attrs,vars,eos)
+     ?TypeDeclarationStmt(label,type,attrs,vars)
+  ;  !TypeDeclarationStmt(label,type,<flatten-list>attrs,vars)
 
 caf-lower-ast =
      ?Allocation(var,shape,coshape)
