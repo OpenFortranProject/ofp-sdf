@@ -1,0 +1,55 @@
+PROGRAM test_restrict
+USE ForOpenCL
+IMPLICIT NONE
+INTEGER, PARAMETER :: L = 32, M = 64
+INTEGER(KIND=cl_int) :: device, i, j
+REAL, ALLOCATABLE, DIMENSION(:,:) :: A, B, C
+TYPE(CLDevice) :: cl_device_
+TYPE(CLBuffer) :: cl_A_
+TYPE(CLBuffer) :: cl_B_
+TYPE(CLBuffer) :: cl_C_
+TYPE(CLKernel) :: cl_elemental_add_
+INTEGER(KIND=cl_int) :: cl_status__
+INTEGER(KIND=c_size_t) :: cl_size__
+INTEGER(KIND=c_size_t) :: cl_gwo__(3)
+INTEGER(KIND=c_size_t) :: cl_gws__(3)
+INTEGER(KIND=c_size_t) :: cl_lws__(3) = [1,1,1]
+device = get_subimage ( 0 , cl_device_ )
+ALLOCATE(A(L,M),B(L,M),C(L,M))
+IF (device /= THIS_IMAGE()) THEN
+  cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+  cl_A_ = createBuffer ( cl_device_ , CL_MEM_READ_WRITE , cl_size__ , C_NULL_PTR )
+  cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+  cl_B_ = createBuffer ( cl_device_ , CL_MEM_READ_WRITE , cl_size__ , C_NULL_PTR )
+  cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+  cl_C_ = createBuffer ( cl_device_ , CL_MEM_READ_WRITE , cl_size__ , C_NULL_PTR )
+END IF
+A = 1
+A(2,1) = 2
+B = 2
+cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+cl_status__ = writeBuffer ( cl_A_ , C_LOC(A) , cl_size__ )
+cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+cl_status__ = writeBuffer ( cl_B_ , C_LOC(B) , cl_size__ )
+cl_elemental_add_ = createKernel ( cl_device_ , "elemental_add" )
+cl_status__ = setKernelArg ( cl_elemental_add_ , 0 , clMemObject( cl_A_ ) )
+cl_status__ = setKernelArg ( cl_elemental_add_ , 1 , clMemObject( cl_B_ ) )
+cl_status__ = setKernelArg ( cl_elemental_add_ , 2 , clMemObject( cl_C_ ) )
+cl_gwo__(1) = 1-1
+cl_gwo__(2) = 1-1
+cl_gws__(1) = ((L-1)+1)
+cl_gws__(2) = ((M-1)+1)
+cl_status__ = run ( cl_elemental_add_ , 2 , cl_gwo__ , cl_gws__ , cl_lws__ )
+cl_status__ = clFinish ( cl_elemental_add_%commands )
+cl_size__ = 4*((L-1)+1)*((M-1)+1)*1
+cl_status__ = readBuffer ( cl_C_ , C_LOC(C) , cl_size__ )
+PRINT *, A(1:5,1)
+PRINT *, B(1:5,1)
+PRINT *, C(1:5,1)
+DEALLOCATE(A,B,C)
+IF (device /= THIS_IMAGE()) THEN
+  cl_status__ = releaseMemObject ( cl_A_ )
+  cl_status__ = releaseMemObject ( cl_B_ )
+  cl_status__ = releaseMemObject ( cl_C_ )
+END IF
+END PROGRAM
