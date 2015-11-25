@@ -30,7 +30,7 @@ FCFLAGS = -g -I $(FOR_OCL_DIR)
 	$(FC) -c $(FCFLAGS) -o $@ $<
 
 
-all : lope-to-foropencl sg-const-folding
+all : lope-to-ocr lope-to-foropencl sg-const-folding
 
 elemental_add_1d : elemental_add_1d.f90
 	$(FC) elemental_add_1d.f90 -o elemental_add_1d $(FCFLAGS) -Wl,-no_pie -L$(FOR_OCL_DIR) -lforopencl -framework OpenCL
@@ -47,8 +47,11 @@ sg-const-folding : sg-const-folding.str
 lope-to-foropencl : lope-to-foropencl.str
 	$(ST_PATH)/strc -i lope-to-foropencl.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-foropencl
 
-check : lope-to-foropencl
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+lope-to-ocr : lope-to-ocr.str
+	$(ST_PATH)/strc -i lope-to-ocr.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-ocr
+
+check : lope-to-ocr
+	sglri -p $(TBL) -i testfile.ocr.f90 | $(TO_FAST) | lope-to-ocr | $(TO_PP) | ast2text -p $(PP)
 
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
