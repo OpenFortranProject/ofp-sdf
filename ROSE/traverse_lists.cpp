@@ -2,127 +2,99 @@
 
 #define DEBUG_PRINT
 
+#ifdef MOVED_BACK_TO_GENERATED
 
-#ifdef NOT_YET
-ATbool ofp_traverse_AttrSpecList(ATerm term, sage::AttrSpecList** AttrSpecList)
-{
-#ifdef DEBUG_PRINT
-   printf("traverse_AttrSpecList: %s\n", ATwriteToString(term));
-#endif
-
-   if (! ATmatch(term, "AttrSpecList(<term>)", &AttrSpecList->term)) {
-      return ATfalse;
-   }
-
-   OFP_Traverse AttrSpec;
-   ATermList AttrSpec_tail = (ATermList) ATmake("<term>", AttrSpecList->term);
-   while (! ATisEmpty(AttrSpec_tail)) {
-      AttrSpec.term = ATgetFirst(AttrSpec_tail);
-      AttrSpec_tail = ATgetNext (AttrSpec_tail);
-      if (ofp_traverse_AttrSpec(AttrSpec.term, &AttrSpec)) {
-         // MATCHED AttrSpec                                                              
-      } else return ATfalse;
-   }
-   return ATtrue;
-}
-#endif
-
-
-
+//========================================================================================
+// SgUntypedStatementList
+//----------------------------------------------------------------------------------------
 ATbool traverse_SgUntypedStatementList(ATerm term, sage::SgUntypedStatementList** SgUntypedStatementList)
 {
 #ifdef DEBUG_PRINT
-   printf("traverse_SgUntypedStatementList: %s\n", ATwriteToString(term));
+  printf("... traverse_SgUntypedStatementList: %s\n", ATwriteToString(term));
 #endif
 
   ATerm term1;
-  sage::SgUntypedStatement* arg1;
-
+  
   *SgUntypedStatementList = NULL;
-
   if (ATmatch(term, "SgUntypedStatementList(<term>)", &term1)) {
-     std::list<sage::SgUntypedStatement*>* plist = new std::list<sage::SgUntypedStatement*>();
-
 #ifdef NOT_YET
-
-     ATermList tail = (ATermList) ATmake("<term>", term1);
-     while (! ATisEmpty(tail)) {
-        ATerm head = ATgetFirst(tail);
-        tail = ATgetNext(tail);
-        if (traverse_SgUntypedDeclarationStatement(term1, &arg1)) {
-           // MATCHED SgUntypedDeclarationStatement
-        }
-        else if (traverse_SgUntypedAssignmentStatement(term1, &arg1)) {
-           // MATCHED SgUntypedAssignmentStatement
-        }
-        else if (traverse_SgUntypedFunctionCallStatement(term1, &arg1)) {
-           // MATCHED SgUntypedFunctionCallStatement
-        }
-        else if (traverse_SgUntypedBlockStatement(term1, &arg1)) {
-           // MATCHED SgUntypedBlockStatement
-        }
-        else if (traverse_SgUntypedNamedStatement(term1, &arg1)) {
-           // MATCHED SgUntypedNamedStatement
-        }
-`        else if (traverse_SgUntypedOtherStatement(term1, &arg1)) {
-           // MATCHED SgUntypedOtherStatement
-        }
-        else if (traverse_SgUntypedScope(term1, &arg1)) {
-           // MATCHED SgUntypedScope
-        }
-        else {
-           delete plist;
-           *SgUntypedStatementList = NULL;
-           return ATfalse;
-        }
-
-        plist->push_back(arg1);
-     }
-#endif
-
-  }
-  else return ATfalse;
-
-#ifdef NOT_YET
-  *SgUntypedStatementList = plist;
-#endif
-
-  return ATtrue;
-}
-
-
-ATbool traverse_SgUntypedDeclarationList(ATerm term, sage::SgUntypedDeclarationList** SgUntypedDeclarationList)
-{
-#ifdef DEBUG_PRINT
-   printf("traverse_SgUntypedDeclarationList: %s\n", ATwriteToString(term));
-#endif
-
-  *SgUntypedDeclarationList = NULL;
-
-  return ATtrue;
-}
-
-ATbool traverse_SgUntypedFunctionDeclarationList(ATerm term, sage::SgUntypedFunctionDeclarationList** SgUntypedFunctionDeclarationList)
-{
-#ifdef DEBUG_PRINT
-   printf("traverse_SgUntypedFunctionDeclarationList: %s\n", ATwriteToString(term));
-#endif
-
-  ATerm term1;
-  *SgUntypedFunctionDeclarationList = NULL;
-
-  if (ATmatch(term, "SgUntypedFunctionDeclarationList(<term>)", &term1)) {
-     std::list<sage::SgUntypedFunctionDeclaration*>* plist = new std::list<sage::SgUntypedFunctionDeclaration*>();
+     sage::SgUntypedStatementList* plist = new sage::SgUntypedStatementList();
 
      ATermList tail = (ATermList) ATmake("<term>", term1);
      while (! ATisEmpty(tail)) {
         ATerm head = ATgetFirst(tail);
         tail = ATgetNext(tail);
         {
-           sage::SgUntypedProgramHeaderDeclaration* arg1;
-           if (traverse_SgUntypedProgramHeaderDeclaration(head, &arg1)) {
-              // MATCHED SgUntypedProgramHeaderDeclaration
-              plist->push_back(arg1);
+           sage::SgUntypedScope* arg;
+           if (traverse_SgUntypedScope(head, &arg)) {
+              // SgUntypedScope
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedOtherStatement* arg;
+           if (traverse_SgUntypedOtherStatement(head, &arg)) {
+              // SgUntypedOtherStatement
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedNamedStatement* arg;
+           if (traverse_SgUntypedNamedStatement(head, &arg)) {
+              // SgUntypedNamedStatement
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedBlockStatement* arg;
+           if (traverse_SgUntypedBlockStatement(head, &arg)) {
+              // SgUntypedBlockStatement
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedFunctionCallStatement* arg;
+           if (traverse_SgUntypedFunctionCallStatement(head, &arg)) {
+              // SgUntypedFunctionCallStatement
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedAssignmentStatement* arg;
+           if (traverse_SgUntypedAssignmentStatement(head, &arg)) {
+              // SgUntypedAssignmentStatement
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+        {
+           sage::SgUntypedDeclarationStatement* arg;
+           if (traverse_SgUntypedDeclarationStatement(head, &arg)) {
+              // SgUntypedDeclarationStatement
+              plist->push_back(arg);
            }
            else {
               delete plist;
@@ -130,7 +102,98 @@ ATbool traverse_SgUntypedFunctionDeclarationList(ATerm term, sage::SgUntypedFunc
            }
         }
      }
+     *SgUntypedStatementList = plist;
+#endif
+  }
+  else return ATfalse;
 
+  return ATtrue;
+}
+
+//========================================================================================
+// SgUntypedDeclarationList
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedDeclarationList(ATerm term, sage::SgUntypedDeclarationList** SgUntypedDeclarationList)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedDeclarationList: %s\n", ATwriteToString(term));
+#endif
+
+  ATerm term1;
+  
+  *SgUntypedDeclarationList = NULL;
+  if (ATmatch(term, "SgUntypedDeclarationList(<term>)", &term1)) {
+#ifdef NOT_YET
+     sage::SgUntypedDeclarationList* plist = new sage::SgUntypedDeclarationList();
+
+     ATermList tail = (ATermList) ATmake("<term>", term1);
+     while (! ATisEmpty(tail)) {
+        ATerm head = ATgetFirst(tail);
+        tail = ATgetNext(tail);
+        {
+           sage::SgUntypedDeclaration* arg;
+           if (traverse_SgUntypedDeclaration(head, &arg)) {
+              // SgUntypedDeclaration
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+     }
+     *SgUntypedDeclarationList = plist;
+#endif
+  }
+  else return ATfalse;
+
+  return ATtrue;
+}
+
+//========================================================================================
+// SgUntypedFunctionDeclarationList
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedFunctionDeclarationList(ATerm term, sage::SgUntypedFunctionDeclarationList** SgUntypedFunctionDeclarationList)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedFunctionDeclarationList: %s\n", ATwriteToString(term));
+#endif
+
+  ATerm term1;
+  
+  *SgUntypedFunctionDeclarationList = NULL;
+  if (ATmatch(term, "SgUntypedFunctionDeclarationList(<term>)", &term1)) {
+     sage::SgUntypedFunctionDeclarationList* plist = new sage::SgUntypedFunctionDeclarationList();
+
+     ATermList tail = (ATermList) ATmake("<term>", term1);
+     while (! ATisEmpty(tail)) {
+        ATerm head = ATgetFirst(tail);
+        tail = ATgetNext(tail);
+        {
+#ifdef NOT_YET
+           sage::SgUntypedSubroutineDeclaration* arg;
+           if (traverse_SgUntypedSubroutineDeclaration(head, &arg)) {
+              // SgUntypedSubroutineDeclaration
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+#endif
+        }
+        {
+           sage::SgUntypedProgramHeaderDeclaration* arg;
+           if (traverse_SgUntypedProgramHeaderDeclaration(head, &arg)) {
+              // SgUntypedProgramHeaderDeclaration
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
+        }
+     }
      *SgUntypedFunctionDeclarationList = plist;
   }
   else return ATfalse;
@@ -138,38 +201,42 @@ ATbool traverse_SgUntypedFunctionDeclarationList(ATerm term, sage::SgUntypedFunc
   return ATtrue;
 }
 
-
+//========================================================================================
+// SgUntypedInitializedNameList
+//----------------------------------------------------------------------------------------
 ATbool traverse_SgUntypedInitializedNameList(ATerm term, sage::SgUntypedInitializedNameList** SgUntypedInitializedNameList)
 {
 #ifdef DEBUG_PRINT
-   printf("traverse_SgUntypedInitializedNameList: %s\n", ATwriteToString(term));
+  printf("... traverse_SgUntypedInitializedNameList: %s\n", ATwriteToString(term));
 #endif
 
   ATerm term1;
+  
   *SgUntypedInitializedNameList = NULL;
-
   if (ATmatch(term, "SgUntypedInitializedNameList(<term>)", &term1)) {
-     std::list<sage::SgUntypedInitializedName*>* plist = new std::list<sage::SgUntypedInitializedName*>();
+     sage::SgUntypedInitializedNameList* plist = new sage::SgUntypedInitializedNameList();
 
      ATermList tail = (ATermList) ATmake("<term>", term1);
      while (! ATisEmpty(tail)) {
         ATerm head = ATgetFirst(tail);
         tail = ATgetNext(tail);
-
-        sage::SgUntypedInitializedName* arg1;
-        if (traverse_SgUntypedInitializedName(head, &arg1)) {
-           // MATCHED SgUntypedInitializedName
+        {
+           sage::SgUntypedInitializedName* arg;
+           if (traverse_SgUntypedInitializedName(head, &arg)) {
+              // SgUntypedInitializedName
+              plist->push_back(arg);
+           }
+           else {
+              delete plist;
+              return ATfalse;
+           }
         }
-        else {
-           delete plist;
-           return ATfalse;
-        }
-        plist->push_back(arg1);
      }
-
      *SgUntypedInitializedNameList = plist;
   }
   else return ATfalse;
 
   return ATtrue;
 }
+
+#endif
