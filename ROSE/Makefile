@@ -50,6 +50,8 @@ check-pp : sage-to-traverse
 check-traverse : sage2pp
 	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
 
+check-traversal: traverse
+	traverse -i testfile.f90.aterm
 
 clean :
 	rm -f traverse sage-to-traverse
