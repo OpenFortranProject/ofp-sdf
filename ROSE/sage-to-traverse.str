@@ -35,11 +35,16 @@ signature
     no-decls        : no-decls
 
     MatchConstruct  : Name * TermList * ArgList * TraverseArgs  -> MatchConstruct
+    MatchList       : Name * TermList * ArgList * TraverseArgs  -> MatchList
 
     TraverseArg     : Name * Term * Arg              -> TraverseArg
     TraverseArgs    : TraverseArgList                -> TraverseArgs
 
+    ListArg         : Name                           -> ListArg
+    ListArgs        : ListArgList                    -> ListArgs
+
     BuildStmt       : Name * ArgList                 -> BuildStmt
+    no-build        : no-build
 
     ClassDecl       : Name                           -> ClassDecl
     ClassDecls      : DeclList                       -> ClassDecls
@@ -71,9 +76,16 @@ strategies
     io-wrap(sage-to-traverse)
 
   sage-to-traverse() =
-      innermost(nil-terms-to-pp)
-    ; innermost(ast-to-pp)
-    ; outermost(cleanup-pp)
+{ ct
+    : ?RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  new-hashtable => ct
+    ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  topdown(try(rtg-get-classes(|ct)))
+    ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  innermost(nil-terms-to-pp)
+    ;  innermost(ast-to-pp)
+    ;  outermost(cleanup-pp(|ct))
+}
 
   extract-traversals() =
       ?Traversal(fdecl,debug,tdecl,adecls,match,build)
@@ -102,6 +114,21 @@ strategies
       ?TypeRef(Nonterm(name))         ; !"<term>"
    <+ ?TypeRef(terminal)              ; <terminal-to-term-type> <write-to-string> terminal
 
+
+// Build class inheritance table
+// -----------------------------
+
+// Add a class to the class table
+ct-add-class(|ct,child) =
+     ?class
+  ;  <hashtable-pushunion(|class,[child])> ct
+
+rtg-get-classes(|ct) =
+     ?ProdRule(Nonterm(parent), [Ref(Nonterm(child))])
+  ;  !parent
+  ;  <ct-add-class(|ct,child)> parent
+  ;  ?ProdRule(Nonterm(parent), [Ref(Nonterm(child))])
+
   term-decl-list(|count,new) =
       ?[]  ; !new
    <+ ?[head|tail]
@@ -111,8 +138,17 @@ strategies
    <+ ?[head|tail]
            ; <term-decl-list(|<addS>(count,"1"),new)> tail
 
+  isListStarOf =
+      ?str
+    ; <is-substring(!"ListStarOf")> str
+    ; !str
+
   arg-decl(|count) =
-      ?type
+      ?TypeRef(Nonterm(str))
+    ; !str
+    ; <isListStarOf> <id>
+    ; ![]
+   <+ ?type
     ; !ArgDecl(<arg-type> type, <concat-strings>["arg", count])
 
   arg-decl-list(|count,new) =
@@ -154,6 +190,41 @@ strategies
 
 rules
 
+list-arg =
+      !ListArg(<id>)
+
+list-args(|ct) =
+      ?name
+   ;  <hashtable-get(|name)> ct
+   ;  !ListArgs(<map(list-arg)> <id>)
+ <+   ?name
+   ;  ![name]
+   ;  !ListArgs(<map(list-arg)> <id>)
+
+list-type =
+      <back-split-at(|4)> <explode-string> <string-ends-with(|"List")> <id>
+   ;  ?(head,_)
+   ;  <implode-string> head
+
+nil-terms-to-pp =
+      ?ProdRule(c, [Appl(NilTerm(),list)])      ; !Macro(c)
+  <+  ?ProdRule(c, [Appl(ConsTerm(),list)])     ; !no-class()
+
+cleanup-pp(|ct) =
+     ?TermDecls([])                             ; !no-decls()
+
+cleanup-pp(|ct) =
+     ?Traversal(fundecl,dbug,termdecls,argdecls
+                 , MatchConstruct(name,term_types,arg_names
+                            , TraverseArgs([TraverseArg(list_name,type,arg)]))
+                 , build
+               )
+   ; <isListStarOf>list_name
+   ; !Traversal(fundecl,dbug,termdecls,argdecls
+                 , MatchList(name,term_types,arg_names,<list-args(|ct)> <list-type> name)
+                 , no-build()
+               )
+
 //ast-to-pp:  Start([root])                                   -> ClassDecl(root)
 
 ast-to-pp =
@@ -163,18 +234,11 @@ ast-to-pp =
    ; !Traversals(t)
 }
 
-nil-terms-to-pp =
-      ?ProdRule(c, [Appl(NilTerm(),list)])      ; !Macro(c)
-  +>  ?ProdRule(c, [Appl(ConsTerm(),list)])     ; !no-class()
-
-cleanup-pp =
-      ?TermDecls([])                            ; !no-decls()
-
 ast-to-pp =
 { term_types, arg_names
    :  ?ProdRule(parent,[Ref(c)])                ; !ClassDecl(c)
   +>  ?ProdRule(Nonterm(name), [Appl(_,args)])
-    ;  <map(term-type)> args       => term_types
+    ;  <map(term-type)> args         => term_types
     ;  <arg-name-list(|"1",[])> args => arg_names
     ; !Traversal(
                     FunDecl(name)
@@ -183,7 +247,7 @@ ast-to-pp =
                   , ArgDecls (<arg-decl-list (|"1",[])> args)
                   , MatchConstruct(name,term_types,<map(address-of)>arg_names,
                                    TraverseArgs(<traverse-arg-list(|"1",[])> args))
-                  , BuildStmt(name,<builder-arg-list (|"1",[])> args)
+                  , no-build() // BuildStmt(name,<builder-arg-list (|"1",[])> args)
                 )
 }
 
