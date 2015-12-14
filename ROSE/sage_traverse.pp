@@ -16,7 +16,7 @@
 
    Debug                              -- H hs=0 [
          "#ifdef DEBUG_PRINT\n"
-         "  printf(\"" _1 " %s\\n\", ATwriteToString(term));\n"
+         "  printf(\"... traverse_" _1 ": %s\\n\", ATwriteToString(term));\n"
          "#endif\n"                             ],
 
    TermDecls                           -- H hs=0 ["ATerm " _1 ";"],
@@ -28,6 +28,7 @@
 
    MatchConstruct                      -- H hs=0
       [ 
+           "\n  *" _1 " = NULL;"
            "\n  if (ATmatch(term, \"" _1 "(" _2 ")\", " _3 ")) {"
       ]
         _4 "} else return ATfalse;\n",
@@ -35,13 +36,51 @@
    MatchConstruct.2:iter-sep           -- _1 ",",
    MatchConstruct.3:iter-sep           -- _1 ",",
 
+   MatchList                           -- H hs=0
+      [ 
+           "\n  *" _1 " = NULL;"
+           "\n  if (ATmatch(term, \"" _1 "(" _2 ")\", " _3 ")) {"
+           "\n     sage::" _1 "* plist = new sage::" _1 "();"
+           "\n"
+           "\n     ATermList tail = (ATermList) ATmake(\"<term>\", term1);"
+           "\n     while (! ATisEmpty(tail)) {"
+           "\n        ATerm head = ATgetFirst(tail);"
+           "\n        tail = ATgetNext(tail);"
+      ]
+        _4  H hs=0
+      [
+           "   }"
+           "\n     *" _1 " = plist;"
+      ]
+           "}\n  else return ATfalse;",
+
+   MatchList.2:iter-sep                -- _1 ",",
+   MatchList.3:iter-sep                -- _1 ",",
+
    TraverseArgs                        -- _1,
    TraverseArg                         -- H hs=0
       ["  if (traverse_"_1 "(" _2 ", &"_3 ")) {\n      // " _1 "\n    } else return ATfalse;"
       ],
 
-   BuildStmt                           -- H hs=0 ["*"_1 " = new sage::" _1 "("_2 ");"],
-   BuildStmt.2:iter-sep           -- _1 ",",
+   ListArgs                            -- _1,
+   ListArg                             -- H hs=0
+      [
+           "      {"
+           "\n           sage::" _1 "* arg;"
+           "\n           if (traverse_"_1 "(head, &arg)) {"
+           "\n              // " _1
+           "\n              plist->push_back(arg);"
+           "\n           }"
+           "\n           else {"
+           "\n              delete plist;"
+           "\n              return ATfalse;"
+           "\n           }"
+           "\n        }"
+      ],
+
+   BuildStmt                           -- H hs=0 ["*"_1 " = build_" _1 "("_2 ");"],
+   BuildStmt.2:iter-sep                -- _1 ",",
+   no-build                            -- H hs=0 ["// turn on build functions (using BuildStmt) in sage-to-traverse.str"],
 
    TypeRef                             -- _1,
 
