@@ -1,0 +1,27 @@
+SgUntypedFile(
+  SgUntypedGlobalScope(
+    "100"
+  , 1111
+  , SgUntypedDeclarationList([])
+  , SgUntypedStatementList([])
+  , SgUntypedFunctionDeclarationList(
+      [ SgUntypedProgramHeaderDeclaration(
+          ""
+        , 1112
+        , "main"
+        , SgUntypedInitializedNameList([])
+        , SgUntypedTypeVoid()
+        , SgUntypedFunctionScope(
+            ""
+          , 1113
+          , SgUntypedDeclarationList([])
+          , SgUntypedStatementList([])
+          , SgUntypedFunctionDeclarationList([])
+          )
+        , SgUntypedNamedStatement("", 1114, "")
+        )
+      ]
+    )
+  )
+)
+
