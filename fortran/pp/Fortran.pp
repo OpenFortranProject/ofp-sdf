@@ -420,8 +420,8 @@
    DeallocateStmt.2:iter-sep     -- _1 ",",
 
    #Operators --,
-   UnaryMinus                    -- H hs=0["-" _1],
-   UnaryPlus                     -- H hs=0["+" _1],
+   UnaryMinus                    -- H hs=0["(-" _1 ")"],
+   UnaryPlus                     -- H hs=0["(+" _1 ")"],
    Minus                         -- H hs=0[_1 "-" _2],
    NOT                           -- H hs=0[".NOT. " _1],
    Plus                          -- H hs=0[_1 "+" _2],
