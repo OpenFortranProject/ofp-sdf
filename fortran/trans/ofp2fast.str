@@ -172,7 +172,7 @@ complete-block-do-construct =
   ;  ?[BlockDoConstruct(begin_do,block,no-end()) | do_list]
   ;  <split-fetch-keep(match-end-do)> <next-is-end-do> exec_list
   ;  ?(end_block,end_do,tail)
-  ;  !BlockDoConstruct(begin_do,<concat>[block,[inner],end_block],end_do)
+  ;  !BlockDoConstruct(begin_do,<flatten-list><concat>[block,[inner],end_block],end_do)
   ;  <complete-block-do-construct> (do_list,<id>,tail)
 
  <+  ?(outer,inner,exec_list)         // match an inner begin-do
@@ -182,9 +182,10 @@ complete-block-do-construct =
   ;  ?(next_block,next_do,tail)
   ;  !BlockDoConstruct(next_do,[],no-end())
   ;  !(<concat>[[<id>]
-                 ,[BlockDoConstruct(begin_do,<concat>[begin_block,next_block],no-end())]
-                 ,do_list]
-                , [], tail)
+                 , [BlockDoConstruct(begin_do
+                     ,<flatten-list> <concat>[begin_block,next_block],no-end())]
+                 , do_list]
+            , [], tail)
   ;  <complete-block-do-construct> <id>
 
 // matches if next part of a do construct is the end-do
