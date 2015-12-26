@@ -202,14 +202,14 @@ next-is-begin-do =
   ;  !exec_list
 
 match-begin-or-end-do =
-     ?NonlabelDoStmt(label,name,control)
- <+  ?EndDoStmt(label,name)
+     ?NonlabelDoStmt(_,_,_)
+ <+  ?EndDoStmt(_,_)
 
 match-begin-block-do =
-     ?NonlabelDoStmt(label,name,control)
+     ?NonlabelDoStmt(_,_,_)
 
 match-end-do =
-     ?EndDoStmt(label,name)
+     ?EndDoStmt(_,_)
 
 
 //R201
