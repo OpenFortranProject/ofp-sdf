@@ -50,8 +50,11 @@ lope-to-foropencl : lope-to-foropencl.str
 lope-to-ocr : lope-to-ocr.str
 	$(ST_PATH)/strc -i lope-to-ocr.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-ocr
 
-check : lope-to-ocr
-	sglri -p $(TBL) -i testfile.ocr.f90 | $(TO_FAST) | lope-to-ocr | $(TO_PP) | ast2text -p $(PP)
+check : lope-to-foropencl
+	@sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+
+check-orig : lope-to-foropencl
+	@sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
 
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
