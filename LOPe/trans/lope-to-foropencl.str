@@ -173,7 +173,11 @@ opencl-build-create-kernel(|ct,device) =
 
 // Add an argument to an OpenCL kernel object via call to setKernelArg
 opencl-build-add-kernel-args(|ct,kernel) =
-     ?(index, PartRef(arg,_,selector))
+     ?(index, VarRef(arg))                                    // scalar variables
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("setKernelArg"
+              ,[kernel,<subti>(index,1),arg]))
+ <+  ?(index, PartRef(arg,_,selector))                        // array variables
   ;  <opencl-kernel-arg-type(|ct)> <hashtable-get(|arg)> ct
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("setKernelArg"
