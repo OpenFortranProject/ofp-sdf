@@ -156,6 +156,7 @@ fast-fixup-do-construct =
   ;  <complete-block-do-construct> ([BlockDoConstruct(begin_do,[],no-end())],[],after)
   ;  ?(do_construct,rest)
   ;  !(<concat>[exec_list, before, [do_construct]], rest)
+  ;  try(<fast-fixup-do-construct> <id>)
 
 // Starting with an initial NonlabelDoStmt this strategy completes a
 // BlockDoConstruct by matching it with an EndDoStmt.  If an embedded
