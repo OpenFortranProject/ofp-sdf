@@ -808,7 +808,7 @@
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
    #R1219 --,
-   FunctionReference                   -- _1 "("_2")",
+   FunctionReference                   -- H hs=0[_1 "("_2")"],
    FunctionReference.2:iter-sep        -- _1 ",",
 
    #R1220 --,
