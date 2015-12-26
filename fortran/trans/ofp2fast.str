@@ -15,6 +15,8 @@ signature
   ExecPart : ListStarOfStmt -> ExecPart
   FuncPart : ListStarOfDecl -> FuncPart
 
+  no-end   : NoEndStmt
+
   // Ambiguities
   amb : list -> choice
 
@@ -112,7 +114,6 @@ rules //========================START OF RULES===============================
 // of ambiguities in the grammar related to format, entry, and data statements being
 // in both the declaration-construct and the execution-part-construct.
 //
-
 fast-fixup-spec-part =
 {spec_list
   :  ?Scope(SpecPart(slist),ExecPart(elist),funcs)
@@ -152,11 +153,56 @@ fast-fixup-do-construct =
      ?(exec_list,remaining)
   ;  <split-fetch-keep(match-begin-block-do)> remaining
   ;  ?(before,begin_do,after)
-  ;  <split-fetch-keep(match-end-do)> after
-  ;  ?(block,end_do,rest)
-  ;  !BlockDoConstruct(begin_do,block,end_do)
-  ;  !(<concat>[exec_list,before,[<id>]], rest)
-  ;  try(<fast-fixup-do-construct> <id>)
+  ;  <complete-block-do-construct> ([BlockDoConstruct(begin_do,[],no-end())],[],after)
+  ;  ?(do_construct,rest)
+  ;  !(<concat>[exec_list, before, [do_construct]], rest)
+
+// Starting with an initial NonlabelDoStmt this strategy completes a
+// BlockDoConstruct by matching it with an EndDoStmt.  If an embedded
+// do loop is found it first has to build the innermost BlockDoConstruct
+// and via recursion and attach it to the block of the immediate outer
+// BlockDoConstruct, and so on ...
+complete-block-do-construct =
+     ?([],inner,exec_list)            // terminating condition
+  ;  !(inner,exec_list)
+
+ <+  ?(outer,inner,exec_list)         // match an end-do
+  ;  !outer
+  ;  ?[BlockDoConstruct(begin_do,block,no-end()) | do_list]
+  ;  <split-fetch-keep(match-end-do)> <next-is-end-do> exec_list
+  ;  ?(end_block,end_do,tail)
+  ;  !BlockDoConstruct(begin_do,<concat>[block,[inner],end_block],end_do)
+  ;  <complete-block-do-construct> (do_list,<id>,tail)
+
+ <+  ?(outer,inner,exec_list)         // match an inner begin-do
+  ;  !outer
+  ;  ?[BlockDoConstruct(begin_do,begin_block,no-end()) | do_list]
+  ;  <split-fetch-keep(match-begin-block-do)> <next-is-begin-do> exec_list
+  ;  ?(next_block,next_do,tail)
+  ;  !BlockDoConstruct(next_do,[],no-end())
+  ;  !(<concat>[[<id>]
+                 ,[BlockDoConstruct(begin_do,<concat>[begin_block,next_block],no-end())]
+                 ,do_list]
+                , [], tail)
+  ;  <complete-block-do-construct> <id>
+
+// matches if next part of a do construct is the end-do
+next-is-end-do =
+     ?exec_list
+  ;  <split-fetch-keep(match-begin-or-end-do)> exec_list
+  ;  ?(_,EndDoStmt(_,_),_)
+  ;  !exec_list
+
+// matches if next part of a do construct is an imbedded do-loop
+next-is-begin-do =
+     ?exec_list
+  ;  <split-fetch-keep(match-begin-or-end-do)> exec_list
+  ;  ?(_,NonlabelDoStmt(_,_,_),_)
+  ;  !exec_list
+
+match-begin-or-end-do =
+     ?NonlabelDoStmt(label,name,control)
+ <+  ?EndDoStmt(label,name)
 
 match-begin-block-do =
      ?NonlabelDoStmt(label,name,control)
