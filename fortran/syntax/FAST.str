@@ -372,6 +372,15 @@ signature
                               : String -> Keyword
     AltReturn                 : Label -> AltReturn
     EntryStmt                 : OptLabel * Name * List(DummyArg) * OptSuffix -> EntryStmt
+    ReturnStmt                : OptLabel * OptExpr -> ReturnStmt
+    no-expr                   : OptExpr
+                              : Expr -> OptExpr
+    OpenStmt                  : OptLabel * List(ConnectSpec) -> OpenStmt
+    RECL                      : IntExpr -> ConnectSpec
+    NEWUNIT                   : IntVariable -> ConnectSpec
+    IOSTAT                    : IntVariable -> ConnectSpec
+    ERR                       : LblRef -> ConnectSpec
+    UNIT                      : FileUnitNumber -> ConnectSpec
                               : FunctionStmt -> Stmt
                               : EndFunctionStmt -> Stmt
                               : SubroutineStmt -> Stmt
@@ -438,9 +447,12 @@ signature
                               : CallStmt -> Stmt
                               : EntryStmt -> Stmt
                               : ReturnStmt -> Stmt
-    ReturnStmt                : OptLabel * OptExpr -> ReturnStmt
-    no-expr                   : OptExpr
-                              : Expr -> OptExpr
+                              : OpenStmt -> Stmt
+                              : CloseStmt -> Stmt
+    CloseStmt                 : OptLabel * List(CloseSpec) -> CloseStmt
+    ERR                       : LblRef -> CloseSpec
+    IOSTAT                    : IntVariable -> CloseSpec
+    UNIT                      : FileUnitNumber -> CloseSpec
                               : ProcedureName -> InitialProcTarget
     SAVE                      : ProcAttrSpec
     POINTER                   : ProcAttrSpec

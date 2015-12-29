@@ -99,20 +99,6 @@ regular tree grammar
     ListPlusOfInputItem0              -> <conc>(ListPlusOfInputItem0,ListStarOfInputItem0)
     ListPlusOfInputItem0              -> <conc>(ListPlusOfInputItem0,ListPlusOfInputItem0)
     ListPlusOfInputItem0              -> <cons>(InputItem,ListStarOfInputItem0)
-    ListStarOfCloseSpec0              -> ListPlusOfCloseSpec0
-    ListStarOfCloseSpec0              -> <nil>()
-    ListStarOfCloseSpec0              -> <conc>(ListStarOfCloseSpec0,ListStarOfCloseSpec0)
-    ListPlusOfCloseSpec0              -> <conc>(ListStarOfCloseSpec0,ListPlusOfCloseSpec0)
-    ListPlusOfCloseSpec0              -> <conc>(ListPlusOfCloseSpec0,ListStarOfCloseSpec0)
-    ListPlusOfCloseSpec0              -> <conc>(ListPlusOfCloseSpec0,ListPlusOfCloseSpec0)
-    ListPlusOfCloseSpec0              -> <cons>(CloseSpec,ListStarOfCloseSpec0)
-    ListStarOfConnectSpec0            -> ListPlusOfConnectSpec0
-    ListStarOfConnectSpec0            -> <nil>()
-    ListStarOfConnectSpec0            -> <conc>(ListStarOfConnectSpec0,ListStarOfConnectSpec0)
-    ListPlusOfConnectSpec0            -> <conc>(ListStarOfConnectSpec0,ListPlusOfConnectSpec0)
-    ListPlusOfConnectSpec0            -> <conc>(ListPlusOfConnectSpec0,ListStarOfConnectSpec0)
-    ListPlusOfConnectSpec0            -> <conc>(ListPlusOfConnectSpec0,ListPlusOfConnectSpec0)
-    ListPlusOfConnectSpec0            -> <cons>(ConnectSpec,ListStarOfConnectSpec0)
 
     ListStarOfTypeGuardStmtAndBlock0  -> ListPlusOfTypeGuardStmtAndBlock0
     ListStarOfTypeGuardStmtAndBlock0  -> <nil>()
@@ -1223,9 +1209,40 @@ regular tree grammar
     OptExpr                           -> Expr
 
 
+    Stmt                              -> OpenStmt
+    OpenStmt                          -> OpenStmt(OptLabel,ListPlusOfConnectSpec)
 
+    ConnectSpec                       -> STATUS(DefaultCharExpr)
+    ConnectSpec                       -> SIGN(DefaultCharExpr)
+    ConnectSpec                       -> ROUND(DefaultCharExpr)
+    ConnectSpec                       -> RECL(IntExpr)
+    ConnectSpec                       -> POSITION(DefaultCharExpr)
+    ConnectSpec                       -> PAD(DefaultCharExpr)
+    ConnectSpec                       -> NEWUNIT(IntVariable)
+    ConnectSpec                       -> IOSTAT(IntVariable)
+    ConnectSpec                       -> IOMSG(IomsgVariable)
+    ConnectSpec                       -> FORM(DefaultCharExpr)
+    ConnectSpec                       -> FILE(FileNameExpr)
+    ConnectSpec                       -> ERR(LblRef)
+    ConnectSpec                       -> ENCODING(DefaultCharExpr)
+    ConnectSpec                       -> DELIM(DefaultCharExpr)
+    ConnectSpec                       -> DECIMAL(DefaultCharExpr)
+    ConnectSpec                       -> BLANK(DefaultCharExpr)
+    ConnectSpec                       -> ASYNCHRONOUS(DefaultCharExpr)
+    ConnectSpec                       -> ACTION(DefaultCharExpr)
+    ConnectSpec                       -> ACCESS(DefaultCharExpr)
+    ConnectSpec                       -> UNIT(FileUnitNumber)
+    ConnectSpec                       -> UNIT(FileUnitNumber)
 
+    Stmt                              -> CloseStmt
+    CloseStmt                         -> CloseStmt(OptLabel,ListPlusOfCloseSpec)
 
+    CloseSpec                         -> STATUS(DefaultCharExpr)
+    CloseSpec                         -> ERR(LblRef)
+    CloseSpec                         -> IOMSG(IomsgVariable)
+    CloseSpec                         -> IOSTAT(IntVariable)
+    CloseSpec                         -> UNIT(FileUnitNumber)
+    CloseSpec                         -> UNIT(FileUnitNumber)
 
 
 
@@ -1375,37 +1392,10 @@ regular tree grammar
     IoControlSpec                     -> FMT(Format)
     IoControlSpec                     -> UNIT(IoUnit)
 
-    CloseSpec                         -> STATUS(DefaultCharExpr)
-    CloseSpec                         -> ERR(LblRef)
-    CloseSpec                         -> IOMSG(IomsgVariable)
-    CloseSpec                         -> IOSTAT(IntVariable)
-    CloseSpec                         -> UNIT(FileUnitNumber)
-    CloseSpec                         -> UNIT(FileUnitNumber)
-    CloseStmt                         -> CloseStmt(OptLabel,ListPlusOfCloseSpec0,EOS)
 
     FileNameExpr                      -> DefaultCharExpr
-    ConnectSpec                       -> STATUS(DefaultCharExpr)
-    ConnectSpec                       -> SIGN(DefaultCharExpr)
-    ConnectSpec                       -> ROUND(DefaultCharExpr)
-    ConnectSpec                       -> RECL(IntExpr)
-    ConnectSpec                       -> POSITION(DefaultCharExpr)
-    ConnectSpec                       -> PAD(DefaultCharExpr)
-    ConnectSpec                       -> NEWUNIT(IntVariable)
-    ConnectSpec                       -> IOSTAT(IntVariable)
-    ConnectSpec                       -> IOMSG(IomsgVariable)
-    ConnectSpec                       -> FORM(DefaultCharExpr)
-    ConnectSpec                       -> FILE(FileNameExpr)
-    ConnectSpec                       -> ERR(LblRef)
-    ConnectSpec                       -> ENCODING(DefaultCharExpr)
-    ConnectSpec                       -> DELIM(DefaultCharExpr)
-    ConnectSpec                       -> DECIMAL(DefaultCharExpr)
-    ConnectSpec                       -> BLANK(DefaultCharExpr)
-    ConnectSpec                       -> ASYNCHRONOUS(DefaultCharExpr)
-    ConnectSpec                       -> ACTION(DefaultCharExpr)
-    ConnectSpec                       -> ACCESS(DefaultCharExpr)
-    ConnectSpec                       -> UNIT(FileUnitNumber)
-    ConnectSpec                       -> UNIT(FileUnitNumber)
-    OpenStmt                          -> OpenStmt(OptLabel,ListPlusOfConnectSpec0,EOS)
+
+
     InternalFileVariable              -> CharVariable
     FileUnitNumber                    -> IntExpr
     IoUnit                            -> STAR()
@@ -2251,3 +2241,19 @@ regular tree grammar
     ListPlusOfDeallocOpt             -> <conc>(ListPlusOfDeallocOpt,ListStarOfDeallocOpt)
     ListPlusOfDeallocOpt             -> <conc>(ListPlusOfDeallocOpt,ListPlusOfDeallocOpt)
     ListPlusOfDeallocOpt             -> <cons>(DeallocOpt,ListStarOfDeallocOpt)
+
+    ListStarOfConnectSpec            -> ListPlusOfConnectSpec
+    ListStarOfConnectSpec            -> <nil>()
+    ListStarOfConnectSpec            -> <conc>(ListStarOfConnectSpec,ListStarOfConnectSpec)
+    ListPlusOfConnectSpec            -> <conc>(ListStarOfConnectSpec,ListPlusOfConnectSpec)
+    ListPlusOfConnectSpec            -> <conc>(ListPlusOfConnectSpec,ListStarOfConnectSpec)
+    ListPlusOfConnectSpec            -> <conc>(ListPlusOfConnectSpec,ListPlusOfConnectSpec)
+    ListPlusOfConnectSpec            -> <cons>(ConnectSpec,ListStarOfConnectSpec)
+
+    ListStarOfCloseSpec              -> ListPlusOfCloseSpec
+    ListStarOfCloseSpec              -> <nil>()
+    ListStarOfCloseSpec              -> <conc>(ListStarOfCloseSpec,ListStarOfCloseSpec)
+    ListPlusOfCloseSpec              -> <conc>(ListStarOfCloseSpec,ListPlusOfCloseSpec)
+    ListPlusOfCloseSpec              -> <conc>(ListPlusOfCloseSpec,ListStarOfCloseSpec)
+    ListPlusOfCloseSpec              -> <conc>(ListPlusOfCloseSpec,ListPlusOfCloseSpec)
+    ListPlusOfCloseSpec              -> <cons>(CloseSpec,ListStarOfCloseSpec)
