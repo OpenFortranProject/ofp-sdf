@@ -610,6 +610,30 @@
    END                           -- "END="    _1,
    EOR                           -- "EOR="    _1,
 
+   OpenStmt                      -- H hs=1 [_1 H hs=0["OPEN"  "(" _2 ")"]],
+   OpenStmt.2:iter-sep           -- _1 ", ",
+
+   ACCESS                        -- "ACCESS="       _1,
+   ACTION                        -- "ACTION="       _1,
+   ASYNCHRONOUS                  -- "ASYNCHRONOUS=" _1,
+   BLANK                         -- "BLANK="        _1,
+   DECIMAL                       -- "DECIMAL="      _1,
+   DELIM                         -- "DELIM="        _1,
+   ENCODING                      -- "ENCODING="     _1,
+   FILE                          -- "FILE="         _1,
+   FORM                          -- "FORM="         _1,
+   NEWUNIT                       -- "NEWUNIT="      _1,
+   PAD                           -- "PAD="          _1,
+   POSITION                      -- "POSITION="     _1,
+   RECL                          -- "RECL="         _1,
+   ROUND                         -- "ROUND="        _1,
+   SIGN                          -- "SIGN="         _1,
+   STATUS                        -- "STATUS="       _1,
+   TEAM                          -- "TEAM="         _1,
+
+   CloseStmt                     -- H hs=1 [_1 H hs=0["CLOSE" "(" _2 ")"]],
+   CloseStmt.2:iter-sep          -- _1 ", ",
+
    #R910 --,
    ReadStmt                      -- H hs=1 [_1 H hs=0["READ" "("_2")" ", " _3]],
    ReadStmt.3:iter-sep           -- _1 ", ",
@@ -621,11 +645,10 @@
    PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
-   FMT                           -- "FMT=" _1,
-   DECIMAL                       -- "DECIMAL=" _1,
-   SIZE                          -- "SIZE=" _1,
+   FMT                           -- "FMT="     _1,
+   SIZE                          -- "SIZE="    _1,
    ADVANCE                       -- "ADVANCE=" _1,
-   REC                           -- "REC=" _1,
+   REC                           -- "REC="     _1,
 
    Format_STAR                   -- "*",
    Format                        -- _1,
@@ -664,14 +687,6 @@
    InquireStmt.2:iter-sep        -- _1 ", ",
    InquireLengthStmt             -- H hs=1 [_1 "INQUIRE" H hs=0["(" "IOLENGTH=" _2 ")"] H hs=0[_3]],
    InquireLengthStmt.3:iter-sep  -- _1 ", ",
-
-   #R931 --,
-   FILE                          -- KW ["FILE="] _1,
-   BLANK                         -- KW ["BLANK="] _1,
-   ENCODING                      -- KW ["ENCODING="] _1,
-   ACCESS                        -- KW ["ACCESS="] _1,
-   ACTION                        -- KW ["ACTION="] _1,
-   ASYNCHRONOUS                  -- KW ["ASYNCHRONOUS="] _1,
 
    #R1001 --,
    FormatStmt                    -- H hs=1[_1 H hs=0 ["FORMAT" "("_2")"]],
@@ -771,10 +786,10 @@
    ProcedureStmt                       -- H hs=1[_1 "PROCEDURE ::" H hs=0[_2]],
    ProcedureStmt.2:iter-sep            -- _1 ", ",
    ModuleProcedureStmt                 -- H hs=1[_1 "MODULE PROCEDURE ::" H hs=0[_2]],
-   ModuleProcedureStmt.2:iter-sep            -- _1 ", ",
+   ModuleProcedureStmt.2:iter-sep      -- _1 ", ",
 
    #R1207 --,
-   OfpGenericSpec                         -- _1,
+   OfpGenericSpec                      -- _1,
    ASSIGNMENT                          -- "ASSIGNMENT(=)",
    OPERATOR                            -- H hs=0[ "OPERATOR" "(" _1 ")" ],
 
