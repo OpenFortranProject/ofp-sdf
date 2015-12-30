@@ -11,12 +11,14 @@
    opt-list                      -- KW[", "] _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
-   CONCURRENT                    -- KW["CONCURRENT"],
-   Halo                          -- ", " KW["HALO"] "(" _1 ")",
-   HaloAlloc                     -- ", " KW["HALO"] "=" _1,
+   CONCURRENT                    -- "CONCURRENT",
+   Halo                          -- ", " "HALO" "(" _1 ")",
+   HaloAlloc                     -- ", " "HALO" "=" _1,
    HaloExplicitShapeSpec         -- _1 ":*:" _2,
    AssumedShape                  -- ":",
-   ConcurrentExecControl         -- " " KW["CONCURRENT"] _1 _2,
+   ConcurrentExecControl         -- " " "CONCURRENT" _1 _2,
+   ImageExecStmt                 -- H hs=1[_1 "CALL" H hs=0[_2 "("_3")"] _4 _5],
+   ImageExecStmt.3:iter-sep      -- _1 ",",
    ImageExecutionSelector        -- " [[" _1 "]]",
 
    CoAllocateStmt                -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5 _6]],
