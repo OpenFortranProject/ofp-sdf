@@ -64,7 +64,7 @@ sorts
 %% private sorts
 
   HaloStmt HaloSpec HaloAssumedShapeSpec HaloExplicitShapeSpec
-  ImageExecutionSelector
+  ImageExecutionSelector ImageExecStmt
 
 %% Rosebud syntax
 %% context-free rules
@@ -112,6 +112,16 @@ context-free syntax
                ImageExecutionSelector     -> LoopControl            {cons("ConcurrentExecControl")}
 
   "[" ImageSelector "]"                   -> ImageExecutionSelector {cons("ImageExecutionSelector")}
+
+%%R1220
+  CallStmt ImageExecutionSelector         -> ImageExecStmt           {cons("ImageExecStmt")}
+
+  OptLabel 'CALL' ProcedureDesignator
+                     NoActualArgSpecList
+                     ImageExecutionSelector       EOS -> CallStmt            {cons("ImageExecStmt")}
+  OptLabel 'CALL' ProcedureDesignator
+                  '(' {ActualArgSpec ','}* ')'
+                     ImageExecutionSelector       EOS -> CallStmt            {cons("ImageExecStmt")}
 
 %%1226
   "CONCURRENT"                            -> PrefixSpec             {cons("CONCURRENT")}

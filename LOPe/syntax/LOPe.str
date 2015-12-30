@@ -75,6 +75,8 @@ signature
     ProcedureDesignator             : DataRef * BindingName -> ProcedureDesignator
     ProcedureDesignator             : ProcedureName -> ProcedureDesignator
     no-list                         : NoActualArgSpecList
+    ImageExecStmt                   : OptLabel * ProcedureDesignator * List(ActualArgSpec) * ImageExecutionSelector * EOS -> CallStmt
+    ImageExecStmt                   : OptLabel * ProcedureDesignator * NoActualArgSpecList * ImageExecutionSelector * EOS -> CallStmt
     CallStmt                        : OptLabel * ProcedureDesignator * List(ActualArgSpec) * EOS -> CallStmt
     CallStmt                        : OptLabel * ProcedureDesignator * NoActualArgSpecList * EOS -> CallStmt
     FunctionReference               : ProcedureDesignator * List(ActualArgSpec) -> FunctionReference

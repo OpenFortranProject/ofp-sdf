@@ -2,6 +2,13 @@
 regular tree grammar
   start Program
   productions
+    ListStarOfActualArgSpec0          -> ListPlusOfActualArgSpec0
+    ListStarOfActualArgSpec0          -> <nil>()
+    ListStarOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListStarOfActualArgSpec0)
+    ListPlusOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListPlusOfActualArgSpec0)
+    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
+    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
+    ListPlusOfActualArgSpec0          -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
     ListStarOfHaloExplicitShapeSpec0  -> ListPlusOfHaloExplicitShapeSpec0
     ListStarOfHaloExplicitShapeSpec0  -> <nil>()
     ListStarOfHaloExplicitShapeSpec0  -> <conc>(ListStarOfHaloExplicitShapeSpec0,ListStarOfHaloExplicitShapeSpec0)
@@ -52,13 +59,6 @@ regular tree grammar
     ListPlusOfPrefixSpec0             -> <conc>(ListPlusOfPrefixSpec0,ListStarOfPrefixSpec0)
     ListPlusOfPrefixSpec0             -> <conc>(ListPlusOfPrefixSpec0,ListPlusOfPrefixSpec0)
     ListPlusOfPrefixSpec0             -> <cons>(PrefixSpec,ListStarOfPrefixSpec0)
-    ListStarOfActualArgSpec0          -> ListPlusOfActualArgSpec0
-    ListStarOfActualArgSpec0          -> <nil>()
-    ListStarOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListStarOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListPlusOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
     ListStarOfIntrinsicProcedureName0 -> ListPlusOfIntrinsicProcedureName0
     ListStarOfIntrinsicProcedureName0 -> <nil>()
     ListStarOfIntrinsicProcedureName0 -> <conc>(ListStarOfIntrinsicProcedureName0,ListStarOfIntrinsicProcedureName0)
@@ -779,6 +779,9 @@ regular tree grammar
     Expr                              -> Power(Expr,Expr)
     Expr                              -> DefUnaryExpr(DefinedUnaryOp,Expr)
     PrefixSpec                        -> CONCURRENT()
+    CallStmt                          -> ImageExecStmt(OptLabel,ProcedureDesignator,ListStarOfActualArgSpec0,ImageExecutionSelector,EOS)
+    CallStmt                          -> ImageExecStmt(OptLabel,ProcedureDesignator,NoActualArgSpecList,ImageExecutionSelector,EOS)
+    ImageExecStmt                     -> ImageExecStmt(CallStmt,ImageExecutionSelector)
     ImageExecutionSelector            -> ImageExecutionSelector(ImageSelector)
     LoopControl                       -> ConcurrentExecControl(ForallHeader,ImageExecutionSelector)
     AssignmentStmt                    -> CoAssignmentStmt(OptLabel,Variable,Expr,ImageExecutionSelector,EOS)
