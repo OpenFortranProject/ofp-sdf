@@ -42,7 +42,28 @@ rules //========================START OF RULES===============================
 // Local thread group size
 // TODO - make dependent on dim and device
 opencl-local-size =
-     ![IntVal("1"),IntVal("1"),IntVal("1")]
+     ![IntVal("16"),IntVal("8"),IntVal("1")]
+
+opencl-arg-shape(|st) =
+     ?PartRef(symbol,no-section-subscripts(),_)
+  ;  <hashtable-get(|symbol)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ;  <map(fast-dim-size)> shape
+ <+  ![1,1,1]
+
+opencl-rank(|st) =
+     ?args
+  ;  <map(opencl-arg-rank(|st))> args
+  ;  <foldr(!1,max)> <id>
+
+opencl-arg-rank(|st) =
+     ?PartRef(symbol,no-section-subscripts(),_)
+  ;  <hashtable-get(|symbol)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ; <length> shape
+ <+  !1
 
 // FAST strategies (MOVE TO fortran/trans)
 // ---------------
@@ -159,20 +180,31 @@ opencl-build-release-buffer(|st,device) =
 // Create an OpenCL kernel object via call to createKernel
 //TODO - check selector against device to ensure they refer to same image
 opencl-build-create-kernel(|ct,device) =
-{kernel_arg_funcs
-  :  ?obj
+     ?obj
   ;  <hashtable-get(|obj)> ct
   ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
-  ;  <lookup> ("args", annotations)
-  ;  <map(opencl-build-add-kernel-args(|ct,kernel))> <add-indices> <id>  => kernel_arg_funcs
   ;  !AssignmentStmt(no-label(),kernel
          , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]))
-  ;  <flatten-list> [<id>, kernel_arg_funcs]
+  ;  ![<id>]
+ <+  ![    ]
+
+// Create an OpenCL kernel object via call to createKernel
+//TODO - check selector against device to ensure they refer to same image
+opencl-build-set-kernel-args(|ct,device) =
+{kernel_arg_funcs
+  :  ?(obj,args)
+  ;  <hashtable-get(|obj)> ct
+  ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
+//  ;  <lookup> ("args", annotations)
+  ;  <map(opencl-build-set-kernel-arg(|ct,kernel))> <add-indices> args  => kernel_arg_funcs
+  ;  <flatten-list> [kernel_arg_funcs]
  <+  ![]
 }
 
 // Add an argument to an OpenCL kernel object via call to setKernelArg
-opencl-build-add-kernel-args(|ct,kernel) =
+//
+// TODO-FIXME: need to check procedure interface for argument type if arg is an expression
+opencl-build-set-kernel-arg(|ct,kernel) =
      ?(index, VarRef(arg))                                    // scalar variables
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("setKernelArg"
@@ -182,7 +214,12 @@ opencl-build-add-kernel-args(|ct,kernel) =
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("setKernelArg"
               ,[kernel,<subti>(index,1),<id>]))
- <+  ![]
+ <+  ?(index, expr)                                            // assume int scalar
+  ;  !AssignmentStmt(no-label(),VarDef("focl_intvar__"), expr)
+  ;  <concat> [[<id>],
+               [AssignmentStmt(no-label(),VarDef("cl_status__")
+                   , FunctionReference("setKernelArg"
+                       ,[kernel,<subti>(index,1),VarRef("focl_intvar__")]))] ]
 
 opencl-kernel-arg-type(|ct) =
      ?(cl_symbol, DerivedType("CLBuffer",_),_)
@@ -266,6 +303,12 @@ cafe-get-symbols(|st,ct) =
   ;  <map(fast-update-allocation-symbol(|st))> alloc_list
   ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
 
+// Mark CallStmts having an ImageExecutionSelector (ImageExecStmt)
+cafe-get-symbols(|st,ct) =
+     ?ImageExecStmt(label,name,args,image,eos)
+  ;  <cafe-get-stmt-symbol(|st,ct)> <id>
+  ;  !ImageExecStmt(label,name,args,image,eos)
+
 // Mark DO CONCURRENT loops having an ImageExecutionSelector
 cafe-get-symbols(|st,ct) =
      ?BlockDoConstruct(begin,stmts,end)
@@ -289,6 +332,14 @@ cafe-get-stmt-symbol(|st,ct) =
             , []){[("args",args)]})> ct
   ;  !CallStmt(label, name, args)
 
+// Add ImageExecStmt subroutine name to CAFe symbols
+cafe-get-stmt-symbol(|st,ct) =
+     ?ImageExecStmt(label,name,args,image,eos)
+  ;  <hashtable-put(|name,(<cl-wrap-name>name
+            , DerivedType("CLKernel",[])
+            , []){[("args",args)]})> ct
+  ;  !ImageExecStmt(label,name,args,image,eos)
+
 cafe-subimage =
      ?ImageExecutionSelector([VarRef(device)])
   ;  !device
@@ -297,17 +348,23 @@ cafe-subimage =
 // Add ForOpenCL calls to the AST
 // ------------------------------
 
+// Replace get_subimage call with ForOpenCl counterpart
+//  - also create kernel calls here
+//     - TODO: fix for multiple devices
 cafe-add-cl(|st,ct) =
      ?AssignmentStmt(label,VarDef(lhs),PartRef("get_subimage",[arg],_))
-  ;  !AssignmentStmt(label,VarDef(lhs),FunctionReference("get_subimage",
-                                      [arg,<cl-wrap-name>lhs]))
+  ;  <flatten-list> <map(opencl-build-create-kernel(|ct,lhs))> <hashtable-keys> ct
+  ;  <concat> [[AssignmentStmt(label,VarDef(lhs),FunctionReference("get_subimage",
+                                      [arg,<cl-wrap-name>lhs]))], <id>]
 
 // Add variables associated with ForOpenCL calls
-//    cl_status__, cl_size__, ch_ng__(3)
+//    focl_intvar__, cl_status__, cl_size__, ch_ng__(3)
 cafe-add-cl(|st,ct) =
      ?Scope(decls,execs,funcs)
   ;  <concat> [[<fast-build-use-stmt>"ForOpenCL"], decls]
   ;  <concat> [<id>, <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct]
+  ;  <concat> [<id>, [<fast-build-type-decl(|
+                          INTEGER(no-kind()),[])> "focl_intvar__"]]
   ;  <concat> [<id>, [<fast-build-type-decl(|
                           INTEGER(Kind(VarRef("cl_int"  ))),[])> "cl_status__"]]
   ;  <concat> [<id>, [<fast-build-type-decl(|
@@ -373,17 +430,34 @@ cafe-add-cl(|st,ct) =
             ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]))
       ]
 
-// Create OpenCL kernels and run them; replacing DO CONCURRENT loop
+// Add arguments to OpenCL kernels and run them; replacing DO CONCURRENT loop
 cafe-add-cl(|st,ct) =
 {device,triplets
   :  ?BlockDoConstruct(begin,stmts,end) {annotations}
   ;  <lookup> ("ImageExecutionSelector", annotations)  => device
   ;  <cafe-forall-triplet> begin                       => triplets
-  ;  <flatten-list>  <map(opencl-build-create-kernel(|ct,device))> <hashtable-keys> ct
+  ;  ![]
   ;  <concat> [<id>, <map(opencl-build-calc-global-offset)> <add-indices> triplets]
   ;  <concat> [<id>, <map(opencl-build-calc-global-size  )> <add-indices> triplets]
-  ;  <concat> [<id>, <map(opencl-replace-call-stmt(|triplets))> stmts]
-  ;  <concat> [<id>, <map(opencl-build-finish-kernel)> stmts]
+  ;  <concat> [<id>, <map(opencl-replace-call-stmt(|ct,triplets))> stmts]
+  ;  <concat> [<id>, <map(opencl-build-finish-kernel)> <map(fast-call-stmt-name)> stmts]
+  ;  <flatten-list> <id>
+}
+
+// Add arguments to OpenCL kernels and run them; replacing ImageExecStmts
+cafe-add-cl(|st,ct) =
+{device,rank
+  :  ?ImageExecStmt(label,name,args,image,eos)
+  ;  <cafe-subimage> image    => device
+  ;  <opencl-rank(|st)> args  => rank
+  ;  <flatten-list>  <opencl-build-set-kernel-args(|ct,device)> (name,args)
+  ;  <concat> [<id>, [<opencl-build-calc-global-offset-of-args(|st)> args]]
+  ;  <concat> [<id>, [<opencl-build-calc-global-size-of-args  (|st)> args]]
+  ;  <concat> [<id>,
+               [AssignmentStmt(label,VarDef("cl_status__")
+                  , FunctionReference("run",[<cl-wrap-name> name
+                    ,rank, VarRef("cl_gwo__"), VarRef("cl_gws__"), VarRef("cl_lws__")]))]]
+  ;  <concat> [<id>, [<opencl-build-finish-kernel> name]]
   ;  <flatten-list> <id>
 }
 
@@ -399,6 +473,13 @@ opencl-build-calc-global-offset =
   ;  !AssignmentStmt(no-label(),PartRef("cl_gwo__",[index],no-image-selector())
          , Minus(lb,1))
 
+// Build AssignmentStmt calculating global offset from an arg list
+// TODO - this may not be urgent as OpenCL standard may only allow 0 offset for now
+opencl-build-calc-global-offset-of-args(|st) =
+     ?args
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gwo__")
+        , ArrayConstructor(AcSpec(no-type-spec(),[IntVal("0"), IntVal("0"), IntVal("0")])))
+
 // Build AssignmentStmt calculating global size from a ForallHeader triplet
 // TODO - incorporate step information
 opencl-build-calc-global-size =
@@ -406,19 +487,41 @@ opencl-build-calc-global-size =
   ;  <fast-dim-size> Range(lb,ub)
   ;  !AssignmentStmt(no-label(),PartRef("cl_gws__",[index],no-image-selector()),<id>)
 
+// Build AssignmentStmts calculating global size from an arg list
+opencl-build-calc-global-size-of-args(|st) =
+     ?args
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gws__")
+        , ArrayConstructor(AcSpec(no-type-spec(),[IntVal("1"), IntVal("1"), IntVal("1")])))
+  ;  <concat> [[<id>], <map(opencl-build-calc-global-size-of-arg(|st))> args]
+
+// Build AssignmentStmt calculating global size from an arg
+opencl-build-calc-global-size-of-arg(|st) =
+     ?arg
+  ;  <opencl-arg-shape(|st)> arg
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gws__")
+        , FunctionReference("focl_global_size"
+            ,[<opencl-arg-rank(|st)>arg, "cl_lws__", "cl_gws__"
+               , ArrayConstructor(AcSpec(no-type-spec(),<id>))]))
+
 // Replace subroutine call with running the corresponding OpenCL kernel
-opencl-replace-call-stmt(|bounds) =
+opencl-replace-call-stmt(|ct,bounds) =
      ?CallStmt(label, name, args)
+  ;  <cl-wrap-name>name
+  ;  <flatten-list>  <opencl-build-set-kernel-args(|ct,"unknown-device")> (name,args)
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
                , FunctionReference("run",[<cl-wrap-name>name
                   , <length>bounds, VarRef("cl_gwo__"), VarRef("cl_gws__"), VarRef("cl_lws__")]))
 
 // Build the OpenCL kernel finish call
 opencl-build-finish-kernel =
-     ?CallStmt(label, name, args)
+     ?name
   ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
          , FunctionReference("clFinish",[<conc-strings>(<cl-wrap-name>name, "%commands")]))
 
+// Return the name of the call statement
+fast-call-stmt-name =
+     ?CallStmt(label, name, args)
+   ; !name
 
 // Lower CAF components to serial
 // ------------------------------
