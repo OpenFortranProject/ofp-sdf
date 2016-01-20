@@ -185,28 +185,28 @@ strategies
 
 rules
 
-  sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedTypeUnknown(),name)
+  sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedType("unknown"),name)
 
 //R201
 fast-to-sage:  Program(units)
                -> SgUntypedFile(SgUntypedGlobalScope("",FORTRAN_UNKNOWN(),
-                                                        SgUntypedDeclarationList([]),
+                                                        SgUntypedDeclarationStatementList([]),
                                                         SgUntypedStatementList([]),
                                                         SgUntypedFunctionDeclarationList(units)))
 
 //R404
-fast-to-sage:  INTEGER()                     -> SgUntypedTypeInt()
-fast-to-sage:  REAL()                        -> SgUntypedTypeFloat()
-fast-to-sage:  DOUBLEPRECISION()             -> SgUntypedTypeDouble()
-fast-to-sage:  LOGICAL()                     -> SgUntypedTypeBool()
+fast-to-sage:  INTEGER()                     -> SgUntypedType("integer")
+fast-to-sage:  REAL()                        -> SgUntypedType("real")
+fast-to-sage:  DOUBLEPRECISION()             -> SgUntypedType("doubleprecision")
+fast-to-sage:  LOGICAL()                     -> SgUntypedType("logical")
 
 //R407
 fast-to-sage:  IntVal(val)
-               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedTypeInt())
+               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedType("integer"))
 
 //R413
 fast-to-sage:  RealVal(val)
-               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedTypeFloat())
+               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedType("real"))
 
 
 //R501
@@ -318,10 +318,10 @@ fast-to-sage =
   ;  !SgUntypedBlockStatement(label,
                               FORTRAN_BLOCK(),
                               name,
-                              SgUntypedBlockScope(label,FORTRAN_BLOCK(),
-                                                        SgUntypedDeclarationList(l1),
-                                                        SgUntypedStatementList(l2),
-                                                        SgUntypedFunctionDeclarationList(l3)),
+                              SgUntypedScope(label,FORTRAN_BLOCK(),
+                                                   SgUntypedDeclarationStatementList(l1),
+                                                   SgUntypedStatementList(l2),
+                                                   SgUntypedFunctionDeclarationList(l3)),
                               end)
 }
 
@@ -357,9 +357,9 @@ fast-to-sage =
                                         FORTRAN_PROGRAM(),
                                         "",
                                         SgUntypedInitializedNameList([]),
-                                        SgUntypedTypeVoid(),
+                                        SgUntypedType("void"),
                                         SgUntypedFunctionScope("",FORTRAN_PROGRAM(),
-                                                               SgUntypedDeclarationList(l1),
+                                                               SgUntypedDeclarationStatementList(l1),
                                                                SgUntypedStatementList(l2),
                                                                SgUntypedFunctionDeclarationList(l3)),
                                         end)
@@ -368,9 +368,9 @@ fast-to-sage =
                                         FORTRAN_PROGRAM(),
                                         name,
                                         SgUntypedInitializedNameList([]),
-                                        SgUntypedTypeVoid(),
+                                        SgUntypedType("void"),
                                         SgUntypedFunctionScope(label,FORTRAN_PROGRAM(),
-                                                               SgUntypedDeclarationList(l1),
+                                                               SgUntypedDeclarationStatementList(l1),
                                                                SgUntypedStatementList(l2),
                                                                SgUntypedFunctionDeclarationList(l3)),
                                         end)
@@ -391,7 +391,7 @@ fast-to-sage =
                                  FORTRAN_MODULE(),
                                  name,
                                  SgUntypedModuleScope(label,FORTRAN_MODULE(),
-                                                      SgUntypedDeclarationList(l1),
+                                                      SgUntypedDeclarationStatementList(l1),
                                                       SgUntypedStatementList(l2),
                                                       SgUntypedFunctionDeclarationList(l3)),
                                  end)
@@ -414,9 +414,9 @@ fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,FORTRA
 //                                     FORTRAN_FUNCTION(),
 //                                     name,
 //                                     <map(sg-initialized-name)>args,
-//                                     SgUntypedTypeVoid(),
+//                                     SgUntypedType("void"),
 //                                     SgUntypedFunctionScope(label,FORTRAN_FUNCTION(),
-//                                                            SgUntypedDeclarationList(l1),
+//                                                            SgUntypedDeclarationStatementList(l1),
 //                                                            SgUntypedStatementList(l2),
 //                                                            SgUntypedFunctionDeclarationList(l3)),
 //                                     end)
@@ -430,9 +430,9 @@ fast-to-sage =
                                      FORTRAN_SUBROUTINE(),
                                      name,
                                      <map(sg-initialized-name)>args,
-                                     SgUntypedTypeVoid(),
+                                     SgUntypedType("void"),
                                      SgUntypedFunctionScope(label,FORTRAN_SUBROUTINE(),
-                                                            SgUntypedDeclarationList(l1),
+                                                            SgUntypedDeclarationStatementList(l1),
                                                             SgUntypedStatementList(l2),
                                                             SgUntypedFunctionDeclarationList(l3)),
                                      end)
