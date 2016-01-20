@@ -17,8 +17,7 @@ SgUntypedNode -> SgUntypedFile
 SgUntypedFile -> SgUntypedFile (SgUntypedGlobalScope)
 SgUntypedNode -> SgUntypedStatementList
 SgUntypedStatementList -> SgUntypedStatementList (ListStarOfSgUntypedStatement)
-SgUntypedNode -> SgUntypedDeclarationList
-SgUntypedDeclarationList -> SgUntypedDeclarationList (ListStarOfSgUntypedDeclarationStatement)
+
 SgUntypedNode -> SgUntypedFunctionDeclarationList
 SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration)
 SgUntypedNode -> SgUntypedInitializedNameList
@@ -62,17 +61,20 @@ SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>
 SgUntypedFunctionDeclaration -> SgUntypedSubroutineDeclaration
 SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
 SgUntypedScope -> SgUntypedFunctionScope
-SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
 SgUntypedScope -> SgUntypedModuleScope
-SgUntypedModuleScope -> SgUntypedModuleScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedModuleScope -> SgUntypedModuleScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
 SgUntypedScope -> SgUntypedGlobalScope
-SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
 SgUntypedType -> SgUntypedArrayType
 SgUntypedArrayType -> SgUntypedArrayType (<string>, SgUntypedExpression, bool, bool, bool, bool, bool, bool, SgUntypedExpression, <string>, bool)
-ListStarOfSgUntypedDeclaration -> <nil>()
-ListStarOfSgUntypedDeclaration -> <cons>(SgUntypedDeclaration,ListStarOfSgUntypedDeclaration)
+
+SgUntypedNode -> SgUntypedDeclarationStatementList
+SgUntypedDeclarationStatementList -> SgUntypedDeclarationStatementList (ListStarOfSgUntypedDeclarationStatement)
+
 ListStarOfSgUntypedDeclarationStatement -> <nil>()
 ListStarOfSgUntypedDeclarationStatement -> <cons>(SgUntypedDeclarationStatement,ListStarOfSgUntypedDeclarationStatement)
+
 ListStarOfSgUntypedFunctionDeclaration -> <nil>()
 ListStarOfSgUntypedFunctionDeclaration -> <cons>(SgUntypedFunctionDeclaration,ListStarOfSgUntypedFunctionDeclaration)
 ListStarOfSgUntypedInitializedName -> <nil>()
@@ -80,29 +82,10 @@ ListStarOfSgUntypedInitializedName -> <cons>(SgUntypedInitializedName,ListStarOf
 ListStarOfSgUntypedStatement -> <nil>()
 ListStarOfSgUntypedStatement -> <cons>(SgUntypedStatement,ListStarOfSgUntypedStatement)
 
-SgUntypedType             -> SgUntypedTypeVoid
-SgUntypedTypeVoid         -> SgUntypedTypeVoid()
 
-SgUntypedType             -> SgUntypedTypeUnknown
-SgUntypedTypeUnknown      -> SgUntypedTypeUnknown()
+SgUntypedScope -> SgUntypedScope(<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
 
-SgUntypedType             -> SgUntypedTypeInt
-SgUntypedTypeInt          -> SgUntypedTypeInt()
-
-SgUntypedType             -> SgUntypedTypeFloat
-SgUntypedTypeFloat        -> SgUntypedTypeFloat()
-
-SgUntypedType             -> SgUntypedTypeDouble
-SgUntypedTypeDouble       -> SgUntypedTypeDouble()
-
-SgUntypedType             -> SgUntypedTypeBool
-SgUntypedTypeBool         -> SgUntypedTypeBool()
-
-
-SgUntypedScope -> SgUntypedBlockScope
-SgUntypedBlockScope -> SgUntypedBlockScope(<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
-
-SgUntypedBlockStatement -> SgUntypedBlockStatement(<string>, <int>, <string>, SgUntypedBlockScope, SgUntypedNamedStatement)
+SgUntypedBlockStatement -> SgUntypedBlockStatement(<string>, <int>, <string>, SgUntypedScope, SgUntypedNamedStatement)
 
 SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
 
