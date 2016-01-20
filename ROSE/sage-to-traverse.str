@@ -69,6 +69,7 @@ signature
     NilTerm         : NilTerm
     ConsTerm        : ConsTerm
 
+    Bool            : Bool
 
 strategies
 
@@ -82,6 +83,7 @@ strategies
     ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
     ;  topdown(try(rtg-get-classes(|ct)))
     ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  innermost(nonterm-to-term)
     ;  innermost(nil-terms-to-pp)
     ;  innermost(ast-to-pp)
     ;  outermost(cleanup-pp(|ct))
@@ -101,10 +103,12 @@ strategies
   terminal-to-type() =
       ?"String"                       ; !"char*"
    <+ ?"Int"                          ; !"int"
+   <+ ?"Bool"                         ; !"int"
 
   terminal-to-term-type() =
       ?"String"                       ; !"<str>"
    <+ ?"Int"                          ; !"<int>"
+   <+ ?"Bool"                         ; !"<int>"
 
   arg-type() =
       ?TypeRef(Nonterm(name))         ; !TypePointer(name)
@@ -114,7 +118,6 @@ strategies
       ?TypeRef(Nonterm(name))         ; !"<term>"
    <+ ?TypeRef(terminal)              ; <terminal-to-term-type> <write-to-string> terminal
 
-
 // Build class inheritance table
 // -----------------------------
 
@@ -122,6 +125,11 @@ strategies
 ct-add-class(|ct,child) =
      ?class
   ;  <hashtable-pushunion(|class,[child])> ct
+
+// Rewrite what looks like nonterminals to terminals (e.g. bool will be matched as an <int>)
+nonterm-to-term() =
+     ?Ref(Nonterm("bool"))
+  ;  !Ref(Bool())
 
 rtg-get-classes(|ct) =
      ?ProdRule(Nonterm(parent), [Ref(Nonterm(child))])
