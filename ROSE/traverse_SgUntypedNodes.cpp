@@ -4,6 +4,10 @@
 // 3. Fix SgUntypedType and remove SgUntypedTypeFloat, ...
 // 4. Fix SgUntypedExpression
 // - SgUntypedType and SgUntypedExpression should be fixed in new grammar
+// IMPORTANT - LOST?? (maybe) SgUntypedFile and SgUntypedGlobalScope (maybe added by hand??)
+//
+
+#include "traverse_SgUntypedNodes.hpp"
 
 //========================================================================================
 // SgUntypedFile
@@ -772,6 +776,40 @@ ATbool traverse_SgUntypedModuleScope(ATerm term, SgUntypedModuleScope** var_SgUn
 }
 
 //========================================================================================
+// SgUntypedGlobalScope
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedGlobalScope(ATerm term, SgUntypedGlobalScope** var_SgUntypedGlobalScope)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedGlobalScope: %s\n", ATwriteToString(term));
+#endif
+
+  ATerm term3, term4, term5;
+  char* arg1;
+  int arg2;
+  SgUntypedDeclarationList* arg3;
+  SgUntypedStatementList* arg4;
+  SgUntypedFunctionDeclarationList* arg5;
+  
+  *var_SgUntypedGlobalScope = NULL;
+  if (ATmatch(term, "SgUntypedGlobalScope(<str>,<int>,<term>,<term>,<term>)", &arg1,&arg2,&term3,&term4,&term5)) {
+    if (traverse_SgUntypedDeclarationList(term3, &arg3)) {
+      // SgUntypedDeclarationList
+    } else return ATfalse;
+    if (traverse_SgUntypedStatementList(term4, &arg4)) {
+      // SgUntypedStatementList
+    } else return ATfalse;
+    if (traverse_SgUntypedFunctionDeclarationList(term5, &arg5)) {
+      // SgUntypedFunctionDeclarationList
+    } else return ATfalse;
+  } else return ATfalse;
+
+  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+
+  return ATtrue;
+}
+
+//========================================================================================
 // SgUntypedArrayType
 //----------------------------------------------------------------------------------------
 ATbool traverse_SgUntypedArrayType(ATerm term, SgUntypedArrayType** var_SgUntypedArrayType)
@@ -830,17 +868,17 @@ ATbool traverse_SgUntypedArrayType(ATerm term, SgUntypedArrayType** var_SgUntype
 }
 
 //========================================================================================
-// SgUntypedTypeVoid
+// SgUntypedType
 //----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeVoid(ATerm term, SgUntypedTypeVoid** var_SgUntypedTypeVoid)
+ATbool traverse_SgUntypedType(ATerm term, SgUntypedType** var_SgUntypedType)
 {
 #ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeVoid: %s\n", ATwriteToString(term));
+  printf("... traverse_SgUntypedType: %s\n", ATwriteToString(term));
 #endif
 
   
-  *var_SgUntypedTypeVoid = NULL;
-  if (ATmatch(term, "SgUntypedTypeVoid()", )) {
+  *var_SgUntypedType = NULL;
+  if (ATmatch(term, "SgUntypedType()", )) {
   } else return ATfalse;
 
   // turn on build functions (using BuildStmt) in sage-to-traverse.str
@@ -849,127 +887,17 @@ ATbool traverse_SgUntypedTypeVoid(ATerm term, SgUntypedTypeVoid** var_SgUntypedT
 }
 
 //========================================================================================
-// SgUntypedTypeUnknown
+// SgUntypedScope
 //----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeUnknown(ATerm term, SgUntypedTypeUnknown** var_SgUntypedTypeUnknown)
+ATbool traverse_SgUntypedScope(ATerm term, SgUntypedScope** var_SgUntypedScope)
 {
 #ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeUnknown: %s\n", ATwriteToString(term));
+  printf("... traverse_SgUntypedScope: %s\n", ATwriteToString(term));
 #endif
 
   
-  *var_SgUntypedTypeUnknown = NULL;
-  if (ATmatch(term, "SgUntypedTypeUnknown()", )) {
-  } else return ATfalse;
-
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
-
-  return ATtrue;
-}
-
-//========================================================================================
-// SgUntypedTypeInt
-//----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeInt(ATerm term, SgUntypedTypeInt** var_SgUntypedTypeInt)
-{
-#ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeInt: %s\n", ATwriteToString(term));
-#endif
-
-  
-  *var_SgUntypedTypeInt = NULL;
-  if (ATmatch(term, "SgUntypedTypeInt()", )) {
-  } else return ATfalse;
-
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
-
-  return ATtrue;
-}
-
-//========================================================================================
-// SgUntypedTypeFloat
-//----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeFloat(ATerm term, SgUntypedTypeFloat** var_SgUntypedTypeFloat)
-{
-#ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeFloat: %s\n", ATwriteToString(term));
-#endif
-
-  
-  *var_SgUntypedTypeFloat = NULL;
-  if (ATmatch(term, "SgUntypedTypeFloat()", )) {
-  } else return ATfalse;
-
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
-
-  return ATtrue;
-}
-
-//========================================================================================
-// SgUntypedTypeDouble
-//----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeDouble(ATerm term, SgUntypedTypeDouble** var_SgUntypedTypeDouble)
-{
-#ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeDouble: %s\n", ATwriteToString(term));
-#endif
-
-  
-  *var_SgUntypedTypeDouble = NULL;
-  if (ATmatch(term, "SgUntypedTypeDouble()", )) {
-  } else return ATfalse;
-
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
-
-  return ATtrue;
-}
-
-//========================================================================================
-// SgUntypedTypeBool
-//----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedTypeBool(ATerm term, SgUntypedTypeBool** var_SgUntypedTypeBool)
-{
-#ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedTypeBool: %s\n", ATwriteToString(term));
-#endif
-
-  
-  *var_SgUntypedTypeBool = NULL;
-  if (ATmatch(term, "SgUntypedTypeBool()", )) {
-  } else return ATfalse;
-
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
-
-  return ATtrue;
-}
-
-//========================================================================================
-// SgUntypedBlockScope
-//----------------------------------------------------------------------------------------
-ATbool traverse_SgUntypedBlockScope(ATerm term, SgUntypedBlockScope** var_SgUntypedBlockScope)
-{
-#ifdef DEBUG_PRINT
-  printf("... traverse_SgUntypedBlockScope: %s\n", ATwriteToString(term));
-#endif
-
-  ATerm term3, term4, term5;
-  char* arg1;
-  int arg2;
-  SgUntypedDeclarationList* arg3;
-  SgUntypedStatementList* arg4;
-  SgUntypedFunctionDeclarationList* arg5;
-  
-  *var_SgUntypedBlockScope = NULL;
-  if (ATmatch(term, "SgUntypedBlockScope(<str>,<int>,<term>,<term>,<term>)", &arg1,&arg2,&term3,&term4,&term5)) {
-    if (traverse_SgUntypedDeclarationList(term3, &arg3)) {
-      // SgUntypedDeclarationList
-    } else return ATfalse;
-    if (traverse_SgUntypedStatementList(term4, &arg4)) {
-      // SgUntypedStatementList
-    } else return ATfalse;
-    if (traverse_SgUntypedFunctionDeclarationList(term5, &arg5)) {
-      // SgUntypedFunctionDeclarationList
-    } else return ATfalse;
+  *var_SgUntypedScope = NULL;
+  if (ATmatch(term, "SgUntypedScope()", )) {
   } else return ATfalse;
 
   // turn on build functions (using BuildStmt) in sage-to-traverse.str
@@ -990,13 +918,13 @@ ATbool traverse_SgUntypedBlockStatement(ATerm term, SgUntypedBlockStatement** va
   char* arg1;
   int arg2;
   char* arg3;
-  SgUntypedBlockScope* arg4;
+  SgUntypedScope* arg4;
   SgUntypedNamedStatement* arg5;
   
   *var_SgUntypedBlockStatement = NULL;
   if (ATmatch(term, "SgUntypedBlockStatement(<str>,<int>,<str>,<term>,<term>)", &arg1,&arg2,&arg3,&term4,&term5)) {
-    if (traverse_SgUntypedBlockScope(term4, &arg4)) {
-      // SgUntypedBlockScope
+    if (traverse_SgUntypedScope(term4, &arg4)) {
+      // SgUntypedScope
     } else return ATfalse;
     if (traverse_SgUntypedNamedStatement(term5, &arg5)) {
       // SgUntypedNamedStatement

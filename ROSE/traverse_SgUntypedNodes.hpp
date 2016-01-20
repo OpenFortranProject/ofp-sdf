@@ -1,8 +1,8 @@
 #ifndef TRAVERSE_SG_UNTYPED_NODES_HPP
 #define TRAVERSE_SG_UNTYPED_NODES_HPP
 
+#include "rose.h"
 #include <aterm2.h>
-#include "SgUntypedNodes.hpp"
 
 
 ATbool traverse_SgLocatedNode(ATerm, SgLocatedNode**);
@@ -42,12 +42,5 @@ ATbool traverse_SgUntypedFunctionScope(ATerm, SgUntypedFunctionScope**);
 ATbool traverse_SgUntypedModuleScope(ATerm, SgUntypedModuleScope**);
 ATbool traverse_SgUntypedGlobalScope(ATerm, SgUntypedGlobalScope**);
 ATbool traverse_SgUntypedArrayType(ATerm, SgUntypedArrayType**);
-ATbool traverse_SgUntypedTypeVoid(ATerm, SgUntypedTypeVoid**);
-ATbool traverse_SgUntypedTypeUnknown(ATerm, SgUntypedTypeUnknown**);
-ATbool traverse_SgUntypedTypeInt(ATerm, SgUntypedTypeInt**);
-ATbool traverse_SgUntypedTypeFloat(ATerm, SgUntypedTypeFloat**);
-ATbool traverse_SgUntypedTypeDouble(ATerm, SgUntypedTypeDouble**);
-ATbool traverse_SgUntypedTypeBool(ATerm, SgUntypedTypeBool**);
-ATbool traverse_SgUntypedBlockScope(ATerm, SgUntypedBlockScope**);
 
 #endif // TRAVERSE_SG_UNTYPED_NODES_HPP
