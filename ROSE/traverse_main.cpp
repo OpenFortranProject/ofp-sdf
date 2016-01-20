@@ -12,7 +12,7 @@
 
 int main(int argc, char * argv[])
 {
-   sage::SgUntypedFile* SgUntypedFile;
+   SgUntypedFile* SgUntypedFile;
    ATerm SgUntypedFile_term;
 
    FILE * file = stdin;
@@ -48,8 +48,10 @@ int main(int argc, char * argv[])
    }
 
    if (SgUntypedFile != NULL) {
+#ifdef NO_NO_NO
       printf("..............\ntraverse_main: SgUntypedFile == %p  global scope ==%p\n\n",
              SgUntypedFile, SgUntypedFile->p_SgUntypedGlobalScope);
+#endif
    } else {
       printf("..............\ntraverse_main: SgUntypedFile == %p\n\n", SgUntypedFile);
    }
