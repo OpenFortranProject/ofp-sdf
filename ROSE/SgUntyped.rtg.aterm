@@ -8,25 +8,6 @@ RTG(
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatement"))])
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedType"))])
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedAttribute"))])
-    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFile"))])
-    , ProdRule(
-        Nonterm("SgUntypedFile")
-      , [Appl(Term("SgUntypedFile"), [Ref(Nonterm("SgUntypedGlobalScope"))])]
-      )
-    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedGlobalScope"))])
-    , ProdRule(
-        Nonterm("SgUntypedGlobalScope")
-      , [ Appl(
-            Term("SgUntypedGlobalScope")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationList"))
-            , Ref(Nonterm("SgUntypedStatementList"))
-            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
-            ]
-          )
-        ]
-      )
     , ProdRule(
         Nonterm("SgUntypedAttribute")
       , [Appl(Term("SgUntypedAttribute"), [Ref(Int()), Ref(String())])]
@@ -39,15 +20,15 @@ RTG(
          , [Ref(Nonterm("SgUntypedType")), Ref(String())]
          )]
       )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFile"))])
+    , ProdRule(
+        Nonterm("SgUntypedFile")
+      , [Appl(Term("SgUntypedFile"), [Ref(Nonterm("SgUntypedGlobalScope"))])]
+      )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatementList"))])
     , ProdRule(
         Nonterm("SgUntypedStatementList")
       , [Appl(Term("SgUntypedStatementList"), [Ref(Nonterm("ListStarOfSgUntypedStatement"))])]
-      )
-    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedDeclarationList"))])
-    , ProdRule(
-        Nonterm("SgUntypedDeclarationList")
-      , [Appl(Term("SgUntypedDeclarationList"), [Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))])]
       )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFunctionDeclarationList"))])
     , ProdRule(
@@ -197,7 +178,7 @@ RTG(
             Term("SgUntypedFunctionScope")
           , [ Ref(String())
             , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
             ]
@@ -211,7 +192,21 @@ RTG(
             Term("SgUntypedModuleScope")
           , [ Ref(String())
             , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedGlobalScope"))])
+    , ProdRule(
+        Nonterm("SgUntypedGlobalScope")
+      , [ Appl(
+            Term("SgUntypedGlobalScope")
+          , [ Ref(String())
+            , Ref(Int())
+            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
             ]
@@ -238,13 +233,10 @@ RTG(
           )
         ]
       )
-    , ProdRule(Nonterm("ListStarOfSgUntypedDeclaration"), [Appl(NilTerm(), [])])
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedDeclarationStatementList"))])
     , ProdRule(
-        Nonterm("ListStarOfSgUntypedDeclaration")
-      , [Appl(
-           ConsTerm()
-         , [Ref(Nonterm("SgUntypedDeclaration")), Ref(Nonterm("ListStarOfSgUntypedDeclaration"))]
-         )]
+        Nonterm("SgUntypedDeclarationStatementList")
+      , [Appl(Term("SgUntypedDeclarationStatementList"), [Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))])]
       )
     , ProdRule(Nonterm("ListStarOfSgUntypedDeclarationStatement"), [Appl(NilTerm(), [])])
     , ProdRule(
@@ -278,26 +270,13 @@ RTG(
          , [Ref(Nonterm("SgUntypedStatement")), Ref(Nonterm("ListStarOfSgUntypedStatement"))]
          )]
       )
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeVoid"))])
-    , ProdRule(Nonterm("SgUntypedTypeVoid"), [Appl(Term("SgUntypedTypeVoid"), [])])
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeUnknown"))])
-    , ProdRule(Nonterm("SgUntypedTypeUnknown"), [Appl(Term("SgUntypedTypeUnknown"), [])])
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeInt"))])
-    , ProdRule(Nonterm("SgUntypedTypeInt"), [Appl(Term("SgUntypedTypeInt"), [])])
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeFloat"))])
-    , ProdRule(Nonterm("SgUntypedTypeFloat"), [Appl(Term("SgUntypedTypeFloat"), [])])
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeDouble"))])
-    , ProdRule(Nonterm("SgUntypedTypeDouble"), [Appl(Term("SgUntypedTypeDouble"), [])])
-    , ProdRule(Nonterm("SgUntypedType"), [Ref(Nonterm("SgUntypedTypeBool"))])
-    , ProdRule(Nonterm("SgUntypedTypeBool"), [Appl(Term("SgUntypedTypeBool"), [])])
-    , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedBlockScope"))])
     , ProdRule(
-        Nonterm("SgUntypedBlockScope")
+        Nonterm("SgUntypedScope")
       , [ Appl(
-            Term("SgUntypedBlockScope")
+            Term("SgUntypedScope")
           , [ Ref(String())
             , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationList"))
+            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
             ]
@@ -311,7 +290,7 @@ RTG(
           , [ Ref(String())
             , Ref(Int())
             , Ref(String())
-            , Ref(Nonterm("SgUntypedBlockScope"))
+            , Ref(Nonterm("SgUntypedScope"))
             , Ref(Nonterm("SgUntypedNamedStatement"))
             ]
           )
