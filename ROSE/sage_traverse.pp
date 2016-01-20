@@ -1,5 +1,8 @@
 [
-   Traversals                          -- V [_1],
+   Traversals                          -- V [
+                                               "#include \"traverse_SgUntypedNodes.hpp\"\n"
+                                               _1
+                                            ],
 
    Traversal                           -- _1 
          "{"
@@ -11,7 +14,7 @@
          "//========================================================================================\n"
          "// " _1 "\n"
          "//----------------------------------------------------------------------------------------\n"
-         "ATbool traverse_" _1 "(ATerm term, sage::" _1 "** " _1 ")"
+         "ATbool traverse_" _1 "(ATerm term, " _1 "** var_" _1 ")"
                                                  ],
 
    Debug                              -- H hs=0 [
@@ -28,7 +31,7 @@
 
    MatchConstruct                      -- H hs=0
       [ 
-           "\n  *" _1 " = NULL;"
+           "\n  *var_" _1 " = NULL;"
            "\n  if (ATmatch(term, \"" _1 "(" _2 ")\", " _3 ")) {"
       ]
         _4 "} else return ATfalse;\n",
@@ -38,9 +41,9 @@
 
    MatchList                           -- H hs=0
       [ 
-           "\n  *" _1 " = NULL;"
+           "\n  *var_" _1 " = NULL;"
            "\n  if (ATmatch(term, \"" _1 "(" _2 ")\", " _3 ")) {"
-           "\n     sage::" _1 "* plist = new sage::" _1 "();"
+           "\n     " _1 "* plist = new " _1 "();"
            "\n"
            "\n     ATermList tail = (ATermList) ATmake(\"<term>\", term1);"
            "\n     while (! ATisEmpty(tail)) {"
@@ -50,7 +53,7 @@
         _4  H hs=0
       [
            "   }"
-           "\n     *" _1 " = plist;"
+           "\n     *var_" _1 " = plist;"
       ]
            "}\n  else return ATfalse;",
 
@@ -66,10 +69,10 @@
    ListArg                             -- H hs=0
       [
            "      {"
-           "\n           sage::" _1 "* arg;"
+           "\n           " _1 "* arg;"
            "\n           if (traverse_"_1 "(head, &arg)) {"
            "\n              // " _1
-           "\n              plist->push_back(arg);"
+           "\n              plist->get_" _2 "_list().push_back(arg);"
            "\n           }"
            "\n           else {"
            "\n              delete plist;"
@@ -100,7 +103,7 @@
 
    Term                                -- _1,
 
-   TypePointer                         -- H hs=0 ["sage::" _1 "*"],
+   TypePointer                         -- H hs=0 [_1 "*"],
 
    Address                             -- H hs=0 ["&" _1],
 
