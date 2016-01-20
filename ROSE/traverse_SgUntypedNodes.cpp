@@ -1,3 +1,10 @@
+//TODO
+// 1. sage:bool -> bool
+// 2. Turn build functions back on using BuildStmt in sage-to-traverse.str
+// 3. Fix SgUntypedType and remove SgUntypedTypeFloat, ...
+// 4. Fix SgUntypedExpression
+// - SgUntypedType and SgUntypedExpression should be fixed in new grammar
+
 //========================================================================================
 // SgUntypedFile
 //----------------------------------------------------------------------------------------
