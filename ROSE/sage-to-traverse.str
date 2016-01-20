@@ -40,7 +40,7 @@ signature
     TraverseArg     : Name * Term * Arg              -> TraverseArg
     TraverseArgs    : TraverseArgList                -> TraverseArgs
 
-    ListArg         : Name                           -> ListArg
+    ListArg         : Name * ListType                -> ListArg
     ListArgs        : ListArgList                    -> ListArgs
 
     BuildStmt       : Name * ArgList                 -> BuildStmt
@@ -198,16 +198,26 @@ rtg-get-classes(|ct) =
 
 rules
 
-list-arg =
-      !ListArg(<id>)
+list-arg-type() =
+      ?"SgUntypedStatement"
+   ;  !"stmt"
+  <+  ?"SgUntypedDeclarationStatement"
+   ;  !"decl"
+  <+  ?"SgUntypedFunctionDeclaration"
+   ;  !"func"
+  <+  ?"SgUntypedInitializedName"
+   ;  !"name"
+
+list-arg(|name) =
+      !ListArg(<id>, <list-arg-type> name)
 
 list-args(|ct) =
       ?name
    ;  <hashtable-get(|name)> ct
-   ;  !ListArgs(<map(list-arg)> <id>)
+   ;  !ListArgs(<map(list-arg(|name))> <id>)
  <+   ?name
    ;  ![name]
-   ;  !ListArgs(<map(list-arg)> <id>)
+   ;  !ListArgs(<map(list-arg(|name))> <id>)
 
 list-type =
       <back-split-at(|4)> <explode-string> <string-ends-with(|"List")> <id>
