@@ -44,8 +44,11 @@ sage-to-traverse : sage-to-traverse.str
 check : sage-to-traverse
 	sage-to-traverse -i SgUntyped.rtg.aterm | pp-aterm
 
-check-pp : sage-to-traverse
+check-pp : sage-to-traverse SgUntyped.rtg.aterm
 	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
+
+check-pp-header : sage-to-traverse SgUntyped.rtg.aterm
+	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse_header.pp
 
 check-traverse : sage2pp
 	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
