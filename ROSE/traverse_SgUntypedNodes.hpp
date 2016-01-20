@@ -15,7 +15,7 @@ ATbool traverse_SgUntypedAttribute(ATerm, SgUntypedAttribute**);
 ATbool traverse_SgUntypedInitializedName(ATerm, SgUntypedInitializedName**);
 ATbool traverse_SgUntypedFile(ATerm, SgUntypedFile**);
 ATbool traverse_SgUntypedStatementList(ATerm, SgUntypedStatementList**);
-ATbool traverse_SgUntypedDeclarationList(ATerm, SgUntypedDeclarationList**);
+ATbool traverse_SgUntypedDeclarationStatementList(ATerm, SgUntypedDeclarationStatementList**);
 ATbool traverse_SgUntypedFunctionDeclarationList(ATerm, SgUntypedFunctionDeclarationList**);
 ATbool traverse_SgUntypedInitializedNameList(ATerm, SgUntypedInitializedNameList**);
 ATbool traverse_SgUntypedUnaryOperator(ATerm, SgUntypedUnaryOperator**);
