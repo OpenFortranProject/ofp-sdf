@@ -1,10 +1,6 @@
 #ifndef TRAVERSE_SG_UNTYPED_NODES_HPP
 #define TRAVERSE_SG_UNTYPED_NODES_HPP
 
-#include "rose.h"
-#include <aterm2.h>
-
-
 ATbool traverse_SgLocatedNode(ATerm, SgLocatedNode**);
 ATbool traverse_SgLocatedNodeSupport(ATerm, SgLocatedNodeSupport**);
 ATbool traverse_SgUntypedNode(ATerm, SgUntypedNode**);
