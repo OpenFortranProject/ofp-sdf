@@ -1,9 +1,10 @@
 //TODO
 // 1. sage:bool -> bool (DONE)
-// 2. Turn build functions back on using BuildStmt in sage-to-traverse.str
-// 3. Fix SgUntypedType and remove SgUntypedTypeFloat, ...  (sort of DONE)
+// 2. Turn build functions back on using BuildStmt in sage-to-traverse.str (DONE)
+// 3. Fix SgUntypedType and remove SgUntypedTypeFloat, ...  (DONE)
 // 4. Fix SgUntypedExpression
-// - SgUntypedType and SgUntypedExpression should be fixed in new grammar
+// 5. SgUntypedFunctionDeclaration, SgUntypedDeclarationStatement, SgUntypedExpression
+// - It's basically the base classes that need fixin
 
 #include "traverse_SgUntypedNodes.hpp"
 
