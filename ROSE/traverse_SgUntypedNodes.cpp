@@ -14,6 +14,48 @@
 #include "traverse_SgUntypedNodes.hpp"
 #include "build_SgUntypedNodes.hpp"
 
+//FIXME --------------------------------------
+// Must add by hand the three following
+//
+
+//========================================================================================
+// SgUntypedFunctionDeclaration
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedFunctionDeclaration(ATerm term, SgUntypedFunctionDeclaration** var_SgUntypedFunctionDeclaration)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedFunctionDeclaration: %s\n", ATwriteToString(term));
+#endif
+
+  return ATtrue;
+}
+
+//========================================================================================
+// SgUntypedDeclarationStatement
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedDeclarationStatement(ATerm term, SgUntypedDeclarationStatement** var_SgUntypedDeclarationStatement)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedDeclarationStatement: %s\n", ATwriteToString(term));
+#endif
+
+  return ATtrue;
+}
+
+//========================================================================================
+// SgUntypedExpression
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedExpression(ATerm term, SgUntypedExpression** var_SgUntypedExpression)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedExpression: %s\n", ATwriteToString(term));
+#endif
+
+  return ATtrue;
+}
+
+//FIXME END  ---------------------------------
+
 //========================================================================================
 // SgUntypedAttribute
 //----------------------------------------------------------------------------------------
