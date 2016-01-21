@@ -265,7 +265,7 @@ ast-to-pp =
                   , ArgDecls (<arg-decl-list (|"1",[])> args)
                   , MatchConstruct(name,term_types,<map(address-of)>arg_names,
                                    TraverseArgs(<traverse-arg-list(|"1",[])> args))
-                  , no-build() // BuildStmt(name,<builder-arg-list (|"1",[])> args)
+                  , BuildStmt(name,<builder-arg-list (|"1",[])> args)
                 )
 }
 
