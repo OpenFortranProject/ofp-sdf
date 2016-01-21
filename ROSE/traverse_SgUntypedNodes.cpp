@@ -12,7 +12,7 @@
 #include "aterm2.h"
 
 #include "traverse_SgUntypedNodes.hpp"
-#include "build_traverse_SgUntypedNodes.hpp"
+#include "build_SgUntypedNodes.hpp"
 
 //========================================================================================
 // SgUntypedAttribute
