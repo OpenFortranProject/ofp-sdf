@@ -317,6 +317,10 @@ RTG(
           )
         ]
       )
+    , ProdRule(
+        Nonterm("SgUntypedType")
+      , [Appl(Term("SgUntypedType"), [Ref(String())])]
+      )
     ]
   )
 )
