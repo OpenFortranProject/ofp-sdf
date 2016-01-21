@@ -1,13 +1,13 @@
 [
    Traversals                          -- V [
-                                               "#include \"build_SgUntypedNodes.hpp\"\n"
+                                               "#include \"build_SgUntypedNodes.hpp\""
+                                               "#include \"rose_build_SgUntypedNodes.hpp\"\n"
                                                _1
                                             ],
 
    Traversal                           -- _1 
          "{"
                                           V is=2 [_2 _3 _4 _5 _6]
-         "  return NULL;"
          "}\n",
 
    FunDecl                             -- H hs=0 [
@@ -85,7 +85,7 @@
            "\n        }"
       ],
 
-   BuildStmt                           -- H hs=0 ["*"_1 " = build_" _1 "("_2 ");"],
+   BuildStmt                           -- H hs=0 ["return rose_build_" _1 "("_2 ");"],
    BuildStmt.2:iter-sep                -- _1 ",",
    no-build                            -- H hs=0 ["printf(\"build_" _1 "() needs implementation\");\n"],
 
