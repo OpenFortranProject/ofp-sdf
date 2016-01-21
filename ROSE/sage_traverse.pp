@@ -1,6 +1,10 @@
 [
    Traversals                          -- V [
-                                               "#include \"traverse_SgUntypedNodes.hpp\"\n"
+                                               "#include \"rosePublicConfig.h\""
+                                               "#include \"sage3basic.h\"\n"
+                                               "#include \"aterm2.h\"\n"
+                                               "#include \"traverse_SgUntypedNodes.hpp\""
+                                               "#include \"build_traverse_SgUntypedNodes.hpp\"\n"
                                                _1
                                             ],
 
