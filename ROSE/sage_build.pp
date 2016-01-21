@@ -1,7 +1,6 @@
 [
    Traversals                          -- V [
                                                "#include \"build_SgUntypedNodes.hpp\""
-                                               "#include \"rose_build_SgUntypedNodes.hpp\"\n"
                                                _1
                                             ],
 
@@ -85,10 +84,8 @@
            "\n        }"
       ],
 
-   BuildStmt                           -- H hs=0 ["return rose_build_" _1 "("_2 ");"],
-   BuildStmt.2:iter-sep                -- _1 ",",
+   BuildStmt                           -- H hs=0 ["return new " _1 "();"],
    no-build                            -- H hs=0 ["printf(\"build_" _1 "() needs implementation\");\n"],
-
 
    TypeRef                             -- _1,
 
