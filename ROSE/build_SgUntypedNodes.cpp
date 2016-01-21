@@ -1,3 +1,6 @@
+#include "rosePublicConfig.h"
+#include "sage3basic.h"
+
 #include "build_SgUntypedNodes.hpp"
 //========================================================================================
 // SgUntypedAttribute
@@ -8,7 +11,7 @@ SgUntypedAttribute* build_SgUntypedAttribute(int arg1, char* arg2)
   printf("... build_SgUntypedAttribute()");
 #endif
 
-  printf("build_SgUntypedAttribute() needs implementation");
+  printf("build_SgUntypedAttribute() needs implementation\n");
   return NULL;
 }
 
@@ -21,7 +24,7 @@ SgUntypedInitializedName* build_SgUntypedInitializedName(SgUntypedType* arg1, ch
   printf("... build_SgUntypedInitializedName()");
 #endif
 
-  printf("build_SgUntypedInitializedName() needs implementation");
+  printf("build_SgUntypedInitializedName() needs implementation\n");
   return NULL;
 }
 
@@ -34,7 +37,7 @@ SgUntypedFile* build_SgUntypedFile(SgUntypedGlobalScope* arg1)
   printf("... build_SgUntypedFile()");
 #endif
 
-  printf("build_SgUntypedFile() needs implementation");
+  printf("build_SgUntypedFile() needs implementation\n");
   return NULL;
 }
 
@@ -47,7 +50,7 @@ SgUntypedStatementList* build_SgUntypedStatementList()
   printf("... build_SgUntypedStatementList()");
 #endif
 
-  printf("build_SgUntypedStatementList() needs implementation");
+  printf("build_SgUntypedStatementList() needs implementation\n");
   return NULL;
 }
 
@@ -60,7 +63,7 @@ SgUntypedFunctionDeclarationList* build_SgUntypedFunctionDeclarationList()
   printf("... build_SgUntypedFunctionDeclarationList()");
 #endif
 
-  printf("build_SgUntypedFunctionDeclarationList() needs implementation");
+  printf("build_SgUntypedFunctionDeclarationList() needs implementation\n");
   return NULL;
 }
 
@@ -73,7 +76,7 @@ SgUntypedInitializedNameList* build_SgUntypedInitializedNameList()
   printf("... build_SgUntypedInitializedNameList()");
 #endif
 
-  printf("build_SgUntypedInitializedNameList() needs implementation");
+  printf("build_SgUntypedInitializedNameList() needs implementation\n");
   return NULL;
 }
 
@@ -86,7 +89,7 @@ SgUntypedValueExpression* build_SgUntypedValueExpression(int arg1, char* arg2, S
   printf("... build_SgUntypedValueExpression()");
 #endif
 
-  printf("build_SgUntypedValueExpression() needs implementation");
+  printf("build_SgUntypedValueExpression() needs implementation\n");
   return NULL;
 }
 
@@ -99,7 +102,7 @@ SgUntypedArrayReferenceExpression* build_SgUntypedArrayReferenceExpression(int a
   printf("... build_SgUntypedArrayReferenceExpression()");
 #endif
 
-  printf("build_SgUntypedArrayReferenceExpression() needs implementation");
+  printf("build_SgUntypedArrayReferenceExpression() needs implementation\n");
   return NULL;
 }
 
@@ -112,7 +115,7 @@ SgUntypedOtherExpression* build_SgUntypedOtherExpression(int arg1)
   printf("... build_SgUntypedOtherExpression()");
 #endif
 
-  printf("build_SgUntypedOtherExpression() needs implementation");
+  printf("build_SgUntypedOtherExpression() needs implementation\n");
   return NULL;
 }
 
@@ -125,7 +128,7 @@ SgUntypedFunctionCallOrArrayReferenceExpression* build_SgUntypedFunctionCallOrAr
   printf("... build_SgUntypedFunctionCallOrArrayReferenceExpression()");
 #endif
 
-  printf("build_SgUntypedFunctionCallOrArrayReferenceExpression() needs implementation");
+  printf("build_SgUntypedFunctionCallOrArrayReferenceExpression() needs implementation\n");
   return NULL;
 }
 
@@ -138,7 +141,7 @@ SgUntypedReferenceExpression* build_SgUntypedReferenceExpression(int arg1, char*
   printf("... build_SgUntypedReferenceExpression()");
 #endif
 
-  printf("build_SgUntypedReferenceExpression() needs implementation");
+  printf("build_SgUntypedReferenceExpression() needs implementation\n");
   return NULL;
 }
 
@@ -151,7 +154,7 @@ SgUntypedAssignmentStatement* build_SgUntypedAssignmentStatement(char* arg1, int
   printf("... build_SgUntypedAssignmentStatement()");
 #endif
 
-  printf("build_SgUntypedAssignmentStatement() needs implementation");
+  printf("build_SgUntypedAssignmentStatement() needs implementation\n");
   return NULL;
 }
 
@@ -164,7 +167,7 @@ SgUntypedFunctionCallStatement* build_SgUntypedFunctionCallStatement(char* arg1,
   printf("... build_SgUntypedFunctionCallStatement()");
 #endif
 
-  printf("build_SgUntypedFunctionCallStatement() needs implementation");
+  printf("build_SgUntypedFunctionCallStatement() needs implementation\n");
   return NULL;
 }
 
@@ -177,7 +180,7 @@ SgUntypedNamedStatement* build_SgUntypedNamedStatement(char* arg1, int arg2, cha
   printf("... build_SgUntypedNamedStatement()");
 #endif
 
-  printf("build_SgUntypedNamedStatement() needs implementation");
+  printf("build_SgUntypedNamedStatement() needs implementation\n");
   return NULL;
 }
 
@@ -190,7 +193,7 @@ SgUntypedOtherStatement* build_SgUntypedOtherStatement(char* arg1, int arg2)
   printf("... build_SgUntypedOtherStatement()");
 #endif
 
-  printf("build_SgUntypedOtherStatement() needs implementation");
+  printf("build_SgUntypedOtherStatement() needs implementation\n");
   return NULL;
 }
 
@@ -203,7 +206,7 @@ SgUntypedImplicitDeclaration* build_SgUntypedImplicitDeclaration(char* arg1, int
   printf("... build_SgUntypedImplicitDeclaration()");
 #endif
 
-  printf("build_SgUntypedImplicitDeclaration() needs implementation");
+  printf("build_SgUntypedImplicitDeclaration() needs implementation\n");
   return NULL;
 }
 
@@ -216,7 +219,7 @@ SgUntypedVariableDeclaration* build_SgUntypedVariableDeclaration(char* arg1, int
   printf("... build_SgUntypedVariableDeclaration()");
 #endif
 
-  printf("build_SgUntypedVariableDeclaration() needs implementation");
+  printf("build_SgUntypedVariableDeclaration() needs implementation\n");
   return NULL;
 }
 
@@ -229,7 +232,7 @@ SgUntypedModuleDeclaration* build_SgUntypedModuleDeclaration(char* arg1, int arg
   printf("... build_SgUntypedModuleDeclaration()");
 #endif
 
-  printf("build_SgUntypedModuleDeclaration() needs implementation");
+  printf("build_SgUntypedModuleDeclaration() needs implementation\n");
   return NULL;
 }
 
@@ -242,7 +245,7 @@ SgUntypedProgramHeaderDeclaration* build_SgUntypedProgramHeaderDeclaration(char*
   printf("... build_SgUntypedProgramHeaderDeclaration()");
 #endif
 
-  printf("build_SgUntypedProgramHeaderDeclaration() needs implementation");
+  printf("build_SgUntypedProgramHeaderDeclaration() needs implementation\n");
   return NULL;
 }
 
@@ -255,7 +258,7 @@ SgUntypedSubroutineDeclaration* build_SgUntypedSubroutineDeclaration(char* arg1,
   printf("... build_SgUntypedSubroutineDeclaration()");
 #endif
 
-  printf("build_SgUntypedSubroutineDeclaration() needs implementation");
+  printf("build_SgUntypedSubroutineDeclaration() needs implementation\n");
   return NULL;
 }
 
@@ -268,7 +271,7 @@ SgUntypedFunctionScope* build_SgUntypedFunctionScope(char* arg1, int arg2, SgUnt
   printf("... build_SgUntypedFunctionScope()");
 #endif
 
-  printf("build_SgUntypedFunctionScope() needs implementation");
+  printf("build_SgUntypedFunctionScope() needs implementation\n");
   return NULL;
 }
 
@@ -281,7 +284,7 @@ SgUntypedModuleScope* build_SgUntypedModuleScope(char* arg1, int arg2, SgUntyped
   printf("... build_SgUntypedModuleScope()");
 #endif
 
-  printf("build_SgUntypedModuleScope() needs implementation");
+  printf("build_SgUntypedModuleScope() needs implementation\n");
   return NULL;
 }
 
@@ -294,7 +297,7 @@ SgUntypedGlobalScope* build_SgUntypedGlobalScope(char* arg1, int arg2, SgUntyped
   printf("... build_SgUntypedGlobalScope()");
 #endif
 
-  printf("build_SgUntypedGlobalScope() needs implementation");
+  printf("build_SgUntypedGlobalScope() needs implementation\n");
   return NULL;
 }
 
@@ -307,7 +310,7 @@ SgUntypedArrayType* build_SgUntypedArrayType(char* arg1, SgUntypedExpression* ar
   printf("... build_SgUntypedArrayType()");
 #endif
 
-  printf("build_SgUntypedArrayType() needs implementation");
+  printf("build_SgUntypedArrayType() needs implementation\n");
   return NULL;
 }
 
@@ -320,7 +323,7 @@ SgUntypedDeclarationStatementList* build_SgUntypedDeclarationStatementList()
   printf("... build_SgUntypedDeclarationStatementList()");
 #endif
 
-  printf("build_SgUntypedDeclarationStatementList() needs implementation");
+  printf("build_SgUntypedDeclarationStatementList() needs implementation\n");
   return NULL;
 }
 
@@ -333,7 +336,7 @@ SgUntypedScope* build_SgUntypedScope(char* arg1, int arg2, SgUntypedDeclarationS
   printf("... build_SgUntypedScope()");
 #endif
 
-  printf("build_SgUntypedScope() needs implementation");
+  printf("build_SgUntypedScope() needs implementation\n");
   return NULL;
 }
 
@@ -346,7 +349,7 @@ SgUntypedBlockStatement* build_SgUntypedBlockStatement(char* arg1, int arg2, cha
   printf("... build_SgUntypedBlockStatement()");
 #endif
 
-  printf("build_SgUntypedBlockStatement() needs implementation");
+  printf("build_SgUntypedBlockStatement() needs implementation\n");
   return NULL;
 }
 
@@ -359,7 +362,7 @@ SgUntypedUnaryOperator* build_SgUntypedUnaryOperator(int arg1, int arg2, char* a
   printf("... build_SgUntypedUnaryOperator()");
 #endif
 
-  printf("build_SgUntypedUnaryOperator() needs implementation");
+  printf("build_SgUntypedUnaryOperator() needs implementation\n");
   return NULL;
 }
 
@@ -372,7 +375,7 @@ SgUntypedBinaryOperator* build_SgUntypedBinaryOperator(int arg1, int arg2, char*
   printf("... build_SgUntypedBinaryOperator()");
 #endif
 
-  printf("build_SgUntypedBinaryOperator() needs implementation");
+  printf("build_SgUntypedBinaryOperator() needs implementation\n");
   return NULL;
 }
 
@@ -385,7 +388,7 @@ SgUntypedType* build_SgUntypedType(char* arg1)
   printf("... build_SgUntypedType()");
 #endif
 
-  printf("build_SgUntypedType() needs implementation");
+  printf("build_SgUntypedType() needs implementation\n");
   return NULL;
 }
 

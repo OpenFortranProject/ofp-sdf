@@ -1,5 +1,8 @@
 [
    Traversals                          -- V [
+                                               "#include \"rosePublicConfig.h\""
+                                               "#include \"sage3basic.h\"\n"
+
                                                "#include \"build_SgUntypedNodes.hpp\""
                                                _1
                                             ],
@@ -85,7 +88,7 @@
       ],
 
    BuildStmt                           -- H hs=0 ["return new " _1 "();"],
-   no-build                            -- H hs=0 ["printf(\"build_" _1 "() needs implementation\");\n"],
+   no-build                            -- H hs=0 ["printf(\"build_" _1 "() needs implementation\\n\");\n  return NULL;"],
 
    TypeRef                             -- _1,
 
