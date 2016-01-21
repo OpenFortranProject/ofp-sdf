@@ -90,3 +90,5 @@ SgUntypedBlockStatement -> SgUntypedBlockStatement(<string>, <int>, <string>, Sg
 SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
 
 SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, <int>, <string>, SgUntypedExpression, SgUntypedExpression)
+
+SgUntypedType -> SgUntypedType(<string>)
