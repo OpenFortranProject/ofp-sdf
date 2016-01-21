@@ -47,7 +47,7 @@ signature
     ListArg         : Name * ListType                -> ListArg
     ListArgs        : ListArgList                    -> ListArgs
 
-    BuildStmt       : Name * ArgList                 -> BuildStmt
+    BuildStmt       : Name                           -> BuildStmt
     no-build        : Name                           -> no-build
 
     ClassDecl       : Name                           -> ClassDecl
@@ -268,7 +268,7 @@ ast-to-pp =
                   , no-terms()
                   , no-args()
                   , no-match()
-                  , BuildStmt(name,<builder-arg-list (|"1",[])> args)
+                  , BuildStmt(name)
                 )
 }
 
