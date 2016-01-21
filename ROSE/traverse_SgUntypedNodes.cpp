@@ -24,7 +24,7 @@ ATbool traverse_SgUntypedAttribute(ATerm term, SgUntypedAttribute** var_SgUntype
   if (ATmatch(term, "SgUntypedAttribute(<int>,<str>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedAttribute = build_SgUntypedAttribute(arg1,arg2);
 
   return ATtrue;
 }
@@ -49,7 +49,7 @@ ATbool traverse_SgUntypedInitializedName(ATerm term, SgUntypedInitializedName** 
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedInitializedName = build_SgUntypedInitializedName(arg1,arg2);
 
   return ATtrue;
 }
@@ -73,7 +73,7 @@ ATbool traverse_SgUntypedFile(ATerm term, SgUntypedFile** var_SgUntypedFile)
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedFile = build_SgUntypedFile(arg1);
 
   return ATtrue;
 }
@@ -293,7 +293,7 @@ ATbool traverse_SgUntypedValueExpression(ATerm term, SgUntypedValueExpression** 
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedValueExpression = build_SgUntypedValueExpression(arg1,arg2,arg3);
 
   return ATtrue;
 }
@@ -313,7 +313,7 @@ ATbool traverse_SgUntypedArrayReferenceExpression(ATerm term, SgUntypedArrayRefe
   if (ATmatch(term, "SgUntypedArrayReferenceExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedArrayReferenceExpression = build_SgUntypedArrayReferenceExpression(arg1);
 
   return ATtrue;
 }
@@ -333,7 +333,7 @@ ATbool traverse_SgUntypedOtherExpression(ATerm term, SgUntypedOtherExpression** 
   if (ATmatch(term, "SgUntypedOtherExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedOtherExpression = build_SgUntypedOtherExpression(arg1);
 
   return ATtrue;
 }
@@ -353,7 +353,7 @@ ATbool traverse_SgUntypedFunctionCallOrArrayReferenceExpression(ATerm term, SgUn
   if (ATmatch(term, "SgUntypedFunctionCallOrArrayReferenceExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedFunctionCallOrArrayReferenceExpression = build_SgUntypedFunctionCallOrArrayReferenceExpression(arg1);
 
   return ATtrue;
 }
@@ -374,7 +374,7 @@ ATbool traverse_SgUntypedReferenceExpression(ATerm term, SgUntypedReferenceExpre
   if (ATmatch(term, "SgUntypedReferenceExpression(<int>,<str>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedReferenceExpression = build_SgUntypedReferenceExpression(arg1,arg2);
 
   return ATtrue;
 }
@@ -404,7 +404,7 @@ ATbool traverse_SgUntypedAssignmentStatement(ATerm term, SgUntypedAssignmentStat
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedAssignmentStatement = build_SgUntypedAssignmentStatement(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -425,7 +425,7 @@ ATbool traverse_SgUntypedFunctionCallStatement(ATerm term, SgUntypedFunctionCall
   if (ATmatch(term, "SgUntypedFunctionCallStatement(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedFunctionCallStatement = build_SgUntypedFunctionCallStatement(arg1,arg2);
 
   return ATtrue;
 }
@@ -447,7 +447,7 @@ ATbool traverse_SgUntypedNamedStatement(ATerm term, SgUntypedNamedStatement** va
   if (ATmatch(term, "SgUntypedNamedStatement(<str>,<int>,<str>)", &arg1,&arg2,&arg3)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedNamedStatement = build_SgUntypedNamedStatement(arg1,arg2,arg3);
 
   return ATtrue;
 }
@@ -468,7 +468,7 @@ ATbool traverse_SgUntypedOtherStatement(ATerm term, SgUntypedOtherStatement** va
   if (ATmatch(term, "SgUntypedOtherStatement(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedOtherStatement = build_SgUntypedOtherStatement(arg1,arg2);
 
   return ATtrue;
 }
@@ -489,7 +489,7 @@ ATbool traverse_SgUntypedImplicitDeclaration(ATerm term, SgUntypedImplicitDeclar
   if (ATmatch(term, "SgUntypedImplicitDeclaration(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedImplicitDeclaration = build_SgUntypedImplicitDeclaration(arg1,arg2);
 
   return ATtrue;
 }
@@ -519,7 +519,7 @@ ATbool traverse_SgUntypedVariableDeclaration(ATerm term, SgUntypedVariableDeclar
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedVariableDeclaration = build_SgUntypedVariableDeclaration(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -550,7 +550,7 @@ ATbool traverse_SgUntypedModuleDeclaration(ATerm term, SgUntypedModuleDeclaratio
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedModuleDeclaration = build_SgUntypedModuleDeclaration(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -589,7 +589,7 @@ ATbool traverse_SgUntypedProgramHeaderDeclaration(ATerm term, SgUntypedProgramHe
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedProgramHeaderDeclaration = build_SgUntypedProgramHeaderDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
 
   return ATtrue;
 }
@@ -628,7 +628,7 @@ ATbool traverse_SgUntypedSubroutineDeclaration(ATerm term, SgUntypedSubroutineDe
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedSubroutineDeclaration = build_SgUntypedSubroutineDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
 
   return ATtrue;
 }
@@ -662,7 +662,7 @@ ATbool traverse_SgUntypedFunctionScope(ATerm term, SgUntypedFunctionScope** var_
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedFunctionScope = build_SgUntypedFunctionScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -696,7 +696,7 @@ ATbool traverse_SgUntypedModuleScope(ATerm term, SgUntypedModuleScope** var_SgUn
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedModuleScope = build_SgUntypedModuleScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -730,7 +730,7 @@ ATbool traverse_SgUntypedGlobalScope(ATerm term, SgUntypedGlobalScope** var_SgUn
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedGlobalScope = build_SgUntypedGlobalScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -767,7 +767,7 @@ ATbool traverse_SgUntypedArrayType(ATerm term, SgUntypedArrayType** var_SgUntype
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedArrayType = build_SgUntypedArrayType(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
 
   return ATtrue;
 }
@@ -873,7 +873,7 @@ ATbool traverse_SgUntypedScope(ATerm term, SgUntypedScope** var_SgUntypedScope)
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedScope = build_SgUntypedScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -904,7 +904,7 @@ ATbool traverse_SgUntypedBlockStatement(ATerm term, SgUntypedBlockStatement** va
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedBlockStatement = build_SgUntypedBlockStatement(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -931,7 +931,7 @@ ATbool traverse_SgUntypedUnaryOperator(ATerm term, SgUntypedUnaryOperator** var_
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedUnaryOperator = build_SgUntypedUnaryOperator(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -962,7 +962,27 @@ ATbool traverse_SgUntypedBinaryOperator(ATerm term, SgUntypedBinaryOperator** va
     } else return ATfalse;
   } else return ATfalse;
 
-  // turn on build functions (using BuildStmt) in sage-to-traverse.str
+  *SgUntypedBinaryOperator = build_SgUntypedBinaryOperator(arg1,arg2,arg3,arg4,arg5);
+
+  return ATtrue;
+}
+
+//========================================================================================
+// SgUntypedType
+//----------------------------------------------------------------------------------------
+ATbool traverse_SgUntypedType(ATerm term, SgUntypedType** var_SgUntypedType)
+{
+#ifdef DEBUG_PRINT
+  printf("... traverse_SgUntypedType: %s\n", ATwriteToString(term));
+#endif
+
+  char* arg1;
+  
+  *var_SgUntypedType = NULL;
+  if (ATmatch(term, "SgUntypedType(<str>)", &arg1)) {
+  } else return ATfalse;
+
+  *SgUntypedType = build_SgUntypedType(arg1);
 
   return ATtrue;
 }
