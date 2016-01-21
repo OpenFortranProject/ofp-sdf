@@ -30,7 +30,7 @@ ATbool traverse_SgUntypedAttribute(ATerm term, SgUntypedAttribute** var_SgUntype
   if (ATmatch(term, "SgUntypedAttribute(<int>,<str>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  *SgUntypedAttribute = build_SgUntypedAttribute(arg1,arg2);
+  *var_SgUntypedAttribute = build_SgUntypedAttribute(arg1,arg2);
 
   return ATtrue;
 }
@@ -55,7 +55,7 @@ ATbool traverse_SgUntypedInitializedName(ATerm term, SgUntypedInitializedName** 
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedInitializedName = build_SgUntypedInitializedName(arg1,arg2);
+  *var_SgUntypedInitializedName = build_SgUntypedInitializedName(arg1,arg2);
 
   return ATtrue;
 }
@@ -79,7 +79,7 @@ ATbool traverse_SgUntypedFile(ATerm term, SgUntypedFile** var_SgUntypedFile)
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedFile = build_SgUntypedFile(arg1);
+  *var_SgUntypedFile = build_SgUntypedFile(arg1);
 
   return ATtrue;
 }
@@ -299,7 +299,7 @@ ATbool traverse_SgUntypedValueExpression(ATerm term, SgUntypedValueExpression** 
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedValueExpression = build_SgUntypedValueExpression(arg1,arg2,arg3);
+  *var_SgUntypedValueExpression = build_SgUntypedValueExpression(arg1,arg2,arg3);
 
   return ATtrue;
 }
@@ -319,7 +319,7 @@ ATbool traverse_SgUntypedArrayReferenceExpression(ATerm term, SgUntypedArrayRefe
   if (ATmatch(term, "SgUntypedArrayReferenceExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  *SgUntypedArrayReferenceExpression = build_SgUntypedArrayReferenceExpression(arg1);
+  *var_SgUntypedArrayReferenceExpression = build_SgUntypedArrayReferenceExpression(arg1);
 
   return ATtrue;
 }
@@ -339,7 +339,7 @@ ATbool traverse_SgUntypedOtherExpression(ATerm term, SgUntypedOtherExpression** 
   if (ATmatch(term, "SgUntypedOtherExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  *SgUntypedOtherExpression = build_SgUntypedOtherExpression(arg1);
+  *var_SgUntypedOtherExpression = build_SgUntypedOtherExpression(arg1);
 
   return ATtrue;
 }
@@ -359,7 +359,7 @@ ATbool traverse_SgUntypedFunctionCallOrArrayReferenceExpression(ATerm term, SgUn
   if (ATmatch(term, "SgUntypedFunctionCallOrArrayReferenceExpression(<int>)", &arg1)) {
   } else return ATfalse;
 
-  *SgUntypedFunctionCallOrArrayReferenceExpression = build_SgUntypedFunctionCallOrArrayReferenceExpression(arg1);
+  *var_SgUntypedFunctionCallOrArrayReferenceExpression = build_SgUntypedFunctionCallOrArrayReferenceExpression(arg1);
 
   return ATtrue;
 }
@@ -380,7 +380,7 @@ ATbool traverse_SgUntypedReferenceExpression(ATerm term, SgUntypedReferenceExpre
   if (ATmatch(term, "SgUntypedReferenceExpression(<int>,<str>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  *SgUntypedReferenceExpression = build_SgUntypedReferenceExpression(arg1,arg2);
+  *var_SgUntypedReferenceExpression = build_SgUntypedReferenceExpression(arg1,arg2);
 
   return ATtrue;
 }
@@ -410,7 +410,7 @@ ATbool traverse_SgUntypedAssignmentStatement(ATerm term, SgUntypedAssignmentStat
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedAssignmentStatement = build_SgUntypedAssignmentStatement(arg1,arg2,arg3,arg4);
+  *var_SgUntypedAssignmentStatement = build_SgUntypedAssignmentStatement(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -431,7 +431,7 @@ ATbool traverse_SgUntypedFunctionCallStatement(ATerm term, SgUntypedFunctionCall
   if (ATmatch(term, "SgUntypedFunctionCallStatement(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  *SgUntypedFunctionCallStatement = build_SgUntypedFunctionCallStatement(arg1,arg2);
+  *var_SgUntypedFunctionCallStatement = build_SgUntypedFunctionCallStatement(arg1,arg2);
 
   return ATtrue;
 }
@@ -453,7 +453,7 @@ ATbool traverse_SgUntypedNamedStatement(ATerm term, SgUntypedNamedStatement** va
   if (ATmatch(term, "SgUntypedNamedStatement(<str>,<int>,<str>)", &arg1,&arg2,&arg3)) {
   } else return ATfalse;
 
-  *SgUntypedNamedStatement = build_SgUntypedNamedStatement(arg1,arg2,arg3);
+  *var_SgUntypedNamedStatement = build_SgUntypedNamedStatement(arg1,arg2,arg3);
 
   return ATtrue;
 }
@@ -474,7 +474,7 @@ ATbool traverse_SgUntypedOtherStatement(ATerm term, SgUntypedOtherStatement** va
   if (ATmatch(term, "SgUntypedOtherStatement(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  *SgUntypedOtherStatement = build_SgUntypedOtherStatement(arg1,arg2);
+  *var_SgUntypedOtherStatement = build_SgUntypedOtherStatement(arg1,arg2);
 
   return ATtrue;
 }
@@ -495,7 +495,7 @@ ATbool traverse_SgUntypedImplicitDeclaration(ATerm term, SgUntypedImplicitDeclar
   if (ATmatch(term, "SgUntypedImplicitDeclaration(<str>,<int>)", &arg1,&arg2)) {
   } else return ATfalse;
 
-  *SgUntypedImplicitDeclaration = build_SgUntypedImplicitDeclaration(arg1,arg2);
+  *var_SgUntypedImplicitDeclaration = build_SgUntypedImplicitDeclaration(arg1,arg2);
 
   return ATtrue;
 }
@@ -525,7 +525,7 @@ ATbool traverse_SgUntypedVariableDeclaration(ATerm term, SgUntypedVariableDeclar
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedVariableDeclaration = build_SgUntypedVariableDeclaration(arg1,arg2,arg3,arg4);
+  *var_SgUntypedVariableDeclaration = build_SgUntypedVariableDeclaration(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -556,7 +556,7 @@ ATbool traverse_SgUntypedModuleDeclaration(ATerm term, SgUntypedModuleDeclaratio
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedModuleDeclaration = build_SgUntypedModuleDeclaration(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedModuleDeclaration = build_SgUntypedModuleDeclaration(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -595,7 +595,7 @@ ATbool traverse_SgUntypedProgramHeaderDeclaration(ATerm term, SgUntypedProgramHe
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedProgramHeaderDeclaration = build_SgUntypedProgramHeaderDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+  *var_SgUntypedProgramHeaderDeclaration = build_SgUntypedProgramHeaderDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
 
   return ATtrue;
 }
@@ -634,7 +634,7 @@ ATbool traverse_SgUntypedSubroutineDeclaration(ATerm term, SgUntypedSubroutineDe
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedSubroutineDeclaration = build_SgUntypedSubroutineDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+  *var_SgUntypedSubroutineDeclaration = build_SgUntypedSubroutineDeclaration(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
 
   return ATtrue;
 }
@@ -668,7 +668,7 @@ ATbool traverse_SgUntypedFunctionScope(ATerm term, SgUntypedFunctionScope** var_
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedFunctionScope = build_SgUntypedFunctionScope(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedFunctionScope = build_SgUntypedFunctionScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -702,7 +702,7 @@ ATbool traverse_SgUntypedModuleScope(ATerm term, SgUntypedModuleScope** var_SgUn
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedModuleScope = build_SgUntypedModuleScope(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedModuleScope = build_SgUntypedModuleScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -736,7 +736,7 @@ ATbool traverse_SgUntypedGlobalScope(ATerm term, SgUntypedGlobalScope** var_SgUn
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedGlobalScope = build_SgUntypedGlobalScope(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedGlobalScope = build_SgUntypedGlobalScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -773,7 +773,7 @@ ATbool traverse_SgUntypedArrayType(ATerm term, SgUntypedArrayType** var_SgUntype
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedArrayType = build_SgUntypedArrayType(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
+  *var_SgUntypedArrayType = build_SgUntypedArrayType(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11);
 
   return ATtrue;
 }
@@ -879,7 +879,7 @@ ATbool traverse_SgUntypedScope(ATerm term, SgUntypedScope** var_SgUntypedScope)
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedScope = build_SgUntypedScope(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedScope = build_SgUntypedScope(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -910,7 +910,7 @@ ATbool traverse_SgUntypedBlockStatement(ATerm term, SgUntypedBlockStatement** va
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedBlockStatement = build_SgUntypedBlockStatement(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedBlockStatement = build_SgUntypedBlockStatement(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -937,7 +937,7 @@ ATbool traverse_SgUntypedUnaryOperator(ATerm term, SgUntypedUnaryOperator** var_
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedUnaryOperator = build_SgUntypedUnaryOperator(arg1,arg2,arg3,arg4);
+  *var_SgUntypedUnaryOperator = build_SgUntypedUnaryOperator(arg1,arg2,arg3,arg4);
 
   return ATtrue;
 }
@@ -968,7 +968,7 @@ ATbool traverse_SgUntypedBinaryOperator(ATerm term, SgUntypedBinaryOperator** va
     } else return ATfalse;
   } else return ATfalse;
 
-  *SgUntypedBinaryOperator = build_SgUntypedBinaryOperator(arg1,arg2,arg3,arg4,arg5);
+  *var_SgUntypedBinaryOperator = build_SgUntypedBinaryOperator(arg1,arg2,arg3,arg4,arg5);
 
   return ATtrue;
 }
@@ -988,7 +988,7 @@ ATbool traverse_SgUntypedType(ATerm term, SgUntypedType** var_SgUntypedType)
   if (ATmatch(term, "SgUntypedType(<str>)", &arg1)) {
   } else return ATfalse;
 
-  *SgUntypedType = build_SgUntypedType(arg1);
+  *var_SgUntypedType = build_SgUntypedType(arg1);
 
   return ATtrue;
 }

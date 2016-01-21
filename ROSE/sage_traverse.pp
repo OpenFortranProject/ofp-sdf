@@ -85,7 +85,7 @@
            "\n        }"
       ],
 
-   BuildStmt                           -- H hs=0 ["*"_1 " = build_" _1 "("_2 ");"],
+   BuildStmt                           -- H hs=0 ["*var_"_1 " = build_" _1 "("_2 ");"],
    BuildStmt.2:iter-sep                -- _1 ",",
    no-build                            -- H hs=0 ["// turn on build functions (using BuildStmt) in sage-to-traverse.str"],
 
