@@ -268,7 +268,7 @@ ast-to-pp =
                   , no-terms()
                   , no-args()
                   , no-match()
-                  , no-build(name)
+                  , BuildStmt(name,<builder-arg-list (|"1",[])> args)
                 )
 }
 
