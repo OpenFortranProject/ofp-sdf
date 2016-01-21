@@ -4,9 +4,15 @@
 // 3. Fix SgUntypedType and remove SgUntypedTypeFloat, ...  (DONE)
 // 4. Fix SgUntypedExpression
 // 5. SgUntypedFunctionDeclaration, SgUntypedDeclarationStatement, SgUntypedExpression
-// - It's basically the base classes that need fixin
+// - It's basically the base classes that need fixing
+
+#include "rosePublicConfig.h"
+#include "sage3basic.h"
+
+#include "aterm2.h"
 
 #include "traverse_SgUntypedNodes.hpp"
+#include "build_traverse_SgUntypedNodes.hpp"
 
 //========================================================================================
 // SgUntypedAttribute
