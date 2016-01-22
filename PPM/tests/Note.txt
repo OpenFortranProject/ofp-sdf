@@ -1,0 +1,174 @@
+This is a note from Paul Woodward about his DSL ideas:
+
+
+c     1/19/16:
+c     This code is intended for use by Craig Rassmussen and Pei-Hung
+c     Lin as at least a partial example of what a true DSL might buy
+c     us in code clarity and coding ease when we take the incredible
+c     step of writing the pipelined code manually to process 2 grid
+c     planes at once.  It is better still to have a code translator
+c     generate this implementation from a Fortran-W source.  Fortran-W
+c     can also benefit from a true DSL, and that would be even better.
+c     But that code translator would be much more difficult to write.
+c     Implementing the DSL features explored in this example could be a
+c     way to start toward that goal in an incremental way.
+c
+c     Only the first 2 episodes have been cleaned up, and the top-level
+c     routine.  The main benefit comes from the code translator parsing
+c     the suffixes "gp1" through "gp5", knowing that they are arrays of
+c     2 grid planes each, and knowing that a "gp2" suffix array refer-
+c     ence when only "gp1" and "gp3" arrays have been created implies
+c     that "gp2" must be generated from half of each of gp1 and gp3.
+c     Tons of boring code is eliminated by the implied offset vector
+c     generation, making the code much more readable.
+c     Tons and tons of code is eliminated by my not constantly repeat-
+c     ing long lists of all my vectors.  Let's face it, the compiler
+c     can discover my variable names, because I have used them and it
+c     can see that.  Because I use a large number of subroutines in a
+c     deep call chain in order to help the compiler to manage the
+c     absolutely humongous stack of this module, I end up making long
+c     lists of things the compiler can perfectly well find for itself
+c     over and over and over.  The DSL, which introduces a sort of
+c     implicit typing, eliminates all that work.
+c
+c     Another advantage is expressed in this code for the first 2
+c     episodes.  I no longer laboriously and painstakingly pass down
+c     through the very deep call chain elements of my block of totally
+c     managed scratch vectors.  Instead I let the DSL translator tool
+c     perform this function for me by in-lining ALL the subroutines
+c     and combining ALL the little stacks of each into one great big
+c     glorious stack in which each element is reused again and again
+c     without my having to figure out how.  The CUDA compiler is
+c     probably good at this, because this function is critical in
+c     getting code to run on a GPU.  The CPU compiler probably does not
+c     do this at all, because this task was relegated to the cache
+c     hardware in the ancient past.  However, if the cache hardware
+c     does this, it will generate a lot of unnecessary spills of
+c     unneeded stack variables to their allocated positions in off-chip
+c     memory.  These are wasteful of precious memory bandwidth.  There-
+c     fore, explicitly managing the cache to avoid this pointless data
+c     traffic is worth the trouble.
+c
+c     If writing code for the GPU that very aggressively reduces the
+c     on-chip workspace while fusing enough "kernels" to be of practi-
+c     cal value is to become manageable, it can only be through the
+c     very substantial assistance of a precompilation tool.  This code
+c     is an existence proof that such code can in fact be written.  The
+c     challenge now is to make it possible to write this sort of code
+c     in a day-to-day mode.  As GPUs evolve, the need for such coding
+c     handstands should diminish, and one will ultimately, we hope, be
+c     able to simply discard the crutch of the precompilation tool.
+c     But that change could easily take 5 years, and the tool could be
+c     very helpful in the meantime.
+c
+c     DSL features:
+c     nusgar is a reserved word.  It is the briquette size.  Here it is
+c            explicitly specified as a parameter.
+c     nssq = nsugar*nsugar*2 is the size of a vector.  In this code it
+c            is 2 grid planes of 16 cells each.  The size of a CUDA
+c            "register".
+c     The largest a pipelined array need ever be in the on-chip cache
+c         is 3 slices of 2 grid planes each.  In Fortran-W code, we
+c         would have augmented briquette arrays consisting of 6 such
+c         slices, and the pipelining would transform them to the much
+c         shorter forms seen in the manually pipelined code given here.
+c     The in-cache, on-stack footprint of a briquette-based variable
+c         (such as the density of the pressure) is at most 3 slices,
+c         beginning in this code with grid plane 1.  This code, as I
+c         am writing it, does not assume that the 3 slices making up
+c         such a variable's footprint are contiguous, and therefore I
+c         have been explicitly unrolling all loops over slices that I
+c         wrote in the original version of this pipelined code.
+c     Any implicitly-typed Fortran name to which is appended the suffix
+c         gp1, gp2, gp3, gp4, gp5, is implicitly assumed to be an array
+c         with the length of a slice, 32 words or 2 grid planes, and
+c         beginning at the grid plane number indicated by the third
+c         character of this suffix.  We call this a vector, or a grid
+c         plane array.  In CUDA it is called a "register".
+c     If a variable appears in the code with one of the special
+c         suffixes listed above, it is a vector and is transformed as
+c         such, with a single array index, in the generated Fortran-77
+c         output code expression.  That expression includes all the
+c         required declaration statements, which are omitted in the
+c         simpler input code.  This vector is of course on the stack
+c         unless it appears in a common block.  If it is an argument
+c         of a subroutine call, then it is on the stack if it is on
+c         the stack of the calling routine.
+c     If a vector, for example, with suffix "gp4" is referenced, but
+c         it has not been given a value, then its value is implicitly
+c         specified as the second half of the "gp3" and the first half
+c         of the "gp5" vectors of the same stem name.  Code that sets
+c         this value explicitly is generated as part of the output
+c         Fortran=77 code expression.
+c     If an implicitly typed Fortran variable is given the special
+c         suffix "gp", then it is a vector, or grid plane arrray.
+c         This is a useful variant for short-lived and reused tempo-
+c         rary vectors, for which specifying a specific grid plane at
+c         which they start would be confusing and inappropriate.
+c         In this code example, I am careful to use these vector names
+c         for things that are targets of "if" tests, because the Intel
+c         compiler demands that in the output Fortran-77 it will be
+c         given, these are explicitly stated as vectors rather than as
+c         scalars that we expect the compiler to promote to vectors.
+c         The compiler refuses to promote such things to vectors,
+c         because it thinks we might have wanted it to perform some
+c         sort of reduction operation instead.  I think the compiler's
+c         confusion is caused by the Fortran-90 syntax that it thinks I
+c         might have wanted to use.
+c     An "if" test written in the same Fortran syntax we would use for
+c         scalar variables, but involving vectors instead with "gp"
+c         suffixes denotes the appropriate vector mask operation.  We
+c         have found that vendor compilers seem to do what we intend
+c         if such a statement is transformed in the output Fortran-77
+c         code expression as if tests of this same style inside vector
+c         loop bodies, but with indices on the vectors.
+c     In this translation of the original GPU-friendly Fortran into the
+c         proposed DSL syntax, I have left the distinction intact from
+c         the original code between: (1) 2-D arrays of 2-grid-plane
+c         slices, which generally need to be returned to the calling
+c         routine through the call argument list, (2) temporary vectors
+c         2 grid planes in length that are evanescent on the local
+c         subroutine stack, and (3) scalar temporaries in vector loops
+c         that should be promoted to vectors by the vendor's compiler.
+c         These distinctions are potentially important for performance.
+c         Category (3) are temporaries that are better called "register
+c         variables".  These never need be stored in any but the cache
+c         memory on a CPU, and if there are enough actual registers
+c         (not Nvidia "registers"), they need never even exist as named
+c         variables.  The vendor's compiler should know this and handle
+c         them appropriately.  The distinctions in the DSL syntax are:
+c         (1) suffixes of "gp1", "gp2", "gp3", "gp4", and/or "gp5",
+c         (2) the suffix "gp", and (3) none of the above suffixes.
+c     cPPM$ INLINE     is a directive stating that the subroutine that
+c         is being called here must be in-lined.  This is a performance
+c         requirement, but the in-lining needs to be intelligently done
+c         This is a translator capability that we already have.  We
+c         seem, from performance tests, to do a much better job of this
+c         in-lining than the Intel compiler.  One savings of this in-
+c         lining operation is that we do not have little stacks popping
+c         in and out of existence constantly and pointlessly.  Instead,
+c         when all the routines are in-lined, we have only a single,
+c         completely managed stack that is used and reused over the
+c         course of millions of flops without interruption.
+c     Management of stack vectors.
+c         This is a very big job of the precompilation tool.  We tell
+c         it when vectors need to appear and when they can disappear
+c         by making all the many subroutines, each with its own stack.
+c         In this regard, one of our subroutines is like a section of
+c         CUDA code that is set off by braces and that has declarations
+c         just after the first brace.  It is clumsier to do this in
+c         Fortran, but it does give us sufficient control. Our code
+c         suggests that stacks are created and released, even though we
+c         demand that subroutines be in-lined, making that impossible.
+c         This is to assist the precompilation tool in managing the
+c         stack by telling it when we guarantee that we will never
+c         again use the contents of certain vectors.  This should help
+c         the tool, but it does not eliminate the need for it to work.
+c         Many vectors are passed into and out of each subroutine, even
+c         though others have short lives on that subroutine's stack.
+c         The precompiler must do a liveness analysis and have some sort
+c         of scoreboard that enables it to fulfill all the needs for
+c         stack vector data with the absolute minimum number of stack
+c         vectors.  This will necessarily require copying some vectors
+c         over others, and this should not be done with abandon, as it
+c         does cost something.
