@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  PPM DSL definition
+%%
+%%  Copyright ((c)) 2013, TBD.
+%%  All rights reserved. See the file "LICENSE" for details.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Rosebud syntax
+%% definition
+
+module PPM
+
+%% Rosebud syntax
+%% language PPM
+
+%% Rosebud syntax
+%% title       "Halo array extensions to Fortran for stencil-based computation"
+
+%% Rosebud
+%% summary     "This DSL provides syntax for extending array declarations in      "
+%%             "Fortran so that arrays explicitly have a halo region surrounding  "
+%%             "the interior portion of a normal array.  Explicit halo            "
+%%             "declarations allows the compiler to manage the memory of an       "
+%%             "array that is distributed across memory boundaries.  In particular"
+%%             "the declaration of a halo region provides the compiler with       "
+%%             "information regarding the regions of the array that are shared    "
+%%             "between processing (and memory) elements.                         "
+
+%% Rosebud syntax
+%% version     1.0
+%% maintainer  srasmus2@uoregon.edu
+%% web site    dtec-xstack.org
+
+%% Rosebud syntax
+%% host        Fortran
+%% requires    none
+%% id          org.dtec-xstack.uoregon.ppm
+
+imports Main
+
+%%------------------------------------------------------------------------------
+%% Rosebud syntax
+%% concrete syntax
+%%------------------------------------------------------------------------------
+
+%% Rosebud syntax
+%% extends host sorts
+
+exports
+
+sorts
+   ImplicitPrefixStmt
+%% Rosebud syntax
+%% uses host sorts
+%% ArrayName LowerBound UpperBound EOS
+
+%% Rosebud syntax
+%% private sorts
+
+%% Rosebud syntax
+%% context-free rules
+
+context-free syntax
+
+%%R###
+%% OptLabel 'IMPLICIT' {ImplicitSpec ','}+          EOS -> ImplicitStmt    {cons("ImplicitStmt")}
+%% OptLabel 'IMPLICIT' 'NONE'                       EOS -> ImplicitStmt    {cons("ImplicitNoneStmt")}
+OptLabel 'IMPLICIT' 'PREFIX' {ImplicitSpec ','}+          EOS -> ImplicitStmt    {cons("ImplicitPrefixStmt")}
