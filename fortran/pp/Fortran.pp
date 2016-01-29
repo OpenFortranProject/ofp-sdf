@@ -333,7 +333,7 @@
 
    #R560 --,
    ppImplicitStmt                -- H hs=1[_1 KW["IMPLICIT NONE"]],
-   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=0[_2 _3]],
+   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=1[_2 _3]],
    ImplicitStmt.2:iter-sep       -- _1 ", ",
 
    #R561 --,
