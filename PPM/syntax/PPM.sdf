@@ -54,30 +54,30 @@ sorts
 %% Rosebud syntax
 %% uses host sorts
 %% ArrayName LowerBound UpperBound EOS
-
+   
 %% Rosebud syntax
 %% private sorts
 
 %% Rosebud syntax
 %% context-free rules
-  ImplicitAffixStmt
+  ImplicitPrefixStmt
+  ImplicitPostfixStmt
+
   ImplicitAffixSpec
   AffixTypeSpec
-  Affix
 
 context-free syntax
 
-   ImplicitAffixStmt -> ImplicitPartStmt
-   ImplicitAffixStmt -> SpecAndExecConstruct
+   ImplicitPrefixStmt  -> ImplicitPartStmt
+   ImplicitPostfixStmt -> ImplicitPartStmt
+   ImplicitPrefixStmt  -> SpecAndExecConstruct
+   ImplicitPostfixStmt -> SpecAndExecConstruct
 
-   'SUFFIX'                 -> Affix
-   'PREFIX'                 -> Affix
-
-%% May need to change ImplicitAffixStmt: gett "'_bind'" which probably won't be good
-   OptLabel 'IMPLICIT' Affix {ImplicitAffixSpec ','}+          EOS -> ImplicitAffixStmt {cons("ImplicitAffixStmt")}
+%% May need to change ImplicitAffixStmt: get "'_bind'" which probably won't be good
+   OptLabel 'IMPLICIT' 'PREFIX' {ImplicitAffixSpec ','}+           EOS -> ImplicitPrefixStmt {cons("ImplicitPrefixStmt")}
+   OptLabel 'IMPLICIT' 'POSTFIX' {ImplicitAffixSpec ','}+          EOS -> ImplicitPostfixStmt {cons("ImplicitPostfixStmt")}
 
    AffixTypeSpec '(' {Scon ','}+ ')'                               -> ImplicitAffixSpec {cons("ImplicitAffixSpec")}        
-
    'TYPE' '(' Name ')'                                             -> AffixTypeSpec     {cons("AssumedType")}
 
 
