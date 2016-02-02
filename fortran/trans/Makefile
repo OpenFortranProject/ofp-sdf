@@ -2,8 +2,6 @@ include ../../make.inc
 
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
-ST_PATH = ~/opt/strategoxt/bin/
-SDF2_PATH = ~/opt/sdf2-bundle/bin/
 
 all : ofp-simplify ofp2fast fast2pp fast2sage no-to-none
 
