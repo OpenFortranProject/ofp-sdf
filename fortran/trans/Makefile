@@ -3,22 +3,23 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : ofp-simplify ofp2fast fast2pp fast2sage no-to-none
+all : ofp-simplify ofp2fast fast2pp fast2sage
 
 ofp-simplify : ofp-simplify.str
 	$(ST_PATH)/strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
 
-no-to-none : no-to-none.str
-	$(ST_PATH)/strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
-
-ofp2fast : ofp2fast.str ofp-simplify no-to-none ../syntax/FAST.str
+ofp2fast : ofp2fast.str ofp-simplify ../syntax/FAST.str
 	$(ST_PATH)/strc -i ofp2fast.str $(CFLAGS) $(LDFLAGS)
 
-fast2pp : fast2pp.str no-to-none
+fast2pp : fast2pp.str
 	$(ST_PATH)/strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
 
-fast2sage : fast2sage.str no-to-none
+fast2sage : fast2sage.str
 	$(ST_PATH)/strc -i fast2sage.str $(CFLAGS) $(LDFLAGS)
+
+# OBSOLETE
+no-to-none : no-to-none.str
+	$(ST_PATH)/strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
 
 check : ofp-simplify ofp2fast
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
