@@ -3,7 +3,7 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : ofp-simplify ofp2fast fast2pp fast2sage
+all : ofp-simplify ofp2fast fast2pp
 
 ofp-simplify : ofp-simplify.str
 	$(ST_PATH)/strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
@@ -14,12 +14,17 @@ ofp2fast : ofp2fast.str ofp-simplify ../syntax/FAST.str
 fast2pp : fast2pp.str
 	$(ST_PATH)/strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
 
+# OBSOLETE
+no-to-none : no-to-none.str
+	$(ST_PATH)/strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
+
+# OBSOLETE
 fast2sage : fast2sage.str
 	$(ST_PATH)/strc -i fast2sage.str $(CFLAGS) $(LDFLAGS)
 
 # OBSOLETE
-no-to-none : no-to-none.str
-	$(ST_PATH)/strc -i no-to-none.str $(CFLAGS) $(LDFLAGS)
+check-sage : fast2sage
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2sage | pp-aterm
 
 check : ofp-simplify ofp2fast
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
@@ -29,9 +34,6 @@ check-ofp : ofp-simplify
 
 check-pp : fast2pp
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
-
-check-sage : fast2sage
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2sage | pp-aterm
 
 unparse : ofp-simplify ofp2fast fast2pp
 	@echo "------------"
