@@ -25,14 +25,16 @@ strategies //=================START OF STRATEGIES============================
         ;  new-hashtable => st
         ;  new-hashtable => lt
         ;  !Program(units)
-        ;  topdown(try(fast-get-symbols(|st)))
-        ;  topdown(try(ppm-get-symbols(|st,lt)))
-        ;  bottomup(try(ppm-add-cl(|st,lt)))
-        ;  topdown(try(fast-flatten-scope-parts))
-        ;  bottomup(try(caf-lower-ast))  => save
         ;  !"--------------------------------------------------------------------------------------"
         ;  debug()
-        ;  !save
+        ;  topdown(try(fast-get-symbols(|st)))
+//        ;  topdown(try(ppm-get-symbols(|st,lt)))
+//        ;  bottomup(try(ppm-add-cl(|st,lt)))
+//        ;  topdown(try(fast-flatten-scope-parts))
+//        ;  bottomup(try(caf-lower-ast))  => save
+        ;  !"--------------------------------------------------------------------------------------"
+        ;  debug()
+//        ;  !save
 }
 
 
@@ -275,17 +277,17 @@ ct-add-type-decl(|ct) =
 // ------------------
 
 // Add declared variables to symbol table
-fast-get-symbols(|st) =
-     ?TypeDeclarationStmt(label,type,attrs,vars)
-  ;  <map(st-add-symbol(|st,type,attrs))> vars
-  ;  !TypeDeclarationStmt(label,type,attrs,vars)
+//fast-get-symbols(|st) =
+//     ?TypeDeclarationStmt(label,type,attrs,vars)
+//  ;  <map(st-add-symbol(|st,type,attrs))> vars
+//  ;  !TypeDeclarationStmt(label,type,attrs,vars)
 
-// Update symbol table with information from allocate statements
+// Update symbol table with information from assignment statements
 fast-get-symbols(|st) =
-     ?AllocateStmt(label,type,alloc_list,options)
-  ;  <map(fast-update-allocation-symbol(|st))> alloc_list
-  ;  !AllocateStmt(label,type,alloc_list,options)
-
+     ?AssignmentStmt(label,VarDef(name),lhs)
+  ;  <hashtable-put(|name,"Bricket")> st
+  ;  !AssignmentStmt(label,VarDef(name),lhs)
+;debug(!"--------------")
 
 // Get symbols specifically relevant to PPM
 // ----------------------------------------
