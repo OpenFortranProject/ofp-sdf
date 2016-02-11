@@ -1,6 +1,6 @@
 Program ppm_test
 
-!implicit prefix integer (A-K)
+   implicit postfix type(Brickett) ("gp1")
 
    integer, parameter :: nssq=13
 
