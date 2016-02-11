@@ -44,7 +44,7 @@ check-orig : ppm-to-fast
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
 
-check-last : ppm-to-fast
+check-ppm : ppm-to-fast
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | pp-aterm
 
 check-lower : ppm-lower
