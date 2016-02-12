@@ -53,7 +53,7 @@ exports
 sorts 
 %% Rosebud syntax
 %% uses host sorts
-%% ArrayName LowerBound UpperBound EOS
+%% Type
    
 %% Rosebud syntax
 %% private sorts
@@ -74,10 +74,8 @@ context-free syntax
    ImplicitPostfixStmt -> SpecAndExecConstruct
 
 %% May need to change ImplicitAffixStmt: get "'_bind'" which probably won't be good
-   OptLabel 'IMPLICIT' 'PREFIX' {ImplicitAffixSpec ','}+           EOS -> ImplicitPrefixStmt {cons("ImplicitPrefixStmt")}
-   OptLabel 'IMPLICIT' 'POSTFIX' {ImplicitAffixSpec ','}+          EOS -> ImplicitPostfixStmt {cons("ImplicitPostfixStmt")}
+   OptLabel 'IMPLICIT' 'PREFIX' {ImplicitAffixSpec ','}+    EOS -> ImplicitPrefixStmt {cons("ImplicitPrefixStmt")}
+   OptLabel 'IMPLICIT' 'POSTFIX' {ImplicitAffixSpec ','}+   EOS -> ImplicitPostfixStmt {cons("ImplicitPostfixStmt")}
 
-   AffixTypeSpec '(' {Scon ','}+ ')'                               -> ImplicitAffixSpec {cons("ImplicitAffixSpec")}        
-   'TYPE' '(' Name ')'                                             -> AffixTypeSpec     {cons("AssumedType")}
-
-
+   AffixTypeSpec '(' {Scon ','}+ ')'                            -> ImplicitAffixSpec {cons("ImplicitAffixSpec")}
+   DeclarationTypeSpec                                          -> AffixTypeSpec

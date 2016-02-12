@@ -2,7 +2,7 @@ module PPM
 
 signature
   constructors
-    AssumedType                     : Name -> AffixTypeSpec
+                                    : DeclarationTypeSpec -> AffixTypeSpec
     ImplicitAffixSpec               : AffixTypeSpec * List(Scon) -> ImplicitAffixSpec
     ImplicitPostfixStmt             : OptLabel * List(ImplicitAffixSpec) * EOS -> ImplicitPostfixStmt
     ImplicitPrefixStmt              : OptLabel * List(ImplicitAffixSpec) * EOS -> ImplicitPrefixStmt
