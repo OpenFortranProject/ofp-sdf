@@ -1,0 +1,11 @@
+cafe-lower
+cafe-lower.c
+cafe-lower.o
+cafe-lower.lo
+cafe-lower.dep
+
+cafe-to-foropencl
+cafe-to-foropencl.c
+cafe-to-foropencl.o
+cafe-to-foropencl.lo
+cafe-to-foropencl.dep
