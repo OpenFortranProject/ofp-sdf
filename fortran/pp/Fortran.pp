@@ -81,7 +81,7 @@
    ppArrayType.1:iter-sep        -- _1 ",",
    ppArrayType.2:iter-sep        -- _1 ",",
 
-   ppCoarrayType                 -- "("_1")",
+   ppCoarrayType                 -- "["_1"]",
    ppCoarrayType.1:iter-sep      -- _1 ",",
 
    ppRange                       -- _1,
