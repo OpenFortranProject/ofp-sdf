@@ -1,10 +1,8 @@
 Program ppm_test
-
-   implicit postfix type(Brickett) ("gp1", "gp2")
-
+   implicit postfix real ("gp1", "gp2")
    integer, parameter :: nssq=13
 
    cournogp1 = 0.
+   cournogp2 = 0.
 
-
-End Program Ppm_test
+End Program ppm_test
