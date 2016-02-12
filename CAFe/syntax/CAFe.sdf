@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  CAFe DSL definition
+%%
+%%  Copyright ((c)) 2013, TBD.
+%%  All rights reserved. See the file "LICENSE" for details.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Rosebud syntax
+%% definition
+
+module CAFe
+
+%% Rosebud syntax
+%% language CAFe
+
+%% Rosebud syntax
+%% title       "Halo array extensions to Fortran for stencil-based computation"
+
+%% Rosebud
+%% summary     "This DSL provides syntax for extending array declarations in      "
+%%             "Fortran so that arrays explicitly have a halo region surrounding  "
+%%             "the interior portion of a normal array.  Explicit halo            "
+%%             "declarations allows the compiler to manage the memory of an       "
+%%             "array that is distributed across memory boundaries.  In particular"
+%%             "the declaration of a halo region provides the compiler with       "
+%%             "information regarding the regions of the array that are shared    "
+%%             "between processing (and memory) elements.                         "
+
+%% Rosebud syntax
+%% version     1.0
+%% maintainer  rasmus@uoregon.edu
+%% web site    dtec-xstack.org
+
+%% Rosebud syntax
+%% host        Fortran
+%% requires    none
+%% id          org.dtec-xstack.uoregon.cafe
+
+imports Main
+
+%%------------------------------------------------------------------------------
+%% Rosebud syntax
+%% concrete syntax
+%%------------------------------------------------------------------------------
+
+%% Rosebud syntax
+%% extends host sorts
+
+exports
+
+sorts
+
+  AllocOpt AttrSpec PrefixSpec OtherSpecificationStmt
+  AllocateStmt AssignmentStmt LoopControl
+
+%% Rosebud syntax
+%% uses host sorts
+%% ArrayName LowerBound UpperBound EOS
+
+%% Rosebud syntax
+%% private sorts
+
+  HaloStmt HaloSpec HaloAssumedShapeSpec HaloExplicitShapeSpec
+  ImageExecutionSelector ImageExecStmt
+
+%% Rosebud syntax
+%% context-free rules
+
+context-free syntax
+
+%%R212
+  HaloStmt                                -> OtherSpecificationStmt {cons("OtherSpecificationStmt")}
+
+%%R502
+  "HALO" "(" HaloSpec ")"                 -> AttrSpec               {cons("Halo")}
+
+  {HaloAssumedShapeSpec  ","}+            -> HaloSpec
+  {HaloExplicitShapeSpec ","}+            -> HaloSpec
+
+  ":"                                     -> HaloAssumedShapeSpec   {cons("AssumedShape")}
+  LowerBound ":" "*" ":" UpperBound       -> HaloExplicitShapeSpec  {cons("HaloExplicitShapeSpec")}
+
+  OptLabel "HALO" "::"
+         ArrayName "(" HaloSpec ")"
+    ("," ArrayName "(" HaloSpec ")")* EOS -> HaloStmt               {cons("HaloStmt")}
+
+%%R626
+  OptLabel 'ALLOCATE'
+     '(' NoTypeSpec    {Allocation ','}+ OptAllocOptList ')'
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoAllocateStmt")}
+  OptLabel 'ALLOCATE'
+     '(' TypeSpec '::' {Allocation ','}+ OptAllocOptList ')'
+                               ImageExecutionSelector        EOS -> AllocateStmt   {cons("CoAllocateStmt")}
+
+%%R640
+  OptLabel 'DEALLOCATE'
+     '(' {AllocateObject ','}+ OptDeallocOptList ')'
+                               ImageExecutionSelector        EOS -> DeallocateStmt {cons("CoDeallocateStmt")}
+
+%%R627
+  "HALO" "=" "(" {HaloExplicitShapeSpec ","}+ ")"                -> AllocOpt       {cons("HaloAlloc")}
+
+%%R732
+  OptLabel Variable '=' Expr
+           ImageExecutionSelector     EOS -> AssignmentStmt  {cons("CoAssignmentStmt")}
+
+%%R818
+  'CONCURRENT' ForallHeader
+               ImageExecutionSelector     -> LoopControl            {cons("ConcurrentExecControl")}
+
+  "[" ImageSelector "]"                   -> ImageExecutionSelector {cons("ImageExecutionSelector")}
+
+%%R1220
+  CallStmt ImageExecutionSelector         -> ImageExecStmt           {cons("ImageExecStmt")}
+
+  OptLabel 'CALL' ProcedureDesignator
+                     NoActualArgSpecList
+                     ImageExecutionSelector       EOS -> CallStmt            {cons("ImageExecStmt")}
+  OptLabel 'CALL' ProcedureDesignator
+                  '(' {ActualArgSpec ','}* ')'
+                     ImageExecutionSelector       EOS -> CallStmt            {cons("ImageExecStmt")}
+
+%%1226
+  "CONCURRENT"                            -> PrefixSpec             {cons("CONCURRENT")}
