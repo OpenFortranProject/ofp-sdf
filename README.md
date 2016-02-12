@@ -22,12 +22,12 @@ allow a parser user to build a custom Abstract Syntax Tree ([AST]).
 
 If you need access to a complete source-to-source Fortran compiler
 infrastructure incorporating OFP, please consider using [ROSE].
-[Uncomment the next two lines after the release of an OFP-enabled OpenCoarrays       ]:#
-[If you are specifically interested in coarray Fortran (CAF), including Fortran 2008 ]:#
-[and  2015, please consider using OpenCoarrays 2.0.0 or later                        ]:#
+If you are specifically interested in coarray Fortran (CAF), please consider 
+using the experimental support under development in [OpenCoarrays] for
+for transforming CAF programs to extend the features of existing CAF compilers
+as well as to support compilation with non-CAF compilers.
 
 The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Stratego/XT].
-
 
 ## <a name="installing-ofp">Installing OFP</a>  ##
 
@@ -75,7 +75,7 @@ The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Strat
   -  directories for testing Fortran parser
 * [tests/rule-tests]      
   -  tests of the original Fortran 2003 syntax rules
-* [tests/rule-f08-tests]  
+* [tests/f08-tests]  
   -  tests of 2008 rule additions and modifications
 
 
@@ -91,7 +91,7 @@ The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Strat
 [Directories]: #directories
 
 
-[Internal links]:#
+[Relative links]:#
 [INSTALL]: ./INSTALL
 [src]: ./src
 [build]: ./build
@@ -100,12 +100,13 @@ The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Strat
 [fortran/syntax]: ./fortran/syntax       
 [tests]: ./tests               
 [tests/rule-tests]: ./tests/rule-tests     
-[tests/rule-f08-tests]: ./tests/rule-f08-tests  
+[tests/f08-tests]: ./tests/f08-tests  
+
+
+[URLs]:#
 [Issues]: https://github.com/openfortranproject/ofp-sdf/issues
 [OFP]: https://github.com/openfortranproject/ofp-sdf/
-
-
-[External links]:#
+[OpenCoarrays]: https://github.com/sourceryinstitute/opencoarrays/tree/caffeinate-opencoarrays
 [SDF2]: http://releases.strategoxt.org/strategoxt-0.17/sdf2-bundle/sdf2-bundle-2.4pre212034-37nm9z7p/
 [Stratego/XT]: http://strategoxt.org
 [AST]: https://en.wikipedia.org/wiki/Abstract_syntax_tree
