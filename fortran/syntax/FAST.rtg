@@ -60,14 +60,6 @@ regular tree grammar
     ListPlusOfDummyArg0               -> <conc>(ListPlusOfDummyArg0,ListPlusOfDummyArg0)
     ListPlusOfDummyArg0               -> <cons>(DummyArg,ListStarOfDummyArg0)
 
-    ListStarOfActualArgSpec0          -> ListPlusOfActualArgSpec0
-    ListStarOfActualArgSpec0          -> <nil>()
-    ListStarOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListStarOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListStarOfActualArgSpec0,ListPlusOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListStarOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <conc>(ListPlusOfActualArgSpec0,ListPlusOfActualArgSpec0)
-    ListPlusOfActualArgSpec0          -> <cons>(ActualArgSpec,ListStarOfActualArgSpec0)
-
     ListStarOfModuleSubprogram0       -> ListPlusOfModuleSubprogram0
     ListStarOfModuleSubprogram0       -> <nil>()
     ListStarOfModuleSubprogram0       -> <conc>(ListStarOfModuleSubprogram0,ListStarOfModuleSubprogram0)
@@ -716,6 +708,8 @@ regular tree grammar
     ProcPointerInit                   -> InitialProcTarget
     ProcPointerInit                   -> NullInit
 
+    InitialProcTarget                 -> ProcedureName
+
     ProcComponentAttrSpec             -> POINTER()
     ProcComponentAttrSpec             -> PASS()
     ProcComponentAttrSpec             -> NOPASS()
@@ -1185,8 +1179,11 @@ regular tree grammar
     Decl                              -> IntrinsicStmt
     IntrinsicStmt                     -> IntrinsicStmt(OptLabel,ListPlusOfName)
 
+    Expr                              -> FunctionReference
+    FunctionReference                 -> FunctionReference(ProcRef,ListStarOfArg)
+
     Stmt                              -> CallStmt
-    CallStmt                          -> CallStmt(OptLabel,ProcRef,ListPlusOfArg)
+    CallStmt                          -> CallStmt(OptLabel,ProcRef,ListStarOfArg)
 
     ProcRef                           -> Expr
     Arg                               -> Expr
@@ -1244,13 +1241,6 @@ regular tree grammar
     CloseSpec                         -> UNIT(FileUnitNumber)
     CloseSpec                         -> UNIT(FileUnitNumber)
 
-
-
-
-
-    FunctionReference                 -> FunctionReference(ProcedureDesignator,ListStarOfActualArgSpec0)
-    IntrinsicProcedureName            -> Ident
-    InitialProcTarget                 -> ProcedureName
 
     NoProcAttrSpecList                -> no-list()
     OptProcAttrSpecList               -> no-list()

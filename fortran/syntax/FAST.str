@@ -134,6 +134,8 @@ signature
     ProcDecl                  : Name * NoProcPointerInit -> ProcDecl
     no-init                   : NoProcPointerInit
                               : InitialProcTarget -> ProcPointerInit
+                              : NullInit -> ProcPointerInit
+                              : ProcedureName -> InitialProcTarget
     POINTER                   : ProcComponentAttrSpec
     PASS                      : ProcComponentAttrSpec
     NOPASS                    : ProcComponentAttrSpec
@@ -362,6 +364,7 @@ signature
                               : ProcedureDeclarationStmt -> Decl
                               : IntrinsicStmt -> Decl
     IntrinsicStmt             : OptLabel * List(Name) -> IntrinsicStmt
+    FunctionReference         : ProcRef * List(Arg) -> FunctionReference
     CallStmt                  : OptLabel * ProcRef * List(Arg) -> CallStmt
                               : Expr -> ProcRef
                               : Expr -> Arg
@@ -453,7 +456,6 @@ signature
     ERR                       : LblRef -> CloseSpec
     IOSTAT                    : IntVariable -> CloseSpec
     UNIT                      : FileUnitNumber -> CloseSpec
-                              : ProcedureName -> InitialProcTarget
     SAVE                      : ProcAttrSpec
     POINTER                   : ProcAttrSpec
     OPTIONAL                  : ProcAttrSpec
@@ -551,6 +553,7 @@ signature
                               : OfpExplicitCoshape -> Expr
                               : OfpAssumedSize -> Expr
                               : OfpAssumedOrDeferredShape -> Expr
+                              : FunctionReference -> Expr
                               : IntExpr -> Expr
                               : RealExpr -> Expr
                               : LogicalExpr -> Expr
@@ -655,8 +658,10 @@ signature
                               : List(ExplicitShapeSpec) -> ArraySpec
     PRIVATE                   : AccessSpec
     PUBLIC                    : AccessSpec
+    NullInit                  : FunctionReference -> NullInit
                               : Expr -> Initialization
     PointerInit               : InitialDataTarget -> Initialization
+    PointerInit               : NullInit -> Initialization
     Init                      : ConstantExpr -> Initialization
     no-init                   : OptInitialization
                               : Initialization -> OptInitialization
