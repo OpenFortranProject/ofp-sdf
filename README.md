@@ -4,6 +4,10 @@
 
 #                Open Fortran Parser (OFP)               #
 ####              1.0.0 release candidate             ####
+
+This repository hosts the one actively developed OFP parser supporting new and ongoing projects.    
+A sepearate [repository](https://github.com/OpenFortranProject/open-fortran-parser) hosts a version 
+of OFP that supports some legacy codes.
  
 ## Contents                                                               
 * [Overview]
@@ -27,7 +31,9 @@ using the experimental support under development in [OpenCoarrays] for
 for transforming CAF programs to extend the features of existing CAF compilers
 as well as to support compilation with non-CAF compilers.
 
-The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Stratego/XT].
+The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Stratego/XT].  An 
+[ANTLR]-based [OFP parser] also exists to support legacy projects. The latter repository is
+no longer under active development.
 
 ## <a name="installing-ofp">Installing OFP</a>  ##
 
@@ -111,4 +117,6 @@ The OFP parser is based on the Syntax Definition Formalism [SDF2] used by [Strat
 [Stratego/XT]: http://strategoxt.org
 [AST]: https://en.wikipedia.org/wiki/Abstract_syntax_tree
 [ROSE]: http://www.rosecompiler.org/
+[ANTLR]: http://www.antlr.org
+
 
