@@ -32,7 +32,13 @@ ppm-lower : ppm-lower.str
 ppm-to-fast : ppm-to-fast.str
 	$(ST_PATH)/strc -i ppm-to-fast.str $(CFLAGS) $(LDFLAGS) --main io-ppm-to-fast
 
-check :
+check : ppm-to-fast
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | pp-aterm
+
+check-pp : ppm-to-fast
+	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | $(TO_PP) | ast2text -p $(PP)
+
+check-parse :
 	sglri -p $(TBL) -i testfile.f90 | pp-aterm
 
 check-fast : ppm-to-fast
@@ -43,9 +49,6 @@ check-orig : ppm-to-fast
 
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
-
-check-ppm : ppm-to-fast
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | pp-aterm
 
 check-lower : ppm-lower
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-lower | $(TO_PP) | ast2text -p $(PP)
