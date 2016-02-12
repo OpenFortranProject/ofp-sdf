@@ -4,17 +4,9 @@ imports
    libstratego-lib
    FAST
    PPM
-   ofp-simplify
-//   ofp2fast
 
 signature
   constructors
-
-  ALLOCATED : ALLOCATED
-  INTERNAL  : INTERNAL
-
-  clMemObject : symbol -> clMemObject
-
 
 strategies //=================START OF STRATEGIES============================
 
@@ -23,261 +15,65 @@ strategies //=================START OF STRATEGIES============================
 
 // ppm-to-fast
 // -----------
-// 1. Move declarations from exec list to decl list as they may be wrong because ImplicitPostfixStmt not
-//    recognized by ofp2fast strategy.
-// 2. Get symbol implicit suffix list [(type,suffix)]
-// 1. get implicit suffix list [(type,suffix)]
-// 2. get var list with (type,suffix) -> hashtable lt -> ("var", (type,suffix))
-// 3. add type declaration for each var in lt in a scope
-
+// 1. Move declarations from exec list to decl list as they may be wrong.
+//      - because ImplicitPostfixStmt not recognized by ofp2fast strategy.
+// 2. Add explicit type declarations based on ImplicitPostfixStmt
+// 3. Remove the (now unneeded) ImplicitPostfixStmt
+//
   ppm-to-fast =
-{ st,lt,save
-        :  ?Program(units)
-        ;  new-hashtable => st
-        ;  new-hashtable => lt
-        ;  !Program(units)
-        ;  topdown(try(ppm-fixup-decl-part))
-  ;debug(!".....................")
-
-// ? only traverse scopes, creating hashtable and then adding decls ?
-//        ;  topdown(try(fast-get-symbols(|st)))
-        ;  topdown(try(ppm-add-type-decls(|st)))
-        ;  topdown(try(ppm-remove-affix-stmts))
-        ; ? save
-//        ;  topdown(try(ppm-get-symbols(|st,lt)))
-//        ;  bottomup(try(ppm-add-cl(|st,lt)))
-//        ;  topdown(try(fast-flatten-scope-parts))
-//        ;  bottomup(try(caf-lower-ast))  => save
-        ;  !"--------------------------------------------------------------------------------------"
-        ;  debug()
-        ;  !save
+{ save
+    :  ?Program(units)
+    ;  topdown(try(ppm-fixup-decl-part))
+    ;  topdown(try(ppm-add-type-decls))
+    ;  topdown(try(ppm-remove-affix-stmts))
+    ; ? save
+    ;  !"--------------------------------------------------------------------------------------"
+    ;  debug()
+    ;  !save
 }
 
 
 rules //========================START OF RULES===============================
-
-// Local thread group size
-// TODO - make dependent on dim and device
-opencl-local-size =
-     ![IntVal("16"),IntVal("8"),IntVal("1")]
-
-opencl-arg-shape(|st) =
-     ?PartRef(symbol,no-section-subscripts(),_)
-  ;  <hashtable-get(|symbol)> st
-  ;  ?(type,attrs)
-  ;  <fetch-elem(?Dimension(shape))> attrs
-  ;  <map(fast-dim-size)> shape
- <+  ![1,1,1]
-
-opencl-rank(|st) =
-     ?args
-  ;  <map(opencl-arg-rank(|st))> args
-  ;  <foldr(!1,max)> <id>
-
-opencl-arg-rank(|st) =
-     ?PartRef(symbol,no-section-subscripts(),_)
-  ;  <hashtable-get(|symbol)> st
-  ;  ?(type,attrs)
-  ;  <fetch-elem(?Dimension(shape))> attrs
-  ; <length> shape
- <+  !1
-
-// FAST strategies (MOVE TO fortran/trans)
-// ---------------
-
-fast-var-name =
-     ?VarRef(name)        ;  !name
- <+  ?VarDef(name)        ;  !name
-
-// Remove excess list elements inside of a Scope
-//   - occurs when a single statement is replaced by a list of statements
-fast-flatten-scope-parts =
-     ?Scope(decls,execs,funcs)
-  ;  !Scope(<flatten-list>decls, <flatten-list>execs, <flatten-list>funcs)
-
-fast-allocation-object =
-     ?Allocation(object,_,_)
-  ;  <fast-var-name> object
-
-// assume literals for now, otherwise get const from symbol table
-// TODO - use choice to use lb info
-fast-build-allocation-size(|st,obj) =
-     ?AllocateShapeSpec(no-lower-bound(),ub)
-  ;  !ub
-
-fast-dim-size =
-     ?Range(lb,ub)
-  ;  !Parens(Minus(ub,Parens(lb)))
-  ;  !Parens(Plus(<id>,"1"))
-
-// Size of a type in bytes
-// TODO - add other intrinsic types and support for kinds
-// TODO - could replace kind with size in bytes!!!!
-fast-type-size =
-     ?REAL()              ;  !"4"
- <+  ?INTEGER()           ;  !"4"
-
-fast-mult-op =
-     ?(l,r)
-  ;  !Mult(l,r)
-
-fast-allocation-size(|st) =
-     ?symbol
-  ;  <hashtable-get(|symbol)> st
-  ;  ?(type,attrs)
-  ;  <fetch-elem(?Dimension(shape))> attrs
-  ;  <map(fast-dim-size)> shape
-  ;  <foldr(!"1",fast-mult-op)> <id>
-  ;  <fast-mult-op> (<fast-type-size>type,<id>)
-
-fast-fix-no-lower-bound =
-     ?no-lower-bound()
-  ;  !"1"
-
-fast-update-allocation-dim =
-     ?(Range(lb,ub),Range(_,_))
-  ;  !Range(lb,ub)
-
-fast-update-allocation-codim =
-     ?(Range(lb,ub),Range(_,_))
-  ;  !Range(lb,ub)
-
-// Update the symbol table with information from an allocate statement
-fast-update-allocation-symbol(|st) =
-{shape,coshape,attrs
-  :  topdown(try(fast-fix-no-lower-bound))
-  ;  ?Allocation(VarRef(obj),alloc_shape,alloc_coshape)
-  ;  <hashtable-get(|obj)> st
-  ;  ?(type,decl_attrs)
-  ;  <elem> (ALLOCATABLE(),decl_attrs)   // ensure this symbol is allocatable
-  ;  <fetch-elem(?Dimension(decl_shape))> decl_attrs
-  ;  <fetch-elem(?Codimension(decl_coshape))> decl_attrs
-  ;  <zip(fast-update-allocation-dim)>   (alloc_shape,  decl_shape)   =>   shape
-  ;  <zip(fast-update-allocation-codim)> (alloc_coshape,decl_coshape) => coshape
-  ;  <filter( try(?Dimension(_)   ; !Dimension(shape))     )> decl_attrs
-  ;  <filter( try(?Codimension(_) ; !Codimension(coshape)) )> <id>
-  ;  <filter( try(?ALLOCATABLE()  ; !ALLOCATED()) )> <id> => attrs
-  ;  <hashtable-put(|obj,(type,attrs))> st
-}
-
-fast-build-use-stmt =
-     ?module_name
-  ;  !UseStmt(no-label(), no-module-nature(), module_name, [])
-
-fast-build-type-decl(|type,attrs) =
-     ?object_name
-  ;  !TypeDeclarationStmt(  no-label()
-                          , type
-                          , attrs
-                          , [Var(object_name,type,no-init())]
-                         )
-
-fast-build-block(|decls,execs) =
-     !Block(no-label()
-          , no-name()
-          , Scope(decls,execs,[])
-          , EndBlockStmt(no-label(),no-name()))
-
-
-// Utility strategies
-// ------------------
-
-cl-wrap-name =
-     is-string
-  ;  <conc-strings>("cl_", <id>, "_")
- +>  ?VarRef(name) 
-  ;  debug(!"CL_WRAP_NAME: ERROR isVarRef ------------------------------------------------")
-  ;  <conc-strings>("cl_", name, "_")
-
-cl-wrap-var =
-     ?VarRef(name) 
-  ;  <conc-strings>("cl_", name, "_")
- +>  ?VarDef(name) 
-  ;  <conc-strings>("cl_", name, "_")
- +>  is-string
-  ;  debug(!"CL_WRAP_VAR: ERROR is-string ------------------------------------------------")
-  ;  <conc-strings>("cl_", <id>, "_")
-
-ofp-ident
-  :  Var(ident,_,_) -> ident
-
-// Add a symbol to the symbol table
-st-add-symbol(|st,type,attrs) =
-     ?var
-  ;  <hashtable-put(|<ofp-ident>var,(type,attrs))> st
-
-// Add a symbol to the CAFe symbol table
-ct-add-symbol(|ct,type,attrs) =
-     ?symbol
-  ;  <hashtable-put(|symbol,(<cl-wrap-name>symbol,type,attrs))> ct
-
-ct-add-type-decl(|ct) =
-     ?ident
-  ;  <hashtable-get(|ident)> ct
-  ;  ?(clident,type,attrs)
-  ;  <fast-build-type-decl(|type,attrs)> clident
-
-
-// Build symbol table
-// ------------------
-
-// Add declared variables to symbol table
-//fast-get-symbols(|st) =
-//     ?TypeDeclarationStmt(label,type,attrs,vars)
-//  ;  <map(st-add-symbol(|st,type,attrs))> vars
-//  ;  !TypeDeclarationStmt(label,type,attrs,vars)
-
-// Get symbols specifically relevant to PPM
-// ----------------------------------------
-
-ppm-get-symbols(|st,ct) =
-     ?AssignmentStmt(label,lhs,rhs)
-//  ;  <ppm-add-subimage-symbol(|ct,lhs)> rhs
-  ;  !AssignmentStmt(label,lhs,rhs)
 
 
 // Add PPM variables to declarations
 // ---------------------------------
 
 // Insert type declaration for PPM identifiers
-ppm-add-type-decls(|junk_table) =
-{st, vt
-  :  ?Scope(decls,execs,funcs)
+ppm-add-type-decls =
+{ st, vt
+  :  ? Scope(decls,execs,funcs)
   ;  new-hashtable => st
   ;  new-hashtable => vt
   ;  !decls
   ;  topdown(try(ppm-get-suffix-symbols(|st)))
-; <hashtable-getlist> st
-;debug(!"-----suffix hashtable---------")
-  ;  !execs
+  ;  ! execs
   ;  topdown(try(ppm-get-suffix-variables(|st,vt)))
-; <hashtable-getlist> vt
-;debug(!"-----variable hashtable---------")
-  ;  <map(ppm-add-type-decl(|[]))> <id>
-  ;  ? new_decls
-;debug(!"-----new_decls---------")
-  ;   !Scope(<concat>[decls,new_decls],execs,funcs)
+  ;  <hashtable-getlist> vt
+  ;  <map(ppm-add-type-decl)> <id>
+  ;  ! Scope(<concat>[decls,<id>],execs,funcs)
 }
 
-ppm-add-type-decl(|list) =
+// Build new TypeDeclarationStmt
+ppm-add-type-decl =
      ? (name, type)
-;debug(!"-----(name,type)---------")
-  ;  ! TypeDeclarationStmt(no-label(), type, [], [Var(name, type, no-init())])
+  ;  ! TypeDeclarationStmt(no-label(), type, [], [Var(name,type,no-init())])
 
+// Create a symbol table of (suffix,type) key/value pairs
 ppm-get-suffix-symbols(|lt) =
-     ?ImplicitPostfixStmt(label,spec_list,eos)
-  ;  <flatten-list> <map(ppm-add-affix-spec(|lt))> spec_list
-  ;  !ImplicitPostfixStmt(label,spec_list,eos)
+     ? ImplicitPostfixStmt(label,suffix_list,eos)
+  ;  <flatten-list> <map(ppm-add-affix-spec(|lt))> suffix_list
+  ;  ! ImplicitPostfixStmt(label,suffix_list,eos)
 
+// Find all variables that need type declaration based on suffix
 ppm-get-suffix-variables(|st,vt) =
      ? AssignmentStmt(label,VarDef(var),lhs)
-;    ! var
-;debug(!"-----variable---------")
-; <string-ends-with(|"gp1")> var
-  ; <hashtable-keys> st
+  ;  <hashtable-keys> st
   ;  <map(ppm-add-affix-variable(|st,vt,var))> <id>
   ;  ! AssignmentStmt(label,VarDef(var),lhs)
 
+// Create a symbol table of (variable,type) key/value pairs.
+//   - the type will be based on the suffix of the variable
 ppm-add-affix-variable(|st,vt,var) =
      ? suffix
   ;  <string-ends-with(|suffix)> var
@@ -287,103 +83,51 @@ ppm-add-affix-variable(|st,vt,var) =
   ;  ! suffix
  <+  ! [ ]
 
+// Add suffix strings and type to the (suffix,type) table
 ppm-add-affix-spec(|lt) =
      ? ImplicitAffixSpec(type,spec_list)
   ;  <map(ppm-add-affix-symbol(|lt,type))> spec_list
   ;  ! ImplicitAffixSpec(type,spec_list)
 
+// Add this suffix and type to the (suffix,type) table
 ppm-add-affix-symbol(|lt,type) =
      ? quoted_affix
   ;  <explode-string> quoted_affix
-  ;  <flatten-list> <map(ppm-remove-quote)> <id>      // remove quoted string, e.g., "\"_suffix\""
+  ;  <flatten-list> <map(ppm-remove-quote)> <id>  // remove quoted strings, e.g., "\"str\""
   ;  <implode-string> <id>
   ;  ? affix
   ;  <hashtable-put(|affix,type)> lt
   ;  ! affix
 
+// Remove quote character (34)
 ppm-remove-quote =
      ? 34   ;  ! []
  <+  ? num  ;  ! num
 
-
-// The fast-fixup-spec-part strategy transfers statements in the execution-part to the
-// specification-part.  The statements transferred are in the execution-part because
-// of ambiguities in the grammar related to format, entry, and data statements being
-// in both the declaration-construct and the execution-part-construct.
-//
 is-specification-part =
-     ?ImplicitStmt(_,_)
- +>  ?ImplicitPostfixStmt(_,_,_)
- +>  ?ParameterStmt(_,_)
- +>  ?TypeDeclarationStmt(_,_,_,_)
+     ? ImplicitStmt(_,_)
+ +>  ? ImplicitPostfixStmt(_,_,_)
+ +>  ? ParameterStmt(_,_)
+ +>  ? TypeDeclarationStmt(_,_,_,_)
 
+// The ppm-fixup-spec-part strategy transfers statements in the execution list to
+// the declaration list.  The statements transferred are in the execution list because
+// ofp2fast doesn't recogize ImplicitPostfixStmt and so fast-fixup-spec-part may fail
+// to copy it to the correct list.
+//
 ppm-fixup-decl-part =
 {decls
-  :  ?Scope(slist,elist,funcs)
+  :  ? Scope(slist,elist,funcs)
   ;  <concat>[slist,<take-while(is-specification-part)> elist] => decls
   ;  <drop-while(is-specification-part)> elist
-  ;  !Scope(decls,<id>,funcs)
+  ;  ! Scope(decls,<id>,funcs)
 }
 
 is-affix-stmt =
      ? ImplicitPostfixStmt(_,_,_)
-;debug(!"..................affix................")
 
+// Remove all ImplicitPostfixStmts from the decl list
 ppm-remove-affix-stmts =
-{decls
-  :  ? Scope(slist,elist,funcs)
-;debug(!"..................scope1................")
-  ;  <drop-while(is-affix-stmt)> slist
-  ;  ! Scope(<id>,elist,funcs)
-;debug(!"..................scope2................")
-}
-
-// Add variables associated with ForOpenCL calls
-//    focl_intvar__, cl_status__, cl_size__, ch_ng__(3)
-//ppm-add-cl(|st,ct) =
-//     ?Scope(decls,execs,funcs)
-//  ;  <concat> [<id>, <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct]
-//  ;  <concat> [<id>, [<fast-build-type-decl(|
-//                          INTEGER(no-kind()),[])> "focl_intvar__"]]
-//  ;  !Scope(<id>,execs,funcs)
-
-// Replace assignment statements with memory transfer with read/writeBuffer
-ppm-add-cl(|st,ct) =
-     ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj))
-  ;  <fast-allocation-size(|st)> var
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
-       , AssignmentStmt(no-label(),VarDef("cl_status__")
-         , FunctionReference("writeBuffer"
-            ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]))
-      ]
- +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]))
-  ;  <fast-allocation-size(|st)> obj
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
-       , AssignmentStmt(no-label(),VarDef("cl_status__")
-         , FunctionReference("readBuffer"
-            ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]))
-      ]
-
-// Return the name of the call statement
-fast-call-stmt-name =
-     ?CallStmt(label, name, args)
-   ; !name
-
-// Lower CAF components to serial
-// ------------------------------
-caf-lower-ast =
-     ?Codimension(_)
-  ;  ![]
-
-caf-lower-ast =
-     ?EntityDecl(name,array_spec,coarray_spec,char_length,init)
-  ;  !EntityDecl(name,array_spec,          [],char_length,init)
-
-// This is just used to flatten the attribute list after removing Codimension attribute
-caf-lower-ast =
-     ?TypeDeclarationStmt(label,type,attrs,vars)
-  ;  !TypeDeclarationStmt(label,type,<flatten-list>attrs,vars)
-
-caf-lower-ast =
-     ?Allocation(var,shape,coshape)
-  ;  !Allocation(var,shape,     [])
+     ? Scope(decls,execs,funcs)
+  ;  <drop-while(is-affix-stmt)> decls
+  ;  ! Scope(<id>,execs,funcs)
