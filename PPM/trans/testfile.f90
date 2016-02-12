@@ -1,6 +1,6 @@
 Program ppm_test
 
-   implicit postfix type(Brickett) ("gp1")
+   implicit postfix type(Brickett) ("gp1", "gp2")
 
    integer, parameter :: nssq=13
 
