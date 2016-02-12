@@ -3,7 +3,9 @@ module ppm-to-fast
 imports
    libstratego-lib
    FAST
+   PPM
    ofp-simplify
+//   ofp2fast
 
 signature
   constructors
@@ -19,24 +21,36 @@ strategies //=================START OF STRATEGIES============================
   io-ppm-to-fast =
     io-wrap(ppm-to-fast)
 
+// ppm-to-fast
+// -----------
+// 1. Move declarations from exec list to decl list as they may be wrong because ImplicitPostfixStmt not
+//    recognized by ofp2fast strategy.
+// 2. Get symbol implicit suffix list [(type,suffix)]
+// 1. get implicit suffix list [(type,suffix)]
+// 2. get var list with (type,suffix) -> hashtable lt -> ("var", (type,suffix))
+// 3. add type declaration for each var in lt in a scope
+
   ppm-to-fast =
 { st,lt,save
         :  ?Program(units)
         ;  new-hashtable => st
         ;  new-hashtable => lt
         ;  !Program(units)
-// 1. get implicit suffix list [(type,suffix)]
-// 2. get var list with (type,suffix) -> hashtable lt -> ("var", (type,suffix))
-// 3. add type declaration for each var in lt in a scope
+        ;  topdown(try(ppm-fixup-decl-part))
+  ;debug(!".....................")
+
 // ? only traverse scopes, creating hashtable and then adding decls ?
-        ;  topdown(try(fast-get-symbols(|st)))
+//        ;  topdown(try(fast-get-symbols(|st)))
+        ;  topdown(try(ppm-add-type-decls(|st)))
+        ;  topdown(try(ppm-remove-affix-stmts))
+        ; ? save
 //        ;  topdown(try(ppm-get-symbols(|st,lt)))
 //        ;  bottomup(try(ppm-add-cl(|st,lt)))
 //        ;  topdown(try(fast-flatten-scope-parts))
 //        ;  bottomup(try(caf-lower-ast))  => save
         ;  !"--------------------------------------------------------------------------------------"
         ;  debug()
-//        ;  !save
+        ;  !save
 }
 
 
@@ -164,70 +178,6 @@ fast-build-block(|decls,execs) =
           , Scope(decls,execs,[])
           , EndBlockStmt(no-label(),no-name()))
 
-// Allocate memory on OpenCL device via call to createBuffer()
-opencl-build-create-buffer(|st,device) =
-     ?obj
-  ;  <fast-allocation-size(|st)> obj
-  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
-       , AssignmentStmt(no-label(),<cl-wrap-name> obj
-          , FunctionReference("createBuffer"
-             , [device,"CL_MEM_READ_WRITE",VarRef("cl_size__")
-               ,"C_NULL_PTR"]))
-      ]
-
-// Deallocate memory on OpenCL device via call to releaseMemObject()
-opencl-build-release-buffer(|st,device) =
-    !AssignmentStmt(no-label(),VarDef("cl_status__")
-          , FunctionReference("releaseMemObject", [<cl-wrap-var> <id>]))
-
-// Create an OpenCL kernel object via call to createKernel
-//TODO - check selector against device to ensure they refer to same image
-opencl-build-create-kernel(|ct,device) =
-     ?obj
-  ;  <hashtable-get(|obj)> ct
-  ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
-  ;  !AssignmentStmt(no-label(),kernel
-         , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]))
-  ;  ![<id>]
- <+  ![    ]
-
-// Create an OpenCL kernel object via call to createKernel
-//TODO - check selector against device to ensure they refer to same image
-opencl-build-set-kernel-args(|ct,device) =
-{kernel_arg_funcs
-  :  ?(obj,args)
-  ;  <hashtable-get(|obj)> ct
-  ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
-//  ;  <lookup> ("args", annotations)
-  ;  <map(opencl-build-set-kernel-arg(|ct,kernel))> <add-indices> args  => kernel_arg_funcs
-  ;  <flatten-list> [kernel_arg_funcs]
- <+  ![]
-}
-
-// Add an argument to an OpenCL kernel object via call to setKernelArg
-//
-// TODO-FIXME: need to check procedure interface for argument type if arg is an expression
-opencl-build-set-kernel-arg(|ct,kernel) =
-     ?(index, VarRef(arg))                                    // scalar variables
-  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
-         , FunctionReference("setKernelArg"
-              ,[kernel,<subti>(index,1),arg]))
- <+  ?(index, PartRef(arg,_,selector))                        // array variables
-  ;  <opencl-kernel-arg-type(|ct)> <hashtable-get(|arg)> ct
-  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
-         , FunctionReference("setKernelArg"
-              ,[kernel,<subti>(index,1),<id>]))
- <+  ?(index, expr)                                            // assume int scalar
-  ;  !AssignmentStmt(no-label(),VarDef("focl_intvar__"), expr)
-  ;  <concat> [[<id>],
-               [AssignmentStmt(no-label(),VarDef("cl_status__")
-                   , FunctionReference("setKernelArg"
-                       ,[kernel,<subti>(index,1),VarRef("focl_intvar__")]))] ]
-
-opencl-kernel-arg-type(|ct) =
-     ?(cl_symbol, DerivedType("CLBuffer",_),_)
-  ;  !clMemObject(cl_symbol)
-
 
 // Utility strategies
 // ------------------
@@ -250,13 +200,6 @@ cl-wrap-var =
 
 ofp-ident
   :  Var(ident,_,_) -> ident
-
-// add subimage device
-//
-ppm-add-subimage-symbol(|ct,lhs) =
-     ?PartRef("get_subimage",args,no-image-selector())
-  ;  <hashtable-put(|<fast-var-name>lhs, (<cl-wrap-var>lhs,DerivedType("CLDevice",[]),[]))> ct
-  ;  !PartRef("get_subimage",args,no-image-selector())
 
 // Add a symbol to the symbol table
 st-add-symbol(|st,type,attrs) =
@@ -284,14 +227,6 @@ ct-add-type-decl(|ct) =
 //  ;  <map(st-add-symbol(|st,type,attrs))> vars
 //  ;  !TypeDeclarationStmt(label,type,attrs,vars)
 
-// Update symbol table with information from assignment statements
-fast-get-symbols(|st) =
-     ?AssignmentStmt(label,VarDef(name),lhs)
-  ;  <hashtable-put(|name,"dimension(nssq)")> st
-; <hashtable-getlist> st
-;debug(!"-----assign---------")
-  ;  !AssignmentStmt(label,VarDef(name),lhs)
-
 // Get symbols specifically relevant to PPM
 // ----------------------------------------
 
@@ -304,51 +239,113 @@ ppm-get-symbols(|st,ct) =
 // Add PPM variables to declarations
 // ---------------------------------
 
-// Replace get_subimage call with ForOpenCl counterpart
-//  - also create kernel calls here
-//     - TODO: fix for multiple devices
-ppm-add-cl(|st,ct) =
-     ?AssignmentStmt(label,VarDef(lhs),PartRef("get_subimage",[arg],_))
-  ;  <flatten-list> <map(opencl-build-create-kernel(|ct,lhs))> <hashtable-keys> ct
-  ;  <concat> [[AssignmentStmt(label,VarDef(lhs),FunctionReference("get_subimage",
-                                      [arg,<cl-wrap-name>lhs]))], <id>]
+// Insert type declaration for PPM identifiers
+ppm-add-type-decls(|junk_table) =
+{st, vt
+  :  ?Scope(decls,execs,funcs)
+  ;  new-hashtable => st
+  ;  new-hashtable => vt
+  ;  !decls
+  ;  topdown(try(ppm-get-suffix-symbols(|st)))
+; <hashtable-getlist> st
+;debug(!"-----suffix hashtable---------")
+  ;  !execs
+  ;  topdown(try(ppm-get-suffix-variables(|st,vt)))
+; <hashtable-getlist> vt
+;debug(!"-----variable hashtable---------")
+  ;  <map(ppm-add-type-decl(|[]))> <id>
+  ;  ? new_decls
+;debug(!"-----new_decls---------")
+  ;   !Scope(<concat>[decls,new_decls],execs,funcs)
+}
+
+ppm-add-type-decl(|list) =
+     ? (name, type)
+;debug(!"-----(name,type)---------")
+  ;  ! TypeDeclarationStmt(no-label(), type, [], [Var(name, type, no-init())])
+
+ppm-get-suffix-symbols(|lt) =
+     ?ImplicitPostfixStmt(label,spec_list,eos)
+  ;  <flatten-list> <map(ppm-add-affix-spec(|lt))> spec_list
+  ;  !ImplicitPostfixStmt(label,spec_list,eos)
+
+ppm-get-suffix-variables(|st,vt) =
+     ? AssignmentStmt(label,VarDef(var),lhs)
+;    ! var
+;debug(!"-----variable---------")
+; <string-ends-with(|"gp1")> var
+  ; <hashtable-keys> st
+  ;  <map(ppm-add-affix-variable(|st,vt,var))> <id>
+  ;  ! AssignmentStmt(label,VarDef(var),lhs)
+
+ppm-add-affix-variable(|st,vt,var) =
+     ? suffix
+  ;  <string-ends-with(|suffix)> var
+  ;  <hashtable-get(|suffix)> st
+  ;  ? type
+  ;  <hashtable-put(|var,type)> vt
+  ;  ! suffix
+ <+  ! [ ]
+
+ppm-add-affix-spec(|lt) =
+     ? ImplicitAffixSpec(type,spec_list)
+  ;  <map(ppm-add-affix-symbol(|lt,type))> spec_list
+  ;  ! ImplicitAffixSpec(type,spec_list)
+
+ppm-add-affix-symbol(|lt,type) =
+     ? quoted_affix
+  ;  <explode-string> quoted_affix
+  ;  <flatten-list> <map(ppm-remove-quote)> <id>      // remove quoted string, e.g., "\"_suffix\""
+  ;  <implode-string> <id>
+  ;  ? affix
+  ;  <hashtable-put(|affix,type)> lt
+  ;  ! affix
+
+ppm-remove-quote =
+     ? 34   ;  ! []
+ <+  ? num  ;  ! num
+
+
+// The fast-fixup-spec-part strategy transfers statements in the execution-part to the
+// specification-part.  The statements transferred are in the execution-part because
+// of ambiguities in the grammar related to format, entry, and data statements being
+// in both the declaration-construct and the execution-part-construct.
+//
+is-specification-part =
+     ?ImplicitStmt(_,_)
+ +>  ?ImplicitPostfixStmt(_,_,_)
+ +>  ?ParameterStmt(_,_)
+ +>  ?TypeDeclarationStmt(_,_,_,_)
+
+ppm-fixup-decl-part =
+{decls
+  :  ?Scope(slist,elist,funcs)
+  ;  <concat>[slist,<take-while(is-specification-part)> elist] => decls
+  ;  <drop-while(is-specification-part)> elist
+  ;  !Scope(decls,<id>,funcs)
+}
+
+is-affix-stmt =
+     ? ImplicitPostfixStmt(_,_,_)
+;debug(!"..................affix................")
+
+ppm-remove-affix-stmts =
+{decls
+  :  ? Scope(slist,elist,funcs)
+;debug(!"..................scope1................")
+  ;  <drop-while(is-affix-stmt)> slist
+  ;  ! Scope(<id>,elist,funcs)
+;debug(!"..................scope2................")
+}
 
 // Add variables associated with ForOpenCL calls
 //    focl_intvar__, cl_status__, cl_size__, ch_ng__(3)
-ppm-add-cl(|st,ct) =
-     ?Scope(decls,execs,funcs)
-  ;  <concat> [[<fast-build-use-stmt>"ForOpenCL"], decls]
-  ;  <concat> [<id>, <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct]
-  ;  <concat> [<id>, [<fast-build-type-decl(|
-                          INTEGER(no-kind()),[])> "focl_intvar__"]]
-  ;  <concat> [<id>, [<fast-build-type-decl(|
-                          INTEGER(Kind(VarRef("cl_int"  ))),[])> "cl_status__"]]
-  ;  <concat> [<id>, [<fast-build-type-decl(|
-                          INTEGER(Kind(VarRef("c_size_t"))),[])> "cl_size__"]]
-  ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , INTEGER(Kind(VarRef("c_size_t")))
-                        , []
-                        , [Var("cl_gwo__",
-                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
-                                     , [Range(no-lower-bound(), IntVal("3"))],[]), no-init())]
-                        )]]
-  ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , INTEGER(Kind(VarRef("c_size_t")))
-                        , []
-                        , [Var("cl_gws__",
-                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
-                                     , [Range(no-lower-bound(), IntVal("3"))],[]), no-init())]
-                        )]]
-  ;  <concat> [<id>, [TypeDeclarationStmt(no-label()
-                        , INTEGER(Kind(VarRef("c_size_t")))
-                        , []
-                        , [Var("cl_lws__",
-                             ArrayType(INTEGER(Kind(VarRef("c_size_t")))
-                                     , [Range(no-lower-bound(), IntVal("3"))],[])
-                                          , Init(ArrayConstructor(AcSpec(no-type-spec()
-                                                                         ,<opencl-local-size>))))]
-                        )]]
-  ;  !Scope(<id>,execs,funcs)
+//ppm-add-cl(|st,ct) =
+//     ?Scope(decls,execs,funcs)
+//  ;  <concat> [<id>, <map(ct-add-type-decl(|ct))> <hashtable-keys()> ct]
+//  ;  <concat> [<id>, [<fast-build-type-decl(|
+//                          INTEGER(no-kind()),[])> "focl_intvar__"]]
+//  ;  !Scope(<id>,execs,funcs)
 
 // Replace assignment statements with memory transfer with read/writeBuffer
 ppm-add-cl(|st,ct) =
