@@ -319,23 +319,20 @@ ofp-to-ast:    EntityDecl(name,dims,codims,no-char-length(),init)
             -> Var(name,ArrayType(unknown-type(),dims,codims),init)
 
 //R510
-//  ofp-to-ast:  DeferredCoshape()                -> DimSpec(no-lower-bound(), COLON())
-  ofp-to-ast:  DeferredCoshape()                -> Range(no-lower-bound(), COLON())
+ofp-to-ast:  DeferredCoshape()                  -> Range(no-lower-bound(), COLON())
 
 //R511
-  ofp-to-ast:  ExplicitCoshape(lower,upper)     -> Range(lower,upper)
+ofp-to-ast:  ExplicitCoshape(lower,upper)       -> Range(lower,upper)
+ofp-to-ast:  LowerCobound(lower)                -> lower
 
 //R516
 ofp-to-ast:  ExplicitShape(lower,upper)         -> Range(lower,upper)
-//  ofp-to-ast:  ExplicitShapeSpecList(list)    -> OfpExplicitShape(list)
 
 //R519
-//  ofp-to-ast:  AssumedShapeSpec(AssumedOrDeferredShapeSpec()) -> DimSpec(None(),":")
 ofp-to-ast:  AssumedShape(lower)                -> Range(lower,COLON())
 
 //R520
-//  ofp-to-ast:  DeferredShape()                -> DimSpec(no-lower-bound(), COLON())
-  ofp-to-ast:  DeferredShape()                  -> Range(no-lower-bound(), COLON())
+ofp-to-ast:  DeferredShape()                    -> Range(no-lower-bound(), COLON())
 
 //R521
 //  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list), lower)
