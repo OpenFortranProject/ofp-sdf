@@ -11,3 +11,14 @@ regular tree grammar
     SourceFile                        -> SourceFile(<string>)
 
     Routine                           -> Routine(<string>)
+    PDBFile                           -> PDBFile(location)
+
+    Location                          -> Location(<int>, <int>, <int>, <int>)
+    Location                          -> Location(<string>)
+    Location                          -> Location()
+
+    PDBFile                           -> PDBFile(Location)
+
+
+
+
