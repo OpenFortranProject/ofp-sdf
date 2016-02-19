@@ -1,0 +1,74 @@
+module FixedForm
+
+exports 
+
+  sorts
+
+    START DIGIT LETTER CHARS BLANKS CONT OTHER EOL WS WORD
+    COMMENT DIRECTIVE
+    LABEL LABEL1 LABEL2 LABEL3 LABEL4 LABEL5
+    File Line Word Eol Separator
+
+  context-free start-symbols
+
+    File
+
+  lexical syntax
+
+    [\n]                        -> EOL
+
+    [0-9]                       -> DIGIT
+    [a-zA-Z]                    -> LETTER
+   ~[a-zA-Z0-9\n]               -> OTHER
+    (DIGIT|LETTER|OTHER)*       -> CHARS
+%%  "&"                         -> IGNORE    % predefined sort (maybe) %
+                                             % REJECT also a predefined sort %
+                                             % CHAR   also a predefined sort %
+
+%%    "!$OFP"               -> DIRECTIVE
+    "!"  CHARS                  -> COMMENT
+    "c"  CHARS                  -> COMMENT
+    "C"  CHARS                  -> COMMENT
+%%    "c$" CHARS                  -> DIRECTIVE
+%%    "C$" CHARS                  -> DIRECTIVE
+    [\ ]*                       -> BLANKS 
+
+%% start of a non-labeled statement
+   "      "                     -> START
+   "     0"                     -> START
+   "     " ~[\ 0]               -> CONT
+
+%% Number as label: max 5 digits with space in 6th pos
+%%
+    [0-9]                       -> LABEL1
+    [0-9][0-9]                  -> LABEL2
+    [0-9][0-9][0-9]             -> LABEL3
+    [0-9][0-9][0-9][0-9]        -> LABEL4
+    [0-9][0-9][0-9][0-9][0-9]   -> LABEL5
+
+    [\ \t]+                     -> WS
+    [A-Za-z0-9\;\:\=]+          -> WORD
+
+  lexical restrictions
+    WORD -/- [A-Za-z0-9\;\:\=\!]
+    WS   -/- [\ \t]
+
+  context-free syntax
+
+    Line*                      -> File {cons("File")}
+
+    COMMENT                Eol -> Line {cons("Comment")}
+%%    DIRECTIVE              Eol -> Line {cons("Directive")}
+    BLANKS                 Eol -> Line {cons("BlankLine")}
+
+%%    Separator Word*        Eol -> Line  {cons("Line")}
+%%    Separator COMMENT      Eol -> Line  {cons("Comment")}
+
+%%    WORD Separator             -> Word {cons("Word")}
+%%    WS                         -> Separator {cons("ws")}
+%%    % empty %                  -> Separator {cons("no-ws")}
+
+    EOL                        -> Eol {cons("eol")}
+
+
+
