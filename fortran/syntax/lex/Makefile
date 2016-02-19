@@ -1,36 +1,21 @@
-TEST_DIR = ../xmpl
 
-STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoStratego.tbl
 
-SDF_FILES =  TIL-layout.sdf           \
-             TIL-literals.sdf         \
-             TIL-expressions.sdf      \
-             TIL-statements.sdf       \
-             TIL-calls.sdf            \
-             TIL.sdf
+all : FixedForm.tbl FreeForm.tbl
 
-%.tbl : %
-	sdf2table -i $< -o $@
-
-all : TIL.tbl
-
-TIL.def : TIL.sdf
+FixedForm.def : FixedForm.sdf
 	pack-sdf -i $< -o $@
 
-TIL.tbl : TIL.def
-	sdf2table -i $< -o $@ -m TIL
+FixedForm.tbl : FixedForm.def
+	sdf2table -i $< -o $@ -m FixedForm
 
-TIL.rtg : TIL.def
-	sdf2rtg -i $< -o $@ -m TIL
+FreeForm.def : FreeForm.sdf
+	pack-sdf -i $< -o $@
 
-TIL.str : TIL.rtg
-	rtg2sig -i $< -o $@
+FreeForm.tbl : FreeForm.def
+	sdf2table -i $< -o $@ -m FreeForm
 
-check : TIL.tbl
-	sglri -p TIL.tbl -i testfile.til | pp-aterm
-
-pretty : TIL.tbl
-	sglri -p TIL.tbl -i $(TEST_DIR)/test1.til | pp-aterm
+check : FixedForm.tbl
+	sglri -p FixedForm.tbl -i testfile.til | pp-aterm
 
 clean :
 	rm -f *.def *.tbl
