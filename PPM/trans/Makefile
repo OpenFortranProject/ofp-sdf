@@ -41,12 +41,6 @@ check-pp : ppm-to-fast
 check-parse :
 	sglri -p $(TBL) -i testfile.f90 | pp-aterm
 
-check-fast : ppm-to-fast
-	@sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | $(TO_PP) | ast2text -p $(PP)
-
-check-orig : ppm-to-fast
-	@sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | ppm-to-fast | $(TO_PP) | ast2text -p $(PP)
-
 check-fast :
 	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
 
