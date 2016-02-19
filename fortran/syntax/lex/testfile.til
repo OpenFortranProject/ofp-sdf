@@ -1,0 +1,8 @@
+! TIL program computing the factorial
+   
+   !var n;
+!!var x;
+ var fact; 
+fact  :=   1;
+    
+var  
