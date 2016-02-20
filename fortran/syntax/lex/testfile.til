@@ -1,5 +1,7 @@
 ! comment line 1
 C comment line 2
-
+#ifdef 0
+!$OFP
 c comment line 3
 
+12345 integer :: i
