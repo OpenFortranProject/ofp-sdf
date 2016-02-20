@@ -5,9 +5,8 @@ exports
   sorts
 
     EOL WS DIGIT LETTER CHARS
-    LABEL START STARTCHAR CONTCHAR
-    COMMENT DIRECTIVE PREPROCESS
-    StartChar ContChar Eol OptWS
+    LABEL START STARTCHAR CONTCHAR COMMENTCHAR
+    StartChar ContChar CommentChar Eol OptWS
     File Line
 
   context-free start-symbols
@@ -27,12 +26,7 @@ exports
                                              % REJECT also a predefined sort %
                                              % CHAR   also a predefined sort %
 
-    "!"   [\$] CHARS            -> DIRECTIVE
-    [cC]  [\$] CHARS            -> DIRECTIVE
-    "!"  ~[\$] CHARS            -> COMMENT
-    [cC] ~[\$] CHARS            -> COMMENT
-    "#"        CHARS            -> PREPROCESS
-
+    [cC\!]                      -> COMMENTCHAR
 
 %% start of a non-labeled statement
 
@@ -64,25 +58,25 @@ exports
     [0-9][0-9][0-9][0-9][0-9]   -> LABEL
 
   lexical restrictions
-    WS   -/- [\ \t]
+     WS  -/- [\ \t]
 
   context-free syntax
 
     Line*                       -> File {cons("File")}
 
-    COMMENT                 Eol -> Line {cons("Comment")}
-    PREPROCESS              Eol -> Line {cons("Preprocess")}
-    DIRECTIVE               Eol -> Line {cons("Directive")}
     OptWS                   Eol -> Line {cons("BlankLine")}
 
+    "#"             CHARS   Eol -> Line {cons("Preprocess")}
+    CommentChar     CHARS   Eol -> Line {cons("Comment")}
     START StartChar CHARS   Eol -> Line {cons("Stmt")}
     LABEL StartChar CHARS   Eol -> Line {cons("LabeledStmt")}
     START  ContChar CHARS   Eol -> Line {cons("Continuation")}
 
     EOL                         -> Eol {cons("eol")}
 
-    CONTCHAR                    -> ContChar  {cons("conchar")}
-    STARTCHAR                   -> StartChar {cons("stchar")}
+    COMMENTCHAR                 -> CommentChar {cons("comchar")}
+    CONTCHAR                    -> ContChar    {cons("conchar")}
+    STARTCHAR                   -> StartChar   {cons("stchar")}
 
     WS                          -> OptWS {cons("ws")}
     % empty %                   -> OptWS {cons("no-ws")}
