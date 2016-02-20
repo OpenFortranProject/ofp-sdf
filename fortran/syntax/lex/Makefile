@@ -15,7 +15,7 @@ FreeForm.tbl : FreeForm.def
 	sdf2table -i $< -o $@ -m FreeForm
 
 check : FixedForm.tbl
-	sglri -p FixedForm.tbl -i testfile.til | pp-aterm
+	sglri -p FixedForm.tbl -i testfile.F | pp-aterm
 
 clean :
 	rm -f *.def *.tbl
