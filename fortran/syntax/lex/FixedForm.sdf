@@ -4,10 +4,10 @@ exports
 
   sorts
 
-    START DIGIT LETTER CHARS BLANKS CONT OTHER EOL WS WORD
-    COMMENT DIRECTIVE
-    LABEL LABEL1 LABEL2 LABEL3 LABEL4 LABEL5
-    File Line Word Eol Separator
+    START DIGIT LETTER CHARS CONT OTHER EOL WS
+    COMMENT DIRECTIVE PREPROS TEXT
+    LABEL
+    File Line Eol
 
   context-free start-symbols
 
@@ -20,18 +20,19 @@ exports
     [0-9]                       -> DIGIT
     [a-zA-Z]                    -> LETTER
    ~[a-zA-Z0-9\n]               -> OTHER
-    (DIGIT|LETTER|OTHER)*       -> CHARS
+   ~[\n]*                       -> CHARS
+
 %%  "&"                         -> IGNORE    % predefined sort (maybe) %
                                              % REJECT also a predefined sort %
                                              % CHAR   also a predefined sort %
 
-%%    "!$OFP"               -> DIRECTIVE
-    "!"  CHARS                  -> COMMENT
-    "c"  CHARS                  -> COMMENT
-    "C"  CHARS                  -> COMMENT
-%%    "c$" CHARS                  -> DIRECTIVE
-%%    "C$" CHARS                  -> DIRECTIVE
-    [\ ]*                       -> BLANKS 
+    "!"   [\$] CHARS            -> DIRECTIVE
+    [cC]  [\$] CHARS            -> DIRECTIVE
+    "!"  ~[\$] CHARS            -> COMMENT
+    [cC] ~[\$] CHARS            -> COMMENT
+    "#"        CHARS            -> PREPROS
+
+   ~[\!cC\#\n] CHARS            -> TEXT
 
 %% start of a non-labeled statement
    "      "                     -> START
@@ -40,17 +41,15 @@ exports
 
 %% Number as label: max 5 digits with space in 6th pos
 %%
-    [0-9]                       -> LABEL1
-    [0-9][0-9]                  -> LABEL2
-    [0-9][0-9][0-9]             -> LABEL3
-    [0-9][0-9][0-9][0-9]        -> LABEL4
-    [0-9][0-9][0-9][0-9][0-9]   -> LABEL5
+    [0-9][0-9][0-9][0-9][0-9]   -> LABEL
+    [0-9][0-9][0-9][0-9]        -> LABEL
+    [0-9][0-9][0-9]             -> LABEL
+    [0-9][0-9]                  -> LABEL
+    [0-9]                       -> LABEL
 
     [\ \t]+                     -> WS
-    [A-Za-z0-9\;\:\=]+          -> WORD
 
   lexical restrictions
-    WORD -/- [A-Za-z0-9\;\:\=\!]
     WS   -/- [\ \t]
 
   context-free syntax
@@ -58,8 +57,15 @@ exports
     Line*                      -> File {cons("File")}
 
     COMMENT                Eol -> Line {cons("Comment")}
-%%    DIRECTIVE              Eol -> Line {cons("Directive")}
-    BLANKS                 Eol -> Line {cons("BlankLine")}
+    PREPROS                Eol -> Line {cons("Preprocess")}
+    DIRECTIVE              Eol -> Line {cons("Directive")}
+                           Eol -> Line {cons("BlankLine")}
+
+    TEXT                   Eol -> Line {cons("Text")}
+    OptWS LABEL CHARS      Eol -> Line {cons("LabeledText")}
+
+    WS                         -> OptWS {cons("ws")}
+    % empty %                  -> OptWS {cons("no-ws")}
 
 %%    Separator Word*        Eol -> Line  {cons("Line")}
 %%    Separator COMMENT      Eol -> Line  {cons("Comment")}
