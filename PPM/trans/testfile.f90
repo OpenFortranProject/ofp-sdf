@@ -1,5 +1,6 @@
 Program ppm_test
-   implicit postfix real ("gp1", "gp2")
+   implicit postfix real ("gp1")
+   implicit postfix real, dimension(nssq) ("gp2", "gp3")
    integer, parameter :: nssq=13
 
    cournogp1 = 0.
