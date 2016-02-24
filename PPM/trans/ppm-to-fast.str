@@ -56,8 +56,8 @@ ppm-add-type-decls =
 
 // Build new TypeDeclarationStmt
 ppm-add-type-decl =
-     ? (name, type)
-  ;  ! TypeDeclarationStmt(no-label(), type, [], [Var(name,type,no-init())])
+     ? (name, AffixTypeSpec(type,attrs))
+  ;  ! TypeDeclarationStmt(no-label(), type, attrs, [Var(name,type,no-init())])
 
 // Create a symbol table of (suffix,type) key/value pairs
 ppm-get-suffix-symbols(|lt) =
