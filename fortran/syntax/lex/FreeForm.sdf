@@ -1,0 +1,41 @@
+module FreeForm
+
+exports 
+
+  sorts
+
+    COMMENT EOL WS WORD
+    File Line Word Eol Separator
+
+  context-free start-symbols
+
+    File
+
+  lexical syntax
+
+    [\n]                        -> EOL
+
+    [\ \t]+                     -> WS
+    [A-Za-z0-9\;\:\=]+          -> WORD
+
+    "!" [\ A-Za-z0-9\;\:\=\!]*  -> COMMENT
+
+  lexical restrictions
+    WORD -/- [A-Za-z0-9\;\:\=\!]
+    WS   -/- [\ \t]
+
+  context-free syntax
+
+    Line*                      -> File {cons("File")}
+
+    Separator Word*        Eol -> Line  {cons("Line")}
+    Separator COMMENT      Eol -> Line  {cons("Comment")}
+
+    WORD Separator             -> Word {cons("Word")}
+    WS                         -> Separator {cons("ws")}
+    % empty %                  -> Separator {cons("no-ws")}
+
+    EOL                        -> Eol {cons("eol")}
+
+
+

@@ -1,0 +1,66 @@
+module sage-to-traverse-header
+
+imports
+   libstratego-lib
+
+signature
+  constructors
+
+    RTG             : Start * ProdRules              -> RTG
+    Start           : List                           -> Start
+
+    Traversal       : FunDecl                        -> Traversal
+    Traversals      : TraversalList                  -> Traversals
+
+    FunDecl         : Name                           -> FunDecl
+    ClassDecl       : Name                           -> ClassDecl
+
+    Macro           : Name                           -> Macro
+    no-class        : no-class
+
+    ProdRule        : Nonterm * List                 -> ProdRule
+    ProdRules       : List                           -> ProdRules
+
+    Appl            : Term * List                    -> Appl
+
+    Ref             : Term                           -> Ref
+    Nonterm         : String                         -> Nonterm
+    NilTerm         : NilTerm
+    ConsTerm        : ConsTerm
+
+strategies
+
+  main =
+    io-wrap(sage-to-traverse)
+
+  sage-to-traverse() =
+       ? RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  innermost(nil-terms-to-pp)
+    ;  innermost(ast-to-pp)
+
+  extract-traversals() =
+      ? Traversal(fdecl)
+    ; ! Traversal(fdecl)
+
+
+rules
+
+nil-terms-to-pp =
+     ? ProdRule(c, [Appl(NilTerm(),list)])      ; ! Macro(c)
+  <+ ? ProdRule(c, [Appl(ConsTerm(),list)])     ; ! no-class()
+
+ast-to-pp =
+{ t
+   : ? ProdRules(r)
+   ; <filter(extract-traversals)> r             => t
+   ; ! Traversals(t)
+}
+
+ast-to-pp =
+{ term_types, arg_names
+   : ? ProdRule(parent,[Ref(c)])                ; ! ClassDecl(c)
+  +> ? ProdRule(Nonterm(name), [Appl(_,args)])
+   ; ! Traversal(FunDecl(name))
+}
+
+ast-to-pp:  RTG(_,Traversals(list))             -> Traversals(list)

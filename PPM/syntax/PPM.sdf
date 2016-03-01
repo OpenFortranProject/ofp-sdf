@@ -78,4 +78,4 @@ context-free syntax
    OptLabel 'IMPLICIT' 'POSTFIX' {ImplicitAffixSpec ','}+   EOS -> ImplicitPostfixStmt {cons("ImplicitPostfixStmt")}
 
    AffixTypeSpec '(' {Scon ','}+ ')'                            -> ImplicitAffixSpec {cons("ImplicitAffixSpec")}
-   DeclarationTypeSpec                                          -> AffixTypeSpec
+   DeclarationTypeSpec OptAttrSpecList                          -> AffixTypeSpec     {cons("AffixTypeSpec")}

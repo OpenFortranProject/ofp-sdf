@@ -12,7 +12,7 @@ LDFLAGS = -m32
 LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
 
-all : SgUntyped.str sage2pp sage-to-traverse sage-to-build traverse
+all : SgUntyped.str sage2pp sage-to-traverse sage-to-traverse-header traverse
 
 traverse : traverse_main.o traverse_SgUntypedNodes.o SgUntypedNodes.o
 	c++ -o traverse $(LDFLAGS) traverse_main.o traverse_SgUntypedNodes.o SgUntypedNodes.o $(LIBS)
@@ -41,17 +41,20 @@ sage2pp : sage2pp.str
 sage-to-traverse : sage-to-traverse.str
 	$(ST_PATH)/strc -i sage-to-traverse.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
+sage-to-traverse-header : sage-to-traverse-header.str
+	$(ST_PATH)/strc -i sage-to-traverse-header.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
+
 sage-to-build : sage-to-build.str
 	$(ST_PATH)/strc -i sage-to-build.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
-check : sage-to-traverse
+check : sage-to-traverse SgUntyped.rtg.aterm
 	sage-to-traverse -i SgUntyped.rtg.aterm | pp-aterm
 
 check-pp : sage-to-traverse SgUntyped.rtg.aterm
 	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
 
-check-pp-header : sage-to-traverse SgUntyped.rtg.aterm
-	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse_header.pp
+check-pp-header : sage-to-traverse-header SgUntyped.rtg.aterm
+	@sage-to-traverse-header -i SgUntyped.rtg.aterm | ast2text -p sage_traverse_header.pp
 
 check-pp-build : sage-to-build SgUntyped.rtg.aterm
 	@sage-to-build -i SgUntyped.rtg.aterm | ast2text -p sage_build.pp
@@ -64,7 +67,7 @@ check-traversal: traverse
 
 clean :
 	rm -f SgUntyped.str
-	rm -f traverse sage-to-traverse
+	rm -f traverse sage-to-traverse sage-to-traverse-header
 	rm -f sage-traverse sage-to-traverse.c
 	rm -f sage2pp sage2pp.c
 	rm -f *.o *.dep *.lo
