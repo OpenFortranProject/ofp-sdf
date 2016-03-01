@@ -162,6 +162,11 @@ rules
   fast-to-pdb: Function(FuncStmt, Scope(Decl, Stmt, Decl2), EndFuncStmt)
                -> routine(FuncStmt, Stmt, EndFuncStmt)
 
+
+  // stkinds
+  // TODO : fstop, fcontinue, fio, fdo, fif, fallocate, fdeallocate, fgoto,
+  //        flabel, fexit, fcycle, farinthif, fentry, fpause, flabelassign,
+  /         fpointerassign, fselect, fcase, fwhere, fforall, fcall, fsingle_if
   fast-to-pdb: EndSubroutineStmt(OptLabel, OptSubroutineName)
                -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
 
