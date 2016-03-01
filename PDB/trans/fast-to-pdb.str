@@ -37,8 +37,6 @@ strategies //=================START OF STRATEGIES==========================
   // ; new-hashtable => lt
   // ; topdown(try(pdb-get-symbols(|st)))
 
-  // removed this in the future?   //; topdown(try(transform-module))
-
   ; topdown(try(fast-to-pdb))
   ; topdown(try(fix-routine-name))
   ; ?PDBFile(file, source, list)
@@ -77,22 +75,20 @@ strategies //=================START OF STRATEGIES==========================
             ; !routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody(st(0)))
 
 
-  add-rlink  = ?PDBFile(file, source, list)
-              ; !PDBFile(file, source, <map(add-rlink2)>list)
-  add-rlink2 = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+  add-rlink = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
             ; !routine(ronum, rsig, rstart, rloc, rpos, rlink("f90"), rkind, rstmt, rbody)
 
 
   add-rpos = ?routine(ronum, rsig, rstart, rloc(so), rpos, rlink, rkind, rstmt, rbody)
-            ; so2 := <get-second-so><last>rstmt
-            ; !routine(ronum, rsig, rstart, rloc(so), rpos(so,so2), rlink, rkind, rstmt, rbody)
+           ; so2 := <get-second-so><last>rstmt
+           ; !routine(ronum, rsig, rstart, rloc(so), rpos(so,so2), rlink, rkind, rstmt, rbody)
 
   get-second-so = ?stkind(name, so1, so2) ; !so2
 
 
   add-rsig = ?PDBFile(file, source, list)
-           ; !PDBFile(file, source, <map-with-index(add-rsig2)>list)
-  add-rsig2 = ?(num,routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody))
+           ; !PDBFile(file, source, <map-with-index(add-rsig)>list)
+  add-rsig = ?(num,routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody))
             ; !routine(ronum, rsig(num), rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
 
 
@@ -102,7 +98,7 @@ strategies //=================START OF STRATEGIES==========================
 
   get-start   = ?stkind(name, start, end)
               ; !start
-        
+
 
   add-ro-num = ?PDBFile(file, source, list)
              ; !PDBFile(file, source, <add-indices>list)
@@ -129,8 +125,8 @@ strategies //=================START OF STRATEGIES==========================
                   !<get-back>location
 
   fix-routine-name = ?Module(RoutineName, RoutineList, EndStmt)
-                 ; modname := <index(|1)><get-appl-arguments>RoutineName
-                 ; <map(apply-mod-name(|modname))>RoutineList
+                   ; modname := <index(|1)><get-appl-arguments>RoutineName
+                   ; <map(apply-mod-name(|modname))>RoutineList
   fix-routine-name = ?MainProgram(RoutineName, RoutineList, EndStmt)
                    ; ![routine(RoutineName, RoutineList, EndStmt)]
 
@@ -145,10 +141,8 @@ rules
   fast-to-pdb: Version()    -> Version("3.0")
   fast-to-pdb: Language()   -> Language("fortran")
 
-  // NOT SURE WHAT DECL2 WILL HOLD, MAY NEED TO CHANGE HOW THIS IS HANDLED
   fast-to-pdb: Subroutine(SubStmt, Scope(Decl, Stmt, Decl2), EndSubStmt)
                -> routine(SubStmt, Stmt, EndSubStmt)
-
 
   fast-to-pdb: ProgramStmt(OptLabel, ProgramName)
                -> [<rm-annotations>ProgramName, rloc(<get-front-loc>OptLabel), rkind("fprog")]
@@ -163,11 +157,13 @@ rules
   fast-to-pdb: SubroutineStmt(OptLabel, _, Name, _, _)
                -> [<rm-annotations>Name, rloc(<get-front-loc>OptLabel), rkind("fext")]
 
-  fast-to-pdb: EndSubroutineStmt(OptLabel, OptSubroutineName)
-               -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
-
   fast-to-pdb: FunctionStmt(OptLabel, _, Name, _, _, _)
                -> [<rm-annotations>Name, rloc(<get-front-loc>OptLabel), rkind("fext")]
+  fast-to-pdb: Function(FuncStmt, Scope(Decl, Stmt, Decl2), EndFuncStmt)
+               -> routine(FuncStmt, Stmt, EndFuncStmt)
+
+  fast-to-pdb: EndSubroutineStmt(OptLabel, OptSubroutineName)
+               -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
 
   fast-to-pdb: EndFunctionStmt(OptLabel, OptSubroutineName)
                -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
@@ -176,10 +172,3 @@ rules
 
   fast-to-pdb: AssignmentStmt(OptLabel, VarDef, Expr)
                -> stkind("fassign",<get-front-loc>VarDef, <get-back-loc>Expr)
-
-  fast-to-pdb: Function(FuncStmt, Scope(Decl, Stmt, Decl2), EndFuncStmt)
-               -> routine(FuncStmt, Stmt, EndFuncStmt)
-
-  // pdb-get-symbols(|st) =
-  //    ?SubroutineStmt(_,_,name,_,_)
-  // ;  !name
