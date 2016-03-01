@@ -20,52 +20,166 @@ imports
 signature
   constructors
 
+  no-label: loc           -> no-label
+  Comment: comments       -> Comment
+  Comment: comments * com   -> Comment
+
 strategies //=================START OF STRATEGIES==========================
-  main = io-wrap(
-              ArgOption(
-                 "-n"
-                 , where(<extend-config> ("-n", [<id>]))
-                 , !"-n               File name producing the Fortran AST")
-              , fast-to-pdb-usage
-              , fast-to-pdb-about
-              , do-fast-to-pdb)
 
-  fast-to-pdb-usage =
-    default-system-usage(
-      !["Usage: fast-to-pdb -n file_name"]
-    , !["\n   This program generates a PDB file from Fortran input.\n"]
-    )
+  main = io-wrap(fast2pdb)
 
-  fast-to-pdb-about =
-    <echo> "Written by Soren Rasmussen <soren.rasmussen@aggiemail.usu.edu>"
+//  main = io-wrap(debug(!<id>); fast2pdb)
 
-  io-fast-to-pdb = io-wrap(fast-to-pdb)
+  fast2pdb = 
+{ st, lt, save, num
+  : ?Program(units)  
+  // ; new-hashtable => st
+  // ; new-hashtable => lt
+  // ; topdown(try(pdb-get-symbols(|st)))
 
-do-fast-to-pdb =
-     ?(term)
-  ;  file_name := <get-config> "-n"
-//  ;  routines  := <innermost(pdb-routine)> term
-  ;  debug(!"-------")
-  ;  !term
-  ;  debug(!"-------")
-  ;  outermost(to-pdb)
-  ;  ?(routines)
-  ; debug(!"-------")
-//  ;  !PDBFile(FileHeader(Version("3.0"),Language("fortran"))   ,SourceFile("routines"))
-  ;  !PDBFile(FileHeader(Version("3.0"),Language("fortran")),SourceFile(file_name),Routine(routines))
-     
-//     <fast-to-pdb> Name(term,<removeBrac>binding_name)
+  // removed this in the future?   //; topdown(try(transform-module))
 
-//fast-to-pdb = ?Name(input, bind_name)
+  ; topdown(try(fast-to-pdb))
+  ; topdown(try(fix-routine-name))
+  ; ?PDBFile(file, source, list)
+  ; !PDBFile(file, source, <concat>list)
+  // add-ro-num needs to be first. Other order doesn't matter
+  ; topdown(try(add-ro-num))
+  ; topdown(try(add-rsig))
+  ; topdown(try(add-rstart))
+  ; topdown(try(add-rpos))
+  ; topdown(try(add-rlink))
+  ; topdown(try(add-rbody))
+  ; topdown(try(add-rstmt))
+}
 
-fast-to-pdb =
-      id
-//   ;  ?Program(_)
-//   ;  debug(!"Found Program")
-//  <+  debug(!"did not match name")
+  transform-module = ?Module(stmt,Scope(DeclList, StmtList, RoutineList),end)
+                   ; topdown(try(fast-to-pdb))
+
+  add-rstmt = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+            ; <map-with-index(add-rstmt)>rstmt ; ?indexed-rstmt
+            ; <map-with-index(rm-last-st(|2))>indexed-rstmt ; ?fixed-rstmt
+            ; !routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, fixed-rstmt, rbody)
+  add-rstmt = ?(num, stkind(name,so1,so2))
+            ; !rstmt(st(<dec>num), stkind(name,so1,so2), st(num), NA())
+
+  rm-last-st(|n) = ?(num, rstmt(st1, stkind, st(i), na))
+              ; <if(equal,make-na,make-st)>(n,i)
+              ; ?new_st
+              ; !rstmt(st1, stkind, new_st, na)
+
+  make-na = ?(n, i)
+          ; !NA()
+  make-st = ?(n, i)
+          ; !st(i)
+
+  add-rbody = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+            ; !routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody(st(0)))
 
 
-  // list of strategies that use rules
+  add-rlink  = ?PDBFile(file, source, list)
+              ; !PDBFile(file, source, <map(add-rlink2)>list)
+  add-rlink2 = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+            ; !routine(ronum, rsig, rstart, rloc, rpos, rlink("f90"), rkind, rstmt, rbody)
 
-to-pdb: Program(program_units)  ->  program_units
-to-pdb: MainProgram(ProgramStmt(_,name),scope,_)  -> name
+
+  add-rpos = ?routine(ronum, rsig, rstart, rloc(so), rpos, rlink, rkind, rstmt, rbody)
+            ; so2 := <get-second-so><last>rstmt
+            ; !routine(ronum, rsig, rstart, rloc(so), rpos(so,so2), rlink, rkind, rstmt, rbody)
+
+  get-second-so = ?stkind(name, so1, so2) ; !so2
+
+
+  add-rsig = ?PDBFile(file, source, list)
+           ; !PDBFile(file, source, <map-with-index(add-rsig2)>list)
+  add-rsig2 = ?(num,routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody))
+            ; !routine(ronum, rsig(num), rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+
+
+  add-rstart = ?routine(ronum, rsig, rstart, rloc, rpos, rlink, rkind, rstmt, rbody)
+              ; start := <get-start><index(|1)>rstmt
+              ; !routine(ronum, rsig, rstart(start), rloc, rpos, rlink, rkind, rstmt, rbody) 
+
+  get-start   = ?stkind(name, start, end)
+              ; !start
+        
+
+  add-ro-num = ?PDBFile(file, source, list)
+             ; !PDBFile(file, source, <add-indices>list)
+
+  add-ro-num = ?(num, routine([name, rloc, rkind], list2, endrpos))
+             ; !routine(ronum(num,<upper-case>name), "rsig", "rstart", rloc, "rpos", "rlink", rkind, <concat>[list2, [endrpos]], "rbody")
+
+  // Get location information strategies
+  get-front     = ?Location(i,j,l,m); !so(i,j)
+  get-back      = ?Location(i,j,l,m); !so(l,<subt>(m,1))
+
+  // Ways to extract location depending on whether it is inside or 
+  // outside the application
+  get-front-loc = ?func#(val);
+                  loclist := <get-annotations><index(|1)>val; 
+                  <get-front><index(|1)>loclist
+  get-front-loc = ?func#(_){location};  
+                  !<get-front>location
+
+  get-back-loc  = ?func#(val);
+                  loclist := <get-annotations><index(|1)>val; 
+                  <get-back><index(|1)>loclist
+  get-back-loc  = ?func#(_){location};  
+                  !<get-back>location
+
+  fix-routine-name = ?Module(RoutineName, RoutineList, EndStmt)
+                 ; modname := <index(|1)><get-appl-arguments>RoutineName
+                 ; <map(apply-mod-name(|modname))>RoutineList
+  fix-routine-name = ?MainProgram(RoutineName, RoutineList, EndStmt)
+                   ; ![routine(RoutineName, RoutineList, EndStmt)]
+
+  apply-mod-name(|modname) = ?routine([rname,rloc,rkind], second, end)
+                           ; routineid :=  <concat-strings>[modname,"::",rname]
+                           ; !routine([routineid,rloc,rkind],second, end)
+                  
+rules
+  fast-to-pdb: Program(units) 
+               -> PDBFile(FileHeader(), SourceFile("TODO.F90"), units)
+  fast-to-pdb: FileHeader() -> FileHeader(Version(), Language())
+  fast-to-pdb: Version()    -> Version("3.0")
+  fast-to-pdb: Language()   -> Language("fortran")
+
+  // NOT SURE WHAT DECL2 WILL HOLD, MAY NEED TO CHANGE HOW THIS IS HANDLED
+  fast-to-pdb: Subroutine(SubStmt, Scope(Decl, Stmt, Decl2), EndSubStmt)
+               -> routine(SubStmt, Stmt, EndSubStmt)
+
+
+  fast-to-pdb: ProgramStmt(OptLabel, ProgramName)
+               -> [<rm-annotations>ProgramName, rloc(<get-front-loc>OptLabel), rkind("fprog")]
+  fast-to-pdb: MainProgram(stmt,Scope(DeclList, StmtList, RoutineList),end) 
+               -> MainProgram(stmt,StmtList,end)
+
+  fast-to-pdb: ModuleStmt(OptLabel, ModuleName) 
+               -> RoutineName(<rm-annotations>ModuleName)
+  fast-to-pdb: Module(stmt,Scope(DeclList, StmtList, RoutineList),end) 
+               -> Module(stmt,RoutineList,end)
+
+  fast-to-pdb: SubroutineStmt(OptLabel, _, Name, _, _)
+               -> [<rm-annotations>Name, rloc(<get-front-loc>OptLabel), rkind("fext")]
+
+  fast-to-pdb: EndSubroutineStmt(OptLabel, OptSubroutineName)
+               -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
+
+  fast-to-pdb: FunctionStmt(OptLabel, _, Name, _, _, _)
+               -> [<rm-annotations>Name, rloc(<get-front-loc>OptLabel), rkind("fext")]
+
+  fast-to-pdb: EndFunctionStmt(OptLabel, OptSubroutineName)
+               -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptSubroutineName)
+  fast-to-pdb: EndProgramStmt(OptLabel, OptProgramName)
+               -> stkind("freturn",<get-front-loc>OptLabel ,<get-back-loc>OptProgramName)
+
+  fast-to-pdb: AssignmentStmt(OptLabel, VarDef, Expr)
+               -> stkind("fassign",<get-front-loc>VarDef, <get-back-loc>Expr)
+
+  fast-to-pdb: Function(FuncStmt, Scope(Decl, Stmt, Decl2), EndFuncStmt)
+               -> routine(FuncStmt, Stmt, EndFuncStmt)
+
+  // pdb-get-symbols(|st) =
+  //    ?SubroutineStmt(_,_,name,_,_)
+  // ;  !name
