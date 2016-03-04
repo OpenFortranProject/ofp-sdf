@@ -5,8 +5,8 @@ exports
   sorts
 
     EOL WS DIGIT LETTER CHARS
-    LABEL START STARTCHAR CONTCHAR COMMENTCHAR
-    StartChar ContChar CommentChar Eol OptWS
+    LABEL START STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
+    StartChar ContChar CommentChar BangChar PreChar Eol OptWS
     File Line
 
   context-free start-symbols
@@ -25,6 +25,9 @@ exports
 %%  "&"                         -> IGNORE    % predefined sort (maybe) %
                                              % REJECT also a predefined sort %
                                              % CHAR   also a predefined sort %
+
+    "!"                         -> BANGCHAR
+    "#"                         -> PRECHAR
 
     [cC\!]                      -> COMMENTCHAR
 
@@ -66,16 +69,22 @@ exports
 
     OptWS                   Eol -> Line {cons("BlankLine")}
 
-    "#"             CHARS   Eol -> Line {cons("Preprocess")}
+    PreChar         CHARS   Eol -> Line {cons("Preprocess")}
+
     CommentChar     CHARS   Eol -> Line {cons("Comment")}
+
+    WS BangChar     CHARS   Eol -> Line {cons("FreeFormComment")}
+
     START StartChar CHARS   Eol -> Line {cons("Stmt")}
     LABEL StartChar CHARS   Eol -> Line {cons("LabeledStmt")}
     START  ContChar CHARS   Eol -> Line {cons("Continuation")}
 
     EOL                         -> Eol {cons("eol")}
 
+    BANGCHAR                    -> BangChar    {cons("comchar")}
     COMMENTCHAR                 -> CommentChar {cons("comchar")}
     CONTCHAR                    -> ContChar    {cons("conchar")}
+    PRECHAR                     -> PreChar     {cons("prechar")}
     STARTCHAR                   -> StartChar   {cons("stchar")}
 
     WS                          -> OptWS {cons("ws")}
