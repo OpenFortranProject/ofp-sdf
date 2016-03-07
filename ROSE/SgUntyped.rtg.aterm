@@ -2,15 +2,138 @@ RTG(
   Start([Nonterm("SgNode")])
 , ProdRules(
     [ ProdRule(Nonterm("SgNode"), [Ref(Nonterm("SgLocatedNode"))])
+    , ProdRule(Nonterm("SgLocatedNode"), [Appl(Term("SgLocatedNode"), [])])
     , ProdRule(Nonterm("SgLocatedNode"), [Ref(Nonterm("SgLocatedNodeSupport"))])
+    , ProdRule(Nonterm("SgLocatedNodeSupport"), [Appl(Term("SgLocatedNodeSupport"), [])])
     , ProdRule(Nonterm("SgLocatedNodeSupport"), [Ref(Nonterm("SgUntypedNode"))])
+    , ProdRule(Nonterm("SgUntypedNode"), [Appl(Term("SgUntypedNode"), [])])
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedExpression"))])
+    , ProdRule(
+        Nonterm("SgUntypedExpression")
+      , [Appl(Term("SgUntypedExpression"), [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))])]
+      )
+    , ProdRule(
+        Nonterm("SgToken_ROSE_Fortran_Keywords")
+      , [Appl(Term("SgToken_ROSE_Fortran_Keywords"), [Ref(Int())])]
+      )
+    , ProdRule(
+        Nonterm("SgToken_ROSE_Fortran_Operators")
+      , [Appl(Term("SgToken_ROSE_Fortran_Operators"), [Ref(Int())])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedType_type_enum")
+      , [Appl(Term("SgUntypedType_type_enum"), [Ref(Int())])]
+      )
+    , ProdRule(
+        Nonterm("bool")
+      , [Appl(Term("bool"), [Ref(Int())])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedUnaryOperator")
+      , [ Appl(
+            Term("SgUntypedUnaryOperator")
+          , [ Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Operators"))
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedExpression"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedBinaryOperator")
+      , [ Appl(
+            Term("SgUntypedBinaryOperator")
+          , [ Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Operators"))
+            , Ref(String())
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(Nonterm("SgUntypedExpression"))
+            ]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedValueExpression")
+      , [ Appl(
+            Term("SgUntypedValueExpression")
+          , [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords")), Ref(String()), Ref(Nonterm("SgUntypedType"))]
+          )
+        ]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedArrayReferenceExpression")
+      , [Appl(Term("SgUntypedArrayReferenceExpression"), [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedOtherExpression")
+      , [Appl(Term("SgUntypedOtherExpression"), [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedFunctionCallOrArrayReferenceExpression")
+      , [Appl(Term("SgUntypedFunctionCallOrArrayReferenceExpression"), [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedReferenceExpression")
+      , [Appl(
+           Term("SgUntypedReferenceExpression")
+         , [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords")), Ref(String())]
+         )]
+      )
+    , ProdRule(Nonterm("SgUntypedImplicitDeclaration"), [Appl(Term("SgUntypedImplicitDeclaration"), [])])
+    , ProdRule(
+        Nonterm("SgUntypedVariableDeclaration")
+      , [Appl(Term("SgUntypedVariableDeclaration"), [Ref(Nonterm("SgUntypedType"))])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedFunctionDeclaration")
+      , [Appl(Term("SgUntypedFunctionDeclaration"), [Ref(String())])]
+      )
+    , ProdRule(Nonterm("SgUntypedModuleDeclaration"), [Appl(Term("SgUntypedModuleDeclaration"), [])])
+    , ProdRule(
+        Nonterm("SgUntypedProgramHeaderDeclaration")
+      , [Appl(Term("SgUntypedProgramHeaderDeclaration"), [Ref(String())])]
+      )
+    , ProdRule(
+        Nonterm("SgUntypedSubroutineDeclaration")
+      , [Appl(Term("SgUntypedSubroutineDeclaration"), [Ref(String())])]
+      )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedStatement")
+      , [Appl(
+           Term("SgUntypedStatement")
+         , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))]
+         )]
+      )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedType"))])
+    , ProdRule(
+        Nonterm("SgUntypedType")
+      , [ Appl(
+            Term("SgUntypedType")
+          , [ Ref(String())
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("SgUntypedExpression"))
+            , Ref(String())
+            , Ref(Nonterm("bool"))
+            , Ref(Nonterm("SgUntypedType_type_enum"))
+            ]
+          )
+        ]
+      )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedAttribute"))])
     , ProdRule(
         Nonterm("SgUntypedAttribute")
-      , [Appl(Term("SgUntypedAttribute"), [Ref(Int()), Ref(String())])]
+      , [Appl(
+           Term("SgUntypedAttribute")
+         , [Ref(Nonterm("SgToken_ROSE_Fortran_Keywords")), Ref(String())]
+         )]
       )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedInitializedName"))])
     , ProdRule(
@@ -30,6 +153,11 @@ RTG(
         Nonterm("SgUntypedStatementList")
       , [Appl(Term("SgUntypedStatementList"), [Ref(Nonterm("ListStarOfSgUntypedStatement"))])]
       )
+    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedDeclarationStatementList"))])
+    , ProdRule(
+        Nonterm("SgUntypedDeclarationStatementList")
+      , [Appl(Term("SgUntypedDeclarationStatementList"), [Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))])]
+      )
     , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedFunctionDeclarationList"))])
     , ProdRule(
         Nonterm("SgUntypedFunctionDeclarationList")
@@ -43,42 +171,25 @@ RTG(
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedUnaryOperator"))])
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedBinaryOperator"))])
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedValueExpression"))])
-    , ProdRule(
-        Nonterm("SgUntypedValueExpression")
-      , [ Appl(
-            Term("SgUntypedValueExpression")
-          , [Ref(Int()), Ref(String()), Ref(Nonterm("SgUntypedType"))]
-          )
-        ]
-      )
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedArrayReferenceExpression"))])
-    , ProdRule(
-        Nonterm("SgUntypedArrayReferenceExpression")
-      , [Appl(Term("SgUntypedArrayReferenceExpression"), [Ref(Int())])]
-      )
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedOtherExpression"))])
-    , ProdRule(
-        Nonterm("SgUntypedOtherExpression")
-      , [Appl(Term("SgUntypedOtherExpression"), [Ref(Int())])]
-      )
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedFunctionCallOrArrayReferenceExpression"))])
-    , ProdRule(
-        Nonterm("SgUntypedFunctionCallOrArrayReferenceExpression")
-      , [Appl(Term("SgUntypedFunctionCallOrArrayReferenceExpression"), [Ref(Int())])]
-      )
     , ProdRule(Nonterm("SgUntypedExpression"), [Ref(Nonterm("SgUntypedReferenceExpression"))])
-    , ProdRule(
-        Nonterm("SgUntypedReferenceExpression")
-      , [Appl(Term("SgUntypedReferenceExpression"), [Ref(Int()), Ref(String())])]
-      )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedDeclarationStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedDeclarationStatement")
+      , [Appl(
+           Term("SgUntypedDeclarationStatement")
+         , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))]
+         )]
+      )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedAssignmentStatement"))])
     , ProdRule(
         Nonterm("SgUntypedAssignmentStatement")
       , [ Appl(
             Term("SgUntypedAssignmentStatement")
           , [ Ref(String())
-            , Ref(Int())
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
             , Ref(Nonterm("SgUntypedExpression"))
             , Ref(Nonterm("SgUntypedExpression"))
             ]
@@ -88,96 +199,64 @@ RTG(
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedFunctionCallStatement"))])
     , ProdRule(
         Nonterm("SgUntypedFunctionCallStatement")
-      , [Appl(Term("SgUntypedFunctionCallStatement"), [Ref(String()), Ref(Int())])]
+      , [Appl(
+           Term("SgUntypedFunctionCallStatement")
+         , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))]
+         )]
       )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedBlockStatement"))])
+    , ProdRule(
+        Nonterm("SgUntypedBlockStatement")
+      , [ Appl(
+            Term("SgUntypedBlockStatement")
+          , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords")), Ref(Nonterm("SgUntypedScope"))]
+          )
+        ]
+      )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedNamedStatement"))])
     , ProdRule(
         Nonterm("SgUntypedNamedStatement")
       , [ Appl(
             Term("SgUntypedNamedStatement")
-          , [Ref(String()), Ref(Int()), Ref(String())]
+          , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords")), Ref(String())]
           )
         ]
       )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedOtherStatement"))])
     , ProdRule(
         Nonterm("SgUntypedOtherStatement")
-      , [Appl(Term("SgUntypedOtherStatement"), [Ref(String()), Ref(Int())])]
+      , [Appl(
+           Term("SgUntypedOtherStatement")
+         , [Ref(String()), Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))]
+         )]
       )
     , ProdRule(Nonterm("SgUntypedStatement"), [Ref(Nonterm("SgUntypedScope"))])
-    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedImplicitDeclaration"))])
     , ProdRule(
-        Nonterm("SgUntypedImplicitDeclaration")
-      , [Appl(Term("SgUntypedImplicitDeclaration"), [Ref(String()), Ref(Int())])]
-      )
-    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedVariableDeclaration"))])
-    , ProdRule(
-        Nonterm("SgUntypedVariableDeclaration")
+        Nonterm("SgUntypedScope")
       , [ Appl(
-            Term("SgUntypedVariableDeclaration")
+            Term("SgUntypedScope")
           , [ Ref(String())
-            , Ref(Int())
-            , Ref(Nonterm("SgUntypedType"))
-            , Ref(Nonterm("SgUntypedInitializedNameList"))
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
+            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
+            , Ref(Nonterm("SgUntypedStatementList"))
+            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
             ]
           )
         ]
       )
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedImplicitDeclaration"))])
+    , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedVariableDeclaration"))])
     , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedFunctionDeclaration"))])
     , ProdRule(Nonterm("SgUntypedDeclarationStatement"), [Ref(Nonterm("SgUntypedModuleDeclaration"))])
-    , ProdRule(
-        Nonterm("SgUntypedModuleDeclaration")
-      , [ Appl(
-            Term("SgUntypedModuleDeclaration")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(String())
-            , Ref(Nonterm("SgUntypedModuleScope"))
-            , Ref(Nonterm("SgUntypedNamedStatement"))
-            ]
-          )
-        ]
-      )
     , ProdRule(Nonterm("SgUntypedFunctionDeclaration"), [Ref(Nonterm("SgUntypedProgramHeaderDeclaration"))])
-    , ProdRule(
-        Nonterm("SgUntypedProgramHeaderDeclaration")
-      , [ Appl(
-            Term("SgUntypedProgramHeaderDeclaration")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(String())
-            , Ref(Nonterm("SgUntypedInitializedNameList"))
-            , Ref(Nonterm("SgUntypedType"))
-            , Ref(Nonterm("SgUntypedFunctionScope"))
-            , Ref(Nonterm("SgUntypedNamedStatement"))
-            ]
-          )
-        ]
-      )
     , ProdRule(Nonterm("SgUntypedFunctionDeclaration"), [Ref(Nonterm("SgUntypedSubroutineDeclaration"))])
-    , ProdRule(
-        Nonterm("SgUntypedSubroutineDeclaration")
-      , [ Appl(
-            Term("SgUntypedSubroutineDeclaration")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(String())
-            , Ref(Nonterm("SgUntypedInitializedNameList"))
-            , Ref(Nonterm("SgUntypedType"))
-            , Ref(Nonterm("SgUntypedFunctionScope"))
-            , Ref(Nonterm("SgUntypedNamedStatement"))
-            ]
-          )
-        ]
-      )
     , ProdRule(Nonterm("SgUntypedScope"), [Ref(Nonterm("SgUntypedFunctionScope"))])
     , ProdRule(
         Nonterm("SgUntypedFunctionScope")
       , [ Appl(
             Term("SgUntypedFunctionScope")
           , [ Ref(String())
-            , Ref(Int())
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
             , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
@@ -191,7 +270,7 @@ RTG(
       , [ Appl(
             Term("SgUntypedModuleScope")
           , [ Ref(String())
-            , Ref(Int())
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
             , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
@@ -205,7 +284,7 @@ RTG(
       , [ Appl(
             Term("SgUntypedGlobalScope")
           , [ Ref(String())
-            , Ref(Int())
+            , Ref(Nonterm("SgToken_ROSE_Fortran_Keywords"))
             , Ref(Nonterm("SgUntypedDeclarationStatementList"))
             , Ref(Nonterm("SgUntypedStatementList"))
             , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
@@ -229,14 +308,11 @@ RTG(
             , Ref(Nonterm("SgUntypedExpression"))
             , Ref(String())
             , Ref(Nonterm("bool"))
+            , Ref(Nonterm("SgUntypedType_type_enum"))
+            , Ref(Nonterm("SgUntypedExpression"))
             ]
           )
         ]
-      )
-    , ProdRule(Nonterm("SgUntypedNode"), [Ref(Nonterm("SgUntypedDeclarationStatementList"))])
-    , ProdRule(
-        Nonterm("SgUntypedDeclarationStatementList")
-      , [Appl(Term("SgUntypedDeclarationStatementList"), [Ref(Nonterm("ListStarOfSgUntypedDeclarationStatement"))])]
       )
     , ProdRule(Nonterm("ListStarOfSgUntypedDeclarationStatement"), [Appl(NilTerm(), [])])
     , ProdRule(
@@ -269,57 +345,6 @@ RTG(
            ConsTerm()
          , [Ref(Nonterm("SgUntypedStatement")), Ref(Nonterm("ListStarOfSgUntypedStatement"))]
          )]
-      )
-    , ProdRule(
-        Nonterm("SgUntypedScope")
-      , [ Appl(
-            Term("SgUntypedScope")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(Nonterm("SgUntypedDeclarationStatementList"))
-            , Ref(Nonterm("SgUntypedStatementList"))
-            , Ref(Nonterm("SgUntypedFunctionDeclarationList"))
-            ]
-          )
-        ]
-      )
-    , ProdRule(
-        Nonterm("SgUntypedBlockStatement")
-      , [ Appl(
-            Term("SgUntypedBlockStatement")
-          , [ Ref(String())
-            , Ref(Int())
-            , Ref(String())
-            , Ref(Nonterm("SgUntypedScope"))
-            , Ref(Nonterm("SgUntypedNamedStatement"))
-            ]
-          )
-        ]
-      )
-    , ProdRule(
-        Nonterm("SgUntypedUnaryOperator")
-      , [ Appl(
-            Term("SgUntypedUnaryOperator")
-          , [Ref(Int()), Ref(Int()), Ref(String()), Ref(Nonterm("SgUntypedExpression"))]
-          )
-        ]
-      )
-    , ProdRule(
-        Nonterm("SgUntypedBinaryOperator")
-      , [ Appl(
-            Term("SgUntypedBinaryOperator")
-          , [ Ref(Int())
-            , Ref(Int())
-            , Ref(String())
-            , Ref(Nonterm("SgUntypedExpression"))
-            , Ref(Nonterm("SgUntypedExpression"))
-            ]
-          )
-        ]
-      )
-    , ProdRule(
-        Nonterm("SgUntypedType")
-      , [Appl(Term("SgUntypedType"), [Ref(String())])]
       )
     ]
   )
