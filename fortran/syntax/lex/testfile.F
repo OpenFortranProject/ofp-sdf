@@ -1,3 +1,8 @@
+      subroutine FVsCsEs1 (rhogp5,pgp5,fvgp5,
+
+     &                     rhoairgp5,ceul2iairgp5,ceulgp5,gamma1gp5,
+     &                    rhocldtoair0)
+
 ! comment line 1
 C comment line 2
 #ifdef NO_NO_NO
@@ -13,9 +18,9 @@ c comment line 3
      0integer :: l
       integer :: m
      1, n
+C
      &   , o
 
   ! not begin comment line
 
-      END
-      
+      END SUBROUTINE
