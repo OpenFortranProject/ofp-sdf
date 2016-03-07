@@ -3,92 +3,113 @@ start SgNode
 productions
 
 SgNode -> SgLocatedNode
+SgLocatedNode -> SgLocatedNode ()
+
 SgLocatedNode -> SgLocatedNodeSupport
+SgLocatedNodeSupport -> SgLocatedNodeSupport ()
 
 SgLocatedNodeSupport -> SgUntypedNode
+SgUntypedNode -> SgUntypedNode ()
+
 SgUntypedNode -> SgUntypedExpression
+SgUntypedExpression -> SgUntypedExpression (SgToken_ROSE_Fortran_Keywords/*statement_enum*/)
+
+/********** Added by Craig Rasmussen **********/
+
+SgToken_ROSE_Fortran_Keywords -> SgToken_ROSE_Fortran_Keywords (<int>)
+SgToken_ROSE_Fortran_Operators -> SgToken_ROSE_Fortran_Operators (<int>)
+SgUntypedType_type_enum -> SgUntypedType_type_enum(<int>)
+bool -> bool (<int>)
+
+SgUntypedUnaryOperator -> SgUntypedUnaryOperator (SgToken_ROSE_Fortran_Keywords,SgToken_ROSE_Fortran_Operators,<string>,SgUntypedExpression)
+
+SgUntypedBinaryOperator -> SgUntypedBinaryOperator (SgToken_ROSE_Fortran_Keywords,SgToken_ROSE_Fortran_Operators,<string>,SgUntypedExpression,SgUntypedExpression)
+
+SgUntypedValueExpression -> SgUntypedValueExpression (SgToken_ROSE_Fortran_Keywords,<string>,SgUntypedType)
+
+SgUntypedArrayReferenceExpression -> SgUntypedArrayReferenceExpression (SgToken_ROSE_Fortran_Keywords)
+
+SgUntypedOtherExpression -> SgUntypedOtherExpression (SgToken_ROSE_Fortran_Keywords)
+
+SgUntypedFunctionCallOrArrayReferenceExpression -> SgUntypedFunctionCallOrArrayReferenceExpression (SgToken_ROSE_Fortran_Keywords)
+
+SgUntypedReferenceExpression -> SgUntypedReferenceExpression (SgToken_ROSE_Fortran_Keywords,<string>)
+
+SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration ()
+
+SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (SgUntypedType)
+
+SgUntypedFunctionDeclaration -> SgUntypedFunctionDeclaration (<string>)
+
+SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration ()
+
+SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>)
+
+SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>)
+
+/********** End added constructurs **********/
+
 SgUntypedNode -> SgUntypedStatement
+SgUntypedStatement -> SgUntypedStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/)
+
 SgUntypedNode -> SgUntypedType
+SgUntypedType -> SgUntypedType (<string>/*type_name*/, SgUntypedExpression/*type_kind*/, bool/*has_kind*/, bool/*is_literal*/, bool/*is_class*/, bool/*is_intrinsic*/, bool/*is_constant*/, bool/*is_user_defined*/, SgUntypedExpression/*char_length_expression*/, <string>/*char_length_string*/, bool/*char_length_is_string*/, SgUntypedType_type_enum/*type_enum_id*/)
+
 SgUntypedNode -> SgUntypedAttribute
-SgUntypedAttribute -> SgUntypedAttribute (<int>, <string>)
+SgUntypedAttribute -> SgUntypedAttribute (SgToken_ROSE_Fortran_Keywords/*type_name*/, <string>/*named_attribute*/)
 SgUntypedNode -> SgUntypedInitializedName
-SgUntypedInitializedName -> SgUntypedInitializedName (SgUntypedType, <string>)
+SgUntypedInitializedName -> SgUntypedInitializedName (SgUntypedType/*type*/, <string>/*name*/)
 SgUntypedNode -> SgUntypedFile
-SgUntypedFile -> SgUntypedFile (SgUntypedGlobalScope)
+SgUntypedFile -> SgUntypedFile (SgUntypedGlobalScope/*scope*/)
 SgUntypedNode -> SgUntypedStatementList
-SgUntypedStatementList -> SgUntypedStatementList (ListStarOfSgUntypedStatement)
-
+SgUntypedStatementList -> SgUntypedStatementList (ListStarOfSgUntypedStatement/*stmt_list*/)
+SgUntypedNode -> SgUntypedDeclarationStatementList
+SgUntypedDeclarationStatementList -> SgUntypedDeclarationStatementList (ListStarOfSgUntypedDeclarationStatement/*decl_list*/)
 SgUntypedNode -> SgUntypedFunctionDeclarationList
-SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration)
+SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration/*func_list*/)
 SgUntypedNode -> SgUntypedInitializedNameList
-SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName)
-
+SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName/*name_list*/)
 SgUntypedExpression -> SgUntypedUnaryOperator
-
 SgUntypedExpression -> SgUntypedBinaryOperator
-
 SgUntypedExpression -> SgUntypedValueExpression
-SgUntypedValueExpression -> SgUntypedValueExpression (<int>, <string>, SgUntypedType)
 SgUntypedExpression -> SgUntypedArrayReferenceExpression
-SgUntypedArrayReferenceExpression -> SgUntypedArrayReferenceExpression (<int>)
 SgUntypedExpression -> SgUntypedOtherExpression
-SgUntypedOtherExpression -> SgUntypedOtherExpression (<int>)
 SgUntypedExpression -> SgUntypedFunctionCallOrArrayReferenceExpression
-SgUntypedFunctionCallOrArrayReferenceExpression -> SgUntypedFunctionCallOrArrayReferenceExpression (<int>)
 SgUntypedExpression -> SgUntypedReferenceExpression
-SgUntypedReferenceExpression -> SgUntypedReferenceExpression (<int>, <string>)
 SgUntypedStatement -> SgUntypedDeclarationStatement
+SgUntypedDeclarationStatement -> SgUntypedDeclarationStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/)
 SgUntypedStatement -> SgUntypedAssignmentStatement
-SgUntypedAssignmentStatement -> SgUntypedAssignmentStatement (<string>, <int>, SgUntypedExpression, SgUntypedExpression)
+SgUntypedAssignmentStatement -> SgUntypedAssignmentStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedExpression/*lhs_operand*/, SgUntypedExpression/*rhs_operand*/)
 SgUntypedStatement -> SgUntypedFunctionCallStatement
-SgUntypedFunctionCallStatement -> SgUntypedFunctionCallStatement (<string>, <int>)
+SgUntypedFunctionCallStatement -> SgUntypedFunctionCallStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/)
 SgUntypedStatement -> SgUntypedBlockStatement
-
+SgUntypedBlockStatement -> SgUntypedBlockStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedScope/*scope*/)
 SgUntypedStatement -> SgUntypedNamedStatement
-SgUntypedNamedStatement -> SgUntypedNamedStatement (<string>, <int>, <string>)
+SgUntypedNamedStatement -> SgUntypedNamedStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, <string>/*statement_name*/)
 SgUntypedStatement -> SgUntypedOtherStatement
-SgUntypedOtherStatement -> SgUntypedOtherStatement (<string>, <int>)
+SgUntypedOtherStatement -> SgUntypedOtherStatement (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/)
 SgUntypedStatement -> SgUntypedScope
+SgUntypedScope -> SgUntypedScope (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedDeclarationStatementList/*declaration_list*/, SgUntypedStatementList/*statement_list*/, SgUntypedFunctionDeclarationList/*function_list*/)
 SgUntypedDeclarationStatement -> SgUntypedImplicitDeclaration
-SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration (<string>, <int>)
 SgUntypedDeclarationStatement -> SgUntypedVariableDeclaration
-SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (<string>, <int>, SgUntypedType, SgUntypedInitializedNameList)
 SgUntypedDeclarationStatement -> SgUntypedFunctionDeclaration
 SgUntypedDeclarationStatement -> SgUntypedModuleDeclaration
-SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration (<string>, <int>, <string>, SgUntypedModuleScope, SgUntypedNamedStatement)
 SgUntypedFunctionDeclaration -> SgUntypedProgramHeaderDeclaration
-SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
 SgUntypedFunctionDeclaration -> SgUntypedSubroutineDeclaration
-SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
 SgUntypedScope -> SgUntypedFunctionScope
-SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedDeclarationStatementList/*declaration_list*/, SgUntypedStatementList/*statement_list*/, SgUntypedFunctionDeclarationList/*function_list*/)
 SgUntypedScope -> SgUntypedModuleScope
-SgUntypedModuleScope -> SgUntypedModuleScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedModuleScope -> SgUntypedModuleScope (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedDeclarationStatementList/*declaration_list*/, SgUntypedStatementList/*statement_list*/, SgUntypedFunctionDeclarationList/*function_list*/)
 SgUntypedScope -> SgUntypedGlobalScope
-SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>/*label_string*/, SgToken_ROSE_Fortran_Keywords/*statement_enum*/, SgUntypedDeclarationStatementList/*declaration_list*/, SgUntypedStatementList/*statement_list*/, SgUntypedFunctionDeclarationList/*function_list*/)
 SgUntypedType -> SgUntypedArrayType
-SgUntypedArrayType -> SgUntypedArrayType (<string>, SgUntypedExpression, bool, bool, bool, bool, bool, bool, SgUntypedExpression, <string>, bool)
-
-SgUntypedNode -> SgUntypedDeclarationStatementList
-SgUntypedDeclarationStatementList -> SgUntypedDeclarationStatementList (ListStarOfSgUntypedDeclarationStatement)
+SgUntypedArrayType -> SgUntypedArrayType (<string>/*type_name*/, SgUntypedExpression/*type_kind*/, bool/*has_kind*/, bool/*is_literal*/, bool/*is_class*/, bool/*is_intrinsic*/, bool/*is_constant*/, bool/*is_user_defined*/, SgUntypedExpression/*char_length_expression*/, <string>/*char_length_string*/, bool/*char_length_is_string*/, SgUntypedType_type_enum/*type_enum_id*/, SgUntypedExpression/*array_length_expression*/)
 
 ListStarOfSgUntypedDeclarationStatement -> <nil>()
 ListStarOfSgUntypedDeclarationStatement -> <cons>(SgUntypedDeclarationStatement,ListStarOfSgUntypedDeclarationStatement)
-
 ListStarOfSgUntypedFunctionDeclaration -> <nil>()
 ListStarOfSgUntypedFunctionDeclaration -> <cons>(SgUntypedFunctionDeclaration,ListStarOfSgUntypedFunctionDeclaration)
 ListStarOfSgUntypedInitializedName -> <nil>()
 ListStarOfSgUntypedInitializedName -> <cons>(SgUntypedInitializedName,ListStarOfSgUntypedInitializedName)
 ListStarOfSgUntypedStatement -> <nil>()
 ListStarOfSgUntypedStatement -> <cons>(SgUntypedStatement,ListStarOfSgUntypedStatement)
-
-
-SgUntypedScope -> SgUntypedScope(<string>, <int>, SgUntypedDeclarationStatementList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
-
-SgUntypedBlockStatement -> SgUntypedBlockStatement(<string>, <int>, <string>, SgUntypedScope, SgUntypedNamedStatement)
-
-SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, <int>, <string>, SgUntypedExpression)
-
-SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, <int>, <string>, SgUntypedExpression, SgUntypedExpression)
-
-SgUntypedType -> SgUntypedType(<string>)
