@@ -30,11 +30,12 @@ fixed-to-free : fixed-to-free.str
 check : FixedForm.tbl
 	sglri -p FixedForm.tbl -i testfile.F | pp-aterm
 
-check-free : fixed-to-free
+check-free : FixedForm.tbl fixed-to-free
 	$(SGLRI) -i testfile.F -p FixedForm.tbl | ./fixed-to-free | pp-aterm
 
-check-pp : fixed-to-free
+check-pp : FixedForm.tbl fixed-to-free
 	@$(SGLRI) -i testfile.F -p FixedForm.tbl | ./fixed-to-free | ast2text -p FreeForm.pp
 
 clean :
 	rm -f *.def *.tbl
+	rm -f *.o fixed-to-free fixed-to-free.c fixed-to-free.lo fixed-to-free.dep
