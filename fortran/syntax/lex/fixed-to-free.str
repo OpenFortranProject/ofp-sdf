@@ -1,0 +1,100 @@
+module fixed-to-free
+
+imports
+   libstratego-lib
+   FixedForm
+
+signature
+  constructors
+
+  ppchar  :  StartChar  -> ppchar
+
+  // For ambiguities
+  amb : list -> choice
+
+
+strategies //=================START OF STRATEGIES============================
+
+  io-fixed-to-free =
+    io-wrap(fixed-to-free)
+
+  fixed-to-free =
+      outermost(fixed-disamb)
+    ; innermost(fixed-to-free-form)
+    ; <fixed-to-free-continuation> <id>
+
+
+rules //========================START OF RULES===============================
+
+fixed-disamb =
+      ? amb([Stmt(_,_,"",_), BlankLine(ws, eol)])
+    ; ! BlankLine(ws, eol)
+
+// Change comment character to '!'
+//
+fixed-to-free-form:  comchar("C")                 -> comchar("!")
+fixed-to-free-form:  comchar("c")                 -> comchar("!")
+
+// Change start character to ' '
+//
+fixed-to-free-form:  stchar(_)                    -> ppchar(" ")
+
+// Change continuation character to '&'
+//
+fixed-to-free-form:  conchar(_)                   -> ppchar("&")
+
+// Add continuation character to end of continued lines
+//
+fixed-to-free-continuation =
+{list
+  : ? File(lines)
+  ; <add-continuation(|[])> lines
+  ; ! File(<id>)
+}
+
+// Add continuation character to next line if needed
+// -------------------------------------------------
+add-continuation(|list) =
+{new_list
+
+ /* has continuation branch */
+  : ? [head|tail]
+  ; <is-continued> tail
+  ; ! head
+  ; try(<insert-cont-char> head)
+  ; <concat> [list, [<id>]]        => new_list
+  ; <add-continuation(|new_list)> tail
+
+ /* no continuation branch */
+ <+ ? [head|tail]
+  ; <concat> [list, [head]]        => new_list
+  ; <add-continuation(|new_list)> tail
+
+ /* end of list branch */
+ <+ ? [head]
+  ; <concat> [list, [head]]
+}
+
+// Succeeds if next non-blank line is continued
+// --------------------------------------------
+is-continued =
+ /* check for continuation */
+    ? [head|tail]
+  ; ! head
+  ; ? Continuation(_,_,_,_)
+
+ /* check for continuation after a blank line */
+ <+ ? [head|tail]
+  ; ! head
+  ; ? BlankLine(_,_)
+  ; <is-continued> tail
+
+ /* check for continuation after a comment line */
+ <+ ? [head|tail]
+  ; ! head
+  ; ? Comment(_,_,_)
+  ; <is-continued> tail
+
+
+insert-cont-char : Stmt(begin,char,text,end)         -> Stmt(begin,char,text,eol("&\n"))
+insert-cont-char : Continuation(begin,char,text,end) -> Continuation(begin,char,text,eol("&\n"))
