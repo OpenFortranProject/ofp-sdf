@@ -1,0 +1,1827 @@
+regular tree grammar
+start SgNode
+productions
+SgNode -> SgSupport
+SgNode -> SgType
+SgNode -> SgLocatedNode
+SgNode -> SgSymbol
+SgNode -> SgAsmNode
+SgNode -> SgAterm
+SgAterm -> SgAterm (<string>)
+SgSupport -> SgModifier
+SgSupport -> SgName
+SgName -> SgName (<string>)
+SgSupport -> SgSymbolTable
+SgSymbolTable -> SgSymbolTable (hash_iterator, SgName, bool,  rose_hash_multimap, SgNodeSet, bool)
+SgSupport -> SgAttribute
+SgSupport -> Sg_File_Info
+Sg_File_Info -> Sg_File_Info (int, int, int, <int>, int, int, <int>, SgFileIdList)
+SgSupport -> SgFile
+SgSupport -> SgProject
+SgProject -> SgProject (SgFileList, SgStringList, int, int, int, int, int, bool, bool, <string>, SgStringList, SgStringList, SgStringList, SgStringList, SgStringList, SgStringList, SgStringList, SgStringList, SgStringList, bool, bool, bool, SgProject::template_instantiation_enum, bool, <string>, <string>, bool, <string>, SgStringList, SgStringList, SgStringList, SgStringList, bool, <string>, SgDirectoryList, bool, bool, bool, bool, bool, bool, bool, bool, list<std::string>, bool, bool, bool, list<std::string>, bool, list<std::string>, list<std::string>, <string>, <string>, <string>, <string>, <string>, <string>, <string>, bool, bool, bool, list<std::string>, bool, map<std::string, std::set<PreprocessingInfo> >, list<std::string>, list<std::string>, <string>, bool, SgGlobal, bool, bool, <string>, bool, bool, bool, bool, bool)
+SgSupport -> SgOptions
+SgOptions -> SgOptions (ostream, ostream, ostream, ostream, int, int)
+SgSupport -> SgUnparse_Info
+SgUnparse_Info -> SgUnparse_Info (SgBitVector, int, int, <string>, SgName, SgDeclarationStatement, SgNamedType, SgName, SgNamespaceDeclarationStatement, bool, SgQualifiedNamePtrList, SgFunctionCallExp, SgScopeStatement, SgNode, int, bool, bool, int, SgFile::outputLanguageOption_enum, SgSourceFile)
+SgSupport -> SgBaseClass
+SgSupport -> SgTypedefSeq
+SgTypedefSeq -> SgTypedefSeq (SgTypePtrList)
+SgSupport -> SgTemplateParameter
+SgTemplateParameter -> SgTemplateParameter (SgTemplateParameter::template_parameter_enum, SgType, SgType, SgExpression, SgExpression, SgDeclarationStatement, SgDeclarationStatement, SgInitializedName)
+SgSupport -> SgTemplateArgument
+SgTemplateArgument -> SgTemplateArgument (SgTemplateArgument::template_argument_enum, bool, SgType, SgExpression, SgDeclarationStatement, SgInitializedName, bool, int, bool, bool, bool, int, bool, bool)
+SgSupport -> SgDirectory
+SgDirectory -> SgDirectory (<string>, SgFileList, SgDirectoryList)
+SgSupport -> SgFileList
+SgFileList -> SgFileList (ListStarOfSgFile)
+SgSupport -> SgDirectoryList
+SgDirectoryList -> SgDirectoryList (ListStarOfSgDirectory)
+SgSupport -> SgFunctionParameterTypeList
+SgFunctionParameterTypeList -> SgFunctionParameterTypeList (SgTypePtrList)
+SgSupport -> SgQualifiedName
+SgQualifiedName -> SgQualifiedName (SgScopeStatement)
+SgSupport -> SgTemplateArgumentList
+SgTemplateArgumentList -> SgTemplateArgumentList (ListStarOfSgTemplateArgument)
+SgSupport -> SgTemplateParameterList
+SgTemplateParameterList -> SgTemplateParameterList (ListStarOfSgTemplateParameter)
+SgSupport -> SgGraph
+SgSupport -> SgGraphNode
+SgGraphNode -> SgGraphNode (<string>, SgNode, int, map<int, std::string>)
+SgSupport -> SgGraphEdge
+SgSupport -> SgGraphNodeList
+SgGraphNodeList -> SgGraphNodeList ()
+SgSupport -> SgGraphEdgeList
+SgGraphEdgeList -> SgGraphEdgeList ()
+SgSupport -> SgTypeTable
+SgTypeTable -> SgTypeTable (SgSymbolTable)
+SgSupport -> SgNameGroup
+SgNameGroup -> SgNameGroup (<string>, SgStringList)
+SgSupport -> SgDimensionObject
+SgDimensionObject -> SgDimensionObject (SgInitializedName, SgExprListExp)
+SgSupport -> SgFormatItem
+SgFormatItem -> SgFormatItem (int, SgExpression, SgFormatItemList)
+SgSupport -> SgFormatItemList
+SgFormatItemList -> SgFormatItemList (SgFormatItemPtrList)
+SgSupport -> SgDataStatementGroup
+SgDataStatementGroup -> SgDataStatementGroup (SgDataStatementObjectPtrList, SgDataStatementValuePtrList)
+SgSupport -> SgDataStatementObject
+SgDataStatementObject -> SgDataStatementObject (SgExprListExp)
+SgSupport -> SgDataStatementValue
+SgDataStatementValue -> SgDataStatementValue (SgDataStatementValue::data_statement_value_enum, SgExprListExp, SgExpression, SgExpression)
+SgSupport -> SgJavaImportStatementList
+SgJavaImportStatementList -> SgJavaImportStatementList (ListStarOfSgJavaImportStatement)
+SgSupport -> SgJavaClassDeclarationList
+SgJavaClassDeclarationList -> SgJavaClassDeclarationList (ListStarOfSgClassDeclaration)
+SgModifier -> SgModifierNodes
+SgModifierNodes -> SgModifierNodes (SgModifierTypePtrVector, SgModifierNodes)
+SgModifier -> SgConstVolatileModifier
+SgConstVolatileModifier -> SgConstVolatileModifier (SgConstVolatileModifier::cv_modifier_enum)
+SgModifier -> SgStorageModifier
+SgStorageModifier -> SgStorageModifier (SgStorageModifier::storage_modifier_enum, bool)
+SgModifier -> SgAccessModifier
+SgAccessModifier -> SgAccessModifier (SgAccessModifier::access_modifier_enum)
+SgModifier -> SgFunctionModifier
+SgFunctionModifier -> SgFunctionModifier (SgBitVector, unsigned long int, <string>, <string>, SgType , SgFunctionModifier::opencl_work_group_size_t)
+SgModifier -> SgUPC_AccessModifier
+SgUPC_AccessModifier -> SgUPC_AccessModifier (SgUPC_AccessModifier::upc_access_modifier_enum, bool, long)
+SgModifier -> SgSpecialFunctionModifier
+SgSpecialFunctionModifier -> SgSpecialFunctionModifier (SgBitVector)
+SgModifier -> SgElaboratedTypeModifier
+SgElaboratedTypeModifier -> SgElaboratedTypeModifier (SgElaboratedTypeModifier::elaborated_type_modifier_enum)
+SgModifier -> SgLinkageModifier
+SgLinkageModifier -> SgLinkageModifier (SgLinkageModifier::linkage_modifier_enum)
+SgModifier -> SgBaseClassModifier
+SgBaseClassModifier -> SgBaseClassModifier (SgBaseClassModifier::baseclass_modifier_enum, SgAccessModifier)
+SgModifier -> SgTypeModifier
+SgTypeModifier -> SgTypeModifier (SgBitVector, SgUPC_AccessModifier, SgConstVolatileModifier, SgElaboratedTypeModifier, SgTypeModifier::gnu_extension_machine_mode_enum, int, long, unsigned, unsigned)
+SgModifier -> SgDeclarationModifier
+SgDeclarationModifier -> SgDeclarationModifier (SgBitVector, SgTypeModifier, SgAccessModifier, SgStorageModifier, <string>, SgDeclarationModifier::gnu_declaration_visability_enum, <string>, <string>, <string>)
+SgModifier -> SgOpenclAccessModeModifier
+SgOpenclAccessModeModifier -> SgOpenclAccessModeModifier (SgOpenclAccessModeModifier::access_mode_modifier_enum)
+SgAttribute -> SgPragma
+SgPragma -> SgPragma (<string>, short)
+SgAttribute -> SgBitAttribute
+SgBitAttribute -> SgFuncDecl_attr
+SgFuncDecl_attr -> SgFuncDecl_attr (<string>, unsigned long int)
+SgBitAttribute -> SgClassDecl_attr
+SgClassDecl_attr -> SgClassDecl_attr (<string>, unsigned long int)
+SgFile -> SgSourceFile
+SgSourceFile -> SgSourceFile (SgStringList, int, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputLanguageOption_enum, <string>, <string>, <string>, <string>, <string>, bool, bool, <string>, bool, bool, bool, bool, bool, ROSEAttributesListContainerPtr, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, int, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, SgStringList, bool, bool, unsigned, unsigned, <string>, bool, int, bool, bool, bool, bool, int, int, int, int, int, bool, SgGlobal, SgModuleStatementPtrList, SgTokenPtrList, SgGlobal, SgJavaPackageStatement , SgJavaImportStatementList, SgJavaClassDeclarationList)
+SgFile -> SgBinaryComposite
+SgBinaryComposite -> SgBinaryComposite (SgStringList, int, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputLanguageOption_enum, <string>, <string>, <string>, <string>, <string>, bool, bool, <string>, bool, bool, bool, bool, bool, ROSEAttributesListContainerPtr, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, int, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, SgStringList, bool, bool, unsigned, unsigned, <string>, bool, int, bool, bool, bool, bool, int, int, int, int, int, bool, SgAsmGenericFileList, SgAsmInterpretationList)
+SgFile -> SgUnknownFile
+SgUnknownFile -> SgUnknownFile (SgStringList, int, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, SgFile::outputFormatOption_enum, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, SgFile::outputLanguageOption_enum, <string>, <string>, <string>, <string>, <string>, bool, bool, <string>, bool, bool, bool, bool, bool, ROSEAttributesListContainerPtr, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, bool, int, int, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, bool, bool, bool, bool, bool, SgStringList, bool, bool, unsigned, unsigned, <string>, bool, int, bool, bool, bool, bool, int, int, int, int, int, bool, SgGlobal)
+SgBaseClass -> SgExpBaseClass
+SgExpBaseClass -> SgExpBaseClass (SgClassDeclaration, bool, SgBaseClassModifier, int, bool, bool, SgExpression)
+SgGraph -> SgIncidenceDirectedGraph
+SgGraph -> SgIncidenceUndirectedGraph
+SgIncidenceUndirectedGraph -> SgIncidenceUndirectedGraph (<string>, rose_graph_integer_node_hash_map, rose_graph_integer_edge_hash_map, rose_graph_integerpair_edge_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_integer_edge_hash_multimap, int, SgBoostEdgeList, SgBoostEdgeWeightList, map<int, std::string>)
+SgIncidenceDirectedGraph -> SgBidirectionalGraph
+SgBidirectionalGraph -> SgStringKeyedBidirectionalGraph
+SgStringKeyedBidirectionalGraph -> SgStringKeyedBidirectionalGraph (<string>, rose_graph_integer_node_hash_map, rose_graph_integer_edge_hash_map, rose_graph_integerpair_edge_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_integer_edge_hash_multimap, int, SgBoostEdgeList, SgBoostEdgeWeightList, map<int, std::string>, rose_graph_integer_edge_hash_multimap, rose_graph_integer_edge_hash_multimap)
+SgBidirectionalGraph -> SgIntKeyedBidirectionalGraph
+SgIntKeyedBidirectionalGraph -> SgIntKeyedBidirectionalGraph (<string>, rose_graph_integer_node_hash_map, rose_graph_integer_edge_hash_map, rose_graph_integerpair_edge_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_string_integer_hash_multimap, rose_graph_integer_edge_hash_multimap, int, SgBoostEdgeList, SgBoostEdgeWeightList, map<int, std::string>, rose_graph_integer_edge_hash_multimap, rose_graph_integer_edge_hash_multimap)
+SgGraphEdge -> SgDirectedGraphEdge
+SgDirectedGraphEdge -> SgDirectedGraphEdge (SgGraphNode, SgGraphNode, <string>, int, map<int, std::string>)
+SgGraphEdge -> SgUndirectedGraphEdge
+SgUndirectedGraphEdge -> SgUndirectedGraphEdge (SgGraphNode, SgGraphNode, <string>, int, map<int, std::string>)
+SgType -> SgTypeUnknown
+SgTypeUnknown -> SgTypeUnknown (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeChar
+SgTypeChar -> SgTypeChar (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeSignedChar
+SgTypeSignedChar -> SgTypeSignedChar (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsignedChar
+SgTypeUnsignedChar -> SgTypeUnsignedChar (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeShort
+SgTypeShort -> SgTypeShort (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeSignedShort
+SgTypeSignedShort -> SgTypeSignedShort (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsignedShort
+SgTypeUnsignedShort -> SgTypeUnsignedShort (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeInt
+SgTypeInt -> SgTypeInt (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, int)
+SgType -> SgTypeSignedInt
+SgTypeSignedInt -> SgTypeSignedInt (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsignedInt
+SgTypeUnsignedInt -> SgTypeUnsignedInt (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeLong
+SgTypeLong -> SgTypeLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeSignedLong
+SgTypeSignedLong -> SgTypeSignedLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsignedLong
+SgTypeUnsignedLong -> SgTypeUnsignedLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeVoid
+SgTypeVoid -> SgTypeVoid (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeGlobalVoid
+SgTypeGlobalVoid -> SgTypeGlobalVoid (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeWchar
+SgTypeWchar -> SgTypeWchar (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeFloat
+SgTypeFloat -> SgTypeFloat (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeDouble
+SgTypeDouble -> SgTypeDouble (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeLongLong
+SgTypeLongLong -> SgTypeLongLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeSignedLongLong
+SgTypeSignedLongLong -> SgTypeSignedLongLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsignedLongLong
+SgTypeUnsignedLongLong -> SgTypeUnsignedLongLong (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeSigned128bitInteger
+SgTypeSigned128bitInteger -> SgTypeSigned128bitInteger (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeUnsigned128bitInteger
+SgTypeUnsigned128bitInteger -> SgTypeUnsigned128bitInteger (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeLongDouble
+SgTypeLongDouble -> SgTypeLongDouble (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeString
+SgTypeString -> SgTypeString (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgExpression)
+SgType -> SgTypeBool
+SgTypeBool -> SgTypeBool (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgPointerType
+SgType -> SgReferenceType
+SgReferenceType -> SgReferenceType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType)
+SgType -> SgNamedType
+SgType -> SgModifierType
+SgModifierType -> SgModifierType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType, SgTypeModifier, char)
+SgType -> SgFunctionType
+SgType -> SgArrayType
+SgArrayType -> SgArrayType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType, SgExpression, SgExprListExp, int)
+SgType -> SgTypeEllipse
+SgTypeEllipse -> SgTypeEllipse (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTemplateType
+SgTemplateType -> SgTemplateType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgName, int)
+SgType -> SgQualifiedNameType
+SgQualifiedNameType -> SgQualifiedNameType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType, SgQualifiedNamePtrList)
+SgType -> SgTypeComplex
+SgTypeComplex -> SgTypeComplex (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType)
+SgType -> SgTypeImaginary
+SgTypeImaginary -> SgTypeImaginary (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType)
+SgType -> SgTypeDefault
+SgTypeDefault -> SgTypeDefault (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgName)
+SgType -> SgTypeCAFTeam
+SgTypeCAFTeam -> SgTypeCAFTeam (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeCrayPointer
+SgTypeCrayPointer -> SgTypeCrayPointer (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgTypeLabel
+SgTypeLabel -> SgTypeLabel (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgName)
+SgType -> SgJavaUnionType
+SgJavaUnionType -> SgJavaUnionType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgTypePtrList)
+SgType -> SgRvalueReferenceType
+SgRvalueReferenceType -> SgRvalueReferenceType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType)
+SgType -> SgTypeNullptr
+SgTypeNullptr -> SgTypeNullptr (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression)
+SgType -> SgDeclType
+SgDeclType -> SgDeclType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgExpression, SgType)
+SgType -> SgTypeOfType
+SgTypeOfType -> SgTypeOfType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgExpression, SgType)
+SgType -> SgTypeMatrix
+SgTypeMatrix -> SgTypeMatrix (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType)
+SgType -> SgTypeTuple
+SgTypeTuple -> SgTypeTuple (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgTypePtrList)
+SgPointerType -> SgPointerMemberType
+SgPointerMemberType -> SgPointerMemberType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType, SgType)
+SgNamedType -> SgClassType
+SgNamedType -> SgJavaParameterizedType
+SgJavaParameterizedType -> SgJavaParameterizedType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool, SgNamedType, SgTemplateParameterList)
+SgNamedType -> SgJavaQualifiedType
+SgJavaQualifiedType -> SgJavaQualifiedType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool, SgNamedType , SgNamedType )
+SgNamedType -> SgEnumType
+SgEnumType -> SgEnumType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool)
+SgNamedType -> SgTypedefType
+SgTypedefType -> SgTypedefType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool, SgSymbol)
+SgNamedType -> SgJavaWildcardType
+SgJavaWildcardType -> SgJavaWildcardType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool, SgType, bool, bool, bool)
+SgClassType -> SgJavaParameterType
+SgJavaParameterType -> SgJavaParameterType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgDeclarationStatement, bool)
+SgFunctionType -> SgMemberFunctionType
+SgMemberFunctionType -> SgPartialFunctionType
+SgPartialFunctionType -> SgPartialFunctionModifierType
+SgPartialFunctionModifierType -> SgPartialFunctionModifierType (bool, int, SgReferenceType, SgPointerType, SgModifierNodes, SgTypedefSeq, SgRvalueReferenceType, SgDeclType, SgTypeOfType, SgExpression, SgType, bool, SgType, SgFunctionParameterTypeList, SgType, <int>)
+SgLocatedNode -> SgToken
+SgToken -> SgToken (<string>, <int>)
+SgLocatedNode -> SgLocatedNodeSupport
+SgLocatedNode -> SgStatement
+SgLocatedNode -> SgExpression
+SgLocatedNodeSupport -> SgCommonBlockObject
+SgCommonBlockObject -> SgCommonBlockObject (<string>, SgExprListExp)
+SgLocatedNodeSupport -> SgInitializedName
+SgInitializedName -> SgInitializedName (SgName, <string>, SgType, SgInitializer, SgInitializedName, bool, SgDeclarationStatement, SgStorageModifier, SgScopeStatement, SgInitializedName::preinitialization_enum, bool, SgInitializedName::asm_register_name_enum, SgInitializedName::excess_specifier_enum, <string>, bool, bool, bool, SgBitVector, unsigned long int, <string>, <string>, <string>, <string>, int, SgDeclarationModifier::gnu_declaration_visability_enum, bool, int, bool, bool, bool, bool, SgNode, bool)
+SgLocatedNodeSupport -> SgInterfaceBody
+SgInterfaceBody -> SgInterfaceBody (SgName, SgFunctionDeclaration, bool)
+SgLocatedNodeSupport -> SgHeaderFileBody
+SgHeaderFileBody -> SgHeaderFileBody ()
+SgLocatedNodeSupport -> SgRenamePair
+SgRenamePair -> SgRenamePair (SgName, SgName)
+SgLocatedNodeSupport -> SgJavaMemberValuePair
+SgJavaMemberValuePair -> SgJavaMemberValuePair (SgName, SgExpression)
+SgLocatedNodeSupport -> SgOmpClause
+SgLocatedNodeSupport -> SgUntypedNode
+SgLocatedNodeSupport -> SgLambdaCapture
+SgLambdaCapture -> SgLambdaCapture (SgExpression, SgExpression, SgExpression, bool, bool, bool)
+SgLocatedNodeSupport -> SgLambdaCaptureList
+SgLambdaCaptureList -> SgLambdaCaptureList (ListStarOfSgLambdaCapture)
+SgOmpClause -> SgOmpOrderedClause
+SgOmpOrderedClause -> SgOmpOrderedClause ()
+SgOmpClause -> SgOmpNowaitClause
+SgOmpNowaitClause -> SgOmpNowaitClause ()
+SgOmpClause -> SgOmpUntiedClause
+SgOmpUntiedClause -> SgOmpUntiedClause ()
+SgOmpClause -> SgOmpDefaultClause
+SgOmpDefaultClause -> SgOmpDefaultClause (SgOmpClause::omp_default_option_enum)
+SgOmpClause -> SgOmpExpressionClause
+SgOmpClause -> SgOmpVariablesClause
+SgOmpClause -> SgOmpScheduleClause
+SgOmpScheduleClause -> SgOmpScheduleClause (SgOmpClause::omp_schedule_kind_enum, SgExpression)
+SgOmpExpressionClause -> SgOmpCollapseClause
+SgOmpCollapseClause -> SgOmpCollapseClause (SgExpression)
+SgOmpExpressionClause -> SgOmpIfClause
+SgOmpIfClause -> SgOmpIfClause (SgExpression)
+SgOmpExpressionClause -> SgOmpNumThreadsClause
+SgOmpNumThreadsClause -> SgOmpNumThreadsClause (SgExpression)
+SgOmpExpressionClause -> SgOmpDeviceClause
+SgOmpDeviceClause -> SgOmpDeviceClause (SgExpression)
+SgOmpExpressionClause -> SgOmpSafelenClause
+SgOmpSafelenClause -> SgOmpSafelenClause (SgExpression)
+SgOmpVariablesClause -> SgOmpCopyprivateClause
+SgOmpCopyprivateClause -> SgOmpCopyprivateClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpPrivateClause
+SgOmpPrivateClause -> SgOmpPrivateClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpFirstprivateClause
+SgOmpFirstprivateClause -> SgOmpFirstprivateClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpSharedClause
+SgOmpSharedClause -> SgOmpSharedClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpCopyinClause
+SgOmpCopyinClause -> SgOmpCopyinClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpLastprivateClause
+SgOmpLastprivateClause -> SgOmpLastprivateClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpReductionClause
+SgOmpReductionClause -> SgOmpReductionClause (ListStarOfSgVarRefExp, ListStarOfSgOmpClause::omp_reduction_operator_enum)
+SgOmpVariablesClause -> SgOmpMapClause
+SgOmpMapClause -> SgOmpMapClause (ListStarOfSgVarRefExp, ListStarOfSgOmpClause::omp_map_operator_enum, ListStarOfmap<SgSymbol,  std::vector < std::pair <SgExpression*, SgExpression*> > >)
+SgOmpVariablesClause -> SgOmpLinearClause
+SgOmpLinearClause -> SgOmpLinearClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpUniformClause
+SgOmpUniformClause -> SgOmpUniformClause (ListStarOfSgVarRefExp)
+SgOmpVariablesClause -> SgOmpAlignedClause
+SgOmpAlignedClause -> SgOmpAlignedClause (ListStarOfSgVarRefExp)
+SgUntypedNode -> SgUntypedExpression
+SgUntypedNode -> SgUntypedStatement
+SgUntypedNode -> SgUntypedType
+SgUntypedNode -> SgUntypedAttribute
+SgUntypedAttribute -> SgUntypedAttribute (<int>, <string>)
+SgUntypedNode -> SgUntypedInitializedName
+SgUntypedInitializedName -> SgUntypedInitializedName (SgUntypedType, <string>)
+SgUntypedNode -> SgUntypedFile
+SgUntypedFile -> SgUntypedFile (SgUntypedGlobalScope)
+SgUntypedNode -> SgUntypedStatementList
+SgUntypedStatementList -> SgUntypedStatementList (ListStarOfSgUntypedStatement)
+SgUntypedNode -> SgUntypedDeclarationList
+SgUntypedDeclarationList -> SgUntypedDeclarationList (ListStarOfSgUntypedDeclarationStatement)
+SgUntypedNode -> SgUntypedFunctionDeclarationList
+SgUntypedFunctionDeclarationList -> SgUntypedFunctionDeclarationList (ListStarOfSgUntypedFunctionDeclaration)
+SgUntypedNode -> SgUntypedInitializedNameList
+SgUntypedInitializedNameList -> SgUntypedInitializedNameList (ListStarOfSgUntypedInitializedName)
+SgUntypedExpression -> SgUntypedUnaryOperator
+SgUntypedUnaryOperator -> SgUntypedUnaryOperator (<int>, SgToken::ROSE_Fortran_Operators, <string>, SgUntypedExpression)
+SgUntypedExpression -> SgUntypedBinaryOperator
+SgUntypedBinaryOperator -> SgUntypedBinaryOperator (<int>, SgToken::ROSE_Fortran_Operators, <string>, SgUntypedExpression, SgUntypedExpression)
+SgUntypedExpression -> SgUntypedValueExpression
+SgUntypedValueExpression -> SgUntypedValueExpression (<int>, <string>, SgUntypedType)
+SgUntypedExpression -> SgUntypedArrayReferenceExpression
+SgUntypedArrayReferenceExpression -> SgUntypedArrayReferenceExpression (<int>)
+SgUntypedExpression -> SgUntypedOtherExpression
+SgUntypedOtherExpression -> SgUntypedOtherExpression (<int>)
+SgUntypedExpression -> SgUntypedFunctionCallOrArrayReferenceExpression
+SgUntypedFunctionCallOrArrayReferenceExpression -> SgUntypedFunctionCallOrArrayReferenceExpression (<int>)
+SgUntypedExpression -> SgUntypedReferenceExpression
+SgUntypedReferenceExpression -> SgUntypedReferenceExpression (<int>, <string>)
+SgUntypedStatement -> SgUntypedDeclarationStatement
+SgUntypedStatement -> SgUntypedAssignmentStatement
+SgUntypedAssignmentStatement -> SgUntypedAssignmentStatement (<string>, <int>, SgUntypedExpression, SgUntypedExpression)
+SgUntypedStatement -> SgUntypedFunctionCallStatement
+SgUntypedFunctionCallStatement -> SgUntypedFunctionCallStatement (<string>, <int>)
+SgUntypedStatement -> SgUntypedBlockStatement
+SgUntypedBlockStatement -> SgUntypedBlockStatement (<string>, <int>, SgUntypedScope)
+SgUntypedStatement -> SgUntypedNamedStatement
+SgUntypedNamedStatement -> SgUntypedNamedStatement (<string>, <int>, <string>)
+SgUntypedStatement -> SgUntypedOtherStatement
+SgUntypedOtherStatement -> SgUntypedOtherStatement (<string>, <int>)
+SgUntypedStatement -> SgUntypedScope
+SgUntypedDeclarationStatement -> SgUntypedImplicitDeclaration
+SgUntypedImplicitDeclaration -> SgUntypedImplicitDeclaration (<string>, <int>)
+SgUntypedDeclarationStatement -> SgUntypedVariableDeclaration
+SgUntypedVariableDeclaration -> SgUntypedVariableDeclaration (<string>, <int>, SgUntypedType, SgUntypedInitializedNameList)
+SgUntypedDeclarationStatement -> SgUntypedFunctionDeclaration
+SgUntypedDeclarationStatement -> SgUntypedModuleDeclaration
+SgUntypedModuleDeclaration -> SgUntypedModuleDeclaration (<string>, <int>, SgUntypedModuleScope, SgUntypedNamedStatement)
+SgUntypedFunctionDeclaration -> SgUntypedProgramHeaderDeclaration
+SgUntypedProgramHeaderDeclaration -> SgUntypedProgramHeaderDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
+SgUntypedFunctionDeclaration -> SgUntypedSubroutineDeclaration
+SgUntypedSubroutineDeclaration -> SgUntypedSubroutineDeclaration (<string>, <int>, <string>, SgUntypedInitializedNameList, SgUntypedType, SgUntypedFunctionScope, SgUntypedNamedStatement)
+SgUntypedScope -> SgUntypedFunctionScope
+SgUntypedFunctionScope -> SgUntypedFunctionScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedScope -> SgUntypedModuleScope
+SgUntypedModuleScope -> SgUntypedModuleScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedScope -> SgUntypedGlobalScope
+SgUntypedGlobalScope -> SgUntypedGlobalScope (<string>, <int>, SgUntypedDeclarationList, SgUntypedStatementList, SgUntypedFunctionDeclarationList)
+SgUntypedType -> SgUntypedArrayType
+SgUntypedArrayType -> SgUntypedArrayType (<string>, SgUntypedExpression, bool, bool, bool, bool, bool, bool, SgUntypedExpression, <string>, bool)
+SgStatement -> SgScopeStatement
+SgStatement -> SgFunctionTypeTable
+SgFunctionTypeTable -> SgFunctionTypeTable (SgLabelRefExp, SgSymbolTable)
+SgStatement -> SgDeclarationStatement
+SgStatement -> SgExprStatement
+SgExprStatement -> SgExprStatement (SgLabelRefExp, SgExpression)
+SgStatement -> SgLabelStatement
+SgLabelStatement -> SgLabelStatement (SgLabelRefExp, SgName, SgScopeStatement, SgStatement, bool)
+SgStatement -> SgCaseOptionStmt
+SgCaseOptionStmt -> SgCaseOptionStmt (SgLabelRefExp, SgExpression, SgStatement, SgExpression, <string>)
+SgStatement -> SgTryStmt
+SgTryStmt -> SgTryStmt (SgLabelRefExp, SgStatement, SgCatchStatementSeq, SgStatement, SgStatement)
+SgStatement -> SgDefaultOptionStmt
+SgDefaultOptionStmt -> SgDefaultOptionStmt (SgLabelRefExp, SgStatement, <string>)
+SgStatement -> SgBreakStmt
+SgBreakStmt -> SgBreakStmt (SgLabelRefExp, <string>)
+SgStatement -> SgContinueStmt
+SgContinueStmt -> SgContinueStmt (SgLabelRefExp, <string>)
+SgStatement -> SgReturnStmt
+SgReturnStmt -> SgReturnStmt (SgLabelRefExp, SgExpression)
+SgStatement -> SgGotoStatement
+SgGotoStatement -> SgGotoStatement (SgLabelRefExp, SgLabelStatement, SgLabelRefExp)
+SgStatement -> SgSpawnStmt
+SgSpawnStmt -> SgSpawnStmt (SgLabelRefExp, SgFunctionCallExp)
+SgStatement -> SgNullStatement
+SgNullStatement -> SgNullStatement (SgLabelRefExp)
+SgStatement -> SgVariantStatement
+SgVariantStatement -> SgVariantStatement (SgLabelRefExp)
+SgStatement -> SgForInitStatement
+SgForInitStatement -> SgForInitStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement)
+SgStatement -> SgCatchStatementSeq
+SgCatchStatementSeq -> SgCatchStatementSeq (ListStarOfSgLabelRefExp, ListStarOfSgStatement)
+SgStatement -> SgStopOrPauseStatement
+SgStopOrPauseStatement -> SgStopOrPauseStatement (SgLabelRefExp, SgStopOrPauseStatement::stop_or_pause_enum, SgExpression)
+SgStatement -> SgIOStatement
+SgStatement -> SgWhereStatement
+SgWhereStatement -> SgWhereStatement (SgLabelRefExp, SgExpression, SgBasicBlock, SgElseWhereStatement, SgLabelRefExp, <string>, bool)
+SgStatement -> SgElseWhereStatement
+SgElseWhereStatement -> SgElseWhereStatement (SgLabelRefExp, SgExpression, SgBasicBlock, SgElseWhereStatement)
+SgStatement -> SgNullifyStatement
+SgNullifyStatement -> SgNullifyStatement (SgLabelRefExp, SgExprListExp)
+SgStatement -> SgArithmeticIfStatement
+SgArithmeticIfStatement -> SgArithmeticIfStatement (SgLabelRefExp, SgExpression, SgLabelRefExp, SgLabelRefExp, SgLabelRefExp)
+SgStatement -> SgAssignStatement
+SgAssignStatement -> SgAssignStatement (SgLabelRefExp, SgLabelRefExp, SgExpression)
+SgStatement -> SgComputedGotoStatement
+SgComputedGotoStatement -> SgComputedGotoStatement (SgLabelRefExp, SgExprListExp, SgExpression)
+SgStatement -> SgAssignedGotoStatement
+SgAssignedGotoStatement -> SgAssignedGotoStatement (SgLabelRefExp, SgExprListExp)
+SgStatement -> SgAllocateStatement
+SgAllocateStatement -> SgAllocateStatement (SgLabelRefExp, SgExprListExp, SgExpression, SgExpression, SgExpression)
+SgStatement -> SgDeallocateStatement
+SgDeallocateStatement -> SgDeallocateStatement (SgLabelRefExp, SgExprListExp, SgExpression, SgExpression)
+SgStatement -> SgUpcNotifyStatement
+SgUpcNotifyStatement -> SgUpcNotifyStatement (SgLabelRefExp, SgExpression)
+SgStatement -> SgUpcWaitStatement
+SgUpcWaitStatement -> SgUpcWaitStatement (SgLabelRefExp, SgExpression)
+SgStatement -> SgUpcBarrierStatement
+SgUpcBarrierStatement -> SgUpcBarrierStatement (SgLabelRefExp, SgExpression)
+SgStatement -> SgUpcFenceStatement
+SgUpcFenceStatement -> SgUpcFenceStatement (SgLabelRefExp)
+SgStatement -> SgOmpBarrierStatement
+SgOmpBarrierStatement -> SgOmpBarrierStatement (SgLabelRefExp)
+SgStatement -> SgOmpTaskwaitStatement
+SgOmpTaskwaitStatement -> SgOmpTaskwaitStatement (SgLabelRefExp)
+SgStatement -> SgOmpFlushStatement
+SgOmpFlushStatement -> SgOmpFlushStatement (ListStarOfSgLabelRefExp, ListStarOfSgVarRefExp)
+SgStatement -> SgOmpBodyStatement
+SgStatement -> SgSequenceStatement
+SgSequenceStatement -> SgSequenceStatement (SgLabelRefExp)
+SgStatement -> SgWithStatement
+SgWithStatement -> SgWithStatement (SgLabelRefExp, SgExpression, SgStatement)
+SgStatement -> SgPythonPrintStmt
+SgPythonPrintStmt -> SgPythonPrintStmt (SgLabelRefExp, SgExpression, SgExprListExp)
+SgStatement -> SgPassStatement
+SgPassStatement -> SgPassStatement (SgLabelRefExp)
+SgStatement -> SgAssertStmt
+SgAssertStmt -> SgAssertStmt (SgLabelRefExp, SgExpression, SgExpression)
+SgStatement -> SgExecStatement
+SgExecStatement -> SgExecStatement (SgLabelRefExp, SgExpression, SgExpression, SgExpression)
+SgStatement -> SgPythonGlobalStmt
+SgPythonGlobalStmt -> SgPythonGlobalStmt (ListStarOfSgLabelRefExp, ListStarOfSgInitializedName)
+SgStatement -> SgJavaThrowStatement
+SgJavaThrowStatement -> SgJavaThrowStatement (SgLabelRefExp, SgThrowOp)
+SgStatement -> SgJavaSynchronizedStatement
+SgJavaSynchronizedStatement -> SgJavaSynchronizedStatement (SgLabelRefExp, SgExpression, SgStatement)
+SgStatement -> SgAsyncStmt
+SgAsyncStmt -> SgAsyncStmt (SgLabelRefExp, SgStatement)
+SgStatement -> SgFinishStmt
+SgFinishStmt -> SgFinishStmt (SgLabelRefExp, SgStatement)
+SgStatement -> SgAtStmt
+SgAtStmt -> SgAtStmt (SgLabelRefExp, SgExpression, SgStatement)
+SgScopeStatement -> SgGlobal
+SgGlobal -> SgGlobal (ListStarOfSgLabelRefExp, ListStarOfSgSymbolTable, ListStarOfSgTypeTable, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfSgDeclarationStatement)
+SgScopeStatement -> SgBasicBlock
+SgBasicBlock -> SgBasicBlock (ListStarOfSgLabelRefExp, ListStarOfSgSymbolTable, ListStarOfSgTypeTable, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfSgStatement, ListStarOfstring)
+SgScopeStatement -> SgIfStmt
+SgIfStmt -> SgIfStmt (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgStatement, SgStatement, SgStatement, SgLabelRefExp, <string>, SgLabelRefExp, bool, bool, bool)
+SgScopeStatement -> SgForStatement
+SgForStatement -> SgForStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgForInitStatement, SgStatement, SgExpression, SgStatement, SgStatement, <string>)
+SgScopeStatement -> SgFunctionDefinition
+SgScopeStatement -> SgClassDefinition
+SgScopeStatement -> SgWhileStmt
+SgWhileStmt -> SgWhileStmt (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgStatement, SgStatement, SgStatement, SgLabelRefExp, <string>, bool)
+SgScopeStatement -> SgDoWhileStmt
+SgDoWhileStmt -> SgDoWhileStmt (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgStatement, SgStatement)
+SgScopeStatement -> SgSwitchStatement
+SgSwitchStatement -> SgSwitchStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgStatement, SgStatement, SgLabelRefExp, <string>)
+SgScopeStatement -> SgCatchOptionStmt
+SgCatchOptionStmt -> SgCatchOptionStmt (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgVariableDeclaration, SgStatement, SgTryStmt)
+SgScopeStatement -> SgNamespaceDefinitionStatement
+SgNamespaceDefinitionStatement -> SgNamespaceDefinitionStatement (ListStarOfSgLabelRefExp, ListStarOfSgSymbolTable, ListStarOfSgTypeTable, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfSgDeclarationStatement, ListStarOfSgNamespaceDeclarationStatement, ListStarOfSgNamespaceDefinitionStatement, ListStarOfSgNamespaceDefinitionStatement, ListStarOfSgNamespaceDefinitionStatement, ListStarOfbool)
+SgScopeStatement -> SgBlockDataStatement
+SgBlockDataStatement -> SgBlockDataStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgBasicBlock)
+SgScopeStatement -> SgAssociateStatement
+SgAssociateStatement -> SgAssociateStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgVariableDeclaration, SgBasicBlock)
+SgScopeStatement -> SgFortranDo
+SgScopeStatement -> SgForAllStatement
+SgForAllStatement -> SgForAllStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgExprListExp, SgBasicBlock, bool, <string>, SgLabelRefExp)
+SgScopeStatement -> SgUpcForAllStatement
+SgUpcForAllStatement -> SgUpcForAllStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgForInitStatement, SgStatement, SgExpression, SgExpression, SgStatement)
+SgScopeStatement -> SgCAFWithTeamStatement
+SgCAFWithTeamStatement -> SgCAFWithTeamStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgVarRefExp, SgBasicBlock, bool)
+SgScopeStatement -> SgJavaForEachStatement
+SgJavaForEachStatement -> SgJavaForEachStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgVariableDeclaration, SgExpression, SgStatement)
+SgScopeStatement -> SgJavaLabelStatement
+SgJavaLabelStatement -> SgJavaLabelStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgName, SgStatement)
+SgScopeStatement -> SgMatlabForStatement
+SgMatlabForStatement -> SgMatlabForStatement (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgExpression, SgExpression, SgBasicBlock)
+SgFunctionDefinition -> SgTemplateFunctionDefinition
+SgTemplateFunctionDefinition -> SgTemplateFunctionDefinition (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgBasicBlock, map<SgNode,int>)
+SgClassDefinition -> SgTemplateInstantiationDefn
+SgTemplateInstantiationDefn -> SgTemplateInstantiationDefn (ListStarOfSgLabelRefExp, ListStarOfSgSymbolTable, ListStarOfSgTypeTable, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfSgDeclarationStatement, ListStarOfSgBaseClass, ListStarOfunsigned int, ListStarOfbool, ListStarOfbool, ListStarOfbool)
+SgClassDefinition -> SgTemplateClassDefinition
+SgTemplateClassDefinition -> SgTemplateClassDefinition (ListStarOfSgLabelRefExp, ListStarOfSgSymbolTable, ListStarOfSgTypeTable, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfset<SgSymbol>, ListStarOfSgDeclarationStatement, ListStarOfSgBaseClass, ListStarOfunsigned int, ListStarOfbool, ListStarOfbool, ListStarOfbool)
+SgFortranDo -> SgFortranNonblockedDo
+SgFortranNonblockedDo -> SgFortranNonblockedDo (SgLabelRefExp, SgSymbolTable, SgTypeTable, set<SgSymbol>, set<SgSymbol>, set<SgSymbol>, SgExpression, SgExpression, SgExpression, SgBasicBlock, SgLabelRefExp, <string>, bool, bool, SgStatement)
+SgDeclarationStatement -> SgFunctionParameterList
+SgFunctionParameterList -> SgFunctionParameterList (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgInitializedName)
+SgDeclarationStatement -> SgVariableDeclaration
+SgDeclarationStatement -> SgVariableDefinition
+SgVariableDefinition -> SgVariableDefinition (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgInitializedName, SgValueExp)
+SgDeclarationStatement -> SgClinkageDeclarationStatement
+SgDeclarationStatement -> SgEnumDeclaration
+SgEnumDeclaration -> SgEnumDeclaration (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgName, ListStarOfbool, ListStarOfSgEnumType, ListStarOfSgInitializedName, ListStarOfSgScopeStatement, ListStarOfbool, ListStarOfbool, ListStarOfSgType, ListStarOfbool)
+SgDeclarationStatement -> SgAsmStmt
+SgAsmStmt -> SgAsmStmt (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfstring, ListStarOfbool, ListStarOfSgExpression, ListStarOfSgAsmStmt::AsmRegisterName, ListStarOfbool)
+SgDeclarationStatement -> SgAttributeSpecificationStatement
+SgAttributeSpecificationStatement -> SgAttributeSpecificationStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgStringList, SgAttributeSpecificationStatement::attribute_spec_enum, int, SgExprListExp, SgDataStatementGroupPtrList, SgExprListExp, SgDimensionObjectPtrList)
+SgDeclarationStatement -> SgFormatStatement
+SgFormatStatement -> SgFormatStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgFormatItemList)
+SgDeclarationStatement -> SgTemplateDeclaration
+SgTemplateDeclaration -> SgTemplateDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgName, SgTemplateDeclaration::template_type_enum, SgTemplateParameterPtrList, SgScopeStatement)
+SgDeclarationStatement -> SgTemplateInstantiationDirectiveStatement
+SgTemplateInstantiationDirectiveStatement -> SgTemplateInstantiationDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgDeclarationStatement, bool)
+SgDeclarationStatement -> SgUseStatement
+SgUseStatement -> SgUseStatement (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgName, ListStarOfbool, ListStarOfSgRenamePair, ListStarOfSgModuleStatement)
+SgDeclarationStatement -> SgParameterStatement
+SgParameterStatement -> SgParameterStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>)
+SgDeclarationStatement -> SgNamespaceDeclarationStatement
+SgNamespaceDeclarationStatement -> SgNamespaceDeclarationStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgNamespaceDefinitionStatement, bool, bool)
+SgDeclarationStatement -> SgEquivalenceStatement
+SgEquivalenceStatement -> SgEquivalenceStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgExprListExp)
+SgDeclarationStatement -> SgInterfaceStatement
+SgInterfaceStatement -> SgInterfaceStatement (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgName, ListStarOfSgInterfaceStatement::generic_spec_enum, ListStarOfSgInterfaceBody, ListStarOfSgLabelRefExp)
+SgDeclarationStatement -> SgNamespaceAliasDeclarationStatement
+SgNamespaceAliasDeclarationStatement -> SgNamespaceAliasDeclarationStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgNamespaceDeclarationStatement, int, bool, bool)
+SgDeclarationStatement -> SgCommonBlock
+SgCommonBlock -> SgCommonBlock (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgCommonBlockObject)
+SgDeclarationStatement -> SgTypedefDeclaration
+SgDeclarationStatement -> SgStatementFunctionStatement
+SgStatementFunctionStatement -> SgStatementFunctionStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgFunctionDeclaration, SgExpression)
+SgDeclarationStatement -> SgCtorInitializerList
+SgCtorInitializerList -> SgCtorInitializerList (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgInitializedName)
+SgDeclarationStatement -> SgPragmaDeclaration
+SgPragmaDeclaration -> SgPragmaDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgPragma)
+SgDeclarationStatement -> SgUsingDirectiveStatement
+SgUsingDirectiveStatement -> SgUsingDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgNamespaceDeclarationStatement, int, bool, bool)
+SgDeclarationStatement -> SgClassDeclaration
+SgDeclarationStatement -> SgImplicitStatement
+SgImplicitStatement -> SgImplicitStatement (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfbool, ListStarOfSgInitializedName)
+SgDeclarationStatement -> SgUsingDeclarationStatement
+SgUsingDeclarationStatement -> SgUsingDeclarationStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgDeclarationStatement, SgInitializedName, int, bool, bool)
+SgDeclarationStatement -> SgNamelistStatement
+SgNamelistStatement -> SgNamelistStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgNameGroupPtrList)
+SgDeclarationStatement -> SgImportStatement
+SgImportStatement -> SgImportStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgExpressionPtrList)
+SgDeclarationStatement -> SgFunctionDeclaration
+SgDeclarationStatement -> SgContainsStatement
+SgContainsStatement -> SgContainsStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>)
+SgDeclarationStatement -> SgC_PreprocessorDirectiveStatement
+SgDeclarationStatement -> SgOmpThreadprivateStatement
+SgOmpThreadprivateStatement -> SgOmpThreadprivateStatement (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgVarRefExp)
+SgDeclarationStatement -> SgFortranIncludeLine
+SgFortranIncludeLine -> SgFortranIncludeLine (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgDeclarationStatement -> SgJavaImportStatement
+SgJavaImportStatement -> SgJavaImportStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, bool)
+SgDeclarationStatement -> SgJavaPackageStatement
+SgJavaPackageStatement -> SgJavaPackageStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName)
+SgDeclarationStatement -> SgStmtDeclarationStatement
+SgStmtDeclarationStatement -> SgStmtDeclarationStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgStatement)
+SgDeclarationStatement -> SgStaticAssertionDeclaration
+SgStaticAssertionDeclaration -> SgStaticAssertionDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgExpression, SgName)
+SgDeclarationStatement -> SgMicrosoftAttributeDeclaration
+SgMicrosoftAttributeDeclaration -> SgMicrosoftAttributeDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName)
+SgVariableDeclaration -> SgTemplateVariableDeclaration
+SgTemplateVariableDeclaration -> SgTemplateVariableDeclaration (ListStarOfSgLabelRefExp, ListStarOfunsigned int, ListStarOfstring, ListStarOfSgDeclarationModifier, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgDeclarationStatement, ListStarOfSgDeclarationStatement, ListStarOfSgQualifiedName, ListStarOfstring, ListStarOfSgDeclarationStatement, ListStarOfSgInitializedName, ListStarOfbool, ListStarOfSgDeclarationStatement::template_specialization_enum, ListStarOfbool, ListStarOfstring, ListStarOfstring, ListStarOfunsigned short, ListStarOfSgDeclarationStatement::gnu_extension_visability_attribute_enum, ListStarOfSgVariableDeclaration::gnu_extension_declaration_attributes_enum, ListStarOfint, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfSgTemplateParameter, ListStarOfSgTemplateArgument, ListStarOfSgName)
+SgClinkageDeclarationStatement -> SgClinkageStartStatement
+SgClinkageStartStatement -> SgClinkageStartStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgClinkageDeclarationStatement -> SgClinkageEndStatement
+SgClinkageEndStatement -> SgClinkageEndStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgTypedefDeclaration -> SgTemplateTypedefDeclaration
+SgTemplateTypedefDeclaration -> SgTemplateTypedefDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgType, SgTypedefType, SgDeclarationStatement, SgSymbol, bool, SgScopeStatement, bool, int, bool, bool, bool, bool, bool, SgTemplateParameterPtrList, SgTemplateArgumentPtrList, SgName)
+SgTypedefDeclaration -> SgTemplateInstantiationTypedefDeclaration
+SgTemplateInstantiationTypedefDeclaration -> SgTemplateInstantiationTypedefDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgType, SgTypedefType, SgDeclarationStatement, SgSymbol, bool, SgScopeStatement, bool, int, bool, bool, bool, bool, bool, SgName, SgName, SgTemplateTypedefDeclaration, SgTemplateArgumentPtrList, bool)
+SgClassDeclaration -> SgTemplateClassDeclaration
+SgTemplateClassDeclaration -> SgTemplateClassDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgClassDeclaration::class_types, SgClassType, SgClassDefinition, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, bool, bool, bool, bool, bool, bool, SgExprListExp, int, bool, bool, bool, bool, SgTemplateParameterPtrList, SgTemplateArgumentPtrList, SgName, SgName)
+SgClassDeclaration -> SgTemplateInstantiationDecl
+SgTemplateInstantiationDecl -> SgTemplateInstantiationDecl (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgClassDeclaration::class_types, SgClassType, SgClassDefinition, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, bool, bool, bool, bool, bool, bool, SgExprListExp, int, bool, bool, bool, bool, SgName, SgName, SgTemplateClassDeclaration, SgTemplateArgumentPtrList, bool)
+SgClassDeclaration -> SgDerivedTypeStatement
+SgDerivedTypeStatement -> SgDerivedTypeStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgClassDeclaration::class_types, SgClassType, SgClassDefinition, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, bool, bool, bool, bool, bool, bool, SgExprListExp, int, bool, bool, bool, bool, SgLabelRefExp)
+SgClassDeclaration -> SgModuleStatement
+SgModuleStatement -> SgModuleStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgClassDeclaration::class_types, SgClassType, SgClassDefinition, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, bool, bool, bool, bool, bool, bool, SgExprListExp, int, bool, bool, bool, bool, SgLabelRefExp)
+SgClassDeclaration -> SgJavaPackageDeclaration
+SgJavaPackageDeclaration -> SgJavaPackageDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgClassDeclaration::class_types, SgClassType, SgClassDefinition, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, bool, bool, bool, bool, bool, bool, SgExprListExp, int, bool, bool, bool, bool)
+SgFunctionDeclaration -> SgTemplateFunctionDeclaration
+SgTemplateFunctionDeclaration -> SgTemplateFunctionDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgTemplateParameterPtrList, SgTemplateArgumentPtrList, SgName, bool)
+SgFunctionDeclaration -> SgMemberFunctionDeclaration
+SgFunctionDeclaration -> SgTemplateInstantiationFunctionDecl
+SgTemplateInstantiationFunctionDecl -> SgTemplateInstantiationFunctionDecl (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgName, SgTemplateFunctionDeclaration, SgTemplateArgumentPtrList, bool, bool)
+SgFunctionDeclaration -> SgProgramHeaderStatement
+SgProgramHeaderStatement -> SgProgramHeaderStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, bool, SgLabelRefExp)
+SgFunctionDeclaration -> SgProcedureHeaderStatement
+SgProcedureHeaderStatement -> SgProcedureHeaderStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgProcedureHeaderStatement::subprogram_kind_enum, SgLabelRefExp, SgInitializedName)
+SgFunctionDeclaration -> SgEntryStatement
+SgEntryStatement -> SgEntryStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgInitializedName)
+SgMemberFunctionDeclaration -> SgTemplateMemberFunctionDeclaration
+SgTemplateMemberFunctionDeclaration -> SgTemplateMemberFunctionDeclaration (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgCtorInitializerList, SgClassDeclaration, SgTemplateParameterPtrList, SgTemplateArgumentPtrList, SgName, bool)
+SgMemberFunctionDeclaration -> SgTemplateInstantiationMemberFunctionDecl
+SgTemplateInstantiationMemberFunctionDecl -> SgTemplateInstantiationMemberFunctionDecl (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, SgName, SgFunctionParameterList, SgFunctionModifier, SgSpecialFunctionModifier, SgTypePtrList, bool, <string>, SgExprListExp, SgFunctionType, SgFunctionDefinition, bool, SgScopeStatement, SgDeclarationStatement::template_specialization_enum, bool, <string>, <string>, SgDeclarationStatement::gnu_extension_visability_attribute_enum, int, bool, bool, int, bool, bool, bool, int, SgFunctionType, bool, bool, bool, bool, SgCtorInitializerList, SgClassDeclaration, SgName, SgTemplateMemberFunctionDeclaration, SgTemplateArgumentPtrList, bool, bool)
+SgC_PreprocessorDirectiveStatement -> SgIncludeDirectiveStatement
+SgIncludeDirectiveStatement -> SgIncludeDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>, SgHeaderFileBody)
+SgC_PreprocessorDirectiveStatement -> SgDefineDirectiveStatement
+SgDefineDirectiveStatement -> SgDefineDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgUndefDirectiveStatement
+SgUndefDirectiveStatement -> SgUndefDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgIfdefDirectiveStatement
+SgIfdefDirectiveStatement -> SgIfdefDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgIfndefDirectiveStatement
+SgIfndefDirectiveStatement -> SgIfndefDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgIfDirectiveStatement
+SgIfDirectiveStatement -> SgIfDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgDeadIfDirectiveStatement
+SgDeadIfDirectiveStatement -> SgDeadIfDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgElseDirectiveStatement
+SgElseDirectiveStatement -> SgElseDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgElseifDirectiveStatement
+SgElseifDirectiveStatement -> SgElseifDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgEndifDirectiveStatement
+SgEndifDirectiveStatement -> SgEndifDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgLineDirectiveStatement
+SgLineDirectiveStatement -> SgLineDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgWarningDirectiveStatement
+SgWarningDirectiveStatement -> SgWarningDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgErrorDirectiveStatement
+SgErrorDirectiveStatement -> SgErrorDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgEmptyDirectiveStatement
+SgEmptyDirectiveStatement -> SgEmptyDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgIncludeNextDirectiveStatement
+SgIncludeNextDirectiveStatement -> SgIncludeNextDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgIdentDirectiveStatement
+SgIdentDirectiveStatement -> SgIdentDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>)
+SgC_PreprocessorDirectiveStatement -> SgLinemarkerDirectiveStatement
+SgLinemarkerDirectiveStatement -> SgLinemarkerDirectiveStatement (SgLabelRefExp, <int>, <string>, SgDeclarationModifier, bool, bool, bool, bool, SgDeclarationStatement, SgDeclarationStatement, SgQualifiedNamePtrList, <string>, <string>, int, <string>, SgUnsignedCharList)
+SgIOStatement -> SgPrintStatement
+SgPrintStatement -> SgPrintStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgReadStatement
+SgReadStatement -> SgReadStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgWriteStatement
+SgWriteStatement -> SgWriteStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgOpenStatement
+SgOpenStatement -> SgOpenStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgCloseStatement
+SgCloseStatement -> SgCloseStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgInquireStatement
+SgInquireStatement -> SgInquireStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgExpression, SgVarRefExp)
+SgIOStatement -> SgFlushStatement
+SgFlushStatement -> SgFlushStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgBackspaceStatement
+SgBackspaceStatement -> SgBackspaceStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgRewindStatement
+SgRewindStatement -> SgRewindStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgEndfileStatement
+SgEndfileStatement -> SgEndfileStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression)
+SgIOStatement -> SgWaitStatement
+SgWaitStatement -> SgWaitStatement (SgLabelRefExp, SgIOStatement::io_statement_enum, SgExprListExp, SgExpression, SgExpression, SgExpression, SgExpression)
+SgOmpBodyStatement -> SgOmpAtomicStatement
+SgOmpAtomicStatement -> SgOmpAtomicStatement (SgLabelRefExp, SgStatement)
+SgOmpBodyStatement -> SgOmpMasterStatement
+SgOmpMasterStatement -> SgOmpMasterStatement (SgLabelRefExp, SgStatement)
+SgOmpBodyStatement -> SgOmpOrderedStatement
+SgOmpOrderedStatement -> SgOmpOrderedStatement (SgLabelRefExp, SgStatement)
+SgOmpBodyStatement -> SgOmpCriticalStatement
+SgOmpCriticalStatement -> SgOmpCriticalStatement (SgLabelRefExp, SgStatement, SgName)
+SgOmpBodyStatement -> SgOmpSectionStatement
+SgOmpSectionStatement -> SgOmpSectionStatement (SgLabelRefExp, SgStatement)
+SgOmpBodyStatement -> SgOmpWorkshareStatement
+SgOmpWorkshareStatement -> SgOmpWorkshareStatement (SgLabelRefExp, SgStatement)
+SgOmpBodyStatement -> SgOmpClauseBodyStatement
+SgOmpClauseBodyStatement -> SgOmpParallelStatement
+SgOmpParallelStatement -> SgOmpParallelStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpSingleStatement
+SgOmpSingleStatement -> SgOmpSingleStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpTaskStatement
+SgOmpTaskStatement -> SgOmpTaskStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpForStatement
+SgOmpForStatement -> SgOmpForStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpDoStatement
+SgOmpDoStatement -> SgOmpDoStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpSectionsStatement
+SgOmpSectionsStatement -> SgOmpSectionsStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpTargetStatement
+SgOmpTargetStatement -> SgOmpTargetStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpTargetDataStatement
+SgOmpTargetDataStatement -> SgOmpTargetDataStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgOmpClauseBodyStatement -> SgOmpSimdStatement
+SgOmpSimdStatement -> SgOmpSimdStatement (ListStarOfSgLabelRefExp, ListStarOfSgStatement, ListStarOfSgOmpClause)
+SgExpression -> SgUnaryOp
+SgExpression -> SgBinaryOp
+SgExpression -> SgExprListExp
+SgExpression -> SgVarRefExp
+SgVarRefExp -> SgVarRefExp (bool, SgVariableSymbol, int, bool, bool)
+SgExpression -> SgClassNameRefExp
+SgClassNameRefExp -> SgClassNameRefExp (bool, SgClassSymbol)
+SgExpression -> SgFunctionRefExp
+SgFunctionRefExp -> SgFunctionRefExp (bool, SgFunctionSymbol, SgFunctionType, int, bool, bool)
+SgExpression -> SgMemberFunctionRefExp
+SgMemberFunctionRefExp -> SgMemberFunctionRefExp (bool, SgMemberFunctionSymbol, int, SgFunctionType, int, int, bool, bool)
+SgExpression -> SgValueExp
+SgExpression -> SgCallExpression
+SgExpression -> SgSizeOfOp
+SgSizeOfOp -> SgSizeOfOp (bool, SgExpression, SgType, SgType, int, bool, bool, bool)
+SgExpression -> SgUpcLocalsizeofExpression
+SgUpcLocalsizeofExpression -> SgUpcLocalsizeofExpression (bool, SgExpression, SgType, SgType)
+SgExpression -> SgUpcBlocksizeofExpression
+SgUpcBlocksizeofExpression -> SgUpcBlocksizeofExpression (bool, SgExpression, SgType, SgType)
+SgExpression -> SgUpcElemsizeofExpression
+SgUpcElemsizeofExpression -> SgUpcElemsizeofExpression (bool, SgExpression, SgType, SgType)
+SgExpression -> SgJavaInstanceOfOp
+SgJavaInstanceOfOp -> SgJavaInstanceOfOp (bool, SgExpression, SgType, SgType)
+SgExpression -> SgSuperExp
+SgSuperExp -> SgSuperExp (bool, SgClassSymbol, int)
+SgExpression -> SgTypeIdOp
+SgTypeIdOp -> SgTypeIdOp (bool, SgExpression, SgType, int, bool, bool)
+SgExpression -> SgConditionalExp
+SgConditionalExp -> SgConditionalExp (bool, SgExpression, SgExpression, SgExpression, SgType)
+SgExpression -> SgNewExp
+SgNewExp -> SgNewExp (bool, SgType, SgExprListExp, SgConstructorInitializer, SgExpression, short, SgFunctionDeclaration, int, bool, bool)
+SgExpression -> SgDeleteExp
+SgDeleteExp -> SgDeleteExp (bool, SgExpression, short, short, SgFunctionDeclaration)
+SgExpression -> SgThisExp
+SgThisExp -> SgThisExp (bool, SgClassSymbol, int)
+SgExpression -> SgRefExp
+SgRefExp -> SgRefExp (bool, SgType)
+SgExpression -> SgInitializer
+SgExpression -> SgVarArgStartOp
+SgVarArgStartOp -> SgVarArgStartOp (bool, SgExpression, SgExpression, SgType)
+SgExpression -> SgVarArgOp
+SgVarArgOp -> SgVarArgOp (bool, SgExpression, SgType)
+SgExpression -> SgVarArgEndOp
+SgVarArgEndOp -> SgVarArgEndOp (bool, SgExpression, SgType)
+SgExpression -> SgVarArgCopyOp
+SgVarArgCopyOp -> SgVarArgCopyOp (bool, SgExpression, SgExpression, SgType)
+SgExpression -> SgVarArgStartOneOperandOp
+SgVarArgStartOneOperandOp -> SgVarArgStartOneOperandOp (bool, SgExpression, SgType)
+SgExpression -> SgNullExpression
+SgNullExpression -> SgNullExpression (bool)
+SgExpression -> SgVariantExpression
+SgVariantExpression -> SgVariantExpression (bool)
+SgExpression -> SgSubscriptExpression
+SgSubscriptExpression -> SgSubscriptExpression (bool, SgExpression, SgExpression, SgExpression)
+SgExpression -> SgColonShapeExp
+SgColonShapeExp -> SgColonShapeExp (bool)
+SgExpression -> SgAsteriskShapeExp
+SgAsteriskShapeExp -> SgAsteriskShapeExp (bool)
+SgExpression -> SgImpliedDo
+SgImpliedDo -> SgImpliedDo (bool, SgExpression, SgExpression, SgExpression, SgExprListExp, SgScopeStatement)
+SgExpression -> SgIOItemExpression
+SgIOItemExpression -> SgIOItemExpression (bool, SgName, SgExpression)
+SgExpression -> SgStatementExpression
+SgStatementExpression -> SgStatementExpression (bool, SgStatement)
+SgExpression -> SgAsmOp
+SgAsmOp -> SgAsmOp (bool, SgAsmOp::asm_operand_constraint_enum, SgAsmOp::asm_operand_modifier_enum, SgExpression, bool, bool, <string>, <string>)
+SgExpression -> SgLabelRefExp
+SgLabelRefExp -> SgLabelRefExp (bool, SgLabelSymbol)
+SgExpression -> SgActualArgumentExpression
+SgActualArgumentExpression -> SgActualArgumentExpression (bool, SgName, SgExpression)
+SgExpression -> SgUnknownArrayOrFunctionReference
+SgUnknownArrayOrFunctionReference -> SgUnknownArrayOrFunctionReference (bool, <string>, SgExpression, SgExprListExp)
+SgExpression -> SgPseudoDestructorRefExp
+SgPseudoDestructorRefExp -> SgPseudoDestructorRefExp (bool, SgType, SgType)
+SgExpression -> SgCAFCoExpression
+SgCAFCoExpression -> SgCAFCoExpression (bool, SgVarRefExp, SgExpression, SgExpression)
+SgExpression -> SgCudaKernelExecConfig
+SgCudaKernelExecConfig -> SgCudaKernelExecConfig (bool, SgExpression, SgExpression, SgExpression, SgExpression)
+SgExpression -> SgLambdaRefExp
+SgLambdaRefExp -> SgLambdaRefExp (bool, SgFunctionDeclaration)
+SgExpression -> SgDictionaryExp
+SgDictionaryExp -> SgDictionaryExp (ListStarOfbool, ListStarOfSgKeyDatumPair)
+SgExpression -> SgKeyDatumPair
+SgKeyDatumPair -> SgKeyDatumPair (bool, SgExpression, SgExpression)
+SgExpression -> SgComprehension
+SgComprehension -> SgComprehension (bool, SgExpression, SgExpression, SgExprListExp)
+SgExpression -> SgListComprehension
+SgListComprehension -> SgListComprehension (bool, SgExpression, SgExprListExp)
+SgExpression -> SgSetComprehension
+SgSetComprehension -> SgSetComprehension (bool, SgExpression, SgExprListExp)
+SgExpression -> SgDictionaryComprehension
+SgDictionaryComprehension -> SgDictionaryComprehension (bool, SgKeyDatumPair, SgExprListExp)
+SgExpression -> SgNaryOp
+SgExpression -> SgStringConversion
+SgStringConversion -> SgStringConversion (bool, SgExpression)
+SgExpression -> SgYieldExpression
+SgYieldExpression -> SgYieldExpression (bool, SgExpression)
+SgExpression -> SgTemplateFunctionRefExp
+SgTemplateFunctionRefExp -> SgTemplateFunctionRefExp (bool, SgTemplateFunctionSymbol, int, bool, bool)
+SgExpression -> SgTemplateMemberFunctionRefExp
+SgTemplateMemberFunctionRefExp -> SgTemplateMemberFunctionRefExp (bool, SgTemplateMemberFunctionSymbol, int, int, int, bool, bool)
+SgExpression -> SgAlignOfOp
+SgAlignOfOp -> SgAlignOfOp (bool, SgExpression, SgType, SgType, int, bool, bool, bool)
+SgExpression -> SgRangeExp
+SgRangeExp -> SgRangeExp (bool, SgExpression, SgExpression, SgExpression)
+SgExpression -> SgMagicColonExp
+SgMagicColonExp -> SgMagicColonExp (bool)
+SgExpression -> SgTypeTraitBuiltinOperator
+SgTypeTraitBuiltinOperator -> SgTypeTraitBuiltinOperator (bool, SgName, SgNodePtrList)
+SgExpression -> SgCompoundLiteralExp
+SgCompoundLiteralExp -> SgCompoundLiteralExp (bool, SgVariableSymbol)
+SgExpression -> SgJavaAnnotation
+SgExpression -> SgJavaTypeExpression
+SgJavaTypeExpression -> SgJavaTypeExpression (bool, SgType)
+SgExpression -> SgTypeExpression
+SgTypeExpression -> SgTypeExpression (bool, SgType)
+SgExpression -> SgClassExp
+SgClassExp -> SgClassExp (bool, SgClassSymbol, int)
+SgExpression -> SgFunctionParameterRefExp
+SgFunctionParameterRefExp -> SgFunctionParameterRefExp (bool, int, int, SgExpression, SgType)
+SgExpression -> SgLambdaExp
+SgLambdaExp -> SgLambdaExp (bool, SgLambdaCaptureList, SgClassDeclaration, SgFunctionDeclaration, bool, bool, bool, bool, bool)
+SgExpression -> SgHereExp
+SgHereExp -> SgHereExp (bool, SgType, SgExpression)
+SgExpression -> SgNoexceptOp
+SgNoexceptOp -> SgNoexceptOp (bool, SgExpression)
+SgUnaryOp -> SgExpressionRoot
+SgExpressionRoot -> SgExpressionRoot (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgMinusOp
+SgMinusOp -> SgMinusOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgUnaryAddOp
+SgUnaryAddOp -> SgUnaryAddOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgNotOp
+SgNotOp -> SgNotOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgPointerDerefExp
+SgPointerDerefExp -> SgPointerDerefExp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgAddressOfOp
+SgAddressOfOp -> SgAddressOfOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgMinusMinusOp
+SgMinusMinusOp -> SgMinusMinusOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgPlusPlusOp
+SgPlusPlusOp -> SgPlusPlusOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgBitComplementOp
+SgBitComplementOp -> SgBitComplementOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgCastExp
+SgCastExp -> SgCastExp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode, SgCastExp::cast_type_enum, int, bool, bool, bool)
+SgUnaryOp -> SgThrowOp
+SgThrowOp -> SgThrowOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode, SgThrowOp::e_throw_kind)
+SgUnaryOp -> SgRealPartOp
+SgRealPartOp -> SgRealPartOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgImagPartOp
+SgImagPartOp -> SgImagPartOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgConjugateOp
+SgConjugateOp -> SgConjugateOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode)
+SgUnaryOp -> SgUserDefinedUnaryOp
+SgUserDefinedUnaryOp -> SgUserDefinedUnaryOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode, SgName, SgFunctionSymbol)
+SgUnaryOp -> SgMatrixTransposeOp
+SgMatrixTransposeOp -> SgMatrixTransposeOp (bool, SgExpression, SgType, SgUnaryOp::Sgop_mode, bool)
+SgBinaryOp -> SgArrowExp
+SgArrowExp -> SgArrowExp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgDotExp
+SgDotExp -> SgDotExp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgDotStarOp
+SgDotStarOp -> SgDotStarOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgArrowStarOp
+SgArrowStarOp -> SgArrowStarOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgEqualityOp
+SgEqualityOp -> SgEqualityOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgLessThanOp
+SgLessThanOp -> SgLessThanOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgGreaterThanOp
+SgGreaterThanOp -> SgGreaterThanOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgNotEqualOp
+SgNotEqualOp -> SgNotEqualOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgLessOrEqualOp
+SgLessOrEqualOp -> SgLessOrEqualOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgGreaterOrEqualOp
+SgGreaterOrEqualOp -> SgGreaterOrEqualOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgAddOp
+SgAddOp -> SgAddOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgSubtractOp
+SgSubtractOp -> SgSubtractOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgMultiplyOp
+SgMultiplyOp -> SgMultiplyOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgDivideOp
+SgDivideOp -> SgDivideOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgIntegerDivideOp
+SgIntegerDivideOp -> SgIntegerDivideOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgModOp
+SgModOp -> SgModOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgAndOp
+SgAndOp -> SgAndOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgOrOp
+SgOrOp -> SgOrOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgBitXorOp
+SgBitXorOp -> SgBitXorOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgBitAndOp
+SgBitAndOp -> SgBitAndOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgBitOrOp
+SgBitOrOp -> SgBitOrOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgCommaOpExp
+SgCommaOpExp -> SgCommaOpExp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgLshiftOp
+SgLshiftOp -> SgLshiftOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgRshiftOp
+SgRshiftOp -> SgRshiftOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgPntrArrRefExp
+SgPntrArrRefExp -> SgPntrArrRefExp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgScopeOp
+SgScopeOp -> SgScopeOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgAssignOp
+SgAssignOp -> SgAssignOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgExponentiationOp
+SgExponentiationOp -> SgExponentiationOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgJavaUnsignedRshiftOp
+SgJavaUnsignedRshiftOp -> SgJavaUnsignedRshiftOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgConcatenationOp
+SgConcatenationOp -> SgConcatenationOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgPointerAssignOp
+SgPointerAssignOp -> SgPointerAssignOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgUserDefinedBinaryOp
+SgUserDefinedBinaryOp -> SgUserDefinedBinaryOp (bool, SgExpression, SgExpression, SgType, SgName, SgFunctionSymbol)
+SgBinaryOp -> SgCompoundAssignOp
+SgBinaryOp -> SgMembershipOp
+SgMembershipOp -> SgMembershipOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgNonMembershipOp
+SgNonMembershipOp -> SgNonMembershipOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgIsOp
+SgIsOp -> SgIsOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgIsNotOp
+SgIsNotOp -> SgIsNotOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgElementwiseOp
+SgBinaryOp -> SgPowerOp
+SgPowerOp -> SgPowerOp (bool, SgExpression, SgExpression, SgType)
+SgBinaryOp -> SgLeftDivideOp
+SgLeftDivideOp -> SgLeftDivideOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgPlusAssignOp
+SgPlusAssignOp -> SgPlusAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgMinusAssignOp
+SgMinusAssignOp -> SgMinusAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgAndAssignOp
+SgAndAssignOp -> SgAndAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgIorAssignOp
+SgIorAssignOp -> SgIorAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgMultAssignOp
+SgMultAssignOp -> SgMultAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgDivAssignOp
+SgDivAssignOp -> SgDivAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgModAssignOp
+SgModAssignOp -> SgModAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgXorAssignOp
+SgXorAssignOp -> SgXorAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgLshiftAssignOp
+SgLshiftAssignOp -> SgLshiftAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgRshiftAssignOp
+SgRshiftAssignOp -> SgRshiftAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgJavaUnsignedRshiftAssignOp
+SgJavaUnsignedRshiftAssignOp -> SgJavaUnsignedRshiftAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgIntegerDivideAssignOp
+SgIntegerDivideAssignOp -> SgIntegerDivideAssignOp (bool, SgExpression, SgExpression, SgType)
+SgCompoundAssignOp -> SgExponentiationAssignOp
+SgExponentiationAssignOp -> SgExponentiationAssignOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwiseMultiplyOp
+SgElementwiseMultiplyOp -> SgElementwiseMultiplyOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwisePowerOp
+SgElementwisePowerOp -> SgElementwisePowerOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwiseLeftDivideOp
+SgElementwiseLeftDivideOp -> SgElementwiseLeftDivideOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwiseDivideOp
+SgElementwiseDivideOp -> SgElementwiseDivideOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwiseAddOp
+SgElementwiseAddOp -> SgElementwiseAddOp (bool, SgExpression, SgExpression, SgType)
+SgElementwiseOp -> SgElementwiseSubtractOp
+SgElementwiseSubtractOp -> SgElementwiseSubtractOp (bool, SgExpression, SgExpression, SgType)
+SgExprListExp -> SgListExp
+SgListExp -> SgListExp (ListStarOfbool, ListStarOfSgExpression)
+SgExprListExp -> SgTupleExp
+SgTupleExp -> SgTupleExp (ListStarOfbool, ListStarOfSgExpression)
+SgExprListExp -> SgMatrixExp
+SgMatrixExp -> SgMatrixExp (ListStarOfbool, ListStarOfSgExpression)
+SgValueExp -> SgBoolValExp
+SgBoolValExp -> SgBoolValExp (bool, int)
+SgValueExp -> SgStringVal
+SgStringVal -> SgStringVal (bool, <string>, bool, bool, bool, bool, bool, bool, <string>)
+SgValueExp -> SgShortVal
+SgShortVal -> SgShortVal (bool, short, <string>)
+SgValueExp -> SgCharVal
+SgCharVal -> SgCharVal (bool, char, <string>)
+SgValueExp -> SgUnsignedCharVal
+SgUnsignedCharVal -> SgUnsignedCharVal (bool, unsigned char, <string>)
+SgValueExp -> SgWcharVal
+SgWcharVal -> SgWcharVal (bool, unsigned long, <string>)
+SgValueExp -> SgUnsignedShortVal
+SgUnsignedShortVal -> SgUnsignedShortVal (bool, unsigned short, <string>)
+SgValueExp -> SgIntVal
+SgIntVal -> SgIntVal (bool, int, <string>)
+SgValueExp -> SgEnumVal
+SgEnumVal -> SgEnumVal (bool, int, SgEnumDeclaration, SgName, bool, int, bool, bool)
+SgValueExp -> SgUnsignedIntVal
+SgUnsignedIntVal -> SgUnsignedIntVal (bool, <int>, <string>)
+SgValueExp -> SgLongIntVal
+SgLongIntVal -> SgLongIntVal (bool, long int, <string>)
+SgValueExp -> SgLongLongIntVal
+SgLongLongIntVal -> SgLongLongIntVal (bool, long long int, <string>)
+SgValueExp -> SgUnsignedLongLongIntVal
+SgUnsignedLongLongIntVal -> SgUnsignedLongLongIntVal (bool, unsigned long long int, <string>)
+SgValueExp -> SgUnsignedLongVal
+SgUnsignedLongVal -> SgUnsignedLongVal (bool, unsigned long, <string>)
+SgValueExp -> SgFloatVal
+SgFloatVal -> SgFloatVal (bool, float, <string>)
+SgValueExp -> SgDoubleVal
+SgDoubleVal -> SgDoubleVal (bool, double, <string>)
+SgValueExp -> SgLongDoubleVal
+SgLongDoubleVal -> SgLongDoubleVal (bool, long double, <string>)
+SgValueExp -> SgComplexVal
+SgComplexVal -> SgComplexVal (bool, SgValueExp, SgValueExp, SgType, <string>)
+SgValueExp -> SgUpcThreads
+SgUpcThreads -> SgUpcThreads (bool, int, <string>)
+SgValueExp -> SgUpcMythread
+SgUpcMythread -> SgUpcMythread (bool, int, <string>)
+SgValueExp -> SgTemplateParameterVal
+SgTemplateParameterVal -> SgTemplateParameterVal (bool, int, <string>, SgType)
+SgValueExp -> SgNullptrValExp
+SgNullptrValExp -> SgNullptrValExp (bool)
+SgCallExpression -> SgFunctionCallExp
+SgFunctionCallExp -> SgCudaKernelCallExp
+SgCudaKernelCallExp -> SgCudaKernelCallExp (bool, SgExpression, SgExprListExp, SgType, bool, SgCudaKernelExecConfig)
+SgInitializer -> SgAggregateInitializer
+SgAggregateInitializer -> SgAggregateInitializer (bool, bool, bool, SgExprListExp, SgType, bool, bool, bool, int, bool, bool)
+SgInitializer -> SgCompoundInitializer
+SgCompoundInitializer -> SgCompoundInitializer (bool, bool, bool, SgExprListExp, SgType)
+SgInitializer -> SgConstructorInitializer
+SgConstructorInitializer -> SgConstructorInitializer (bool, bool, bool, SgMemberFunctionDeclaration, SgExprListExp, SgType, bool, bool, bool, bool, int, bool, bool)
+SgInitializer -> SgAssignInitializer
+SgAssignInitializer -> SgAssignInitializer (bool, bool, bool, SgExpression, SgType)
+SgInitializer -> SgDesignatedInitializer
+SgDesignatedInitializer -> SgDesignatedInitializer (bool, bool, bool, SgExprListExp, SgInitializer)
+SgNaryOp -> SgNaryBooleanOp
+SgNaryBooleanOp -> SgNaryBooleanOp (ListStarOfbool, ListStarOfSgExpression, ListStarOfVariantT)
+SgNaryOp -> SgNaryComparisonOp
+SgNaryComparisonOp -> SgNaryComparisonOp (ListStarOfbool, ListStarOfSgExpression, ListStarOfVariantT)
+SgJavaAnnotation -> SgJavaMarkerAnnotation
+SgJavaMarkerAnnotation -> SgJavaMarkerAnnotation (bool, SgType)
+SgJavaAnnotation -> SgJavaSingleMemberAnnotation
+SgJavaSingleMemberAnnotation -> SgJavaSingleMemberAnnotation (bool, SgType, SgExpression)
+SgJavaAnnotation -> SgJavaNormalAnnotation
+SgJavaNormalAnnotation -> SgJavaNormalAnnotation (ListStarOfbool, ListStarOfSgType, ListStarOfSgJavaMemberValuePair)
+SgSymbol -> SgVariableSymbol
+SgSymbol -> SgFunctionSymbol
+SgSymbol -> SgFunctionTypeSymbol
+SgFunctionTypeSymbol -> SgFunctionTypeSymbol (SgName, SgType)
+SgSymbol -> SgClassSymbol
+SgSymbol -> SgTemplateSymbol
+SgTemplateSymbol -> SgTemplateSymbol (SgTemplateDeclaration)
+SgSymbol -> SgEnumSymbol
+SgEnumSymbol -> SgEnumSymbol (SgEnumDeclaration)
+SgSymbol -> SgEnumFieldSymbol
+SgEnumFieldSymbol -> SgEnumFieldSymbol (SgInitializedName)
+SgSymbol -> SgTypedefSymbol
+SgSymbol -> SgLabelSymbol
+SgLabelSymbol -> SgLabelSymbol (SgLabelStatement, SgStatement, SgInitializedName, int, SgLabelSymbol::label_type_enum)
+SgSymbol -> SgDefaultSymbol
+SgDefaultSymbol -> SgDefaultSymbol (SgType)
+SgSymbol -> SgNamespaceSymbol
+SgNamespaceSymbol -> SgNamespaceSymbol (SgName, SgNamespaceDeclarationStatement, SgNamespaceAliasDeclarationStatement, bool)
+SgSymbol -> SgIntrinsicSymbol
+SgIntrinsicSymbol -> SgIntrinsicSymbol (SgInitializedName)
+SgSymbol -> SgModuleSymbol
+SgModuleSymbol -> SgModuleSymbol (SgModuleStatement)
+SgSymbol -> SgInterfaceSymbol
+SgInterfaceSymbol -> SgInterfaceSymbol (SgInterfaceStatement)
+SgSymbol -> SgCommonSymbol
+SgCommonSymbol -> SgCommonSymbol (SgInitializedName)
+SgSymbol -> SgAliasSymbol
+SgAliasSymbol -> SgAliasSymbol (SgSymbol, bool, SgName, SgNodePtrList)
+SgSymbol -> SgAsmBinaryAddressSymbol
+SgAsmBinaryAddressSymbol -> SgAsmBinaryAddressSymbol (SgName, SgAsmInstruction)
+SgSymbol -> SgAsmBinaryDataSymbol
+SgAsmBinaryDataSymbol -> SgAsmBinaryDataSymbol (SgName, SgAsmInstruction)
+SgSymbol -> SgJavaLabelSymbol
+SgJavaLabelSymbol -> SgJavaLabelSymbol (SgJavaLabelStatement)
+SgVariableSymbol -> SgTemplateVariableSymbol
+SgTemplateVariableSymbol -> SgTemplateVariableSymbol (SgInitializedName)
+SgFunctionSymbol -> SgMemberFunctionSymbol
+SgFunctionSymbol -> SgTemplateFunctionSymbol
+SgTemplateFunctionSymbol -> SgTemplateFunctionSymbol (SgFunctionDeclaration)
+SgFunctionSymbol -> SgRenameSymbol
+SgRenameSymbol -> SgRenameSymbol (SgFunctionDeclaration, SgSymbol, SgName)
+SgMemberFunctionSymbol -> SgTemplateMemberFunctionSymbol
+SgTemplateMemberFunctionSymbol -> SgTemplateMemberFunctionSymbol (SgFunctionDeclaration)
+SgClassSymbol -> SgTemplateClassSymbol
+SgTemplateClassSymbol -> SgTemplateClassSymbol (SgClassDeclaration)
+SgTypedefSymbol -> SgTemplateTypedefSymbol
+SgTemplateTypedefSymbol -> SgTemplateTypedefSymbol (SgTypedefDeclaration)
+SgAsmNode -> SgAsmStatement
+SgAsmNode -> SgAsmExpression
+SgAsmNode -> SgAsmInterpretation
+SgAsmInterpretation -> SgAsmInterpretation (AstAttributeMechanism, SgAsmGenericHeaderList, SgAsmBlock)
+SgAsmNode -> SgAsmOperandList
+SgAsmOperandList -> SgAsmOperandList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmExpression)
+SgAsmNode -> SgAsmType
+SgAsmNode -> SgAsmExecutableFileFormat
+SgAsmNode -> SgAsmInterpretationList
+SgAsmInterpretationList -> SgAsmInterpretationList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmInterpretation)
+SgAsmNode -> SgAsmGenericFileList
+SgAsmGenericFileList -> SgAsmGenericFileList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile)
+SgAsmStatement -> SgAsmSynthesizedDeclaration
+SgAsmStatement -> SgAsmBlock
+SgAsmBlock -> SgAsmBlock (ListStarOfAstAttributeMechanism, ListStarOfrose_addr_t, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfunsigned, ListStarOfSgAsmStatement, ListStarOfSgAsmIntegerValue, ListStarOfbool, ListStarOfSgAsmBlock, ListStarOfsize_t, ListStarOfdouble, ListStarOfint64_t)
+SgAsmStatement -> SgAsmInstruction
+SgAsmStatement -> SgAsmStaticData
+SgAsmStaticData -> SgAsmStaticData (AstAttributeMechanism, rose_addr_t, <string>, SgUnsignedCharList)
+SgAsmSynthesizedDeclaration -> SgAsmSynthesizedDataStructureDeclaration
+SgAsmSynthesizedDataStructureDeclaration -> SgAsmSynthesizedDataStructureDeclaration (AstAttributeMechanism, rose_addr_t, <string>)
+SgAsmSynthesizedDeclaration -> SgAsmFunction
+SgAsmFunction -> SgAsmFunction (ListStarOfAstAttributeMechanism, ListStarOfrose_addr_t, ListStarOfstring, ListStarOfstring, ListStarOfunsigned, ListStarOfSgAsmFunction::function_kind_enum, ListStarOfSgAsmFunction::MayReturn, ListStarOfstring, ListStarOfSgAsmStatement, ListStarOfSgAsmStatement, ListStarOfrose_addr_t, ListStarOfSgSymbolTable, ListStarOfsize_t, ListStarOfint64_t)
+SgAsmSynthesizedDeclaration -> SgAsmSynthesizedFieldDeclaration
+SgAsmSynthesizedFieldDeclaration -> SgAsmSynthesizedFieldDeclaration (AstAttributeMechanism, rose_addr_t, <string>, <string>, uint64_t)
+SgAsmInstruction -> SgAsmX86Instruction
+SgAsmX86Instruction -> SgAsmX86Instruction (AstAttributeMechanism, rose_addr_t, <string>, <string>, SgUnsignedCharList, SgAsmOperandList, SgAsmStatementPtrList, int64_t, SgAsmExprListExp, X86InstructionKind, X86InstructionSize, X86InstructionSize, X86InstructionSize, bool, X86RepeatPrefix, X86BranchPrediction, X86SegmentRegister)
+SgAsmInstruction -> SgAsmArmInstruction
+SgAsmArmInstruction -> SgAsmArmInstruction (AstAttributeMechanism, rose_addr_t, <string>, <string>, SgUnsignedCharList, SgAsmOperandList, SgAsmStatementPtrList, int64_t, SgAsmExprListExp, ArmInstructionKind, ArmInstructionCondition, int)
+SgAsmInstruction -> SgAsmPowerpcInstruction
+SgAsmPowerpcInstruction -> SgAsmPowerpcInstruction (AstAttributeMechanism, rose_addr_t, <string>, <string>, SgUnsignedCharList, SgAsmOperandList, SgAsmStatementPtrList, int64_t, SgAsmExprListExp, PowerpcInstructionKind)
+SgAsmInstruction -> SgAsmMipsInstruction
+SgAsmMipsInstruction -> SgAsmMipsInstruction (AstAttributeMechanism, rose_addr_t, <string>, <string>, SgUnsignedCharList, SgAsmOperandList, SgAsmStatementPtrList, int64_t, SgAsmExprListExp, MipsInstructionKind)
+SgAsmInstruction -> SgAsmM68kInstruction
+SgAsmM68kInstruction -> SgAsmM68kInstruction (AstAttributeMechanism, rose_addr_t, <string>, <string>, SgUnsignedCharList, SgAsmOperandList, SgAsmStatementPtrList, int64_t, SgAsmExprListExp, M68kInstructionKind)
+SgAsmExpression -> SgAsmValueExpression
+SgAsmExpression -> SgAsmBinaryExpression
+SgAsmExpression -> SgAsmUnaryExpression
+SgAsmExpression -> SgAsmMemoryReferenceExpression
+SgAsmMemoryReferenceExpression -> SgAsmMemoryReferenceExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmExpression -> SgAsmRegisterReferenceExpression
+SgAsmExpression -> SgAsmControlFlagsExpression
+SgAsmControlFlagsExpression -> SgAsmControlFlagsExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, unsigned long)
+SgAsmExpression -> SgAsmCommonSubExpression
+SgAsmCommonSubExpression -> SgAsmCommonSubExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression)
+SgAsmExpression -> SgAsmExprListExp
+SgAsmExprListExp -> SgAsmExprListExp (ListStarOfAstAttributeMechanism, ListStarOfSgAsmType, ListStarOfstring, ListStarOfstring, ListStarOfSgAsmExpression)
+SgAsmExpression -> SgAsmRegisterNames
+SgAsmRegisterNames -> SgAsmRegisterNames (ListStarOfAstAttributeMechanism, ListStarOfSgAsmType, ListStarOfstring, ListStarOfstring, ListStarOfSgAsmRegisterReferenceExpression, ListStarOfunsigned)
+SgAsmExpression -> SgAsmRiscOperation
+SgAsmRiscOperation -> SgAsmRiscOperation (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmRiscOperation::RiscOperator, SgAsmExprListExp)
+SgAsmValueExpression -> SgAsmConstantExpression
+SgAsmConstantExpression -> SgAsmIntegerValueExpression
+SgAsmIntegerValueExpression -> SgAsmIntegerValueExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmValueExpression, unsigned short, unsigned short, SgSymbol, Sawyer::Container::BitVector, SgNode)
+SgAsmConstantExpression -> SgAsmFloatValueExpression
+SgAsmFloatValueExpression -> SgAsmFloatValueExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmValueExpression, unsigned short, unsigned short, SgSymbol, Sawyer::Container::BitVector)
+SgAsmBinaryExpression -> SgAsmBinaryAdd
+SgAsmBinaryAdd -> SgAsmBinaryAdd (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinarySubtract
+SgAsmBinarySubtract -> SgAsmBinarySubtract (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryMultiply
+SgAsmBinaryMultiply -> SgAsmBinaryMultiply (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryDivide
+SgAsmBinaryDivide -> SgAsmBinaryDivide (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryMod
+SgAsmBinaryMod -> SgAsmBinaryMod (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryAddPreupdate
+SgAsmBinaryAddPreupdate -> SgAsmBinaryAddPreupdate (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinarySubtractPreupdate
+SgAsmBinarySubtractPreupdate -> SgAsmBinarySubtractPreupdate (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryAddPostupdate
+SgAsmBinaryAddPostupdate -> SgAsmBinaryAddPostupdate (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinarySubtractPostupdate
+SgAsmBinarySubtractPostupdate -> SgAsmBinarySubtractPostupdate (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryLsl
+SgAsmBinaryLsl -> SgAsmBinaryLsl (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryLsr
+SgAsmBinaryLsr -> SgAsmBinaryLsr (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryAsr
+SgAsmBinaryAsr -> SgAsmBinaryAsr (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmBinaryExpression -> SgAsmBinaryRor
+SgAsmBinaryRor -> SgAsmBinaryRor (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression, SgAsmExpression)
+SgAsmUnaryExpression -> SgAsmUnaryPlus
+SgAsmUnaryPlus -> SgAsmUnaryPlus (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression)
+SgAsmUnaryExpression -> SgAsmUnaryMinus
+SgAsmUnaryMinus -> SgAsmUnaryMinus (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression)
+SgAsmUnaryExpression -> SgAsmUnaryRrx
+SgAsmUnaryRrx -> SgAsmUnaryRrx (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression)
+SgAsmUnaryExpression -> SgAsmUnaryArmSpecialRegisterList
+SgAsmUnaryArmSpecialRegisterList -> SgAsmUnaryArmSpecialRegisterList (AstAttributeMechanism, SgAsmType, <string>, <string>, SgAsmExpression)
+SgAsmRegisterReferenceExpression -> SgAsmDirectRegisterExpression
+SgAsmDirectRegisterExpression -> SgAsmDirectRegisterExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, RegisterDescriptor, int, unsigned)
+SgAsmRegisterReferenceExpression -> SgAsmIndirectRegisterExpression
+SgAsmIndirectRegisterExpression -> SgAsmIndirectRegisterExpression (AstAttributeMechanism, SgAsmType, <string>, <string>, RegisterDescriptor, int, RegisterDescriptor, RegisterDescriptor, size_t, size_t)
+SgAsmType -> SgAsmScalarType
+SgAsmType -> SgAsmVectorType
+SgAsmVectorType -> SgAsmVectorType (AstAttributeMechanism, size_t, SgAsmType)
+SgAsmScalarType -> SgAsmIntegerType
+SgAsmIntegerType -> SgAsmIntegerType (AstAttributeMechanism, ByteOrder::Endianness, ByteOrder::Endianness, size_t, size_t, bool)
+SgAsmScalarType -> SgAsmFloatType
+SgAsmFloatType -> SgAsmFloatType (AstAttributeMechanism, ByteOrder::Endianness, ByteOrder::Endianness, size_t, size_t, size_t, size_t, size_t, size_t, size_t, uint64_t, unsigned)
+SgAsmExecutableFileFormat -> SgAsmGenericDLL
+SgAsmGenericDLL -> SgAsmGenericDLL (AstAttributeMechanism, SgAsmGenericString, SgStringList)
+SgAsmExecutableFileFormat -> SgAsmGenericFormat
+SgAsmGenericFormat -> SgAsmGenericFormat (AstAttributeMechanism, SgAsmGenericFormat::ExecFamily, SgAsmGenericFormat::ExecPurpose, ByteOrder::Endianness, unsigned, bool, SgAsmGenericFormat::ExecABI, unsigned, size_t)
+SgAsmExecutableFileFormat -> SgAsmGenericDLLList
+SgAsmGenericDLLList -> SgAsmGenericDLLList (AstAttributeMechanism, SgAsmGenericDLLPtrList)
+SgAsmExecutableFileFormat -> SgAsmElfEHFrameEntryFD
+SgAsmElfEHFrameEntryFD -> SgAsmElfEHFrameEntryFD (AstAttributeMechanism, rose_rva_t, rose_addr_t, SgUnsignedCharList, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmGenericFile
+SgAsmGenericFile -> SgAsmGenericFile (AstAttributeMechanism, SgAsmDwarfCompilationUnitList, <string>, int, SgAsmGenericFormat::fileDetails, SgFileContentList, SgAsmGenericHeaderList, SgAsmGenericSectionList, bool, bool, AddressIntervalSet, bool)
+SgAsmExecutableFileFormat -> SgAsmGenericSection
+SgAsmExecutableFileFormat -> SgAsmGenericSymbol
+SgAsmExecutableFileFormat -> SgAsmGenericStrtab
+SgAsmExecutableFileFormat -> SgAsmGenericSymbolList
+SgAsmGenericSymbolList -> SgAsmGenericSymbolList (AstAttributeMechanism, SgAsmGenericSymbolPtrList)
+SgAsmExecutableFileFormat -> SgAsmGenericSectionList
+SgAsmGenericSectionList -> SgAsmGenericSectionList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericSection)
+SgAsmExecutableFileFormat -> SgAsmGenericHeaderList
+SgAsmGenericHeaderList -> SgAsmGenericHeaderList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericHeader)
+SgAsmExecutableFileFormat -> SgAsmGenericString
+SgAsmExecutableFileFormat -> SgAsmElfSectionTableEntry
+SgAsmElfSectionTableEntry -> SgAsmElfSectionTableEntry (AstAttributeMechanism, unsigned, SgAsmElfSectionTableEntry::SectionType, unsigned long, unsigned long, uint64_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmElfSegmentTableEntry
+SgAsmElfSegmentTableEntry -> SgAsmElfSegmentTableEntry (AstAttributeMechanism, size_t, SgAsmElfSegmentTableEntry::SegmentType, SgAsmElfSegmentTableEntry::SegmentFlags, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmElfSymbolList
+SgAsmElfSymbolList -> SgAsmElfSymbolList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymbol)
+SgAsmExecutableFileFormat -> SgAsmElfRelocEntry
+SgAsmElfRelocEntry -> SgAsmElfRelocEntry (AstAttributeMechanism, rose_addr_t, rose_addr_t, unsigned long, SgAsmElfRelocEntry::RelocType, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmElfRelocEntryList
+SgAsmElfRelocEntryList -> SgAsmElfRelocEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfRelocEntry)
+SgAsmExecutableFileFormat -> SgAsmPEExportEntry
+SgAsmPEExportEntry -> SgAsmPEExportEntry (AstAttributeMechanism, SgAsmGenericString, unsigned, rose_rva_t, SgAsmGenericString)
+SgAsmExecutableFileFormat -> SgAsmPEExportEntryList
+SgAsmPEExportEntryList -> SgAsmPEExportEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmPEExportEntry)
+SgAsmExecutableFileFormat -> SgAsmElfDynamicEntry
+SgAsmElfDynamicEntry -> SgAsmElfDynamicEntry (AstAttributeMechanism, SgAsmElfDynamicEntry::EntryType, rose_rva_t, SgAsmGenericString, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmElfDynamicEntryList
+SgAsmElfDynamicEntryList -> SgAsmElfDynamicEntryList (AstAttributeMechanism, SgAsmElfDynamicEntryPtrList)
+SgAsmExecutableFileFormat -> SgAsmElfSegmentTableEntryList
+SgAsmElfSegmentTableEntryList -> SgAsmElfSegmentTableEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSegmentTableEntry)
+SgAsmExecutableFileFormat -> SgAsmStringStorage
+SgAsmStringStorage -> SgAsmStringStorage (AstAttributeMechanism, SgAsmGenericStrtab, <string>, rose_addr_t)
+SgAsmExecutableFileFormat -> SgAsmElfNoteEntry
+SgAsmElfNoteEntry -> SgAsmElfNoteEntry (AstAttributeMechanism, unsigned, SgAsmGenericString, SgUnsignedCharList)
+SgAsmExecutableFileFormat -> SgAsmElfNoteEntryList
+SgAsmElfNoteEntryList -> SgAsmElfNoteEntryList (AstAttributeMechanism, SgAsmElfNoteEntryPtrList)
+SgAsmExecutableFileFormat -> SgAsmElfSymverEntry
+SgAsmElfSymverEntry -> SgAsmElfSymverEntry (AstAttributeMechanism, size_t)
+SgAsmExecutableFileFormat -> SgAsmElfSymverEntryList
+SgAsmElfSymverEntryList -> SgAsmElfSymverEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymverEntry)
+SgAsmExecutableFileFormat -> SgAsmElfSymverDefinedEntry
+SgAsmElfSymverDefinedEntry -> SgAsmElfSymverDefinedEntry (AstAttributeMechanism, size_t, int, size_t, uint32_t, SgAsmElfSymverDefinedAuxList)
+SgAsmExecutableFileFormat -> SgAsmElfSymverDefinedEntryList
+SgAsmElfSymverDefinedEntryList -> SgAsmElfSymverDefinedEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymverDefinedEntry)
+SgAsmExecutableFileFormat -> SgAsmElfSymverDefinedAux
+SgAsmElfSymverDefinedAux -> SgAsmElfSymverDefinedAux (AstAttributeMechanism, SgAsmGenericString)
+SgAsmExecutableFileFormat -> SgAsmElfSymverDefinedAuxList
+SgAsmElfSymverDefinedAuxList -> SgAsmElfSymverDefinedAuxList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymverDefinedAux)
+SgAsmExecutableFileFormat -> SgAsmElfSymverNeededEntry
+SgAsmElfSymverNeededEntry -> SgAsmElfSymverNeededEntry (AstAttributeMechanism, size_t, SgAsmGenericString, SgAsmElfSymverNeededAuxList)
+SgAsmExecutableFileFormat -> SgAsmElfSymverNeededEntryList
+SgAsmElfSymverNeededEntryList -> SgAsmElfSymverNeededEntryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymverNeededEntry)
+SgAsmExecutableFileFormat -> SgAsmElfSymverNeededAux
+SgAsmElfSymverNeededAux -> SgAsmElfSymverNeededAux (AstAttributeMechanism, uint32_t, int, size_t, SgAsmGenericString)
+SgAsmExecutableFileFormat -> SgAsmElfSymverNeededAuxList
+SgAsmElfSymverNeededAuxList -> SgAsmElfSymverNeededAuxList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmElfSymverNeededAux)
+SgAsmExecutableFileFormat -> SgAsmPEImportDirectory
+SgAsmPEImportDirectory -> SgAsmPEImportDirectory (AstAttributeMechanism, SgAsmGenericString, rose_rva_t, size_t, time_t, unsigned, rose_rva_t, size_t, rose_rva_t, size_t, SgAsmPEImportItemList)
+SgAsmExecutableFileFormat -> SgAsmPESectionTableEntry
+SgAsmPESectionTableEntry -> SgAsmPESectionTableEntry (AstAttributeMechanism, <string>, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, unsigned, unsigned, unsigned, unsigned)
+SgAsmExecutableFileFormat -> SgAsmPEExportDirectory
+SgAsmPEExportDirectory -> SgAsmPEExportDirectory (AstAttributeMechanism, unsigned, time_t, unsigned, unsigned, rose_rva_t, unsigned, size_t, size_t, rose_rva_t, rose_rva_t, rose_rva_t, SgAsmGenericString)
+SgAsmExecutableFileFormat -> SgAsmPERVASizePair
+SgAsmPERVASizePair -> SgAsmPERVASizePair (AstAttributeMechanism, rose_rva_t, rose_addr_t, SgAsmGenericSection)
+SgAsmExecutableFileFormat -> SgAsmCoffSymbolList
+SgAsmCoffSymbolList -> SgAsmCoffSymbolList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmCoffSymbol)
+SgAsmExecutableFileFormat -> SgAsmPERVASizePairList
+SgAsmPERVASizePairList -> SgAsmPERVASizePairList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmPERVASizePair)
+SgAsmExecutableFileFormat -> SgAsmElfEHFrameEntryCI
+SgAsmElfEHFrameEntryCI -> SgAsmElfEHFrameEntryCI (AstAttributeMechanism, int, <string>, uint64_t, uint64_t, int64_t, uint64_t, int, int, unsigned, rose_addr_t, int, bool, SgUnsignedCharList, SgAsmElfEHFrameEntryFDList)
+SgAsmExecutableFileFormat -> SgAsmPEImportDirectoryList
+SgAsmPEImportDirectoryList -> SgAsmPEImportDirectoryList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmPEImportDirectory)
+SgAsmExecutableFileFormat -> SgAsmNEEntryPoint
+SgAsmNEEntryPoint -> SgAsmNEEntryPoint (AstAttributeMechanism, SgAsmNEEntryPoint::NEEntryFlags, unsigned, unsigned, unsigned)
+SgAsmExecutableFileFormat -> SgAsmNERelocEntry
+SgAsmNERelocEntry -> SgAsmNERelocEntry (AstAttributeMechanism, SgAsmNERelocEntry::NERelocSrcType, SgAsmNERelocEntry::NERelocModifiers, SgAsmNERelocEntry::NERelocTgtType, SgAsmNERelocEntry::NERelocFlags, rose_addr_t, SgAsmNERelocEntry::iref_type, SgAsmNERelocEntry::iord_type, SgAsmNERelocEntry::iname_type, SgAsmNERelocEntry::osfixup_type)
+SgAsmExecutableFileFormat -> SgAsmNESectionTableEntry
+SgAsmNESectionTableEntry -> SgAsmNESectionTableEntry (AstAttributeMechanism, unsigned, unsigned, rose_addr_t, rose_addr_t)
+SgAsmExecutableFileFormat -> SgAsmElfEHFrameEntryCIList
+SgAsmElfEHFrameEntryCIList -> SgAsmElfEHFrameEntryCIList (AstAttributeMechanism, SgAsmElfEHFrameEntryCIPtrList)
+SgAsmExecutableFileFormat -> SgAsmLEPageTableEntry
+SgAsmLEPageTableEntry -> SgAsmLEPageTableEntry (AstAttributeMechanism, unsigned, unsigned)
+SgAsmExecutableFileFormat -> SgAsmLEEntryPoint
+SgAsmLEEntryPoint -> SgAsmLEEntryPoint (ListStarOfAstAttributeMechanism, ListStarOfSgAsmLEEntryPoint, ListStarOfunsigned, ListStarOfunsigned, ListStarOfunsigned, ListStarOfunsigned, ListStarOfrose_addr_t)
+SgAsmExecutableFileFormat -> SgAsmLESectionTableEntry
+SgAsmLESectionTableEntry -> SgAsmLESectionTableEntry (AstAttributeMechanism, unsigned, unsigned, unsigned, unsigned, rose_addr_t, rose_addr_t)
+SgAsmExecutableFileFormat -> SgAsmElfEHFrameEntryFDList
+SgAsmElfEHFrameEntryFDList -> SgAsmElfEHFrameEntryFDList (AstAttributeMechanism, SgAsmElfEHFrameEntryFDPtrList)
+SgAsmExecutableFileFormat -> SgAsmDwarfInformation
+SgAsmExecutableFileFormat -> SgAsmPEImportItem
+SgAsmPEImportItem -> SgAsmPEImportItem (AstAttributeMechanism, bool, unsigned, unsigned, SgAsmGenericString, rose_rva_t, size_t, rose_rva_t)
+SgAsmExecutableFileFormat -> SgAsmPEImportItemList
+SgAsmPEImportItemList -> SgAsmPEImportItemList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmPEImportItem)
+SgAsmGenericSection -> SgAsmGenericHeader
+SgAsmGenericSection -> SgAsmElfSection
+SgAsmGenericSection -> SgAsmElfSectionTable
+SgAsmElfSectionTable -> SgAsmElfSectionTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t)
+SgAsmGenericSection -> SgAsmElfSegmentTable
+SgAsmElfSegmentTable -> SgAsmElfSegmentTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t)
+SgAsmGenericSection -> SgAsmPESection
+SgAsmGenericSection -> SgAsmPESectionTable
+SgAsmPESectionTable -> SgAsmPESectionTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t)
+SgAsmGenericSection -> SgAsmDOSExtendedHeader
+SgAsmDOSExtendedHeader -> SgAsmDOSExtendedHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, rose_addr_t)
+SgAsmGenericSection -> SgAsmCoffSymbolTable
+SgAsmCoffSymbolTable -> SgAsmCoffSymbolTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericSection, SgAsmCoffSymbolList)
+SgAsmGenericSection -> SgAsmNESection
+SgAsmNESection -> SgAsmNESection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmNESectionTableEntry, SgAsmNERelocTable)
+SgAsmGenericSection -> SgAsmNESectionTable
+SgAsmNESectionTable -> SgAsmNESectionTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, unsigned, unsigned, rose_addr_t, rose_addr_t)
+SgAsmGenericSection -> SgAsmNENameTable
+SgAsmNENameTable -> SgAsmNENameTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgStringList, SgUnsignedList)
+SgAsmGenericSection -> SgAsmNEModuleTable
+SgAsmNEModuleTable -> SgAsmNEModuleTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmNEStringTable, SgAddressList, SgStringList)
+SgAsmGenericSection -> SgAsmNEStringTable
+SgAsmNEStringTable -> SgAsmNEStringTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t)
+SgAsmGenericSection -> SgAsmNEEntryTable
+SgAsmNEEntryTable -> SgAsmNEEntryTable (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile, ListStarOfSgAsmGenericHeader, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfSgFileContent, ListStarOfSgAsmGenericSection::SectionPurpose, ListStarOfbool, ListStarOfint, ListStarOfSgAsmGenericString, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfrose_addr_t, ListStarOfSgSizeT, ListStarOfSgAsmNEEntryPoint)
+SgAsmGenericSection -> SgAsmNERelocTable
+SgAsmNERelocTable -> SgAsmNERelocTable (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile, ListStarOfSgAsmGenericHeader, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfSgFileContent, ListStarOfSgAsmGenericSection::SectionPurpose, ListStarOfbool, ListStarOfint, ListStarOfSgAsmGenericString, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfrose_addr_t, ListStarOfSgAsmNERelocEntry)
+SgAsmGenericSection -> SgAsmLESection
+SgAsmLESection -> SgAsmLESection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmLESectionTableEntry)
+SgAsmGenericSection -> SgAsmLESectionTable
+SgAsmLESectionTable -> SgAsmLESectionTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t)
+SgAsmGenericSection -> SgAsmLENameTable
+SgAsmLENameTable -> SgAsmLENameTable (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgStringList, SgUnsignedList)
+SgAsmGenericSection -> SgAsmLEPageTable
+SgAsmLEPageTable -> SgAsmLEPageTable (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile, ListStarOfSgAsmGenericHeader, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfSgFileContent, ListStarOfSgAsmGenericSection::SectionPurpose, ListStarOfbool, ListStarOfint, ListStarOfSgAsmGenericString, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfrose_addr_t, ListStarOfSgAsmLEPageTableEntry)
+SgAsmGenericSection -> SgAsmLEEntryTable
+SgAsmLEEntryTable -> SgAsmLEEntryTable (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile, ListStarOfSgAsmGenericHeader, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfSgFileContent, ListStarOfSgAsmGenericSection::SectionPurpose, ListStarOfbool, ListStarOfint, ListStarOfSgAsmGenericString, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfrose_addr_t, ListStarOfSgSizeT, ListStarOfSgAsmLEEntryPoint)
+SgAsmGenericSection -> SgAsmLERelocTable
+SgAsmLERelocTable -> SgAsmLERelocTable (ListStarOfAstAttributeMechanism, ListStarOfSgAsmGenericFile, ListStarOfSgAsmGenericHeader, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfSgFileContent, ListStarOfSgAsmGenericSection::SectionPurpose, ListStarOfbool, ListStarOfint, ListStarOfSgAsmGenericString, ListStarOfstring, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfrose_addr_t, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfbool, ListStarOfrose_addr_t, ListStarOfSgAsmLERelocEntry)
+SgAsmGenericHeader -> SgAsmPEFileHeader
+SgAsmPEFileHeader -> SgAsmPEFileHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericFormat, SgCharList, SgAsmGenericFormat::InsSetArchitecture, rose_addr_t, SgRVAList, SgAsmGenericDLLList, SgAsmGenericSectionList, unsigned, unsigned, unsigned, rose_addr_t, rose_addr_t, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, rose_rva_t, rose_rva_t, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, SgAsmPERVASizePairList, SgAsmPESectionTable, SgAsmCoffSymbolTable)
+SgAsmGenericHeader -> SgAsmLEFileHeader
+SgAsmLEFileHeader -> SgAsmLEFileHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericFormat, SgCharList, SgAsmGenericFormat::InsSetArchitecture, rose_addr_t, SgRVAList, SgAsmGenericDLLList, SgAsmGenericSectionList, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, SgAsmDOSExtendedHeader, SgAsmLESectionTable, SgAsmLEPageTable, SgAsmLENameTable, SgAsmLENameTable, SgAsmLEEntryTable, SgAsmLERelocTable)
+SgAsmGenericHeader -> SgAsmNEFileHeader
+SgAsmNEFileHeader -> SgAsmNEFileHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericFormat, SgCharList, SgAsmGenericFormat::InsSetArchitecture, rose_addr_t, SgRVAList, SgAsmGenericDLLList, SgAsmGenericSectionList, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, unsigned, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, rose_addr_t, SgAsmDOSExtendedHeader, SgAsmNESectionTable, SgAsmNENameTable, SgAsmNENameTable, SgAsmNEModuleTable, SgAsmNEEntryTable)
+SgAsmGenericHeader -> SgAsmDOSFileHeader
+SgAsmDOSFileHeader -> SgAsmDOSFileHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericFormat, SgCharList, SgAsmGenericFormat::InsSetArchitecture, rose_addr_t, SgRVAList, SgAsmGenericDLLList, SgAsmGenericSectionList, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, rose_addr_t, unsigned, SgAsmGenericSection, SgAsmGenericSection)
+SgAsmGenericHeader -> SgAsmElfFileHeader
+SgAsmElfFileHeader -> SgAsmElfFileHeader (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmGenericFormat, SgCharList, SgAsmGenericFormat::InsSetArchitecture, rose_addr_t, SgRVAList, SgAsmGenericDLLList, SgAsmGenericSectionList, unsigned char, unsigned char, unsigned char, SgUnsignedCharList, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, SgAsmElfSectionTable, SgAsmElfSegmentTable)
+SgAsmElfSection -> SgAsmElfSymbolSection
+SgAsmElfSymbolSection -> SgAsmElfSymbolSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfSymbolList, bool)
+SgAsmElfSection -> SgAsmElfRelocSection
+SgAsmElfRelocSection -> SgAsmElfRelocSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, bool, SgAsmElfSection, SgAsmElfRelocEntryList)
+SgAsmElfSection -> SgAsmElfDynamicSection
+SgAsmElfDynamicSection -> SgAsmElfDynamicSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfDynamicEntryList)
+SgAsmElfSection -> SgAsmElfStringSection
+SgAsmElfStringSection -> SgAsmElfStringSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfStrtab)
+SgAsmElfSection -> SgAsmElfNoteSection
+SgAsmElfNoteSection -> SgAsmElfNoteSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfNoteEntryList)
+SgAsmElfSection -> SgAsmElfEHFrameSection
+SgAsmElfEHFrameSection -> SgAsmElfEHFrameSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfEHFrameEntryCIList)
+SgAsmElfSection -> SgAsmElfSymverSection
+SgAsmElfSymverSection -> SgAsmElfSymverSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfSymverEntryList)
+SgAsmElfSection -> SgAsmElfSymverDefinedSection
+SgAsmElfSymverDefinedSection -> SgAsmElfSymverDefinedSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfSymverDefinedEntryList)
+SgAsmElfSection -> SgAsmElfSymverNeededSection
+SgAsmElfSymverNeededSection -> SgAsmElfSymverNeededSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmElfSection, SgAsmElfSectionTableEntry, SgAsmElfSegmentTableEntry, SgAsmElfSymverNeededEntryList)
+SgAsmPESection -> SgAsmPEImportSection
+SgAsmPEImportSection -> SgAsmPEImportSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmPESectionTableEntry, SgAsmPEImportDirectoryList)
+SgAsmPESection -> SgAsmPEExportSection
+SgAsmPEExportSection -> SgAsmPEExportSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmPESectionTableEntry, SgAsmPEExportDirectory, SgAsmPEExportEntryList)
+SgAsmPESection -> SgAsmPEStringSection
+SgAsmPEStringSection -> SgAsmPEStringSection (AstAttributeMechanism, SgAsmGenericFile, SgAsmGenericHeader, rose_addr_t, rose_addr_t, rose_addr_t, SgFileContentList, SgAsmGenericSection::SectionPurpose, bool, int, SgAsmGenericString, <string>, rose_addr_t, rose_addr_t, rose_addr_t, bool, bool, bool, bool, rose_addr_t, SgAsmPESectionTableEntry, SgAsmCoffStrtab)
+SgAsmGenericSymbol -> SgAsmCoffSymbol
+SgAsmCoffSymbol -> SgAsmCoffSymbol (AstAttributeMechanism, SgAsmGenericSymbol::SymbolDefState, SgAsmGenericSymbol::SymbolBinding, SgAsmGenericSymbol::SymbolType, rose_addr_t, rose_addr_t, SgAsmGenericSection, SgAsmGenericString, <string>, rose_addr_t, int, unsigned, unsigned, unsigned, SgUnsignedCharList)
+SgAsmGenericSymbol -> SgAsmElfSymbol
+SgAsmElfSymbol -> SgAsmElfSymbol (AstAttributeMechanism, SgAsmGenericSymbol::SymbolDefState, SgAsmGenericSymbol::SymbolBinding, SgAsmGenericSymbol::SymbolType, rose_addr_t, rose_addr_t, SgAsmGenericSection, SgAsmGenericString, unsigned char, unsigned char, unsigned, rose_addr_t, SgUnsignedCharList)
+SgAsmGenericStrtab -> SgAsmElfStrtab
+SgAsmElfStrtab -> SgAsmElfStrtab (AstAttributeMechanism, SgAsmGenericSection, SgAsmGenericStrtab::referenced_t, AddressIntervalSet, SgAsmStringStorage, size_t)
+SgAsmGenericStrtab -> SgAsmCoffStrtab
+SgAsmCoffStrtab -> SgAsmCoffStrtab (AstAttributeMechanism, SgAsmGenericSection, SgAsmGenericStrtab::referenced_t, AddressIntervalSet, SgAsmStringStorage, size_t)
+SgAsmGenericString -> SgAsmBasicString
+SgAsmBasicString -> SgAsmBasicString (AstAttributeMechanism, <string>)
+SgAsmGenericString -> SgAsmStoredString
+SgAsmStoredString -> SgAsmStoredString (AstAttributeMechanism, SgAsmStringStorage)
+SgAsmDwarfInformation -> SgAsmDwarfMacro
+SgAsmDwarfMacro -> SgAsmDwarfMacro (AstAttributeMechanism, <string>)
+SgAsmDwarfInformation -> SgAsmDwarfMacroList
+SgAsmDwarfMacroList -> SgAsmDwarfMacroList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmDwarfMacro)
+SgAsmDwarfInformation -> SgAsmDwarfLine
+SgAsmDwarfLine -> SgAsmDwarfLine (AstAttributeMechanism, uint64_t, int, int, int)
+SgAsmDwarfInformation -> SgAsmDwarfLineList
+SgAsmDwarfLineList -> SgAsmDwarfLineList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmDwarfLine)
+SgAsmDwarfInformation -> SgAsmDwarfCompilationUnitList
+SgAsmDwarfCompilationUnitList -> SgAsmDwarfCompilationUnitList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmDwarfCompilationUnit)
+SgAsmDwarfInformation -> SgAsmDwarfConstruct
+SgAsmDwarfInformation -> SgAsmDwarfConstructList
+SgAsmDwarfConstructList -> SgAsmDwarfConstructList (ListStarOfAstAttributeMechanism, ListStarOfSgAsmDwarfConstruct)
+SgAsmDwarfConstruct -> SgAsmDwarfArrayType
+SgAsmDwarfArrayType -> SgAsmDwarfArrayType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfClassType
+SgAsmDwarfClassType -> SgAsmDwarfClassType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfEntryPoint
+SgAsmDwarfEntryPoint -> SgAsmDwarfEntryPoint (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfEnumerationType
+SgAsmDwarfEnumerationType -> SgAsmDwarfEnumerationType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfFormalParameter
+SgAsmDwarfFormalParameter -> SgAsmDwarfFormalParameter (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfImportedDeclaration
+SgAsmDwarfImportedDeclaration -> SgAsmDwarfImportedDeclaration (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfLabel
+SgAsmDwarfLabel -> SgAsmDwarfLabel (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfLexicalBlock
+SgAsmDwarfLexicalBlock -> SgAsmDwarfLexicalBlock (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfMember
+SgAsmDwarfMember -> SgAsmDwarfMember (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfPointerType
+SgAsmDwarfPointerType -> SgAsmDwarfPointerType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfReferenceType
+SgAsmDwarfReferenceType -> SgAsmDwarfReferenceType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfCompilationUnit
+SgAsmDwarfCompilationUnit -> SgAsmDwarfCompilationUnit (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, <string>, <string>, uint64_t, uint64_t, int, uint64_t, uint64_t, uint64_t, SgAsmDwarfLineList, SgAsmDwarfConstructList, SgAsmDwarfMacroList)
+SgAsmDwarfConstruct -> SgAsmDwarfStringType
+SgAsmDwarfStringType -> SgAsmDwarfStringType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfStructureType
+SgAsmDwarfStructureType -> SgAsmDwarfStructureType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfSubroutineType
+SgAsmDwarfSubroutineType -> SgAsmDwarfSubroutineType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfTypedef
+SgAsmDwarfTypedef -> SgAsmDwarfTypedef (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUnionType
+SgAsmDwarfUnionType -> SgAsmDwarfUnionType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfUnspecifiedParameters
+SgAsmDwarfUnspecifiedParameters -> SgAsmDwarfUnspecifiedParameters (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfVariant
+SgAsmDwarfVariant -> SgAsmDwarfVariant (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfCommonBlock
+SgAsmDwarfCommonBlock -> SgAsmDwarfCommonBlock (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfCommonInclusion
+SgAsmDwarfCommonInclusion -> SgAsmDwarfCommonInclusion (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfInheritance
+SgAsmDwarfInheritance -> SgAsmDwarfInheritance (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfInlinedSubroutine
+SgAsmDwarfInlinedSubroutine -> SgAsmDwarfInlinedSubroutine (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfModule
+SgAsmDwarfModule -> SgAsmDwarfModule (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfPtrToMemberType
+SgAsmDwarfPtrToMemberType -> SgAsmDwarfPtrToMemberType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfSetType
+SgAsmDwarfSetType -> SgAsmDwarfSetType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfSubrangeType
+SgAsmDwarfSubrangeType -> SgAsmDwarfSubrangeType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfWithStmt
+SgAsmDwarfWithStmt -> SgAsmDwarfWithStmt (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfAccessDeclaration
+SgAsmDwarfAccessDeclaration -> SgAsmDwarfAccessDeclaration (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfBaseType
+SgAsmDwarfBaseType -> SgAsmDwarfBaseType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfCatchBlock
+SgAsmDwarfCatchBlock -> SgAsmDwarfCatchBlock (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfConstType
+SgAsmDwarfConstType -> SgAsmDwarfConstType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfConstant
+SgAsmDwarfConstant -> SgAsmDwarfConstant (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfEnumerator
+SgAsmDwarfEnumerator -> SgAsmDwarfEnumerator (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfFileType
+SgAsmDwarfFileType -> SgAsmDwarfFileType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfFriend
+SgAsmDwarfFriend -> SgAsmDwarfFriend (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfNamelist
+SgAsmDwarfNamelist -> SgAsmDwarfNamelist (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfNamelistItem
+SgAsmDwarfNamelistItem -> SgAsmDwarfNamelistItem (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfPackedType
+SgAsmDwarfPackedType -> SgAsmDwarfPackedType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfSubprogram
+SgAsmDwarfSubprogram -> SgAsmDwarfSubprogram (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfTemplateTypeParameter
+SgAsmDwarfTemplateTypeParameter -> SgAsmDwarfTemplateTypeParameter (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfTemplateValueParameter
+SgAsmDwarfTemplateValueParameter -> SgAsmDwarfTemplateValueParameter (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfThrownType
+SgAsmDwarfThrownType -> SgAsmDwarfThrownType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfTryBlock
+SgAsmDwarfTryBlock -> SgAsmDwarfTryBlock (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfVariantPart
+SgAsmDwarfVariantPart -> SgAsmDwarfVariantPart (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfVariable
+SgAsmDwarfVariable -> SgAsmDwarfVariable (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfVolatileType
+SgAsmDwarfVolatileType -> SgAsmDwarfVolatileType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfDwarfProcedure
+SgAsmDwarfDwarfProcedure -> SgAsmDwarfDwarfProcedure (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfRestrictType
+SgAsmDwarfRestrictType -> SgAsmDwarfRestrictType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfInterfaceType
+SgAsmDwarfInterfaceType -> SgAsmDwarfInterfaceType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfNamespace
+SgAsmDwarfNamespace -> SgAsmDwarfNamespace (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine, SgAsmDwarfConstructList)
+SgAsmDwarfConstruct -> SgAsmDwarfImportedModule
+SgAsmDwarfImportedModule -> SgAsmDwarfImportedModule (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUnspecifiedType
+SgAsmDwarfUnspecifiedType -> SgAsmDwarfUnspecifiedType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfPartialUnit
+SgAsmDwarfPartialUnit -> SgAsmDwarfPartialUnit (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfImportedUnit
+SgAsmDwarfImportedUnit -> SgAsmDwarfImportedUnit (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfMutableType
+SgAsmDwarfMutableType -> SgAsmDwarfMutableType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfCondition
+SgAsmDwarfCondition -> SgAsmDwarfCondition (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfSharedType
+SgAsmDwarfSharedType -> SgAsmDwarfSharedType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfFormatLabel
+SgAsmDwarfFormatLabel -> SgAsmDwarfFormatLabel (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfFunctionTemplate
+SgAsmDwarfFunctionTemplate -> SgAsmDwarfFunctionTemplate (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfClassTemplate
+SgAsmDwarfClassTemplate -> SgAsmDwarfClassTemplate (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUpcSharedType
+SgAsmDwarfUpcSharedType -> SgAsmDwarfUpcSharedType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUpcStrictType
+SgAsmDwarfUpcStrictType -> SgAsmDwarfUpcStrictType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUpcRelaxedType
+SgAsmDwarfUpcRelaxedType -> SgAsmDwarfUpcRelaxedType (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+SgAsmDwarfConstruct -> SgAsmDwarfUnknownConstruct
+SgAsmDwarfUnknownConstruct -> SgAsmDwarfUnknownConstruct (AstAttributeMechanism, int, uint64_t, uint64_t, <string>, SgAsmDwarfLine)
+
+ListStarOfAstAttributeMechanism -> <nil>()
+ListStarOfAstAttributeMechanism -> <cons>(AstAttributeMechanism,ListStarOfAstAttributeMechanism)
+ListStarOfAttachedPreprocessingInfoType -> <nil>()
+ListStarOfAttachedPreprocessingInfoType -> <cons>(AttachedPreprocessingInfoType,ListStarOfAttachedPreprocessingInfoType)
+ListStarOfSgAsmBlock -> <nil>()
+ListStarOfSgAsmBlock -> <cons>(SgAsmBlock,ListStarOfSgAsmBlock)
+ListStarOfSgAsmCoffSymbol -> <nil>()
+ListStarOfSgAsmCoffSymbol -> <cons>(SgAsmCoffSymbol,ListStarOfSgAsmCoffSymbol)
+ListStarOfSgAsmDwarfCompilationUnit -> <nil>()
+ListStarOfSgAsmDwarfCompilationUnit -> <cons>(SgAsmDwarfCompilationUnit,ListStarOfSgAsmDwarfCompilationUnit)
+ListStarOfSgAsmDwarfConstruct -> <nil>()
+ListStarOfSgAsmDwarfConstruct -> <cons>(SgAsmDwarfConstruct,ListStarOfSgAsmDwarfConstruct)
+ListStarOfSgAsmDwarfLine -> <nil>()
+ListStarOfSgAsmDwarfLine -> <cons>(SgAsmDwarfLine,ListStarOfSgAsmDwarfLine)
+ListStarOfSgAsmDwarfMacro -> <nil>()
+ListStarOfSgAsmDwarfMacro -> <cons>(SgAsmDwarfMacro,ListStarOfSgAsmDwarfMacro)
+ListStarOfSgAsmElfRelocEntry -> <nil>()
+ListStarOfSgAsmElfRelocEntry -> <cons>(SgAsmElfRelocEntry,ListStarOfSgAsmElfRelocEntry)
+ListStarOfSgAsmElfSegmentTableEntry -> <nil>()
+ListStarOfSgAsmElfSegmentTableEntry -> <cons>(SgAsmElfSegmentTableEntry,ListStarOfSgAsmElfSegmentTableEntry)
+ListStarOfSgAsmElfSymbol -> <nil>()
+ListStarOfSgAsmElfSymbol -> <cons>(SgAsmElfSymbol,ListStarOfSgAsmElfSymbol)
+ListStarOfSgAsmElfSymverDefinedAux -> <nil>()
+ListStarOfSgAsmElfSymverDefinedAux -> <cons>(SgAsmElfSymverDefinedAux,ListStarOfSgAsmElfSymverDefinedAux)
+ListStarOfSgAsmElfSymverDefinedEntry -> <nil>()
+ListStarOfSgAsmElfSymverDefinedEntry -> <cons>(SgAsmElfSymverDefinedEntry,ListStarOfSgAsmElfSymverDefinedEntry)
+ListStarOfSgAsmElfSymverEntry -> <nil>()
+ListStarOfSgAsmElfSymverEntry -> <cons>(SgAsmElfSymverEntry,ListStarOfSgAsmElfSymverEntry)
+ListStarOfSgAsmElfSymverNeededAux -> <nil>()
+ListStarOfSgAsmElfSymverNeededAux -> <cons>(SgAsmElfSymverNeededAux,ListStarOfSgAsmElfSymverNeededAux)
+ListStarOfSgAsmElfSymverNeededEntry -> <nil>()
+ListStarOfSgAsmElfSymverNeededEntry -> <cons>(SgAsmElfSymverNeededEntry,ListStarOfSgAsmElfSymverNeededEntry)
+ListStarOfSgAsmExprExp -> <nil>()
+ListStarOfSgAsmExprExp -> <cons>(SgAsmExprExp,ListStarOfSgAsmExprExp)
+ListStarOfSgAsmExpression -> <nil>()
+ListStarOfSgAsmExpression -> <cons>(SgAsmExpression,ListStarOfSgAsmExpression)
+ListStarOfSgAsmFunction -> <nil>()
+ListStarOfSgAsmFunction -> <cons>(SgAsmFunction,ListStarOfSgAsmFunction)
+ListStarOfSgAsmFunction::MayReturn -> <nil>()
+ListStarOfSgAsmFunction::MayReturn -> <cons>(SgAsmFunction::MayReturn,ListStarOfSgAsmFunction::MayReturn)
+ListStarOfSgAsmFunction::function_kind_enum -> <nil>()
+ListStarOfSgAsmFunction::function_kind_enum -> <cons>(SgAsmFunction::function_kind_enum,ListStarOfSgAsmFunction::function_kind_enum)
+ListStarOfSgAsmGenericFile -> <nil>()
+ListStarOfSgAsmGenericFile -> <cons>(SgAsmGenericFile,ListStarOfSgAsmGenericFile)
+ListStarOfSgAsmGenericHeader -> <nil>()
+ListStarOfSgAsmGenericHeader -> <cons>(SgAsmGenericHeader,ListStarOfSgAsmGenericHeader)
+ListStarOfSgAsmGenericSection -> <nil>()
+ListStarOfSgAsmGenericSection -> <cons>(SgAsmGenericSection,ListStarOfSgAsmGenericSection)
+ListStarOfSgAsmGenericSection::SectionPurpose -> <nil>()
+ListStarOfSgAsmGenericSection::SectionPurpose -> <cons>(SgAsmGenericSection::SectionPurpose,ListStarOfSgAsmGenericSection::SectionPurpose)
+ListStarOfSgAsmGenericString -> <nil>()
+ListStarOfSgAsmGenericString -> <cons>(SgAsmGenericString,ListStarOfSgAsmGenericString)
+ListStarOfSgAsmIntegerValue -> <nil>()
+ListStarOfSgAsmIntegerValue -> <cons>(SgAsmIntegerValue,ListStarOfSgAsmIntegerValue)
+ListStarOfSgAsmInterpretation -> <nil>()
+ListStarOfSgAsmInterpretation -> <cons>(SgAsmInterpretation,ListStarOfSgAsmInterpretation)
+ListStarOfSgAsmLEEntryPoint -> <nil>()
+ListStarOfSgAsmLEEntryPoint -> <cons>(SgAsmLEEntryPoint,ListStarOfSgAsmLEEntryPoint)
+ListStarOfSgAsmLEEntryTable -> <nil>()
+ListStarOfSgAsmLEEntryTable -> <cons>(SgAsmLEEntryTable,ListStarOfSgAsmLEEntryTable)
+ListStarOfSgAsmLEPageTable -> <nil>()
+ListStarOfSgAsmLEPageTable -> <cons>(SgAsmLEPageTable,ListStarOfSgAsmLEPageTable)
+ListStarOfSgAsmLEPageTableEntry -> <nil>()
+ListStarOfSgAsmLEPageTableEntry -> <cons>(SgAsmLEPageTableEntry,ListStarOfSgAsmLEPageTableEntry)
+ListStarOfSgAsmLERelocEntry -> <nil>()
+ListStarOfSgAsmLERelocEntry -> <cons>(SgAsmLERelocEntry,ListStarOfSgAsmLERelocEntry)
+ListStarOfSgAsmLERelocTable -> <nil>()
+ListStarOfSgAsmLERelocTable -> <cons>(SgAsmLERelocTable,ListStarOfSgAsmLERelocTable)
+ListStarOfSgAsmNEEntryPoint -> <nil>()
+ListStarOfSgAsmNEEntryPoint -> <cons>(SgAsmNEEntryPoint,ListStarOfSgAsmNEEntryPoint)
+ListStarOfSgAsmNEEntryTable -> <nil>()
+ListStarOfSgAsmNEEntryTable -> <cons>(SgAsmNEEntryTable,ListStarOfSgAsmNEEntryTable)
+ListStarOfSgAsmNERelocEntry -> <nil>()
+ListStarOfSgAsmNERelocEntry -> <cons>(SgAsmNERelocEntry,ListStarOfSgAsmNERelocEntry)
+ListStarOfSgAsmNERelocTable -> <nil>()
+ListStarOfSgAsmNERelocTable -> <cons>(SgAsmNERelocTable,ListStarOfSgAsmNERelocTable)
+ListStarOfSgAsmOperand -> <nil>()
+ListStarOfSgAsmOperand -> <cons>(SgAsmOperand,ListStarOfSgAsmOperand)
+ListStarOfSgAsmPEExportEntry -> <nil>()
+ListStarOfSgAsmPEExportEntry -> <cons>(SgAsmPEExportEntry,ListStarOfSgAsmPEExportEntry)
+ListStarOfSgAsmPEImportDirectory -> <nil>()
+ListStarOfSgAsmPEImportDirectory -> <cons>(SgAsmPEImportDirectory,ListStarOfSgAsmPEImportDirectory)
+ListStarOfSgAsmPEImportItem -> <nil>()
+ListStarOfSgAsmPEImportItem -> <cons>(SgAsmPEImportItem,ListStarOfSgAsmPEImportItem)
+ListStarOfSgAsmPERVASizePair -> <nil>()
+ListStarOfSgAsmPERVASizePair -> <cons>(SgAsmPERVASizePair,ListStarOfSgAsmPERVASizePair)
+ListStarOfSgAsmRegisterNames -> <nil>()
+ListStarOfSgAsmRegisterNames -> <cons>(SgAsmRegisterNames,ListStarOfSgAsmRegisterNames)
+ListStarOfSgAsmRegisterReferenceExpression -> <nil>()
+ListStarOfSgAsmRegisterReferenceExpression -> <cons>(SgAsmRegisterReferenceExpression,ListStarOfSgAsmRegisterReferenceExpression)
+ListStarOfSgAsmStatement -> <nil>()
+ListStarOfSgAsmStatement -> <cons>(SgAsmStatement,ListStarOfSgAsmStatement)
+ListStarOfSgAsmStmt -> <nil>()
+ListStarOfSgAsmStmt -> <cons>(SgAsmStmt,ListStarOfSgAsmStmt)
+ListStarOfSgAsmStmt::AsmRegisterName -> <nil>()
+ListStarOfSgAsmStmt::AsmRegisterName -> <cons>(SgAsmStmt::AsmRegisterName,ListStarOfSgAsmStmt::AsmRegisterName)
+ListStarOfSgAsmType -> <nil>()
+ListStarOfSgAsmType -> <cons>(SgAsmType,ListStarOfSgAsmType)
+ListStarOfSgBaseClass -> <nil>()
+ListStarOfSgBaseClass -> <cons>(SgBaseClass,ListStarOfSgBaseClass)
+ListStarOfSgBasicBlock -> <nil>()
+ListStarOfSgBasicBlock -> <cons>(SgBasicBlock,ListStarOfSgBasicBlock)
+ListStarOfSgCatchStatementSeq -> <nil>()
+ListStarOfSgCatchStatementSeq -> <cons>(SgCatchStatementSeq,ListStarOfSgCatchStatementSeq)
+ListStarOfSgClassDeclaration -> <nil>()
+ListStarOfSgClassDeclaration -> <cons>(SgClassDeclaration,ListStarOfSgClassDeclaration)
+ListStarOfSgCommonBlock -> <nil>()
+ListStarOfSgCommonBlock -> <cons>(SgCommonBlock,ListStarOfSgCommonBlock)
+ListStarOfSgCommonBlockObject -> <nil>()
+ListStarOfSgCommonBlockObject -> <cons>(SgCommonBlockObject,ListStarOfSgCommonBlockObject)
+ListStarOfSgCtorInitializer -> <nil>()
+ListStarOfSgCtorInitializer -> <cons>(SgCtorInitializer,ListStarOfSgCtorInitializer)
+ListStarOfSgDeclarationModifier -> <nil>()
+ListStarOfSgDeclarationModifier -> <cons>(SgDeclarationModifier,ListStarOfSgDeclarationModifier)
+ListStarOfSgDeclarationStatement -> <nil>()
+ListStarOfSgDeclarationStatement -> <cons>(SgDeclarationStatement,ListStarOfSgDeclarationStatement)
+ListStarOfSgDeclarationStatement::gnu_extension_visability_attribute_enum -> <nil>()
+ListStarOfSgDeclarationStatement::gnu_extension_visability_attribute_enum -> <cons>(SgDeclarationStatement::gnu_extension_visability_attribute_enum,ListStarOfSgDeclarationStatement::gnu_extension_visability_attribute_enum)
+ListStarOfSgDeclarationStatement::template_specialization_enum -> <nil>()
+ListStarOfSgDeclarationStatement::template_specialization_enum -> <cons>(SgDeclarationStatement::template_specialization_enum,ListStarOfSgDeclarationStatement::template_specialization_enum)
+ListStarOfSgDictionaryExp -> <nil>()
+ListStarOfSgDictionaryExp -> <cons>(SgDictionaryExp,ListStarOfSgDictionaryExp)
+ListStarOfSgDirectory -> <nil>()
+ListStarOfSgDirectory -> <cons>(SgDirectory,ListStarOfSgDirectory)
+ListStarOfSgEnumDeclaration -> <nil>()
+ListStarOfSgEnumDeclaration -> <cons>(SgEnumDeclaration,ListStarOfSgEnumDeclaration)
+ListStarOfSgEnumType -> <nil>()
+ListStarOfSgEnumType -> <cons>(SgEnumType,ListStarOfSgEnumType)
+ListStarOfSgExp -> <nil>()
+ListStarOfSgExp -> <cons>(SgExp,ListStarOfSgExp)
+ListStarOfSgExpression -> <nil>()
+ListStarOfSgExpression -> <cons>(SgExpression,ListStarOfSgExpression)
+ListStarOfSgFile -> <nil>()
+ListStarOfSgFile -> <cons>(SgFile,ListStarOfSgFile)
+ListStarOfSgFileContent -> <nil>()
+ListStarOfSgFileContent -> <cons>(SgFileContent,ListStarOfSgFileContent)
+ListStarOfSgForInitStatement -> <nil>()
+ListStarOfSgForInitStatement -> <cons>(SgForInitStatement,ListStarOfSgForInitStatement)
+ListStarOfSgFunctionParameter -> <nil>()
+ListStarOfSgFunctionParameter -> <cons>(SgFunctionParameter,ListStarOfSgFunctionParameter)
+ListStarOfSgGlobal -> <nil>()
+ListStarOfSgGlobal -> <cons>(SgGlobal,ListStarOfSgGlobal)
+ListStarOfSgImplicitStatement -> <nil>()
+ListStarOfSgImplicitStatement -> <cons>(SgImplicitStatement,ListStarOfSgImplicitStatement)
+ListStarOfSgInitializedName -> <nil>()
+ListStarOfSgInitializedName -> <cons>(SgInitializedName,ListStarOfSgInitializedName)
+ListStarOfSgInterfaceBody -> <nil>()
+ListStarOfSgInterfaceBody -> <cons>(SgInterfaceBody,ListStarOfSgInterfaceBody)
+ListStarOfSgInterfaceStatement -> <nil>()
+ListStarOfSgInterfaceStatement -> <cons>(SgInterfaceStatement,ListStarOfSgInterfaceStatement)
+ListStarOfSgInterfaceStatement::generic_spec_enum -> <nil>()
+ListStarOfSgInterfaceStatement::generic_spec_enum -> <cons>(SgInterfaceStatement::generic_spec_enum,ListStarOfSgInterfaceStatement::generic_spec_enum)
+ListStarOfSgJavaClassDeclaration -> <nil>()
+ListStarOfSgJavaClassDeclaration -> <cons>(SgJavaClassDeclaration,ListStarOfSgJavaClassDeclaration)
+ListStarOfSgJavaImportStatement -> <nil>()
+ListStarOfSgJavaImportStatement -> <cons>(SgJavaImportStatement,ListStarOfSgJavaImportStatement)
+ListStarOfSgJavaMemberValuePair -> <nil>()
+ListStarOfSgJavaMemberValuePair -> <cons>(SgJavaMemberValuePair,ListStarOfSgJavaMemberValuePair)
+ListStarOfSgJavaNormalAnnotation -> <nil>()
+ListStarOfSgJavaNormalAnnotation -> <cons>(SgJavaNormalAnnotation,ListStarOfSgJavaNormalAnnotation)
+ListStarOfSgKeyDatumPair -> <nil>()
+ListStarOfSgKeyDatumPair -> <cons>(SgKeyDatumPair,ListStarOfSgKeyDatumPair)
+ListStarOfSgLabelRefExp -> <nil>()
+ListStarOfSgLabelRefExp -> <cons>(SgLabelRefExp,ListStarOfSgLabelRefExp)
+ListStarOfSgLambdaCapture -> <nil>()
+ListStarOfSgLambdaCapture -> <cons>(SgLambdaCapture,ListStarOfSgLambdaCapture)
+ListStarOfSgMatrixExp -> <nil>()
+ListStarOfSgMatrixExp -> <cons>(SgMatrixExp,ListStarOfSgMatrixExp)
+ListStarOfSgModuleStatement -> <nil>()
+ListStarOfSgModuleStatement -> <cons>(SgModuleStatement,ListStarOfSgModuleStatement)
+ListStarOfSgName -> <nil>()
+ListStarOfSgName -> <cons>(SgName,ListStarOfSgName)
+ListStarOfSgNamespaceDeclarationStatement -> <nil>()
+ListStarOfSgNamespaceDeclarationStatement -> <cons>(SgNamespaceDeclarationStatement,ListStarOfSgNamespaceDeclarationStatement)
+ListStarOfSgNamespaceDefinitionStatement -> <nil>()
+ListStarOfSgNamespaceDefinitionStatement -> <cons>(SgNamespaceDefinitionStatement,ListStarOfSgNamespaceDefinitionStatement)
+ListStarOfSgNaryBooleanOp -> <nil>()
+ListStarOfSgNaryBooleanOp -> <cons>(SgNaryBooleanOp,ListStarOfSgNaryBooleanOp)
+ListStarOfSgNaryComparisonOp -> <nil>()
+ListStarOfSgNaryComparisonOp -> <cons>(SgNaryComparisonOp,ListStarOfSgNaryComparisonOp)
+ListStarOfSgNode -> <nil>()
+ListStarOfSgNode -> <cons>(SgNode,ListStarOfSgNode)
+ListStarOfSgOmpAlignedClause -> <nil>()
+ListStarOfSgOmpAlignedClause -> <cons>(SgOmpAlignedClause,ListStarOfSgOmpAlignedClause)
+ListStarOfSgOmpClause -> <nil>()
+ListStarOfSgOmpClause -> <cons>(SgOmpClause,ListStarOfSgOmpClause)
+ListStarOfSgOmpClause::omp_map_operator_enum -> <nil>()
+ListStarOfSgOmpClause::omp_map_operator_enum -> <cons>(SgOmpClause::omp_map_operator_enum,ListStarOfSgOmpClause::omp_map_operator_enum)
+ListStarOfSgOmpClause::omp_reduction_operator_enum -> <nil>()
+ListStarOfSgOmpClause::omp_reduction_operator_enum -> <cons>(SgOmpClause::omp_reduction_operator_enum,ListStarOfSgOmpClause::omp_reduction_operator_enum)
+ListStarOfSgOmpCopyinClause -> <nil>()
+ListStarOfSgOmpCopyinClause -> <cons>(SgOmpCopyinClause,ListStarOfSgOmpCopyinClause)
+ListStarOfSgOmpCopyprivateClause -> <nil>()
+ListStarOfSgOmpCopyprivateClause -> <cons>(SgOmpCopyprivateClause,ListStarOfSgOmpCopyprivateClause)
+ListStarOfSgOmpDoStatement -> <nil>()
+ListStarOfSgOmpDoStatement -> <cons>(SgOmpDoStatement,ListStarOfSgOmpDoStatement)
+ListStarOfSgOmpFirstprivateClause -> <nil>()
+ListStarOfSgOmpFirstprivateClause -> <cons>(SgOmpFirstprivateClause,ListStarOfSgOmpFirstprivateClause)
+ListStarOfSgOmpFlushStatement -> <nil>()
+ListStarOfSgOmpFlushStatement -> <cons>(SgOmpFlushStatement,ListStarOfSgOmpFlushStatement)
+ListStarOfSgOmpForStatement -> <nil>()
+ListStarOfSgOmpForStatement -> <cons>(SgOmpForStatement,ListStarOfSgOmpForStatement)
+ListStarOfSgOmpLastprivateClause -> <nil>()
+ListStarOfSgOmpLastprivateClause -> <cons>(SgOmpLastprivateClause,ListStarOfSgOmpLastprivateClause)
+ListStarOfSgOmpLinearClause -> <nil>()
+ListStarOfSgOmpLinearClause -> <cons>(SgOmpLinearClause,ListStarOfSgOmpLinearClause)
+ListStarOfSgOmpMapClause -> <nil>()
+ListStarOfSgOmpMapClause -> <cons>(SgOmpMapClause,ListStarOfSgOmpMapClause)
+ListStarOfSgOmpParallelStatement -> <nil>()
+ListStarOfSgOmpParallelStatement -> <cons>(SgOmpParallelStatement,ListStarOfSgOmpParallelStatement)
+ListStarOfSgOmpPrivateClause -> <nil>()
+ListStarOfSgOmpPrivateClause -> <cons>(SgOmpPrivateClause,ListStarOfSgOmpPrivateClause)
+ListStarOfSgOmpReductionClause -> <nil>()
+ListStarOfSgOmpReductionClause -> <cons>(SgOmpReductionClause,ListStarOfSgOmpReductionClause)
+ListStarOfSgOmpSectionsStatement -> <nil>()
+ListStarOfSgOmpSectionsStatement -> <cons>(SgOmpSectionsStatement,ListStarOfSgOmpSectionsStatement)
+ListStarOfSgOmpSharedClause -> <nil>()
+ListStarOfSgOmpSharedClause -> <cons>(SgOmpSharedClause,ListStarOfSgOmpSharedClause)
+ListStarOfSgOmpSimdStatement -> <nil>()
+ListStarOfSgOmpSimdStatement -> <cons>(SgOmpSimdStatement,ListStarOfSgOmpSimdStatement)
+ListStarOfSgOmpSingleStatement -> <nil>()
+ListStarOfSgOmpSingleStatement -> <cons>(SgOmpSingleStatement,ListStarOfSgOmpSingleStatement)
+ListStarOfSgOmpTargetDataStatement -> <nil>()
+ListStarOfSgOmpTargetDataStatement -> <cons>(SgOmpTargetDataStatement,ListStarOfSgOmpTargetDataStatement)
+ListStarOfSgOmpTargetStatement -> <nil>()
+ListStarOfSgOmpTargetStatement -> <cons>(SgOmpTargetStatement,ListStarOfSgOmpTargetStatement)
+ListStarOfSgOmpTaskStatement -> <nil>()
+ListStarOfSgOmpTaskStatement -> <cons>(SgOmpTaskStatement,ListStarOfSgOmpTaskStatement)
+ListStarOfSgOmpThreadprivateStatement -> <nil>()
+ListStarOfSgOmpThreadprivateStatement -> <cons>(SgOmpThreadprivateStatement,ListStarOfSgOmpThreadprivateStatement)
+ListStarOfSgOmpUniformClause -> <nil>()
+ListStarOfSgOmpUniformClause -> <cons>(SgOmpUniformClause,ListStarOfSgOmpUniformClause)
+ListStarOfSgPythonGlobalStmt -> <nil>()
+ListStarOfSgPythonGlobalStmt -> <cons>(SgPythonGlobalStmt,ListStarOfSgPythonGlobalStmt)
+ListStarOfSgQualifiedName -> <nil>()
+ListStarOfSgQualifiedName -> <cons>(SgQualifiedName,ListStarOfSgQualifiedName)
+ListStarOfSgRenamePair -> <nil>()
+ListStarOfSgRenamePair -> <cons>(SgRenamePair,ListStarOfSgRenamePair)
+ListStarOfSgScopeStatement -> <nil>()
+ListStarOfSgScopeStatement -> <cons>(SgScopeStatement,ListStarOfSgScopeStatement)
+ListStarOfSgSizeT -> <nil>()
+ListStarOfSgSizeT -> <cons>(SgSizeT,ListStarOfSgSizeT)
+ListStarOfSgStatement -> <nil>()
+ListStarOfSgStatement -> <cons>(SgStatement,ListStarOfSgStatement)
+ListStarOfSgSymbolTable -> <nil>()
+ListStarOfSgSymbolTable -> <cons>(SgSymbolTable,ListStarOfSgSymbolTable)
+ListStarOfSgTemplateArgument -> <nil>()
+ListStarOfSgTemplateArgument -> <cons>(SgTemplateArgument,ListStarOfSgTemplateArgument)
+ListStarOfSgTemplateClassDefinition -> <nil>()
+ListStarOfSgTemplateClassDefinition -> <cons>(SgTemplateClassDefinition,ListStarOfSgTemplateClassDefinition)
+ListStarOfSgTemplateInstantiationDefn -> <nil>()
+ListStarOfSgTemplateInstantiationDefn -> <cons>(SgTemplateInstantiationDefn,ListStarOfSgTemplateInstantiationDefn)
+ListStarOfSgTemplateParameter -> <nil>()
+ListStarOfSgTemplateParameter -> <cons>(SgTemplateParameter,ListStarOfSgTemplateParameter)
+ListStarOfSgTemplateVariableDeclaration -> <nil>()
+ListStarOfSgTemplateVariableDeclaration -> <cons>(SgTemplateVariableDeclaration,ListStarOfSgTemplateVariableDeclaration)
+ListStarOfSgTupleExp -> <nil>()
+ListStarOfSgTupleExp -> <cons>(SgTupleExp,ListStarOfSgTupleExp)
+ListStarOfSgType -> <nil>()
+ListStarOfSgType -> <cons>(SgType,ListStarOfSgType)
+ListStarOfSgTypeTable -> <nil>()
+ListStarOfSgTypeTable -> <cons>(SgTypeTable,ListStarOfSgTypeTable)
+ListStarOfSgUntypedDeclaration -> <nil>()
+ListStarOfSgUntypedDeclaration -> <cons>(SgUntypedDeclaration,ListStarOfSgUntypedDeclaration)
+ListStarOfSgUntypedDeclarationStatement -> <nil>()
+ListStarOfSgUntypedDeclarationStatement -> <cons>(SgUntypedDeclarationStatement,ListStarOfSgUntypedDeclarationStatement)
+ListStarOfSgUntypedFunctionDeclaration -> <nil>()
+ListStarOfSgUntypedFunctionDeclaration -> <cons>(SgUntypedFunctionDeclaration,ListStarOfSgUntypedFunctionDeclaration)
+ListStarOfSgUntypedInitializedName -> <nil>()
+ListStarOfSgUntypedInitializedName -> <cons>(SgUntypedInitializedName,ListStarOfSgUntypedInitializedName)
+ListStarOfSgUntypedStatement -> <nil>()
+ListStarOfSgUntypedStatement -> <cons>(SgUntypedStatement,ListStarOfSgUntypedStatement)
+ListStarOfSgUseStatement -> <nil>()
+ListStarOfSgUseStatement -> <cons>(SgUseStatement,ListStarOfSgUseStatement)
+ListStarOfSgVarRefExp -> <nil>()
+ListStarOfSgVarRefExp -> <cons>(SgVarRefExp,ListStarOfSgVarRefExp)
+ListStarOfSgVariableDeclaration::gnu_extension_declaration_attributes_enum -> <nil>()
+ListStarOfSgVariableDeclaration::gnu_extension_declaration_attributes_enum -> <cons>(SgVariableDeclaration::gnu_extension_declaration_attributes_enum,ListStarOfSgVariableDeclaration::gnu_extension_declaration_attributes_enum)
+ListStarOfSg_File_Info -> <nil>()
+ListStarOfSg_File_Info -> <cons>(Sg_File_Info,ListStarOfSg_File_Info)
+ListStarOfVariantT -> <nil>()
+ListStarOfVariantT -> <cons>(VariantT,ListStarOfVariantT)
+ListStarOfbool -> <nil>()
+ListStarOfbool -> <cons>(bool,ListStarOfbool)
+ListStarOfdouble -> <nil>()
+ListStarOfdouble -> <cons>(double,ListStarOfdouble)
+ListStarOfint -> <nil>()
+ListStarOfint -> <cons>(int,ListStarOfint)
+ListStarOfint64_t -> <nil>()
+ListStarOfint64_t -> <cons>(int64_t,ListStarOfint64_t)
+ListStarOfmap<SgSymbol,  std::vector < std::pair <SgExpression*, SgExpression*> > > -> <nil>()
+ListStarOfmap<SgSymbol,  std::vector < std::pair <SgExpression*, SgExpression*> > > -> <cons>(map<SgSymbol,  std::vector < std::pair <SgExpression*, SgExpression*> > >,ListStarOfmap<SgSymbol,  std::vector < std::pair <SgExpression*, SgExpression*> > >)
+ListStarOfrose_addr_t -> <nil>()
+ListStarOfrose_addr_t -> <cons>(rose_addr_t,ListStarOfrose_addr_t)
+ListStarOfset<SgSymbol> -> <nil>()
+ListStarOfset<SgSymbol> -> <cons>(set<SgSymbol>,ListStarOfset<SgSymbol>)
+ListStarOfsize_t -> <nil>()
+ListStarOfsize_t -> <cons>(size_t,ListStarOfsize_t)
+ListStarOfstring -> <nil>()
+ListStarOfstring -> <cons>(string,ListStarOfstring)
+ListStarOfunsigned -> <nil>()
+ListStarOfunsigned -> <cons>(unsigned,ListStarOfunsigned)
+ListStarOfunsigned int -> <nil>()
+ListStarOfunsigned int -> <cons>(unsigned int,ListStarOfunsigned int)
+ListStarOfunsigned short -> <nil>()
+ListStarOfunsigned short -> <cons>(unsigned short,ListStarOfunsigned short)
