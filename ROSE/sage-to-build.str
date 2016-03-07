@@ -1,4 +1,4 @@
-module sage-to-traverse
+module sage-to-build
 
 imports
    libstratego-lib
