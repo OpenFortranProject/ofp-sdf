@@ -47,6 +47,9 @@ sage-to-traverse-header : sage-to-traverse-header.str
 sage-to-build : sage-to-build.str
 	$(ST_PATH)/strc -i sage-to-build.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
+sage-to-build-header : sage-to-build-header.str
+	$(ST_PATH)/strc -i sage-to-build-header.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
+
 check : sage-to-traverse SgUntyped.rtg.aterm
 	sage-to-traverse -i SgUntyped.rtg.aterm | pp-aterm
 
@@ -58,6 +61,9 @@ check-pp-header : sage-to-traverse-header SgUntyped.rtg.aterm
 
 check-pp-build : sage-to-build SgUntyped.rtg.aterm
 	@sage-to-build -i SgUntyped.rtg.aterm | ast2text -p sage_build.pp
+
+check-pp-build-header : sage-to-build-header SgUntyped.rtg.aterm
+	@sage-to-build-header -i SgUntyped.rtg.aterm | ast2text -p sage_build_header.pp
 
 check-traverse : sage2pp
 	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
