@@ -1,0 +1,176 @@
+module sage-to-build-header
+
+imports
+   libstratego-lib
+
+signature
+  constructors
+
+    RTG             : Start * ProdRules              -> RTG
+    Start           : List                           -> Start
+
+    Parent          : Name                           -> Parent
+
+    Traversal       : FunDecl                        -> Traversal
+                              
+    Traversals      : TraversalList                  -> Traversals
+
+    FunDecl         : Name * ArgDecls                -> FunDecl
+    TypeRef         : Name                           -> TypeRef
+    TypePointer     : Name                           -> TypePointer
+    Address         : Name                           -> Address
+
+    ArgDecl         : Type * Name                    -> ArgDecl
+    ArgDecls        : ArgList                        -> ArgDecls
+    no-args         : no-args
+    no-decls        : no-decls
+
+    no-class        : no-class
+
+    Macro           : Name                           -> Macro
+
+    Args            : TypeList                       -> Args
+    Constructor     : Name * Args                    -> Constructor
+
+    ProdRule        : Nonterm * List                 -> ProdRule
+    ProdRules       : List                           -> ProdRules
+
+    Appl            : Term * List                    -> Appl
+
+    Ref             : Term                           -> Ref
+    Term            : String                         -> Term
+    Nonterm         : String                         -> Nonterm
+    NilTerm         : NilTerm
+    ConsTerm        : ConsTerm
+
+    Bool            : Bool
+
+strategies
+
+  main =
+    io-wrap(sage-to-traverse)
+
+  sage-to-traverse() =
+{ ct
+    : ?RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  new-hashtable => ct
+    ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  topdown(try(rtg-get-classes(|ct)))
+    ; !RTG(Start([Nonterm("SgNode")]), ProdRules(rule_list))
+    ;  innermost(nonterm-to-term)
+    ;  innermost(nil-terms-to-pp)
+    ;  innermost(ast-to-pp)
+}
+
+  extract-traversals() =
+      ? Traversal(fdecl)
+    ; ! Traversal(fdecl)
+
+  is-nonterminal() =
+      ?TypeRef(Nonterm(_))
+
+  retain-nonterm() =
+       ?TypeRef(Nonterm(name))
+    <+ ![]
+
+  terminal-to-type() =
+      ?"String"                       ; !"char*"
+   <+ ?"Int"                          ; !"int"
+   <+ ?"Bool"                         ; !"int"
+
+  terminal-to-term-type() =
+      ?"String"                       ; !"<str>"
+   <+ ?"Int"                          ; !"<int>"
+   <+ ?"Bool"                         ; !"<int>"
+
+  arg-type() =
+      ?TypeRef(Nonterm(name))         ; !TypePointer(name)
+   <+ ?TypeRef(terminal)              ; <terminal-to-type> <write-to-string> terminal
+
+// Build class inheritance table
+// -----------------------------
+
+// Add a class to the class table
+ct-add-class(|ct,child) =
+     ?class
+  ;  <hashtable-pushunion(|class,[child])> ct
+
+// Rewrite what looks like nonterminals to terminals (e.g. bool will be matched as an <int>)
+nonterm-to-term() =
+     ?Ref(Nonterm("bool"))
+  ;  !Ref(Bool())
+
+rtg-get-classes(|ct) =
+     ?ProdRule(Nonterm(parent), [Ref(Nonterm(child))])
+  ;  !parent
+  ;  <ct-add-class(|ct,child)> parent
+  ;  ?ProdRule(Nonterm(parent), [Ref(Nonterm(child))])
+
+  term-decl-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <is-nonterminal> head
+           ; <term-decl-list(|<addS>(count,"1"),
+                              <concat>[new,[<concat-strings>["term", count]]])> tail
+   <+ ?[head|tail]
+           ; <term-decl-list(|<addS>(count,"1"),new)> tail
+
+  isListStarOf =
+      ?str
+    ; <is-substring(!"ListStarOf")> str
+    ; !str
+
+  arg-decl(|count) =
+      ?TypeRef(Nonterm(str))
+    ; !str
+    ; <isListStarOf> <id>
+    ; ![]
+   <+ ?type
+    ; !ArgDecl(<arg-type> type, <concat-strings>["arg", count])
+
+  arg-decl-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <arg-decl-list(|<addS>(count,"1"),
+                             <concat>[new,[<arg-decl(|count)> head]])> tail
+
+  arg-name(|count) =
+      ?TypeRef(Nonterm(_))         ; <concat-strings>["term", count]
+   <+ ?TypeRef(_)                  ; <concat-strings>["arg",  count]
+
+  arg-name-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <arg-name-list(|<addS>(count,"1"),
+                             <concat>[new,[<arg-name(|count)> head]])> tail
+
+  builder-arg-list(|count,new) =
+      ?[]  ; !new
+   <+ ?[head|tail]
+           ; <builder-arg-list(|<addS>(count,"1"),
+                                <concat>[new,[<concat-strings>["arg", count]]])> tail
+   <+ ?[head|tail]
+           ; <builder-arg-list(|<addS>(count,"1"),new)> tail
+
+  address-of() = !Address(<id>)
+
+rules
+
+nil-terms-to-pp =
+      ?ProdRule(c, [Appl(NilTerm(),list)])      ; !Macro(c)
+  <+  ?ProdRule(c, [Appl(ConsTerm(),list)])     ; !no-class()
+
+ast-to-pp =
+{ t
+   : ?ProdRules(r)
+   ; <filter(extract-traversals)> r             => t
+   ; !Traversals(t)
+}
+
+ast-to-pp =
+      ? ProdRule(Nonterm(name), [Appl(_,args)])
+    ; ! Traversal( FunDecl(name, ArgDecls(<arg-decl-list (|"1",[])> args)) )
+
+ast-to-pp:  RTG(_,Traversals(list))             -> Traversals(list)
+
+ast-to-pp:  Ref(type)                           -> TypeRef(type)
