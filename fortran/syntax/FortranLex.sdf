@@ -138,6 +138,8 @@ lexical syntax
 
 lexical restrictions
 
+%% -/- to be read as "cannot be followed by"
+%%
   SconSingle -/- [\']
   SconDouble -/- [\"]
 
