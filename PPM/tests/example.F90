@@ -1,4 +1,4 @@
-      subroutine FVsCsEs1 (rhogp5,pgp5,fvgp5,&
+      subroutine FVsCsEs1 (nssq,rhogp5,pgp5,fvgp5,&
 
      &                     rhoairgp5,ceul2iairgp5,ceulgp5,gamma1gp5,&
      &                    rhocldtoair0,&
@@ -39,6 +39,12 @@
 !
 !     Output arrays:
 !        rhoairgp5,ceul2iairgp5,ceulgp5,gamma1gp5
+!
+!
+!     Declare implicit postfix for gp5 suffix
+!
+      implicit postfix real, dimension(nssq) ("gp5")
+!
 !
       character*14   dbgfile
 !
