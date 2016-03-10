@@ -32,7 +32,7 @@ check : ofp-simplify ofp2fast
 check-ofp : ofp-simplify
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp-simplify | pp-aterm
 
-check-pp : fast2pp
+check-pp : ofp-simplify ofp2fast fast2pp
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
 
 unparse : ofp-simplify ofp2fast fast2pp
