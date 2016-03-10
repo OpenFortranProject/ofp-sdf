@@ -241,7 +241,7 @@ ofp-to-ast:  CHARACTER(CharSelector(len,kind))       -> CHARACTER(len,kind)
 
 //R405
 ofp-to-ast:  KindSelector(k)                    -> Kind(k)
-ofp-to-ast:  KindSelector_STAR(k)               -> Kind(k)
+ofp-to-ast:  KindSelector_STAR(k)               -> Kind(IntVal(k))
 
 //R408
 ofp-to-ast:
@@ -260,6 +260,7 @@ ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)
 
 //R421
 ofp-to-ast: LengthSelector(expr)                -> expr
+ofp-to-ast: LengthSelector_STAR(len)            -> IntVal(len)
 ofp-to-ast: no-length-selector()                -> no-char-length()
 
 //R424
