@@ -105,9 +105,6 @@
    RealVal                       -- _1,
    RealVal                       -- H hs=0[_1 _2],
 
-   #R421 --,
-   LengthSelector                -- "(" KW["LEN="] _1")",
-
    #R423 --,
    CharLiteralConstant           -- _1 _2,
 
