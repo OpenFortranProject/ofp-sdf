@@ -102,5 +102,9 @@ is-continued =
   ; <is-continued> tail
 
 
+/**
+ * Insert continuation character at end of current statement (free format style)
+ */
 insert-cont-char : Stmt(begin,char,text,end)         -> Stmt(begin,char,text,eol("&\n"))
+insert-cont-char : LabeledStmt(begin,char,text,end)  -> LabeledStmt(begin,char,text,eol("&\n"))
 insert-cont-char : Continuation(begin,char,text,end) -> Continuation(begin,char,text,eol("&\n"))
