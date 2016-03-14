@@ -26,8 +26,14 @@ strategies //=================START OF STRATEGIES============================
 
 rules //========================START OF RULES===============================
 
+/**
+ * Remove ambiguity between statements containing all whitespace and blank lines.
+ *   - replaces blank "statement" with a blank line
+ */
 fixed-disamb =
-      ? amb([Stmt(_,_,"",_), BlankLine(ws, eol)])
+      ? amb([Stmt(_,_,_,_), BlankLine(ws, eol)])
+    ; ! BlankLine(ws, eol)
+   <+ ? amb([BlankLine(ws, eol), Stmt(_,_,_,_)])
     ; ! BlankLine(ws, eol)
 
 // Change comment character to '!'
