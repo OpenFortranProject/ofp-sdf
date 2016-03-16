@@ -62,6 +62,7 @@ signature
     AcSpec                    : OptTypeSpec * List(AcValue) -> AcSpec
     no-type-spec              : OptTypeSpec
     ParameterStmt             : OptLabel * List(NamedConstantDef) -> ParameterStmt
+    NamedConstantDef          : NamedConstant * ConstantExpr -> NamedConstantDef
     AssignmentStmt            : OptLabel * VarDef * Expr -> AssignmentStmt
     PointerAssignmentStmt     : OptLabel * DataPointerObject * List(Range) * Expr -> PointerAssignmentStmt
     DataPointerObject         : Var * NoName -> DataPointerObject
@@ -632,7 +633,6 @@ signature
     LetterSpec                : Letter * NoLetter -> LetterSpec
     LetterSpec                : Letter * Letter -> LetterSpec
     ImplicitSpec              : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
-    NamedConstantDef          : NamedConstant * ConstantExpr -> NamedConstantDef
     INOUT                     : IntentSpec
     OUT                       : IntentSpec
     IN                        : IntentSpec
