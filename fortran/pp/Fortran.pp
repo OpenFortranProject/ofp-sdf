@@ -307,6 +307,11 @@
    #R540 --,
    DataStmtValue                 -- _1 KW["*"] _2,
 
+   ParameterStmt                 -- H hs=0["PARAMETER(" _1 _2 ")"],
+   ParameterStmt.2:iter-sep      -- _1 ", ",
+
+   NamedConstantDef              -- _1 "=" _2,
+
    #R553 --,
    SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
    SaveStmt.2:iter-sep           -- _1 ", ",
