@@ -340,6 +340,16 @@ ofp-to-ast:  DeferredShape()                    -> Range(no-lower-bound(), COLON
 //                            -> OfpAssumedSize(<concat>[list, [DimSpec(lower,"*")]])
 //  ofp-to-ast:  AssumedSizeSpec(OfpExplicitShape(list))
 //                            -> OfpAssumedSize(<concat>[list, [DimSpec(None(),"*")]])
+//
+// assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
+//    - The following four rules remove the ambiguity by choosing assumed-size over
+//      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
+//
+//R522
+//  ofp-to-ast:  AssumedOrImpliedSpec()
+//                            -> OfpAssumedSize([DimSpec(None(),"*")])
+//  ofp-to-ast:  AssumedOrImpliedSpec(lower)
+//                            -> OfpAssumedSize([DimSpec(lower,"*")])
 
 //R522
 //ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
@@ -367,23 +377,15 @@ ofp-to-ast =
 
 //R528
 ofp-to-ast:  AsynchronousStmt(label,list,eos("\n")) -> AsynchronousStmt(label,list)
-ofp-to-ast:  AsynchronousStmt(label,list,eos(str))  -> AsynchronousStmt(label,list)  {Comment(str)}
+ofp-to-ast:  AsynchronousStmt(label,list,eos(str))  -> AsynchronousStmt(label,list) {Comment(str)}
 
+//R548
+ofp-to-ast:  ParameterStmt(label,list,eos("\n"))    -> ParameterStmt(label,list)
+ofp-to-ast:  ParameterStmt(label,list,eos(str))     -> ParameterStmt(label,list)    {Comment(str)}
 
-// assumed-size-spec and implied-shape-spec are ambiguous with only rank 1 array declarations
-//    - The following four rules remove the ambiguity by choosing assumed-size over
-//      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
-//
-//  ofp-to-ast:  AssumedOrImpliedSpec()
-//                            -> OfpAssumedSize([DimSpec(None(),"*")])
-//  ofp-to-ast:  AssumedOrImpliedSpec(lower)
-//                            -> OfpAssumedSize([DimSpec(lower,"*")])
-
-//  rm-assumed-size: OfpAssumedSize([l]) -> l
-
-//  ofp-to-ast:  OfpImpliedShape(l1) -> OfpImpliedShape( <map(rm-assumed-size)>l1 )
 
 // Operators...
+// ------------
 
 //R559
 ofp-to-ast:  VolatileStmt(label,names,eos("\n")) -> VolatileStmt(label,names)
