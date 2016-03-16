@@ -257,13 +257,7 @@ regular tree grammar
     ListPlusOfPointerDecl0            -> <conc>(ListPlusOfPointerDecl0,ListStarOfPointerDecl0)
     ListPlusOfPointerDecl0            -> <conc>(ListPlusOfPointerDecl0,ListPlusOfPointerDecl0)
     ListPlusOfPointerDecl0            -> <cons>(PointerDecl,ListStarOfPointerDecl0)
-    ListStarOfNamedConstantDef0       -> ListPlusOfNamedConstantDef0
-    ListStarOfNamedConstantDef0       -> <nil>()
-    ListStarOfNamedConstantDef0       -> <conc>(ListStarOfNamedConstantDef0,ListStarOfNamedConstantDef0)
-    ListPlusOfNamedConstantDef0       -> <conc>(ListStarOfNamedConstantDef0,ListPlusOfNamedConstantDef0)
-    ListPlusOfNamedConstantDef0       -> <conc>(ListPlusOfNamedConstantDef0,ListStarOfNamedConstantDef0)
-    ListPlusOfNamedConstantDef0       -> <conc>(ListPlusOfNamedConstantDef0,ListPlusOfNamedConstantDef0)
-    ListPlusOfNamedConstantDef0       -> <cons>(NamedConstantDef,ListStarOfNamedConstantDef0)
+
     ListStarOfArrayNameSpec0          -> ListPlusOfArrayNameSpec0
     ListStarOfArrayNameSpec0          -> <nil>()
     ListStarOfArrayNameSpec0          -> <conc>(ListStarOfArrayNameSpec0,ListStarOfArrayNameSpec0)
@@ -547,7 +541,9 @@ regular tree grammar
     OptTypeSpec                       -> TypeSpec
 
     Stmt                              -> ParameterStmt
-    ParameterStmt                     -> ParameterStmt(OptLabel,ListPlusOfNamedConstantDef0)
+    ParameterStmt                     -> ParameterStmt(OptLabel,ListPlusOfNamedConstantDef)
+
+    NamedConstantDef                  -> NamedConstantDef(NamedConstant,ConstantExpr)
 
     Stmt                              -> AssignmentStmt
     AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
@@ -1618,7 +1614,7 @@ regular tree grammar
     PointerDecl                       -> PointerDecl(ObjectName,ListPlusOfAssumedShapeSpec0)
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
-    NamedConstantDef                  -> NamedConstantDef(NamedConstant,ConstantExpr)
+
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
@@ -2247,3 +2243,11 @@ regular tree grammar
     ListPlusOfCloseSpec              -> <conc>(ListPlusOfCloseSpec,ListStarOfCloseSpec)
     ListPlusOfCloseSpec              -> <conc>(ListPlusOfCloseSpec,ListPlusOfCloseSpec)
     ListPlusOfCloseSpec              -> <cons>(CloseSpec,ListStarOfCloseSpec)
+
+    ListStarOfNamedConstantDef       -> ListPlusOfNamedConstantDef
+    ListStarOfNamedConstantDef       -> <nil>()
+    ListStarOfNamedConstantDef       -> <conc>(ListStarOfNamedConstantDef,ListStarOfNamedConstantDef)
+    ListPlusOfNamedConstantDef       -> <conc>(ListStarOfNamedConstantDef,ListPlusOfNamedConstantDef)
+    ListPlusOfNamedConstantDef       -> <conc>(ListPlusOfNamedConstantDef,ListStarOfNamedConstantDef)
+    ListPlusOfNamedConstantDef       -> <conc>(ListPlusOfNamedConstantDef,ListPlusOfNamedConstantDef)
+    ListPlusOfNamedConstantDef       -> <cons>(NamedConstantDef,ListStarOfNamedConstantDef)
