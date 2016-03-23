@@ -43,11 +43,10 @@ strategies //=================START OF STRATEGIES============================
     ; topdown(try(fast-fixup-do-constructs))
     ; topdown(try(fast-cleanup))
 
-//TODO check to see if +> should goto <+ (AND ELSEWHERE)
 transfer-type(|type) =
      ?Var(name,unknown-type(),init)
   ;  !Var(name,type,init)
- +>  ?Var(name,ArrayType(unknown-type(),dims,codims),init)
+ <+  ?Var(name,ArrayType(unknown-type(),dims,codims),init)
   ;  !Var(name,ArrayType(type,dims,codims),init)
 
 // TODO - try to remove usage of Some()
@@ -130,8 +129,8 @@ fast-fixup-spec-part =
 //
 is-specification-part =
      ?ImplicitStmt(_,_)
- +>  ?ParameterStmt(_,_)
- +>  ?TypeDeclarationStmt(_,_,_,_)
+ <+  ?ParameterStmt(_,_)
+ <+  ?TypeDeclarationStmt(_,_,_,_)
 
 // Call the recursive strategy fast-fixup-do-construct (directly below) to build multiple
 // BlockDoConstructs from a series of do statements.
