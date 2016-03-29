@@ -68,6 +68,8 @@ signature
 
     ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
 
+    ppTypeDeclarationStmt : OptLabel * Type * List(EntityDecl)      -> ppTypeDeclarationStmt
+
     ppNonlabelDoStmt  : OptLabel * OptLoopControl                   -> ppNonlabelDoStmt    // R817
 
     ppBlock           : OptLabel * Scope * EndBlockStmt             -> ppBlock
@@ -119,6 +121,9 @@ ast-to-pp =
       ?DerivedTypeStmt(label,[],name,[])      ;  !ppDerivedTypeStmt(label,name)
   <+  ?DerivedTypeStmt(label,attrs,name,[])   ;  !ppDerivedTypeStmt_attrs(label,attrs,name)
   <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
+
+//R501
+ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)  ->  ppTypeDeclarationStmt(label,type,vars)
 
 //R503
 ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
