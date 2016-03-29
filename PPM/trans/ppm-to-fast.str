@@ -106,9 +106,9 @@ ppm-remove-quote =
 
 is-specification-part =
      ? ImplicitStmt(_,_)
- +>  ? ImplicitPostfixStmt(_,_,_)
- +>  ? ParameterStmt(_,_)
- +>  ? TypeDeclarationStmt(_,_,_,_)
+ <+  ? ImplicitPostfixStmt(_,_,_)
+ <+  ? ParameterStmt(_,_)
+ <+  ? TypeDeclarationStmt(_,_,_,_)
 
 // The ppm-fixup-spec-part strategy transfers statements in the execution list to
 // the declaration list.  The statements transferred are in the execution list because
@@ -127,7 +127,20 @@ is-affix-stmt =
      ? ImplicitPostfixStmt(_,_,_)
 
 // Remove all ImplicitPostfixStmts from the decl list
+//
 ppm-remove-affix-stmts =
      ? Scope(decls,execs,funcs)
-  ;  <drop-while(is-affix-stmt)> decls
+  ;  <ofp-drop-terms(is-affix-stmt|[])> decls
   ;  ! Scope(<id>,execs,funcs)
+
+
+// Drop terms from list for which the strategy s succeeds
+//
+ofp-drop-terms(s|new_list) =
+     ? []                                      /* end of list branch */
+  ;  ! new_list
+ <+  ? [head|tail]                             /* drop term branch   */
+  ;  <s> head
+  ;  <ofp-drop-terms(s|new_list)> tail
+ <+  ? [head|tail]                             /* keep term branch   */
+  ;  <ofp-drop-terms(s|<concat> [new_list, [head]])> tail
