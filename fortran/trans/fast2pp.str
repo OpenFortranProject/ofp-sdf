@@ -82,6 +82,8 @@ signature
     ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
     ppIfConstructName : name                                        -> ppIfConstructName
 
+    ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
+
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
     opt-list       : list            -> opt-list
@@ -219,6 +221,9 @@ ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
 //R860
 //  ast-to-pp:
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+
+//R1109
+ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
 
 //R1222
 ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
