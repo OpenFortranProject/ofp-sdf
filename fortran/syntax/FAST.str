@@ -109,8 +109,11 @@ signature
     CHARACTER                 : CharLength * Kind -> IntrinsicType
     CHARACTER                 : CharLength -> IntrinsicType
     CHARACTER                 : IntrinsicType
+    DerivedType               : Name * List(TypeParamSpec) -> DerivedType
+    TypeParamSpec             : Keyword * TypeParamValue -> TypeParamSpec
     unknown-type              : Type
                               : IntrinsicType -> Type
+                              : DerivedType -> Type
                               : ArrayType -> Type
     ArrayType                 : Type * List(Range) * List(Range) -> ArrayType
     DerivedTypeStmt           : OptLabel * List(TypeAttrSpec) * Name * List(Name) -> DerivedTypeStmt
@@ -726,6 +729,9 @@ signature
     ComplexLiteralConstant    : RealPart * ImagPart -> ComplexLiteralConstant
     AssumedType               : DeclarationTypeSpec
     AssumedClass              : DeclarationTypeSpec
+    COLON                     : TypeParamValue
+    STAR                      : TypeParamValue
+                              : Expr -> TypeParamValue
                               : Name -> NamedConstant
                               : BozLiteralConstant -> LiteralConstant
                               : CharLiteralConstant -> LiteralConstant

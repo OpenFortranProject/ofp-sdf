@@ -351,13 +351,7 @@ regular tree grammar
     ListPlusOfComponentSpec0          -> <conc>(ListPlusOfComponentSpec0,ListStarOfComponentSpec0)
     ListPlusOfComponentSpec0          -> <conc>(ListPlusOfComponentSpec0,ListPlusOfComponentSpec0)
     ListPlusOfComponentSpec0          -> <cons>(ComponentSpec,ListStarOfComponentSpec0)
-    ListStarOfTypeParamSpec0          -> ListPlusOfTypeParamSpec0
-    ListStarOfTypeParamSpec0          -> <nil>()
-    ListStarOfTypeParamSpec0          -> <conc>(ListStarOfTypeParamSpec0,ListStarOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListStarOfTypeParamSpec0,ListPlusOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec0)
+
     ListStarOfFinalSubroutineName0    -> ListPlusOfFinalSubroutineName0
     ListStarOfFinalSubroutineName0    -> <nil>()
     ListStarOfFinalSubroutineName0    -> <conc>(ListStarOfFinalSubroutineName0,ListStarOfFinalSubroutineName0)
@@ -647,8 +641,14 @@ regular tree grammar
     IntrinsicType                     -> CHARACTER(CharLength)
     IntrinsicType                     -> CHARACTER()
 
+/* R453 */
     Type                              -> DerivedType
-    DerivedType                       -> DerivedType(name)
+    DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
+/* TODO - replace with DerivedTyped */
+    DerivedTypeSpec                   -> DerivedTypeSpec(TypeName,OptTypeParamSpecList)
+
+/* R454 */
+    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
 
     Type                              -> ArrayType
     ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
@@ -1752,11 +1752,6 @@ regular tree grammar
     ComponentSpec                     -> ComponentSpec(Keyword,ComponentDataSource)
     ComponentSpec                     -> ComponentSpec(NoKeyword,ComponentDataSource)
     StructureConstructor              -> StructureConstructor(DerivedTypeSpec,ListStarOfComponentSpec0)
-    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
-    TypeParamSpec                     -> TypeParamSpec(NoKeyword,TypeParamValue)
-    OptTypeParamSpecList              -> no-list()
-    OptTypeParamSpecList              -> paren-list(ListPlusOfTypeParamSpec0)
-    DerivedTypeSpec                   -> DerivedTypeSpec(TypeName,OptTypeParamSpecList)
 
     NoArgName                         -> no-arg-name()
     ArgName                           -> Ident
@@ -2251,3 +2246,11 @@ regular tree grammar
     ListPlusOfNamedConstantDef       -> <conc>(ListPlusOfNamedConstantDef,ListStarOfNamedConstantDef)
     ListPlusOfNamedConstantDef       -> <conc>(ListPlusOfNamedConstantDef,ListPlusOfNamedConstantDef)
     ListPlusOfNamedConstantDef       -> <cons>(NamedConstantDef,ListStarOfNamedConstantDef)
+
+    ListStarOfTypeParamSpec          -> ListPlusOfTypeParamSpec0
+    ListStarOfTypeParamSpec          -> <nil>()
+    ListStarOfTypeParamSpec          -> <conc>(ListStarOfTypeParamSpec,ListStarOfTypeParamSpec)
+    ListPlusOfTypeParamSpec0          -> <conc>(ListStarOfTypeParamSpec,ListPlusOfTypeParamSpec0)
+    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec)
+    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec0)
+    ListPlusOfTypeParamSpec0          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
