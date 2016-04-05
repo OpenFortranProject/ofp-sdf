@@ -741,17 +741,20 @@
    EndModuleStmt                 -- H hs=1 [_1 "END MODULE" _2],
    no-module-name                -- ,
 
-   #R1109 --,
-   UseStmt                       -- H hs=1 [_1 "USE" H hs=0[_2 _3 _4]],
+   %% R1109
+   ppUseStmt                     -- H hs=1 [_1 "USE" H hs=0[_2 _3]],
+   UseStmt                       -- H hs=1 [_1 "USE" H hs=0[_2 _3 ", " _4]],
+   UseStmt.4:iter-sep            -- _1 ", ",
    UseOnlyStmt                   -- H hs=1 [_1 "USE" H hs=0[_2 _3 ", ONLY: " _4]],
    OnlyList                      -- _1,
+   OnlyList.1:iter-sep           -- _1 ", ",
 
    #R1110 --,
    ModuleNature                  -- ", " _1,
    no-module-nature              --,
 
-   #R1111 --,
-   Rename                        -- ", " H hs=0[_1 "=>" _2],
+   %% R1111
+   Rename                        -- H hs=0[_1 "=>" _2],
 
    #R1116 --,
    Submodule                     -- V vs=0 [_1 _2 _3],
