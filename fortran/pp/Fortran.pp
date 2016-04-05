@@ -31,7 +31,7 @@
 
    INTRINSIC                     -- "INTRINSIC" " :: ",
    NON_INTRINSIC                 -- "NON_INTRINSIC" " :: ",
-   PARAMETER                     -- ", " "PARAMETER",
+   PARAMETER                     -- "PARAMETER",
 
    #R201 --,
    Program                       -- V vs=0 is=0 [_1],
@@ -105,7 +105,9 @@
    RealVal                       -- _1,
    RealVal                       -- H hs=0[_1 _2],
 
-   #R423 --,
+   %% R423
+   SignedRealLiteralConstant     -- _1 _2,
+   ComplexLiteralConstant        -- "(" _1 "," _2 ")",
    CharLiteralConstant           -- _1 _2,
 
    #R424 --,
@@ -116,7 +118,6 @@
 
    #R425 --,
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
-
    DerivedTypeStmt               -- H hs=1[_1 "TYPE," H hs=0[_2 " :: " _3 "(" _4 ")"]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
    DerivedTypeStmt.4:iter-sep    -- _1 ",",
@@ -147,8 +148,8 @@
    DataComponentDefStmt.4:iter-sep  -- _1 ", ",
    no-type-bound-procedure-part     --,
 
-   #R437 --,
-   Codimension                   -- ", " KW["CODIMENSION"] "["_1"]",
+   %% R437
+   Codimension                   -- "CODIMENSION" "["_1"]",
    Codimension.1:iter-sep        -- _1 ",",
 
    #R438 --,
@@ -187,12 +188,14 @@
    FinalProcedureStmt            -- H hs=1[_1 "FINAL ::" H hs=0[_2]],
    FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
-   #R453 --,
-   DerivedTypeSpec               -- _1 _2,
-   DerivedType                   -- "TYPE" "("_1")" _2,
+   %% R453
+   %%TODO-DELETE-DerivedTypeSpec -- _1 _2,
+   ppDerivedType                 -- "TYPE" "("_1            ")",
+   DerivedType                   -- "TYPE" "("_1 "(" _2 ")" ")",
+   DerivedType.2:iter-sep        -- _1 ",",
 
-   #R454 --,
-   TypeParamSpec                 -- _1 KW["="] "("_2")",
+   %% R454
+   TypeParamSpec                 -- _1 "=" _2,
 
    #R455 --,
    StructureConstructor          -- _1 "("_2")",
@@ -227,19 +230,23 @@
    #R474 --,
    AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
 
-   #R501 --,
-   TypeDeclarationStmt             -- H hs=0 [_1 H hs=0[_2] H hs=0[_3 " :: "] H hs=0[_4]],
-   TypeDeclarationStmt.4:iter-sep  -- _1 ", ",
+   %% R501
+   TypeDeclarationStmt               -- H hs=1 [_1 H hs=0[_2 ", " _3 " :: " _4]],
+   TypeDeclarationStmt.3:iter-sep    -- _1 ", ",
+   TypeDeclarationStmt.4:iter-sep    -- _1 ", ",
 
-   #R502 --,
-   ALLOCATABLE                   -- ", " KW["ALLOCATABLE"],
-   Intent                        -- ", " KW["INTENT"]    "("_1")",
-   Dimension                     -- ", " KW["DIMENSION"] "("_1")",
+   ppTypeDeclarationStmt             -- H hs=1 [_1 H hs=0[_2 " :: " _3]],
+   ppTypeDeclarationStmt.3:iter-sep  -- _1 ", ",
+
+   %% R502
+   ALLOCATABLE                   -- "ALLOCATABLE",
+   Intent                        -- "INTENT" "("_1")",
+   Dimension                     -- "DIMENSION" "("_1")",
    Dimension.1:iter-sep          -- _1 ",",
 
-   IN                            -- KW["IN"],
-   OUT                           -- KW["OUT"],
-   INOUT                         -- KW["INOUT"],
+   IN                            -- "IN",
+   OUT                           -- "OUT",
+   INOUT                         -- "INOUT",
 
    #R503 --,
    ppVar                         -- _1 _2,
@@ -448,8 +455,9 @@
 
    Parens                        -- H hs=0["(" _1 ")"],
 
-   #R709 --,
+   %% R709
    PLUS                          -- "+",
+   MINUS                         -- "-",
 
    #R732 --,
    AssignmentStmt                -- H [_1 _2 "=" _3],
