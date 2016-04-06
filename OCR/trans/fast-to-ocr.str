@@ -1,0 +1,542 @@
+/*
+ * fast-to-ocaf.str
+ *
+ * -- This file contains Stratego/XT rules to transform coarray Fortran
+ *    source files to standard Fortran with OCR library calls.
+ *
+ * Copyright (c) 2016, Paradox PTF
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this
+ *    list of conditions and the following disclaimer in the documentation and/or
+ *    other materials provided with the distribution.
+ * 3. Neither the names of the copyright holders nor the names of their contributors
+ *    may be used to endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+module fast-to-ocr
+
+imports
+   libstratego-lib
+   FAST
+   ofp-simplify
+
+signature
+  constructors
+
+  ALLOCATED : ALLOCATED
+  INTERNAL  : INTERNAL
+
+  clMemObject : symbol -> clMemObject
+
+
+strategies //=================START OF STRATEGIES============================
+
+  io-fast-to-ocr =
+    io-wrap(fast-to-ocr)
+
+  fast-to-ocr =
+{ st,lt
+        :  ?Program(units)
+        ;  new-hashtable => st
+        ;  new-hashtable => lt
+        ;  !Program(units)
+        ;  topdown(try(fast-get-symbols(|st)))
+        ;  topdown(try(ocr-get-symbols(|st,lt)))
+        ;  bottomup(try(ocr-add-use(|st,lt)))
+        ;  bottomup(try(ocr-replace-image-selector(|st,lt)))
+        ;  topdown(try(fast-flatten-scope-parts))
+        ;  bottomup(try(caf-lower-ast(|lt)))
+}
+
+
+rules //========================START OF RULES===============================
+
+
+// Add "use iso_c_bindings" module
+//
+ocr-add-use(|st,ct) =
+     ? Scope(decls,execs,funcs)
+  ;  ! UseOnlyStmt(no-label(), no-module-nature(), "iso_c_bindings",
+                   OnlyList(["c_loc","c_f_pointer","c_ptr","c_size_t","c_int8_t"]))
+  ;  ! Scope( <concat>[[<id>],decls], execs, funcs)
+
+// Replace image selectors with calls to OCAF functions
+//
+ocr-replace-image-selector(|st,ct) =
+     ? PartRef(name, subscripts, cosubscripts)
+//  ;  ! FunctionReference("caf_get", [VarRef("array"), ArrayConstructor(AcSpec(no-type-spec(), [IntVal("13")]))])
+  ;  ! FunctionReference("caf_get", [VarRef("array"), cosubscripts])
+
+
+
+// Local thread group size
+// TODO - make dependent on dim and device
+opencl-local-size =
+     ![IntVal("16"),IntVal("8"),IntVal("1")]
+
+opencl-arg-shape(|st) =
+     ?PartRef(symbol,no-section-subscripts(),_)
+  ;  <hashtable-get(|symbol)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ;  <map(fast-dim-size)> shape
+ <+  ![1,1,1]
+
+opencl-rank(|st) =
+     ?args
+  ;  <map(opencl-arg-rank(|st))> args
+  ;  <foldr(!1,max)> <id>
+
+opencl-arg-rank(|st) =
+     ?PartRef(symbol,no-section-subscripts(),_)
+  ;  <hashtable-get(|symbol)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ; <length> shape
+ <+  !1
+
+// FAST strategies (MOVE TO fortran/trans)
+// ---------------
+
+fast-var-name =
+     ?VarRef(name)        ;  !name
+ <+  ?VarDef(name)        ;  !name
+
+// Remove excess list elements inside of a Scope
+//   - occurs when a single statement is replaced by a list of statements
+fast-flatten-scope-parts =
+     ?Scope(decls,execs,funcs)
+  ;  !Scope(<flatten-list>decls, <flatten-list>execs, <flatten-list>funcs)
+
+fast-allocation-object =
+     ?Allocation(object,_,_)
+  ;  <fast-var-name> object
+
+// assume literals for now, otherwise get const from symbol table
+// TODO - use choice to use lb info
+fast-build-allocation-size(|st,obj) =
+     ?AllocateShapeSpec(no-lower-bound(),ub)
+  ;  !ub
+
+fast-dim-size =
+     ?Range(lb,ub)
+  ;  !Parens(Minus(ub,Parens(lb)))
+  ;  !Parens(Plus(<id>,"1"))
+
+// Size of a type in bytes
+// TODO - add other intrinsic types and support for kinds
+// TODO - could replace kind with size in bytes!!!!
+fast-type-size =
+     ?REAL()              ;  !"4"
+ <+  ?INTEGER()           ;  !"4"
+
+fast-mult-op =
+     ?(l,r)
+  ;  !Mult(l,r)
+
+fast-allocation-size(|st) =
+     ?symbol
+  ;  <hashtable-get(|symbol)> st
+  ;  ?(type,attrs)
+  ;  <fetch-elem(?Dimension(shape))> attrs
+  ;  <map(fast-dim-size)> shape
+  ;  <foldr(!"1",fast-mult-op)> <id>
+  ;  <fast-mult-op> (<fast-type-size>type,<id>)
+
+fast-fix-no-lower-bound =
+     ?no-lower-bound()
+  ;  !"1"
+
+fast-update-allocation-dim =
+     ?(Range(lb,ub),Range(_,_))
+  ;  !Range(lb,ub)
+
+fast-update-allocation-codim =
+     ?(Range(lb,ub),Range(_,_))
+  ;  !Range(lb,ub)
+
+// Update the symbol table with information from an allocate statement
+fast-update-allocation-symbol(|st) =
+{shape,coshape,attrs
+  :  topdown(try(fast-fix-no-lower-bound))
+  ;  ?Allocation(VarRef(obj),alloc_shape,alloc_coshape)
+  ;  <hashtable-get(|obj)> st
+  ;  ?(type,decl_attrs)
+  ;  <elem> (ALLOCATABLE(),decl_attrs)   // ensure this symbol is allocatable
+  ;  <fetch-elem(?Dimension(decl_shape))> decl_attrs
+  ;  <fetch-elem(?Codimension(decl_coshape))> decl_attrs
+  ;  <zip(fast-update-allocation-dim)>   (alloc_shape,  decl_shape)   =>   shape
+  ;  <zip(fast-update-allocation-codim)> (alloc_coshape,decl_coshape) => coshape
+  ;  <filter( try(?Dimension(_)   ; !Dimension(shape))     )> decl_attrs
+  ;  <filter( try(?Codimension(_) ; !Codimension(coshape)) )> <id>
+  ;  <filter( try(?ALLOCATABLE()  ; !ALLOCATED()) )> <id> => attrs
+  ;  <hashtable-put(|obj,(type,attrs))> st
+}
+
+fast-build-use-stmt =
+     ?module_name
+  ;  !UseStmt(no-label(), no-module-nature(), module_name, [])
+
+fast-build-type-decl(|type,attrs) =
+     ?object_name
+  ;  !TypeDeclarationStmt(  no-label()
+                          , type
+                          , attrs
+                          , [Var(object_name,type,no-init())]
+                         )
+
+fast-build-block(|decls,execs) =
+     !Block(no-label()
+          , no-name()
+          , Scope(decls,execs,[])
+          , EndBlockStmt(no-label(),no-name()))
+
+// Allocate memory on OpenCL device via call to createBuffer()
+opencl-build-create-buffer(|st,device) =
+     ?obj
+  ;  <fast-allocation-size(|st)> obj
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
+       , AssignmentStmt(no-label(),<cl-wrap-name> obj
+          , FunctionReference("createBuffer"
+             , [device,"CL_MEM_READ_WRITE",VarRef("cl_size__")
+               ,"C_NULL_PTR"]))
+      ]
+
+// Deallocate memory on OpenCL device via call to releaseMemObject()
+opencl-build-release-buffer(|st,device) =
+    !AssignmentStmt(no-label(),VarDef("cl_status__")
+          , FunctionReference("releaseMemObject", [<cl-wrap-var> <id>]))
+
+// Create an OpenCL kernel object via call to createKernel
+//TODO - check selector against device to ensure they refer to same image
+opencl-build-create-kernel(|ct,device) =
+     ?obj
+  ;  <hashtable-get(|obj)> ct
+  ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
+  ;  !AssignmentStmt(no-label(),kernel
+         , FunctionReference("createKernel",[<cl-wrap-name>device,<write-to-string>obj]))
+  ;  ![<id>]
+ <+  ![    ]
+
+// Create an OpenCL kernel object via call to createKernel
+//TODO - check selector against device to ensure they refer to same image
+opencl-build-set-kernel-args(|ct,device) =
+{kernel_arg_funcs
+  :  ?(obj,args)
+  ;  <hashtable-get(|obj)> ct
+  ;  ?(kernel,DerivedType("CLKernel",[]),[]) {annotations}
+//  ;  <lookup> ("args", annotations)
+  ;  <map(opencl-build-set-kernel-arg(|ct,kernel))> <add-indices> args  => kernel_arg_funcs
+  ;  <flatten-list> [kernel_arg_funcs]
+ <+  ![]
+}
+
+// Add an argument to an OpenCL kernel object via call to setKernelArg
+//
+// TODO-FIXME: need to check procedure interface for argument type if arg is an expression
+opencl-build-set-kernel-arg(|ct,kernel) =
+     ?(index, VarRef(arg))                                    // scalar variables
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("setKernelArg"
+              ,[kernel,<subti>(index,1),arg]))
+ <+  ?(index, PartRef(arg,_,selector))                        // array variables
+  ;  <opencl-kernel-arg-type(|ct)> <hashtable-get(|arg)> ct
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("setKernelArg"
+              ,[kernel,<subti>(index,1),<id>]))
+ <+  ?(index, expr)                                            // assume int scalar
+  ;  !AssignmentStmt(no-label(),VarDef("focl_intvar__"), expr)
+  ;  <concat> [[<id>],
+               [AssignmentStmt(no-label(),VarDef("cl_status__")
+                   , FunctionReference("setKernelArg"
+                       ,[kernel,<subti>(index,1),VarRef("focl_intvar__")]))] ]
+
+opencl-kernel-arg-type(|ct) =
+     ?(cl_symbol, DerivedType("CLBuffer",_),_)
+  ;  !clMemObject(cl_symbol)
+
+
+// Utility strategies
+// ------------------
+
+cl-wrap-name =
+     is-string
+  ;  <conc-strings>("cl_", <id>, "_")
+ <+  ?VarRef(name)
+  ;  debug(!"CL_WRAP_NAME: ERROR isVarRef ------------------------------------------------")
+  ;  <conc-strings>("cl_", name, "_")
+
+cl-wrap-var =
+     ?VarRef(name)
+  ;  <conc-strings>("cl_", name, "_")
+ <+  ?VarDef(name)
+  ;  <conc-strings>("cl_", name, "_")
+ <+  is-string
+  ;  debug(!"CL_WRAP_VAR: ERROR is-string ------------------------------------------------")
+  ;  <conc-strings>("cl_", <id>, "_")
+
+ofp-ident
+  :  Var(ident,_,_) -> ident
+
+// add CAF symbols to caf symbol table
+//
+ocr-add-caf-symbol(|ct) =
+     ? Var(name,ArrayType(type,dims,  []  ),init)    /* not a coarray so don't add symbol */
+ <+  ? Var(name,ArrayType(type,dims,codims),init)
+  ;  <hashtable-put(|name, (name,ArrayType(type,dims,codims)))> ct
+  ;  ! Var(name,ArrayType(type,dims,codims),init)
+
+// Add a symbol to the symbol table
+st-add-symbol(|st,type,attrs) =
+     ?var
+  ;  <hashtable-put(|<ofp-ident>var,(type,attrs))> st
+
+// Add a symbol to the OCAF symbol table
+ct-add-symbol(|ct,type,attrs) =
+     ?symbol
+  ;  <hashtable-put(|symbol,(<cl-wrap-name>symbol,type,attrs))> ct
+
+ct-add-type-decl(|ct) =
+     ?ident
+  ;  <hashtable-get(|ident)> ct
+  ;  ?(clident,type,attrs)
+  ;  <fast-build-type-decl(|type,attrs)> clident
+
+
+// Build symbol table
+// ------------------
+
+// Add declared variables to symbol table
+fast-get-symbols(|st) =
+     ?TypeDeclarationStmt(label,type,attrs,vars)
+  ;  <map(st-add-symbol(|st,type,attrs))> vars
+  ;  !TypeDeclarationStmt(label,type,attrs,vars)
+
+// Update symbol table with information from allocate statements
+fast-get-symbols(|st) =
+     ?AllocateStmt(label,type,alloc_list,options)
+  ;  <map(fast-update-allocation-symbol(|st))> alloc_list
+  ;  !AllocateStmt(label,type,alloc_list,options)
+
+
+// Get symbols specifically relevant to OCAF
+// -----------------------------------------
+
+//
+//
+ocr-get-symbols(|st,ct) =
+     ?TypeDeclarationStmt(label,type,attrs,vars)
+  ;  <map(ocr-add-caf-symbol(|ct))> vars
+  ;  !TypeDeclarationStmt(label,type,attrs,vars)
+
+//ocr-get-symbols(|st,ct) =
+//     ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
+//  ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
+//         <map(fast-allocation-object)> alloc_list
+//  ;  <map(fast-update-allocation-symbol(|st))> alloc_list
+//  ;  !CoAllocateStmt(label,type,alloc_list,options,image,eos)
+
+// Mark CallStmts having an ImageExecutionSelector (ImageExecStmt)
+//ocr-get-symbols(|st,ct) =
+//     ?ImageExecStmt(label,name,args,image,eos)
+//  ;  <ocr-get-stmt-symbol(|st,ct)> <id>
+//  ;  !ImageExecStmt(label,name,args,image,eos)
+
+// Mark DO CONCURRENT loops having an ImageExecutionSelector
+ocr-get-symbols(|st,ct) =
+     ?BlockDoConstruct(begin,stmts,end)
+//  ;  !begin
+//  ;  ?NonlabelDoStmt(_,_,ConcurrentExecControl(_,image))
+//  ;  <map(ocr-get-stmt-symbol(|st,ct))> stmts
+//  ;  !BlockDoConstruct(begin,stmts,end) {[("ImageExecutionSelector",<ocr-subimage>image)]}
+
+// Unmark DO CONCURRENT loop (assumes no embedded do loops)
+//ocr-get-symbols(|st,ct) =
+//     ?EndDoStmt(label,name)
+//  ;  <hashtable-get(|"ocaf_do_concurrent_tmp_")> ct
+//  ;  <hashtable-remove(|"ocaf_do_concurrent_tmp_")> ct
+//  ;  !EndDoStmt(label,name)
+
+// Add CONCURRENT subroutine names to OCAF symbols
+ocr-get-stmt-symbol(|st,ct) =
+     ?CallStmt(label, name, args)
+  ;  <hashtable-put(|name,(<cl-wrap-name>name
+            , DerivedType("CLKernel",[])
+            , []){[("args",args)]})> ct
+  ;  !CallStmt(label, name, args)
+
+// Add ImageExecStmt subroutine name to OCAF symbols
+//ocr-get-stmt-symbol(|st,ct) =
+//     ?ImageExecStmt(label,name,args,image,eos)
+//  ;  <hashtable-put(|name,(<cl-wrap-name>name
+//            , DerivedType("CLKernel",[])
+//            , []){[("args",args)]})> ct
+//  ;  !ImageExecStmt(label,name,args,image,eos)
+
+//ocr-subimage =
+//     ?ImageExecutionSelector([VarRef(device)])
+//  ;  !device
+
+
+// Add ForOpenCL calls to the AST
+// ------------------------------
+
+// Replace get_subimage call with ForOpenCl counterpart
+//  - also create kernel calls here
+//     - TODO: fix for multiple devices
+ocr-add-calls(|st,ct) =
+     ?AssignmentStmt(label,VarDef(lhs),PartRef("get_subimage",[arg],_))
+  ;  <flatten-list> <map(opencl-build-create-kernel(|ct,lhs))> <hashtable-keys> ct
+  ;  <concat> [[AssignmentStmt(label,VarDef(lhs),FunctionReference("get_subimage",
+                                      [arg,<cl-wrap-name>lhs]))], <id>]
+
+// Replace coallocate statement with function call to alloc memory on device
+//ocr-add-calls(|st,ct) =
+//{device
+//  :  ?CoAllocateStmt(label,type,alloc_list,options,image,eos)
+//  ;  <cl-wrap-name> <ocr-subimage> image => device
+//  ;  <map(ct-add-symbol(|ct,DerivedType("CLBuffer",[]),[]))>
+//         <map(fast-allocation-object)> alloc_list
+//  ;  <map(fast-allocation-object)> alloc_list
+//  ;  <map(opencl-build-create-buffer(|st,device))> <id>
+//}
+
+// Replace assignment statements with memory transfer with read/writeBuffer
+ocr-add-calls(|st,ct) =
+     ?AssignmentStmt(label,PartRef(var,no-section-subscripts(),[VarRef(device)]),VarRef(obj))
+  ;  <fast-allocation-size(|st)> var
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
+       , AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("writeBuffer"
+            ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]))
+      ]
+ <+  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]))
+  ;  <fast-allocation-size(|st)> obj
+  ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
+       , AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("readBuffer"
+            ,[<cl-wrap-name>obj,<conc-strings>("C_LOC(",var,")"),VarRef("cl_size__")]))
+      ]
+
+
+// Build AssignmentStmt calculating global offset from a ForallHeader triplet
+// TODO - incorporate step information
+opencl-build-calc-global-offset =
+     ?(index, ForallTripletSpec(var,lb,ub,step))
+  ;  !AssignmentStmt(no-label(),PartRef("cl_gwo__",[index],no-image-selector())
+         , Minus(lb,1))
+
+// Build AssignmentStmt calculating global offset from an arg list
+// TODO - this may not be urgent as OpenCL standard may only allow 0 offset for now
+opencl-build-calc-global-offset-of-args(|st) =
+     ?args
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gwo__")
+        , ArrayConstructor(AcSpec(no-type-spec(),[IntVal("0"), IntVal("0"), IntVal("0")])))
+
+// Build AssignmentStmt calculating global size from a ForallHeader triplet
+// TODO - incorporate step information
+opencl-build-calc-global-size =
+     ?(index, ForallTripletSpec(var,lb,ub,step))
+  ;  <fast-dim-size> Range(lb,ub)
+  ;  !AssignmentStmt(no-label(),PartRef("cl_gws__",[index],no-image-selector()),<id>)
+
+// Build AssignmentStmts calculating global size from an arg list
+opencl-build-calc-global-size-of-args(|st) =
+     ?args
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gws__")
+        , ArrayConstructor(AcSpec(no-type-spec(),[IntVal("1"), IntVal("1"), IntVal("1")])))
+  ;  <concat> [[<id>], <map(opencl-build-calc-global-size-of-arg(|st))> args]
+
+// Build AssignmentStmt calculating global size from an arg
+opencl-build-calc-global-size-of-arg(|st) =
+     ?arg
+  ;  <opencl-arg-shape(|st)> arg
+  ;  !AssignmentStmt(no-label(),VarDef("cl_gws__")
+        , FunctionReference("focl_global_size"
+            ,[<opencl-arg-rank(|st)>arg, "cl_lws__", "cl_gws__"
+               , ArrayConstructor(AcSpec(no-type-spec(),<id>))]))
+
+// Replace subroutine call with running the corresponding OpenCL kernel
+opencl-replace-call-stmt(|ct,bounds) =
+     ?CallStmt(label, name, args)
+  ;  <cl-wrap-name>name
+  ;  <flatten-list>  <opencl-build-set-kernel-args(|ct,"unknown-device")> (name,args)
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
+               , FunctionReference("run",[<cl-wrap-name>name
+                  , <length>bounds, VarRef("cl_gwo__"), VarRef("cl_gws__"), VarRef("cl_lws__")]))
+
+// Build the OpenCL kernel finish call
+opencl-build-finish-kernel =
+     ?name
+  ;  !AssignmentStmt(no-label(),VarDef("cl_status__")
+         , FunctionReference("clFinish",[<conc-strings>(<cl-wrap-name>name, "%commands")]))
+
+// Return the name of the call statement
+fast-call-stmt-name =
+     ?CallStmt(label, name, args)
+   ; !name
+
+// Lower CAF components to OCAF
+// ----------------------------
+
+// drop symbols that are in the caf symbol table
+//
+remove-caf-decl(|st) =
+     ? Var(name,_,_)
+  ;  <hashtable-get(|name)> st
+  ;  ! [ ]
+ <+ id
+
+// remove coarray variables
+//
+caf-lower-ast(|st) =
+     ? TypeDeclarationStmt(label,type,attrs,vars)
+  ;  ! TypeDeclarationStmt(label,type,attrs,<flatten-list><map(remove-caf-decl(|st))>vars)
+
+caf-lower-ast =
+     ?SyncAllStmt(label, sync_stat_list)
+  ;  !CallStmt(label, "sync_all", sync_stat_list)
+
+caf-lower-ast =
+     ?SyncImagesStmt(label, image_set, sync_stat_list)
+  ;  !CallStmt(label, "sync_images", <concat>[[image_set],sync_stat_list] )
+
+// Remove codimension from an array type declaration
+//
+caf-lower-ast =
+     ?Codimension(_)
+  ;  ![]
+
+// Remove coshape from an array type declaration
+//
+caf-lower-ast =
+     ? ArrayType(type, [], coshape)
+  ;  ! type
+ <+  ? ArrayType(type, shape, coshape)
+  ;  ! ArrayType(type, shape, [])
+
+caf-lower-ast =
+     ?EntityDecl(name,array_spec,coarray_spec,char_length,init)
+  ;  !EntityDecl(name,array_spec,          [],char_length,init)
+
+caf-lower-ast =
+     ?Allocation(var,shape,coshape)
+  ;  !Allocation(var,shape,     [])
