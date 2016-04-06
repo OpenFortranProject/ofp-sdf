@@ -321,8 +321,9 @@
 
    NamedConstantDef              -- _1 "=" _2,
 
-   #R553 --,
-   SaveStmt                      -- H hs=1[_1 KW["SAVE ::"] H hs=0[_2 _3]],
+   %% R553
+   ppSaveStmt                    -- H hs=1[_1 "SAVE"],
+   SaveStmt                      -- H hs=1[_1 "SAVE ::" H hs=0[_2]],
    SaveStmt.2:iter-sep           -- _1 ", ",
 
    #R554 --,
