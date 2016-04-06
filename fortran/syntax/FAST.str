@@ -76,6 +76,9 @@ signature
     OfpDefinedOp              : String -> OfpDefinedOp
     VarRef                    : Name -> VarRef
     VarDef                    : Name -> VarDef
+    SaveStmt                  : OptLabel * List(SavedEntity) -> SaveStmt
+    CommonBlockName           : CommonBlockName -> SavedEntity
+    SavedEntity               : ObjectName -> SavedEntity
     VolatileStmt              : OptLabel * List(Name) -> VolatileStmt
     ImplicitStmt              : OptLabel * List(ImplicitSpec) -> ImplicitStmt
     OfpAssumedRank            : List(DimSpec) -> OfpAssumedRank
@@ -110,7 +113,7 @@ signature
     CHARACTER                 : CharLength -> IntrinsicType
     CHARACTER                 : IntrinsicType
     CHARACTER_LEN             : CharLength -> IntrinsicType
-    DerivedType               : Name * List(TypeParamSpec) -> DerivedType
+    DerivedType               : Name * ListStarOfTypeParamSpec -> DerivedType
     TypeParamSpec             : Keyword * TypeParamValue -> TypeParamSpec
     unknown-type              : Type
                               : IntrinsicType -> Type
@@ -354,6 +357,7 @@ signature
                               : MpSubprogram -> Decl
                               : BlockDataStmt -> Decl
                               : EndBlockDataStmt -> Decl
+                              : SaveStmt -> Decl
                               : VolatileStmt -> Decl
                               : ImplicitStmt -> Decl
                               : TypeDeclarationStmt -> Decl
@@ -632,6 +636,7 @@ signature
                               : Designator -> Variable
                               : Substring -> Designator
                               : DataRef -> Designator
+                              : Ident -> CommonBlockName
                               : Ident -> NamelistGroupName
     no-letter                 : NoLetter
     LetterSpec                : Letter * NoLetter -> LetterSpec
@@ -669,6 +674,7 @@ signature
     Init                      : ConstantExpr -> Initialization
     no-init                   : OptInitialization
                               : Initialization -> OptInitialization
+                              : Ident -> ObjectName
     VOLATILE                  : AttrSpec
     VALUE                     : AttrSpec
     TARGET                    : AttrSpec
@@ -753,6 +759,8 @@ signature
                               : String -> Letter
                               : String -> LblDef
                               : String -> EOStmt
+    Conc                      : ListStarOfTypeParamSpec * ListPlusOfTypeParamSpec -> ListPlusOfTypeParamSpec
+    Cons                      : TypeParamSpec * ListStarOfTypeParamSpec -> ListPlusOfTypeParamSpec
 
 
 signature

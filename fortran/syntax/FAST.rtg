@@ -229,13 +229,7 @@ regular tree grammar
     ListPlusOfTargetDecl0             -> <conc>(ListPlusOfTargetDecl0,ListStarOfTargetDecl0)
     ListPlusOfTargetDecl0             -> <conc>(ListPlusOfTargetDecl0,ListPlusOfTargetDecl0)
     ListPlusOfTargetDecl0             -> <cons>(TargetDecl,ListStarOfTargetDecl0)
-    ListStarOfSavedEntity0            -> ListPlusOfSavedEntity0
-    ListStarOfSavedEntity0            -> <nil>()
-    ListStarOfSavedEntity0            -> <conc>(ListStarOfSavedEntity0,ListStarOfSavedEntity0)
-    ListPlusOfSavedEntity0            -> <conc>(ListStarOfSavedEntity0,ListPlusOfSavedEntity0)
-    ListPlusOfSavedEntity0            -> <conc>(ListPlusOfSavedEntity0,ListStarOfSavedEntity0)
-    ListPlusOfSavedEntity0            -> <conc>(ListPlusOfSavedEntity0,ListPlusOfSavedEntity0)
-    ListPlusOfSavedEntity0            -> <cons>(SavedEntity,ListStarOfSavedEntity0)
+
     ListStarOfEntityName0             -> ListPlusOfEntityName0
     ListStarOfEntityName0             -> <nil>()
     ListStarOfEntityName0             -> <conc>(ListStarOfEntityName0,ListStarOfEntityName0)
@@ -568,6 +562,14 @@ regular tree grammar
 
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
+
+/* R553 */
+    Decl                              -> SaveStmt
+    SaveStmt                          -> SaveStmt(OptLabel,ListPlusOfSavedEntity)
+
+/* R554 */
+    SavedEntity                       -> CommonBlockName(CommonBlockName)
+    SavedEntity                       -> SavedEntity(ObjectName)
 
     Decl                              -> VolatileStmt
     VolatileStmt                      -> VolatileStmt(OptLabel,ListStarOfName)
@@ -1604,10 +1606,7 @@ regular tree grammar
     TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
     TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
     ProcPointerName                   -> Ident
-    SavedEntity                       -> CommonBlockName(CommonBlockName)
-    SavedEntity                       -> SavedEntity(ObjectName)
-    SaveStmt                          -> SaveStmt(OptLabel,ListStarOfSavedEntity0,EOS)
-    SaveStmt                          -> SaveStmt(OptLabel,ListPlusOfSavedEntity0,EOS)
+
     ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfEntityName0,EOS)
     ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfEntityName0,EOS)
     NoList                            -> no-list()
@@ -2248,10 +2247,18 @@ regular tree grammar
     ListPlusOfNamedConstantDef       -> <conc>(ListPlusOfNamedConstantDef,ListPlusOfNamedConstantDef)
     ListPlusOfNamedConstantDef       -> <cons>(NamedConstantDef,ListStarOfNamedConstantDef)
 
-    ListStarOfTypeParamSpec          -> ListPlusOfTypeParamSpec0
+    ListStarOfTypeParamSpec          -> ListPlusOfTypeParamSpec
     ListStarOfTypeParamSpec          -> <nil>()
     ListStarOfTypeParamSpec          -> <conc>(ListStarOfTypeParamSpec,ListStarOfTypeParamSpec)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListStarOfTypeParamSpec,ListPlusOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec)
-    ListPlusOfTypeParamSpec0          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec0)
-    ListPlusOfTypeParamSpec0          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <conc>(ListStarOfTypeParamSpec,ListPlusOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
+
+    ListStarOfSavedEntity            -> ListPlusOfSavedEntity
+    ListStarOfSavedEntity            -> <nil>()
+    ListStarOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListStarOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListPlusOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListStarOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListPlusOfSavedEntity)
+    ListPlusOfSavedEntity            -> <cons>(SavedEntity,ListStarOfSavedEntity)
