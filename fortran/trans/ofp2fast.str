@@ -390,6 +390,12 @@ ofp-to-ast:  ParameterStmt(label,list,eos(str))     -> ParameterStmt(label,list)
 // Operators...
 // ------------
 
+
+//R553
+ofp-to-ast =
+      ? SaveStmt(label,entities,eos("\n"))       ;  ! SaveStmt(label,entities)
+  <+  ? SaveStmt(label,entities,eos(str))        ;  ! SaveStmt(label,entities) {Comment(str)}
+
 //R559
 ofp-to-ast:  VolatileStmt(label,names,eos("\n")) -> VolatileStmt(label,names)
 ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {Comment(str)}
