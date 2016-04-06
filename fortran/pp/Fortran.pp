@@ -72,7 +72,7 @@
 
    CHARACTER                     -- "CHARACTER",
    CHARACTER                     -- "CHARACTER" "(" _1 ")",
-   CHARACTER                     -- "CHARACTER" "(" _1 "," _2 ")",
+   CHARACTER                     -- "CHARACTER" "(" _1 ",KIND=" _2 ")",
    ppCharNoLen                   -- "CHARACTER" "(" "KIND=" _1 ")",
    no-length-selector            --,
 
@@ -240,6 +240,7 @@
 
    %% R502
    ALLOCATABLE                   -- "ALLOCATABLE",
+   TARGET                        -- "TARGET",
    Intent                        -- "INTENT" "("_1")",
    Dimension                     -- "DIMENSION" "("_1")",
    Dimension.1:iter-sep          -- _1 ",",
@@ -250,6 +251,7 @@
 
    #R503 --,
    ppVar                         -- _1 _2,
+   ppVarLen                      -- _1 "*" _2 _3,
    ppArrayVar                    -- _1 _2 _3,
 
    #R505 --,
