@@ -68,6 +68,8 @@ signature
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
 
+    ppSaveStmt        : OptLabel                                    -> ppSaveStmt          // R553
+
     ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
 
     ppTypeDeclarationStmt : OptLabel * Type * List(EntityDecl)      -> ppTypeDeclarationStmt
@@ -147,6 +149,9 @@ ast-to-pp:    Var(name,type,init)                  -> ppVar(name,init)
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
+ast-to-pp:  SaveStmt(label,[])               -> ppSaveStmt(label)
+
+//R553
 ast-to-pp:  Range(no-lower-bound(), upper)   -> ppRange(upper)
 
 //R560
