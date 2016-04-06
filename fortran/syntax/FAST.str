@@ -109,6 +109,7 @@ signature
     CHARACTER                 : CharLength * Kind -> IntrinsicType
     CHARACTER                 : CharLength -> IntrinsicType
     CHARACTER                 : IntrinsicType
+    CHARACTER_LEN             : CharLength -> IntrinsicType
     DerivedType               : Name * List(TypeParamSpec) -> DerivedType
     TypeParamSpec             : Keyword * TypeParamValue -> TypeParamSpec
     unknown-type              : Type

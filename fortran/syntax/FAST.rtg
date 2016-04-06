@@ -640,6 +640,7 @@ regular tree grammar
     IntrinsicType                     -> CHARACTER(CharLength,Kind)
     IntrinsicType                     -> CHARACTER(CharLength)
     IntrinsicType                     -> CHARACTER()
+    IntrinsicType                     -> CHARACTER_LEN(CharLength)
 
 /* R453 */
     Type                              -> DerivedType
