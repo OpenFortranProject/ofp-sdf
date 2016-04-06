@@ -31,19 +31,20 @@ signature
     ppArrayType    : ListStarOfRange                   -> ppArrayType
     ppArrayType    : ListStarOfRange * ListStarOfRange -> ppArrayType
 
-    ppCoarrayType  : ListStarOfRange -> ppArrayType
+    ppCoarrayType  : ListStarOfRange     -> ppArrayType
 
-    ppArg          : arg              -> ppArg
+    ppArg          : arg                 -> ppArg
 
-    ppVar          : name * init      -> ppVar
-    ppLiteralKind  : val              -> ppLiteralKind
+    ppVar          : name * init         -> ppVar
+    ppVarLen       : name * len * init   -> ppVarLen
+    ppLiteralKind  : val                 -> ppLiteralKind
 
-    ppCharNoLen    : kind             -> ppCharNoLen
+    ppCharNoLen    : kind                -> ppCharNoLen
 
-    ppLetterSpec   : Spec             -> ppLetterSpec
-    ppLetterSpec   : Spec * Spec      -> ppLetterSpec
+    ppLetterSpec   : Spec                -> ppLetterSpec
+    ppLetterSpec   : Spec * Spec         -> ppLetterSpec
 
-    ppTypeSpec     : Spec             -> ppTypeSpec
+    ppTypeSpec     : Spec                -> ppTypeSpec
 
     ppPartRef           : name * ss * is -> ppPartRef
     ppSectionSubscripts : ss             -> ppSectionSubscripts
@@ -139,8 +140,8 @@ ast-to-pp:    Var(name,ArrayType(type,[],codims),init)
 ast-to-pp:    Var(name,ArrayType(type,dims,codims),init)
            -> ppArrayVar(name,ppArrayType(dims,codims),init)
 
-ast-to-pp:    Var(name,type,init)
-           -> ppVar(name,init)
+ast-to-pp:    Var(name,CHARACTER_LEN(len),init)    -> ppVarLen(name,len,init)
+ast-to-pp:    Var(name,type,init)                  -> ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
