@@ -838,7 +838,7 @@ signature
     CommonBlockEntry                : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry
     CommonBlockEntry                : NoName * List(CommonBlockObject) -> CommonBlockEntry1
     CommonBlockEntry                : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry1
-    common-stmt                     : OptLabel * CommonBlockEntry1 * List(CommonBlockEntry) * EOS -> CommonStmt
+    CommonStmt                      : OptLabel * CommonBlockEntry1 * List(CommonBlockEntry) * EOS -> CommonStmt
                                     : Variable -> EquivalenceObject
     equivalence-set-list            : EquivalenceObject * List(EquivalenceObject) -> EquivalenceSet
     EquivalenceStmt                 : OptLabel * List(EquivalenceSet) * EOS -> EquivalenceStmt

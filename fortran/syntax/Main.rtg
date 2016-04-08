@@ -1619,7 +1619,7 @@ regular tree grammar
     CommonBlockEntry                  -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
     CommonBlockEntry1                 -> CommonBlockEntry(NoName,ListPlusOfCommonBlockObject0)
     CommonBlockEntry1                 -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
-    CommonStmt                        -> common-stmt(OptLabel,CommonBlockEntry1,ListStarOfCommonBlockEntry0,EOS)
+    CommonStmt                        -> CommonStmt(OptLabel,CommonBlockEntry1,ListStarOfCommonBlockEntry0,EOS)
     EquivalenceObject                 -> Variable
     EquivalenceSet                    -> equivalence-set-list(EquivalenceObject,ListPlusOfEquivalenceObject0)
     EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet0,EOS)

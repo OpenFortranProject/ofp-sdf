@@ -1651,7 +1651,7 @@ context-free syntax
 %%Substring        %% Ambiguous - included in variable
 
 %%R568
-  OptLabel 'COMMON' CommonBlockEntry1 CommonBlockEntry*  EOS -> CommonStmt  {cons("common-stmt")}
+  OptLabel 'COMMON' CommonBlockEntry1 CommonBlockEntry*  EOS -> CommonStmt  {cons("CommonStmt")}
 
    '/' OptCommonBlockName '/' {CommonBlockObject ','}+       -> CommonBlockEntry1    {cons("CommonBlockEntry")}
                    NoName     {CommonBlockObject ','}+       -> CommonBlockEntry1    {cons("CommonBlockEntry")}
