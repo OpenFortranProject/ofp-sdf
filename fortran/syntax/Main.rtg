@@ -1751,7 +1751,7 @@ regular tree grammar
     LanguageBindingSpec               -> LanguageBinding(OptLanguageBindingName)
     AccessSpec                        -> PRIVATE()
     AccessSpec                        -> PUBLIC()
-    NullInit                          -> NullInit(FunctionReference)
+    NullInit                          -> FunctionReference
     Initialization                    -> PointerInit(InitialDataTarget)
     Initialization                    -> PointerInit(NullInit)
     Initialization                    -> Init(ConstantExpr)

@@ -953,7 +953,7 @@ signature
     LanguageBinding                 : OptLanguageBindingName -> LanguageBindingSpec
     PRIVATE                         : AccessSpec
     PUBLIC                          : AccessSpec
-    NullInit                        : FunctionReference -> NullInit
+                                    : FunctionReference -> NullInit
     PointerInit                     : InitialDataTarget -> Initialization
     PointerInit                     : NullInit -> Initialization
     Init                            : ConstantExpr -> Initialization

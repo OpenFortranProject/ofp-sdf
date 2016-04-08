@@ -1333,7 +1333,7 @@ context-free syntax
   '=>'  InitialDataTarget                               -> Initialization  {cons("PointerInit")}
 
 %%R506
-  FunctionReference                                     -> NullInit        {cons("NullInit")}
+  FunctionReference                                     -> NullInit
 
 
 %% 5.3 Attributes
