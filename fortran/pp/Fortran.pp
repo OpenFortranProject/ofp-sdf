@@ -371,12 +371,13 @@
    EquivalenceSet                -- "("_1")",
    EquivalenceSet.1:iter-sep     -- _1 ", ",
 
-   #R568 --,
-   CommonStmt                    -- H hs=1[_1 KW["COMMON"] H hs=0[ _2 _3]],
-   CommonBlockEntry              -- _1 _2,
-   CommonBlockName               -- "/"_1"/",
+   %% 568
+   CommonStmt                    -- H hs=1[_1 "COMMON" H hs=0[ _2]],
+   CommonBlockEntry              -- _1 " " _2,
+   CommonBlockEntry.2:iter-sep   -- _1 ", ",
+   CommonBlockName               -- "/" _1 "/",
 
-   #R569 --,
+   %% R569
    CommonBlockObject             -- _1 _2,
 
    #R611 --,
