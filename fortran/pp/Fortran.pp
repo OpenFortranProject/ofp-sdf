@@ -254,9 +254,10 @@
    ppVarLen                      -- _1 "*" _2 _3,
    ppArrayVar                    -- _1 _2 _3,
 
-   #R505 --,
-   Initialization                -- KW[" = "] _1,
-   Init                          -- KW[" = "] _1,
+   %% R505
+   Initialization                -- " = " _1,
+   Init                          -- " = " _1,
+   PointerInit                   -- " => " _1,
    no-init                       -- ,
 
    #R507 --,
