@@ -382,6 +382,11 @@ ofp-to-ast =
 ofp-to-ast:  AsynchronousStmt(label,list,eos("\n")) -> AsynchronousStmt(label,list)
 ofp-to-ast:  AsynchronousStmt(label,list,eos(str))  -> AsynchronousStmt(label,list) {Comment(str)}
 
+//R529
+ofp-to-ast =
+      ? BindStmt(label,lang,entities,eos("\n"))     ;  ! BindStmt(label,lang,entities)
+  <+  ? BindStmt(label,lang,entities,eos(str))      ;  ! BindStmt(label,lang,entities) {Comment(str)}
+
 //R548
 ofp-to-ast:  ParameterStmt(label,list,eos("\n"))    -> ParameterStmt(label,list)
 ofp-to-ast:  ParameterStmt(label,list,eos(str))     -> ParameterStmt(label,list)    {Comment(str)}
