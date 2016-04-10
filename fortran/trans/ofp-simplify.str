@@ -18,7 +18,6 @@ signature
 
 //------------------------------------------------------------------------------
 
-   CommonStmt        : A * B * C -> D
    InitialSpecPart   : A -> B
    SpecificationPart : A -> B
    
@@ -87,8 +86,6 @@ ofp-simplify-ast:  opt-component-array-spec(spec) -> spec
 ofp-simplify-ast:  equals-expr(expr)              -> expr
 
 //R503
-ofp-simplify-ast:  opt-array-spec(spec)           -> spec
-ofp-simplify-ast:  opt-coarray-spec(spec)         -> spec
 ofp-simplify-ast:  opt-char-length(length)        -> length
 
 //R511
@@ -101,10 +98,6 @@ ofp-simplify-ast:  name-list-entry-list-tail(head,tail)     -> <conc>(head,[tail
 
 //R566
 ofp-simplify-ast:  equivalence-set-list(head, tail)         -> EquivalenceSet(<concat>[[head], tail])
-
-//R568
-ofp-simplify-ast:
-  common-stmt(label,entry,list,eos)               -> CommonStmt(label, <concat>[[entry], list], eos)
 
 //R611
 ofp-simplify-ast:  DataRef([str])                 -> str
