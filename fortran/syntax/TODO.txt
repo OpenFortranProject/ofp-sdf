@@ -1,0 +1,16 @@
+2014.9.7
+
+Check these things
+- R418 and R419 (rule-test)
+- R420
+  - try and rewrite for KIND,LEN order
+  - add NoTypeParamValue for last rule
+- R463
+  - remove cons?
+- R522
+  - need AssumedOrImpliedShape?
+- R615
+- R309
+  - get rid of PowerOp, ...?
+- R713
+  - get rid of RelOp, ...?
