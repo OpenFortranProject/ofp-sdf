@@ -76,9 +76,12 @@ signature
     OfpDefinedOp              : String -> OfpDefinedOp
     VarRef                    : Name -> VarRef
     VarDef                    : Name -> VarDef
+    BindStmt                  : OptLabel * LanguageBinding * List(BindEntity) -> BindStmt
+    BindEntity                : Name -> BindEntity
+    CommonBlockName           : Name -> BindEntity
     SaveStmt                  : OptLabel * List(SavedEntity) -> SaveStmt
-    CommonBlockName           : Name -> SavedEntity
     SavedEntity               : Name -> SavedEntity
+    CommonBlockName           : Name -> SavedEntity
     VolatileStmt              : OptLabel * List(Name) -> VolatileStmt
     ImplicitStmt              : OptLabel * List(ImplicitSpec) -> ImplicitStmt
     CommonStmt                : OptLabel * List(CommonBlockEntry) -> CommonStmt
@@ -207,8 +210,15 @@ signature
     no-procedure-name         : NoProcedureName
     STAR                      : DummyArg
                               : DummyArgName -> DummyArg
+    no-result-name            : NoResultName
+                              : Ident -> ResultName
     no-suffix                 : OptSuffix
+                              : Suffix -> OptSuffix
+    Suffix                    : ResultName * ProcLanguageBindingSpec -> Suffix
+    Suffix                    : ProcLanguageBindingSpec * ResultName -> Suffix
+    Suffix                    : ProcLanguageBindingSpec * NoResultName -> Suffix
                               : Ident -> DummyArgName
+                              : LanguageBinding -> ProcLanguageBindingSpec
     RECURSIVE                 : PrefixSpec
     PURE                      : PrefixSpec
     MODULE                    : PrefixSpec
@@ -360,6 +370,7 @@ signature
                               : MpSubprogram -> Decl
                               : BlockDataStmt -> Decl
                               : EndBlockDataStmt -> Decl
+                              : BindStmt -> Decl
                               : SaveStmt -> Decl
                               : VolatileStmt -> Decl
                               : ImplicitStmt -> Decl
@@ -473,6 +484,7 @@ signature
     POINTER                   : ProcAttrSpec
     OPTIONAL                  : ProcAttrSpec
     INTENT                    : IntentSpec -> ProcAttrSpec
+                              : ProcLanguageBindingSpec -> ProcAttrSpec
                               : AccessSpec -> ProcAttrSpec
     UseDefinedOperator_DBO    : DefinedBinaryOp -> UseDefinedOperator
     UseDefinedOperator_DUO    : DefinedUnaryOp -> UseDefinedOperator
@@ -688,6 +700,7 @@ signature
     POINTER                   : AttrSpec
     PARAMETER                 : AttrSpec
     OPTIONAL                  : AttrSpec
+                              : LanguageBinding -> AttrSpec
     INTRINSIC                 : AttrSpec
     Intent                    : IntentSpec -> AttrSpec
     EXTERNAL                  : AttrSpec

@@ -274,13 +274,6 @@ regular tree grammar
     ListPlusOfCodimensionDecl0        -> <conc>(ListPlusOfCodimensionDecl0,ListStarOfCodimensionDecl0)
     ListPlusOfCodimensionDecl0        -> <conc>(ListPlusOfCodimensionDecl0,ListPlusOfCodimensionDecl0)
     ListPlusOfCodimensionDecl0        -> <cons>(CodimensionDecl,ListStarOfCodimensionDecl0)
-    ListStarOfBindEntity0             -> ListPlusOfBindEntity0
-    ListStarOfBindEntity0             -> <nil>()
-    ListStarOfBindEntity0             -> <conc>(ListStarOfBindEntity0,ListStarOfBindEntity0)
-    ListPlusOfBindEntity0             -> <conc>(ListStarOfBindEntity0,ListPlusOfBindEntity0)
-    ListPlusOfBindEntity0             -> <conc>(ListPlusOfBindEntity0,ListStarOfBindEntity0)
-    ListPlusOfBindEntity0             -> <conc>(ListPlusOfBindEntity0,ListPlusOfBindEntity0)
-    ListPlusOfBindEntity0             -> <cons>(BindEntity,ListStarOfBindEntity0)
 
     ListStarOfAssumedOrImpliedSpec0   -> ListPlusOfAssumedOrImpliedSpec0
     ListStarOfAssumedOrImpliedSpec0   -> <nil>()
@@ -550,13 +543,23 @@ regular tree grammar
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
 
+/* R508 LanguageBinding */
+
+/* R529 */
+    Decl                              -> BindStmt
+    BindStmt                          -> BindStmt(OptLabel,LanguageBinding,ListPlusOfBindEntity)
+
+/* R530 */
+    BindEntity                        -> BindEntity(Name)
+    BindEntity                        -> CommonBlockName(Name)
+
 /* R553 */
     Decl                              -> SaveStmt
     SaveStmt                          -> SaveStmt(OptLabel,ListPlusOfSavedEntity)
 
 /* R554 */
-    SavedEntity                       -> CommonBlockName(Name)
     SavedEntity                       -> SavedEntity(Name)
+    SavedEntity                       -> CommonBlockName(Name)
 
 /* R559 */
     Decl                              -> VolatileStmt
@@ -829,7 +832,7 @@ regular tree grammar
     Suffix                            -> Suffix(ProcLanguageBindingSpec,NoResultName)
     DummyArgName                      -> Ident
     OptProcLanguageBindingSpec        -> ProcLanguageBindingSpec
-    ProcLanguageBindingSpec           -> LanguageBindingSpec
+    ProcLanguageBindingSpec           -> LanguageBinding
 
     PrefixSpec                        -> RECURSIVE()
     PrefixSpec                        -> PURE()
@@ -1645,11 +1648,6 @@ regular tree grammar
     CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
     CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
     CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
-    EntityName                        -> Ident
-    BindEntity                        -> CommonBlockName(CommonBlockName)
-    BindEntity                        -> EntityName
-    BindStmt                          -> BindStmt(OptLabel,LanguageBindingSpec,ListPlusOfBindEntity0,EOS)
-    BindStmt                          -> BindStmt(OptLabel,LanguageBindingSpec,ListPlusOfBindEntity0,EOS)
 
     IntentSpec                        -> INOUT()
     IntentSpec                        -> OUT()
@@ -1706,7 +1704,7 @@ regular tree grammar
     AttrSpec                          -> POINTER()
     AttrSpec                          -> PARAMETER()
     AttrSpec                          -> OPTIONAL()
-    AttrSpec                          -> LanguageBindingSpec
+    AttrSpec                          -> LanguageBinding        /* see R508 */
     AttrSpec                          -> INTRINSIC()
     AttrSpec                          -> Intent(IntentSpec)
     AttrSpec                          -> EXTERNAL()
@@ -2020,6 +2018,15 @@ regular tree grammar
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListStarOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListPlusOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <cons>(ImplicitSpec,ListStarOfImplicitSpec)
+
+/* R530 */
+    ListStarOfBindEntity             -> ListPlusOfBindEntity
+    ListStarOfBindEntity             -> <nil>()
+    ListStarOfBindEntity             -> <conc>(ListStarOfBindEntity,ListStarOfBindEntity)
+    ListPlusOfBindEntity             -> <conc>(ListStarOfBindEntity,ListPlusOfBindEntity)
+    ListPlusOfBindEntity             -> <conc>(ListPlusOfBindEntity,ListStarOfBindEntity)
+    ListPlusOfBindEntity             -> <conc>(ListPlusOfBindEntity,ListPlusOfBindEntity)
+    ListPlusOfBindEntity             -> <cons>(BindEntity,ListStarOfBindEntity)
 
 /* R568 */
     ListStarOfCommonBlockEntry       -> ListPlusOfCommonBlockEntry
