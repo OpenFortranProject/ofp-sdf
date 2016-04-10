@@ -77,10 +77,13 @@ signature
     VarRef                    : Name -> VarRef
     VarDef                    : Name -> VarDef
     SaveStmt                  : OptLabel * List(SavedEntity) -> SaveStmt
-    CommonBlockName           : CommonBlockName -> SavedEntity
-    SavedEntity               : ObjectName -> SavedEntity
+    CommonBlockName           : Name -> SavedEntity
+    SavedEntity               : Name -> SavedEntity
     VolatileStmt              : OptLabel * List(Name) -> VolatileStmt
     ImplicitStmt              : OptLabel * List(ImplicitSpec) -> ImplicitStmt
+    CommonStmt                : OptLabel * List(CommonBlockEntry) -> CommonStmt
+    CommonBlockEntry          : OptName * List(CommonBlockObject) -> CommonBlockEntry
+    CommonBlockObject         : VariableName * OptArraySpec -> CommonBlockObject
     OfpAssumedRank            : List(DimSpec) -> OfpAssumedRank
     OfpImpliedShape           : List(DimSpec) -> OfpImpliedShape
     OfpAssumedSize            : List(DimSpec) -> OfpAssumedSize
@@ -360,6 +363,7 @@ signature
                               : SaveStmt -> Decl
                               : VolatileStmt -> Decl
                               : ImplicitStmt -> Decl
+                              : CommonStmt -> Decl
                               : TypeDeclarationStmt -> Decl
                               : ComponentDefStmt -> Decl
                               : ComponentDecl -> Decl
@@ -633,10 +637,10 @@ signature
                               : Variable -> IntVariable
                               : Variable -> DefaultCharVariable
                               : Variable -> LogicalVariable
+    VarRef                    : Name -> VariableName
                               : Designator -> Variable
                               : Substring -> Designator
                               : DataRef -> Designator
-                              : Ident -> CommonBlockName
                               : Ident -> NamelistGroupName
     no-letter                 : NoLetter
     LetterSpec                : Letter * NoLetter -> LetterSpec
@@ -674,7 +678,8 @@ signature
     Init                      : ConstantExpr -> Initialization
     no-init                   : OptInitialization
                               : Initialization -> OptInitialization
-                              : Ident -> ObjectName
+    no-list                   : OptArraySpec
+    opt-array-spec            : ArraySpec -> OptArraySpec
     VOLATILE                  : AttrSpec
     VALUE                     : AttrSpec
     TARGET                    : AttrSpec

@@ -172,20 +172,7 @@ regular tree grammar
     ListPlusOfPartRef0                -> <conc>(ListPlusOfPartRef0,ListStarOfPartRef0)
     ListPlusOfPartRef0                -> <conc>(ListPlusOfPartRef0,ListPlusOfPartRef0)
     ListPlusOfPartRef0                -> <cons>(PartRef,ListStarOfPartRef0)
-    ListStarOfCommonBlockObject0      -> ListPlusOfCommonBlockObject0
-    ListStarOfCommonBlockObject0      -> <nil>()
-    ListStarOfCommonBlockObject0      -> <conc>(ListStarOfCommonBlockObject0,ListStarOfCommonBlockObject0)
-    ListPlusOfCommonBlockObject0      -> <conc>(ListStarOfCommonBlockObject0,ListPlusOfCommonBlockObject0)
-    ListPlusOfCommonBlockObject0      -> <conc>(ListPlusOfCommonBlockObject0,ListStarOfCommonBlockObject0)
-    ListPlusOfCommonBlockObject0      -> <conc>(ListPlusOfCommonBlockObject0,ListPlusOfCommonBlockObject0)
-    ListPlusOfCommonBlockObject0      -> <cons>(CommonBlockObject,ListStarOfCommonBlockObject0)
-    ListStarOfCommonBlockEntry0       -> ListPlusOfCommonBlockEntry0
-    ListStarOfCommonBlockEntry0       -> <nil>()
-    ListStarOfCommonBlockEntry0       -> <conc>(ListStarOfCommonBlockEntry0,ListStarOfCommonBlockEntry0)
-    ListPlusOfCommonBlockEntry0       -> <conc>(ListStarOfCommonBlockEntry0,ListPlusOfCommonBlockEntry0)
-    ListPlusOfCommonBlockEntry0       -> <conc>(ListPlusOfCommonBlockEntry0,ListStarOfCommonBlockEntry0)
-    ListPlusOfCommonBlockEntry0       -> <conc>(ListPlusOfCommonBlockEntry0,ListPlusOfCommonBlockEntry0)
-    ListPlusOfCommonBlockEntry0       -> <cons>(CommonBlockEntry,ListStarOfCommonBlockEntry0)
+
     ListStarOfEquivalenceObject0      -> ListPlusOfEquivalenceObject0
     ListStarOfEquivalenceObject0      -> <nil>()
     ListStarOfEquivalenceObject0      -> <conc>(ListStarOfEquivalenceObject0,ListStarOfEquivalenceObject0)
@@ -568,14 +555,25 @@ regular tree grammar
     SaveStmt                          -> SaveStmt(OptLabel,ListPlusOfSavedEntity)
 
 /* R554 */
-    SavedEntity                       -> CommonBlockName(CommonBlockName)
-    SavedEntity                       -> SavedEntity(ObjectName)
+    SavedEntity                       -> CommonBlockName(Name)
+    SavedEntity                       -> SavedEntity(Name)
 
+/* R559 */
     Decl                              -> VolatileStmt
     VolatileStmt                      -> VolatileStmt(OptLabel,ListStarOfName)
 
+/* R560 */
     Decl                              -> ImplicitStmt
     ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfImplicitSpec)
+
+/* 568 */
+    Decl                              -> CommonStmt
+    CommonStmt                        -> CommonStmt(OptLabel,ListPlusOfCommonBlockEntry)
+
+    CommonBlockEntry                  -> CommonBlockEntry(OptName,ListPlusOfCommonBlockObject)
+
+/* R569 */
+    CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
 
     Expr                              -> OfpAssumedRank
     Expr                              -> OfpImpliedShape
@@ -1577,15 +1575,7 @@ regular tree grammar
     Variable                          -> Designator
     Designator                        -> Substring
     Designator                        -> DataRef
-    CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
-    CommonBlockName                   -> Ident
-    OptCommonBlockName                -> no-name()
-    OptCommonBlockName                -> CommonBlockName(CommonBlockName)
-    CommonBlockEntry                  -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
-    CommonBlockEntry                  -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
-    CommonBlockEntry1                 -> CommonBlockEntry(NoName,ListPlusOfCommonBlockObject0)
-    CommonBlockEntry1                 -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
-    CommonStmt                        -> common-stmt(OptLabel,CommonBlockEntry1,ListStarOfCommonBlockEntry0,EOS)
+
     EquivalenceObject                 -> Variable
     EquivalenceSet                    -> equivalence-set-list(EquivalenceObject,ListPlusOfEquivalenceObject0)
     EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet0,EOS)
@@ -2015,6 +2005,14 @@ regular tree grammar
     ListPlusOfRange                   -> <conc>(ListPlusOfRange,ListPlusOfRange)
     ListPlusOfRange                   -> <cons>(Range,ListStarOfRange)
 
+    ListStarOfSavedEntity            -> ListPlusOfSavedEntity
+    ListStarOfSavedEntity            -> <nil>()
+    ListStarOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListStarOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListPlusOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListStarOfSavedEntity)
+    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListPlusOfSavedEntity)
+    ListPlusOfSavedEntity            -> <cons>(SavedEntity,ListStarOfSavedEntity)
+
     ListStarOfImplicitSpec            -> ListPlusOfImplicitSpec
     ListStarOfImplicitSpec            -> <nil>()
     ListStarOfImplicitSpec            -> <conc>(ListStarOfImplicitSpec,ListStarOfImplicitSpec)
@@ -2022,6 +2020,23 @@ regular tree grammar
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListStarOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <conc>(ListPlusOfImplicitSpec,ListPlusOfImplicitSpec)
     ListPlusOfImplicitSpec            -> <cons>(ImplicitSpec,ListStarOfImplicitSpec)
+
+/* R568 */
+    ListStarOfCommonBlockEntry       -> ListPlusOfCommonBlockEntry
+    ListStarOfCommonBlockEntry       -> <nil>()
+    ListStarOfCommonBlockEntry       -> <conc>(ListStarOfCommonBlockEntry,ListStarOfCommonBlockEntry)
+    ListPlusOfCommonBlockEntry       -> <conc>(ListStarOfCommonBlockEntry,ListPlusOfCommonBlockEntry)
+    ListPlusOfCommonBlockEntry       -> <conc>(ListPlusOfCommonBlockEntry,ListStarOfCommonBlockEntry)
+    ListPlusOfCommonBlockEntry       -> <conc>(ListPlusOfCommonBlockEntry,ListPlusOfCommonBlockEntry)
+    ListPlusOfCommonBlockEntry       -> <cons>(CommonBlockEntry,ListStarOfCommonBlockEntry)
+
+    ListStarOfCommonBlockObject      -> ListPlusOfCommonBlockObject
+    ListStarOfCommonBlockObject      -> <nil>()
+    ListStarOfCommonBlockObject      -> <conc>(ListStarOfCommonBlockObject,ListStarOfCommonBlockObject)
+    ListPlusOfCommonBlockObject      -> <conc>(ListStarOfCommonBlockObject,ListPlusOfCommonBlockObject)
+    ListPlusOfCommonBlockObject      -> <conc>(ListPlusOfCommonBlockObject,ListStarOfCommonBlockObject)
+    ListPlusOfCommonBlockObject      -> <conc>(ListPlusOfCommonBlockObject,ListPlusOfCommonBlockObject)
+    ListPlusOfCommonBlockObject      -> <cons>(CommonBlockObject,ListStarOfCommonBlockObject)
 
     ListStarOfProcAttrSpec            -> ListPlusOfProcAttrSpec
     ListStarOfProcAttrSpec            -> <nil>()
@@ -2254,11 +2269,3 @@ regular tree grammar
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
-
-    ListStarOfSavedEntity            -> ListPlusOfSavedEntity
-    ListStarOfSavedEntity            -> <nil>()
-    ListStarOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListStarOfSavedEntity)
-    ListPlusOfSavedEntity            -> <conc>(ListStarOfSavedEntity,ListPlusOfSavedEntity)
-    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListStarOfSavedEntity)
-    ListPlusOfSavedEntity            -> <conc>(ListPlusOfSavedEntity,ListPlusOfSavedEntity)
-    ListPlusOfSavedEntity            -> <cons>(SavedEntity,ListStarOfSavedEntity)
