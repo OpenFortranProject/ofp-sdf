@@ -264,8 +264,8 @@
    PRIVATE                       -- KW["PRIVATE"],
    PUBLIC                        -- KW["PUBLIC"],
    
-   #R508 --, 
-   LanguageBinding               -- " BIND(C" _1 ")",
+   %% R508
+   LanguageBinding               -- H hs=0["BIND(C" _1 ")"],
    BindingName                   -- ",NAME=" _1,
    no-language-binding           -- ,
    no-binding-name               -- ,
@@ -295,8 +295,8 @@
    AllocatableStmt               -- H hs=1[_1 "ALLOCATABLE ::" H hs=0[_2]],
    AllocatableStmt.2:iter-sep    -- _1 ", ",
 
-   #R529 --,
-   BindStmt                      -- H hs=1[_1 H hs=0[_2 " :: " _3 _4]],
+   %% R529
+   BindStmt                      -- H hs=1[_1 _2 "::" H hs=0[_3]],
    BindStmt.3:iter-sep           -- _1 ", ",
 
    #R531 --,
@@ -780,10 +780,10 @@
    ParentIdentifier              -- _1 _2,
 
    #R1120 --,
-   BlockData                     -- _1 _2 _3,
+   BlockData                     -- V vs=0 is=2 [_1 _2] _3,
 
-   BlockDataStmt                 -- _1 "BLOCK DATA" _2,
-   EndBlockDataStmt              -- _1 "END BLOCK DATA" _2,
+   BlockDataStmt                 -- H hs=1 [_1 "BLOCK DATA" _2],
+   EndBlockDataStmt              -- H hs=1 [_1 "END BLOCK DATA" _2],
    no-block-data-name            -- ,
 
    #R1201 --,
@@ -865,9 +865,9 @@
    AltReturn                           -- "*" _1,
    no-keyword                          -- ,
 
-   #R1233 --,
+   %% R1233
    Subroutine                          -- V [_1 _2 _3],
-   SubroutineStmt                      -- H [_1 _2 "SUBROUTINE" H hs=0[_3 "("_4")" _5]],
+   SubroutineStmt                      -- H [_1 _2 "SUBROUTINE" H hs=0[_3 "("_4")"] _5],
    SubroutineStmt.4:iter-sep           -- _1 ",",
    EndSubroutineStmt                   -- H hs=0 [H hs=1[_1 "END SUBROUTINE" _2] "\n"],
 
