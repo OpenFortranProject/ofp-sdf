@@ -404,6 +404,13 @@ ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {C
   ofp-to-ast:  ImplicitNoneStmt(label,eos("\n")) -> ImplicitStmt(label,[])
   ofp-to-ast:  ImplicitNoneStmt(label,eos(str) ) -> ImplicitStmt(label,[]) {Comment(str)}
 
+//R568
+ofp-to-ast =
+     ? CommonStmt(label,entry,list,eos("\n"))
+  ;  ! CommonStmt(label,<concat>[[entry],list])
+ <+  ? CommonStmt(label,entry,list,eos(str))
+  ;  ! CommonStmt(label,<concat>[[entry],list])  {Comment(str)}
+
 //R626
 ofp-to-ast =
      ?AllocateStmt(label,type,allocations,opts,eos("\n"))
