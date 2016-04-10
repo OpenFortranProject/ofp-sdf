@@ -76,12 +76,12 @@
    ppCharNoLen                   -- "CHARACTER" "(" "KIND=" _1 ")",
    no-length-selector            --,
 
-   ppArrayType                   -- "("_1")",
-   ppArrayType                   -- "("_1")" "["_2"]",
+   ppArrayType                   -- _1,
+   ppArrayType                   -- _1 _2,
    ppArrayType.1:iter-sep        -- _1 ",",
    ppArrayType.2:iter-sep        -- _1 ",",
 
-   ppCoarrayType                 -- "["_1"]",
+   ppCoarrayType                 -- _1,
    ppCoarrayType.1:iter-sep      -- _1 ",",
 
    ppRange                       -- _1,
@@ -270,8 +270,16 @@
    no-language-binding           -- ,
    no-binding-name               -- ,
    
+   %% R509
+   CoarraySpec                   -- "[" _1 "]",
+   CoarraySpec.1:iter-sep        -- _1 ",",
+
    #R511 --,
    OfpExplicitCoshape            -- _1,
+
+   %% R515
+   ArraySpec                     -- "(" _1 ")",
+   ArraySpec.1:iter-sep          -- _1 ",",
 
    #R519 --,
    OfpAssumedOrDeferredShape     -- _1,
@@ -373,7 +381,8 @@
 
    %% 568
    CommonStmt                    -- H hs=1[_1 "COMMON" H hs=0[ _2]],
-   CommonBlockEntry              -- _1 " " _2,
+   CommonStmt.2:iter-sep         -- _1 ", ",
+   CommonBlockEntry              -- "/" _1 "/ " _2,
    CommonBlockEntry.2:iter-sep   -- _1 ", ",
    CommonBlockName               -- "/" _1 "/",
 
