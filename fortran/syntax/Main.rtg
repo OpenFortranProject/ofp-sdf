@@ -1614,7 +1614,7 @@ regular tree grammar
     CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
     CommonBlockName                   -> Ident
     OptCommonBlockName                -> no-name()
-    OptCommonBlockName                -> CommonBlockName(CommonBlockName)
+    OptCommonBlockName                -> CommonBlockName
     CommonBlockEntry                  -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
     CommonBlockEntry                  -> CommonBlockEntry(OptCommonBlockName,ListPlusOfCommonBlockObject0)
     CommonBlockEntry1                 -> CommonBlockEntry(NoName,ListPlusOfCommonBlockObject0)
@@ -1761,8 +1761,8 @@ regular tree grammar
     OptArraySpec                      -> no-list()
     OptInitialization                 -> Initialization
     OptCharLength                     -> opt-char-length(CharLength)
-    OptCoarraySpec                    -> opt-coarray-spec(CoarraySpec)
-    OptArraySpec                      -> opt-array-spec(ArraySpec)
+    OptCoarraySpec                    -> CoarraySpec(CoarraySpec)
+    OptArraySpec                      -> ArraySpec(ArraySpec)
     ObjectName                        -> Ident
     EntityDecl                        -> EntityDecl(ObjectName,OptArraySpec,OptCoarraySpec,OptCharLength,OptInitialization)
     AttrSpec                          -> VOLATILE()

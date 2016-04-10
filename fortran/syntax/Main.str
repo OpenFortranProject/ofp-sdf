@@ -834,7 +834,7 @@ signature
     CommonBlockObject               : VariableName * OptArraySpec -> CommonBlockObject
                                     : Ident -> CommonBlockName
     no-name                         : OptCommonBlockName
-    CommonBlockName                 : CommonBlockName -> OptCommonBlockName
+                                    : CommonBlockName -> OptCommonBlockName
     CommonBlockEntry                : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry
     CommonBlockEntry                : NoName * List(CommonBlockObject) -> CommonBlockEntry1
     CommonBlockEntry                : OptCommonBlockName * List(CommonBlockObject) -> CommonBlockEntry1
@@ -962,9 +962,9 @@ signature
     no-char-length                  : OptCharLength
     opt-char-length                 : CharLength -> OptCharLength
     no-list                         : OptCoarraySpec
-    opt-coarray-spec                : CoarraySpec -> OptCoarraySpec
+    CoarraySpec                     : CoarraySpec -> OptCoarraySpec
     no-list                         : OptArraySpec
-    opt-array-spec                  : ArraySpec -> OptArraySpec
+    ArraySpec                       : ArraySpec -> OptArraySpec
                                     : Ident -> ObjectName
     EntityDecl                      : ObjectName * OptArraySpec * OptCoarraySpec * OptCharLength * OptInitialization -> EntityDecl
     VOLATILE                        : AttrSpec

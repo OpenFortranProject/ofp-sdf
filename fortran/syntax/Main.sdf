@@ -1314,8 +1314,8 @@ context-free syntax
 
   Ident                                                 -> ObjectName
 
-  '(' ArraySpec   ')'                                   -> OptArraySpec      {cons("opt-array-spec")}
-  '[' CoarraySpec ']'                                   -> OptCoarraySpec    {cons("opt-coarray-spec")}
+  '(' ArraySpec   ')'                                   -> OptArraySpec      {cons("ArraySpec")}
+  '[' CoarraySpec ']'                                   -> OptCoarraySpec    {cons("CoarraySpec")}
   '*' CharLength                                        -> OptCharLength     {cons("opt-char-length")}
   Initialization                                        -> OptInitialization
 
@@ -1660,7 +1660,7 @@ context-free syntax
        '/' OptCommonBlockName '/' {CommonBlockObject ','}+   -> CommonBlockEntry     {cons("CommonBlockEntry")}
 
   %% NOTE - keep this constructor for printing '/' '/'
-  CommonBlockName                                            -> OptCommonBlockName   {cons("CommonBlockName")}
+  CommonBlockName                                            -> OptCommonBlockName
   % empty %                                                  -> OptCommonBlockName   {cons("no-name")}
   Ident                                                      -> CommonBlockName
 
