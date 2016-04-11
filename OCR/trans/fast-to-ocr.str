@@ -46,6 +46,19 @@ signature
 
   clMemObject : symbol -> clMemObject
 
+  Header    : scope -> Header
+  OcrDefine : Name * Type * Value -> OcrDefine
+  OcrDecl   : Name * Type * Value -> OcrDecl
+  OcrSizeOf : Name * Type -> OcrSizeOf
+  Struct    : Name * Scope -> Struct
+  int       : int
+  double    : double
+  char      : char
+  int       : val -> int
+  double    : val -> double
+  char      : val ->char
+  SizeOf    : SizeOf
+
 
 strategies //=================START OF STRATEGIES============================
 
@@ -64,6 +77,8 @@ strategies //=================START OF STRATEGIES============================
         ;  bottomup(try(ocr-replace-image-selector(|st,lt)))
         ;  topdown(try(fast-flatten-scope-parts))
         ;  bottomup(try(caf-lower-ast(|lt)))
+        ;  bottomup(try(ocr-c-header))
+        ;  bottomup(try(ocr-clean))
 }
 
 
@@ -540,3 +555,95 @@ caf-lower-ast =
 caf-lower-ast =
      ?Allocation(var,shape,coshape)
   ;  !Allocation(var,shape,     [])
+
+
+
+ocr-c-header : REAL() -> double()
+ocr-c-header : INTEGER() -> int(32)
+ocr-c-header : CHARACTER() -> char()
+ocr-c-header : REAL(_) -> double()
+ocr-c-header : INTEGER(_) -> int(32)
+ocr-c-header : CHARACTER(val) -> char(val)
+ocr-c-header : RealVal(val, _) -> val
+ocr-c-header : IntVal(val, _) -> val
+ocr-c-header : RealVal(val) -> val
+ocr-c-header : IntVal(val) -> val
+
+ocr-c-header =
+     ?TypeDeclarationStmt(optlabel, type, attrspeclist, entitydecllist)
+  ;  !<map(ocr-define)>entitydecllist
+
+ocr-define =
+     ?Var(name, type, value)
+  ;  !OcrDefine(name, type, value)
+
+ocr-c-header =
+     ?FunctionReference(procref, arglist)
+  ;  !SizeOf()
+
+ocr-c-header =
+     ?DataComponentDefStmt(optlabel, decltypespec, attrspeclist, decllist)
+  ;  !<map(ocr-decl)>decllist
+
+ocr-c-header =
+     ?DataComponentDefStmt(optlabel, decltypespec, attrspeclist, decllist)
+  ;  !<map(ocr-decl(|decltypespec))>decllist
+
+ocr-c-header =
+     ?Module(modulestmt, scope, endmodulestmt)
+  ;  !Struct(<ocr-get-name>modulestmt, scope)
+
+ocr-get-name =
+     ?ModuleStmt(_, name)
+  ;  <split-before>(name, "_module")
+  ;  ?(first, second)
+  ;  !first
+
+ocr-c-header =
+     ?Program(list)
+//  ;  !Header(<make-header-start>[],<make-include-list>[],list,<make-header-end>[])
+  ;  !Header(list)
+
+ocr-decl(|num) =
+     ?Var(name, type, value)
+  ;  !OcrDecl(name, type, num)
+
+ocr-c-header =
+     ?Init(expr)
+  ;  !expr
+
+ocr-c-header = 
+     ?DerivedTypeDef(_,_,_,list,_,_)
+  ;  !list
+
+ocr-c-header =
+     ?Scope(decllist, stmtlist, decllist2)
+  ;  !decllist
+
+ocr-clean =
+     ?SaveStmt(_, _)
+  ;  ![]
+
+ocr-clean =
+     ?AccessStmt(optlabel, accessspec, accesidlist)
+  ;  ![]
+
+ocr-clean =
+     ?ImplicitStmt(optlabel, implicitspeclist)
+  ;  ![]
+
+ocr-clean =
+     ?UseOnlyStmt(optlabel, optmodulenature, name, listonly)
+  ;  ![]
+
+ocr-clean =
+     ?OcrDefine(name, type, SizeOf())
+  ;  !OcrSizeOf(name, type)
+
+ocr-clean =
+     ?Struct(name, ocr_statements)
+  ;  !Struct(name, <flatten-list>ocr_statements)
+
+ocr-clean =
+     ?OcrDecl(name, char(_), char(val))
+  ;  !OcrDecl(name, char, val)
