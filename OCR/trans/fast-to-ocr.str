@@ -78,7 +78,7 @@ strategies //=================START OF STRATEGIES============================
         ;  topdown(try(fast-flatten-scope-parts))
         ;  bottomup(try(caf-lower-ast(|lt)))
         ;  bottomup(try(ocr-c-header))
-        ;  bottomup(try(ocr-clean))
+        ;  bottomup(try(ocr-c-header-clean))
 }
 
 
@@ -620,30 +620,30 @@ ocr-c-header =
      ?Scope(decllist, stmtlist, decllist2)
   ;  !decllist
 
-ocr-clean =
+ocr-c-header-clean =
      ?SaveStmt(_, _)
   ;  ![]
 
-ocr-clean =
+ocr-c-header-clean =
      ?AccessStmt(optlabel, accessspec, accesidlist)
   ;  ![]
 
-ocr-clean =
+ocr-c-header-clean =
      ?ImplicitStmt(optlabel, implicitspeclist)
   ;  ![]
 
-ocr-clean =
+ocr-c-header-clean =
      ?UseOnlyStmt(optlabel, optmodulenature, name, listonly)
   ;  ![]
 
-ocr-clean =
+ocr-c-header-clean =
      ?OcrDefine(name, type, SizeOf())
   ;  !OcrSizeOf(name, type)
 
-ocr-clean =
+ocr-c-header-clean =
      ?Struct(name, ocr_statements)
   ;  !Struct(name, <flatten-list>ocr_statements)
 
-ocr-clean =
+ocr-c-header-clean =
      ?OcrDecl(name, char(_), char(val))
   ;  !OcrDecl(name, char, val)
