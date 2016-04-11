@@ -7,7 +7,7 @@
                                     ""
                                     H hs=0["struct " _1 "_mod_t {"] 
                                     _2
-                                    "}"
+                                    "};"
                                     ""
                                     H hs=0["#define _" _1 "_OCR_H"] 
                                     "#endif"
