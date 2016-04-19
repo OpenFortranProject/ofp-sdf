@@ -193,16 +193,16 @@ opencl-kernel-arg-type(|ct) =
 cl-wrap-name =
      is-string
   ;  <conc-strings>("cl_", <id>, "_")
- +>  ?VarRef(name) 
+ <+  ?VarRef(name)
   ;  debug(!"CL_WRAP_NAME: ERROR isVarRef ------------------------------------------------")
   ;  <conc-strings>("cl_", name, "_")
 
 cl-wrap-var =
      ?VarRef(name) 
   ;  <conc-strings>("cl_", name, "_")
- +>  ?VarDef(name) 
+ <+  ?VarDef(name)
   ;  <conc-strings>("cl_", name, "_")
- +>  is-string
+ <+  is-string
   ;  debug(!"CL_WRAP_VAR: ERROR is-string ------------------------------------------------")
   ;  <conc-strings>("cl_", <id>, "_")
 
@@ -430,7 +430,7 @@ cafe-add-ocr(|st,ct) =
          , FunctionReference("writeBuffer"
             ,[<cl-wrap-name>var,<conc-strings>("C_LOC(",obj,")"),VarRef("cl_size__")]))
       ]
- +>  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]))
+ <+  ?AssignmentStmt(label,VarDef(var),PartRef(obj,no-section-subscripts(),[VarRef(device)]))
   ;  <fast-allocation-size(|st)> obj
   ;  ![  AssignmentStmt(no-label(),VarDef("cl_size__"),<id>)
        , AssignmentStmt(no-label(),VarDef("cl_status__")
