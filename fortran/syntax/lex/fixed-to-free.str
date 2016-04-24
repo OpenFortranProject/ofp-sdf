@@ -35,6 +35,8 @@ fixed-disamb =
     ; ! BlankLine(ws, eol)
    <+ ? amb([BlankLine(ws, eol), Stmt(_,_,_,_)])
     ; ! BlankLine(ws, eol)
+   <+ ? amb([Stmt(_,_,_,_), FreeFormComment(ws,ch,str,eol)])
+    ; ! FreeFormComment(ws,ch,str,eol)
 
 // Change comment character to '!'
 //
@@ -105,6 +107,22 @@ is-continued =
 /**
  * Insert continuation character at end of current statement (free format style)
  */
-insert-cont-char : Stmt(begin,char,text,end)         -> Stmt(begin,char,text,eol("&\n"))
-insert-cont-char : LabeledStmt(begin,char,text,end)  -> LabeledStmt(begin,char,text,eol("&\n"))
-insert-cont-char : Continuation(begin,char,text,end) -> Continuation(begin,char,text,eol("&\n"))
+insert-cont-char =
+    ? Stmt(begin,char,text,end)
+  ; ! Stmt(begin,char,<insert-cont-char-in-text>text,end)
+
+insert-cont-char =
+    ? LabeledStmt(begin,char,text,end)
+  ; ! LabeledStmt(begin,char,<insert-cont-char-in-text>text,end)
+
+insert-cont-char =
+    ? Continuation(begin,char,text,end)
+  ; ! Continuation(begin,char,<insert-cont-char-in-text>text,end)
+
+/**
+ * Insert continuation character in text (before comment or at end of text)
+ */
+insert-cont-char-in-text =
+    <string-tokenize(|['!'])> <id>
+  ; (? [txt]; ![txt,"&"] <+ ? [txt,comment]; ![txt,"&!",comment])
+  ; <concat-strings> <id>
