@@ -3,7 +3,10 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : ofp-simplify ofp2fast fast2pp
+all : fixed-to-free ofp-simplify ofp2fast fast2pp
+
+fixed-to-free : fixed-to-free.str
+	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
 
 ofp-simplify : ofp-simplify.str
 	$(ST_PATH)/strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
@@ -47,6 +50,7 @@ cafe : ofp-simplify ofp2fast
 
 clean :
 	rm -f ofp2fast ofp2fast.c
+	rm -f fixed-to-free fixed-to-free.c
 	rm -f ofp-simplify ofp-simplify.c
 	rm -f fast2pp fast2pp.c
 	rm -f *.o *.lo *.dep
