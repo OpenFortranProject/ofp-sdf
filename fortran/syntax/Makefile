@@ -9,6 +9,7 @@ SDF_FILES =  FortranLex.sdf           \
              FortranLexFixed.sdf      \
              FortranLexFree.sdf       \
              FortranFixed.sdf         \
+             FixedForm.sdf            \
              Main.sdf
 
 %.tbl : %
@@ -25,6 +26,18 @@ FAST.rtg :
 
 FAST.str : FAST.rtg
 	$(ST_PATH)/rtg2sig -i FAST.rtg -o FAST.str
+
+FixedForm.rtg : FixedForm.def Fortran.tbl
+	$(ST_PATH)/sdf2rtg -i FixedForm.def -m FixedForm -o FixedForm.rtg
+
+FixedForm.str : FixedForm.rtg
+	$(ST_PATH)/rtg2sig -i FixedForm.rtg -o FixedForm.str
+
+FixedForm.def : FixedForm.sdf
+	$(ST_PATH)/pack-sdf -i $< -o $@
+
+FixedForm.tbl : FixedForm.def
+	$(SDF2_PATH)/sdf2table -i $< -o $@ -m FixedForm
 
 Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
