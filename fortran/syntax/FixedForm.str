@@ -1,0 +1,43 @@
+module FixedForm
+
+signature
+  constructors
+    no-ws           : OptWS
+    ws              : WS -> OptWS
+    stchar          : STARTCHAR -> StartChar
+    prechar         : PRECHAR -> PreChar
+    conchar         : CONTCHAR -> ContChar
+    comchar         : COMMENTCHAR -> CommentChar
+    comchar         : BANGCHAR -> BangChar
+    eol             : EOL -> Eol
+    Continuation    : START * ContChar * CHARS * Eol -> Line
+    LabeledStmt     : LABEL * StartChar * CHARS * Eol -> Line
+    Stmt            : START * StartChar * CHARS * Eol -> Line
+    FreeFormComment : WS * BangChar * CHARS * Eol -> Line
+    Comment         : CommentChar * CHARS * Eol -> Line
+    Preprocess      : PreChar * CHARS * Eol -> Line
+    BlankLine       : OptWS * Eol -> Line
+    File            : List(Line) -> File
+                    : String -> LABEL
+                    : String -> START
+                    : String -> CONTCHAR
+                    : String -> STARTCHAR
+                    : String -> COMMENTCHAR
+                    : String -> PRECHAR
+                    : String -> BANGCHAR
+                    : String -> CHARS
+                    : String -> WS
+                    : String -> EOL
+
+
+signature
+  constructors
+    Some : a -> Option(a)
+    None : Option(a)
+
+
+signature
+  constructors
+    Cons : a * List(a) -> List(a)
+    Nil  : List(a)
+    Conc : List(a) * List(a) -> List(a)
