@@ -119,7 +119,10 @@ signature
     CHARACTER                 : CharLength -> IntrinsicType
     CHARACTER                 : IntrinsicType
     CHARACTER_LEN             : CharLength -> IntrinsicType
-    DerivedType               : Name * ListStarOfTypeParamSpec -> DerivedType
+    DimensionStmt             : OptLabel * List(ArrayNameSpec) -> DimensionStmt
+    ArrayNameSpec             : ArrayName * ArraySpec -> ArrayNameSpec
+                              : Ident -> ArrayName
+    DerivedType               : Name * List(TypeParamSpec) -> DerivedType
     TypeParamSpec             : Keyword * TypeParamValue -> TypeParamSpec
     unknown-type              : Type
                               : IntrinsicType -> Type
@@ -376,6 +379,7 @@ signature
                               : ImplicitStmt -> Decl
                               : CommonStmt -> Decl
                               : TypeDeclarationStmt -> Decl
+                              : DimensionStmt -> Decl
                               : ComponentDefStmt -> Decl
                               : ComponentDecl -> Decl
                               : TypeBoundProcPart -> Decl
@@ -777,8 +781,6 @@ signature
                               : String -> Letter
                               : String -> LblDef
                               : String -> EOStmt
-    Conc                      : ListStarOfTypeParamSpec * ListPlusOfTypeParamSpec -> ListPlusOfTypeParamSpec
-    Cons                      : TypeParamSpec * ListStarOfTypeParamSpec -> ListPlusOfTypeParamSpec
 
 
 signature

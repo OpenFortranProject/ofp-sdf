@@ -239,13 +239,6 @@ regular tree grammar
     ListPlusOfPointerDecl0            -> <conc>(ListPlusOfPointerDecl0,ListPlusOfPointerDecl0)
     ListPlusOfPointerDecl0            -> <cons>(PointerDecl,ListStarOfPointerDecl0)
 
-    ListStarOfArrayNameSpec0          -> ListPlusOfArrayNameSpec0
-    ListStarOfArrayNameSpec0          -> <nil>()
-    ListStarOfArrayNameSpec0          -> <conc>(ListStarOfArrayNameSpec0,ListStarOfArrayNameSpec0)
-    ListPlusOfArrayNameSpec0          -> <conc>(ListStarOfArrayNameSpec0,ListPlusOfArrayNameSpec0)
-    ListPlusOfArrayNameSpec0          -> <conc>(ListPlusOfArrayNameSpec0,ListStarOfArrayNameSpec0)
-    ListPlusOfArrayNameSpec0          -> <conc>(ListPlusOfArrayNameSpec0,ListPlusOfArrayNameSpec0)
-    ListPlusOfArrayNameSpec0          -> <cons>(ArrayNameSpec,ListStarOfArrayNameSpec0)
     ListStarOfDataIDoObject0          -> ListPlusOfDataIDoObject0
     ListStarOfDataIDoObject0          -> <nil>()
     ListStarOfDataIDoObject0          -> <conc>(ListStarOfDataIDoObject0,ListStarOfDataIDoObject0)
@@ -619,9 +612,10 @@ regular tree grammar
 
     Var                               -> Var(Name,Type,OptInitialization)
 
-    OfpAttrSpec                       -> OfpIntent(OfpIntent)
-    OfpAttrSpec                       -> ALLOCATABLE()
+/* DELETE    OfpAttrSpec                       -> OfpIntent(OfpIntent) */
+/* DELETE    OfpAttrSpec                       -> ALLOCATABLE() */
 
+/* R501 */
     Decl                              -> TypeDeclarationStmt
     TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
 
@@ -644,6 +638,14 @@ regular tree grammar
     IntrinsicType                     -> CHARACTER(CharLength)
     IntrinsicType                     -> CHARACTER()
     IntrinsicType                     -> CHARACTER_LEN(CharLength)
+
+/* R545 */
+    Decl                              -> DimensionStmt
+    DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec)
+
+    ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
+    ArrayName                         -> Ident
+
 
 /* R453 */
     Type                              -> DerivedType
@@ -1612,10 +1614,7 @@ regular tree grammar
     OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
-    ArrayName                         -> Ident
-    ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
-    DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
-    DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
+
     ConstantSubobject                 -> Designator
     IntConstantSubobject              -> ConstantSubobject
     DataStmtConstant                  -> StructureConstructor
@@ -2028,6 +2027,15 @@ regular tree grammar
     ListPlusOfBindEntity             -> <conc>(ListPlusOfBindEntity,ListPlusOfBindEntity)
     ListPlusOfBindEntity             -> <cons>(BindEntity,ListStarOfBindEntity)
 
+/* R545 */
+    ListStarOfArrayNameSpec          -> ListPlusOfArrayNameSpec
+    ListStarOfArrayNameSpec          -> <nil>()
+    ListStarOfArrayNameSpec          -> <conc>(ListStarOfArrayNameSpec,ListStarOfArrayNameSpec)
+    ListPlusOfArrayNameSpec          -> <conc>(ListStarOfArrayNameSpec,ListPlusOfArrayNameSpec)
+    ListPlusOfArrayNameSpec          -> <conc>(ListPlusOfArrayNameSpec,ListStarOfArrayNameSpec)
+    ListPlusOfArrayNameSpec          -> <conc>(ListPlusOfArrayNameSpec,ListPlusOfArrayNameSpec)
+    ListPlusOfArrayNameSpec          -> <cons>(ArrayNameSpec,ListStarOfArrayNameSpec)
+
 /* R568 */
     ListStarOfCommonBlockEntry       -> ListPlusOfCommonBlockEntry
     ListStarOfCommonBlockEntry       -> <nil>()
@@ -2273,6 +2281,6 @@ regular tree grammar
     ListStarOfTypeParamSpec          -> <nil>()
     ListStarOfTypeParamSpec          -> <conc>(ListStarOfTypeParamSpec,ListStarOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <conc>(ListStarOfTypeParamSpec,ListPlusOfTypeParamSpec)
-    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListStarOfTypeParamSpec)
-    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec0,ListPlusOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListStarOfTypeParamSpec)
+    ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListPlusOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
