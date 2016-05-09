@@ -327,7 +327,7 @@
 
    %% R545
    DimensionStmt                 -- H hs=0[_1 "DIMENSION :: " _2],
-   ParameterStmt.2:iter-sep      -- _1 ", ",
+   DimensionStmt.2:iter-sep      -- _1 ", ",
 
    ArrayNameSpec                 -- _1 "(" _2 ")",
 
