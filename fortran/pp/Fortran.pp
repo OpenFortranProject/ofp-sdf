@@ -325,6 +325,13 @@
    #R540 --,
    DataStmtValue                 -- _1 KW["*"] _2,
 
+   %% R545
+   DimensionStmt                 -- H hs=0[_1 "DIMENSION :: " _2],
+   ParameterStmt.2:iter-sep      -- _1 ", ",
+
+   ArrayNameSpec                 -- _1 "(" _2 ")",
+
+   %% R548
    ParameterStmt                 -- H hs=0["PARAMETER(" _1 _2 ")"],
    ParameterStmt.2:iter-sep      -- _1 ", ",
 
