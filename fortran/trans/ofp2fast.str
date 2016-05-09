@@ -387,6 +387,11 @@ ofp-to-ast =
       ? BindStmt(label,lang,entities,eos("\n"))     ;  ! BindStmt(label,lang,entities)
   <+  ? BindStmt(label,lang,entities,eos(str))      ;  ! BindStmt(label,lang,entities) {Comment(str)}
 
+//R545
+ofp-to-ast =
+      ? DimensionStmt(label,list,eos("\n"))         ;  ! DimensionStmt(label,list)
+  <+  ? DimensionStmt(label,list,eos(str))          ;  ! DimensionStmt(label,list)  {Comment(str)}
+
 //R548
 ofp-to-ast:  ParameterStmt(label,list,eos("\n"))    -> ParameterStmt(label,list)
 ofp-to-ast:  ParameterStmt(label,list,eos(str))     -> ParameterStmt(label,list)    {Comment(str)}
