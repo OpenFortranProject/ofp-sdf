@@ -15,7 +15,7 @@ SDF_FILES =  FortranLex.sdf           \
 %.tbl : %
 	$(SDF2_PATH)/sdf2table -i $< -o $@
 
-all : Fortran.tbl FAST.str
+all : Fortran.tbl FAST.str FixedForm.tbl
 
 FAST.def : FAST.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
