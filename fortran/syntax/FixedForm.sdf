@@ -34,7 +34,7 @@ exports
 %% start of a non-labeled statement
 
    [\ 0]                        -> STARTCHAR
-  ~[\ 0]                        -> CONTCHAR
+  ~[\ 0\n]                      -> CONTCHAR
 
    "     "                      -> START
 
