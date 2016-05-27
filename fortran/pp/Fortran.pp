@@ -21,10 +21,10 @@
    ImageExecStmt.3:iter-sep      -- _1 ",",
    ImageExecutionSelector        -- " [[" _1 "]]",
 
-   CoAllocateStmt                -- H hs=1[_1 H hs=0[KW["ALLOCATE"] "("_2 _3 _4")" _5 _6]],
+   CoAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3 _4")" _5 _6]],
    CoAllocateStmt.3:iter-sep     -- _1 ",",
    CoAllocateStmt.4:iter-sep     -- _1 ", ",
-   CoDeallocateStmt              -- H hs=0[_1 KW["DEALLOCATE"] "("_2 _3")" _4 _5],
+   CoDeallocateStmt              -- H hs=1 [_1 H hs=0["DEALLOCATE" "("_2 _3")" _4 _5]],
    CoDeallocateStmt.2:iter-sep   -- _1 ",",
 
    clMemObject                   -- "clMemObject(" _1 ")",
@@ -139,7 +139,7 @@
    BIND                          -- "BIND(C)",
 
    #R431 --,
-   TypeParamDefStmt              -- _1 H hs=0 ["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]],
+   TypeParamDefStmt              -- H hs=1 [_1 H hs=0["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]]],
    TypeParamDefStmt.4:iter-sep   -- _1 ", ",
 
    TypeParamDecl                 -- _1 " = " _2,
@@ -169,7 +169,7 @@
    #R445 --,
    TypeBoundProcPart             -- "CONTAINS" _1 _2,
 
-   BindingPrivateStmt            -- _1 "PRIVATE",
+   BindingPrivateStmt            -- H hs=1 [_1 "PRIVATE"],
    no-binding-private-stmt       --,
 
    TypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE" _2 _3 _4]],
@@ -326,13 +326,14 @@
    DataStmtValue                 -- _1 KW["*"] _2,
 
    %% R545
-   DimensionStmt                 -- H hs=0[_1 "DIMENSION :: " _2],
+   DimensionStmt                 -- H hs=1 [_1 H hs=0["DIMENSION :: " _2]],
    DimensionStmt.2:iter-sep      -- _1 ", ",
 
    ArrayNameSpec                 -- _1 "(" _2 ")",
+   ArrayNameSpec.2:iter-sep      -- _1 ",",
 
    %% R548
-   ParameterStmt                 -- H hs=0["PARAMETER(" _1 _2 ")"],
+   ParameterStmt                 -- H hs=1 [_1 H hs=0["PARAMETER(" _2 ")"]],
    ParameterStmt.2:iter-sep      -- _1 ", ",
 
    NamedConstantDef              -- _1 "=" _2,
@@ -346,8 +347,8 @@
    SavedEntity                   -- _1,
    SavedEntity_CBN               -- _1,
 
-   #R556 --,
-   TargetStmt                    -- H hs=1[_1 KW["TARGET ::"] H hs=0[_2 _3]],
+   %% R556
+   TargetStmt                    -- H hs=1 [_1 H hs=0["TARGET :: " _2 _3]],
    TargetStmt.2:iter-sep         -- _1 ", ",
 
    #R557 --,
@@ -355,8 +356,8 @@
    TargetDecl.2:iter-sep         -- _1 ", ",
    TargetDecl.3:iter-sep         -- _1 ", ",
 
-   #R559 --,
-   VolatileStmt                  -- H hs=1[_1 KW["VOLATILE ::"] H hs=0[_2]],
+   %% R559
+   VolatileStmt                  -- H hs=1 [_1 H hs=0["VOLATILE :: " _2]],
    VolatileStmt.2:iter-sep       -- _1 ", ",
 
    #R560 --,
@@ -443,12 +444,12 @@
  ppAllocationCoshape.2:iter-sep  -- _1 ",",
    Triplet                       -- _1 ":" _2 _3,
 
-   #R638 --,
-   NullifyStmt                   -- H hs=1[_1 KW["NULLIFY"] H hs=0["("_2")" _3]],
+   %% R638
+   NullifyStmt                   -- H hs=1 [_1 H hs=0 ["NULLIFY" "("_2")" _3]],
    NullifyStmt.2:iter-sep        -- _1 ", ",
 
-   #R640 --,
-   DeallocateStmt                -- H hs=0[_1 KW["DEALLOCATE"] "("_2 _3")" _4],
+   %% R640
+   DeallocateStmt                -- H hs=1 [_1 H hs=0 ["DEALLOCATE" "("_2 _3")" _4]],
    DeallocateStmt.2:iter-sep     -- _1 ",",
 
    #Operators --,
@@ -480,8 +481,8 @@
    PLUS                          -- "+",
    MINUS                         -- "-",
 
-   #R732 --,
-   AssignmentStmt                -- H [_1 _2 "=" _3],
+   %% R732
+   AssignmentStmt                -- H hs=1[_1 H hs=0[_2          " = "  _3]],
 
    ppPointerAssignmentStmt       -- H hs=1[_1 H hs=0[_2          " => " _3]],
    ppPointerAssignmentStmt       -- H hs=1[_1 H hs=0[_2 "("_3")" " => " _4]],
@@ -588,8 +589,8 @@
    SelectTypeConstruct           -- _1 _2 _3,
    TypeGuardStmtBlock            -- _1 _2,
 
-   #R847 --,
-   SelectTypeStmt              -- H hs=1[H hs=0[_2 _1 KW["SELECT TYPE"]] H hs=0[_3 "("_4")" _5]],
+   %% R847
+   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 "SELECT TYPE"] H hs=0[_3 "("_4")" _5]],
 
    #R848 --,
    ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
@@ -699,7 +700,7 @@
    #R920 --,
    IoImpliedDoControl            -- _1 KW["="] _2 KW[","] _3 KW[","] _4,
 
-   #R922 --,
+   %% R922
    WaitStmt                      -- H hs=1 [_1 "WAIT" H hs=0["("_2")"]],
    WaitStmt.2:iter-sep           -- _1 ", ",
 
