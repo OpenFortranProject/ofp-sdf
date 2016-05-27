@@ -240,7 +240,15 @@
 
    %% R502
    ALLOCATABLE                   -- "ALLOCATABLE",
+   ASYNCHRONOUS                  -- "ASYNCHRONOUS",
+   CONTIGUOUS                    -- "CONTIGUOUS",
+   EXTERNAL                      -- "EXTERNAL",
+   OPTIONAL                      -- "OPTIONAL",
+   PROTECTED                     -- "PROTECTED",
+   SAVE                          -- "SAVE",
    TARGET                        -- "TARGET",
+   VALUE                         -- "VALUE",
+   VOLATILE                      -- "VOLATILE",
    Intent                        -- "INTENT" "("_1")",
    Dimension                     -- "DIMENSION" "("_1")",
    Dimension.1:iter-sep          -- _1 ",",
@@ -260,9 +268,9 @@
    PointerInit                   -- " => " _1,
    no-init                       -- ,
 
-   #R507 --,
-   PRIVATE                       -- KW["PRIVATE"],
-   PUBLIC                        -- KW["PUBLIC"],
+   %% R507
+   PRIVATE                       -- "PRIVATE",
+   PUBLIC                        -- "PUBLIC",
    
    %% R508
    LanguageBinding               -- H hs=0["BIND(C" _1 ")"],
