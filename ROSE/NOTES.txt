@@ -1,0 +1,16 @@
+Create the traversal with the command:
+
+     make check-pp > sage-aterm-traverse.C
+
+The generated grammar file should be in the ROSE build tree at:
+
+    /Users/rasmus/ROSE/build_rose-develop/src/ROSETTA/src/generated_sdf_tree_grammar.rtg
+
+I think I was able to create this file the last time I tried to build ROSE on my Mac Pro.
+Even though the build was not entirely successful (failed on EDG stuff as I recall), 
+apparently it was able to get far enough to create the required grammar file.
+Unfortunately, the latest attempt at building ROSE failed in Boost land (or at lost
+generated lots of Boost errors).
+
+
+
