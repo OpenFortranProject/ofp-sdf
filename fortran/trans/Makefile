@@ -38,6 +38,9 @@ check-ofp : ofp-simplify
 check-pp : ofp-simplify ofp2fast fast2pp
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
 
+check-ftf : fixed-to-free
+	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | ast2text -p ../pp/FreeForm.pp
+
 unparse : ofp-simplify ofp2fast fast2pp
 	@echo "------------"
 	@$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | ast2text -p ../pp/Fortran.pp
