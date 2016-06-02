@@ -3,7 +3,7 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : fixed-to-free ofp-simplify ofp2fast fast2pp
+all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf
 
 fixed-to-free : fixed-to-free.str
 	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
@@ -16,6 +16,9 @@ ofp2fast : ofp2fast.str ofp-simplify ../syntax/FAST.str
 
 fast2pp : fast2pp.str
 	$(ST_PATH)/strc -i fast2pp.str $(CFLAGS) $(LDFLAGS)
+
+strip-final-lf : strip-final-lf.c
+	$(CC) -o strip-final-lf strip-final-lf.c
 
 # OBSOLETE
 no-to-none : no-to-none.str
@@ -38,8 +41,8 @@ check-ofp : ofp-simplify
 check-pp : ofp-simplify ofp2fast fast2pp
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
 
-check-ftf : fixed-to-free
-	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | ast2text -p ../pp/FreeForm.pp
+check-ftf : fixed-to-free strip-final-lf
+	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | ast2text -p ../pp/FreeForm.pp | strip-final-lf
 
 unparse : ofp-simplify ofp2fast fast2pp
 	@echo "------------"
@@ -56,4 +59,5 @@ clean :
 	rm -f fixed-to-free fixed-to-free.c
 	rm -f ofp-simplify ofp-simplify.c
 	rm -f fast2pp fast2pp.c
+	rm -f strip-final-lf
 	rm -f *.o *.lo *.dep
