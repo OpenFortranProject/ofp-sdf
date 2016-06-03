@@ -38,6 +38,13 @@ fixed-disamb =
    <+ ? amb([Stmt(_,_,_,_), FreeFormComment(ws,ch,str,eol)])
     ; ! FreeFormComment(ws,ch,str,eol)
 
+// Change fixed-form directive to free form
+//
+fixed-to-free-form:  Comment(comchar(_), "DEC$ NOFREEFORM", eol("\n"))
+                                                  -> Comment(comchar("!"), "DEC$ FREEFORM", eol("\n"))
+fixed-to-free-form:  Comment(comchar(_), "DIR$ FIXED", eol("\n"))
+                                                  -> Comment(comchar("!"), "DIR$ FREE", eol("\n"))
+
 // Change comment character to '!'
 //
 fixed-to-free-form:  comchar("C")                 -> comchar("!")
@@ -103,6 +110,12 @@ is-continued =
   ; ? Comment(_,_,_)
   ; <is-continued> tail
 
+ /* check for continuation after a comment line */
+ <+ ? [head|tail]
+  ; ! head
+  ; ? FreeFormComment(_,_,_,_)
+  ; <is-continued> tail
+
 
 /**
  * Insert continuation character at end of current statement (free format style)
@@ -124,5 +137,13 @@ insert-cont-char =
  */
 insert-cont-char-in-text =
     <string-tokenize(|['!'])> <id>
-  ; (? [txt]; ![txt,"&"] <+ ? [txt,comment]; ![txt,"&!",comment])
-  ; <concat-strings> <id>
+  ; (? [txt]; ![txt,"&"] <+ ? [head|tail]; ![head,"&",<map(prepend-comment-char)>tail])
+  ; <concat-strings> <flatten-list> <id>
+
+/**
+ * Prepend comment character to string (this takes care of a comment character '!' within a comment)
+ */
+prepend-comment-char =
+     is-string
+  ;  ? str
+  ;  ! <concat-strings> ["!", str]
