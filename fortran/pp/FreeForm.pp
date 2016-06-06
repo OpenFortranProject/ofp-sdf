@@ -21,5 +21,6 @@
    eol                           -- _1,
 
    ws                            -- _1,
-   no-ws                         --
+   no-ws                         --   ,
+   no-char                       --
 ]
