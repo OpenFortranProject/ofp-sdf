@@ -90,6 +90,10 @@ check : $(TBL)
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
+           $(FC) -c -fcoarray=single tmp/$$file -o tmp/$$file.o; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
         done;
 	@for file in *.fxx ; do \
            echo "Running test $$file"; \
