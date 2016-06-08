@@ -29,8 +29,8 @@
 
    clMemObject                   -- "clMemObject(" _1 ")",
 
-   INTRINSIC                     -- "INTRINSIC" " :: ",
-   NON_INTRINSIC                 -- "NON_INTRINSIC" " :: ",
+   INTRINSIC                     -- "INTRINSIC",
+   NON_INTRINSIC                 -- "NON_INTRINSIC",
    PARAMETER                     -- "PARAMETER",
 
    #R201 --,
@@ -759,7 +759,7 @@
    MainProgram                   -- V [_1 _2 _3],
    MainProgram.1:opt             -- ,
 
-   ProgramStmt                   -- H [_1 KW["PROGRAM"] _2],
+   ProgramStmt                   -- H [_1     "PROGRAM" _2],
    EndProgramStmt                -- H [_1 "END PROGRAM" _2],
    no-program-stmt               -- ,
    no-program-name               -- ,
@@ -767,7 +767,7 @@
    #R1104 --,
    Module                        -- V vs=0 [_1 _2 _3],
 
-   ModuleStmt                    -- H hs=1 [_1 KW["MODULE"] _2],
+   ModuleStmt                    -- H hs=1 [_1     "MODULE" _2],
    EndModuleStmt                 -- H hs=1 [_1 "END MODULE" _2],
    no-module-name                -- ,
 
@@ -780,7 +780,7 @@
    OnlyList.1:iter-sep           -- _1 ", ",
 
    #R1110 --,
-   ModuleNature                  -- ", " _1,
+   ModuleNature                  -- ", " _1 " :: ",
    no-module-nature              --,
 
    %% R1111
