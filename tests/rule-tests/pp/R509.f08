@@ -1,6 +1,7 @@
+INTEGER, PARAMETER :: N = 3
 REAL :: A(N)[*], B(N)
 REAL :: W(100,100)[0:2,*]
 REAL, CODIMENSION[*] :: X
-REAL, CODIMENSION[3,*] :: Y(:)
-REAL :: x[3,*]
+REAL, CODIMENSION[3,*] :: Y(4)
+REAL :: xx[3,*]
 END PROGRAM
