@@ -189,7 +189,7 @@
    FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
    %% R453
-   %%TODO-DELETE-DerivedTypeSpec -- _1 _2,
+   DerivedTypeSpec               -- _1 _2,
    ppDerivedType                 -- "TYPE" "("_1            ")",
    DerivedType                   -- "TYPE" "("_1 "(" _2 ")" ")",
    DerivedType.2:iter-sep        -- _1 ",",
@@ -197,7 +197,7 @@
    %% R454
    TypeParamSpec                 -- _1 "=" _2,
 
-   #R455 --,
+   %% R455
    StructureConstructor          -- _1 "("_2")",
 %%   StructureConstructor.2:iter-sep   -- _1 ", ",
 
