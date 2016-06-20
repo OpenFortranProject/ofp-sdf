@@ -3,7 +3,7 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf
+all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf unix-to-dos
 
 fixed-to-free : fixed-to-free.str
 	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
@@ -19,6 +19,9 @@ fast2pp : fast2pp.str
 
 strip-final-lf : strip-final-lf.c
 	$(CC) -o strip-final-lf strip-final-lf.c
+
+unix-to-dos : unix-to-dos.c
+	$(CC) -o unix-to-dos unix-to-dos.c
 
 # OBSOLETE
 no-to-none : no-to-none.str
