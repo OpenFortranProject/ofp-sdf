@@ -661,8 +661,13 @@ regular tree grammar
     Stmt                              -> DerivedTypeStmt
     DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
 
+/* R429 */
     Stmt                              -> EndTypeStmt
     EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
+
+/* R430 */
+    Stmt                              -> SequenceStmt
+    SequenceStmt                      -> SequenceStmt(OptLabel)
 
     TypeAttrSpec                      -> ABSTRACT()
     TypeAttrSpec                      -> AccessSpec

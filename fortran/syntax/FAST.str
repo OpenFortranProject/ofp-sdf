@@ -421,6 +421,7 @@ signature
                              : PointerAssignmentStmt -> Stmt
                              : DerivedTypeStmt -> Stmt
                              : EndTypeStmt -> Stmt
+                             : SequenceStmt -> Stmt
                              : TypeParamDefStmt -> Stmt
                              : DataComponentDefStmt -> Stmt
                              : ProcComponentDefStmt -> Stmt
@@ -721,6 +722,8 @@ signature
     BindingPrivateStmt       : OptLabel * EOS -> BindingPrivateStmt
     LEN                      : TypeParamAttrSpec
     KIND                     : TypeParamAttrSpec
+    SequenceStmt             : OptLabel -> SequenceStmt
+    SequenceStmt             : OptLabel * EOS -> SequenceStmt
                              : Ident -> ParentTypeName
     TRUE                     : LogicalLiteralConstant
     FALSE                    : LogicalLiteralConstant
