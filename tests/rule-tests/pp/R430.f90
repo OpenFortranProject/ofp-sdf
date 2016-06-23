@@ -1,0 +1,4 @@
+TYPE seq_type
+  SEQUENCE
+END TYPE
+END PROGRAM
