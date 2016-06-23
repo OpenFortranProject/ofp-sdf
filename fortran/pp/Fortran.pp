@@ -133,12 +133,15 @@
 
    EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE"] _2],
 
-   #R427 --,
+   %% R427
    ABSTRACT                      -- "ABSTRACT",
    Extends                       -- "EXTENDS" "(" _1 ")",
    BIND                          -- "BIND(C)",
 
-   #R431 --,
+   %% R430
+   SequenceStmt                  -- H hs=1 [_1 H hs=0["SEQUENCE"]],
+
+   %% R431
    TypeParamDefStmt              -- H hs=1 [_1 H hs=0["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]]],
    TypeParamDefStmt.4:iter-sep   -- _1 ", ",
 
@@ -478,7 +481,7 @@
    NEQV                          -- H hs=0[_1 " .NEQV. " _2],
    DefUnaryExpr                  -- H hs=1[_1 _2],
    DefBinExpr                    -- H hs=0[_1 " " _2 " " _3],
-   Power                         -- H hs=1[H hs=0[_1] "**" _2],
+   Power                         -- H hs=0[H hs=0[_1] "**" _2],
    Mult                          -- H hs=0[_1 "*" _2],
    Div                           -- H hs=0[_1 "/" _2],
    Concat                        -- H hs=1[_1 "//" _2],
