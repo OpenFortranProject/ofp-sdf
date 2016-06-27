@@ -2,6 +2,7 @@
 !                 is  access-spec 
 !                 or  ALLOCATABLE
 !                 or  ASYNCHRONOUS
+!                 or  CODIMENSION [ coarray-spec ]
 !                 or  CONTIGUOUS
 !                 or  dimension-spec
 !                 or  EXTERNAL
@@ -24,6 +25,7 @@
 integer, private :: a       
 integer, allocatable :: b   
 integer, asynchronous :: c  
+integer, codimension[*] :: co
 integer, CONTIGUOUS :: cont
 integer, dimension(:) :: d  
 integer, external :: e      

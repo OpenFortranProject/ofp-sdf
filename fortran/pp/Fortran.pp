@@ -29,8 +29,8 @@
 
    clMemObject                   -- "clMemObject(" _1 ")",
 
-   INTRINSIC                     -- "INTRINSIC" " :: ",
-   NON_INTRINSIC                 -- "NON_INTRINSIC" " :: ",
+   INTRINSIC                     -- "INTRINSIC",
+   NON_INTRINSIC                 -- "NON_INTRINSIC",
    PARAMETER                     -- "PARAMETER",
 
    #R201 --,
@@ -133,12 +133,15 @@
 
    EndTypeStmt                   -- H hs=1[_1 H hs=0["END TYPE"] _2],
 
-   #R427 --,
+   %% R427
    ABSTRACT                      -- "ABSTRACT",
    Extends                       -- "EXTENDS" "(" _1 ")",
    BIND                          -- "BIND(C)",
 
-   #R431 --,
+   %% R430
+   SequenceStmt                  -- H hs=1 [_1 H hs=0["SEQUENCE"]],
+
+   %% R431
    TypeParamDefStmt              -- H hs=1 [_1 H hs=0["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]]],
    TypeParamDefStmt.4:iter-sep   -- _1 ", ",
 
@@ -189,7 +192,7 @@
    FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
    %% R453
-   %%TODO-DELETE-DerivedTypeSpec -- _1 _2,
+   DerivedTypeSpec               -- _1 _2,
    ppDerivedType                 -- "TYPE" "("_1            ")",
    DerivedType                   -- "TYPE" "("_1 "(" _2 ")" ")",
    DerivedType.2:iter-sep        -- _1 ",",
@@ -197,7 +200,7 @@
    %% R454
    TypeParamSpec                 -- _1 "=" _2,
 
-   #R455 --,
+   %% R455
    StructureConstructor          -- _1 "("_2")",
 %%   StructureConstructor.2:iter-sep   -- _1 ", ",
 
@@ -478,7 +481,7 @@
    NEQV                          -- H hs=0[_1 " .NEQV. " _2],
    DefUnaryExpr                  -- H hs=1[_1 _2],
    DefBinExpr                    -- H hs=0[_1 " " _2 " " _3],
-   Power                         -- H hs=1[H hs=0[_1] "**" _2],
+   Power                         -- H hs=0[H hs=0[_1] "**" _2],
    Mult                          -- H hs=0[_1 "*" _2],
    Div                           -- H hs=0[_1 "/" _2],
    Concat                        -- H hs=1[_1 "//" _2],
@@ -767,7 +770,7 @@
    MainProgram                   -- V [_1 _2 _3],
    MainProgram.1:opt             -- ,
 
-   ProgramStmt                   -- H [_1 KW["PROGRAM"] _2],
+   ProgramStmt                   -- H [_1     "PROGRAM" _2],
    EndProgramStmt                -- H [_1 "END PROGRAM" _2],
    no-program-stmt               -- ,
    no-program-name               -- ,
@@ -775,7 +778,7 @@
    #R1104 --,
    Module                        -- V vs=0 [_1 _2 _3],
 
-   ModuleStmt                    -- H hs=1 [_1 KW["MODULE"] _2],
+   ModuleStmt                    -- H hs=1 [_1     "MODULE" _2],
    EndModuleStmt                 -- H hs=1 [_1 "END MODULE" _2],
    no-module-name                -- ,
 
@@ -788,7 +791,7 @@
    OnlyList.1:iter-sep           -- _1 ", ",
 
    #R1110 --,
-   ModuleNature                  -- ", " _1,
+   ModuleNature                  -- ", " _1 " :: ",
    no-module-nature              --,
 
    %% R1111

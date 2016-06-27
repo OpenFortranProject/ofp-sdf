@@ -33,10 +33,16 @@ rules //========================START OF RULES===============================
 fixed-disamb =
       ? amb([Stmt(_,_,_,_), BlankLine(ws, eol)])
     ; ! BlankLine(ws, eol)
-   <+ ? amb([BlankLine(ws, eol), Stmt(_,_,_,_)])
-    ; ! BlankLine(ws, eol)
    <+ ? amb([Stmt(_,_,_,_), FreeFormComment(ws,ch,str,eol)])
     ; ! FreeFormComment(ws,ch,str,eol)
+   <+ ? amb([BlankLine(ws, eol), Stmt(_,_,_,_)])
+    ; ! BlankLine(ws, eol)
+   <+ ? amb([BlankLine(ws, eol), Continuation(_,_,_,_)])  /* DOS blank lines with spaces */
+    ; ! BlankLine(ws, eol)
+
+// Change DOS line endings to unix (unparsing doesn't work properly for DOS "\r\n" line endings)
+//
+fixed-to-free-form:  eol("\r\n")                 -> eol("\n")
 
 // Change fixed-form directive to free form
 //

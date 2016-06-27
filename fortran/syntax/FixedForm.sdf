@@ -5,8 +5,9 @@ exports
   sorts
 
     EOL WS DIGIT LETTER CHARS
-    LABEL START STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
-    StartChar ContChar CommentChar BangChar PreChar Eol OptWS
+    LABEL LABELTAB START TABSTART
+    STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
+    StartChar ContChar CommentChar BangChar PreChar NoChar Eol OptWS
     File Line
 
   context-free start-symbols
@@ -16,11 +17,12 @@ exports
   lexical syntax
 
     [\n]                        -> EOL
+    [\r][\n]                    -> EOL
     [\ \t]+                     -> WS
 
     [0-9]                       -> DIGIT
     [a-zA-Z]                    -> LETTER
-   ~[\n]*                       -> CHARS
+   ~[\r\n]*                     -> CHARS
 
 %%  "&"                         -> IGNORE    % predefined sort (maybe) %
                                              % REJECT also a predefined sort %
@@ -28,15 +30,21 @@ exports
 
     "!"                         -> BANGCHAR
     "#"                         -> PRECHAR
+    [\$]                        -> PRECHAR   % WARNING - doesn't work with gfortran as preprocess char %
 
     [cC\!]                      -> COMMENTCHAR
 
 %% start of a non-labeled statement
 
-   [\ 0]                        -> STARTCHAR
-  ~[\ 0\n]                      -> CONTCHAR
+   [\ 0\t]                      -> STARTCHAR
+  ~[\ 0\t\n]                    -> CONTCHAR
 
-   "     "                      -> START
+   [\t]                         -> TABSTART
+   [\ ][\t]                     -> TABSTART
+   [\ ][\ ][\t]                 -> TABSTART
+   [\ ][\ ][\ ][\t]             -> TABSTART
+   [\ ][\ ][\ ][\ ][\t]         -> TABSTART
+   [\ ][\ ][\ ][\ ][\ ]         ->    START
 
 %% labels: max 5 digits with space in 6th pos
 %%
@@ -46,17 +54,31 @@ exports
     [\ ][\ ][\ ][0-9][\ ]       -> LABEL
     [\ ][\ ][\ ][\ ][0-9]       -> LABEL
 
+    [0-9][\ ]* [\t]             -> LABELTAB
+    [\ ][0-9][\t]               -> LABELTAB
+    [\ ][\ ][0-9][\t]           -> LABELTAB
+    [\ ][\ ][\ ][0-9][\t]       -> LABELTAB
+
     [0-9][0-9] [\ ] [\ ] [\ ]   -> LABEL
     [\ ] [0-9][0-9] [\ ] [\ ]   -> LABEL
     [\ ] [\ ] [0-9][0-9] [\ ]   -> LABEL
     [\ ] [\ ] [\ ] [0-9][0-9]   -> LABEL
 
+    [0-9][0-9][\ ]* [\t]        -> LABELTAB
+    [\ ] [0-9][0-9] [\t]        -> LABELTAB
+    [\ ] [\ ] [0-9][0-9] [\t]   -> LABELTAB
+
     [0-9][0-9][0-9] [\ ] [\ ]   -> LABEL
     [\ ] [0-9][0-9][0-9] [\ ]   -> LABEL
     [\ ] [\ ] [0-9][0-9][0-9]   -> LABEL
 
+    [0-9][0-9][0-9][\ ]* [\t]   -> LABELTAB
+    [\ ] [0-9][0-9][0-9] [\t]   -> LABELTAB
+
     [0-9][0-9][0-9][0-9] [\ ]   -> LABEL
     [\ ] [0-9][0-9][0-9][0-9]   -> LABEL
+
+    [0-9][0-9][0-9][0-9] [\t]   -> LABELTAB
 
     [0-9][0-9][0-9][0-9][0-9]   -> LABEL
 
@@ -76,7 +98,11 @@ exports
     WS BangChar     CHARS   Eol -> Line {cons("FreeFormComment")}
 
     START StartChar CHARS   Eol -> Line {cons("Stmt")}
+    TABSTART NoChar CHARS   Eol -> Line {cons("Stmt")}
+
     LABEL StartChar CHARS   Eol -> Line {cons("LabeledStmt")}
+    LABELTAB NoChar CHARS   Eol -> Line {cons("LabeledStmt")}
+
     START  ContChar CHARS   Eol -> Line {cons("Continuation")}
 
     EOL                         -> Eol {cons("eol")}
@@ -87,5 +113,7 @@ exports
     PRECHAR                     -> PreChar     {cons("prechar")}
     STARTCHAR                   -> StartChar   {cons("stchar")}
 
-    WS                          -> OptWS {cons("ws")}
-    % empty %                   -> OptWS {cons("no-ws")}
+    % empty %                   -> NoChar      {cons("no-char")}
+
+    WS                          -> OptWS  {cons("ws")}
+    % empty %                   -> OptWS  {cons("no-ws")}

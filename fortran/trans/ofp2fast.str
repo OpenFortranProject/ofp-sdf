@@ -268,16 +268,21 @@ ofp-to-ast:  TRUE(no-kind())                    -> TRUE()
 ofp-to-ast:  FALSE(no-kind())                   -> FALSE()
 
 //R426
-ofp-to-ast:    DerivedTypeStmt(label,attrs,name,params,eos("\n"))
-            -> DerivedTypeStmt(label,attrs,name,params)
-ofp-to-ast:    DerivedTypeStmt(label,attrs,name,params,eos(str))
-            -> DerivedTypeStmt(label,attrs,name,params) {Comment(str)}
+ofp-to-ast =
+      ? DerivedTypeStmt(label,attrs,name,params,eos("\n"))
+    ; ! DerivedTypeStmt(label,attrs,name,params)
+   <+ ? DerivedTypeStmt(label,attrs,name,params,eos(str))
+    ; ! DerivedTypeStmt(label,attrs,name,params) {Comment(str)}
 
 //R429
-ofp-to-ast:    EndTypeStmt(label,name,eos("\n"))
-            -> EndTypeStmt(label,name)
-ofp-to-ast:    EndTypeStmt(label,name,eos(str))
-            -> EndTypeStmt(label,name) {Comment(str)}
+ofp-to-ast =
+      ? EndTypeStmt(label,name,eos("\n")) ; ! EndTypeStmt(label,name)
+   <+ ? EndTypeStmt(label,name,eos(str))  ; ! EndTypeStmt(label,name) {Comment(str)}
+
+//R430
+ofp-to-ast =
+      ? SequenceStmt(label,eos("\n"))     ;  ! SequenceStmt(label)
+   <+ ? SequenceStmt(label,eos(str))      ;  ! SequenceStmt(label) {Comment(str)}
 
 //R432
 ofp-to-ast:    TypeParamDefStmt(label,kind,attrs,decls,eos("\n"))

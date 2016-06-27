@@ -244,13 +244,6 @@ regular tree grammar
     ListPlusOfDataStmtObject0         -> <conc>(ListPlusOfDataStmtObject0,ListStarOfDataStmtObject0)
     ListPlusOfDataStmtObject0         -> <conc>(ListPlusOfDataStmtObject0,ListPlusOfDataStmtObject0)
     ListPlusOfDataStmtObject0         -> <cons>(DataStmtObject,ListStarOfDataStmtObject0)
-    ListStarOfCodimensionDecl0        -> ListPlusOfCodimensionDecl0
-    ListStarOfCodimensionDecl0        -> <nil>()
-    ListStarOfCodimensionDecl0        -> <conc>(ListStarOfCodimensionDecl0,ListStarOfCodimensionDecl0)
-    ListPlusOfCodimensionDecl0        -> <conc>(ListStarOfCodimensionDecl0,ListPlusOfCodimensionDecl0)
-    ListPlusOfCodimensionDecl0        -> <conc>(ListPlusOfCodimensionDecl0,ListStarOfCodimensionDecl0)
-    ListPlusOfCodimensionDecl0        -> <conc>(ListPlusOfCodimensionDecl0,ListPlusOfCodimensionDecl0)
-    ListPlusOfCodimensionDecl0        -> <cons>(CodimensionDecl,ListStarOfCodimensionDecl0)
 
     ListStarOfAssumedOrImpliedSpec0   -> ListPlusOfAssumedOrImpliedSpec0
     ListStarOfAssumedOrImpliedSpec0   -> <nil>()
@@ -520,6 +513,15 @@ regular tree grammar
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
 
+/* R501 */
+    Decl                              -> TypeDeclarationStmt
+    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
+
+/* R503 */
+    EntityDecl                        -> Var
+
+    ObjectName                        -> Ident
+
 /* R508 LanguageBinding */
 
 /* R529 */
@@ -529,6 +531,20 @@ regular tree grammar
 /* R530 */
     BindEntity                        -> BindEntity(Name)
     BindEntity                        -> CommonBlockName(Name)
+
+/* R531 */
+    Decl                              -> CodimensionStmt
+    CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl)
+
+    CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
+    CoarrayName                       -> Ident
+
+/* R545 */
+    Decl                              -> DimensionStmt
+    DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec)
+
+    ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
+    ArrayName                         -> Ident
 
 /* R553 */
     Decl                              -> SaveStmt
@@ -568,14 +584,6 @@ regular tree grammar
     INOUT                             -> INOUT()
     OUT                               -> OUT()
     IN                                -> IN()
-    OfpIntent                         -> OfpIntent(String)
-    OfpAssumedRank                    -> OfpAssumedRank(ListPlusOfDimSpec0)
-    OfpImpliedShape                   -> OfpImpliedShape(ListPlusOfDimSpec0)
-    OfpAssumedSize                    -> OfpAssumedSize(ListPlusOfDimSpec0)
-    OfpAssumedOrDeferredShape         -> OfpAssumedOrDeferredShape(ListPlusOfDimSpec0)
-
-    OfpExplicitShape                  -> OfpExplicitShape(ListPlusOfDimSpec0)
-    OfpExplicitCoshape                -> OfpExplicitCoshape(ListPlusOfDimSpec0)
 
     OptInitialization                 -> no-init()
     OptInitialization                 -> Initialization
@@ -587,24 +595,9 @@ regular tree grammar
     CharLength                        -> STAR()
     CharLength                        -> COLON()
 
-    ArraySpec                         -> ListStarOfDimSpec
-    CoarraySpec                       -> ListStarOfDimSpec
-    DimSpec                           -> Range
-    DimSpec                           -> STAR()
-    DimSpec                           -> COLON()
-    Range                             -> Range(Expr,Expr)
-
     Var                               -> Var(Name,Type,OptInitialization)
 
-/* DELETE    OfpAttrSpec                       -> OfpIntent(OfpIntent) */
-/* DELETE    OfpAttrSpec                       -> ALLOCATABLE() */
-
-/* R501 */
-    Decl                              -> TypeDeclarationStmt
-    TypeDeclarationStmt               -> TypeDeclarationStmt(OptLabel,Type,ListStarOfAttrSpec,ListPlusOfEntityDecl)
-
-    EntityDecl                        -> Var
-
+/* R404 */
     Type                              -> unknown-type()
     Type                              -> IntrinsicType
     IntrinsicType                     -> INTEGER()
@@ -623,14 +616,6 @@ regular tree grammar
     IntrinsicType                     -> CHARACTER()
     IntrinsicType                     -> CHARACTER_LEN(CharLength)
 
-/* R545 */
-    Decl                              -> DimensionStmt
-    DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec)
-
-    ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
-    ArrayName                         -> Ident
-
-
 /* R453 */
     Type                              -> DerivedType
     DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
@@ -644,6 +629,15 @@ regular tree grammar
     ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
 
     ArraySpec                         -> ArraySpec(ListStarOfRange)
+    CoarraySpec                       -> CoarraySpec(ListStarOfRange)
+
+    OptArraySpec                      -> ArraySpec(ArraySpec)
+    OptArraySpec                      -> no-list()
+
+    DimSpec                           -> Range
+    DimSpec                           -> STAR()
+    DimSpec                           -> COLON()
+    Range                             -> Range(Expr,Expr)
 
     Type                              -> DerivedTypeDef
     DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ListStarOfComponentPart,OptTypeBoundProcPart,EndTypeStmt)
@@ -651,8 +645,13 @@ regular tree grammar
     Stmt                              -> DerivedTypeStmt
     DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
 
+/* R429 */
     Stmt                              -> EndTypeStmt
     EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
+
+/* R430 */
+    Stmt                              -> SequenceStmt
+    SequenceStmt                      -> SequenceStmt(OptLabel)
 
     TypeAttrSpec                      -> ABSTRACT()
     TypeAttrSpec                      -> AccessSpec
@@ -674,11 +673,12 @@ regular tree grammar
     Stmt                              -> DataComponentDefStmt
     DataComponentDefStmt              -> DataComponentDefStmt(OptLabel,DeclarationTypeSpec,ListStarOfComponentAttrSpec,ListPlusOfComponentDecl)
 
+/* R437 */
     ComponentAttrSpec                 -> AccessSpec
     ComponentAttrSpec                 -> ALLOCATABLE()
     ComponentAttrSpec                 -> Codimension(CoarraySpec)
     ComponentAttrSpec                 -> CONTIGUOUS()
-    ComponentAttrSpec                 -> Dimension(ListPlusOfRange)
+    ComponentAttrSpec                 -> Dimension(ArraySpec)
     ComponentAttrSpec                 -> POINTER()
 
     Decl                              -> ComponentDecl
@@ -1634,10 +1634,6 @@ regular tree grammar
     DataStmt                          -> DataStmt(OptLabel,DataStmtSetList,EOS)
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
-    CoarrayName                       -> Ident
-    CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
-    CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
-    CodimensionStmt                   -> CodimensionStmt(OptLabel,ListPlusOfCodimensionDecl0,EOS)
 
     IntentSpec                        -> INOUT()
     IntentSpec                        -> OUT()
@@ -1656,13 +1652,7 @@ regular tree grammar
     LowerBound                        -> SpecificationExpr
     ExplicitShapeSpec                 -> ExplicitShape(LowerBound,UpperBound)
     ExplicitShapeSpec                 -> ExplicitShape(NoLowerBound,UpperBound)
-    ArraySpec                         -> AssumedRankSpec
-    ArraySpec                         -> ImpliedShapeSpecList
-    ArraySpec                         -> AssumedOrImpliedSpec
-    ArraySpec                         -> AssumedSizeSpec
-    ArraySpec                         -> ListPlusOfAssumedShapeSpec0
-    ArraySpec                         -> ListPlusOfExplicitShapeSpec0
-    DimensionSpec                     -> DimensionSpec(ArraySpec)
+
     UpperCobound                      -> SpecificationExpr
     NoLowerCobound                    -> no-lower-bound()
     LowerCobound                      -> LowerCobound(SpecificationExpr)
@@ -1681,11 +1671,9 @@ regular tree grammar
     Initialization                    -> Init(ConstantExpr)
     OptInitialization                 -> no-init()
 
-    OptArraySpec                      -> no-list()
     OptInitialization                 -> Initialization
 
-    OptArraySpec                      -> opt-array-spec(ArraySpec)
-    ObjectName                        -> Ident
+/* R502 */
     AttrSpec                          -> VOLATILE()
     AttrSpec                          -> VALUE()
     AttrSpec                          -> TARGET()
@@ -2017,6 +2005,15 @@ regular tree grammar
     ListPlusOfBindEntity             -> <conc>(ListPlusOfBindEntity,ListStarOfBindEntity)
     ListPlusOfBindEntity             -> <conc>(ListPlusOfBindEntity,ListPlusOfBindEntity)
     ListPlusOfBindEntity             -> <cons>(BindEntity,ListStarOfBindEntity)
+
+/* R532 */
+    ListStarOfCodimensionDecl        -> ListPlusOfCodimensionDecl
+    ListStarOfCodimensionDecl        -> <nil>()
+    ListStarOfCodimensionDecl        -> <conc>(ListStarOfCodimensionDecl,ListStarOfCodimensionDecl)
+    ListPlusOfCodimensionDecl        -> <conc>(ListStarOfCodimensionDecl,ListPlusOfCodimensionDecl)
+    ListPlusOfCodimensionDecl        -> <conc>(ListPlusOfCodimensionDecl,ListStarOfCodimensionDecl)
+    ListPlusOfCodimensionDecl        -> <conc>(ListPlusOfCodimensionDecl,ListPlusOfCodimensionDecl)
+    ListPlusOfCodimensionDecl        -> <cons>(CodimensionDecl,ListStarOfCodimensionDecl)
 
 /* R545 */
     ListStarOfArrayNameSpec          -> ListPlusOfArrayNameSpec
