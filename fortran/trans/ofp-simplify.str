@@ -60,7 +60,6 @@ ofp-disamb:  amb([Allocation(u,v,w), Allocation(x,y,z)]) -> Allocation(x,y,z)
 // General catch-all rules
 //
 ofp-simplify-ast:  no-list()                      -> []
-ofp-simplify-ast:  a-list(list)                   -> list
 ofp-simplify-ast:  paren-list(list)               -> list
 ofp-simplify-ast:  comma-list(list)               -> list
 
@@ -133,7 +132,7 @@ ofp-simplify-ast:  colon-forall-step(step)        -> step
 ofp-simplify-ast:  opt-expr(expr)                 -> expr
 
 //R910
-ofp-simplify-ast:  read-format(format)            -> [FMT(format)]
+//ofp-simplify-ast:  read-format(format)            -> [FMT(format)]
 
 //R913
 ofp-simplify-ast:  io-control-spec-list(list)       -> list
