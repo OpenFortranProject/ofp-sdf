@@ -589,6 +589,13 @@ ofp-to-ast =  ?OpenStmt(label,list,eos("\n"))           ;  !OpenStmt(label,list)
 ofp-to-ast =  ?CloseStmt(label,list,eos("\n"))          ;  !CloseStmt(label,list)
           <+  ?CloseStmt(label,list,eos(str) )          ;  !CloseStmt(label,list) {Comment(str)}
 
+//R910
+ofp-to-ast =  ?ReadStmt(label,iocontrol,out,eos("\n"))  ;  !ReadStmt(label,iocontrol,out)
+          <+  ?ReadStmt(label,iocontrol,out,eos(str) )  ;  !ReadStmt(label,iocontrol,out) {Comment(str)}
+
+ofp-to-ast =  ?ReadFMTStmt(label,fmt,out,eos("\n"))     ;  !ReadFMTStmt(label,fmt,out)
+          <+  ?ReadFMTStmt(label,fmt,out,eos(str) )     ;  !ReadFMTStmt(label,fmt,out) {Comment(str)}
+
 //R911
 ofp-to-ast =  ?WriteStmt(label,iocontrol,out,eos("\n")) ;  !WriteStmt(label,iocontrol,out)
           <+  ?WriteStmt(label,iocontrol,out,eos(str) ) ;  !WriteStmt(label,iocontrol,out) {Comment(str)}
