@@ -581,6 +581,7 @@ sorts
 %% 9.6 Data transfer statements
 
   ReadStmt                            %% R910
+  ReadFMTStmt
   WriteStmt                           %% R911
   PrintStmt                           %% R912
   IoControlSpec                       %% R913
@@ -595,7 +596,7 @@ sorts
   IoImpliedDoInput IoImpliedDoOutput
   OptInputItemList OptOutputItemList
   IoControlSpecList OptIoControlSpecList
-  NoStride ReadFormat
+  NoStride
 
 %% 9.7 Waiting on pending data transfer
 
@@ -2070,6 +2071,7 @@ Primary                                    -> Expr
 
 %%R725
   Expr                                     -> DefaultCharExpr
+  "(" IntLiteralConstant ")"               -> DefaultCharExpr  {reject}    %% Fixes AMBIGUOUS Format
 
 %%R726
   Expr                                     -> IntExpr
@@ -2837,10 +2839,11 @@ context-free syntax
 %%
 
 %%910
-  OptLabel 'READ' '(' IoControlSpecList ')' {InputItem ','}*    EOS -> ReadStmt   {cons("ReadStmt")}
-  OptLabel 'READ' ReadFormat                OptInputItemList    EOS -> ReadStmt   {cons("ReadStmt")}
+  OptLabel 'READ' '(' IoControlSpecList ')' {InputItem ','}*    EOS -> ReadStmt         {cons("ReadStmt")}
+  OptLabel 'READ' Format                    OptInputItemList    EOS -> ReadFMTStmt      {cons("ReadFMTStmt")}
 
-  Format                                                            -> ReadFormat {cons("read-format")}
+  ',' {InputItem ','}+                                              -> OptInputItemList {cons("comma-list")}
+  % empty %                                                         -> OptInputItemList {cons("no-list")}
 
 %%R911
   OptLabel 'WRITE' '(' IoControlSpecList ')' {OutputItem ','}*  EOS -> WriteStmt  {cons("WriteStmt")}
@@ -2884,7 +2887,7 @@ context-free syntax
   IoUnitNoKW ',' FormatNoKW   OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
   IoUnitNoKW ',' NameListNoKW OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
 
-  ',' {IoControlSpec ','}+                          -> OptIoControlSpecList {cons("a-list")}
+  ',' {IoControlSpec ','}+                          -> OptIoControlSpecList {cons("comma-list")}
   % empty %                                         -> OptIoControlSpecList {cons("no-list")}
 
   IoUnit                                            -> IoUnitNoKW         {cons("UNIT")}
@@ -2902,8 +2905,6 @@ context-free syntax
 %%R916
   Variable                                          -> InputItem
   IoImpliedDoInput                                  -> InputItem
-
-  ',' {InputItem ','}+                              -> OptInputItemList   {cons("comma-list")}
 
 %%R917
   Expr                                              -> OutputItem
@@ -3322,6 +3323,7 @@ context-free syntax
   PointerAssignmentStmt                  -> ActionStmt
   PrintStmt                              -> ActionStmt
   ReadStmt                               -> ActionStmt
+  ReadFMTStmt                            -> ActionStmt
   ReturnStmt                             -> ActionStmt
   RewindStmt                             -> ActionStmt
   StopStmt                               -> ActionStmt
