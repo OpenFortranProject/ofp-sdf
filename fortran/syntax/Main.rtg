@@ -969,6 +969,7 @@ regular tree grammar
     ActionStmt                        -> StopStmt
     ActionStmt                        -> RewindStmt
     ActionStmt                        -> ReturnStmt
+    ActionStmt                        -> ReadFMTStmt
     ActionStmt                        -> ReadStmt
     ActionStmt                        -> PrintStmt
     ActionStmt                        -> PointerAssignmentStmt
@@ -1213,7 +1214,6 @@ regular tree grammar
     OptOutputItemList                 -> comma-list(ListPlusOfOutputItem0)
     OutputItem                        -> IoImpliedDoOutput
     OutputItem                        -> Expr
-    OptInputItemList                  -> comma-list(ListPlusOfInputItem0)
     InputItem                         -> IoImpliedDoInput
     InputItem                         -> Variable
     Format                            -> STAR()
@@ -1223,7 +1223,7 @@ regular tree grammar
     FormatNoKW                        -> FMT(Format)
     IoUnitNoKW                        -> UNIT(IoUnit)
     OptIoControlSpecList              -> no-list()
-    OptIoControlSpecList              -> a-list(ListPlusOfIoControlSpec0)
+    OptIoControlSpecList              -> comma-list(ListPlusOfIoControlSpec0)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,NameListNoKW,OptIoControlSpecList)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,FormatNoKW,OptIoControlSpecList)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,OptIoControlSpecList)
@@ -1250,8 +1250,9 @@ regular tree grammar
     IoControlSpec                     -> UNIT(IoUnit)
     PrintStmt                         -> PrintStmt(OptLabel,Format,OptOutputItemList,EOS)
     WriteStmt                         -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem0,EOS)
-    ReadFormat                        -> read-format(Format)
-    ReadStmt                          -> ReadStmt(OptLabel,ReadFormat,OptInputItemList,EOS)
+    OptInputItemList                  -> no-list()
+    OptInputItemList                  -> comma-list(ListPlusOfInputItem0)
+    ReadFMTStmt                       -> ReadFMTStmt(OptLabel,Format,OptInputItemList,EOS)
     ReadStmt                          -> ReadStmt(OptLabel,IoControlSpecList,ListStarOfInputItem0,EOS)
     CloseSpec                         -> STATUS(DefaultCharExpr)
     CloseSpec                         -> ERR(LblRef)
