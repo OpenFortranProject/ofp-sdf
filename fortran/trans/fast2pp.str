@@ -85,6 +85,8 @@ signature
     ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
     ppIfConstructName : name                                        -> ppIfConstructName
 
+    ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
+
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
 
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
@@ -227,6 +229,9 @@ ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
 //R860
 //  ast-to-pp:
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+
+//R920
+ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoControl(dovar,begin,end)
 
 //R1109
 ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
