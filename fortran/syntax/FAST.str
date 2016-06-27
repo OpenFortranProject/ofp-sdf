@@ -289,7 +289,9 @@ signature
                               : SyncStat -> LockStat
     UnlockStmt                : OptLabel * LockVariable * List(SyncStat) -> UnlockStmt
                               : Variable -> LockVariable
-    WriteStmt                 : OptLabel * IoControlSpecList * List(OutputItem) -> WriteStmt
+    ReadStmt                  : OptLabel * List(IoControlSpec) * List(InputItem) -> ReadStmt
+    ReadFMTStmt               : OptLabel * Format * List(InputItem) -> ReadFMTStmt
+    WriteStmt                 : OptLabel * List(IoControlSpec) * List(OutputItem) -> WriteStmt
     PrintStmt                 : OptLabel * Format * List(OutputItem) -> PrintStmt
     WaitStmt                  : OptLabel * List(WaitSpec) -> WaitStmt
     IOSTAT                    : IntExpr -> WaitSpec
@@ -462,6 +464,8 @@ signature
                               : SyncMemoryStmt -> Stmt
                               : LockStmt -> Stmt
                               : UnlockStmt -> Stmt
+                              : ReadStmt -> Stmt
+                              : ReadFMTStmt -> Stmt
                               : WriteStmt -> Stmt
                               : PrintStmt -> Stmt
                               : WaitStmt -> Stmt
@@ -524,19 +528,13 @@ signature
     IoImpliedDoControl        : DoVariable * IntExpr * IntExpr * NoStride -> IoImpliedDoControl
     IoImpliedDoControl        : DoVariable * IntExpr * IntExpr * IntExpr -> IoImpliedDoControl
     IoImpliedDo               : List(OutputItem) * IoImpliedDoControl -> IoImpliedDoOutput
+    IoImpliedDo               : List(InputItem) * IoImpliedDoControl -> IoImpliedDoInput
                               : IoImpliedDoOutput -> OutputItem
                               : Expr -> OutputItem
+                              : IoImpliedDoInput -> InputItem
+                              : Variable -> InputItem
     STAR                      : Format
     IdVariable                : IntVariable -> IdVariable
-    NML                       : NamelistGroupName -> NameListNoKW
-    FMT                       : Format -> FormatNoKW
-    UNIT                      : IoUnit -> IoUnitNoKW
-    no-list                   : OptIoControlSpecList
-    a-list                    : List(IoControlSpec) -> OptIoControlSpecList
-    io-control-spec-list      : IoUnitNoKW * NameListNoKW * OptIoControlSpecList -> IoControlSpecList
-    io-control-spec-list      : IoUnitNoKW * FormatNoKW * OptIoControlSpecList -> IoControlSpecList
-    io-control-spec-list      : IoUnitNoKW * OptIoControlSpecList -> IoControlSpecList
-    io-control-spec-list      : List(IoControlSpec) -> IoControlSpecList
     SIZE                      : IntVariable -> IoControlSpec
     REC                       : Expr -> IoControlSpec
     POS                       : Expr -> IoControlSpec

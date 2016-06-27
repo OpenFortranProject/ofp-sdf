@@ -76,22 +76,6 @@ regular tree grammar
     ListPlusOfVEditDesc0              -> <conc>(ListPlusOfVEditDesc0,ListPlusOfVEditDesc0)
     ListPlusOfVEditDesc0              -> <cons>(VEditDesc,ListStarOfVEditDesc0)
 
-    ListStarOfIoControlSpec0          -> ListPlusOfIoControlSpec0
-    ListStarOfIoControlSpec0          -> <nil>()
-    ListStarOfIoControlSpec0          -> <conc>(ListStarOfIoControlSpec0,ListStarOfIoControlSpec0)
-    ListPlusOfIoControlSpec0          -> <conc>(ListStarOfIoControlSpec0,ListPlusOfIoControlSpec0)
-    ListPlusOfIoControlSpec0          -> <conc>(ListPlusOfIoControlSpec0,ListStarOfIoControlSpec0)
-    ListPlusOfIoControlSpec0          -> <conc>(ListPlusOfIoControlSpec0,ListPlusOfIoControlSpec0)
-    ListPlusOfIoControlSpec0          -> <cons>(IoControlSpec,ListStarOfIoControlSpec0)
-
-    ListStarOfInputItem0              -> ListPlusOfInputItem0
-    ListStarOfInputItem0              -> <nil>()
-    ListStarOfInputItem0              -> <conc>(ListStarOfInputItem0,ListStarOfInputItem0)
-    ListPlusOfInputItem0              -> <conc>(ListStarOfInputItem0,ListPlusOfInputItem0)
-    ListPlusOfInputItem0              -> <conc>(ListPlusOfInputItem0,ListStarOfInputItem0)
-    ListPlusOfInputItem0              -> <conc>(ListPlusOfInputItem0,ListPlusOfInputItem0)
-    ListPlusOfInputItem0              -> <cons>(InputItem,ListStarOfInputItem0)
-
     ListStarOfTypeGuardStmtAndBlock0  -> ListPlusOfTypeGuardStmtAndBlock0
     ListStarOfTypeGuardStmtAndBlock0  -> <nil>()
     ListStarOfTypeGuardStmtAndBlock0  -> <conc>(ListStarOfTypeGuardStmtAndBlock0,ListStarOfTypeGuardStmtAndBlock0)
@@ -997,17 +981,22 @@ regular tree grammar
     FileUnitNumber                    -> IntExpr
     IomsgVariable                     -> DefaultCharExpr
 
-    ReadStmt                          -> ReadStmt(OptLabel,ReadFormat,OptInputItemList,EOS)
-    ReadStmt                          -> ReadStmt(OptLabel,IoControlSpecList,ListStarOfInputItem0,EOS)
+/* R910 */
+    Stmt                              -> ReadStmt
+    ReadStmt                          -> ReadStmt(OptLabel,ListStarOfIoControlSpec,ListStarOfInputItem)
 
-    ReadFormat                        -> read-format(Format)
+    Stmt                              -> ReadFMTStmt
+    ReadFMTStmt                       -> ReadFMTStmt(OptLabel,Format,ListStarOfInputItem)
 
+/* R911 */
     Stmt                              -> WriteStmt
-    WriteStmt                         -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem)
+    WriteStmt                         -> WriteStmt(OptLabel,ListPlusOfIoControlSpec,ListStarOfOutputItem)
 
+/* R912 */
     Stmt                              -> PrintStmt
     PrintStmt                         -> PrintStmt(OptLabel,Format,ListStarOfOutputItem)
 
+/* R922 */
     Stmt                              -> WaitStmt
     WaitStmt                          -> WaitStmt(OptLabel,ListPlusOfWaitSpec)
 
@@ -1020,6 +1009,7 @@ regular tree grammar
     WaitSpec                          -> UNIT(FileUnitNumber)
     WaitSpec                          -> UNIT(FileUnitNumber)
 
+/* R924 */
     Stmt                              -> BackspaceStmt
     BackspaceStmt                     -> BackspaceStmt(OptLabel,ListPlusOfPositionSpec)
 
@@ -1357,8 +1347,9 @@ regular tree grammar
     NameListNoKW                      -> NML(NamelistGroupName)
     FormatNoKW                        -> FMT(Format)
     IoUnitNoKW                        -> UNIT(IoUnit)
+
     OptIoControlSpecList              -> no-list()
-    OptIoControlSpecList              -> a-list(ListPlusOfIoControlSpec0)
+    OptIoControlSpecList              -> comma-list(ListPlusOfIoControlSpec0)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,NameListNoKW,OptIoControlSpecList)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,FormatNoKW,OptIoControlSpecList)
     IoControlSpecList                 -> io-control-spec-list(IoUnitNoKW,OptIoControlSpecList)
@@ -2117,14 +2108,6 @@ regular tree grammar
     ListPlusOfLockStat                -> <conc>(ListPlusOfLockStat,ListPlusOfLockStat)
     ListPlusOfLockStat                -> <cons>(LockStat,ListStarOfLockStat)
 
-    ListStarOfOutputItem              -> ListPlusOfOutputItem
-    ListStarOfOutputItem              -> <nil>()
-    ListStarOfOutputItem              -> <conc>(ListStarOfOutputItem,ListStarOfOutputItem)
-    ListPlusOfOutputItem              -> <conc>(ListStarOfOutputItem,ListPlusOfOutputItem)
-    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
-    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
-    ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
-
     ListStarOfWaitSpec                -> ListPlusOfWaitSpec
     ListStarOfWaitSpec                -> <nil>()
     ListStarOfWaitSpec                -> <conc>(ListStarOfWaitSpec,ListStarOfWaitSpec)
@@ -2284,3 +2267,30 @@ regular tree grammar
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListStarOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListPlusOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
+
+/* R913 */
+    ListStarOfIoControlSpec          -> ListPlusOfIoControlSpec
+    ListStarOfIoControlSpec          -> <nil>()
+    ListStarOfIoControlSpec          -> <conc>(ListStarOfIoControlSpec,ListStarOfIoControlSpec)
+    ListPlusOfIoControlSpec          -> <conc>(ListStarOfIoControlSpec,ListPlusOfIoControlSpec)
+    ListPlusOfIoControlSpec          -> <conc>(ListPlusOfIoControlSpec,ListStarOfIoControlSpec)
+    ListPlusOfIoControlSpec          -> <conc>(ListPlusOfIoControlSpec,ListPlusOfIoControlSpec)
+    ListPlusOfIoControlSpec          -> <cons>(IoControlSpec,ListStarOfIoControlSpec)
+
+/* R916 */
+    ListStarOfInputItem              -> ListPlusOfInputItem
+    ListStarOfInputItem              -> <nil>()
+    ListStarOfInputItem              -> <conc>(ListStarOfInputItem,ListStarOfInputItem)
+    ListPlusOfInputItem              -> <conc>(ListStarOfInputItem,ListPlusOfInputItem)
+    ListPlusOfInputItem              -> <conc>(ListPlusOfInputItem,ListStarOfInputItem)
+    ListPlusOfInputItem              -> <conc>(ListPlusOfInputItem,ListPlusOfInputItem)
+    ListPlusOfInputItem              -> <cons>(InputItem,ListStarOfInputItem)
+
+/* R917 */
+    ListStarOfOutputItem              -> ListPlusOfOutputItem
+    ListStarOfOutputItem              -> <nil>()
+    ListStarOfOutputItem              -> <conc>(ListStarOfOutputItem,ListStarOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListStarOfOutputItem,ListPlusOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
+    ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
+    ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
