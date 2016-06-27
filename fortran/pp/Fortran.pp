@@ -673,17 +673,24 @@
    STATUS                        -- "STATUS="       _1,
    TEAM                          -- "TEAM="         _1,
 
+   %% R908
    CloseStmt                     -- H hs=1 [_1 H hs=0["CLOSE" "(" _2 ")"]],
    CloseStmt.2:iter-sep          -- _1 ", ",
 
-   #R910 --,
-   ReadStmt                      -- H hs=1 [_1 H hs=0["READ" "("_2")" ", " _3]],
+   %% R910
+   ReadStmt                      -- H hs=1 [_1 H hs=0["READ" "(" _2 ") " _3]],
+   ReadStmt.2:iter-sep           -- _1 ",",
    ReadStmt.3:iter-sep           -- _1 ", ",
 
+   ReadFMTStmt                   -- H hs=1 [_1 H hs=0["READ " _2 ", " _3]],
+   ReadFMTStmt.3:iter-sep        -- _1 ", ",
+
+   %% R911
    WriteStmt                     -- H hs=1 [_1 H hs=0["WRITE" "("_2") " _3]],
    WriteStmt.2:iter-sep          -- _1 ",",
    WriteStmt.3:iter-sep          -- _1 ", ",
 
+   %% R912
    PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
@@ -705,8 +712,9 @@
    #R919 --,
    IoImpliedDoObjectList         -- _1,
 
-   #R920 --,
-   IoImpliedDoControl            -- _1 KW["="] _2 KW[","] _3 KW[","] _4,
+   %% R920
+   IoImpliedDoControl            -- _1 "=" _2 "," _3 "," _4,
+   ppIoImpliedDoControl          -- _1 "=" _2 "," _3,
 
    %% R922
    WaitStmt                      -- H hs=1 [_1 "WAIT" H hs=0["("_2")"]],
