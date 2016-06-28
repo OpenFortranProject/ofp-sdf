@@ -1,0 +1,5 @@
+PRINT *, a
+PRINT 10, b
+PRINT '(10f8.2)', c
+10 FORMAT(I5)
+END PROGRAM
