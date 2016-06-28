@@ -25,7 +25,7 @@ write (6,*) b
 write (10,fmt=*) c 
 write (unit=n,fmt=*,iostat=ios) d
 write (*,err=999) e
-write (10,size=i,err=999,iostat=i, advance="yes", rec=2) f
+write (10,err=999,iostat=i, advance="yes", rec=2, fmt=10) f
 
 10 format(i3)
 
