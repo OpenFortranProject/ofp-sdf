@@ -74,19 +74,19 @@ pretty : Fortran.tbl
            done
 
 Fortran.sig.aterm : Main.sig
-	$(SGLRI) -p $(STRATEGO_TBL) -i Main.sig | implode-asfix | pp-aterm -o Fortran.sig.aterm
+	$(ST_PATH)/sglri -p $(STRATEGO_TBL) -i Main.sig | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o Fortran.sig.aterm
 
 junk : junk.f90 Fortran.tbl
-	$(SGLRI) -i junk.f90 -p Fortran.tbl | implode-asfix | pp-aterm -o junk.f90.aterm
+	$(ST_PATH)/sglri -i junk.f90 -p Fortran.tbl | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o junk.f90.aterm
 
 junkf : junk.f FortranFixed.tbl
-	$(SGLRI) -i junk.f -p FortranFixed.tbl | implode-asfix | pp-aterm -o junk.f.aterm
+	$(ST_PATH)/sglri -i junk.f -p FortranFixed.tbl | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o junk.f.aterm
 
 junk.ptree : junk.f90 Fortran.tbl
-	$(SGLRI) -i junk.f90 -p Fortran.tbl -o junk.ptree
+	$(ST_PATH)/sglri -i junk.f90 -p Fortran.tbl -o junk.ptree
 
 junk.ast-info.pp : junk.f90 Fortran.tbl
-	$(SDF2_PATH)/sglr -i junk.f90 -p Fortran.tbl | addPosInfo -p ./junk.f90 -m | implode-asfix | pp-aterm -o junk.ast-info.pp
+	$(SDF2_PATH)/sglr -i junk.f90 -p Fortran.tbl | $(SDF2_PATH)/addPosInfo -p ./junk.f90 -m | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o junk.ast-info.pp
 
 clean :
 	rm -f *.def *.tbl
