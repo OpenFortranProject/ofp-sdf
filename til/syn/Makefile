@@ -1,3 +1,5 @@
+include ../../make.inc
+
 TEST_DIR = ../xmpl
 
 STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoStratego.tbl
@@ -10,27 +12,27 @@ SDF_FILES =  TIL-layout.sdf           \
              TIL.sdf
 
 %.tbl : %
-	sdf2table -i $< -o $@
+	$(SDF2_PATH)/sdf2table -i $< -o $@
 
 all : TIL.tbl
 
 TIL.def : TIL.sdf
-	pack-sdf -i $< -o $@
+	$(ST_PATH)/pack-sdf -i $< -o $@
 
 TIL.tbl : TIL.def
-	sdf2table -i $< -o $@ -m TIL
+	$(SDF2_PATH)/sdf2table -i $< -o $@ -m TIL
 
 TIL.rtg : TIL.def
-	sdf2rtg -i $< -o $@ -m TIL
+	$(ST_PATH)/sdf2rtg -i $< -o $@ -m TIL
 
 TIL.str : TIL.rtg
-	rtg2sig -i $< -o $@
+	$(ST_PATH)/rtg2sig -i $< -o $@
 
 check : TIL.tbl
-	sglri -p TIL.tbl -i ../xmpl/test1.til
+	$(ST_PATH)/sglri -p TIL.tbl -i ../xmpl/test1.til
 
 pretty : TIL.tbl
-	sglri -p TIL.tbl -i $(TEST_DIR)/test1.til | pp-aterm
+	$(ST_PATH)/sglri -p TIL.tbl -i $(TEST_DIR)/test1.til | $(ST_PATH)/pp-aterm
 
 clean :
 	rm -f *.def *.tbl
