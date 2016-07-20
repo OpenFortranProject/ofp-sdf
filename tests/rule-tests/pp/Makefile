@@ -1,3 +1,5 @@
+include ../../../make.inc
+
 FC = gfortran
 
 SYNTAX_DIR = ../../../fortran/syntax
@@ -19,19 +21,19 @@ $(TBL) :
 simple : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_SIM) | pp-aterm -o tmp-simple/$$file.aterm; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_SIM) | $(ST_PATH)/pp-aterm -o tmp-simple/$$file.aterm; \
         done;
 
 fast : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | pp-aterm -o tmp-fast/$$file.aterm; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(ST_PATH)/pp-aterm -o tmp-fast/$$file.aterm; \
         done;
 
 check-unparse : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -39,7 +41,7 @@ check-unparse : $(TBL)
         done;
 	@for file in *.f77 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -47,7 +49,7 @@ check-unparse : $(TBL)
         done;
 	@for file in *.f08 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -55,7 +57,7 @@ check-unparse : $(TBL)
         done;
 	@for file in *.fxx ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -65,49 +67,49 @@ check-unparse : $(TBL)
 check : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!1"; \
            fi; \
            $(FC) -c tmp/$$file -o tmp/$$file.o; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!2"; \
            fi; \
         done;
 	@for file in *.f77 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!3"; \
            fi; \
         done;
 	@for file in *.f08 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!4"; \
            fi; \
            $(FC) -c -fcoarray=single tmp/$$file -o tmp/$$file.o; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!5"; \
            fi; \
         done;
 	@for file in *.fxx ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		FAILED!6"; \
            fi; \
         done;
 
 check-f90 : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -121,7 +123,7 @@ check-f90 : $(TBL)
 check-f77 : $(TBL)
 	@for file in *.f77 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -135,7 +137,7 @@ check-f77 : $(TBL)
 check-f08 : $(TBL)
 	@for file in *.f08 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -145,7 +147,7 @@ check-f08 : $(TBL)
 check-fxx : $(TBL)
 	@for file in *.fxx ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -155,7 +157,7 @@ check-fxx : $(TBL)
 check-list : $(TBL)
 	@for file in $(CHECK_LIST) ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
+	   $(ST_PATH)/sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP) -o tmp/$$file; \
            diff $$file tmp/$$file; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
@@ -168,11 +170,11 @@ check-list : $(TBL)
 
 
 test :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | ${ST_PATH}/ast2text -p $(PP)
 check-fast :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(ST_PATH)/pp-aterm
 check-pp :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | $(ST_PATH)/pp-aterm
 
 clean :
 	rm -f *.mod *.o
