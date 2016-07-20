@@ -72,7 +72,7 @@ check-lower : caf-lower
 	$(ST_PATH)/sglri -p $(TBL) -i $(SOURCE) | $(TO_FAST) | ./caf-lower | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-pp :
-	$(ST_PATH)/sglri -p $(TBL) -i $(SOURCE) | $(TO_FAST) | ./fast-to-ocr | ast2text -p ../pp/ocr.pp
+	$(ST_PATH)/sglri -p $(TBL) -i $(SOURCE) | $(TO_FAST) | ./fast-to-ocr | $(ST_PATH)/ast2text -p ../pp/ocr.pp
 
 
 clean :
