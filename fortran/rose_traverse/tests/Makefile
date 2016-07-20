@@ -1,3 +1,5 @@
+include ../../../make.inc
+
 SYNTAX = ../../syntax
 
 all : check
@@ -8,7 +10,7 @@ $(SYNTAX)/Fortran.tbl :
 check : $(SYNTAX)/Fortran.tbl
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-           sglri -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.aterm; \
+           $(ST_PATH)/sglri -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.aterm; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
