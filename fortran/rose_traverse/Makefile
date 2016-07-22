@@ -74,7 +74,7 @@ check : fast-to-rose
 	fast-to-rose -i testfile.f90.aterm | pp-aterm
 
 check_traverse: traverse
-	$(SGLRI) -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl | ../trans/ofp-simplify  -o testfile.f90.aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p $(SDF_GRAMMAR_DIR)/Fortran.tbl | ../trans/ofp-simplify  -o testfile.f90.aterm
 	traverse -i testfile.f90.aterm
 
 clean:
