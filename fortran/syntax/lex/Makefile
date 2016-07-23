@@ -28,13 +28,13 @@ fixed-to-free : fixed-to-free.str
 	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
 
 check : FixedForm.tbl
-	sglri -p FixedForm.tbl -i testfile.F | pp-aterm
+	$(ST_PATH)/sglri -p FixedForm.tbl -i testfile.F | pp-aterm
 
 check-free : FixedForm.tbl fixed-to-free
-	$(SGLRI) -i testfile.F -p FixedForm.tbl | ./fixed-to-free | pp-aterm
+	$(ST_PATH)/sglri -i testfile.F -p FixedForm.tbl | ./fixed-to-free | pp-aterm
 
 check-pp : FixedForm.tbl fixed-to-free
-	@$(SGLRI) -i testfile.F -p FixedForm.tbl | ./fixed-to-free | ast2text -p FreeForm.pp
+	@$(ST_PATH)/sglri -i testfile.F -p FixedForm.tbl | ./fixed-to-free | ast2text -p FreeForm.pp
 
 clean :
 	rm -f *.def *.tbl
