@@ -3,7 +3,7 @@ include ../../make.inc
 CFLAGS = -I ../../ROSE -I ../syntax $(ST_CFLAGS)
 LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf unix-to-dos
+all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf #unix-to-dos
 
 fixed-to-free : fixed-to-free.str
 	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
@@ -33,35 +33,34 @@ fast2sage : fast2sage.str
 
 # OBSOLETE
 check-sage : fast2sage
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2sage | pp-aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2sage | $(ST_PATH)/pp-aterm
 
 check : ofp-simplify ofp2fast
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | $(ST_PATH)/pp-aterm
 
 check-ofp : ofp-simplify
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp-simplify | pp-aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp-simplify | $(ST_PATH)/pp-aterm
 
 check-pp : ofp-simplify ofp2fast fast2pp
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | $(ST_PATH)/pp-aterm
 
 check-fixed :
-	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | pp-aterm
+	$(ST_PATH)/sglri -i testfile.for -p ../syntax/FixedForm.tbl | $(ST_PATH)/pp-aterm
 
 check-ftf : fixed-to-free strip-final-lf
-	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | ast2text -p ../pp/FreeForm.pp | strip-final-lf
+	@$(ST_PATH)/sglri -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | $(ST_PATH)/ast2text -p ../pp/FreeForm.pp | strip-final-lf
 
 check-ftf-ast : fixed-to-free strip-final-lf
-	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | pp-aterm
+	@$(ST_PATH)/sglri -i testfile.for -p ../syntax/FixedForm.tbl | ./fixed-to-free | $(ST_PATH)/pp-aterm
 
 unparse : ofp-simplify ofp2fast fast2pp
-	@echo "------------"
-	@$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | ast2text -p ../pp/Fortran.pp
+	@$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | $(ST_PATH)/ast2text -p ../pp/Fortran.pp
 
 test : ofp-simplify ofp2fast
-	$(SGLRI) -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
+	$(ST_PATH)/sglri -i ../../tests/rule-tests-rose/R1101a.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | $(ST_PATH)/pp-aterm
 
 cafe : ofp-simplify ofp2fast
-	$(SGLRI) -i cafe.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
+	$(ST_PATH)/sglri -i cafe.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | $(ST_PATH)/pp-aterm
 
 clean :
 	rm -f ofp2fast ofp2fast.c
