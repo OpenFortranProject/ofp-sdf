@@ -1,3 +1,4 @@
+include ../../make.inc
 ATERM_ROOT = /usr/local/stratego-debug-32
 
 # cc with Apple XCode uses clang which has unwelcome warning messages
@@ -53,8 +54,8 @@ traversal.o: traversal.c traversal.h ofp_traverse_productions.c
 traversal_f.o: traversal_f.c traversal.h
 
 check: traverse
-	sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
-	traverse testfile.f90.aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p ../syntax/Fortran.tbl -o testfile.f90.aterm
+	./traverse testfile.f90.aterm
 
 clean:
 	rm -f *.o $(EXES) $(OBJS)
