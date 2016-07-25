@@ -51,19 +51,19 @@ lope-to-ocr : lope-to-ocr.str
 	$(ST_PATH)/strc -i lope-to-ocr.str $(CFLAGS) $(LDFLAGS) --main io-lope-to-ocr
 
 check : lope-to-foropencl
-	@sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-orig : lope-to-foropencl
-	@sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | lope-to-foropencl | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-fast :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(ST_PATH)/pp-aterm
 
 check-last : lope-to-foropencl
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-to-foropencl | $(ST_PATH)/pp-aterm
 
 check-lower : lope-lower
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-lower | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | lope-lower | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 clean :
 	rm -f lope-lower lope-lower.c

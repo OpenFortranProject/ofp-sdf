@@ -12,13 +12,13 @@ FOR_ROOT = ../../fortran/syntax
 all : LOPe.tbl
 
 $(FOR_ROOT)/Main.def : $(FOR_ROOT)/Main.sdf
-	cd $(FOR_ROOT); pack-sdf -i Main.sdf -o Main.def -I
+	cd $(FOR_ROOT); $(ST_PATH)/pack-sdf -i Main.sdf -o Main.def -I
 
 LOPe.tbl : LOPe.def
-	sdf2table -i $< -o $@ -m LOPe
+	$(SDF2_PATH)/sdf2table -i $< -o $@ -m LOPe
 
 LOPe.def : LOPe.sdf $(FOR_ROOT)/Main.def
-	pack-sdf -i $< -o $@ -Idef $(FOR_ROOT)/Main.def
+	$(ST_PATH)/pack-sdf -i $< -o $@ -Idef $(FOR_ROOT)/Main.def
 
 LOPe.rtg : LOPe.def
 	$(ST_PATH)/sdf2rtg -i LOPe.def -m LOPe -o LOPe.rtg
@@ -27,10 +27,10 @@ LOPe.str : LOPe.rtg
 	$(ST_PATH)/rtg2sig -i LOPe.rtg -o LOPe.str
 
 convolve : convolve.lope LOPe.tbl
-	sglri -i convolve.lope -p LOPe.tbl | implode-asfix | pp-aterm -o convolve.lope.aterm
+	$(ST_PATH)/sglri -i convolve.lope -p LOPe.tbl | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o convolve.lope.aterm
 
 stencil : stencil.lope LOPe.tbl
-	sglri -i stencil.lope -p LOPe.tbl | implode-asfix | pp-aterm -o stencil.lope.aterm
+	$(ST_PATH)/sglri -i stencil.lope -p LOPe.tbl | $(ST_PATH)/implode-asfix | $(ST_PATH)/pp-aterm -o stencil.lope.aterm
 
 clean :
 	rm -f *.def *.tbl *.rtg *.sig

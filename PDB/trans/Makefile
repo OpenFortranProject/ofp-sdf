@@ -19,20 +19,20 @@ PDB.str : PDB.rtg
 	rtg2sig -i PDB.rtg -o PDB.str
 
 check : fast-to-pdb
-	fast-to-pdb -n R1101c.f90 -i testfile.f90.aterm | pp-aterm
+	fast-to-pdb -n R1101c.f90 -i testfile.f90.aterm | $(ST_PATH)/pp-aterm
 
 check-fast :
-	sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | pp-aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | $(ST_PATH)/pp-aterm
 
 unparse : fast-to-pdb
 	@echo "----------------"
-	@sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | fast-to-pdb -n "R1101c.f90" | ast2text -p ../pp/PDBFile.pp
+	$(ST_PATH)/sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | fast-to-pdb -n "R1101c.f90" | $(ST_PATH)/ast2text -p ../pp/PDBFile.pp
 
 pp : fast-to-pdb
-	sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | fast-to-pdb -n "R1101c.f90"
+	$(ST_PATH)/sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | fast-to-pdb -n "R1101c.f90"
 
 term : $(FTRANS)/ofp2fast $(FSYN)/Fortran.tbl
-	sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | pp-aterm -o testfile.f90.aterm
+	$(ST_PATH)/sglri -i testfile.f90 -p $(FSYN)/Fortran.tbl | $(FTRANS)/ofp2fast | $(ST_PATH)/pp-aterm -o testfile.f90.aterbm
 
 clean :
 	rm -f fast-to-pdb fast-to-pdb.c fast-to-pdb.dep

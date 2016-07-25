@@ -33,19 +33,19 @@ ppm-to-fast : ppm-to-fast.str
 	$(ST_PATH)/strc -i ppm-to-fast.str $(CFLAGS) $(LDFLAGS) --main io-ppm-to-fast
 
 check : ppm-to-fast
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | $(ST_PATH)/pp-aterm
 
 check-pp : ppm-to-fast
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-to-fast | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-parse :
-	sglri -p $(TBL) -i testfile.f90 | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(ST_PATH)/pp-aterm
 
 check-fast :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(ST_PATH)/pp-aterm
 
 check-lower : ppm-lower
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-lower | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | ppm-lower | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 clean :
 	rm -f ppm-lower ppm-lower.c

@@ -27,13 +27,13 @@ SgUntypedNodes.o : SgUntypedNodes.cpp SgUntypedNodes.hpp
 	c++ -c SgUntypedNodes.cpp $(CFLAGS)
 
 SgUntyped.str : SgUntyped.rtg
-	rtg2sig -i SgUntyped.rtg -o SgUntyped.str
+	$(ST_PATH)/rtg2sig -i SgUntyped.rtg -o SgUntyped.str
 
 SgUntyped.rtg.aterm : SgUntyped.rtg
-	parse-rtg -i SgUntyped.rtg | pp-aterm -o SgUntyped.rtg.aterm
+	$(ST_PATH)/parse-rtg -i SgUntyped.rtg | $(ST_PATH)/pp-aterm -o SgUntyped.rtg.aterm
 
 pp : SageRTG.pp SgUntyped.rtg.aterm
-	ast2text -p SageRTG.pp -i SgUntyped.rtg.aterm
+	$(ST_PATH)/ast2text -p SageRTG.pp -i SgUntyped.rtg.aterm
 
 sage2pp : sage2pp.str
 	$(ST_PATH)/strc -i sage2pp.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
@@ -51,22 +51,22 @@ sage-to-build-header : sage-to-build-header.str
 	$(ST_PATH)/strc -i sage-to-build-header.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
 
 check : sage-to-traverse SgUntyped.rtg.aterm
-	sage-to-traverse -i SgUntyped.rtg.aterm | pp-aterm
+	sage-to-traverse -i SgUntyped.rtg.aterm | $(ST_PATH)/pp-aterm
 
 check-pp : sage-to-traverse SgUntyped.rtg.aterm
-	@sage-to-traverse -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
+	@sage-to-traverse -i SgUntyped.rtg.aterm | $(ST_PATH)/ast2text -p sage_traverse.pp
 
 check-pp-header : sage-to-traverse-header SgUntyped.rtg.aterm
-	@sage-to-traverse-header -i SgUntyped.rtg.aterm | ast2text -p sage_traverse_header.pp
+	@sage-to-traverse-header -i SgUntyped.rtg.aterm | $(ST_PATH)/ast2text -p sage_traverse_header.pp
 
 check-pp-build : sage-to-build SgUntyped.rtg.aterm
-	@sage-to-build -i SgUntyped.rtg.aterm | ast2text -p sage_build.pp
+	@sage-to-build -i SgUntyped.rtg.aterm | $(ST_PATH)/ast2text -p sage_build.pp
 
 check-pp-build-header : sage-to-build-header SgUntyped.rtg.aterm
-	@sage-to-build-header -i SgUntyped.rtg.aterm | ast2text -p sage_build_header.pp
+	@sage-to-build-header -i SgUntyped.rtg.aterm | $(ST_PATH)/ast2text -p sage_build_header.pp
 
 check-traverse : sage2pp
-	@sage2pp -i SgUntyped.rtg.aterm | ast2text -p sage_traverse.pp
+	@sage2pp -i SgUntyped.rtg.aterm | $(ST_PATH)/ast2text -p sage_traverse.pp
 
 check-traversal: traverse
 	traverse -i testfile.f90.aterm

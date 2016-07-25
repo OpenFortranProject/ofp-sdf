@@ -1,3 +1,5 @@
+include ../../make.inc
+
 SYNTAX_DIR = ../../LOPe/syntax
 TRANS_DIR  = ../../fortran/trans
 PP_DIR     = ../../fortran/pp
@@ -14,7 +16,7 @@ $(SYNTAX)/Fortran.tbl :
 	cd $(SYNTAX) ; make ; cd -
 
 check : $(TBL) $(TO_FAST) $(TO_PP) $(PP)
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 clean :
 	rm -f *.ast *.ast.aterm

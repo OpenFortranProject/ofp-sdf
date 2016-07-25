@@ -40,19 +40,19 @@ cafe-to-ocr : cafe-to-ocr.str
 	$(ST_PATH)/strc -i cafe-to-ocr.str $(CFLAGS) $(LDFLAGS) --main io-cafe-to-ocr
 
 check : cafe-to-foropencl
-	@sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-to-foropencl | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-orig : cafe-to-foropencl
-	@sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | cafe-to-foropencl | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90.orig | $(TO_FAST) | cafe-to-foropencl | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 check-fast :
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | $(ST_PATH)/pp-aterm
 
 check-cast : cafe-to-foropencl
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-to-foropencl | pp-aterm
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-to-foropencl | $(ST_PATH)/pp-aterm
 
 check-lower : cafe-lower
-	sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-lower | $(TO_PP) | ast2text -p $(PP)
+	$(ST_PATH)/sglri -p $(TBL) -i testfile.f90 | $(TO_FAST) | cafe-lower | $(TO_PP) | $(ST_PATH)/ast2text -p $(PP)
 
 clean :
 	rm -f cafe-lower cafe-lower.c

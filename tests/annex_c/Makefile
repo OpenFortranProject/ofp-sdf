@@ -1,3 +1,5 @@
+include ../../make.inc
+
 SYNTAX = ../../fortran/syntax
 
 all : check
@@ -8,16 +10,16 @@ $(SYNTAX)/Fortran.tbl :
 check : $(SYNTAX)/Fortran.tbl
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-           sglri -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
+           $(ST_PATH)/sglri -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
-           pp-aterm -i $$file.ast -o $$file.ast.aterm; \
+           $(ST_PATH)/pp-aterm -i $$file.ast -o $$file.ast.aterm; \
         done;
 
 junk :
-	sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 -o junk.f90.ast
-	pp-aterm -i junk.f90.ast -o junk.f90.aterm
+	$(ST_PATH)/sglri -p $(SYNTAX)/Fortran.tbl -i junk.f90 -o junk.f90.ast
+	$(ST_PATH)/pp-aterm -i junk.f90.ast -o junk.f90.aterm
 
 clean :
 	rm -f *.ast *.ast.aterm

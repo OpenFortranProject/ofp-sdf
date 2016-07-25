@@ -6,7 +6,7 @@ LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 all : fixed-to-free ofp-simplify ofp2fast fast2pp strip-final-lf #unix-to-dos
 
 fixed-to-free : fixed-to-free.str
-	$(ST_PATH)/strc -i fixed-to-free.str $(CFLAGS) $(LDFLAGS) --main io-fixed-to-free
+	${ST_PATH}/strc -i fixed-to-free.str ${CFLAGS} ${LDFLAGS} --main io-fixed-to-free
 
 ofp-simplify : ofp-simplify.str
 	$(ST_PATH)/strc -i ofp-simplify.str $(CFLAGS) $(LDFLAGS) --main io-ofp-simplify
