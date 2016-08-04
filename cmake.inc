@@ -1,7 +1,6 @@
-OS = $(shell uname -s)
+OS=$(shell uname -s)
 
 ATERM_PATH=${ATERM_PATH}
 SDF2_PATH=${SDF2_PATH}
 ST_PATH=${ST_PATH}
 SGLRI=${ST_PATH}/sglri
-
