@@ -539,6 +539,15 @@ regular tree grammar
     CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
     CoarrayName                       -> Ident
 
+/* R534 */
+    DataStmt                          -> DataStmt(OptLabel,DataStmtSetList,EOS)
+    DataStmtSet                       -> DataStmtSet(ListPlusOfDataStmtObject0,ListPlusOfDataStmtValue0)
+    DataStmtSetList                   -> DataStmtSet
+    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
+    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
+    DataStmtObject                    -> Variable
+    DataStmtObject                    -> DataImpliedDo
+
 /* R545 */
     Decl                              -> DimensionStmt
     DimensionStmt                     -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec)
@@ -1625,13 +1634,7 @@ regular tree grammar
     DataIDoObject                     -> DataImpliedDo
     DataIDoObject                     -> StructureComponent
     DataImpliedDo                     -> DataImpliedDo(ListPlusOfDataIDoObject0,DataIDoVariable,Expr,Expr,OptExpr)
-    DataStmtObject                    -> DataImpliedDo
-    DataStmtObject                    -> Variable
-    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
-    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
-    DataStmtSetList                   -> DataStmtSet
-    DataStmtSet                       -> DataStmtSet(ListPlusOfDataStmtObject0,ListPlusOfDataStmtValue0)
-    DataStmt                          -> DataStmt(OptLabel,DataStmtSetList,EOS)
+
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
     ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
 
