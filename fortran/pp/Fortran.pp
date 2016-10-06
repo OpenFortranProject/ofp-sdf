@@ -318,23 +318,27 @@
    CodimensionDecl               -- _1 "["_2"]",
    CodimensionDecl.2:iter-sep    -- _1 ", ",
 
-   #R534 --,
-   DataStmt                      -- H hs=1[_1 KW["DATA"] H hs=0[_2 _3]],
+   %% R534
+   DataStmt                      -- H hs=1[_1 "DATA" H hs=0[_2]],
+   DataStmt.2:iter-sep           -- _1 ", ",
 
-   #R535 --,
-   DataStmtSet                   -- H hs=1[H hs=0[_1] H hs=0["/"_2"/"]],
+   %% R535
+   DataStmtSet                   -- H hs=0[_1 "/"_2"/"],
    DataStmtSet.1:iter-sep        -- _1 ", ",
    DataStmtSet.2:iter-sep        -- _1 ",",
 
-   #R537 --,
+   %% R537
    DataImpliedDo                 -- "("_1 KW[", "] _2 KW["="] _3 KW[","] _4 _5")",
    DataImpliedDo.1:iter-sep      -- _1 ", ",
 
-   #R539 --,
+   %% R539
    DataIDoVariable               -- _1,
 
-   #R540 --,
-   DataStmtValue                 -- _1 KW["*"] _2,
+   %% R540
+   DataStmtValue                 -- _1 _2,
+   DataStmtRepeat                -- _1 "*",
+
+   no-repeat                     -- ,
 
    %% R545
    DimensionStmt                 -- H hs=1 [_1 H hs=0["DIMENSION :: " _2]],
@@ -342,6 +346,10 @@
 
    ArrayNameSpec                 -- _1 "(" _2 ")",
    ArrayNameSpec.2:iter-sep      -- _1 ",",
+
+   %% R546
+   IntentStmt                    -- H hs=1 [_1 H hs=0["INTENT(" _2 ") :: " _3]],
+   IntentStmt.3:iter-sep         -- _1 ", ",
 
    %% R548
    ParameterStmt                 -- H hs=1 [_1 H hs=0["PARAMETER(" _2 ")"]],
