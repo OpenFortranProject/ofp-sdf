@@ -186,13 +186,6 @@ regular tree grammar
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListPlusOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <cons>(LetterSpec,ListStarOfLetterSpec0)
 
-    ListStarOfDummyArgName0           -> ListPlusOfDummyArgName0
-    ListStarOfDummyArgName0           -> <nil>()
-    ListStarOfDummyArgName0           -> <conc>(ListStarOfDummyArgName0,ListStarOfDummyArgName0)
-    ListPlusOfDummyArgName0           -> <conc>(ListStarOfDummyArgName0,ListPlusOfDummyArgName0)
-    ListPlusOfDummyArgName0           -> <conc>(ListPlusOfDummyArgName0,ListStarOfDummyArgName0)
-    ListPlusOfDummyArgName0           -> <conc>(ListPlusOfDummyArgName0,ListPlusOfDummyArgName0)
-    ListPlusOfDummyArgName0           -> <cons>(DummyArgName,ListStarOfDummyArgName0)
     ListStarOfTargetDecl0             -> ListPlusOfTargetDecl0
     ListStarOfTargetDecl0             -> <nil>()
     ListStarOfTargetDecl0             -> <conc>(ListStarOfTargetDecl0,ListStarOfTargetDecl0)
@@ -230,20 +223,6 @@ regular tree grammar
     ListPlusOfDataIDoObject0          -> <conc>(ListPlusOfDataIDoObject0,ListStarOfDataIDoObject0)
     ListPlusOfDataIDoObject0          -> <conc>(ListPlusOfDataIDoObject0,ListPlusOfDataIDoObject0)
     ListPlusOfDataIDoObject0          -> <cons>(DataIDoObject,ListStarOfDataIDoObject0)
-    ListStarOfDataStmtValue0          -> ListPlusOfDataStmtValue0
-    ListStarOfDataStmtValue0          -> <nil>()
-    ListStarOfDataStmtValue0          -> <conc>(ListStarOfDataStmtValue0,ListStarOfDataStmtValue0)
-    ListPlusOfDataStmtValue0          -> <conc>(ListStarOfDataStmtValue0,ListPlusOfDataStmtValue0)
-    ListPlusOfDataStmtValue0          -> <conc>(ListPlusOfDataStmtValue0,ListStarOfDataStmtValue0)
-    ListPlusOfDataStmtValue0          -> <conc>(ListPlusOfDataStmtValue0,ListPlusOfDataStmtValue0)
-    ListPlusOfDataStmtValue0          -> <cons>(DataStmtValue,ListStarOfDataStmtValue0)
-    ListStarOfDataStmtObject0         -> ListPlusOfDataStmtObject0
-    ListStarOfDataStmtObject0         -> <nil>()
-    ListStarOfDataStmtObject0         -> <conc>(ListStarOfDataStmtObject0,ListStarOfDataStmtObject0)
-    ListPlusOfDataStmtObject0         -> <conc>(ListStarOfDataStmtObject0,ListPlusOfDataStmtObject0)
-    ListPlusOfDataStmtObject0         -> <conc>(ListPlusOfDataStmtObject0,ListStarOfDataStmtObject0)
-    ListPlusOfDataStmtObject0         -> <conc>(ListPlusOfDataStmtObject0,ListPlusOfDataStmtObject0)
-    ListPlusOfDataStmtObject0         -> <cons>(DataStmtObject,ListStarOfDataStmtObject0)
 
     ListStarOfAssumedOrImpliedSpec0   -> ListPlusOfAssumedOrImpliedSpec0
     ListStarOfAssumedOrImpliedSpec0   -> <nil>()
@@ -540,13 +519,14 @@ regular tree grammar
     CoarrayName                       -> Ident
 
 /* R534 */
-    DataStmt                          -> DataStmt(OptLabel,DataStmtSetList,EOS)
-    DataStmtSet                       -> DataStmtSet(ListPlusOfDataStmtObject0,ListPlusOfDataStmtValue0)
-    DataStmtSetList                   -> DataStmtSet
-    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
-    DataStmtSetList                   -> DataStmtSetList_2(DataStmtSetList,DataStmtSet)
+    Decl                              -> DataStmt
+    DataStmt                          -> DataStmt(OptLabel,ListPlusOfDataStmtSet)
+    DataStmtSet                       -> DataStmtSet(ListPlusOfDataStmtObject,ListPlusOfDataStmtValue)
     DataStmtObject                    -> Variable
     DataStmtObject                    -> DataImpliedDo
+    DataStmtValue                     -> DataStmtValue(NoDataStmtRepeat,DataStmtConstant)
+    DataStmtValue                     -> DataStmtValue(DataStmtRepeat,DataStmtConstant)
+    DataStmtRepeat                    -> DataStmtValue(IntConstantExpr)
 
 /* R545 */
     Decl                              -> DimensionStmt
@@ -554,6 +534,10 @@ regular tree grammar
 
     ArrayNameSpec                     -> ArrayNameSpec(ArrayName,ArraySpec)
     ArrayName                         -> Ident
+
+/* R546 */
+    Decl                              -> IntentStmt
+    IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName)
 
 /* R553 */
     Decl                              -> SaveStmt
@@ -1595,8 +1579,8 @@ regular tree grammar
     LetterSpec                        -> LetterSpec(Letter,NoLetter)
     LetterSpec                        -> LetterSpec(Letter,Letter)
     ImplicitSpec                      -> ImplicitSpec(DeclarationTypeSpec,ListPlusOfLetterSpec0)
-    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
-    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
+    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
+    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
     TargetDecl                        -> TargetDecl(ObjectName,OptArraySpec,OptCoarraySpec)
     TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
     TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
@@ -1610,10 +1594,8 @@ regular tree grammar
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
 
-    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
-    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName0,EOS)
-    IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
-    IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName0,EOS)
+    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName,EOS)
+    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName,EOS)
 
     ConstantSubobject                 -> Designator
     IntConstantSubobject              -> ConstantSubobject
@@ -1628,8 +1610,7 @@ regular tree grammar
     NoDataStmtRepeat                  -> no-repeat()
     DataStmtRepeat                    -> IntConstantSubobject
     DataStmtRepeat                    -> Icon
-    DataStmtValue                     -> DataStmtValue(NoDataStmtRepeat,DataStmtConstant)
-    DataStmtValue                     -> DataStmtValue(DataStmtRepeat,DataStmtConstant)
+
     DataIDoVariable                   -> DataIDoVariable(DoVariable)
     DataIDoObject                     -> DataImpliedDo
     DataIDoObject                     -> StructureComponent
@@ -2018,6 +1999,31 @@ regular tree grammar
     ListPlusOfCodimensionDecl        -> <conc>(ListPlusOfCodimensionDecl,ListPlusOfCodimensionDecl)
     ListPlusOfCodimensionDecl        -> <cons>(CodimensionDecl,ListStarOfCodimensionDecl)
 
+/* R534 */
+    ListStarOfDataStmtSet           -> ListPlusOfDataStmtSet
+    ListStarOfDataStmtSet           -> <nil>()
+    ListStarOfDataStmtSet           -> <conc>(ListStarOfDataStmtSet,ListStarOfDataStmtSet)
+    ListPlusOfDataStmtSet           -> <conc>(ListStarOfDataStmtSet,ListPlusOfDataStmtSet)
+    ListPlusOfDataStmtSet           -> <conc>(ListPlusOfDataStmtSet,ListStarOfDataStmtSet)
+    ListPlusOfDataStmtSet           -> <conc>(ListPlusOfDataStmtSet,ListPlusOfDataStmtSet)
+    ListPlusOfDataStmtSet           -> <cons>(DataStmtSet,ListStarOfDataStmtSet)
+
+    ListStarOfDataStmtObject         -> ListPlusOfDataStmtObject
+    ListStarOfDataStmtObject         -> <nil>()
+    ListStarOfDataStmtObject         -> <conc>(ListStarOfDataStmtObject,ListStarOfDataStmtObject)
+    ListPlusOfDataStmtObject         -> <conc>(ListStarOfDataStmtObject,ListPlusOfDataStmtObject)
+    ListPlusOfDataStmtObject         -> <conc>(ListPlusOfDataStmtObject,ListStarOfDataStmtObject)
+    ListPlusOfDataStmtObject         -> <conc>(ListPlusOfDataStmtObject,ListPlusOfDataStmtObject)
+    ListPlusOfDataStmtObject         -> <cons>(DataStmtObject,ListStarOfDataStmtObject)
+
+    ListStarOfDataStmtValue          -> ListPlusOfDataStmtValue
+    ListStarOfDataStmtValue          -> <nil>()
+    ListStarOfDataStmtValue          -> <conc>(ListStarOfDataStmtValue,ListStarOfDataStmtValue)
+    ListPlusOfDataStmtValue          -> <conc>(ListStarOfDataStmtValue,ListPlusOfDataStmtValue)
+    ListPlusOfDataStmtValue          -> <conc>(ListPlusOfDataStmtValue,ListStarOfDataStmtValue)
+    ListPlusOfDataStmtValue          -> <conc>(ListPlusOfDataStmtValue,ListPlusOfDataStmtValue)
+    ListPlusOfDataStmtValue          -> <cons>(DataStmtValue,ListStarOfDataStmtValue)
+
 /* R545 */
     ListStarOfArrayNameSpec          -> ListPlusOfArrayNameSpec
     ListStarOfArrayNameSpec          -> <nil>()
@@ -2294,3 +2300,12 @@ regular tree grammar
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
     ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
+
+/* R1230 */
+    ListStarOfDummyArgName            -> ListPlusOfDummyArgName
+    ListStarOfDummyArgName            -> <nil>()
+    ListStarOfDummyArgName            -> <conc>(ListStarOfDummyArgName,ListStarOfDummyArgName)
+    ListPlusOfDummyArgName            -> <conc>(ListStarOfDummyArgName,ListPlusOfDummyArgName)
+    ListPlusOfDummyArgName            -> <conc>(ListPlusOfDummyArgName,ListStarOfDummyArgName)
+    ListPlusOfDummyArgName            -> <conc>(ListPlusOfDummyArgName,ListPlusOfDummyArgName)
+    ListPlusOfDummyArgName            -> <cons>(DummyArgName,ListStarOfDummyArgName)

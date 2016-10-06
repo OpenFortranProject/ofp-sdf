@@ -84,9 +84,16 @@ signature
     CodimensionStmt          : OptLabel * List(CodimensionDecl) -> CodimensionStmt
     CodimensionDecl          : CoarrayName * CoarraySpec -> CodimensionDecl
                              : Ident -> CoarrayName
+    DataStmt                 : OptLabel * List(DataStmtSet) -> DataStmt
+    DataStmtSet              : List(DataStmtObject) * List(DataStmtValue) -> DataStmtSet
+                             : Variable -> DataStmtObject
+                             : DataImpliedDo -> DataStmtObject
+    DataStmtValue            : NoDataStmtRepeat * DataStmtConstant -> DataStmtValue
+    DataStmtValue            : DataStmtRepeat * DataStmtConstant -> DataStmtValue
     DimensionStmt            : OptLabel * List(ArrayNameSpec) -> DimensionStmt
     ArrayNameSpec            : ArrayName * ArraySpec -> ArrayNameSpec
                              : Ident -> ArrayName
+    IntentStmt               : OptLabel * IntentSpec * List(DummyArgName) -> IntentStmt
     SaveStmt                 : OptLabel * List(SavedEntity) -> SaveStmt
     SavedEntity              : Name -> SavedEntity
     CommonBlockName          : Name -> SavedEntity
@@ -377,7 +384,9 @@ signature
                              : TypeDeclarationStmt -> Decl
                              : BindStmt -> Decl
                              : CodimensionStmt -> Decl
+                             : DataStmt -> Decl
                              : DimensionStmt -> Decl
+                             : IntentStmt -> Decl
                              : SaveStmt -> Decl
                              : VolatileStmt -> Decl
                              : ImplicitStmt -> Decl
@@ -654,6 +663,20 @@ signature
     LetterSpec               : Letter * NoLetter -> LetterSpec
     LetterSpec               : Letter * Letter -> LetterSpec
     ImplicitSpec             : DeclarationTypeSpec * List(LetterSpec) -> ImplicitSpec
+                             : Designator -> ConstantSubobject
+                             : ConstantSubobject -> IntConstantSubobject
+                             : ConstantSubobject -> DataStmtConstant
+                             : BozLiteralConstant -> DataStmtConstant
+                             : CharLiteralConstant -> DataStmtConstant
+                             : LogicalLiteralConstant -> DataStmtConstant
+                             : ComplexLiteralConstant -> DataStmtConstant
+    no-repeat                : NoDataStmtRepeat
+                             : IntConstantSubobject -> DataStmtRepeat
+                             : Icon -> DataStmtRepeat
+    DataIDoVariable          : DoVariable -> DataIDoVariable
+                             : DataImpliedDo -> DataIDoObject
+                             : StructureComponent -> DataIDoObject
+    DataImpliedDo            : List(DataIDoObject) * DataIDoVariable * Expr * Expr * OptExpr -> DataImpliedDo
     INOUT                    : IntentSpec
     OUT                      : IntentSpec
     IN                       : IntentSpec
@@ -750,6 +773,7 @@ signature
                              : String -> OctalConstant
                              : String -> BinaryConstant
                              : String -> Scon
+                             : String -> Icon
                              : String -> Ident
                              : String -> Letter
                              : String -> LblDef
