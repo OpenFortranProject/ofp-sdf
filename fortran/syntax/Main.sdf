@@ -1513,8 +1513,8 @@ context-free syntax
 %%         Icon substituted for scalar-int-constant
 %%         int-constant-subobject substituted for scalar-int-constant-subobject
 %%
-  Icon                                                      ->   DataStmtRepeat
-  IntConstantSubobject                                      ->   DataStmtRepeat
+  Icon                                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
+  IntConstantSubobject                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
   % empty %                                                 -> NoDataStmtRepeat {cons("no-repeat")}
 
 %%R542
