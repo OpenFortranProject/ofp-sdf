@@ -15,6 +15,9 @@ signature
   ExecPart : ListStarOfStmt -> ExecPart
   FuncPart : ListStarOfDecl -> FuncPart
 
+  // Part of recursive definition of DataStmtSetList in Main.sdf
+  DataStmtSetList_2  : DataStmtSetList * DataStmtSet -> DataStmtSetList_2
+
   no-end   : NoEndStmt
 
   // Ambiguities
@@ -396,10 +399,23 @@ ofp-to-ast =
       ? BindStmt(label,lang,entities,eos("\n"))     ;  ! BindStmt(label,lang,entities)
   <+  ? BindStmt(label,lang,entities,eos(str))      ;  ! BindStmt(label,lang,entities) {Comment(str)}
 
+//R534
+ofp-to-ast =
+      ? DataStmt(label,datasetlist,eos("\n"))       ;  ! DataStmt(label,<flatten-list>[datasetlist])
+  <+  ? DataStmt(label,datasetlist,eos(str))        ;  ! DataStmt(label,<flatten-list>[datasetlist]) {Comment(str)}
+
+ofp-to-ast =
+      ? DataStmtSetList_2(set1,set2)                ;  ! <flatten-list> [set1, set2]
+
 //R545
 ofp-to-ast =
       ? DimensionStmt(label,list,eos("\n"))         ;  ! DimensionStmt(label,list)
   <+  ? DimensionStmt(label,list,eos(str))          ;  ! DimensionStmt(label,list)  {Comment(str)}
+
+//R546
+ofp-to-ast =
+      ? IntentStmt(label,intent,args,eos("\n"))     ;  ! IntentStmt(label,intent,args)
+  <+  ? IntentStmt(label,intent,args,eos(str))      ;  ! IntentStmt(label,intent,args)  {Comment(str)}
 
 //R548
 ofp-to-ast:  ParameterStmt(label,list,eos("\n"))    -> ParameterStmt(label,list)
