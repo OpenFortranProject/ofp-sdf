@@ -186,14 +186,6 @@ regular tree grammar
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListPlusOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <cons>(LetterSpec,ListStarOfLetterSpec0)
 
-    ListStarOfTargetDecl0             -> ListPlusOfTargetDecl0
-    ListStarOfTargetDecl0             -> <nil>()
-    ListStarOfTargetDecl0             -> <conc>(ListStarOfTargetDecl0,ListStarOfTargetDecl0)
-    ListPlusOfTargetDecl0             -> <conc>(ListStarOfTargetDecl0,ListPlusOfTargetDecl0)
-    ListPlusOfTargetDecl0             -> <conc>(ListPlusOfTargetDecl0,ListStarOfTargetDecl0)
-    ListPlusOfTargetDecl0             -> <conc>(ListPlusOfTargetDecl0,ListPlusOfTargetDecl0)
-    ListPlusOfTargetDecl0             -> <cons>(TargetDecl,ListStarOfTargetDecl0)
-
     ListStarOfEntityName0             -> ListPlusOfEntityName0
     ListStarOfEntityName0             -> <nil>()
     ListStarOfEntityName0             -> <conc>(ListStarOfEntityName0,ListStarOfEntityName0)
@@ -518,6 +510,10 @@ regular tree grammar
     CodimensionDecl                   -> CodimensionDecl(CoarrayName,CoarraySpec)
     CoarrayName                       -> Ident
 
+/* R533 */
+    Decl                              -> ContiguousStmt
+    ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfName)
+
 /* R534 */
     Decl                              -> DataStmt
     DataStmt                          -> DataStmt(OptLabel,ListPlusOfDataStmtSet)
@@ -546,6 +542,14 @@ regular tree grammar
 /* R554 */
     SavedEntity                       -> SavedEntity(Name)
     SavedEntity                       -> CommonBlockName(Name)
+
+/* R556 */
+    Decl                              -> TargetStmt
+    TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl)
+    TargetDecl                        -> TargetDecl(ObjectName,OptArraySpec,OptCoarraySpec)
+
+    OptCoarraySpec                    -> CoarraySpec(CoarraySpec)
+    OptCoarraySpec                    -> no-list
 
 /* R559 */
     Decl                              -> VolatileStmt
@@ -711,6 +715,7 @@ regular tree grammar
     Stmt                              -> FinalProcedureStmt
     FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
 
+/* R524 */
     Stmt                              -> AccessStmt
     AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId)
 
@@ -1568,6 +1573,7 @@ regular tree grammar
     EquivalenceObject                 -> Variable
     EquivalenceSet                    -> equivalence-set-list(EquivalenceObject,ListPlusOfEquivalenceObject0)
     EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet0,EOS)
+
     NamelistGroupObject               -> VariableName
     NamelistGroupName                 -> Ident
     NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
@@ -1581,9 +1587,7 @@ regular tree grammar
     ImplicitSpec                      -> ImplicitSpec(DeclarationTypeSpec,ListPlusOfLetterSpec0)
     ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
     ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
-    TargetDecl                        -> TargetDecl(ObjectName,OptArraySpec,OptCoarraySpec)
-    TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
-    TargetStmt                        -> TargetStmt(OptLabel,ListPlusOfTargetDecl0,EOS)
+
     ProcPointerName                   -> Ident
 
     ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfEntityName0,EOS)
@@ -1615,9 +1619,6 @@ regular tree grammar
     DataIDoObject                     -> DataImpliedDo
     DataIDoObject                     -> StructureComponent
     DataImpliedDo                     -> DataImpliedDo(ListPlusOfDataIDoObject0,DataIDoVariable,Expr,Expr,OptExpr)
-
-    ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
-    ContiguousStmt                    -> ContiguousStmt(OptLabel,ListPlusOfObjectName0,EOS)
 
     IntentSpec                        -> INOUT()
     IntentSpec                        -> OUT()
@@ -2032,6 +2033,15 @@ regular tree grammar
     ListPlusOfArrayNameSpec          -> <conc>(ListPlusOfArrayNameSpec,ListStarOfArrayNameSpec)
     ListPlusOfArrayNameSpec          -> <conc>(ListPlusOfArrayNameSpec,ListPlusOfArrayNameSpec)
     ListPlusOfArrayNameSpec          -> <cons>(ArrayNameSpec,ListStarOfArrayNameSpec)
+
+/* R556 */
+    ListStarOfTargetDecl             -> ListPlusOfTargetDecl
+    ListStarOfTargetDecl             -> <nil>()
+    ListStarOfTargetDecl             -> <conc>(ListStarOfTargetDecl,ListStarOfTargetDecl)
+    ListPlusOfTargetDecl             -> <conc>(ListStarOfTargetDecl,ListPlusOfTargetDecl)
+    ListPlusOfTargetDecl             -> <conc>(ListPlusOfTargetDecl,ListStarOfTargetDecl)
+    ListPlusOfTargetDecl             -> <conc>(ListPlusOfTargetDecl,ListPlusOfTargetDecl)
+    ListPlusOfTargetDecl             -> <cons>(TargetDecl,ListStarOfTargetDecl)
 
 /* R568 */
     ListStarOfCommonBlockEntry       -> ListPlusOfCommonBlockEntry

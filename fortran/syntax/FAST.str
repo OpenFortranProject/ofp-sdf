@@ -78,12 +78,14 @@ signature
     VarDef                   : Name -> VarDef
     TypeDeclarationStmt      : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
                              : Var -> EntityDecl
+                             : Ident -> ObjectName
     BindStmt                 : OptLabel * LanguageBinding * List(BindEntity) -> BindStmt
     BindEntity               : Name -> BindEntity
     CommonBlockName          : Name -> BindEntity
     CodimensionStmt          : OptLabel * List(CodimensionDecl) -> CodimensionStmt
     CodimensionDecl          : CoarrayName * CoarraySpec -> CodimensionDecl
                              : Ident -> CoarrayName
+    ContiguousStmt           : OptLabel * List(Name) -> ContiguousStmt
     DataStmt                 : OptLabel * List(DataStmtSet) -> DataStmt
     DataStmtSet              : List(DataStmtObject) * List(DataStmtValue) -> DataStmtSet
                              : Variable -> DataStmtObject
@@ -97,6 +99,9 @@ signature
     SaveStmt                 : OptLabel * List(SavedEntity) -> SaveStmt
     SavedEntity              : Name -> SavedEntity
     CommonBlockName          : Name -> SavedEntity
+    TargetStmt               : OptLabel * List(TargetDecl) -> TargetStmt
+    TargetDecl               : ObjectName * OptArraySpec * OptCoarraySpec -> TargetDecl
+    CoarraySpec              : CoarraySpec -> OptCoarraySpec
     VolatileStmt             : OptLabel * List(Name) -> VolatileStmt
     ImplicitStmt             : OptLabel * List(ImplicitSpec) -> ImplicitStmt
     CommonStmt               : OptLabel * List(CommonBlockEntry) -> CommonStmt
@@ -384,10 +389,12 @@ signature
                              : TypeDeclarationStmt -> Decl
                              : BindStmt -> Decl
                              : CodimensionStmt -> Decl
+                             : ContiguousStmt -> Decl
                              : DataStmt -> Decl
                              : DimensionStmt -> Decl
                              : IntentStmt -> Decl
                              : SaveStmt -> Decl
+                             : TargetStmt -> Decl
                              : VolatileStmt -> Decl
                              : ImplicitStmt -> Decl
                              : CommonStmt -> Decl
