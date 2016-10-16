@@ -356,11 +356,27 @@
    IntentStmt                    -- H hs=1 [_1 H hs=0["INTENT(" _2 ") :: " _3]],
    IntentStmt.3:iter-sep         -- _1 ", ",
 
+   %% R547
+   OptionalStmt                  -- H hs=1 [_1 H hs=0["OPTIONAL :: " _2]],
+   OptionalStmt.2:iter-sep       -- _1 ", ",
+
    %% R548
    ParameterStmt                 -- H hs=1 [_1 H hs=0["PARAMETER(" _2 ")"]],
    ParameterStmt.2:iter-sep      -- _1 ", ",
 
    NamedConstantDef              -- _1 "=" _2,
+
+   %% R550
+   PointerStmt                   -- H hs=1 [_1 H hs=0["POINTER :: " _2]],
+   PointerStmt.2:iter-sep        -- _1 ", ",
+
+   %% R551
+   PointerDecl                   -- _1 "(" _2 ")",
+   PointerDecl.2:iter-sep        -- _1 ",",
+
+   %% R552
+   ProtectedStmt                 -- H hs=1 [_1 H hs=0["PROTECTED :: " _2]],
+   ProtectedStmt.2:iter-sep      -- _1 ", ",
 
    %% R553
    ppSaveStmt                    -- H hs=1[_1 "SAVE"],
@@ -382,38 +398,42 @@
    ppArraySpec                   -- "(" _1 ")",
    ppCorraySpec                  -- "[" _1 "]",
 
+   %% R558
+   ValueStmt                     -- H hs=1 [_1 H hs=0["VALUE :: " _2]],
+   ValueStmt.2:iter-sep          -- _1 ", ",
+
    %% R559
    VolatileStmt                  -- H hs=1 [_1 H hs=0["VOLATILE :: " _2]],
    VolatileStmt.2:iter-sep       -- _1 ", ",
 
-   #R560 --,
+   %% R560
    ppImplicitStmt                -- H hs=1[_1 KW["IMPLICIT NONE"]],
    ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=1[_2 _3]],
    ImplicitStmt.2:iter-sep       -- _1 ", ",
 
-   #R561 --,
+   %% R561
    ImplicitSpec                  -- _1 "("_2")",
    ImplicitSpec.2:iter-sep       -- _1 ", ",
 
-   #R562 --,
+   %% R562
    LetterSpec                    -- _1 _2,
    ppLetterSpec                  -- _1,
    ppLetterSpec                  -- _1 KW["-"] _2,
 
-   #R563 --,
-   NamelistStmt                  -- H hs=1[_1 KW["NAMELIST"] H hs=0[_2] _3],
+   %% R563
+   NamelistStmt                  -- H hs=1[_1 "NAMELIST" H hs=0[_2]],
    NamelistEntry                 -- "/"_1"/ " _2,
    NamelistEntry.2:iter-sep      -- _1 ", ",
 
-   #R565 --,
-   EquivalenceStmt               -- H hs=1[_1 KW["EQUIVALENCE"] H hs=0[_2 _3]],
+   %% R565
+   EquivalenceStmt               -- H hs=1[_1 "EQUIVALENCE" H hs=0[_2]],
    EquivalenceStmt.2:iter-sep    -- _1 ", ",
 
-   #R566 --, 
+   %% R566
    EquivalenceSet                -- "("_1")",
    EquivalenceSet.1:iter-sep     -- _1 ", ",
 
-   %% 568
+   %% R568
    CommonStmt                    -- H hs=1[_1 "COMMON" H hs=0[ _2]],
    CommonStmt.2:iter-sep         -- _1 ", ",
    CommonBlockEntry              -- "/" _1 "/ " _2,
