@@ -6,9 +6,10 @@
    no-label                      -- ,
    no-name                       -- ,
 
-   append-colon                  -- _1 KW[": "],
+   append-colon                  -- _1 ": ",
 
-   opt-list                      -- KW[", "] _1,
+   no-list                       -- ,
+   opt-list                      -- ", " _1,
    opt-list.1:iter-sep           -- _1 ", ",
 
    CONCURRENT                    -- "CONCURRENT",
