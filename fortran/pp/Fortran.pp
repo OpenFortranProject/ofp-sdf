@@ -318,6 +318,10 @@
    CodimensionDecl               -- _1 "["_2"]",
    CodimensionDecl.2:iter-sep    -- _1 ", ",
 
+   %% R533
+   ContiguousStmt                -- H hs=1 [_1 H hs=0["CONTIGUOUS :: " _2]],
+   ContiguousStmt.2:iter-sep     -- _1 ", ",
+
    %% R534
    DataStmt                      -- H hs=1[_1 "DATA" H hs=0[_2]],
    DataStmt.2:iter-sep           -- _1 ", ",
@@ -367,13 +371,15 @@
    SavedEntity_CBN               -- _1,
 
    %% R556
-   TargetStmt                    -- H hs=1 [_1 H hs=0["TARGET :: " _2 _3]],
+   TargetStmt                    -- H hs=1 [_1 H hs=0["TARGET :: " _2]],
    TargetStmt.2:iter-sep         -- _1 ", ",
 
-   #R557 --,
-   TargetDecl                    -- _1 "("_2")" "["_3"]",
-   TargetDecl.2:iter-sep         -- _1 ", ",
-   TargetDecl.3:iter-sep         -- _1 ", ",
+   %% R557
+   ppTargetDecl                  -- _1 _2 _3,
+   ppTargetDecl.2:iter-sep       -- _1 ", ",
+   ppTargetDecl.3:iter-sep       -- _1 ", ",
+   ppArraySpec                   -- "(" _1 ")",
+   ppCorraySpec                  -- "[" _1 "]",
 
    %% R559
    VolatileStmt                  -- H hs=1 [_1 H hs=0["VOLATILE :: " _2]],
