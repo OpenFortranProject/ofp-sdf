@@ -33,6 +33,10 @@ signature
 
     ppCoarrayType  : ListStarOfRange     -> ppArrayType
 
+    ppTargetDecl   : Name * ppArraySpec * ppCoarraySpec  -> ppTargetDecl
+    ppArraySpec    :        ppArraySpec                  -> ppArraySpec
+    ppCoarraySpec  :                      ppCoarraySpec  -> ppCoarraySpec
+
     ppArg          : arg                 -> ppArg
 
     ppVar          : name * init         -> ppVar
@@ -155,6 +159,13 @@ ast-to-pp:  SaveStmt(label,[])               -> ppSaveStmt(label)
 
 //R553
 ast-to-pp:  Range(no-lower-bound(), upper)   -> ppRange(upper)
+
+//R557
+ast-to-pp =
+      ? TargetDecl(name,[]       ,[])           ; ! ppTargetDecl(name,no-list()             ,no-list())
+  <+  ? TargetDecl(name,arrayspec,[])           ; ! ppTargetDecl(name,ppArraySpec(arrayspec),no-list())
+  <+  ? TargetDecl(name,[]       ,coarrayspec)  ; ! ppTargetDecl(name,no-list()             ,ppCoarraySpec(coarrayspec))
+  <+  ? TargetDecl(name,arrayspec,coarrayspec)  ; ! ppTargetDecl(name,ppArraySpec(arrayspec),ppCoarraySpec(coarrayspec))
 
 //R560
 ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
