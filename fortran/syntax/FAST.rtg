@@ -157,20 +157,6 @@ regular tree grammar
     ListPlusOfPartRef0                -> <conc>(ListPlusOfPartRef0,ListPlusOfPartRef0)
     ListPlusOfPartRef0                -> <cons>(PartRef,ListStarOfPartRef0)
 
-    ListStarOfEquivalenceObject0      -> ListPlusOfEquivalenceObject0
-    ListStarOfEquivalenceObject0      -> <nil>()
-    ListStarOfEquivalenceObject0      -> <conc>(ListStarOfEquivalenceObject0,ListStarOfEquivalenceObject0)
-    ListPlusOfEquivalenceObject0      -> <conc>(ListStarOfEquivalenceObject0,ListPlusOfEquivalenceObject0)
-    ListPlusOfEquivalenceObject0      -> <conc>(ListPlusOfEquivalenceObject0,ListStarOfEquivalenceObject0)
-    ListPlusOfEquivalenceObject0      -> <conc>(ListPlusOfEquivalenceObject0,ListPlusOfEquivalenceObject0)
-    ListPlusOfEquivalenceObject0      -> <cons>(EquivalenceObject,ListStarOfEquivalenceObject0)
-    ListStarOfEquivalenceSet0         -> ListPlusOfEquivalenceSet0
-    ListStarOfEquivalenceSet0         -> <nil>()
-    ListStarOfEquivalenceSet0         -> <conc>(ListStarOfEquivalenceSet0,ListStarOfEquivalenceSet0)
-    ListPlusOfEquivalenceSet0         -> <conc>(ListStarOfEquivalenceSet0,ListPlusOfEquivalenceSet0)
-    ListPlusOfEquivalenceSet0         -> <conc>(ListPlusOfEquivalenceSet0,ListStarOfEquivalenceSet0)
-    ListPlusOfEquivalenceSet0         -> <conc>(ListPlusOfEquivalenceSet0,ListPlusOfEquivalenceSet0)
-    ListPlusOfEquivalenceSet0         -> <cons>(EquivalenceSet,ListStarOfEquivalenceSet0)
     ListStarOfNamelistGroupObject0    -> ListPlusOfNamelistGroupObject0
     ListStarOfNamelistGroupObject0    -> <nil>()
     ListStarOfNamelistGroupObject0    -> <conc>(ListStarOfNamelistGroupObject0,ListStarOfNamelistGroupObject0)
@@ -185,28 +171,6 @@ regular tree grammar
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListStarOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <conc>(ListPlusOfLetterSpec0,ListPlusOfLetterSpec0)
     ListPlusOfLetterSpec0             -> <cons>(LetterSpec,ListStarOfLetterSpec0)
-
-    ListStarOfEntityName0             -> ListPlusOfEntityName0
-    ListStarOfEntityName0             -> <nil>()
-    ListStarOfEntityName0             -> <conc>(ListStarOfEntityName0,ListStarOfEntityName0)
-    ListPlusOfEntityName0             -> <conc>(ListStarOfEntityName0,ListPlusOfEntityName0)
-    ListPlusOfEntityName0             -> <conc>(ListPlusOfEntityName0,ListStarOfEntityName0)
-    ListPlusOfEntityName0             -> <conc>(ListPlusOfEntityName0,ListPlusOfEntityName0)
-    ListPlusOfEntityName0             -> <cons>(EntityName,ListStarOfEntityName0)
-    ListStarOfAssumedShapeSpec0       -> ListPlusOfAssumedShapeSpec0
-    ListStarOfAssumedShapeSpec0       -> <nil>()
-    ListStarOfAssumedShapeSpec0       -> <conc>(ListStarOfAssumedShapeSpec0,ListStarOfAssumedShapeSpec0)
-    ListPlusOfAssumedShapeSpec0       -> <conc>(ListStarOfAssumedShapeSpec0,ListPlusOfAssumedShapeSpec0)
-    ListPlusOfAssumedShapeSpec0       -> <conc>(ListPlusOfAssumedShapeSpec0,ListStarOfAssumedShapeSpec0)
-    ListPlusOfAssumedShapeSpec0       -> <conc>(ListPlusOfAssumedShapeSpec0,ListPlusOfAssumedShapeSpec0)
-    ListPlusOfAssumedShapeSpec0       -> <cons>(AssumedShapeSpec,ListStarOfAssumedShapeSpec0)
-    ListStarOfPointerDecl0            -> ListPlusOfPointerDecl0
-    ListStarOfPointerDecl0            -> <nil>()
-    ListStarOfPointerDecl0            -> <conc>(ListStarOfPointerDecl0,ListStarOfPointerDecl0)
-    ListPlusOfPointerDecl0            -> <conc>(ListStarOfPointerDecl0,ListPlusOfPointerDecl0)
-    ListPlusOfPointerDecl0            -> <conc>(ListPlusOfPointerDecl0,ListStarOfPointerDecl0)
-    ListPlusOfPointerDecl0            -> <conc>(ListPlusOfPointerDecl0,ListPlusOfPointerDecl0)
-    ListPlusOfPointerDecl0            -> <cons>(PointerDecl,ListStarOfPointerDecl0)
 
     ListStarOfDataIDoObject0          -> ListPlusOfDataIDoObject0
     ListStarOfDataIDoObject0          -> <nil>()
@@ -495,6 +459,12 @@ regular tree grammar
 
 /* R508 LanguageBinding */
 
+/* R524 */
+    Stmt                              -> AccessStmt
+    AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId)
+
+    AccessId                          -> GenericSpec
+
 /* R529 */
     Decl                              -> BindStmt
     BindStmt                          -> BindStmt(OptLabel,LanguageBinding,ListPlusOfBindEntity)
@@ -535,6 +505,21 @@ regular tree grammar
     Decl                              -> IntentStmt
     IntentStmt                        -> IntentStmt(OptLabel,IntentSpec,ListPlusOfDummyArgName)
 
+/* R547 */
+    Decl                              -> OptionalStmt
+    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName)
+
+/* R550 */
+    Decl                              -> PointerStmt
+    PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl)
+
+/* R551 */
+    PointerDecl                       -> PointerDecl(ObjectName,ListStarOfRange)
+
+/* R552 */
+    Decl                              -> ProtectedStmt
+    ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfName)
+
 /* R553 */
     Decl                              -> SaveStmt
     SaveStmt                          -> SaveStmt(OptLabel,ListPlusOfSavedEntity)
@@ -551,6 +536,10 @@ regular tree grammar
     OptCoarraySpec                    -> CoarraySpec(CoarraySpec)
     OptCoarraySpec                    -> no-list
 
+/* R558 */
+    Decl                              -> ValueStmt
+    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName)
+
 /* R559 */
     Decl                              -> VolatileStmt
     VolatileStmt                      -> VolatileStmt(OptLabel,ListStarOfName)
@@ -558,6 +547,22 @@ regular tree grammar
 /* R560 */
     Decl                              -> ImplicitStmt
     ImplicitStmt                      -> ImplicitStmt(OptLabel,ListStarOfImplicitSpec)
+
+/* R563 - TODO - FIXME */
+    Decl                              -> NamelistStmt
+    NamelistStmt                      -> NamelistStmt(OptLabel,NamelistEntryList)
+    NamelistEntry                     -> NamelistEntry(NamelistGroupName,ListPlusOfNamelistGroupObject0)
+    NamelistGroupObject               -> VariableName
+    NamelistGroupName                 -> Ident
+    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
+    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
+    NamelistEntryList                 -> name-list-entry-list-head(NamelistEntry)
+
+/* R565 */
+    Decl                              -> EquivalenceStmt
+    EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet)
+    EquivalenceSet                    -> EquivalenceSet(EquivalenceObject,ListPlusOfEquivalenceObject)
+    EquivalenceObject                 -> Variable
 
 /* 568 */
     Decl                              -> CommonStmt
@@ -714,12 +719,6 @@ regular tree grammar
 
     Stmt                              -> FinalProcedureStmt
     FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
-
-/* R524 */
-    Stmt                              -> AccessStmt
-    AccessStmt                        -> AccessStmt(OptLabel,AccessSpec,ListStarOfAccessId)
-
-    AccessId                          -> GenericSpec
 
     Stmt                              -> AllocatableStmt
     AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl)
@@ -1570,36 +1569,12 @@ regular tree grammar
     Designator                        -> Substring
     Designator                        -> DataRef
 
-    EquivalenceObject                 -> Variable
-    EquivalenceSet                    -> equivalence-set-list(EquivalenceObject,ListPlusOfEquivalenceObject0)
-    EquivalenceStmt                   -> EquivalenceStmt(OptLabel,ListPlusOfEquivalenceSet0,EOS)
-
-    NamelistGroupObject               -> VariableName
-    NamelistGroupName                 -> Ident
-    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
-    NamelistEntryList                 -> name-list-entry-list-tail(NamelistEntryList,NamelistEntry)
-    NamelistEntryList                 -> name-list-entry-list-head(NamelistEntry)
-    NamelistEntry                     -> NamelistEntry(NamelistGroupName,ListPlusOfNamelistGroupObject0)
-    NamelistStmt                      -> NamelistStmt(OptLabel,NamelistEntryList,EOS)
     NoLetter                          -> no-letter()
     LetterSpec                        -> LetterSpec(Letter,NoLetter)
     LetterSpec                        -> LetterSpec(Letter,Letter)
     ImplicitSpec                      -> ImplicitSpec(DeclarationTypeSpec,ListPlusOfLetterSpec0)
-    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
-    ValueStmt                         -> ValueStmt(OptLabel,ListPlusOfDummyArgName,EOS)
 
     ProcPointerName                   -> Ident
-
-    ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfEntityName0,EOS)
-    ProtectedStmt                     -> ProtectedStmt(OptLabel,ListPlusOfEntityName0,EOS)
-    NoList                            -> no-list()
-    PointerDecl                       -> PointerDecl(ObjectName,NoList)
-    PointerDecl                       -> PointerDecl(ObjectName,ListPlusOfAssumedShapeSpec0)
-    PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
-    PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl0,EOS)
-
-    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName,EOS)
-    OptionalStmt                      -> OptionalStmt(OptLabel,ListPlusOfDummyArgName,EOS)
 
     ConstantSubobject                 -> Designator
     IntConstantSubobject              -> ConstantSubobject
@@ -2034,6 +2009,15 @@ regular tree grammar
     ListPlusOfArrayNameSpec          -> <conc>(ListPlusOfArrayNameSpec,ListPlusOfArrayNameSpec)
     ListPlusOfArrayNameSpec          -> <cons>(ArrayNameSpec,ListStarOfArrayNameSpec)
 
+/* R551 */
+    ListStarOfPointerDecl            -> ListPlusOfPointerDecl
+    ListStarOfPointerDecl            -> <nil>()
+    ListStarOfPointerDecl            -> <conc>(ListStarOfPointerDecl,ListStarOfPointerDecl)
+    ListPlusOfPointerDecl            -> <conc>(ListStarOfPointerDecl,ListPlusOfPointerDecl)
+    ListPlusOfPointerDecl            -> <conc>(ListPlusOfPointerDecl,ListStarOfPointerDecl)
+    ListPlusOfPointerDecl            -> <conc>(ListPlusOfPointerDecl,ListPlusOfPointerDecl)
+    ListPlusOfPointerDecl            -> <cons>(PointerDecl,ListStarOfPointerDecl)
+
 /* R556 */
     ListStarOfTargetDecl             -> ListPlusOfTargetDecl
     ListStarOfTargetDecl             -> <nil>()
@@ -2042,6 +2026,24 @@ regular tree grammar
     ListPlusOfTargetDecl             -> <conc>(ListPlusOfTargetDecl,ListStarOfTargetDecl)
     ListPlusOfTargetDecl             -> <conc>(ListPlusOfTargetDecl,ListPlusOfTargetDecl)
     ListPlusOfTargetDecl             -> <cons>(TargetDecl,ListStarOfTargetDecl)
+
+/* R566 */
+    ListStarOfEquivalenceSet         -> ListPlusOfEquivalenceSet
+    ListStarOfEquivalenceSet         -> <nil>()
+    ListStarOfEquivalenceSet         -> <conc>(ListStarOfEquivalenceSet,ListStarOfEquivalenceSet)
+    ListPlusOfEquivalenceSet         -> <conc>(ListStarOfEquivalenceSet,ListPlusOfEquivalenceSet)
+    ListPlusOfEquivalenceSet         -> <conc>(ListPlusOfEquivalenceSet,ListStarOfEquivalenceSet)
+    ListPlusOfEquivalenceSet         -> <conc>(ListPlusOfEquivalenceSet,ListPlusOfEquivalenceSet)
+    ListPlusOfEquivalenceSet         -> <cons>(EquivalenceSet,ListStarOfEquivalenceSet)
+
+/* R567 */
+    ListStarOfEquivalenceObject      -> ListPlusOfEquivalenceObject
+    ListStarOfEquivalenceObject      -> <nil>()
+    ListStarOfEquivalenceObject      -> <conc>(ListStarOfEquivalenceObject,ListStarOfEquivalenceObject)
+    ListPlusOfEquivalenceObject      -> <conc>(ListStarOfEquivalenceObject,ListPlusOfEquivalenceObject)
+    ListPlusOfEquivalenceObject      -> <conc>(ListPlusOfEquivalenceObject,ListStarOfEquivalenceObject)
+    ListPlusOfEquivalenceObject      -> <conc>(ListPlusOfEquivalenceObject,ListPlusOfEquivalenceObject)
+    ListPlusOfEquivalenceObject      -> <cons>(EquivalenceObject,ListStarOfEquivalenceObject)
 
 /* R568 */
     ListStarOfCommonBlockEntry       -> ListPlusOfCommonBlockEntry
