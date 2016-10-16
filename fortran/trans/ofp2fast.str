@@ -125,16 +125,64 @@ fast-fixup-spec-part =
   ;  !Scope(SpecPart(spec_list),ExecPart(<id>),funcs)
 }
 
-// TODO - add derived-type-def, enum-def, interface-block
-//        procedure-declaration-stmt, stmt-function-stmt, access-stmt, allocatable-stmt
-//        bind-stmt, comdimension-stmt, common-stmt
-// Probably also entry-stmt, data-stmt, and format-stmt that precede any truly executable
-// statements.
+// List of possible declarations statements
 //
+//  ImplicitStmt                           -> SpecAndExecConstruct
+//  DeclarationConstruct                   -> SpecAndExecConstruct
+//  ExecutableConstruct                    -> SpecAndExecConstruct
+//
+//  DerivedTypeDef                         -> DeclarationConstruct
+//  EntryStmt                              -> DeclarationConstruct
+//  EnumDef                                -> DeclarationConstruct
+//  FormatStmt                             -> DeclarationConstruct
+//  InterfaceBlock                         -> DeclarationConstruct
+//  ParameterStmt                          -> DeclarationConstruct
+//  ProcedureDeclarationStmt               -> DeclarationConstruct
+//  OtherSpecificationStmt                 -> DeclarationConstruct
+//  TypeDeclarationStmt                    -> DeclarationConstruct
+//%%StmtFunctionStmt                       -> DeclarationConstruct  %% AMBIGUOUS with array assignment
+
+//
+// Note - these have the arity of FAST nodes
+//
+
 is-specification-part =
+//---------------------------------- These options are ordered first because of frequent usage
      ?ImplicitStmt(_,_)
  <+  ?ParameterStmt(_,_)
  <+  ?TypeDeclarationStmt(_,_,_,_)
+//    StmtFunctionStmt               %% AMBIGUOUS with array assignment
+//---------------------------------- OtherSpecificationStmt
+ <+  ?AccessStmt(_,_,_)
+ <+  ?AllocatableStmt(_,_)
+ <+  ?AsynchronousStmt(_,_)
+ <+  ?BindStmt(_,_,_)
+ <+  ?CodimensionStmt(_,_)
+ <+  ?ContiguousStmt(_,_)
+ <+  ?CommonStmt(_,_)
+ <+  ?DataStmt(_,_)
+ <+  ?DimensionStmt(_,_)
+ <+  ?EquivalenceStmt(_,_)
+ <+  ?ExternalStmt(_,_)
+ <+  ?IntentStmt(_,_,_)
+ <+  ?IntrinsicStmt(_,_)
+ <+  ?NamelistStmt(_,_)
+ <+  ?OptionalStmt(_,_)
+ <+  ?PointerStmt(_,_)
+ <+  ?ProtectedStmt(_,_)
+ <+  ?SaveStmt(_,_)
+ <+  ?TargetStmt(_,_)
+ <+  ?VolatileStmt(_,_)
+ <+  ?ValueStmt(_,_)
+//---------------------------------- DeclarationConstruct
+ <+  ?DerivedTypeDef(_,_,_,_,_,_)
+ <+  ?EntryStmt(_,_,_,_)
+ <+  ?EnumDef(_,_,_)
+ <+  ?FormatStmt(_,_)
+ <+  ?InterfaceBlock(_,_,_)
+ //   ParameterStmt(_,_)
+ <+  ?ProcedureDeclarationStmt(_,_,_,_)
+
 
 // Call the recursive strategy fast-fixup-do-construct (directly below) to build multiple
 // BlockDoConstructs from a series of do statements.
@@ -426,18 +474,54 @@ ofp-to-ast:  ParameterStmt(label,list,eos(str))     -> ParameterStmt(label,list)
 // ------------
 
 
+//R547
+ofp-to-ast =
+      ? OptionalStmt(label,args,eos("\n"))        ;  ! OptionalStmt(label,args)
+  <+  ? OptionalStmt(label,args,eos(str))         ;  ! OptionalStmt(label,args) {Comment(str)}
+
+//R550
+ofp-to-ast =
+      ? PointerStmt(label,pointers,eos("\n"))     ;  ! PointerStmt(label,pointers)
+  <+  ? PointerStmt(label,pointers,eos(str))      ;  ! PointerStmt(label,pointers) {Comment(str)}
+
+//R552
+ofp-to-ast =
+      ? ProtectedStmt(label,entnames,eos("\n"))   ;  ! ProtectedStmt(label,entnames)
+  <+  ? ProtectedStmt(label,entnames,eos(str))    ;  ! ProtectedStmt(label,entnames) {Comment(str)}
+
 //R553
 ofp-to-ast =
-      ? SaveStmt(label,entities,eos("\n"))       ;  ! SaveStmt(label,entities)
-  <+  ? SaveStmt(label,entities,eos(str))        ;  ! SaveStmt(label,entities) {Comment(str)}
+      ? SaveStmt(label,entities,eos("\n"))        ;  ! SaveStmt(label,entities)
+  <+  ? SaveStmt(label,entities,eos(str))         ;  ! SaveStmt(label,entities) {Comment(str)}
+
+//R556
+ofp-to-ast =
+      ? TargetStmt(label,targets,eos("\n"))       ;  ! TargetStmt(label,targets)
+  <+  ? TargetStmt(label,targets,eos(str))        ;  ! TargetStmt(label,targets) {Comment(str)}
+
+//R558
+ofp-to-ast =
+      ? ValueStmt(label,args,eos("\n"))           ;  ! ValueStmt(label,args)
+  <+  ? ValueStmt(label,args,eos(str))            ;  ! ValueStmt(label,args) {Comment(str)}
 
 //R559
-ofp-to-ast:  VolatileStmt(label,names,eos("\n")) -> VolatileStmt(label,names)
-ofp-to-ast:  VolatileStmt(label,names,eos(str))  -> VolatileStmt(label,names) {Comment(str)}
+ofp-to-ast =
+      ?  VolatileStmt(label,names,eos("\n"))      ;  ! VolatileStmt(label,names)
+  <+  ?  VolatileStmt(label,names,eos(str))       ;  ! VolatileStmt(label,names) {Comment(str)}
 
 //R560 - TODO: implicit-spec-list
   ofp-to-ast:  ImplicitNoneStmt(label,eos("\n")) -> ImplicitStmt(label,[])
   ofp-to-ast:  ImplicitNoneStmt(label,eos(str) ) -> ImplicitStmt(label,[]) {Comment(str)}
+
+//R563
+ofp-to-ast =
+      ? NamelistStmt(label,groups,eos("\n"))        ;  ! NamelistStmt(label,groups)
+  <+  ? NamelistStmt(label,groups,eos(str))         ;  ! NamelistStmt(label,groups) {Comment(str)}
+
+//R565
+ofp-to-ast =
+      ? EquivalenceStmt(label,eqvlist,eos("\n"))  ;  ! EquivalenceStmt(label,eqvlist)
+  <+  ? EquivalenceStmt(label,eqvlist,eos(str))   ;  ! EquivalenceStmt(label,eqvlist) {Comment(str)}
 
 //R568
 ofp-to-ast =
