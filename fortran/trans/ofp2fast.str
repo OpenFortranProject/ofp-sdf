@@ -234,7 +234,7 @@ complete-block-do-construct =
   ;  !BlockDoConstruct(next_do,[],no-end())
   ;  !(<concat>[[<id>]
                  , [BlockDoConstruct(begin_do
-                     ,<flatten-list> <concat>[begin_block,next_block],no-end())]
+                     ,<flatten-list> <concat>[begin_block,[inner],next_block],no-end())]
                  , do_list]
             , [], tail)
   ;  <complete-block-do-construct> <id>
