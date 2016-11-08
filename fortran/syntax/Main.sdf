@@ -32,6 +32,7 @@ sorts
   DeclarationConstruct                %% R207
   ExecutionPart                       %% R208
   ExecutionPartConstruct              %% R209
+  BlockExecutionPartConstruct         %% replacement for use in Block to allow FormatStmt, for example
   InternalSubprogramPart              %% R210
   InternalSubprogram                  %% R211
   OtherSpecificationStmt              %% R212
@@ -1412,8 +1413,8 @@ context-free syntax
 %%R521
 %%AMB: explicit-shape-spec list made non-empty to remove ambiguity with implied-shape-spec-list
 %%
-  {ExplicitShapeSpec ','}+ ',' '*'                 -> AssumedSizeSpec    {cons("AssumedSize")}
-  {ExplicitShapeSpec ','}+ ',' LowerBound ':' '*'  -> AssumedSizeSpec    {cons("AssumedSize")}
+  {ExplicitShapeSpec ','}+ ',' NoLowerBound     '*'  -> AssumedSizeSpec    {cons("AssumedSize")}
+  {ExplicitShapeSpec ','}+ ','   LowerBound ':' '*'  -> AssumedSizeSpec    {cons("AssumedSize")}
 
 %%R522a
   '..'                                          -> AssumedRankSpec       {cons("AssumedRank")}
@@ -2371,7 +2372,7 @@ context-free syntax
 %%
 
 %%R801
-  ExecutionPartConstruct*                               -> Block              {cons("Block")}
+  BlockExecutionPartConstruct*                          -> Block              {cons("Block")}
 
 %%R802
   AssociateStmt
@@ -3242,6 +3243,14 @@ context-free syntax
 %%FormatStmt                             -> ExecutionPartConstruct
 %%EntryStmt                              -> ExecutionPartConstruct
 %%DataStmt                               -> ExecutionPartConstruct
+
+%% This is needed to allow FormatStmt, ... within a block
+%%   WARNING-MODIFICATION
+%%    This appears to allow an ActionStmt to precede a declaration
+  ExecutableConstruct                    -> BlockExecutionPartConstruct
+  FormatStmt                             -> BlockExecutionPartConstruct
+  EntryStmt                              -> BlockExecutionPartConstruct
+  DataStmt                               -> BlockExecutionPartConstruct
 
 %%R210
   ContainsStmt InternalSubprogram*       -> InternalSubprogramPart    {cons("SubprogramPart")}
