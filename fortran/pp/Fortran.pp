@@ -776,22 +776,45 @@
    InquireLengthStmt             -- H hs=1 [_1 "INQUIRE" H hs=0["(" "IOLENGTH=" _2 ")"] H hs=0[_3]],
    InquireLengthStmt.3:iter-sep  -- _1 ", ",
 
-   #R1001 --,
+   %% R1001
    FormatStmt                    -- H hs=1[_1 H hs=0 ["FORMAT" "("_2")"]],
    FormatStmt.2:iter-sep         -- _1 ",",
 
    FormatSpec                    -- _1 _2,
    FormatSpec.1:iter-sep         -- _1 ",",
 
+   %% R1007
+
+   I                             -- _1 "I" _2 _3,
+%% B                             -- _1 "B" _2 _3,
+%% O                             -- _1 "O" _2 _3,
+%% Z                             -- _1 "Z" _2 _3,
+
+   F                             -- _1 "F"  _2 "." _3,
+   E                             -- _1 "E"  _2 "." _3 _4,
+%% EN                            -- _1 "EN" _2 "." _3 _4,
+%% ES                            -- _1 "ES" _2 "." _3 _4,
+%% G                             -- _1 "G"  _2 "." _3 _4,
+   no-d                          -- ,
+   no-e                          -- ,
+
+%% L                             -- _1 "L" _2,
+   A                             -- _1 "A" _2,
+
+   opt-w                         -- _1,
+   no-w                          -- ,
+
+   opt-m                         -- "." _1,
+   no-m                          -- ,
+
+%% D                             -- _1 "D"  _2 "." _3,
+%% DT                            -- _1 "DT" _2     _3,
+%% DT.2:iter-sep                 -- _1 ",",
+%% DT.3:iter-sep                 -- _1 ",",
+
    R                             -- _1 "("_2")",
    R.2:iter-sep                  -- _1 ",",
    no-r                          -- ,
-   no-m                          -- ,
-
-   I                             -- _1 "I" _2 _3,
-   E                             -- _1 "E" _2 "." _3 _4,
-   F                             -- _1 "F" _2 "." _3,
-   no-e                          -- ,
 
    P                             -- _1 "P",
    SLASH                         -- "/" _1,
@@ -801,7 +824,7 @@
 
    CS                            -- _1,
 
-   #R1101 --,
+   %% R1101
    MainProgram                   -- V [_1 _2 _3],
    MainProgram.1:opt             -- ,
 
