@@ -77,6 +77,9 @@
    ppCharNoLen                   -- "CHARACTER" "(" "KIND=" _1 ")",
    no-length-selector            --,
 
+   %% R406
+   SignedIntLiteralConstant     -- _1 _2,
+
    ppArrayType                   -- _1,
    ppArrayType                   -- _1 _2,
    ppArrayType.1:iter-sep        -- _1 ",",
