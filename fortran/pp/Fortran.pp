@@ -78,7 +78,7 @@
    no-length-selector            --,
 
    %% R406
-   SignedIntLiteralConstant     -- _1 _2,
+   SignedIntLiteralConstant      -- _1 _2,
 
    ppArrayType                   -- _1,
    ppArrayType                   -- _1 _2,
