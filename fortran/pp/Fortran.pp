@@ -570,7 +570,7 @@
    ppBlock                       -- H [_1 "BLOCK"] _2 _3,
    EndBlockStmt                  -- H [_1 "END BLOCK" _2],
 
-   #R814 --,
+   %% R814
    BlockDoConstruct              -- V is=2 [_1 _2] _3,
 
    LabelDoStmt                   -- H hs=1[_1 _2 "DO" H hs=0[_3] H hs=0[_4 _5]],
@@ -578,10 +578,11 @@
    NonlabelDoStmt                -- H hs=1[_1 H hs=0[_2 ": DO" _3]],
    ppNonlabelDoStmt              -- H hs=1[_1 H hs=0["DO" _2]],
 
-   #R818 --,
+   %% R818
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
    LoopWhileControl              -- KW["WHILE"] "("_1")",
    LoopConcurrentControl         -- " " KW["CONCURRENT"] _1,
+   no-loop-control               -- ,
 
    #R822 --,
    EndDoStmt                     -- H hs=1 [_1 "END DO" H hs=0[_2]],
