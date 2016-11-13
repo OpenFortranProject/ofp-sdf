@@ -377,6 +377,8 @@ ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
 ofp-to-ast =
       ? EntityDecl(name,[],[],no-char-length(),init)
    ;  ! Var(name,unknown-type(),init)
+  <+  ? EntityDecl(name,[],[],CharLength(STAR()),init)
+   ;  ! Var(name,CHARACTER_LEN(STAR()),init)
   <+  ? EntityDecl(name,[],[],char_length,init)
    ;  ! Var(name,CHARACTER_LEN(IntVal(char_length)),init)
   <+  ? EntityDecl(name,dims,codims,no-char-length(),init)
@@ -409,10 +411,7 @@ ofp-to-ast:  DeferredShape()                    -> Range(no-lower-bound(), COLON
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
 //
 //R522
-//  ofp-to-ast:  AssumedOrImpliedSpec()
-//                            -> OfpAssumedSize([DimSpec(None(),"*")])
-//  ofp-to-ast:  AssumedOrImpliedSpec(lower)
-//                            -> OfpAssumedSize([DimSpec(lower,"*")])
+ofp-to-ast:  AssumedOrImpliedSpec(lower)        -> Range(lower, STAR())
 
 //R522
 //ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
@@ -483,6 +482,11 @@ ofp-to-ast =
 ofp-to-ast =
       ? PointerStmt(label,pointers,eos("\n"))     ;  ! PointerStmt(label,pointers)
   <+  ? PointerStmt(label,pointers,eos(str))      ;  ! PointerStmt(label,pointers) {Comment(str)}
+
+//ER550
+ofp-to-ast =
+      ? CrayPointerStmt(label,obj1,obj2,eos("\n"));  ! CrayPointerStmt(label,obj1,obj2)
+  <+  ? CrayPointerStmt(label,obj1,obj2,eos(str)) ;  ! CrayPointerStmt(label,obj1,obj2) {Comment(str)}
 
 //R552
 ofp-to-ast =
