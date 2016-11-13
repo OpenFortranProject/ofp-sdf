@@ -513,6 +513,10 @@ regular tree grammar
     Decl                              -> PointerStmt
     PointerStmt                       -> PointerStmt(OptLabel,ListPlusOfPointerDecl)
 
+/* ER550 */
+    Decl                              -> CrayPointerStmt
+    CrayPointerStmt                   -> CrayPointerStmt(OptLabel,ObjectName,ObjectName)
+
 /* R551 */
     PointerDecl                       -> PointerDecl(ObjectName,ListStarOfRange)
 
