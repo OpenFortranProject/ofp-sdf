@@ -11,6 +11,7 @@ module Main
 
 imports FortranLex
 imports FortranLexFree
+imports FortranExtensions
 
 exports
 
@@ -753,6 +754,7 @@ sorts
   GenericName ImportName IntrinsicProcedureName
   ProcedureEntityName ResultName NoResultName
   SubroutineName NoSubroutineName OptSubroutineName
+
 
 context-free syntax
 
