@@ -687,6 +687,8 @@ regular tree grammar
     ComponentAttrSpec                 -> Dimension(ArraySpec)
     ComponentAttrSpec                 -> POINTER()
 
+/* TODO - SIMPLIFY - Initialization is Init(Expr) always I think */
+
     Decl                              -> ComponentDecl
     ComponentDecl                     -> ComponentDecl(Name,ListStarOfRange,ListStarOfRange,OptCharLength,OptComponentInitialization)
 
