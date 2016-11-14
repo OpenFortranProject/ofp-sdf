@@ -59,6 +59,8 @@ signature
     ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
     ppDerivedTypeStmt_params : label * name * params   -> ppDerivedTypeStmt_params
 
+    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt
+
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
     ppAllocation        : object                       -> ppAllocation
@@ -133,6 +135,9 @@ ast-to-pp =
       ?DerivedTypeStmt(label,[],name,[])      ;  !ppDerivedTypeStmt(label,name)
   <+  ?DerivedTypeStmt(label,attrs,name,[])   ;  !ppDerivedTypeStmt_attrs(label,attrs,name)
   <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
+
+//R431
+ast-to-pp:  DataComponentDefStmt(label,type,[],comps)->  ppDataComponentDefStmt(label,type,comps)
 
 //R453
 ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
