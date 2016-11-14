@@ -55,8 +55,27 @@
    #R401 --,
    COLON                         -- ":",
 
-   #R403 --,
+   #R402 --,
+   no-type-spec                  -- ,
+
+   KIND                          -- "KIND",
+   LEN                           -- "LEN",
+
+   Kind                          -- H hs=0 ["(" "KIND=" _1 ")"],
+   ppLiteralKind                 -- H hs=0 ["_" _1],
+   no-kind                       -- ,
+
+   IntVal                        -- _1,
+   IntVal                        -- H hs=0[_1 _2],
+   RealVal                       -- _1,
+   RealVal                       -- H hs=0[_1 _2],
+
+   %% R403
    IntrinsicType                 -- _1,
+     %%TODO - fix second arg, type-param-spec-list
+   Class                         -- "CLASS" "(" _1 _2 ")",
+   AssumedClass                  -- "CLASS(*)",
+   AssumedType                   -- "TYPE(*)",
 
    #R404 --,
    Type                          -- H hs=1[_1 _2],
@@ -91,23 +110,6 @@
    ppRange                       -- _1,
    Range                         -- _1 ":" _2,
    no-lower-bound                -- ,
-
-   #R402 --,
-   no-type-spec                  -- ,
-
-   Class                         -- _1 "CLASS" "(" _2" )",
-
-   KIND                          -- "KIND",
-   LEN                           -- "LEN",
-
-   Kind                          -- H hs=0 ["(" "KIND=" _1 ")"],
-   ppLiteralKind                 -- H hs=0 ["_" _1],
-   no-kind                       -- ,
-   
-   IntVal                        -- _1,
-   IntVal                        -- H hs=0[_1 _2],
-   RealVal                       -- _1,
-   RealVal                       -- H hs=0[_1 _2],
 
    %% R423
    SignedRealLiteralConstant     -- _1 _2,
