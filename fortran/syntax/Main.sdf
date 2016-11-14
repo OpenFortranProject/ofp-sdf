@@ -719,6 +719,7 @@ sorts
   CallStmt                            %% R1220
   ProcedureDesignator                 %% R1221
   ActualArgSpec                       %% R1222
+  KeywordArgSpec
   ActualArg                           %% R1223
   AltReturnSpec                       %% R1224
   Prefix                              %% R1225
@@ -1054,7 +1055,7 @@ context-free syntax
 
   Ident                                       -> ComponentName
 
-  '(' ComponentArraySpec ')'                  -> OptComponentArraySpec     {cons("opt-component-array-spec")}
+  '(' ComponentArraySpec ')'                  -> OptComponentArraySpec     {cons("ArraySpec")}
   ComponentInitialization                     -> OptComponentInitialization
 
   % empty %                                   -> OptComponentArraySpec     {cons("no-list")}
@@ -1077,7 +1078,7 @@ context-free syntax
   AccessSpec                                  -> ProcComponentAttrSpec
 
 %%R442
-  '=' Expr                                    -> ComponentInitialization   {cons("ComponentInit")}
+  '=' Expr                                    -> ComponentInitialization   {cons("Init")}
   '=>' NullInit                               -> ComponentInitialization   {cons("ComponentPointerInit")}
   '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentPointerInit")}
 
@@ -3660,6 +3661,9 @@ context-free syntax
 %%R1222
   NoKeyword   ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
   Keyword '=' ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
+
+  Keyword '=' ActualArg                               -> KeywordArgSpec       {cons("KeywordArgSpec")}
+  KeywordArgSpec                                      -> Subscript
 
 %%R1223
   Expr                                                -> ActualArg
