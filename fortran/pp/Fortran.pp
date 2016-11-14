@@ -153,8 +153,11 @@
 
    TypeParamDecl                 -- _1 " = " _2,
 
-   DataComponentDefStmt          -- H hs=1[_1 H hs=0[_2 _3 " :: " _4]],
+   DataComponentDefStmt             -- H hs=1[_1 H hs=0[_2 ", " _3 " :: " _4]],
+   DataComponentDefStmt.3:iter-sep  -- _1 ", ",
    DataComponentDefStmt.4:iter-sep  -- _1 ", ",
+ ppDataComponentDefStmt             -- H hs=1[_1 H hs=0[_2         " :: " _3]],
+ ppDataComponentDefStmt.3:iter-sep  -- _1 ", ",
    no-type-bound-procedure-part     --,
 
    %% R437
@@ -949,6 +952,11 @@
    #R1220 --,
    CallStmt                            -- H hs=1[_1 "CALL" H hs=0[_2 "("_3")"]],
    CallStmt.3:iter-sep                 -- _1 ",",
+
+   %% R1222
+
+   %%TODO - fix this in ofp2fast (is a FunctionReference rather than PartRef)
+   KeywordArgSpec                      -- _1 "=" _2,
 
    Arg                                 -- _1,
    Arg                                 -- _1 "=" _2,
