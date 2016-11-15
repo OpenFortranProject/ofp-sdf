@@ -2,6 +2,7 @@ module Main
 
 signature
   constructors
+    CrayPointerStmt                 : OptLabel * ObjectName * ObjectName * EOS -> CrayPointerStmt
     ContainsStmt                    : OptLabel * EOS -> ContainsStmt
     ReturnStmt                      : OptLabel * NoExpr * EOS -> ReturnStmt
     ReturnStmt                      : OptLabel * Expr * EOS -> ReturnStmt
@@ -62,6 +63,7 @@ signature
     AltReturnSpec                   : Label -> AltReturnSpec
                                     : AltReturnSpec -> ActualArg
                                     : Expr -> ActualArg
+    KeywordArgSpec                  : Keyword * ActualArg -> KeywordArgSpec
     ActualArgSpec                   : Keyword * ActualArg -> ActualArgSpec
     ActualArgSpec                   : NoKeyword * ActualArg -> ActualArgSpec
     ProcedureDesignator             : DataRef * BindingName -> ProcedureDesignator
@@ -244,6 +246,7 @@ signature
                                     : BlockConstruct -> ExecutableConstruct
                                     : AssociateConstruct -> ExecutableConstruct
                                     : ActionStmt -> ExecutableConstruct
+                                    : CrayPointerStmt -> OtherSpecificationStmt
                                     : ValueStmt -> OtherSpecificationStmt
                                     : VolatileStmt -> OtherSpecificationStmt
                                     : TargetStmt -> OtherSpecificationStmt
@@ -270,7 +273,10 @@ signature
     no-subprogram-part              : OptInternalSubprogramPart
                                     : InternalSubprogramPart -> OptInternalSubprogramPart
     SubprogramPart                  : ContainsStmt * List(InternalSubprogram) -> InternalSubprogramPart
-                                    : ExecutableConstruct -> ExecutionPartConstruct
+                                    : DataStmt -> BlockExecutionPartConstruct
+                                    : EntryStmt -> BlockExecutionPartConstruct
+                                    : FormatStmt -> BlockExecutionPartConstruct
+                                    : ExecutableConstruct -> BlockExecutionPartConstruct
                                     : ExecutableConstruct -> SpecAndExecConstruct
                                     : DeclarationConstruct -> SpecAndExecConstruct
                                     : ImplicitStmt -> SpecAndExecConstruct
@@ -638,7 +644,7 @@ signature
     AssociateStmt                   : OptLabel * NoName * List(Association) * EOS -> AssociateStmt
     AssociateStmt                   : OptLabel * AssociateConstructName * List(Association) * EOS -> AssociateStmt
     AssociateConstruct              : AssociateStmt * Block * EndAssociateStmt -> AssociateConstruct
-    Block                           : List(ExecutionPartConstruct) -> Block
+    Block                           : List(BlockExecutionPartConstruct) -> Block
     ForallStmt                      : OptLabel * ForallHeader * ForallAssignmentStmt -> ForallStmt
     EndForallStmt                   : OptLabel * NoName * EOS -> EndForallStmt
     EndForallStmt                   : OptLabel * ForallConstructName * EOS -> EndForallStmt
@@ -671,7 +677,7 @@ signature
     MaskedElsewhereStmt             : OptLabel * MaskExpr * NoName * EOS -> MaskedElsewhereStmt
     MaskedElsewhereStmt             : OptLabel * MaskExpr * WhereConstructName * EOS -> MaskedElsewhereStmt
                                     : LogicalExpr -> MaskExpr
-                                    : AssignmentStmt -> WhereAssignmentStmt
+    WhereAssignmentStmt             : Variable * Expr * EOS -> WhereAssignmentStmt
                                     : WhereConstruct -> WhereBodyConstruct
                                     : WhereStmt -> WhereBodyConstruct
                                     : WhereAssignmentStmt -> WhereBodyConstruct
@@ -686,7 +692,7 @@ signature
     WhereConstruct                  : WhereConstructStmt * List(WhereBodyConstruct) * List(MaskedElsewhereClause) * OptElsewhereClause * EndWhereStmt -> WhereConstruct
     WhereStmt                       : OptLabel * MaskExpr * WhereAssignmentStmt -> WhereStmt
                                     : Expr -> DataTarget
-    no-upper-bounds                 : NoUpperBoundExpr
+    no-upper-bound                  : NoUpperBoundExpr
     BoundsRemapping                 : LowerBoundExpr * UpperBoundExpr -> BoundsRemapping
     BoundsRemapping                 : LowerBoundExpr * NoUpperBoundExpr -> BoundsRemapping
     no-component-name               : NoDataPointerComponentName
@@ -811,6 +817,7 @@ signature
                                     : Subscript -> SectionSubscript
     no-subscript                    : OptSubscript
                                     : Subscript -> OptSubscript
+                                    : KeywordArgSpec -> Subscript
                                     : IntExpr -> Subscript
                                     : DataRef -> StructureComponent
                                     : Ident -> PartName
@@ -822,8 +829,9 @@ signature
     SubstringRange                  : NoLowerBoundExpr * IntExpr -> SubstringRange
     SubstringRange                  : IntExpr * NoUpperBoundExpr -> SubstringRange
     SubstringRange                  : NoLowerBoundExpr * NoUpperBoundExpr -> SubstringRange
-                                    : Constant -> ParentString
-                                    : StructureComponent -> ParentString
+    paren-list                      : List(SectionSubscript) -> SectionSubscripts
+                                    : CharLiteralConstant -> ParentString
+    PartRef                         : Ident * SectionSubscripts * OptImageSelector -> ParentString
     Substring                       : ParentString * SubstringRange -> Substring
                                     : Variable -> IntVariable
                                     : Variable -> DefaultCharVariable
@@ -922,7 +930,7 @@ signature
     ImpliedShapeSpecList            : AssumedOrImpliedSpec * List(AssumedOrImpliedSpec) -> ImpliedShapeSpecList
     AssumedRank                     : AssumedRankSpec
     AssumedSize                     : List(ExplicitShapeSpec) * LowerBound -> AssumedSizeSpec
-    AssumedSize                     : List(ExplicitShapeSpec) -> AssumedSizeSpec
+    AssumedSize                     : List(ExplicitShapeSpec) * NoLowerBound -> AssumedSizeSpec
     DeferredShape                   : DeferredShapeSpec
     AssumedShape                    : LowerBound -> AssumedShapeSpec
     AssumedShape                    : NoLowerBound -> AssumedShapeSpec
@@ -1052,7 +1060,7 @@ signature
                                     : Designator -> InitialDataTarget
     ComponentPointerInit            : InitialDataTarget -> ComponentInitialization
     ComponentPointerInit            : NullInit -> ComponentInitialization
-    ComponentInit                   : Expr -> ComponentInitialization
+    Init                            : Expr -> ComponentInitialization
                                     : AccessSpec -> ProcComponentAttrSpec
     NOPASS                          : ProcComponentAttrSpec
     Pass                            : ArgName -> ProcComponentAttrSpec
@@ -1064,7 +1072,7 @@ signature
     no-init                         : OptComponentInitialization
                                     : ComponentInitialization -> OptComponentInitialization
     no-list                         : OptComponentArraySpec
-    opt-component-array-spec        : ComponentArraySpec -> OptComponentArraySpec
+    ArraySpec                       : ComponentArraySpec -> OptComponentArraySpec
                                     : Ident -> ComponentName
     ComponentDecl                   : ComponentName * OptComponentArraySpec * OptCoarraySpec * OptCharLength * OptComponentInitialization -> ComponentDecl
     POINTER                         : ComponentAttrSpec
