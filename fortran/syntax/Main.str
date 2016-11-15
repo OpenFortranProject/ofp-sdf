@@ -894,8 +894,8 @@ signature
                                     : LogicalLiteralConstant -> DataStmtConstant
                                     : ComplexLiteralConstant -> DataStmtConstant
     no-repeat                       : NoDataStmtRepeat
-                                    : IntConstantSubobject -> DataStmtRepeat
-                                    : Icon -> DataStmtRepeat
+    DataStmtRepeat                  : IntConstantSubobject -> DataStmtRepeat
+    DataStmtRepeat                  : Icon -> DataStmtRepeat
     DataStmtValue                   : NoDataStmtRepeat * DataStmtConstant -> DataStmtValue
     DataStmtValue                   : DataStmtRepeat * DataStmtConstant -> DataStmtValue
     DataIDoVariable                 : DoVariable -> DataIDoVariable

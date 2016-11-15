@@ -1519,10 +1519,8 @@ context-free syntax
 %%
 %% FIXME - breaks Main.rtg creation
 %%
-  Icon                                                      ->   DataStmtRepeat
-  IntConstantSubobject                                      ->   DataStmtRepeat
-%%  Icon                                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
-%%  IntConstantSubobject                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
+  Icon                                                      ->   DataStmtRepeat {cons("DataStmtRepeat")}
+  IntConstantSubobject                                      ->   DataStmtRepeat {cons("DataStmtRepeat")}
   % empty %                                                 -> NoDataStmtRepeat {cons("no-repeat")}
 
 %%R542

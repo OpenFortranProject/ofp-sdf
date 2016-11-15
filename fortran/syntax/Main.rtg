@@ -1693,8 +1693,8 @@ regular tree grammar
     DataStmtConstant                       -> LogicalLiteralConstant
     DataStmtConstant                       -> ComplexLiteralConstant
     NoDataStmtRepeat                       -> no-repeat()
-    DataStmtRepeat                         -> IntConstantSubobject
-    DataStmtRepeat                         -> Icon
+    DataStmtRepeat                         -> DataStmtRepeat(IntConstantSubobject)
+    DataStmtRepeat                         -> DataStmtRepeat(Icon)
     DataStmtValue                          -> DataStmtValue(NoDataStmtRepeat,DataStmtConstant)
     DataStmtValue                          -> DataStmtValue(DataStmtRepeat,DataStmtConstant)
     DataIDoVariable                        -> DataIDoVariable(DoVariable)
