@@ -335,7 +335,7 @@ sorts
   Stride                              %% R622
   VectorSubscript                     %% R623
 
-  OptSectionSubscripts OptStride OptSubscript
+  SectionSubscripts OptSectionSubscripts OptStride OptSubscript
   NoSubstringRange
 
 %% 6.6 Image selectors
@@ -1738,20 +1738,31 @@ context-free syntax
 %%
 
 %%608
-  ParentString '(' SubstringRange ')'  -> Substring        {cons("Substring")}
+%% AMBIGUOUS
+%%
+%% Substring is ambiguous with PartRef unless ParentString is an array,
+%% e.g., B(1)(1:5), from Note 6.2.  Explicitly catch this case so that it can
+%% be parsed.  Other substrings will appear as part-refs and will have to be
+%% fixed in later phase.
+
+  ParentString '(' SubstringRange ')'      -> Substring      {cons("Substring")}
 
 %%609
 %% AMBIGUOUS
-%%      constant substituted for scalar-constant
+%%      CharLiteralConstant substituted scalar-constant
 %%      structure-component substituted for scalar-structure-component
 %%
-  ScalarVariableName                   -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
-  ArrayElement                         -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
-  CoindexedNamedObject                 -> ParentString     {reject}  %% AMBIGUOUS with StructureComponent
-  StructureComponent                   -> ParentString
-  Constant                             -> ParentString
+%%  ScalarVariableName                     -> ParentString   {reject}  %% AMBIGUOUS with StructureComponent
+%%  ArrayElement                           -> ParentString   {reject}  %% AMBIGUOUS with StructureComponent
+%%  CoindexedNamedObject                   -> ParentString   {reject}  %% AMBIGUOUS with StructureComponent
+%%  StructureComponent                     -> ParentString   {reject}  %% AMBIGUOUS with with PartRef
 
-  Ident                                -> ScalarVariableName                 {cons("VarRef")}
+  Ident SectionSubscripts OptImageSelector -> ParentString        {cons("PartRef")}
+  CharLiteralConstant                      -> ParentString
+
+  '(' {SectionSubscript ','}+ ')'          -> SectionSubscripts   {cons("paren-list")}
+
+  Ident                                    -> ScalarVariableName  {cons("VarRef")}
 
 %%R610
 %%      int-expr substituted for scalar-int-expr
