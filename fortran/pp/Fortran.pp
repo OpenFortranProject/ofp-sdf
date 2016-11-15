@@ -992,6 +992,9 @@
    AltReturn                           -- "*" _1,
    no-keyword                          -- ,
 
+   %% R1231
+   Suffix                              -- _1 _2,
+
    %% R1233
    Subroutine                          -- V [_1 _2 _3],
    SubroutineStmt                      -- H [_1 _2 "SUBROUTINE" H hs=0[_3 "("_4")"] _5],
@@ -1010,6 +1013,11 @@
    no-procedure-name                   -- ,
 
    ReturnStmt                          -- H hs=1 [_1 "RETURN" _2],
-   no-expr                             --
+   no-expr                             --,
+
+   %% R1240
+   EntryStmt                           -- H hs=1 [_1 "ENTRY" H hs=0 [_2 "(" _3 ")" _4]],
+   EntryStmt.3:iter-sep                -- _1 ",",
+   no-suffix                           --
 
 ]
