@@ -552,10 +552,26 @@
    ppDataPointerObject           -- _1,
      DataPointerObject           -- _1 "%" _2,
 
-   #R741 --,
-   WhereStmt                     -- H hs=1[_1 KW["WHERE"] H hs=0["("_2")"] H hs=0[_3]],
+   %% R741
+   WhereStmt                     -- H hs=1[_1 "WHERE" H hs=0["("_2")"] _3],
 
-   #R750 --,
+   %% R742
+   WhereConstruct                -- _1 _2 _3 _4 _5,
+   ElsewhereClause               -- _1 _2,
+
+   %% R743
+   WhereConstructStmt            -- H hs=1[_1 H hs=0[_2 ": " "WHERE" "(" _3 ")"] _4],
+
+   %% R745
+   WhereAssignmentStmt           -- H hs=1[_1 "=" _2],
+
+   %% R748
+   ElsewhereStmt                 -- H hs=1[_1 H hs=0["ELSE WHERE" _2] _3],
+
+   %% R749
+   EndWhereStmt                  -- H hs=1[_1 H hs=0["END WHERE" _2] _3],
+
+   %% R750
    ForallConstruct               -- _1 _2 _3,
 
    ForallConstructStmt           -- H hs=1[_1 _2 "FORALL" H hs=0[_3]],
