@@ -451,11 +451,17 @@
    %% R569
    CommonBlockObject             -- _1 _2,
 
-   #R611 --,
+   %% R608
+   Substring                     -- _1 _2,
+
+   %% R610
+   SubstringRange                -- "(" _1 ":" _2 ")",
+
+   %% R611
    DataRef                       -- H hs=0 [_1],
    DataRef.1:iter-sep            -- _1 "%",
 
-   #R612 --,
+   %% R612
    VarDef                           -- _1,
    VarRef                           -- _1,
    ppPartRef                        -- H hs=0[_1 _2 _3],
