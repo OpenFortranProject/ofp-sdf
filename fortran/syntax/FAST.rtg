@@ -418,14 +418,46 @@ regular tree grammar
 
     NamedConstantDef                  -> NamedConstantDef(NamedConstant,ConstantExpr)
 
+/* R732 */
     Stmt                              -> AssignmentStmt
     AssignmentStmt                    -> AssignmentStmt(OptLabel,VarDef,Expr)
 
+/* R733 */
     Stmt                              -> PointerAssignmentStmt
     PointerAssignmentStmt             -> PointerAssignmentStmt(OptLabel,DataPointerObject,ListStarOfRange,Expr)
 
     DataPointerObject                 -> DataPointerObject(Var,NoName)
     DataPointerObject                 -> DataPointerObject(Var,Name)
+
+/* R741 */
+    Stmt                              -> WhereStmt
+    WhereStmt                         -> WhereStmt(OptLabel,MaskExpr,WhereAssignmentStmt)
+
+/* R745 */
+    Stmt                              -> WhereAssignmentStmt
+    WhereAssignmentStmt               -> WhereAssignmentStmt(VarDef,Expr)
+
+    EndWhereStmt                      -> EndWhereStmt(OptLabel,NoName,EOS)
+    EndWhereStmt                      -> EndWhereStmt(OptLabel,WhereConstructName,EOS)
+    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,NoName,EOS)
+    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,WhereConstructName,EOS)
+    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,NoName,EOS)
+    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,WhereConstructName,EOS)
+
+    WhereAssignmentStmt               -> AssignmentStmt
+    WhereBodyConstruct                -> WhereConstruct
+    WhereBodyConstruct                -> WhereStmt
+    WhereBodyConstruct                -> WhereAssignmentStmt
+    OptWhereConstructName             -> no-name()
+    OptWhereConstructName             -> where-construct-name-colon(WhereConstructName)
+    WhereConstructName                -> Ident
+    WhereConstructStmt                -> WhereConstructStmt(OptLabel,OptWhereConstructName,MaskExpr,EOS)
+    OptElsewhereClause                -> no-elsewhere-clause()
+    OptElsewhereClause                -> ElsewhereClause
+    ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct0)
+    MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct0)
+    WhereConstruct                    -> WhereConstruct(WhereConstructStmt,ListStarOfWhereBodyConstruct0,ListStarOfMaskedElsewhereClause0,OptElsewhereClause,EndWhereStmt)
+
 
     Expr                              -> Expr(OfpLiteral)
     OfpOp                             -> GE
@@ -1430,27 +1462,6 @@ regular tree grammar
 
     ScalarIntVariableName             -> VarRef(Name)
 
-    EndWhereStmt                      -> EndWhereStmt(OptLabel,NoName,EOS)
-    EndWhereStmt                      -> EndWhereStmt(OptLabel,WhereConstructName,EOS)
-    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,NoName,EOS)
-    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,WhereConstructName,EOS)
-    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,NoName,EOS)
-    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,WhereConstructName,EOS)
-
-    WhereAssignmentStmt               -> AssignmentStmt
-    WhereBodyConstruct                -> WhereConstruct
-    WhereBodyConstruct                -> WhereStmt
-    WhereBodyConstruct                -> WhereAssignmentStmt
-    OptWhereConstructName             -> no-name()
-    OptWhereConstructName             -> where-construct-name-colon(WhereConstructName)
-    WhereConstructName                -> Ident
-    WhereConstructStmt                -> WhereConstructStmt(OptLabel,OptWhereConstructName,MaskExpr,EOS)
-    OptElsewhereClause                -> no-elsewhere-clause()
-    OptElsewhereClause                -> ElsewhereClause
-    ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct0)
-    MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct0)
-    WhereConstruct                    -> WhereConstruct(WhereConstructStmt,ListStarOfWhereBodyConstruct0,ListStarOfMaskedElsewhereClause0,OptElsewhereClause,EndWhereStmt)
-    WhereStmt                         -> WhereStmt(OptLabel,MaskExpr,WhereAssignmentStmt)
     ProcTarget                        -> ProcComponentRef
     ProcTarget                        -> ProcedureName
     ProcTarget                        -> Expr

@@ -67,6 +67,9 @@ signature
     PointerAssignmentStmt     : OptLabel * DataPointerObject * List(Range) * Expr -> PointerAssignmentStmt
     DataPointerObject         : Var * NoName -> DataPointerObject
     DataPointerObject         : Var * Name -> DataPointerObject
+    WhereStmt                 : OptLabel * MaskExpr * WhereAssignmentStmt -> WhereStmt
+    WhereAssignmentStmt       : VarDef * Expr -> WhereAssignmentStmt
+                              : AssignmentStmt -> WhereAssignmentStmt
     GE                        : GE
     GT                        : GT
     LE                        : LE
@@ -459,6 +462,8 @@ signature
                               : ParameterStmt -> Stmt
                               : AssignmentStmt -> Stmt
                               : PointerAssignmentStmt -> Stmt
+                              : WhereStmt -> Stmt
+                              : WhereAssignmentStmt -> Stmt
                               : AccessStmt -> Stmt
                               : DerivedTypeStmt -> Stmt
                               : EndTypeStmt -> Stmt
