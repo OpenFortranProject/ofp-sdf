@@ -110,6 +110,7 @@
    ppRange                       -- _1,
    Range                         -- _1 ":" _2,
    no-lower-bound                -- ,
+   no-upper-bound                -- ,
 
    %% R423
    SignedRealLiteralConstant     -- _1 _2,
