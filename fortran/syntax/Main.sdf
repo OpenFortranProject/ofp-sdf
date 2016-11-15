@@ -417,7 +417,7 @@ sorts
   AssignmentStmt                      %% R732
   PointerAssignmentStmt               %% R733
   DataPointerObject                   %% R734
-                                      %% R735  BoundsSpec  %% using BoundsRemapping instead (with no-upper-bounds)
+                                      %% R735  BoundsSpec  %% using BoundsRemapping instead (with no-upper-bound)
   BoundsRemapping                     %% R736
   DataTarget                          %% R737
                                       %% R738  ProcPointerObject  %% removed to fix AMBIGUITY in PointerAssignmentStmt
@@ -2129,14 +2129,14 @@ Primary                                    -> Expr
   % empty %                                             -> NoDataPointerComponentName {cons("no-component-name")}
 
 %%R735
-%% NOTE - replaced by BoundsRemapping with no-upper-bounds
+%% NOTE - replaced by BoundsRemapping with no-upper-bound
 %%LowerBoundExpr ':'                                    -> BoundsSpec         {cons("BoundsSpec")}
 
 %%R736
   LowerBoundExpr ':' NoUpperBoundExpr                   -> BoundsRemapping    {cons("BoundsRemapping")}
   LowerBoundExpr ':' UpperBoundExpr                     -> BoundsRemapping    {cons("BoundsRemapping")}
 
-  % empty %                                             -> NoUpperBoundExpr   {cons("no-upper-bounds")}
+  % empty %                                             -> NoUpperBoundExpr   {cons("no-upper-bound")}
 
 %%R737
 %%       Variable changed to Expr to include ProcTarget
