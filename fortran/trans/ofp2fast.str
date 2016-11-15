@@ -584,6 +584,10 @@ ofp-to-ast:  no-component-name()                      -> no-name()
 //R735
 ofp-to-ast:  BoundsRemapping(lb,ub)                   -> Triplet(lb,ub,no-stride())
 
+//R741
+ofp-to-ast =  ?WhereAssignmentStmt(var,expr,eos("\n")); !WhereAssignmentStmt(var,expr)
+          <+  ?WhereAssignmentStmt(var,expr,eos(str) ); !WhereAssignmentStmt(var,expr) {Comment(str)}
+
 //R751
 ofp-to-ast =  ?ForallConstructStmt(label,name,header,eos("\n")); !ForallConstructStmt(label,name,header)
           <+  ?ForallConstructStmt(label,name,header,eos(str) ); !ForallConstructStmt(label,name,header) {Comment(str)}
