@@ -1517,8 +1517,12 @@ context-free syntax
 %%         Icon substituted for scalar-int-constant
 %%         int-constant-subobject substituted for scalar-int-constant-subobject
 %%
-  Icon                                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
-  IntConstantSubobject                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
+%% FIXME - breaks Main.rtg creation
+%%
+  Icon                                                      ->   DataStmtRepeat
+  IntConstantSubobject                                      ->   DataStmtRepeat
+%%  Icon                                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
+%%  IntConstantSubobject                                      ->   DataStmtRepeat {cons(DataStmtRepeat)}
   % empty %                                                 -> NoDataStmtRepeat {cons("no-repeat")}
 
 %%R542
@@ -2204,9 +2208,7 @@ Primary                                    -> Expr
   WhereConstruct                                   -> WhereBodyConstruct
 
 %%R745
-%%TODO-F08 - make it so label can't be part of assignment-stmt
-%%
-  AssignmentStmt                                   -> WhereAssignmentStmt
+  Variable '=' Expr                            EOS -> WhereAssignmentStmt  {cons("WhereAssignmentStmt")}
 
 %%R746
   LogicalExpr                                      -> MaskExpr
@@ -2214,17 +2216,17 @@ Primary                                    -> Expr
 %%R747
 %%       Ident substituted for where-construct-name
 %%
-  OptLabel 'ELSEWHERE' '(' MaskExpr ')'
-                            WhereConstructName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
-  OptLabel 'ELSEWHERE' '(' MaskExpr ')' NoName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
+  OptLabel 'ELSE' 'WHERE' '(' MaskExpr ')'
+                               WhereConstructName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
+  OptLabel 'ELSE' 'WHERE' '(' MaskExpr ')' NoName EOS -> MaskedElsewhereStmt {cons("MaskedElsewhereStmt")}
 
 %%R748
-  OptLabel 'ELSEWHERE' WhereConstructName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
-  OptLabel 'ELSEWHERE'             NoName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
+  OptLabel 'ELSE' 'WHERE' WhereConstructName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
+  OptLabel 'ELSE' 'WHERE'             NoName      EOS -> ElsewhereStmt       {cons("ElsewhereStmt")}
 
 %%R749
-  OptLabel 'END' 'WHERE' WhereConstructName    EOS -> EndWhereStmt        {cons("EndWhereStmt")}
-  OptLabel 'END' 'WHERE'             NoName    EOS -> EndWhereStmt        {cons("EndWhereStmt")}
+  OptLabel 'END' 'WHERE' WhereConstructName       EOS -> EndWhereStmt        {cons("EndWhereStmt")}
+  OptLabel 'END' 'WHERE'             NoName       EOS -> EndWhereStmt        {cons("EndWhereStmt")}
 
 %%R750
   ForallConstructStmt
