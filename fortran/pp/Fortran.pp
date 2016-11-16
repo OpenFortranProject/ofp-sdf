@@ -561,20 +561,24 @@
    WhereStmt                     -- H hs=1[_1 "WHERE" H hs=0["("_2")"] _3],
 
    %% R742
-   WhereConstruct                -- _1 _2 _3 _4 _5,
-   ElsewhereClause               -- _1 _2,
+   WhereConstruct                -- V vs=0 is=2 [_1 _2 ] _3 _4 _5,
+   ElsewhereClause               -- V vs=0 is=2 [_1 _2],
+   no-elsewhere-clause           -- ,
 
    %% R743
-   WhereConstructStmt            -- H hs=1[_1 H hs=0[_2 ": " "WHERE" "(" _3 ")"] _4],
+   WhereConstructStmt            -- H hs=1[_1 H hs=0[_2 ": " "WHERE" " " "(" _3 ")"]],
+ ppWhereConstructStmt            -- H hs=1[_1 H hs=0[        "WHERE" " " "(" _2 ")"]],
 
-   %% R745
-   WhereAssignmentStmt           -- H hs=1[_1 "=" _2],
+   %% R747
+   MaskedElsewhereClause         -- V vs=0 is=2 [_1 _2],
+   MaskedElsewhereStmt           -- H hs=1[_1 H hs=0["ELSE WHERE" " " "(" _2 ")"] _3],
 
    %% R748
-   ElsewhereStmt                 -- H hs=1[_1 H hs=0["ELSE WHERE" _2] _3],
+   ElsewhereStmt                 -- H hs=1[_1 H hs=0["ELSE WHERE"] _2],
 
    %% R749
-   EndWhereStmt                  -- H hs=1[_1 H hs=0["END WHERE" _2] _3],
+   EndWhereStmt                  -- H hs=1[_1 H hs=0["END WHERE"] _2],
+   ElsewhereClause               -- V vs=0 is=2 [_1 _2],
 
    %% R750
    ForallConstruct               -- _1 _2 _3,
@@ -623,7 +627,7 @@
    #R831 --,
    CycleStmt                     -- H hs=1 [_1 "CYCLE" H hs=0[_2]],
 
-   #R832 --,
+   %% R832
    IfConstruct                   -- V vs=0 is=2 [_1 _2] _3 _4 _5,
    ElseIfStmtBlock               -- V vs=0 is=2 [_1 _2],
    ElseStmtBlock                 -- V vs=0 is=2 [_1 _2],
@@ -640,7 +644,7 @@
    EndIfStmt                     -- H hs=1 [_1 "END IF" H hs=0[_2]],
  ppEndIfStmt                     -- H hs=1 [_1 "END IF"           ],
 
-   #R837 --,
+   %% R837
    IfStmt                        -- H hs=1 [_1 KW["IF"] H hs=0["("_2")"] _3],
 
    no-else-stmt                  -- ,
