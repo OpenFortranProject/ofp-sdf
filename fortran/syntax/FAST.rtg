@@ -105,20 +105,6 @@ regular tree grammar
     ListPlusOfElseIfStmtAndBlock0     -> <conc>(ListPlusOfElseIfStmtAndBlock0,ListPlusOfElseIfStmtAndBlock0)
     ListPlusOfElseIfStmtAndBlock0     -> <cons>(ElseIfStmtAndBlock,ListStarOfElseIfStmtAndBlock0)
 
-    ListStarOfWhereBodyConstruct0     -> ListPlusOfWhereBodyConstruct0
-    ListStarOfWhereBodyConstruct0     -> <nil>()
-    ListStarOfWhereBodyConstruct0     -> <conc>(ListStarOfWhereBodyConstruct0,ListStarOfWhereBodyConstruct0)
-    ListPlusOfWhereBodyConstruct0     -> <conc>(ListStarOfWhereBodyConstruct0,ListPlusOfWhereBodyConstruct0)
-    ListPlusOfWhereBodyConstruct0     -> <conc>(ListPlusOfWhereBodyConstruct0,ListStarOfWhereBodyConstruct0)
-    ListPlusOfWhereBodyConstruct0     -> <conc>(ListPlusOfWhereBodyConstruct0,ListPlusOfWhereBodyConstruct0)
-    ListPlusOfWhereBodyConstruct0     -> <cons>(WhereBodyConstruct,ListStarOfWhereBodyConstruct0)
-    ListStarOfMaskedElsewhereClause0  -> ListPlusOfMaskedElsewhereClause0
-    ListStarOfMaskedElsewhereClause0  -> <nil>()
-    ListStarOfMaskedElsewhereClause0  -> <conc>(ListStarOfMaskedElsewhereClause0,ListStarOfMaskedElsewhereClause0)
-    ListPlusOfMaskedElsewhereClause0  -> <conc>(ListStarOfMaskedElsewhereClause0,ListPlusOfMaskedElsewhereClause0)
-    ListPlusOfMaskedElsewhereClause0  -> <conc>(ListPlusOfMaskedElsewhereClause0,ListStarOfMaskedElsewhereClause0)
-    ListPlusOfMaskedElsewhereClause0  -> <conc>(ListPlusOfMaskedElsewhereClause0,ListPlusOfMaskedElsewhereClause0)
-    ListPlusOfMaskedElsewhereClause0  -> <cons>(MaskedElsewhereClause,ListStarOfMaskedElsewhereClause0)
     ListStarOfBoundsRemapping0        -> ListPlusOfBoundsRemapping0
     ListStarOfBoundsRemapping0        -> <nil>()
     ListStarOfBoundsRemapping0        -> <conc>(ListStarOfBoundsRemapping0,ListStarOfBoundsRemapping0)
@@ -431,32 +417,41 @@ regular tree grammar
 
 /* R741 */
     Stmt                              -> WhereStmt
-    WhereStmt                         -> WhereStmt(OptLabel,MaskExpr,WhereAssignmentStmt)
+    WhereStmt                         -> WhereStmt(OptLabel,Expr,WhereAssignmentStmt)
+
+/* R742 */
+    WhereConstruct                    -> WhereConstruct(WhereConstructStmt,ListStarOfWhereBodyConstruct
+                                                                          ,ListStarOfMaskedElsewhereClause
+                                                                          ,OptElsewhereClause
+                                                                          ,EndWhereStmt)
+
+/* R743 */
+    Stmt                              -> WhereConstructStmt
+    WhereConstructStmt                -> WhereConstructStmt(OptLabel,OptName,Expr)
 
 /* R745 */
     Stmt                              -> WhereAssignmentStmt
     WhereAssignmentStmt               -> WhereAssignmentStmt(VarDef,Expr)
 
-    EndWhereStmt                      -> EndWhereStmt(OptLabel,NoName,EOS)
-    EndWhereStmt                      -> EndWhereStmt(OptLabel,WhereConstructName,EOS)
-    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,NoName,EOS)
-    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,WhereConstructName,EOS)
-    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,NoName,EOS)
-    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,MaskExpr,WhereConstructName,EOS)
+/* R747 */
+    Stmt                              -> MaskedElsewhereStmt
+    MaskedElsewhereStmt               -> MaskedElsewhereStmt(OptLabel,Expr,OptName)
 
-    WhereAssignmentStmt               -> AssignmentStmt
+/* R748 */
+    Stmt                              -> ElsewhereStmt
+    ElsewhereStmt                     -> ElsewhereStmt(OptLabel,OptName)
+
+/* R749 */
+    Stmt                              -> EndWhereStmt
+    EndWhereStmt                      -> EndWhereStmt(OptLabel,OptName)
+
     WhereBodyConstruct                -> WhereConstruct
     WhereBodyConstruct                -> WhereStmt
     WhereBodyConstruct                -> WhereAssignmentStmt
-    OptWhereConstructName             -> no-name()
-    OptWhereConstructName             -> where-construct-name-colon(WhereConstructName)
-    WhereConstructName                -> Ident
-    WhereConstructStmt                -> WhereConstructStmt(OptLabel,OptWhereConstructName,MaskExpr,EOS)
     OptElsewhereClause                -> no-elsewhere-clause()
     OptElsewhereClause                -> ElsewhereClause
-    ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct0)
-    MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct0)
-    WhereConstruct                    -> WhereConstruct(WhereConstructStmt,ListStarOfWhereBodyConstruct0,ListStarOfMaskedElsewhereClause0,OptElsewhereClause,EndWhereStmt)
+    ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct)
+    MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct)
 
 
     Expr                              -> Expr(OfpLiteral)
@@ -2302,6 +2297,23 @@ regular tree grammar
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListStarOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <conc>(ListPlusOfTypeParamSpec,ListPlusOfTypeParamSpec)
     ListPlusOfTypeParamSpec          -> <cons>(TypeParamSpec,ListStarOfTypeParamSpec)
+
+/* R744 */
+    ListStarOfWhereBodyConstruct     -> ListPlusOfWhereBodyConstruct
+    ListStarOfWhereBodyConstruct     -> <nil>()
+    ListStarOfWhereBodyConstruct     -> <conc>(ListStarOfWhereBodyConstruct,ListStarOfWhereBodyConstruct)
+    ListPlusOfWhereBodyConstruct     -> <conc>(ListStarOfWhereBodyConstruct,ListPlusOfWhereBodyConstruct)
+    ListPlusOfWhereBodyConstruct     -> <conc>(ListPlusOfWhereBodyConstruct,ListStarOfWhereBodyConstruct)
+    ListPlusOfWhereBodyConstruct     -> <conc>(ListPlusOfWhereBodyConstruct,ListPlusOfWhereBodyConstruct)
+    ListPlusOfWhereBodyConstruct     -> <cons>(WhereBodyConstruct,ListStarOfWhereBodyConstruct)
+
+    ListStarOfMaskedElsewhereClause  -> ListPlusOfMaskedElsewhereClause
+    ListStarOfMaskedElsewhereClause  -> <nil>()
+    ListStarOfMaskedElsewhereClause  -> <conc>(ListStarOfMaskedElsewhereClause,ListStarOfMaskedElsewhereClause)
+    ListPlusOfMaskedElsewhereClause  -> <conc>(ListStarOfMaskedElsewhereClause,ListPlusOfMaskedElsewhereClause)
+    ListPlusOfMaskedElsewhereClause  -> <conc>(ListPlusOfMaskedElsewhereClause,ListStarOfMaskedElsewhereClause)
+    ListPlusOfMaskedElsewhereClause  -> <conc>(ListPlusOfMaskedElsewhereClause,ListPlusOfMaskedElsewhereClause)
+    ListPlusOfMaskedElsewhereClause  -> <cons>(MaskedElsewhereClause,ListStarOfMaskedElsewhereClause)
 
 /* R913 */
     ListStarOfIoControlSpec          -> ListPlusOfIoControlSpec
