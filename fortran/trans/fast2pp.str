@@ -74,6 +74,8 @@ signature
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
 
+    ppWhereConstructStmt    : OptLabel * Expr              -> ppWhereConstructStmt
+
     ppSaveStmt        : OptLabel                                    -> ppSaveStmt          // R553
 
     ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
@@ -212,6 +214,9 @@ ast-to-pp =
 
 //R734
 ast-to-pp:  DataPointerObject(var,no-name())       ->  ppDataPointerObject(var)
+
+//R743
+ast-to-pp:  WhereConstructStmt(label,no-name(),expr) ->  ppWhereConstructStmt(label,expr)
 
 //R803
 //  ast-to-pp:
