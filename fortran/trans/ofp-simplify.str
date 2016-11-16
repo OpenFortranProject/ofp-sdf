@@ -118,6 +118,8 @@ ofp-simplify-ast:  AllocateCoarraySpec(list,lb)   -> <concat>[list,[AllocateCosh
 ofp-simplify-ast:
   AssignmentStmt(label,VarRef(var),expr,eos)      -> AssignmentStmt(label,VarDef(var),expr,eos)
 
+//R743
+ofp-simplify-ast:  where-construct-name(name)     -> name
 
 //R752
 ofp-simplify-ast:  type-spec-colon(spec)          -> spec
