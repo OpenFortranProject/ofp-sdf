@@ -765,6 +765,8 @@ regular tree grammar
     Expr                                   -> DefUnaryExpr(DefinedUnaryOp,Expr)
     CrayPointerStmt                        -> CrayPointerStmt(OptLabel,ObjectName,ObjectName,EOS)
     OtherSpecificationStmt                 -> CrayPointerStmt
+    Initialization                         -> Init(ConstantExpr)
+    ComponentInitialization                -> Init(Expr)
     ContainsStmt                           -> ContainsStmt(OptLabel,EOS)
     ReturnStmt                             -> ReturnStmt(OptLabel,NoExpr,EOS)
     ReturnStmt                             -> ReturnStmt(OptLabel,Expr,EOS)
@@ -1870,7 +1872,7 @@ regular tree grammar
     InitialDataTarget                      -> Designator
     ComponentInitialization                -> ComponentPointerInit(InitialDataTarget)
     ComponentInitialization                -> ComponentPointerInit(NullInit)
-    ComponentInitialization                -> Init(Expr)
+    ComponentInitialization                -> Init(ConstantExpr)
     ProcComponentAttrSpec                  -> AccessSpec
     ProcComponentAttrSpec                  -> NOPASS()
     ProcComponentAttrSpec                  -> Pass(ArgName)

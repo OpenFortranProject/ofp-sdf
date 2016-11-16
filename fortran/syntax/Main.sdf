@@ -1078,7 +1078,7 @@ context-free syntax
   AccessSpec                                  -> ProcComponentAttrSpec
 
 %%R442
-  '=' Expr                                    -> ComponentInitialization   {cons("Init")}
+  '=' ConstantExpr                            -> ComponentInitialization   {cons("Init")}
   '=>' NullInit                               -> ComponentInitialization   {cons("ComponentPointerInit")}
   '=>' InitialDataTarget                      -> ComponentInitialization   {cons("ComponentPointerInit")}
 

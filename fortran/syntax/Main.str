@@ -1058,9 +1058,10 @@ signature
     TypeBoundProcedurePart          : ContainsStmt * OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcedurePart
     PrivateComponentsStmt           : OptLabel * EOS -> PrivateComponentsStmt
                                     : Designator -> InitialDataTarget
+    Init                            : Expr -> ComponentInitialization
     ComponentPointerInit            : InitialDataTarget -> ComponentInitialization
     ComponentPointerInit            : NullInit -> ComponentInitialization
-    Init                            : Expr -> ComponentInitialization
+    Init                            : ConstantExpr -> ComponentInitialization
                                     : AccessSpec -> ProcComponentAttrSpec
     NOPASS                          : ProcComponentAttrSpec
     Pass                            : ArgName -> ProcComponentAttrSpec
