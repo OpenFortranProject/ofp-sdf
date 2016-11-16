@@ -39,7 +39,7 @@ FixedForm.def : FixedForm.sdf
 FixedForm.tbl : FixedForm.def
 	$(SDF2_PATH)/sdf2table -i $< -o $@ -m FixedForm
 
-Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf
+Main.def : Main.sdf FortranLex.sdf FortranLexFree.sdf FortranExtensions.sdf
 	$(ST_PATH)/pack-sdf -i $< -o $@
 
 FortranFixed.def : FortranFixed.sdf FortranLex.sdf FortranLexFixed.sdf
