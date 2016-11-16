@@ -2197,8 +2197,8 @@ Primary                                    -> Expr
 
   Ident                                            -> WhereConstructName
 
-  WhereConstructName ':'                           -> OptWhereConstructName          {cons("where-construct-name-colon")}
-  % empty %                                        -> OptWhereConstructName          {cons("no-name")}
+  WhereConstructName ':'                           -> OptWhereConstructName  {cons("where-construct-name")}
+  % empty %                                        -> OptWhereConstructName  {cons("no-name")}
 
 %%R744
   WhereAssignmentStmt                              -> WhereBodyConstruct
@@ -2206,7 +2206,7 @@ Primary                                    -> Expr
   WhereConstruct                                   -> WhereBodyConstruct
 
 %%R745
-  Variable '=' Expr                            EOS -> WhereAssignmentStmt  {cons("WhereAssignmentStmt")}
+  AssignmentStmt                                   -> WhereAssignmentStmt
 
 %%R746
   LogicalExpr                                      -> MaskExpr

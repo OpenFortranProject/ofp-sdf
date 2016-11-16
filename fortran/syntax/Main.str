@@ -677,12 +677,12 @@ signature
     MaskedElsewhereStmt             : OptLabel * MaskExpr * NoName * EOS -> MaskedElsewhereStmt
     MaskedElsewhereStmt             : OptLabel * MaskExpr * WhereConstructName * EOS -> MaskedElsewhereStmt
                                     : LogicalExpr -> MaskExpr
-    WhereAssignmentStmt             : Variable * Expr * EOS -> WhereAssignmentStmt
+                                    : AssignmentStmt -> WhereAssignmentStmt
                                     : WhereConstruct -> WhereBodyConstruct
                                     : WhereStmt -> WhereBodyConstruct
                                     : WhereAssignmentStmt -> WhereBodyConstruct
     no-name                         : OptWhereConstructName
-    where-construct-name-colon      : WhereConstructName -> OptWhereConstructName
+    where-construct-name            : WhereConstructName -> OptWhereConstructName
                                     : Ident -> WhereConstructName
     WhereConstructStmt              : OptLabel * OptWhereConstructName * MaskExpr * EOS -> WhereConstructStmt
     no-elsewhere-clause             : OptElsewhereClause

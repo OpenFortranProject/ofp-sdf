@@ -1462,12 +1462,12 @@ regular tree grammar
     MaskedElsewhereStmt                    -> MaskedElsewhereStmt(OptLabel,MaskExpr,NoName,EOS)
     MaskedElsewhereStmt                    -> MaskedElsewhereStmt(OptLabel,MaskExpr,WhereConstructName,EOS)
     MaskExpr                               -> LogicalExpr
-    WhereAssignmentStmt                    -> WhereAssignmentStmt(Variable,Expr,EOS)
+    WhereAssignmentStmt                    -> AssignmentStmt
     WhereBodyConstruct                     -> WhereConstruct
     WhereBodyConstruct                     -> WhereStmt
     WhereBodyConstruct                     -> WhereAssignmentStmt
     OptWhereConstructName                  -> no-name()
-    OptWhereConstructName                  -> where-construct-name-colon(WhereConstructName)
+    OptWhereConstructName                  -> where-construct-name(WhereConstructName)
     WhereConstructName                     -> Ident
     WhereConstructStmt                     -> WhereConstructStmt(OptLabel,OptWhereConstructName,MaskExpr,EOS)
     OptElsewhereClause                     -> no-elsewhere-clause()
