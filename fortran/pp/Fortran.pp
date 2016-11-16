@@ -384,6 +384,8 @@
    PointerStmt                   -- H hs=1 [_1 H hs=0["POINTER :: " _2]],
    PointerStmt.2:iter-sep        -- _1 ", ",
 
+   CrayPointerStmt               -- H hs=1 [_1 H hs=0["POINTER(" _2 "," _3 ")"]],
+
    %% R551
    PointerDecl                   -- _1 "(" _2 ")",
    PointerDecl.2:iter-sep        -- _1 ",",
