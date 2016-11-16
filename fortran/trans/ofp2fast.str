@@ -569,14 +569,14 @@ ofp-to-ast =
 //  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
-ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
+ofp-to-ast =  ?AssignmentStmt(label,var,expr,eos("\n")); !AssignmentStmt(label,var,expr)
+          <+  ?AssignmentStmt(label,var,expr,eos(str) ); !AssignmentStmt(label,var,expr) {Comment(str)}
 
 //R733
-ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos("\n"))
-            -> PointerAssignmentStmt(label,obj,list,expr)
-ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos(str) )
-            -> PointerAssignmentStmt(label,obj,list,expr) {Comment(str)}
+ofp-to-ast =  ?PointerAssignmentStmt(label,obj,list,expr,eos("\n"))
+            ; !PointerAssignmentStmt(label,obj,list,expr)
+          <+  ?PointerAssignmentStmt(label,obj,list,expr,eos(str) )
+            ; !PointerAssignmentStmt(label,obj,list,expr) {Comment(str)}
 
 //R734
 ofp-to-ast:  no-component-name()                      -> no-name()
@@ -584,9 +584,25 @@ ofp-to-ast:  no-component-name()                      -> no-name()
 //R735
 ofp-to-ast:  BoundsRemapping(lb,ub)                   -> Triplet(lb,ub,no-stride())
 
-//R741
-ofp-to-ast =  ?WhereAssignmentStmt(var,expr,eos("\n")); !WhereAssignmentStmt(var,expr)
-          <+  ?WhereAssignmentStmt(var,expr,eos(str) ); !WhereAssignmentStmt(var,expr) {Comment(str)}
+//R743
+ofp-to-ast =  ?WhereConstructStmt(label,name,expr,eos("\n")); !WhereConstructStmt(label,name,expr)
+          <+  ?WhereConstructStmt(label,name,expr,eos(str) ); !WhereConstructStmt(label,name,expr) {Comment(str)}
+
+//R745
+//ofp-to-ast =  ?WhereAssignmentStmt(var,expr,eos("\n")); !WhereAssignmentStmt(var,expr)
+//          <+  ?WhereAssignmentStmt(var,expr,eos(str) ); !WhereAssignmentStmt(var,expr) {Comment(str)}
+
+//R747
+ofp-to-ast =  ?MaskedElsewhereStmt(label,expr,name,eos("\n")); !MaskedElsewhereStmt(label,expr,name)
+          <+  ?MaskedElsewhereStmt(label,expr,name,eos(str) ); !MaskedElsewhereStmt(label,expr,name) {Comment(str)}
+
+//R748
+ofp-to-ast =  ?ElsewhereStmt(label,name,eos("\n"))             ;  !ElsewhereStmt(label,name)
+          <+  ?ElsewhereStmt(label,name,eos(str) )             ;  !ElsewhereStmt(label,name) {Comment(str)}
+
+//R749
+ofp-to-ast =  ?EndWhereStmt(label,name,eos("\n"))             ;  !EndWhereStmt(label,name)
+          <+  ?EndWhereStmt(label,name,eos(str) )             ;  !EndWhereStmt(label,name) {Comment(str)}
 
 //R751
 ofp-to-ast =  ?ForallConstructStmt(label,name,header,eos("\n")); !ForallConstructStmt(label,name,header)
