@@ -702,7 +702,8 @@ signature
     no-list                         : OptBoundsRemappingList
     paren-list                      : List(BoundsRemapping) -> OptBoundsRemappingList
     PointerAssignmentStmt           : OptLabel * DataPointerObject * OptBoundsRemappingList * DataTarget * EOS -> PointerAssignmentStmt
-    AssignmentStmt                  : OptLabel * Variable * Expr * EOS -> AssignmentStmt
+    AssignmentStmt                  : OptLabel * DataRef * Expr * EOS -> AssignmentStmt
+    AssignmentStmt                  : OptLabel * Substring * Expr * EOS -> AssignmentStmt
                                     : IntExpr -> IntConstantExpr
                                     : Expr -> ConstantExpr
                                     : IntExpr -> SpecificationExpr
@@ -829,9 +830,8 @@ signature
     SubstringRange                  : NoLowerBoundExpr * IntExpr -> SubstringRange
     SubstringRange                  : IntExpr * NoUpperBoundExpr -> SubstringRange
     SubstringRange                  : NoLowerBoundExpr * NoUpperBoundExpr -> SubstringRange
-    paren-list                      : List(SectionSubscript) -> SectionSubscripts
                                     : CharLiteralConstant -> ParentString
-    PartRef                         : Ident * SectionSubscripts * OptImageSelector -> ParentString
+                                    : DataRef -> ParentString
     Substring                       : ParentString * SubstringRange -> Substring
                                     : Variable -> IntVariable
                                     : Variable -> DefaultCharVariable

@@ -1494,7 +1494,8 @@ regular tree grammar
     OptBoundsRemappingList                 -> no-list()
     OptBoundsRemappingList                 -> paren-list(ListPlusOfBoundsRemapping0)
     PointerAssignmentStmt                  -> PointerAssignmentStmt(OptLabel,DataPointerObject,OptBoundsRemappingList,DataTarget,EOS)
-    AssignmentStmt                         -> AssignmentStmt(OptLabel,Variable,Expr,EOS)
+    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,Expr,EOS)
+    AssignmentStmt                         -> AssignmentStmt(OptLabel,Substring,Expr,EOS)
     IntConstantExpr                        -> IntExpr
     DefaultCharConstantExpr                -> DefaultCharExpr
     ConstantExpr                           -> Expr
@@ -1620,7 +1621,7 @@ regular tree grammar
     ScalarVariableName                     -> VarRef(Ident)
     SectionSubscripts                      -> paren-list(ListPlusOfSectionSubscript0)
     ParentString                           -> CharLiteralConstant
-    ParentString                           -> PartRef(Ident,SectionSubscripts,OptImageSelector)
+    ParentString                           -> DataRef
     Substring                              -> Substring(ParentString,SubstringRange)
     IntVariable                            -> Variable
     DefaultCharVariable                    -> Variable

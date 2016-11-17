@@ -1697,7 +1697,7 @@ context-free syntax
 %%  ObjectName
 %%  CoindexedNamedObject
   DataRef                              -> Designator
-  Substring                            -> Designator
+  Substring                            -> Designator {prefer}
 
 %%TODO-F08 ambiguous is it needed.  I think '(' SubstringRange ')' is needed at end of 
 %%Designator '(' SubstringRange ')'    -> Designator   {cons("designator")}
@@ -1747,7 +1747,9 @@ context-free syntax
 %% be parsed.  Other substrings will appear as part-refs and will have to be
 %% fixed in later phase.
 
-  ParentString '(' SubstringRange ')'      -> Substring      {cons("Substring")}
+%% AMBIGUOUS - Substring preferred but could be a DataRef
+%%
+  ParentString '(' SubstringRange ')'      -> Substring      {cons("Substring"), prefer}
 
 %%609
 %% AMBIGUOUS
@@ -1759,7 +1761,7 @@ context-free syntax
 %%  CoindexedNamedObject                   -> ParentString   {reject}  %% AMBIGUOUS with StructureComponent
 %%  StructureComponent                     -> ParentString   {reject}  %% AMBIGUOUS with with PartRef
 
-  Ident SectionSubscripts OptImageSelector -> ParentString        {cons("PartRef")}
+  DataRef                                  -> ParentString
   CharLiteralConstant                      -> ParentString
 
   '(' {SectionSubscript ','}+ ')'          -> SectionSubscripts   {cons("paren-list")}
@@ -2111,7 +2113,10 @@ Primary                                    -> Expr
   IntExpr                                  -> IntConstantExpr
 
 %%R732
-  OptLabel Variable '=' Expr           EOS -> AssignmentStmt  {cons("AssignmentStmt")}
+%% AMBIGUOUS - Substring preferred but could be a DataRef
+%%
+  OptLabel Substring '=' Expr            EOS -> AssignmentStmt  {cons("AssignmentStmt"), prefer}
+  OptLabel DataRef   '=' Expr            EOS -> AssignmentStmt  {cons("AssignmentStmt")}
 
 %%R733
   OptLabel DataPointerObject OptBoundsRemappingList
