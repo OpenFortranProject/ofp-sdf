@@ -1,4 +1,4 @@
-!! R617 array-section
+!! R618 array-section
 !    is data-ref [ (substring-range) ]
 !    or complex-part-designator
 !
