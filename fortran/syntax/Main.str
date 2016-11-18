@@ -63,10 +63,10 @@ signature
     AltReturnSpec                   : Label -> AltReturnSpec
                                     : AltReturnSpec -> ActualArg
                                     : Expr -> ActualArg
-    KeywordArgSpec                  : Keyword * ActualArg -> KeywordArgSpec
     ActualArgSpec                   : Keyword * ActualArg -> ActualArgSpec
     ActualArgSpec                   : NoKeyword * ActualArg -> ActualArgSpec
     ProcedureDesignator             : DataRef * BindingName -> ProcedureDesignator
+    ProcedureDesignator             : ProcComponentRef -> ProcedureDesignator
     ProcedureDesignator             : ProcedureName -> ProcedureDesignator
     no-list                         : NoActualArgSpecList
     CallStmt                        : OptLabel * ProcedureDesignator * List(ActualArgSpec) * EOS -> CallStmt
@@ -691,6 +691,8 @@ signature
     MaskedElsewhereClause           : MaskedElsewhereStmt * List(WhereBodyConstruct) -> MaskedElsewhereClause
     WhereConstruct                  : WhereConstructStmt * List(WhereBodyConstruct) * List(MaskedElsewhereClause) * OptElsewhereClause * EndWhereStmt -> WhereConstruct
     WhereStmt                       : OptLabel * MaskExpr * WhereAssignmentStmt -> WhereStmt
+                                    : Ident -> ProcedureComponentName
+    ProcComponentRef                : Variable * ProcedureComponentName -> ProcComponentRef
                                     : Expr -> DataTarget
     no-upper-bound                  : NoUpperBoundExpr
     BoundsRemapping                 : LowerBoundExpr * UpperBoundExpr -> BoundsRemapping
@@ -752,7 +754,7 @@ signature
     PowerOp                         : PowerOp
                                     : Dop -> DefinedUnaryOp
     Parens                          : Expr -> Primary
-                                    : StructureConstructor -> Primary
+                                    : FunctionReference -> Primary
                                     : ArrayConstructor -> Primary
                                     : Designator -> Primary
                                     : Constant -> Primary
@@ -818,7 +820,6 @@ signature
                                     : Subscript -> SectionSubscript
     no-subscript                    : OptSubscript
                                     : Subscript -> OptSubscript
-                                    : KeywordArgSpec -> Subscript
                                     : IntExpr -> Subscript
                                     : DataRef -> StructureComponent
                                     : Ident -> PartName

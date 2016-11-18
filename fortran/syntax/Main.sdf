@@ -719,7 +719,6 @@ sorts
   CallStmt                            %% R1220
   ProcedureDesignator                 %% R1221
   ActualArgSpec                       %% R1222
-  KeywordArgSpec
   ActualArg                           %% R1223
   AltReturnSpec                       %% R1224
   Prefix                              %% R1225
@@ -1696,6 +1695,7 @@ context-free syntax
 
 %%  ObjectName
 %%  CoindexedNamedObject
+
   DataRef                              -> Designator
   Substring                            -> Designator {prefer}
 
@@ -1984,10 +1984,10 @@ context-free syntax
 
 %%R701
   Constant                      -> Primary
-  Designator                    -> Primary
+  Designator                    -> Primary  {prefer}        %% AMBIGUOUS prefer over FunctionReference
   ArrayConstructor              -> Primary
-  StructureConstructor          -> Primary
-%%FunctionReference             -> Primary  {reject}        %% AMBIGUOUS > Designator - TODO: need ActualArgSpec with keyword
+%%StructureConstructor          -> Primary                  %% AMBIGUOUS with FunctionReference
+  FunctionReference             -> Primary
 %%TypeParamInquiry              -> Primary  {reject}        %% AMBIGUOUS > Designator
 %%TypeParamName                 -> Primary  {reject}        %% AMBIGUOUS > Designator
   '(' Expr ')'                  -> Primary  {cons("Parens")}
@@ -3671,15 +3671,12 @@ context-free syntax
 
 %%R1221
   ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
-%%ProcComponentRef   %% AMB with alt3
+  ProcComponentRef                                    -> ProcedureDesignator {cons("ProcedureDesignator")}
   DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator")}
 
 %%R1222
   NoKeyword   ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
   Keyword '=' ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
-
-  Keyword '=' ActualArg                               -> KeywordArgSpec       {cons("KeywordArgSpec")}
-  KeywordArgSpec                                      -> Subscript
 
 %%R1223
   Expr                                                -> ActualArg

@@ -828,11 +828,10 @@ regular tree grammar
     AltReturnSpec                          -> AltReturnSpec(Label)
     ActualArg                              -> AltReturnSpec
     ActualArg                              -> Expr
-    Subscript                              -> KeywordArgSpec
-    KeywordArgSpec                         -> KeywordArgSpec(Keyword,ActualArg)
     ActualArgSpec                          -> ActualArgSpec(Keyword,ActualArg)
     ActualArgSpec                          -> ActualArgSpec(NoKeyword,ActualArg)
     ProcedureDesignator                    -> ProcedureDesignator(DataRef,BindingName)
+    ProcedureDesignator                    -> ProcedureDesignator(ProcComponentRef)
     ProcedureDesignator                    -> ProcedureDesignator(ProcedureName)
     NoActualArgSpecList                    -> no-list()
     CallStmt                               -> CallStmt(OptLabel,ProcedureDesignator,ListStarOfActualArgSpec0,EOS)
@@ -1531,7 +1530,7 @@ regular tree grammar
     PowerOp                                -> PowerOp()
     DefinedUnaryOp                         -> Dop
     Primary                                -> Parens(Expr)
-    Primary                                -> StructureConstructor
+    Primary                                -> FunctionReference
     Primary                                -> ArrayConstructor
     Primary                                -> Designator
     Primary                                -> Constant
