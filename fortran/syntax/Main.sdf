@@ -3672,7 +3672,7 @@ context-free syntax
 %%R1221
   ProcedureName                                       -> ProcedureDesignator {cons("ProcedureDesignator")}
   ProcComponentRef                                    -> ProcedureDesignator {cons("ProcedureDesignator")}
-  DataRef '%' BindingName                             -> ProcedureDesignator {cons("ProcedureDesignator")}
+%%DataRef '%' BindingName                                                    %%AMBIGUOUS with ProcComponentRef
 
 %%R1222
   NoKeyword   ActualArg                               -> ActualArgSpec       {cons("ActualArgSpec")}
