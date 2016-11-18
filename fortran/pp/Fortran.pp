@@ -559,6 +559,9 @@
    ppDataPointerObject           -- _1,
      DataPointerObject           -- _1 "%" _2,
 
+   %% R739
+   ProcComponentRef              --  _1 "%" _2,
+
    %% R741
    WhereStmt                     -- H hs=1[_1 "WHERE" H hs=0["("_2")"] _3],
 
