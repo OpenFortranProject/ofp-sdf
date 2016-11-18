@@ -1,0 +1,9 @@
+a = foo(.NOT. B)
+a = foo(b)
+a = foo(udt%bar)
+a = foo(*10)
+a = var(1)%foo(.NOT. B)
+a = var(1)%foo(b)
+a = var(1)%foo(udt%bar)
+a = var(1)%foo(*10)
+END PROGRAM
