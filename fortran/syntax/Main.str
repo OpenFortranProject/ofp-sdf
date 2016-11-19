@@ -65,7 +65,6 @@ signature
                                     : Expr -> ActualArg
     ActualArgSpec                   : Keyword * ActualArg -> ActualArgSpec
     ActualArgSpec                   : NoKeyword * ActualArg -> ActualArgSpec
-    ProcedureDesignator             : DataRef * BindingName -> ProcedureDesignator
     ProcedureDesignator             : ProcComponentRef -> ProcedureDesignator
     ProcedureDesignator             : ProcedureName -> ProcedureDesignator
     no-list                         : NoActualArgSpecList

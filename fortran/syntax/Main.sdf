@@ -1975,7 +1975,7 @@ context-free syntax
 %%R310
 %% Keep for now for disambiguation
 %%
-  DefinedUnaryOp                -> DefinedOperator
+  DefinedUnaryOp                -> DefinedOperator {prefer} %% AMBIGUOUS both unary and binary are DOP
   DefinedBinaryOp               -> DefinedOperator
   ExtendedIntrinsicOp           -> DefinedOperator
 

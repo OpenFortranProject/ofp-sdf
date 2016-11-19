@@ -830,7 +830,6 @@ regular tree grammar
     ActualArg                              -> Expr
     ActualArgSpec                          -> ActualArgSpec(Keyword,ActualArg)
     ActualArgSpec                          -> ActualArgSpec(NoKeyword,ActualArg)
-    ProcedureDesignator                    -> ProcedureDesignator(DataRef,BindingName)
     ProcedureDesignator                    -> ProcedureDesignator(ProcComponentRef)
     ProcedureDesignator                    -> ProcedureDesignator(ProcedureName)
     NoActualArgSpecList                    -> no-list()
