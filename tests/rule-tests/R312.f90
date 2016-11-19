@@ -1,4 +1,4 @@
-!! R313 label
+!! R312 label
 !    is digit [digit [digit [digit [digit ]]]]
 !
 ! Test label_list with a list of length 1,2,3.
