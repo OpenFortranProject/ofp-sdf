@@ -34,28 +34,25 @@
    NON_INTRINSIC                 -- "NON_INTRINSIC",
    PARAMETER                     -- "PARAMETER",
 
-   #R201 --,
+   %% R201
    Program                       -- V vs=0 is=0 [_1],
    Program.1:opt                 -- ,
 
-   #R204 --,
+   %% R204
    SpecPart                      -- V vs=0 is=0[_1],
    ExecPart                      -- V vs=0 is=0[_1],
    FuncPart                      -- V ["\nCONTAINS\n" _1],
 
-   #R303 --,
-   OfpName                       -- H hs=1[_1],
-
-   #R305 --,
+   %% R305
    IntLiteralConstant            -- _1 _2,
 
-   #R312 --,
+   %% R312
    Label                         -- _1,
 
-   #R401 --,
+   %% R401
    COLON                         -- ":",
 
-   #R402 --,
+   %% R402
    no-type-spec                  -- ,
 
    KIND                          -- "KIND",
@@ -520,7 +517,7 @@
    DeallocateStmt                -- H hs=1 [_1 H hs=0 ["DEALLOCATE" "("_2 _3")" _4]],
    DeallocateStmt.2:iter-sep     -- _1 ",",
 
-   #Operators --,
+   %% Operators (unary and binary)
    UnaryMinus                    -- H hs=0["-" _1],
    UnaryPlus                     -- H hs=0["+" _1],
    Minus                         -- H hs=0[_1 "-" _2],
@@ -545,9 +542,40 @@
 
    Parens                        -- H hs=0["(" _1 ")"],
 
-   %% R709
+   %% R707
+   PowerOp                       -- "**",
+
+   %% R708 MultOp
+   TIMES                         -- "*",
+   DIV                           -- "/",
+
+   %% R709 AddOp
    PLUS                          -- "+",
    MINUS                         -- "-",
+
+   %% R711
+   ConcatOp                      -- "//",
+
+   %% RelOp
+   RelOp_EQ                      -- "==",
+   RelOp_NE                      -- "/=",
+   RelOp_LT                      -- "<",
+   RelOp_LE                      -- "<=",
+   RelOp_GT                      -- ">",
+   RelOp_GE                      -- ">=",
+
+   %% R718
+   NotOp                         -- ".NOT.",
+
+   %% R719
+   AndOp                         -- ".AND.",
+
+   %% R720
+   OrOp                          -- ".OR.",
+
+   %% R720 EquivOp
+   EquivOp_EQV                   -- ".EQV.",
+   EquivOp_NEQV                  -- ".NEQV.",
 
    %% R732
    AssignmentStmt                -- H hs=1[_1 H hs=0[_2          " = "  _3]],
@@ -917,7 +945,7 @@
    EndBlockDataStmt              -- H hs=1 [_1 "END BLOCK DATA" _2],
    no-block-data-name            -- ,
 
-   #R1201 --,
+   %% R1201
    InterfaceBlock             -- V vs=0 [_1 _2 _3],
    InterfaceStmt              -- H hs=1 [_1 "INTERFACE" _2],
    AbstractInterfaceStmt      -- H hs=1 [_1 "ABSTRACT INTERFACE"],
