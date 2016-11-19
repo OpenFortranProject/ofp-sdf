@@ -1,4 +1,4 @@
-!! R310 intrinsic-operator
+!! R309 intrinsic-operator
 !    is power-op     **
 !    or mult-op       * | /
 !    or add-op        + | -
