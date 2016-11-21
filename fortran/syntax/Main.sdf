@@ -3333,10 +3333,10 @@ context-free syntax
   ContinueStmt                           -> ActionStmt
   CycleStmt                              -> ActionStmt
   DeallocateStmt                         -> ActionStmt
-%%EndFunctionStmt                        -> ActionStmt  %% creates ambiguity for bare "end" statement
-%%EndMpSubprogramStmt                    -> ActionStmt  %% creates ambiguity for bare "end" statement
-%%EndProgramStmt                         -> ActionStmt  %% creates ambiguity for bare "end" statement
-%%EndSubroutineStmt                      -> ActionStmt  %% creates ambiguity for bare "end" statement
+  EndFunctionStmt                        -> ActionStmt  {reject}  %% creates ambiguity for "end" statement with no "FUNCTION"
+  EndMpSubprogramStmt                    -> ActionStmt  {reject}  %% creates ambiguity for "end" statement with no "PROCEDURE"
+  EndProgramStmt                         -> ActionStmt  {reject}  %% creates ambiguity for "end" statement with no "PROGRAM"
+  EndSubroutineStmt                      -> ActionStmt  {reject}  %% creates ambiguity for "end" statement with no "SUBROUTINE"
   EndfileStmt                            -> ActionStmt
   ErrorStopStmt                          -> ActionStmt
   ExitStmt                               -> ActionStmt

@@ -995,10 +995,6 @@ regular tree grammar
     ActionStmt                             -> ExitStmt
     ActionStmt                             -> ErrorStopStmt
     ActionStmt                             -> EndfileStmt
-    ActionStmt                             -> EndSubroutineStmt
-    ActionStmt                             -> EndProgramStmt
-    ActionStmt                             -> EndMpSubprogramStmt
-    ActionStmt                             -> EndFunctionStmt
     ActionStmt                             -> DeallocateStmt
     ActionStmt                             -> CycleStmt
     ActionStmt                             -> ContinueStmt
