@@ -1,4 +1,4 @@
-%%%%%%%%%%
+%%%%%%%%%
 %% This Fortran grammar is structured according to document ISO/IEC 1539:1991. 
 %% Rulenumbers are named R2xx - R12xx as in Annex D of 1539:1991
 %% The grammar is adapted from an ELI project grammer, http://eli-project.cvs.sourceforge.net/eli-project
@@ -3333,10 +3333,10 @@ context-free syntax
   ContinueStmt                           -> ActionStmt
   CycleStmt                              -> ActionStmt
   DeallocateStmt                         -> ActionStmt
-  EndFunctionStmt                        -> ActionStmt
-  EndMpSubprogramStmt                    -> ActionStmt
-  EndProgramStmt                         -> ActionStmt
-  EndSubroutineStmt                      -> ActionStmt
+%%EndFunctionStmt                        -> ActionStmt  %% creates ambiguity for bare "end" statement
+%%EndMpSubprogramStmt                    -> ActionStmt  %% creates ambiguity for bare "end" statement
+%%EndProgramStmt                         -> ActionStmt  %% creates ambiguity for bare "end" statement
+%%EndSubroutineStmt                      -> ActionStmt  %% creates ambiguity for bare "end" statement
   EndfileStmt                            -> ActionStmt
   ErrorStopStmt                          -> ActionStmt
   ExitStmt                               -> ActionStmt
