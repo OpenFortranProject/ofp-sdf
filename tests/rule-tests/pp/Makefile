@@ -75,6 +75,14 @@ check : $(TBL)
              echo $$file "		FAILED!"; \
            fi; \
         done;
+	@for file in *.f90.no-diff ; do \
+           echo "Running test $$file"; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file.f90; \
+           $(FC) -c tmp/$$file.f90 -o tmp/$$file.o; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+           fi; \
+        done;
 	@for file in *.f77 ; do \
            echo "Running test $$file"; \
 	   sglri -p $(TBL) -i $$file | $(TO_FAST) | $(TO_PP) | ast2text -p $(PP) -o tmp/$$file; \
