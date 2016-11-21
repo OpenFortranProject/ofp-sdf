@@ -1,0 +1,3 @@
+a = foo()
+a = udt%foo()
+END PROGRAM
