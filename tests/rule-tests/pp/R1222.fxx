@@ -1,0 +1,9 @@
+a = foo(keyword=.NOT. B)
+a = foo(keyword=b)
+a = foo(keyword=udt%bar)
+a = foo(keyword=*10)
+a = fref(1)%foo(keyword=.NOT. B)
+a = fref(1)%foo(keyword=b)
+a = fref(1)%foo(keyword=udt%bar)
+a = fref(1)%foo(keyword=*10)
+END PROGRAM
