@@ -150,6 +150,9 @@ ofp-simplify-ast:  rewind-unit-stmt(label,u,eos)    -> RewindStmt(label,[UNIT(u)
 //R928
 ofp-simplify-ast:  flush-unit-stmt(label,u,eos)     -> FlushStmt(label,[UNIT(u)],eos)
 
+//R1002
+ofp-simplify-ast:  FormatSpec(list, UnlimitedFormatItem(items)) -> <concat>[list, [UnlimitedFormatItem(items)]]
+
 //R1003
 ofp-simplify-ast:  format-items-first(item)         -> [item]
 ofp-simplify-ast:  format-items(list, item)         -> <concat>[list, [item]]
