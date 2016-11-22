@@ -3142,7 +3142,8 @@ context-free syntax
 
 %%R1013
   PositionEditDesc                      -> ControlEditDesc
-  ',' IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH")}
+      IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH")}           %% could be the first edit descriptor
+  ',' IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH"), prefer}   %% otherwise comman is required C1002
   NoR '/'                               -> ControlEditDesc      {cons("SLASH")}
   ':'                                   -> ControlEditDesc      {cons("COLON_ED")}
   SignEditDesc                          -> ControlEditDesc
@@ -3158,7 +3159,7 @@ context-free syntax
        IntLiteralConstant 'X'           -> PositionEditDesc     {cons("X")}
 
 %%R1017
-  'SS'                                  -> SignEditDesc         {cons("SS")}
+  'SS'                                  -> SignEditDesc         {cons("SS"), prefer}  %% prefer longest string
   'SP'                                  -> SignEditDesc         {cons("SP")}
   'S'                                   -> SignEditDesc         {cons("S")}
 

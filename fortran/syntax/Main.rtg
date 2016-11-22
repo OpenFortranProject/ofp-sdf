@@ -1102,6 +1102,7 @@ regular tree grammar
     ControlEditDesc                        -> COLON_ED()
     ControlEditDesc                        -> SLASH(NoR)
     ControlEditDesc                        -> SLASH(IntLiteralConstant)
+    ControlEditDesc                        -> SLASH(IntLiteralConstant)
     ControlEditDesc                        -> PositionEditDesc
     VEditDesc                              -> V(SignedIntLiteralConstant)
     OptVList                               -> no-list()
