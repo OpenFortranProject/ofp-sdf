@@ -2113,10 +2113,12 @@ Primary                                    -> Expr
   IntExpr                                  -> IntConstantExpr
 
 %%R732
-%% AMBIGUOUS - Substring preferred but could be a DataRef
+%% AMBIGUOUS - Substring preferred but could be a DataRef, also prefer FunctionReferences over arrays
 %%
-  OptLabel Substring '=' Expr            EOS -> AssignmentStmt  {cons("AssignmentStmt"), prefer}
-  OptLabel DataRef   '=' Expr            EOS -> AssignmentStmt  {cons("AssignmentStmt")}
+  OptLabel Substring '=' Expr               EOS -> AssignmentStmt  {cons("AssignmentStmt"), prefer}
+  OptLabel DataRef   '=' Expr               EOS -> AssignmentStmt  {cons("AssignmentStmt")}
+  OptLabel DataRef   '=' FunctionReference  EOS -> AssignmentStmt  {cons("AssignmentStmt"), prefer}
+  OptLabel DataRef   '=' Substring          EOS -> AssignmentStmt  {cons("AssignmentStmt"), prefer}
 
 %%R733
   OptLabel DataPointerObject OptBoundsRemappingList

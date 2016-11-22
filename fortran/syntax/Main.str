@@ -699,6 +699,8 @@ signature
     no-list                         : OptBoundsRemappingList
     paren-list                      : List(BoundsRemapping) -> OptBoundsRemappingList
     PointerAssignmentStmt           : OptLabel * DataPointerObject * OptBoundsRemappingList * DataTarget * EOS -> PointerAssignmentStmt
+    AssignmentStmt                  : OptLabel * DataRef * Substring * EOS -> AssignmentStmt
+    AssignmentStmt                  : OptLabel * DataRef * FunctionReference * EOS -> AssignmentStmt
     AssignmentStmt                  : OptLabel * DataRef * Expr * EOS -> AssignmentStmt
     AssignmentStmt                  : OptLabel * Substring * Expr * EOS -> AssignmentStmt
                                     : IntExpr -> IntConstantExpr

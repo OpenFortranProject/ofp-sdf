@@ -1488,6 +1488,8 @@ regular tree grammar
     OptBoundsRemappingList                 -> no-list()
     OptBoundsRemappingList                 -> paren-list(ListPlusOfBoundsRemapping0)
     PointerAssignmentStmt                  -> PointerAssignmentStmt(OptLabel,DataPointerObject,OptBoundsRemappingList,DataTarget,EOS)
+    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,Substring,EOS)
+    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,FunctionReference,EOS)
     AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,Expr,EOS)
     AssignmentStmt                         -> AssignmentStmt(OptLabel,Substring,Expr,EOS)
     IntConstantExpr                        -> IntExpr
