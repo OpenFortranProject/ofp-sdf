@@ -1,5 +1,18 @@
 MODULE A
 INTEGER :: b, c
+TYPE aReal
+  REAL :: zzz
+END TYPE
+INTERFACE OPERATOR(.yourop.)
+INTEGER FUNCTION add_op(a,b)
+INTEGER, INTENT(IN) :: a, b
+END FUNCTION
+END INTERFACE OPERATOR(.yourop.)
+INTERFACE OPERATOR(.yourotherop.)
+INTEGER FUNCTION neg_op(a)
+INTEGER, INTENT(IN) :: a
+END FUNCTION
+END INTERFACE OPERATOR(.yourotherop.)
 END MODULE
 MODULE AA
 INTEGER :: b, c
@@ -11,5 +24,6 @@ USE a
 USE , INTRINSIC :: iso_c_binding
 USE , NON_INTRINSIC :: A
 USE aa, d=>b, e=>c
+USE a, OPERATOR(.myop.)=>OPERATOR(.yourop.), integer=>aReal, b=>c, OPERATOR(.myotherop.)=>OPERATOR(.yourotherop.)
 USE aaa, ONLY: m, f=>n
 END PROGRAM
