@@ -3480,12 +3480,12 @@ context-free syntax
   Ident                                        -> OnlyUseName {cons("OnlyUseName")}
 
 %%R1114
-  DefinedUnaryOp                               -> LocalDefinedOperator  {cons("LocalDefinedOperator_DUO")}
-  DefinedBinaryOp                              -> LocalDefinedOperator  {cons("LocalDefinedOperator_DBO"), prefer}  %% totally AMBIGUOUS, pick one
+  DefinedUnaryOp                               -> LocalDefinedOperator
+  DefinedBinaryOp                              -> LocalDefinedOperator  {prefer}  %% totally AMBIGUOUS, pick one
 
 %%R1115
-  DefinedUnaryOp                               -> UseDefinedOperator    {cons("UseDefinedOperator_DUO")}
-  DefinedBinaryOp                              -> UseDefinedOperator    {cons("UseDefinedOperator_DBO"), prefer}    %% totally AMBIGUOUS, pick one
+  DefinedUnaryOp                               -> UseDefinedOperator
+  DefinedBinaryOp                              -> UseDefinedOperator    {prefer}    %% totally AMBIGUOUS, pick one
 
 %%R1116
 %%     WARNING-MODIFICATION: 

@@ -143,10 +143,10 @@ signature
                                     : Ident -> SubmoduleName
     SubmoduleStmt                   : OptLabel * ParentIdentifier * SubmoduleName * EOS -> SubmoduleStmt
     Submodule                       : SubmoduleStmt * SpecificationPart * OptModuleSubprogramPart * EndSubmoduleStmt -> Submodule
-    UseDefinedOperator_DBO          : DefinedBinaryOp -> UseDefinedOperator
-    UseDefinedOperator_DUO          : DefinedUnaryOp -> UseDefinedOperator
-    LocalDefinedOperator_DBO        : DefinedBinaryOp -> LocalDefinedOperator
-    LocalDefinedOperator_DUO        : DefinedUnaryOp -> LocalDefinedOperator
+                                    : DefinedBinaryOp -> UseDefinedOperator
+                                    : DefinedUnaryOp -> UseDefinedOperator
+                                    : DefinedBinaryOp -> LocalDefinedOperator
+                                    : DefinedUnaryOp -> LocalDefinedOperator
                                     : Rename -> Only
                                     : GenericSpec -> Only
                                     : Ident -> LocalName

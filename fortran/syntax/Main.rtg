@@ -913,10 +913,10 @@ regular tree grammar
     SubmoduleName                          -> Ident
     SubmoduleStmt                          -> SubmoduleStmt(OptLabel,ParentIdentifier,SubmoduleName,EOS)
     Submodule                              -> Submodule(SubmoduleStmt,SpecificationPart,OptModuleSubprogramPart,EndSubmoduleStmt)
-    UseDefinedOperator                     -> UseDefinedOperator_DBO(DefinedBinaryOp)
-    UseDefinedOperator                     -> UseDefinedOperator_DUO(DefinedUnaryOp)
-    LocalDefinedOperator                   -> LocalDefinedOperator_DBO(DefinedBinaryOp)
-    LocalDefinedOperator                   -> LocalDefinedOperator_DUO(DefinedUnaryOp)
+    UseDefinedOperator                     -> DefinedBinaryOp
+    UseDefinedOperator                     -> DefinedUnaryOp
+    LocalDefinedOperator                   -> DefinedBinaryOp
+    LocalDefinedOperator                   -> DefinedUnaryOp
     OnlyUseName                            -> OnlyUseName(Ident)
     Only                                   -> Rename
     Only                                   -> GenericSpec
