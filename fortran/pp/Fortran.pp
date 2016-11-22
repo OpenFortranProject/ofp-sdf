@@ -966,6 +966,7 @@
 
    %% R1111
    Rename                        -- H hs=0[_1 "=>" _2],
+   RenameOp                      -- H hs=0["OPERATOR" "(" _1 ")" "=>" "OPERATOR" "(" _2 ")"],
 
    #R1116 --,
    Submodule                     -- V vs=0 [_1 _2 _3],
