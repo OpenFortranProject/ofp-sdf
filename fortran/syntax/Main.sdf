@@ -654,9 +654,9 @@ sorts
   DecimalEditDesc                     %% R1020
   CharStringEditDesc                  %% R1021
 
-  NoFormatItems NoUnlimitedFormatItem
-  OptE OptM OptR OptW OptVList OptIOType
-  NoD NoE NoR
+  NoFormatItems NoUnlimitedFormatItem FirstSlashEditDesc
+  OptE OptM OptR OptW OptVList NoIOType
+  NoR
 
   MainProgram                         %% R1101
   ProgramStmt                         %% R1102
@@ -3088,6 +3088,7 @@ context-free syntax
 
 %%R1003
   FormatItem                                        -> FormatItems          {cons("format-items-first")}
+  FirstSlashEditDesc                                -> FormatItems          {cons("format-items-first")}
   FormatItems ',' FormatItem                        -> FormatItems          {cons("format-items")}
   FormatItems     FormatItem                        -> FormatItems          {cons("format-items")}
 
@@ -3114,11 +3115,12 @@ context-free syntax
   OptR 'EN' IntLiteralConstant  '.' IntLiteralConstant OptE -> DataEditDesc {cons("EN")}
   OptR 'ES' IntLiteralConstant  '.' IntLiteralConstant OptE -> DataEditDesc {cons("ES")}
   OptR 'G'  IntLiteralConstant  '.' IntLiteralConstant OptE -> DataEditDesc {cons("G")}
-  OptR 'G'  IntLiteralConstant  NoD       NoE               -> DataEditDesc {cons("G")}
+  OptR 'G'  IntLiteralConstant                              -> DataEditDesc {cons("GnoDnoE")}
   OptR 'L'  IntLiteralConstant                              -> DataEditDesc {cons("L")}
   OptR 'A'  OptW                                            -> DataEditDesc {cons("A")}
   OptR 'D'  IntLiteralConstant  '.' IntLiteralConstant      -> DataEditDesc {cons("D")}
-  OptR 'DT' OptIOType OptVList                              -> DataEditDesc {cons("DT")}
+  OptR 'DT' CharLiteralConstant OptVList                    -> DataEditDesc {cons("DT"), prefer}  %% otherwise could create an excess FormatItem
+  OptR 'DT' NoIOType            OptVList                    -> DataEditDesc {cons("DT")}
 
   IntLiteralConstant                    -> OptW                 {cons("opt-w")}
   % empty %                             -> OptW                 {cons("no-w")}
@@ -3128,23 +3130,20 @@ context-free syntax
 
   'E' IntLiteralConstant                -> OptE                 {cons("opt-e")}
   % empty %                             -> OptE                 {cons("no-e")}
-  % empty %                             ->  NoE                 {cons("no-e")}
-  % empty %                             ->  NoD                 {cons("no-d")}
 
-  CharLiteralConstant                   -> OptIOType            {cons("opt-iotype")}
-  % empty %                             -> OptIOType            {cons("no-iotype")}
+  % empty %                             ->  NoIOType            {cons("no-iotype")}
 
-  '(' {VEditDesc ','}+ ')'              -> OptVList             {cons("paren-list")}
+  '(' {VEditDesc ','}+ ')'              -> OptVList             {cons("VEditDescList")}
   % empty %                             -> OptVList             {cons("no-list")}
 
 %%R1012
-  SignedIntLiteralConstant              -> VEditDesc            {cons("V")}
+  SignedIntLiteralConstant              -> VEditDesc
 
 %%R1013
   PositionEditDesc                      -> ControlEditDesc
-      IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH")}           %% could be the first edit descriptor
-  ',' IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH"), prefer}   %% otherwise comman is required C1002
-  NoR '/'                               -> ControlEditDesc      {cons("SLASH")}
+      IntLiteralConstant '/'            -> FirstSlashEditDesc   {cons("SLASH")}           %% could be the first edit descriptor
+  ',' IntLiteralConstant '/'            -> ControlEditDesc      {cons("SLASH"), prefer}   %% otherwise comma is required C1002
+  NoR '/'                               -> ControlEditDesc      {cons("SLASH"), prefer}   %% select no-r over splitting up an int literal (r)
   ':'                                   -> ControlEditDesc      {cons("COLON_ED")}
   SignEditDesc                          -> ControlEditDesc
   SignedIntLiteralConstant 'P'          -> ControlEditDesc      {cons("P")}
