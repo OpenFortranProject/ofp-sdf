@@ -3481,11 +3481,11 @@ context-free syntax
 
 %%R1114
   DefinedUnaryOp                               -> LocalDefinedOperator  {cons("LocalDefinedOperator_DUO")}
-  DefinedBinaryOp                              -> LocalDefinedOperator  {cons("LocalDefinedOperator_DBO")}
+  DefinedBinaryOp                              -> LocalDefinedOperator  {cons("LocalDefinedOperator_DBO"), prefer}  %% totally AMBIGUOUS, pick one
 
 %%R1115
   DefinedUnaryOp                               -> UseDefinedOperator    {cons("UseDefinedOperator_DUO")}
-  DefinedBinaryOp                              -> UseDefinedOperator    {cons("UseDefinedOperator_DBO")}
+  DefinedBinaryOp                              -> UseDefinedOperator    {cons("UseDefinedOperator_DBO"), prefer}    %% totally AMBIGUOUS, pick one
 
 %%R1116
 %%     WARNING-MODIFICATION: 
