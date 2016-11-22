@@ -25,13 +25,23 @@
 ! Not tested here: generic-spec, only-use-name, local-name, use-name,  
 ! defined-binary-op, and defined-unary-op.
 !
-! Note: defined-binary-op and defined-unary-op are ambiguous to the grammar 
-! and are both matched as T_DEFINED_OP in the lexer.
-
 !! modules for subsequent tests
 !
 MODULE A
   INTEGER :: b, c
+  type :: aReal
+    real :: zzz
+  end type
+  interface operator (.yourop.)
+    integer function add_op(a,b)
+      integer, intent(in) :: a, b
+    end function
+  end interface operator (.yourop.)
+  interface operator (.yourotherop.)
+    integer function neg_op(a)
+      integer, intent(in) :: a
+    end function
+  end interface operator (.yourotherop.)
 END MODULE
 MODULE AA
   INTEGER :: b, c
@@ -49,8 +59,8 @@ use, non_intrinsic :: A
 
 ! Include optional rename-list
 USE aa, d=>b, e=>c
-!TODO-F08 use a, operator(.myop.)=>operator(.yourop.), integer => real, &
-!TODO-F08      b => c, operator(.myotherop.) =>operator(.yourotherop.)
+use a, operator(.myop.)=>operator(.yourop.), integer => aReal, &
+       b => c, operator(.myotherop.) =>operator(.yourotherop.)
 
 ! Include optional only clause
 USE aaa, ONLY: m, f=>n
