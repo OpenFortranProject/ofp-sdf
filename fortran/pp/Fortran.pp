@@ -457,10 +457,10 @@
    CommonBlockObject             -- _1 _2,
 
    %% R608
-   Substring                     -- _1 _2,
+   Substring                     -- H hs=0 [_1 _2],
 
    %% R610
-   SubstringRange                -- "(" _1 ":" _2 ")",
+   SubstringRange                -- H hs=0 ["(" _1 ":" _2 ")"],
 
    %% R611
    DataRef                       -- H hs=0 [_1],
