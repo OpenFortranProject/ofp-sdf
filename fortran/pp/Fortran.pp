@@ -1066,6 +1066,7 @@
    Arg                                 -- _1 "=" _2,
    ppArg                               -- _1,
    AltReturn                           -- "*" _1,
+   AltReturnSpec                       -- "*" _1,
    no-keyword                          -- ,
 
    %% R1231
