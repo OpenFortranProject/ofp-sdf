@@ -534,6 +534,17 @@ ofp-to-ast =
  <+  ? CommonStmt(label,entry,list,eos(str))
   ;  ! CommonStmt(label,<concat>[[entry],list])  {Comment(str)}
 
+//R612
+ofp-to-ast =
+     ? PartRef(name, substring-section-range(ss,range), is)
+  ;  ! Substring(PartRef(name,ss,is), range)
+ <+  ? PartRef(name, ss, substring-section-range(is,range))
+  ;  ! Substring(PartRef(name,ss,is), range)
+
+ofp-to-ast =
+     ? PartRef(name, function-ref-no-args(), no-image-selector())
+  ;  ! FunctionReference(name,[])
+
 //R626
 ofp-to-ast =
      ?AllocateStmt(label,type,allocations,opts,eos("\n"))
@@ -554,8 +565,9 @@ ofp-to-ast =
  <+  ?DeallocateStmt(label,objects,opts,eos(str))
   ;  !DeallocateStmt(label,objects,opts)  {Comment(str)}
 
-//R703
-//  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
+//OR702
+  ofp-to-ast:  ParensUnaryPlus (operand)      -> Parens(UnaryPlus (operand))
+  ofp-to-ast:  ParensUnaryMinus(operand)      -> Parens(UnaryMinus(operand))
 
 //R713
 //  ofp-to-ast:  RelOp_EQ()                   -> EQ()
