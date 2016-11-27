@@ -1,18 +1,19 @@
-!! R442 component-attr-spec
+!! R437 component-attr-spec
 !    is access-spec
 !    or ALLOCATABLE
+!    or CODIMENSION lbracket coarray-spec rbracket
+!    or CONTIGUOUS
 !    or DIMENSION ( component-array-spec )
-!    or DIMENSION [ ( deferred-shape-spec-list ) ]
-!    lbracket co-array-spec rbracket
-!    or CONTIGUOUS or POINTER
+!    or POINTER
 !
+module boohoo
 type woohoo
-!TODO-F08     integer, pointer, codimension[:] ::bar 
     integer, pointer, dimension(:) :: ugly
+    integer, allocatable, codimension[:] ::bar 
     real, pointer :: lies1
     real, allocatable :: lies2(:,:)
     real, pointer, private :: foo
     integer, allocatable ::this(:)
     integer, allocatable, private :: that
 end type
-end
+end module
