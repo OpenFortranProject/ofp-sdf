@@ -1,0 +1,23 @@
+MODULE whut
+TYPE point
+  INTEGER :: x, y
+END TYPE
+TYPE, EXTENDS(point) :: feeble
+  PROCEDURE(), POINTER, NOPASS :: foible
+  PROCEDURE(bob), PASS(a), PRIVATE, POINTER :: boo=>bar
+  PROCEDURE(bob), PASS, PUBLIC, POINTER :: boo
+  TYPE(feeble), POINTER :: b
+END TYPE
+INTERFACE
+FUNCTION bob(a)
+IMPORT feeble
+TYPE(feeble) :: a
+END FUNCTION
+END INTERFACE
+
+CONTAINS
+
+FUNCTION boo(a)
+TYPE(point) :: a
+END FUNCTION
+END MODULE
