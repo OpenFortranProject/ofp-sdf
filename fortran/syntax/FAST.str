@@ -194,8 +194,26 @@ signature
                               : Expr -> OptComponentInitialization
     no-init                   : OptComponentInitialization
                               : Expr -> InitialDataTarget
-    TypeBoundProcPart         : OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcPart
     PrivateComponentsStmt     : OptLabel -> PrivateComponentsStmt
+    TypeBoundProcPart         : OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcPart
+    BindingPrivateStmt        : OptLabel -> BindingPrivateStmt
+                              : BindingPrivateStmt -> OptBindingPrivateStmt
+    no-binding-private-stmt   : OptBindingPrivateStmt
+    TypeBoundProcedureStmt    : OptLabel * OptBindingAttrList * List(TypeBoundProcDecl) -> TypeBoundProcedureStmt
+    no-list                   : OptBindingAttrList
+    comma-list                : List(BindingAttr) -> OptBindingAttrList
+    TypeBoundProcDecl         : BindingName * NoProcedureName -> TypeBoundProcDecl
+    TypeBoundProcDecl         : BindingName * ProcedureName -> TypeBoundProcDecl
+    BindingName               : String -> BindingName
+                              : Ident -> BindingName
+                              : Ident -> ProcedureName
+    no-procedure-name         : NoProcedureName
+    Pass                      : ArgName -> BindingAttr
+    Pass                      : NoArgName -> BindingAttr
+    NOPASS                    : BindingAttr
+    NON_OVERRIDABLE           : BindingAttr
+    DEFERRED                  : BindingAttr
+                              : AccessSpec -> BindingAttr
     FinalProcedureStmt        : OptLabel * List(Name) -> FinalProcedureStmt
     AllocatableStmt           : OptLabel * List(AllocatableDecl) -> AllocatableStmt
                               : Var -> AllocatableDecl
@@ -241,8 +259,6 @@ signature
     OfpLiteral                : String * Type -> OfpLiteral
     OfpLiteral                : String -> OfpLiteral
                               : String -> String
-                              : Ident -> ProcedureName
-    no-procedure-name         : NoProcedureName
     STAR                      : DummyArg
                               : DummyArgName -> DummyArg
     no-result-name            : NoResultName
@@ -479,6 +495,7 @@ signature
                               : DataComponentDefStmt -> Stmt
                               : ProcComponentDefStmt -> Stmt
                               : PrivateComponentsStmt -> Stmt
+                              : TypeBoundProcedureStmt -> Stmt
                               : FinalProcedureStmt -> Stmt
                               : AllocatableStmt -> Stmt
                               : AsynchronousStmt -> Stmt
@@ -759,28 +776,12 @@ signature
     no-expr                   : OptEqualsExpr
     no-arg-name               : NoArgName
                               : Ident -> ArgName
-                              : AccessSpec -> BindingAttr
-    DEFERRED                  : BindingAttr
-    NON_OVERRIDABLE           : BindingAttr
-    NOPASS                    : BindingAttr
-    Pass                      : NoArgName -> BindingAttr
-    Pass                      : ArgName -> BindingAttr
     no-access-spec            : OptAccessSpec
     comma-access-spec         : AccessSpec -> OptAccessSpec
     TypeBoundGenericStmt      : OptLabel * OptAccessSpec * GenericSpec * List(BindingName) * EOS -> TypeBoundGenericStmt
-    TypeBoundProcDecl         : BindingName * NoProcedureName -> TypeBoundProcDecl
-    TypeBoundProcDecl         : BindingName * ProcedureName -> TypeBoundProcDecl
-    BindingName               : String -> BindingName
-                              : Ident -> BindingName
-    no-list                   : OptBindingAttrList
-    comma-list                : List(BindingAttr) -> OptBindingAttrList
-    TypeBoundProcedureStmt    : OptLabel * OptBindingAttrList * List(TypeBoundProcDecl) * EOS -> TypeBoundProcedureStmt
                               : FinalProcedureStmt -> TypeBoundProcBinding
                               : TypeBoundGenericStmt -> TypeBoundProcBinding
                               : TypeBoundProcedureStmt -> TypeBoundProcBinding
-    no-binding-private-stmt   : OptBindingPrivateStmt
-                              : BindingPrivateStmt -> OptBindingPrivateStmt
-    BindingPrivateStmt        : OptLabel * EOS -> BindingPrivateStmt
     LEN                       : TypeParamAttrSpec
     KIND                      : TypeParamAttrSpec
     SequenceStmt              : OptLabel -> SequenceStmt
