@@ -371,6 +371,13 @@ ofp-to-ast =
 ofp-to-ast:    TypeBoundProcedurePart(contains,private,bindings)
             -> TypeBoundProcPart(private,bindings)
 
+//R448
+ofp-to-ast =
+      ? TypeBoundProcedureStmt(label,attrs,procs,eos("\n"))
+   ;  ! TypeBoundProcedureStmt(label,attrs,procs)
+  <+  ? TypeBoundProcedureStmt(label,attrs,procs,eos(str))
+   ;  ! TypeBoundProcedureStmt(label,attrs,procs) {Comment(str)}
+
 //R452
 ofp-to-ast =
       ? FinalProcedureStmt(label,names,eos("\n"))
