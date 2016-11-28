@@ -1,0 +1,23 @@
+%%%%%%%%%%
+%% Fortran obsolete syntax
+%%%%%%%%%%
+
+module FortranObsolete
+
+imports Main
+
+exports
+
+sorts
+
+  ParensUnaryMinus ParensUnaryPlus         %% OR702
+
+context-free syntax
+
+%% OR702
+
+  '+' Primary                              -> ParensUnaryPlus   {cons("ParensUnaryPlus")}
+  '-' Primary                              -> ParensUnaryMinus  {cons("ParensUnaryMinus")} 
+
+  ParensUnaryPlus                          -> Level1Expr
+  ParensUnaryMinus                         -> Level1Expr
