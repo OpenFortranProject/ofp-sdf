@@ -180,7 +180,11 @@
    BindingPrivateStmt            -- H hs=1 [_1 "PRIVATE"],
    no-binding-private-stmt       --,
 
-   TypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE" _2 _3 _4]],
+   %% R448
+   TypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE" ", " _2 " :: " _3]],
+   TypeBoundProcedureStmt.2:iter-sep  -- _1 ", ",
+   TypeBoundProcedureStmt.3:iter-sep  -- _1 ", ",
+
    TypeBoundProcedureInterfaceStmt    -- H hs=1[H hs=0[_1 "PROCEDURE" "("_2")" _3 _4 _5]],
    TypeBoundProcedureInterfaceStmt.3:iter-sep  -- _1 ", ",
    TypeBoundProcedureInterfaceStmt.4:iter-sep  -- _1 ", ",
@@ -210,17 +214,17 @@
    StructureConstructor          -- _1 "("_2")",
 %%   StructureConstructor.2:iter-sep   -- _1 ", ",
 
-   #R458 --,
+   %% R458
    EnumDef                       -- _1 _2 _3,
 
-   #R459 --,
+   %% R459
    EnumDefStmt                   -- H hs=1[_1 KW["ENUM, "] H hs=0[KW["BIND(C)"] _2]],
 
-   #R460 --,
+   %% R460
    EnumeratorDefStmt             -- H hs=1[_1 KW["ENUMERATOR ::"] H hs=0[_2 _3]],
    EnumeratorDefStmt.2:iter-sep  -- _1 ", ",
 
-   #R461 --,
+   %% R461
    Enumerator                    -- _1 KW[" = "] _2,
 
    %% R462
