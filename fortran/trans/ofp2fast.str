@@ -48,6 +48,7 @@ strategies //=================START OF STRATEGIES============================
 
 transfer-type(|type) =
       ? Var(name,CHARACTER_LEN(_),init)
+  <+  ? Var(name,ArrayType(CHARACTER_LEN(_),dims,codims),init)
   <+  ? Var(name,unknown-type(),init)
    ;  ! Var(name,type,init)
   <+  ? Var(name,ArrayType(unknown-type(),dims,codims),init)
@@ -356,22 +357,33 @@ ofp-to-ast =
     ; ! Var(name,CHARACTER_LEN(char_length),init)
    <+ ? ComponentDecl(name,dims,codims,no-char-length(),init)
     ; ! Var(name,ArrayType(unknown-type(),dims,codims),init)
+   <+ ? ComponentDecl(name,dims,codims,char_length,init)
+    ; ! Var(name,ArrayType(CHARACTER_LEN(char_length),dims,codims),init)
+
+//R440
+ofp-to-ast =
+      ? ProcComponentDefStmt(label,interface,attrs,decls,eos("\n"))
+    ; ! ProcComponentDefStmt(label,interface,attrs,decls)
+   <+ ? ProcComponentDefStmt(label,interface,attrs,decls,eos(str))
+    ; ! ProcComponentDefStmt(label,interface,attrs,decls) {Comment(str)}
 
 //R445
 ofp-to-ast:    TypeBoundProcedurePart(contains,private,bindings)
             -> TypeBoundProcPart(private,bindings)
 
 //R452
-ofp-to-ast:    FinalProcedureStmt(label,names,eos("\n"))
-            -> FinalProcedureStmt(label,names)
-ofp-to-ast:    FinalProcedureStmt(label,names,eos(str))
-            -> FinalProcedureStmt(label,names) {Comment(str)}
+ofp-to-ast =
+      ? FinalProcedureStmt(label,names,eos("\n"))
+   ;  ! FinalProcedureStmt(label,names)
+  <+  ? FinalProcedureStmt(label,names,eos(str))
+   ;  ! FinalProcedureStmt(label,names) {Comment(str)}
 
 //R501
-ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
-            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
-ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
-            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
+ofp-to-ast =
+      ? TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
+   ;  ! TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
+  <+  ? TypeDeclarationStmt(label,type,attrs,vars,eos(str))
+   ;  ! TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
 
 //R503
 ofp-to-ast =
