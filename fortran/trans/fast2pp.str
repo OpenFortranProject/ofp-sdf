@@ -25,6 +25,7 @@ signature
     ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
 
     ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
+    ppArrayVarLen  : Name * ArrayType * Length * Init  -> ppArrayVarLen
     ppRange        : upper-bound                       -> ppRange
     ppTriplet      : lb * ub * OptColon * stride       -> ppTriplet
 
@@ -97,6 +98,8 @@ signature
 
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
 
+    ppProcDecl        : name                                        -> ppProcDecl           // R1214
+
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
     opt-list       : list            -> opt-list
@@ -141,6 +144,9 @@ ast-to-pp =
 //R431
 ast-to-pp:  DataComponentDefStmt(label,type,[],comps)->  ppDataComponentDefStmt(label,type,comps)
 
+//R440
+ast-to-pp:  Pass(no-arg-name())                      ->  PASS()
+
 //R453
 ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
 
@@ -148,15 +154,23 @@ ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
 ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)  ->  ppTypeDeclarationStmt(label,type,vars)
 
 //R503
-ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
-           -> ppArrayVar(name,ppArrayType(dims),init)
-ast-to-pp:    Var(name,ArrayType(type,[],codims),init)
-           -> ppArrayVar(name,ppCoarrayType(codims),init)
-ast-to-pp:    Var(name,ArrayType(type,dims,codims),init)
-           -> ppArrayVar(name,ppArrayType(dims,codims),init)
+ast-to-pp =
+      ? Var(name,ArrayType(CHARACTER_LEN(len),dims,[]),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,[]),init)
+    ; ! ppArrayVar(name,ppArrayType(dims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),[],codims),init)
+    ; ! ppArrayVarLen(name,ppCoarrayType(codims),len,init)
+   <+ ? Var(name,ArrayType(type,[],codims),init)
+    ; ! ppArrayVar(name,ppCoarrayType(codims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),dims,codims),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims,codims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,codims),init)
+    ; ! ppArrayVar(name,ppArrayType(dims,codims),init)
 
-ast-to-pp:    Var(name,CHARACTER_LEN(len),init)    -> ppVarLen(name,len,init)
-ast-to-pp:    Var(name,type,init)                  -> ppVar(name,init)
+ast-to-pp =
+      ? Var(name,CHARACTER_LEN(len),init)   ; ! ppVarLen(name,len,init)
+  <+  ? Var(name,type,init)                 ; ! ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
@@ -257,14 +271,11 @@ ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoCon
 //R1109
 ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
 
+//R1214
+ast-to-pp:  ProcDecl(name,no-init())         -> ppProcDecl(name)
+
 //R1222
 ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
-
-//R1227
-//  ast-to-pp:  OfpFunction(name, scope)     -> ppFunction(scope)
-
-//R1233
-//  ast-to-pp:  OfpSubroutine(name, scope)   -> ppSubroutine(scope)
 
 //R1237
 //ast-to-pp:  MpSubprogram(name, scope)        -> ppMpSubprogram(scope)
