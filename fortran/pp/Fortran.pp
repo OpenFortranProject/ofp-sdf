@@ -120,7 +120,7 @@
    TRUE                          -- H hs=0[".TRUE."  "_" _1],
    FALSE                         -- H hs=0[".FALSE." "_" _1],
 
-   #R425 --,
+   %% R425
    DerivedTypeDef                -- V vs=0 is=2[_1 _2 _3 _4] _5 _6,
    DerivedTypeStmt               -- H hs=1[_1 "TYPE," H hs=0[_2 " :: " _3 "(" _4 ")"]],
    DerivedTypeStmt.2:iter-sep    -- _1 ", ",
@@ -162,21 +162,19 @@
    Codimension                   -- "CODIMENSION" "["_1"]",
    Codimension.1:iter-sep        -- _1 ",",
 
-   #R438 --,
+   %% R438
    ComponentDecl                 -- _1 _2 _3 _4 _5,
 
-   #R440 --,
-   ProcComponentDefStmt          -- H hs=1[_1 KW["PROCEDURE"] H hs=0["("_2")" KW[", "] _3 KW[" :: "] _4 _5]],
+   %% R440
+   ProcComponentDefStmt          -- H hs=1[_1 H hs=0["PROCEDURE" "("_2")" ", " _3 " :: " _4]],
    ProcComponentDefStmt.3:iter-sep   -- _1 ", ",
 
-   #R441 --,
+   %% R441
    POINTER                       -- "POINTER",
    PASS                          -- "PASS",
+   NOPASS                        -- "NOPASS",
 
-   #R442 --,
-   ComponentInit                 -- _1,
-
-   #R445 --,
+   %% R445
    TypeBoundProcPart             -- "CONTAINS" _1 _2,
 
    BindingPrivateStmt            -- H hs=1 [_1 "PRIVATE"],
@@ -189,10 +187,11 @@
 
    TypeBoundProcDecl             -- _1 " => " _2,
 
-   #R451 --,
-   Pass                          -- KW["PASS"] _1,
-   NON_OVERRIDABLE               -- KW["NON_OVERRIDABLE"],
-   DEFERRED                      -- KW["DEFERRED"],
+   %% R451
+   Pass                          -- "PASS" "(" _1 ")",
+   NON_OVERRIDABLE               -- "NON_OVERRIDABLE",
+   DEFERRED                      -- "DEFERRED",
+   no-arg-name                   --,
 
    #R452 --,
    FinalProcedureStmt            -- H hs=1[_1 "FINAL ::" H hs=0[_2]],
@@ -276,9 +275,9 @@
    ppVar                         -- _1 _2,
    ppVarLen                      -- _1 "*" _2 _3,
    ppArrayVar                    -- _1 _2 _3,
+   ppArrayVarLen                 -- _1 _2 "*" _3 _4,
 
    %% R505
-   Initialization                -- " = " _1,
    Init                          -- " = " _1,
    PointerInit                   -- " => " _1,
    no-init                       -- ,
@@ -1033,10 +1032,11 @@
    ProcedureDeclarationStmt.4:iter-sep -- _1 ", ",
    no-proc-interface                   -- ,
   
-   #R1214 --,
-   ProcDecl                            -- _1 _2,
+   %% R1214
+   ProcDecl                            -- _1 "=>" _2,
+ ppProcDecl                            -- _1,
 
-   #R1217 --,
+   %% R1217
    Function                            -- V vs=0 [_1 _2 _3],
    FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
    FunctionStmt.4:iter-sep             -- _1 ",",
