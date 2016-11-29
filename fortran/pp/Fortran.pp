@@ -189,7 +189,9 @@
    TypeBoundProcedureInterfaceStmt.3:iter-sep  -- _1 ", ",
    TypeBoundProcedureInterfaceStmt.4:iter-sep  -- _1 ", ",
 
+   %% R449
    TypeBoundProcDecl             -- _1 " => " _2,
+ ppTypeBoundProcDecl             -- _1,
 
    %% R451
    Pass                          -- "PASS" "(" _1 ")",
@@ -203,7 +205,7 @@
 
    %% R453
    DerivedTypeSpec               -- _1 _2,
-   ppDerivedType                 -- "TYPE" "("_1            ")",
+ ppDerivedType                   -- "TYPE" "("_1            ")",
    DerivedType                   -- "TYPE" "("_1 "(" _2 ")" ")",
    DerivedType.2:iter-sep        -- _1 ",",
 
