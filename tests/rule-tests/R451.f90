@@ -8,8 +8,8 @@
 type truth
 contains
   procedure, pass(beauty) :: foo
-  procedure, pass, deferred :: boo
-  procedure, non_overridable, private :: hoo
-  procedure, public :: loo
+  procedure, pass, deferred ::boo
+  procedure, non_overridable, private:: hoo
+  procedure,public :: loo,doo=>goo
 end type truth
 end
