@@ -55,6 +55,8 @@ signature
     ppSectionSubscripts : ss             -> ppSectionSubscripts
     ppImageSelector     : ss             -> ppImageSelector
 
+    ppTypeBoundProcDecl      : name                    -> ppTypeBoundProcDecl
+
     ppDerivedType            : name                    -> ppDerivedType
     ppDerivedTypeStmt        : label * name            -> ppDerivedTypeStmt
     ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
@@ -142,16 +144,19 @@ ast-to-pp =
   <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
 
 //R431
-ast-to-pp:  DataComponentDefStmt(label,type,[],comps)->  ppDataComponentDefStmt(label,type,comps)
+ast-to-pp:  DataComponentDefStmt(label,type,[],comps)   ->  ppDataComponentDefStmt(label,type,comps)
 
 //R440
-ast-to-pp:  Pass(no-arg-name())                      ->  PASS()
+ast-to-pp:  Pass(no-arg-name())                         ->  PASS()
+
+//R449
+ast-to-pp:  TypeBoundProcDecl(name,no-procedure-name()) -> ppTypeBoundProcDecl(name)
 
 //R453
-ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
+ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
 
 //R501
-ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)  ->  ppTypeDeclarationStmt(label,type,vars)
+ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)
 
 //R503
 ast-to-pp =
