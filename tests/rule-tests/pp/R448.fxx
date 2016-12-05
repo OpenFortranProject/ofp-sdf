@@ -1,0 +1,9 @@
+MODULE myjunk
+TYPE POINT
+CONTAINS
+PROCEDURE, PASS :: LENGTH => POINT_LENGTH
+PROCEDURE :: length => point_length
+PROCEDURE :: length => point_length
+10 PROCEDURE(proc_name), NON_OVERRIDABLE, DEFERRED :: sink, or, swim
+END TYPE POINT
+END MODULE
