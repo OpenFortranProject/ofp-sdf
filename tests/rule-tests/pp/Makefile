@@ -19,13 +19,13 @@ $(TBL) :
 simple : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_SIM) | pp-aterm -o tmp-simple/$$file.aterm; \
+	   sglri -p $(TBL) -i $$file | $(TO_SIM) | pp-aterm -o tmp-simple/$$file.trm; \
         done;
 
 fast : $(TBL)
 	@for file in *.f90 ; do \
            echo "Running test $$file"; \
-	   sglri -p $(TBL) -i $$file | $(TO_FAST) | pp-aterm -o tmp-fast/$$file.aterm; \
+	   sglri -p $(TBL) -i $$file | $(TO_FAST) | pp-aterm -o tmp-fast/$$file.trm; \
         done;
 
 check-unparse : $(TBL)
@@ -185,5 +185,5 @@ check-pp :
 clean :
 	rm -f *.mod *.o
 	rm -f tmp/*.f90 tmp/*.f77 tmp/*.f08 tmp/*.fxx tmp/*.o
-	rm -f tmp-simple/*.aterm
-	rm -f tmp-fast/*.aterm
+	rm -f tmp-simple/*.trm
+	rm -f tmp-fast/*.trm
