@@ -736,37 +736,11 @@ regular tree grammar
     OptComment0                            -> <string>
     OptComment_EOL0                        -> <(1)>(<string>)
     OptComment_EOL_Lit0                    -> <string>
-    Expr                                   -> DefBinExpr(Expr,DefinedBinaryOp,Expr)
-    Expr                                   -> NEQV(Expr,Expr)
-    Expr                                   -> EQV(Expr,Expr)
-    Expr                                   -> OR(Expr,Expr)
-    Expr                                   -> AND(Expr,Expr)
-    Expr                                   -> NOT(Expr)
-    Expr                                   -> GE(Expr,Expr)
-    Expr                                   -> GT(Expr,Expr)
-    Expr                                   -> LE(Expr,Expr)
-    Expr                                   -> LT(Expr,Expr)
-    Expr                                   -> NE(Expr,Expr)
-    Expr                                   -> EQ(Expr,Expr)
-    Expr                                   -> GE(Expr,Expr)
-    Expr                                   -> GT(Expr,Expr)
-    Expr                                   -> LE(Expr,Expr)
-    Expr                                   -> LT(Expr,Expr)
-    Expr                                   -> NE(Expr,Expr)
-    Expr                                   -> EQ(Expr,Expr)
-    Expr                                   -> Concat(Expr,Expr)
-    Expr                                   -> Minus(Expr,Expr)
-    Expr                                   -> Plus(Expr,Expr)
-    Expr                                   -> UnaryMinus(Expr)
-    Expr                                   -> UnaryPlus(Expr)
-    Expr                                   -> Div(Expr,Expr)
-    Expr                                   -> Mult(Expr,Expr)
-    Expr                                   -> Power(Expr,Expr)
-    Expr                                   -> DefUnaryExpr(DefinedUnaryOp,Expr)
-    CrayPointerStmt                        -> CrayPointerStmt(OptLabel,ObjectName,ObjectName,EOS)
-    OtherSpecificationStmt                 -> CrayPointerStmt
-    Initialization                         -> Init(ConstantExpr)
-    ComponentInitialization                -> Init(Expr)
+    PauseStmt                              -> PauseStmt(OptLabel,OptStopCode,EOS)
+    Level1Expr                             -> ParensUnaryMinus
+    Level1Expr                             -> ParensUnaryPlus
+    ParensUnaryMinus                       -> ParensUnaryMinus(Primary)
+    ParensUnaryPlus                        -> ParensUnaryPlus(Primary)
     ContainsStmt                           -> ContainsStmt(OptLabel,EOS)
     ReturnStmt                             -> ReturnStmt(OptLabel,NoExpr,EOS)
     ReturnStmt                             -> ReturnStmt(OptLabel,Expr,EOS)
@@ -1300,7 +1274,6 @@ regular tree grammar
     FileUnitNumber                         -> IntExpr
     IoUnit                                 -> STAR()
     IoUnit                                 -> IntExpr
-    PauseStmt                              -> PauseStmt(OptLabel,OptStopCode,EOS)
     LockVariable                           -> Variable
     UnlockStmt                             -> UnlockStmt(OptLabel,LockVariable,OptSyncStatList,EOS)
     OptLockStatList                        -> no-list()
@@ -1488,10 +1461,7 @@ regular tree grammar
     OptBoundsRemappingList                 -> no-list()
     OptBoundsRemappingList                 -> paren-list(ListPlusOfBoundsRemapping0)
     PointerAssignmentStmt                  -> PointerAssignmentStmt(OptLabel,DataPointerObject,OptBoundsRemappingList,DataTarget,EOS)
-    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,Substring,EOS)
-    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,FunctionReference,EOS)
-    AssignmentStmt                         -> AssignmentStmt(OptLabel,DataRef,Expr,EOS)
-    AssignmentStmt                         -> AssignmentStmt(OptLabel,Substring,Expr,EOS)
+    AssignmentStmt                         -> AssignmentStmt(OptLabel,Variable,Expr,EOS)
     IntConstantExpr                        -> IntExpr
     DefaultCharConstantExpr                -> DefaultCharExpr
     ConstantExpr                           -> Expr
@@ -1501,12 +1471,22 @@ regular tree grammar
     DefaultCharExpr                        -> Expr
     LogicalExpr                            -> Expr
     DefinedBinaryOp                        -> Dop
-    Expr                                   -> Primary
+    Expr                                   -> DefBinExpr(Expr,DefinedBinaryOp,Level5Expr)
+    Expr                                   -> Level5Expr
     EquivOp                                -> EquivOp_NEQV()
     EquivOp                                -> EquivOp_EQV()
     OrOp                                   -> OrOp()
     AndOp                                  -> AndOp()
     NotOp                                  -> NotOp()
+    Level5Expr                             -> NEQV(Level5Expr,EquivOperand)
+    Level5Expr                             -> EQV(Level5Expr,EquivOperand)
+    Level5Expr                             -> EquivOperand
+    EquivOperand                           -> OR(EquivOperand,OrOperand)
+    EquivOperand                           -> OrOperand
+    OrOperand                              -> AND(OrOperand,AndOperand)
+    OrOperand                              -> AndOperand
+    AndOperand                             -> NOT(Level4Expr)
+    AndOperand                             -> Level4Expr
     RelOp                                  -> RelOp_GE()
     RelOp                                  -> RelOp_GT()
     RelOp                                  -> RelOp_LE()
@@ -1519,15 +1499,42 @@ regular tree grammar
     RelOp                                  -> RelOp_LT()
     RelOp                                  -> RelOp_NE()
     RelOp                                  -> RelOp_EQ()
+    Level4Expr                             -> GE(Level3Expr,Level3Expr)
+    Level4Expr                             -> GT(Level3Expr,Level3Expr)
+    Level4Expr                             -> LE(Level3Expr,Level3Expr)
+    Level4Expr                             -> LT(Level3Expr,Level3Expr)
+    Level4Expr                             -> NE(Level3Expr,Level3Expr)
+    Level4Expr                             -> EQ(Level3Expr,Level3Expr)
+    Level4Expr                             -> GE(Level3Expr,Level3Expr)
+    Level4Expr                             -> GT(Level3Expr,Level3Expr)
+    Level4Expr                             -> LE(Level3Expr,Level3Expr)
+    Level4Expr                             -> LT(Level3Expr,Level3Expr)
+    Level4Expr                             -> NE(Level3Expr,Level3Expr)
+    Level4Expr                             -> EQ(Level3Expr,Level3Expr)
+    Level4Expr                             -> Level3Expr
     ConcatOp                               -> ConcatOp()
+    Level3Expr                             -> Concat(Level3Expr,Level2Expr)
+    Level3Expr                             -> Concat(Substring,Level2Expr)
+    Level3Expr                             -> Level2Expr
     AddOp                                  -> MINUS()
     AddOp                                  -> PLUS()
     MultOp                                 -> DIV()
     MultOp                                 -> TIMES()
     PowerOp                                -> PowerOp()
+    Level2Expr                             -> Minus(Level2Expr,AddOperand)
+    Level2Expr                             -> Plus(Level2Expr,AddOperand)
+    Level2Expr                             -> UnaryMinus(AddOperand)
+    Level2Expr                             -> UnaryPlus(AddOperand)
+    Level2Expr                             -> AddOperand
+    AddOperand                             -> Div(AddOperand,MultOperand)
+    AddOperand                             -> Mult(AddOperand,MultOperand)
+    AddOperand                             -> MultOperand
+    MultOperand                            -> Power(Level1Expr,MultOperand)
+    MultOperand                            -> Level1Expr
     DefinedUnaryOp                         -> Dop
+    Level1Expr                             -> DefUnaryExpr(DefinedUnaryOp,Primary)
+    Level1Expr                             -> Primary
     Primary                                -> Parens(Expr)
-    Primary                                -> FunctionReference
     Primary                                -> ArrayConstructor
     Primary                                -> Designator
     Primary                                -> Constant
@@ -1583,6 +1590,7 @@ regular tree grammar
     AllocateStmt                           -> AllocateStmt(OptLabel,NoTypeSpec,ListPlusOfAllocation0,OptAllocOptList,EOS)
     Cosubscript                            -> IntExpr
     OptImageSelector                       -> no-image-selector()
+    OptImageSelector                       -> substring-section-range(ImageSelector,SubstringRange)
     OptImageSelector                       -> ImageSelector
     ImageSelector                          -> ImageSelector(ListPlusOfCosubscript0)
     VectorSubscript                        -> IntExpr
@@ -1590,6 +1598,8 @@ regular tree grammar
     OptStride                              -> opt-stride(Stride)
     Stride                                 -> IntExpr
     SubscriptTriplet                       -> Triplet(OptSubscript,OptSubscript,OptStride)
+    SectionSubscript                       -> AltReturnSpec
+    SectionSubscript                       -> ActualArgSpec(Keyword,ActualArg)
     SectionSubscript                       -> SubscriptTriplet
     SectionSubscript                       -> Subscript
     OptSubscript                           -> no-subscript()
@@ -1606,6 +1616,8 @@ regular tree grammar
     CoindexedNamedObject                   -> DataRef
     StructureComponent                     -> DataRef
     PartName                               -> Ident
+    OptSectionSubscripts                   -> function-ref-no-args()
+    OptSectionSubscripts                   -> substring-section-range(ListPlusOfSectionSubscript0,SubstringRange)
     OptSectionSubscripts                   -> paren-list(ListPlusOfSectionSubscript0)
     OptSectionSubscripts                   -> no-section-subscripts()
     PartRef                                -> PartRef(PartName,OptSectionSubscripts,OptImageSelector)
@@ -1617,7 +1629,6 @@ regular tree grammar
     ScalarVariableName                     -> VarRef(Ident)
     SectionSubscripts                      -> paren-list(ListPlusOfSectionSubscript0)
     ParentString                           -> CharLiteralConstant
-    ParentString                           -> DataRef
     Substring                              -> Substring(ParentString,SubstringRange)
     IntVariable                            -> Variable
     DefaultCharVariable                    -> Variable
@@ -1683,7 +1694,6 @@ regular tree grammar
     DimensionStmt                          -> DimensionStmt(OptLabel,ListPlusOfArrayNameSpec0,EOS)
     ConstantSubobject                      -> Designator
     IntConstantSubobject                   -> ConstantSubobject
-    DataStmtConstant                       -> StructureConstructor
     DataStmtConstant                       -> SignedRealLiteralConstant
     DataStmtConstant                       -> SignedIntLiteralConstant
     DataStmtConstant                       -> ConstantSubobject
@@ -1768,7 +1778,6 @@ regular tree grammar
     AccessSpec                             -> PRIVATE()
     AccessSpec                             -> PUBLIC()
     NullInit                               -> FunctionReference
-    Initialization                         -> PointerInit(InitialDataTarget)
     Initialization                         -> PointerInit(NullInit)
     Initialization                         -> Init(ConstantExpr)
     OptInitialization                      -> no-init()
@@ -1867,8 +1876,7 @@ regular tree grammar
     TypeBoundProcedurePart                 -> TypeBoundProcedurePart(ContainsStmt,OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding0)
     PrivateComponentsStmt                  -> PrivateComponentsStmt(OptLabel,EOS)
     InitialDataTarget                      -> Designator
-    ComponentInitialization                -> ComponentPointerInit(InitialDataTarget)
-    ComponentInitialization                -> ComponentPointerInit(NullInit)
+    ComponentInitialization                -> PointerInit(NullInit)
     ComponentInitialization                -> Init(ConstantExpr)
     ProcComponentAttrSpec                  -> AccessSpec
     ProcComponentAttrSpec                  -> NOPASS()
@@ -2005,6 +2013,10 @@ regular tree grammar
     Constant                               -> LiteralConstant
     NoName                                 -> no-name()
     Name                                   -> Ident
+    CrayPointerStmt                        -> CrayPointerStmt(OptLabel,ObjectName,ObjectName,EOS)
+    OtherSpecificationStmt                 -> CrayPointerStmt
+    Initialization                         -> Init(ConstantExpr)
+    ComponentInitialization                -> Init(Expr)
     Continuation                           -> <string>
     EOS                                    -> eos(EOStmt)
     LblRef                                 -> LblDef

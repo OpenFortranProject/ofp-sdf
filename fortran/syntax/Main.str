@@ -2,7 +2,9 @@ module Main
 
 signature
   constructors
-    CrayPointerStmt                 : OptLabel * ObjectName * ObjectName * EOS -> CrayPointerStmt
+    PauseStmt                       : OptLabel * OptStopCode * EOS -> PauseStmt
+    ParensUnaryMinus                : Primary -> ParensUnaryMinus
+    ParensUnaryPlus                 : Primary -> ParensUnaryPlus
     ContainsStmt                    : OptLabel * EOS -> ContainsStmt
     ReturnStmt                      : OptLabel * NoExpr * EOS -> ReturnStmt
     ReturnStmt                      : OptLabel * Expr * EOS -> ReturnStmt
@@ -241,28 +243,6 @@ signature
                                     : BlockConstruct -> ExecutableConstruct
                                     : AssociateConstruct -> ExecutableConstruct
                                     : ActionStmt -> ExecutableConstruct
-                                    : CrayPointerStmt -> OtherSpecificationStmt
-                                    : ValueStmt -> OtherSpecificationStmt
-                                    : VolatileStmt -> OtherSpecificationStmt
-                                    : TargetStmt -> OtherSpecificationStmt
-                                    : SaveStmt -> OtherSpecificationStmt
-                                    : ProtectedStmt -> OtherSpecificationStmt
-                                    : PointerStmt -> OtherSpecificationStmt
-                                    : OptionalStmt -> OtherSpecificationStmt
-                                    : NamelistStmt -> OtherSpecificationStmt
-                                    : IntrinsicStmt -> OtherSpecificationStmt
-                                    : IntentStmt -> OtherSpecificationStmt
-                                    : ExternalStmt -> OtherSpecificationStmt
-                                    : EquivalenceStmt -> OtherSpecificationStmt
-                                    : DimensionStmt -> OtherSpecificationStmt
-                                    : DataStmt -> OtherSpecificationStmt
-                                    : CommonStmt -> OtherSpecificationStmt
-                                    : ContiguousStmt -> OtherSpecificationStmt
-                                    : CodimensionStmt -> OtherSpecificationStmt
-                                    : BindStmt -> OtherSpecificationStmt
-                                    : AsynchronousStmt -> OtherSpecificationStmt
-                                    : AllocatableStmt -> OtherSpecificationStmt
-                                    : AccessStmt -> OtherSpecificationStmt
                                     : SubroutineSubprogram -> InternalSubprogram
                                     : FunctionSubprogram -> InternalSubprogram
     no-subprogram-part              : OptInternalSubprogramPart
@@ -518,7 +498,6 @@ signature
                                     : IntExpr -> FileUnitNumber
     STAR                            : IoUnit
                                     : IntExpr -> IoUnit
-    PauseStmt                       : OptLabel * OptStopCode * EOS -> PauseStmt
                                     : Variable -> LockVariable
     UnlockStmt                      : OptLabel * LockVariable * OptSyncStatList * EOS -> UnlockStmt
     no-list                         : OptLockStatList
@@ -699,10 +678,7 @@ signature
     no-list                         : OptBoundsRemappingList
     paren-list                      : List(BoundsRemapping) -> OptBoundsRemappingList
     PointerAssignmentStmt           : OptLabel * DataPointerObject * OptBoundsRemappingList * DataTarget * EOS -> PointerAssignmentStmt
-    AssignmentStmt                  : OptLabel * DataRef * Substring * EOS -> AssignmentStmt
-    AssignmentStmt                  : OptLabel * DataRef * FunctionReference * EOS -> AssignmentStmt
-    AssignmentStmt                  : OptLabel * DataRef * Expr * EOS -> AssignmentStmt
-    AssignmentStmt                  : OptLabel * Substring * Expr * EOS -> AssignmentStmt
+    AssignmentStmt                  : OptLabel * Variable * Expr * EOS -> AssignmentStmt
                                     : IntExpr -> IntConstantExpr
                                     : Expr -> ConstantExpr
                                     : IntExpr -> SpecificationExpr
@@ -710,48 +686,60 @@ signature
                                     : Expr -> DefaultCharExpr
                                     : Expr -> LogicalExpr
                                     : Dop -> DefinedBinaryOp
-    DefBinExpr                      : Expr * DefinedBinaryOp * Expr -> Expr
-    NEQV                            : Expr * Expr -> Expr
-    EQV                             : Expr * Expr -> Expr
-    OR                              : Expr * Expr -> Expr
-    AND                             : Expr * Expr -> Expr
-    NOT                             : Expr -> Expr
-    GE                              : Expr * Expr -> Expr
-    GT                              : Expr * Expr -> Expr
-    LE                              : Expr * Expr -> Expr
-    LT                              : Expr * Expr -> Expr
-    NE                              : Expr * Expr -> Expr
-    EQ                              : Expr * Expr -> Expr
-    Concat                          : Expr * Expr -> Expr
-    Minus                           : Expr * Expr -> Expr
-    Plus                            : Expr * Expr -> Expr
-    UnaryMinus                      : Expr -> Expr
-    UnaryPlus                       : Expr -> Expr
-    Div                             : Expr * Expr -> Expr
-    Mult                            : Expr * Expr -> Expr
-    Power                           : Expr * Expr -> Expr
-    DefUnaryExpr                    : DefinedUnaryOp * Expr -> Expr
-                                    : Primary -> Expr
+    DefBinExpr                      : Expr * DefinedBinaryOp * Level5Expr -> Expr
+                                    : Level5Expr -> Expr
     EquivOp_NEQV                    : EquivOp
     EquivOp_EQV                     : EquivOp
     OrOp                            : OrOp
     AndOp                           : AndOp
     NotOp                           : NotOp
+    NEQV                            : Level5Expr * EquivOperand -> Level5Expr
+    EQV                             : Level5Expr * EquivOperand -> Level5Expr
+                                    : EquivOperand -> Level5Expr
+    OR                              : EquivOperand * OrOperand -> EquivOperand
+                                    : OrOperand -> EquivOperand
+    AND                             : OrOperand * AndOperand -> OrOperand
+                                    : AndOperand -> OrOperand
+    NOT                             : Level4Expr -> AndOperand
+                                    : Level4Expr -> AndOperand
     RelOp_GE                        : RelOp
     RelOp_GT                        : RelOp
     RelOp_LE                        : RelOp
     RelOp_LT                        : RelOp
     RelOp_NE                        : RelOp
     RelOp_EQ                        : RelOp
+    GE                              : Level3Expr * Level3Expr -> Level4Expr
+    GT                              : Level3Expr * Level3Expr -> Level4Expr
+    LE                              : Level3Expr * Level3Expr -> Level4Expr
+    LT                              : Level3Expr * Level3Expr -> Level4Expr
+    NE                              : Level3Expr * Level3Expr -> Level4Expr
+    EQ                              : Level3Expr * Level3Expr -> Level4Expr
+                                    : Level3Expr -> Level4Expr
     ConcatOp                        : ConcatOp
+    Concat                          : Level3Expr * Level2Expr -> Level3Expr
+    Concat                          : Substring * Level2Expr -> Level3Expr
+                                    : Level2Expr -> Level3Expr
     MINUS                           : AddOp
     PLUS                            : AddOp
     DIV                             : MultOp
     TIMES                           : MultOp
     PowerOp                         : PowerOp
+    Minus                           : Level2Expr * AddOperand -> Level2Expr
+    Plus                            : Level2Expr * AddOperand -> Level2Expr
+    UnaryMinus                      : AddOperand -> Level2Expr
+    UnaryPlus                       : AddOperand -> Level2Expr
+                                    : AddOperand -> Level2Expr
+    Div                             : AddOperand * MultOperand -> AddOperand
+    Mult                            : AddOperand * MultOperand -> AddOperand
+                                    : MultOperand -> AddOperand
+    Power                           : Level1Expr * MultOperand -> MultOperand
+                                    : Level1Expr -> MultOperand
                                     : Dop -> DefinedUnaryOp
+                                    : ParensUnaryMinus -> Level1Expr
+                                    : ParensUnaryPlus -> Level1Expr
+    DefUnaryExpr                    : DefinedUnaryOp * Primary -> Level1Expr
+                                    : Primary -> Level1Expr
     Parens                          : Expr -> Primary
-                                    : FunctionReference -> Primary
                                     : ArrayConstructor -> Primary
                                     : Designator -> Primary
                                     : Constant -> Primary
@@ -807,12 +795,15 @@ signature
     AllocateStmt                    : OptLabel * NoTypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
                                     : IntExpr -> Cosubscript
     no-image-selector               : OptImageSelector
+    substring-section-range         : ImageSelector * SubstringRange -> OptImageSelector
                                     : ImageSelector -> OptImageSelector
     ImageSelector                   : List(Cosubscript) -> ImageSelector
     no-stride                       : OptStride
     opt-stride                      : Stride -> OptStride
                                     : IntExpr -> Stride
     Triplet                         : OptSubscript * OptSubscript * OptStride -> SubscriptTriplet
+                                    : AltReturnSpec -> SectionSubscript
+    ActualArgSpec                   : Keyword * ActualArg -> SectionSubscript
                                     : SubscriptTriplet -> SectionSubscript
                                     : Subscript -> SectionSubscript
     no-subscript                    : OptSubscript
@@ -820,6 +811,8 @@ signature
                                     : IntExpr -> Subscript
                                     : DataRef -> StructureComponent
                                     : Ident -> PartName
+    function-ref-no-args            : OptSectionSubscripts
+    substring-section-range         : List(SectionSubscript) * SubstringRange -> OptSectionSubscripts
     paren-list                      : List(SectionSubscript) -> OptSectionSubscripts
     no-section-subscripts           : OptSectionSubscripts
     PartRef                         : PartName * OptSectionSubscripts * OptImageSelector -> PartRef
@@ -829,7 +822,6 @@ signature
     SubstringRange                  : IntExpr * NoUpperBoundExpr -> SubstringRange
     SubstringRange                  : NoLowerBoundExpr * NoUpperBoundExpr -> SubstringRange
                                     : CharLiteralConstant -> ParentString
-                                    : DataRef -> ParentString
     Substring                       : ParentString * SubstringRange -> Substring
                                     : Variable -> IntVariable
                                     : Variable -> DefaultCharVariable
@@ -883,7 +875,6 @@ signature
     DimensionStmt                   : OptLabel * List(ArrayNameSpec) * EOS -> DimensionStmt
                                     : Designator -> ConstantSubobject
                                     : ConstantSubobject -> IntConstantSubobject
-                                    : StructureConstructor -> DataStmtConstant
                                     : SignedRealLiteralConstant -> DataStmtConstant
                                     : SignedIntLiteralConstant -> DataStmtConstant
                                     : ConstantSubobject -> DataStmtConstant
@@ -961,9 +952,6 @@ signature
     PRIVATE                         : AccessSpec
     PUBLIC                          : AccessSpec
                                     : FunctionReference -> NullInit
-    PointerInit                     : InitialDataTarget -> Initialization
-    PointerInit                     : NullInit -> Initialization
-    Init                            : ConstantExpr -> Initialization
     no-init                         : OptInitialization
                                     : Initialization -> OptInitialization
     no-char-length                  : OptCharLength
@@ -1016,10 +1004,6 @@ signature
     EnumeratorDefStmt               : OptLabel * List(Enumerator) * EOS -> EnumeratorDefStmt
     EnumDefStmt                     : OptLabel * EOS -> EnumDefStmt
     EnumDef                         : EnumDefStmt * List(EnumeratorDefStmt) * EndEnumStmt -> EnumDef
-                                    : Expr -> ComponentDataSource
-    ComponentSpec                   : Keyword * ComponentDataSource -> ComponentSpec
-    ComponentSpec                   : NoKeyword * ComponentDataSource -> ComponentSpec
-    StructureConstructor            : DerivedTypeSpec * List(ComponentSpec) -> StructureConstructor
     TypeParamSpec                   : Keyword * TypeParamValue -> TypeParamSpec
     TypeParamSpec                   : NoKeyword * TypeParamValue -> TypeParamSpec
     no-list                         : OptTypeParamSpecList
@@ -1055,11 +1039,6 @@ signature
                                     : TypeBoundProcedurePart -> OptTypeBoundProcedurePart
     TypeBoundProcedurePart          : ContainsStmt * OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcedurePart
     PrivateComponentsStmt           : OptLabel * EOS -> PrivateComponentsStmt
-                                    : Designator -> InitialDataTarget
-    Init                            : Expr -> ComponentInitialization
-    ComponentPointerInit            : InitialDataTarget -> ComponentInitialization
-    ComponentPointerInit            : NullInit -> ComponentInitialization
-    Init                            : ConstantExpr -> ComponentInitialization
                                     : AccessSpec -> ProcComponentAttrSpec
     NOPASS                          : ProcComponentAttrSpec
     Pass                            : ArgName -> ProcComponentAttrSpec
@@ -1183,6 +1162,34 @@ signature
                                     : LiteralConstant -> Constant
     no-name                         : NoName
                                     : Ident -> Name
+    CrayPointerStmt                 : OptLabel * ObjectName * ObjectName * EOS -> CrayPointerStmt
+                                    : ValueStmt -> OtherSpecificationStmt
+                                    : VolatileStmt -> OtherSpecificationStmt
+                                    : TargetStmt -> OtherSpecificationStmt
+                                    : SaveStmt -> OtherSpecificationStmt
+                                    : ProtectedStmt -> OtherSpecificationStmt
+                                    : PointerStmt -> OtherSpecificationStmt
+                                    : OptionalStmt -> OtherSpecificationStmt
+                                    : NamelistStmt -> OtherSpecificationStmt
+                                    : IntrinsicStmt -> OtherSpecificationStmt
+                                    : IntentStmt -> OtherSpecificationStmt
+                                    : ExternalStmt -> OtherSpecificationStmt
+                                    : EquivalenceStmt -> OtherSpecificationStmt
+                                    : DimensionStmt -> OtherSpecificationStmt
+                                    : DataStmt -> OtherSpecificationStmt
+                                    : CommonStmt -> OtherSpecificationStmt
+                                    : ContiguousStmt -> OtherSpecificationStmt
+                                    : CodimensionStmt -> OtherSpecificationStmt
+                                    : BindStmt -> OtherSpecificationStmt
+                                    : AsynchronousStmt -> OtherSpecificationStmt
+                                    : AllocatableStmt -> OtherSpecificationStmt
+                                    : AccessStmt -> OtherSpecificationStmt
+                                    : CrayPointerStmt -> OtherSpecificationStmt
+    PointerInit                     : NullInit -> Initialization
+    Init                            : ConstantExpr -> Initialization
+    PointerInit                     : NullInit -> ComponentInitialization
+    Init                            : ConstantExpr -> ComponentInitialization
+    Init                            : Expr -> ComponentInitialization
     eos                             : EOStmt -> EOS
                                     : LblDef -> LblRef
                                     : String -> Dop
