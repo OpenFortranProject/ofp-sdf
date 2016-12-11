@@ -378,6 +378,12 @@ ofp-to-ast =
   <+  ? TypeBoundProcedureStmt(label,attrs,procs,eos(str))
    ;  ! TypeBoundProcedureStmt(label,attrs,procs) {Comment(str)}
 
+ofp-to-ast =
+      ? TypeBoundProcedureInterfaceStmt(label,name,attrs,procs,eos("\n"))
+   ;  ! TypeBoundProcedureInterfaceStmt(label,name,attrs,procs)
+  <+  ? TypeBoundProcedureInterfaceStmt(label,name,attrs,procs,eos(str))
+   ;  ! TypeBoundProcedureInterfaceStmt(label,name,attrs,procs) {Comment(str)}
+
 //R452
 ofp-to-ast =
       ? FinalProcedureStmt(label,names,eos("\n"))
@@ -692,6 +698,33 @@ ofp-to-ast =  ?ElseStmt(label,name,eos("\n"))        ;  !ElseStmt(label,name)
 //R836
 ofp-to-ast =  ?EndIfStmt(label,name,eos("\n"))       ;  !EndIfStmt(label,name)
           <+  ?EndIfStmt(label,name,eos(str))        ;  !EndIfStmt(label,name) {Comment(str)}
+
+//R839
+ofp-to-ast =  ?SelectCaseStmt(label,name,expr,eos("\n"))      ;  !SelectCaseStmt(label,name,expr)
+          <+  ?SelectCaseStmt(label,name,expr,eos(str) )      ;  !SelectCaseStmt(label,name,expr) {Comment(str)}
+
+//R840
+ofp-to-ast =  ?CaseStmt(label,select,name,eos("\n"))          ;  !CaseStmt(label,select,name)
+          <+  ?CaseStmt(label,select,name,eos(str) )          ;  !CaseStmt(label,select,name) {Comment(str)}
+
+//R841
+ofp-to-ast =  ?EndSelectStmt(label,name,eos("\n"))            ;  !EndSelectStmt(label,name)
+          <+  ?EndSelectStmt(label,name,eos(str) )            ;  !EndSelectStmt(label,name) {Comment(str)}
+
+//R847
+ofp-to-ast =  ?SelectTypeStmt(label,name1,name2,select,eos("\n")) ;  !SelectTypeStmt(label,name1,name2,select)
+          <+  ?SelectTypeStmt(label,name1,name2,select,eos(str) ) ;  !SelectTypeStmt(label,name1,name2,select) {Comment(str)}
+
+//R848
+ofp-to-ast =  ?TypeGuardStmt(label,typespec,name,eos("\n"))   ;  !TypeGuardStmt(label,typespec,name)
+          <+  ?TypeGuardStmt(label,typespec,name,eos(str))    ;  !TypeGuardStmt(label,typespec,name) {Comment(str)}
+
+ofp-to-ast =  ?ClassGuardStmt(label,typespec,name,eos("\n"))  ;  !ClassGuardStmt(label,typespec,name)
+          <+  ?ClassGuardStmt(label,typespec,name,eos(str))   ;  !ClassGuardStmt(label,typespec,name) {Comment(str)}
+
+//R849
+ofp-to-ast =  ?EndSelectTypeStmt(label,name,eos("\n"))        ;  !EndSelectTypeStmt(label,name)
+          <+  ?EndSelectTypeStmt(label,name,eos(str) )        ;  !EndSelectTypeStmt(label,name) {Comment(str)}
 
 //R850
 ofp-to-ast =  ?ExitStmt(label,name,eos("\n"))        ;  !ExitStmt(label,name)
