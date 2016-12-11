@@ -21,3 +21,8 @@ context-free syntax
 
   ParensUnaryPlus                          -> Level1Expr
   ParensUnaryMinus                         -> Level1Expr
+
+%% Deleted Statements
+%%
+
+  OptLabel 'PAUSE' OptStopCode         EOS -> PauseStmt         {cons("PauseStmt")}
