@@ -62,7 +62,13 @@ signature
     ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
     ppDerivedTypeStmt_params : label * name * params   -> ppDerivedTypeStmt_params
 
-    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt
+    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt           // R431
+
+    ppTypeParamDecl          : name                    -> ppTypeParamDecl                  // R432
+
+    ppTypeBoundProcedureStmt : label * procdecls       -> ppTypeBoundProcedureStmt         // R448
+
+    ppTypeParamSpec          : value                   -> ppTypeParamSpec                  // R454
 
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
@@ -146,14 +152,24 @@ ast-to-pp =
 //R431
 ast-to-pp:  DataComponentDefStmt(label,type,[],comps)   ->  ppDataComponentDefStmt(label,type,comps)
 
+//R432
+ast-to-pp:  TypeParamDecl(name,no-expr())               ->  ppTypeParamDecl(name)
+
 //R440
 ast-to-pp:  Pass(no-arg-name())                         ->  PASS()
+
+//R445
+ast-to-pp:  TypeBoundProcedureStmt(label,[],procs)      -> ppTypeBoundProcedureStmt(label,procs)
+
 
 //R449
 ast-to-pp:  TypeBoundProcDecl(name,no-procedure-name()) -> ppTypeBoundProcDecl(name)
 
 //R453
 ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
+
+//R454
+ast-to-pp:  TypeParamSpec(no-keyword(),value)           ->  ppTypeParamSpec(value)
 
 //R501
 ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)
