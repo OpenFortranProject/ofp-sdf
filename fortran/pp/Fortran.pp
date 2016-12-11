@@ -149,7 +149,9 @@
    TypeParamDefStmt              -- H hs=1 [_1 H hs=0["INTEGER" H hs=0 [_2 ", " _3 " :: " _4]]],
    TypeParamDefStmt.4:iter-sep   -- _1 ", ",
 
+   %% R432
    TypeParamDecl                 -- _1 " = " _2,
+ ppTypeParamDecl                 -- _1,
 
    DataComponentDefStmt             -- H hs=1[_1 H hs=0[_2 ", " _3 " :: " _4]],
    DataComponentDefStmt.3:iter-sep  -- _1 ", ",
@@ -182,10 +184,12 @@
 
    %% R448
    TypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE" ", " _2 " :: " _3]],
+ ppTypeBoundProcedureStmt             -- H hs=1[H hs=0[_1 "PROCEDURE"         " :: " _2]],
    TypeBoundProcedureStmt.2:iter-sep  -- _1 ", ",
    TypeBoundProcedureStmt.3:iter-sep  -- _1 ", ",
+ ppTypeBoundProcedureStmt.2:iter-sep  -- _1 ", ",
 
-   TypeBoundProcedureInterfaceStmt    -- H hs=1[H hs=0[_1 "PROCEDURE" "("_2")" _3 _4 _5]],
+   TypeBoundProcedureInterfaceStmt    -- H hs=1[_1 H hs=0["PROCEDURE" "(" _2 "), " _3 " :: " _4]],
    TypeBoundProcedureInterfaceStmt.3:iter-sep  -- _1 ", ",
    TypeBoundProcedureInterfaceStmt.4:iter-sep  -- _1 ", ",
 
@@ -211,6 +215,7 @@
 
    %% R454
    TypeParamSpec                 -- _1 "=" _2,
+ ppTypeParamSpec                 -- _1,
 
    %% R455
    StructureConstructor          -- _1 "("_2")",
@@ -655,11 +660,11 @@
 
    %% R818
    LoopControl                   -- H hs=0[" " _1 " = " H hs=0[_2 ", " _3 _4]],
-   LoopWhileControl              -- KW["WHILE"] "("_1")",
-   LoopConcurrentControl         -- " " KW["CONCURRENT"] _1,
+   LoopWhileControl              -- "WHILE" "("_1")",
+   LoopConcurrentControl         -- " " "CONCURRENT" _1,
    no-loop-control               -- ,
 
-   #R822 --,
+   %% R822
    EndDoStmt                     -- H hs=1 [_1 "END DO" H hs=0[_2]],
 
    #R831 --,
@@ -699,7 +704,7 @@
    CaseStmt.2:iter-sep           -- _1 ", ",
 
    #R841 --,
-   EndSelectStmt                 -- H hs=1[_1 KW["END SELECT"] H hs=0[_2 _3]],
+   EndSelectStmt                 -- H hs=1[_1 "END SELECT" H hs=0[_2 _3]],
 
    #R843 --,
    DEFAULT                       -- KW["DEFAULT"],
@@ -710,22 +715,22 @@
    #R845 --,
    CaseValue                     -- _1,
 
-   #R846 --,
-   SelectTypeConstruct           -- _1 _2 _3,
+   %% R846
+   SelectTypeConstruct           -- V is=2 [_1 _2] _3,
    TypeGuardStmtBlock            -- _1 _2,
 
    %% R847
-   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 "SELECT TYPE"] H hs=0[_3 "("_4")" _5]],
+   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 "SELECT TYPE"] H hs=0[_3 "("_4")"]],
 
    #R848 --,
-   ClassGuardStmt                -- H hs=1[_1 KW["CLASS IS"] "("_2")" H hs=0[_3 _4]],
-   TypeGuardStmt                 -- H hs=1[_1 KW["TYPE IS"] H hs=0["("_2")"] H hs=0[_3 _4]],
-   DefaultGuardStmt              -- H hs=1[_1 KW["CLASS DEFAULT"] H hs=0[_2 _3]],
+   TypeGuardStmt                 -- H hs=1[_1 "TYPE IS"  H hs=0["(" _2 ")" _3]],
+   ClassGuardStmt                -- H hs=1[_1 "CLASS IS" H hs=0["(" _2 ")" _3]],
+   DefaultGuardStmt              -- H hs=1[_1 "CLASS DEFAULT" H hs=0[_2]],
 
-   #R849 --,
-   EndSelectTypeStmt             -- H hs=1[_1 "END SELECT" H hs=0[_2 _3]],
+   %% R849
+   EndSelectTypeStmt             -- H hs=1 [_1 "END SELECT" _2],
 
-   #R850 --,
+   %% R850
    ExitStmt                      -- H hs=1 [_1 "EXIT" H hs=0[_2]],
 
    GotoStmt                      -- H hs=1 [_1 "GO TO" _2],
