@@ -391,6 +391,27 @@ ofp-to-ast =
   <+  ? FinalProcedureStmt(label,names,eos(str))
    ;  ! FinalProcedureStmt(label,names) {Comment(str)}
 
+//R459
+ofp-to-ast =
+      ? EnumDefStmt(label,eos("\n"))
+   ;  ! EnumDefStmt(label)
+  <+  ? EnumDefStmt(label,eos(str))
+   ;  ! EnumDefStmt(label) {Comment(str)}
+
+//R460
+ofp-to-ast =
+      ? EnumeratorDefStmt(label,list,eos("\n"))
+   ;  ! EnumeratorDefStmt(label,list)
+  <+  ? EnumeratorDefStmt(label,list,eos(str))
+   ;  ! EnumeratorDefStmt(label,list) {Comment(str)}
+
+//R462
+ofp-to-ast =
+      ? EndEnumStmt(label,eos("\n"))
+   ;  ! EndEnumStmt(label)
+  <+  ? EndEnumStmt(label,eos(str))
+   ;  ! EndEnumStmt(label) {Comment(str)}
+
 //R501
 ofp-to-ast =
       ? TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
