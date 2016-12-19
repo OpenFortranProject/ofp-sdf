@@ -222,6 +222,10 @@ signature
     DEFERRED                        : BindingAttr
                                     : AccessSpec -> BindingAttr
     FinalProcedureStmt              : OptLabel * List(Name) -> FinalProcedureStmt
+    EnumDefStmt                     : OptLabel -> EnumDefStmt
+    EnumeratorDefStmt               : OptLabel * List(Enumerator) -> EnumeratorDefStmt
+    Enumerator                      : NamedConstant * OptEqualsExpr -> Enumerator
+    EndEnumStmt                     : OptLabel -> EndEnumStmt
     AllocatableStmt                 : OptLabel * List(AllocatableDecl) -> AllocatableStmt
                                     : Var -> AllocatableDecl
     AsynchronousStmt                : OptLabel * List(Name) -> AsynchronousStmt
@@ -521,6 +525,9 @@ signature
                                     : ProcComponentDefStmt -> Stmt
                                     : PrivateComponentsStmt -> Stmt
                                     : FinalProcedureStmt -> Stmt
+                                    : EnumDefStmt -> Stmt
+                                    : EnumeratorDefStmt -> Stmt
+                                    : EndEnumStmt -> Stmt
                                     : AllocatableStmt -> Stmt
                                     : AsynchronousStmt -> Stmt
                                     : AllocateStmt -> Stmt
