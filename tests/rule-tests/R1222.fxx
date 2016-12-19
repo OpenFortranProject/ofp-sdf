@@ -1,0 +1,14 @@
+!! R1222 actual-arg-spec
+!    is [ keyword = ] actual-arg
+
+a = foo(keyword=.not.B)
+a = foo(keyword = b)
+a = foo(keyword = udt%bar)
+a = foo(keyword=*10)
+
+a = fref(1)%foo(keyword=.not.B)
+a = fref(1)%foo(keyword = b)
+a = fref(1)%foo(keyword = udt%bar)
+a = fref(1)%foo(keyword=*10)
+
+END

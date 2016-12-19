@@ -5,5 +5,5 @@
 !
 
 a = foo()
-!TODO-F08 a = udt%foo()
+a = udt%foo()
 END

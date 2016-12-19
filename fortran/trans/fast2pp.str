@@ -25,6 +25,7 @@ signature
     ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
 
     ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
+    ppArrayVarLen  : Name * ArrayType * Length * Init  -> ppArrayVarLen
     ppRange        : upper-bound                       -> ppRange
     ppTriplet      : lb * ub * OptColon * stride       -> ppTriplet
 
@@ -54,10 +55,20 @@ signature
     ppSectionSubscripts : ss             -> ppSectionSubscripts
     ppImageSelector     : ss             -> ppImageSelector
 
+    ppTypeBoundProcDecl      : name                    -> ppTypeBoundProcDecl
+
     ppDerivedType            : name                    -> ppDerivedType
     ppDerivedTypeStmt        : label * name            -> ppDerivedTypeStmt
     ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
     ppDerivedTypeStmt_params : label * name * params   -> ppDerivedTypeStmt_params
+
+    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt           // R431
+
+    ppTypeParamDecl          : name                    -> ppTypeParamDecl                  // R432
+
+    ppTypeBoundProcedureStmt : label * procdecls       -> ppTypeBoundProcedureStmt         // R448
+
+    ppTypeParamSpec          : value                   -> ppTypeParamSpec                  // R454
 
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
@@ -71,6 +82,8 @@ signature
     ppPointerAssignmentStmt : label * obj * expr           -> ppPointerAssignmentStmt
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
+
+    ppWhereConstructStmt    : OptLabel * Expr              -> ppWhereConstructStmt
 
     ppSaveStmt        : OptLabel                                    -> ppSaveStmt          // R553
 
@@ -92,6 +105,8 @@ signature
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
 
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
+
+    ppProcDecl        : name                                        -> ppProcDecl           // R1214
 
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
@@ -134,22 +149,49 @@ ast-to-pp =
   <+  ?DerivedTypeStmt(label,attrs,name,[])   ;  !ppDerivedTypeStmt_attrs(label,attrs,name)
   <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
 
+//R431
+ast-to-pp:  DataComponentDefStmt(label,type,[],comps)   ->  ppDataComponentDefStmt(label,type,comps)
+
+//R432
+ast-to-pp:  TypeParamDecl(name,no-expr())               ->  ppTypeParamDecl(name)
+
+//R440
+ast-to-pp:  Pass(no-arg-name())                         ->  PASS()
+
+//R445
+ast-to-pp:  TypeBoundProcedureStmt(label,[],procs)      -> ppTypeBoundProcedureStmt(label,procs)
+
+
+//R449
+ast-to-pp:  TypeBoundProcDecl(name,no-procedure-name()) -> ppTypeBoundProcDecl(name)
+
 //R453
-ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
+ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
+
+//R454
+ast-to-pp:  TypeParamSpec(no-keyword(),value)           ->  ppTypeParamSpec(value)
 
 //R501
-ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)  ->  ppTypeDeclarationStmt(label,type,vars)
+ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)
 
 //R503
-ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
-           -> ppArrayVar(name,ppArrayType(dims),init)
-ast-to-pp:    Var(name,ArrayType(type,[],codims),init)
-           -> ppArrayVar(name,ppCoarrayType(codims),init)
-ast-to-pp:    Var(name,ArrayType(type,dims,codims),init)
-           -> ppArrayVar(name,ppArrayType(dims,codims),init)
+ast-to-pp =
+      ? Var(name,ArrayType(CHARACTER_LEN(len),dims,[]),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,[]),init)
+    ; ! ppArrayVar(name,ppArrayType(dims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),[],codims),init)
+    ; ! ppArrayVarLen(name,ppCoarrayType(codims),len,init)
+   <+ ? Var(name,ArrayType(type,[],codims),init)
+    ; ! ppArrayVar(name,ppCoarrayType(codims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),dims,codims),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims,codims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,codims),init)
+    ; ! ppArrayVar(name,ppArrayType(dims,codims),init)
 
-ast-to-pp:    Var(name,CHARACTER_LEN(len),init)    -> ppVarLen(name,len,init)
-ast-to-pp:    Var(name,type,init)                  -> ppVar(name,init)
+ast-to-pp =
+      ? Var(name,CHARACTER_LEN(len),init)   ; ! ppVarLen(name,len,init)
+  <+  ? Var(name,type,init)                 ; ! ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
@@ -208,6 +250,9 @@ ast-to-pp =
 //R734
 ast-to-pp:  DataPointerObject(var,no-name())       ->  ppDataPointerObject(var)
 
+//R743
+ast-to-pp:  WhereConstructStmt(label,no-name(),expr) ->  ppWhereConstructStmt(label,expr)
+
 //R803
 //  ast-to-pp:
 //    AssociateStmt(label,name,list,eos) -> ppAssociateStmt(label,<append-colon>name,list,eos)
@@ -247,14 +292,11 @@ ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoCon
 //R1109
 ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
 
+//R1214
+ast-to-pp:  ProcDecl(name,no-init())         -> ppProcDecl(name)
+
 //R1222
 ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
-
-//R1227
-//  ast-to-pp:  OfpFunction(name, scope)     -> ppFunction(scope)
-
-//R1233
-//  ast-to-pp:  OfpSubroutine(name, scope)   -> ppSubroutine(scope)
 
 //R1237
 //ast-to-pp:  MpSubprogram(name, scope)        -> ppMpSubprogram(scope)
@@ -287,7 +329,6 @@ ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
 //  no-to-none: no-type-spec()               -> None()   // R626
 //  no-to-none: no-lower-bound()             -> None()   // R633
 //  no-to-none: no-component-name()          -> None()   // R734
-//  no-to-none: no-upper-bounds()            -> None()   // R736
 //  no-to-none: no-type-bound-procedure-part()  -> None()   //R445
 //  no-to-none: no-binding-private-stmt()    -> None()   // R446
 //  no-to-none: no-arg-name()                -> None()   // R451

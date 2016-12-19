@@ -1,4 +1,4 @@
-!! R743 where-stmt
+!! R741 where-stmt
 !    is WHERE ( mask-expr ) where-assignment-stmt
 logical :: Doit(10)
 integer :: A(10)

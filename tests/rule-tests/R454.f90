@@ -4,16 +4,17 @@
 
 Module TPS
 
-type param1(k)
-!TODO-F08   INTEGER, KIND :: k
-END TYPE
-type param2(k1,k2)
-!TODO-F08   INTEGER, KIND :: k1, k2
+type param1 (k)
+  INTEGER, KIND :: k
 END TYPE
 
-!TODO-F08 type(param1(4))   :: beauty
-!TODO-F08 type(param2(4,8)) :: beast
-!TODO-F08 type(ugly(dim=a)) :: lies
-!TODO-F08 type(this(3,4,that=5)) :: theother
+type param2(k1,k2)
+  INTEGER, KIND :: k1, k2
+END TYPE
+
+  type(param1(4))   :: beauty
+  type(param2(4,8)) :: beast
+  type(ugly(dim=a)) :: lies
+  type(this(3,4,that=5)) :: theother
 
 end module

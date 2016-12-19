@@ -1,0 +1,12 @@
+MODULE TPS
+TYPE :: param1(k)
+  INTEGER, KIND :: k
+END TYPE
+TYPE :: param2(k1,k2)
+  INTEGER, KIND :: k1, k2
+END TYPE
+TYPE(param1(4)) :: beauty
+TYPE(param2(4,8)) :: beast
+TYPE(ugly(dim=a)) :: lies
+TYPE(this(3,4,that=5)) :: theother
+END MODULE

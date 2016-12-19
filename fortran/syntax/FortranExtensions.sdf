@@ -1,0 +1,27 @@
+%%%%%%%%%%
+%% Fortran non-standard extensions
+%%%%%%%%%%
+
+module FortranExtensions
+
+imports Main
+
+exports
+
+sorts
+
+  CrayPointerStmt                     %% ER550
+
+context-free syntax
+
+%%DR442
+  '/' Expr '/'                                              -> ComponentInitialization   {cons("Init")}
+
+%%DR505
+  '/' ConstantExpr '/'                                      -> Initialization  {cons("Init")}
+
+%% ER550 Cray pointers
+  CrayPointerStmt                                           -> OtherSpecificationStmt
+
+%% ER550 Cray pointers
+  OptLabel 'POINTER' '(' ObjectName ',' ObjectName ')'  EOS -> CrayPointerStmt {cons("CrayPointerStmt")}

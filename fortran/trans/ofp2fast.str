@@ -48,6 +48,7 @@ strategies //=================START OF STRATEGIES============================
 
 transfer-type(|type) =
       ? Var(name,CHARACTER_LEN(_),init)
+  <+  ? Var(name,ArrayType(CHARACTER_LEN(_),dims,codims),init)
   <+  ? Var(name,unknown-type(),init)
    ;  ! Var(name,type,init)
   <+  ? Var(name,ArrayType(unknown-type(),dims,codims),init)
@@ -356,27 +357,53 @@ ofp-to-ast =
     ; ! Var(name,CHARACTER_LEN(char_length),init)
    <+ ? ComponentDecl(name,dims,codims,no-char-length(),init)
     ; ! Var(name,ArrayType(unknown-type(),dims,codims),init)
+   <+ ? ComponentDecl(name,dims,codims,char_length,init)
+    ; ! Var(name,ArrayType(CHARACTER_LEN(char_length),dims,codims),init)
+
+//R440
+ofp-to-ast =
+      ? ProcComponentDefStmt(label,interface,attrs,decls,eos("\n"))
+    ; ! ProcComponentDefStmt(label,interface,attrs,decls)
+   <+ ? ProcComponentDefStmt(label,interface,attrs,decls,eos(str))
+    ; ! ProcComponentDefStmt(label,interface,attrs,decls) {Comment(str)}
 
 //R445
 ofp-to-ast:    TypeBoundProcedurePart(contains,private,bindings)
             -> TypeBoundProcPart(private,bindings)
 
+//R448
+ofp-to-ast =
+      ? TypeBoundProcedureStmt(label,attrs,procs,eos("\n"))
+   ;  ! TypeBoundProcedureStmt(label,attrs,procs)
+  <+  ? TypeBoundProcedureStmt(label,attrs,procs,eos(str))
+   ;  ! TypeBoundProcedureStmt(label,attrs,procs) {Comment(str)}
+
+ofp-to-ast =
+      ? TypeBoundProcedureInterfaceStmt(label,name,attrs,procs,eos("\n"))
+   ;  ! TypeBoundProcedureInterfaceStmt(label,name,attrs,procs)
+  <+  ? TypeBoundProcedureInterfaceStmt(label,name,attrs,procs,eos(str))
+   ;  ! TypeBoundProcedureInterfaceStmt(label,name,attrs,procs) {Comment(str)}
+
 //R452
-ofp-to-ast:    FinalProcedureStmt(label,names,eos("\n"))
-            -> FinalProcedureStmt(label,names)
-ofp-to-ast:    FinalProcedureStmt(label,names,eos(str))
-            -> FinalProcedureStmt(label,names) {Comment(str)}
+ofp-to-ast =
+      ? FinalProcedureStmt(label,names,eos("\n"))
+   ;  ! FinalProcedureStmt(label,names)
+  <+  ? FinalProcedureStmt(label,names,eos(str))
+   ;  ! FinalProcedureStmt(label,names) {Comment(str)}
 
 //R501
-ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
-            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
-ofp-to-ast:    TypeDeclarationStmt(label,type,attrs,vars,eos(str))
-            -> TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
+ofp-to-ast =
+      ? TypeDeclarationStmt(label,type,attrs,vars,eos("\n"))
+   ;  ! TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars)
+  <+  ? TypeDeclarationStmt(label,type,attrs,vars,eos(str))
+   ;  ! TypeDeclarationStmt(label,type,attrs,<map(transfer-type(|type))>vars) {Comment(str)}
 
 //R503
 ofp-to-ast =
       ? EntityDecl(name,[],[],no-char-length(),init)
    ;  ! Var(name,unknown-type(),init)
+  <+  ? EntityDecl(name,[],[],CharLength(STAR()),init)
+   ;  ! Var(name,CHARACTER_LEN(STAR()),init)
   <+  ? EntityDecl(name,[],[],char_length,init)
    ;  ! Var(name,CHARACTER_LEN(IntVal(char_length)),init)
   <+  ? EntityDecl(name,dims,codims,no-char-length(),init)
@@ -409,10 +436,7 @@ ofp-to-ast:  DeferredShape()                    -> Range(no-lower-bound(), COLON
 //      implied-shape arrays. If there is an initializer then likely it really is implied-shape.
 //
 //R522
-//  ofp-to-ast:  AssumedOrImpliedSpec()
-//                            -> OfpAssumedSize([DimSpec(None(),"*")])
-//  ofp-to-ast:  AssumedOrImpliedSpec(lower)
-//                            -> OfpAssumedSize([DimSpec(lower,"*")])
+ofp-to-ast:  AssumedOrImpliedSpec(lower)        -> Range(lower, STAR())
 
 //R522
 //ofp-to-ast:  ImpliedShapeSpecList(spec,list)    -> OfpImpliedShape(<concat>[[spec],list])
@@ -484,6 +508,11 @@ ofp-to-ast =
       ? PointerStmt(label,pointers,eos("\n"))     ;  ! PointerStmt(label,pointers)
   <+  ? PointerStmt(label,pointers,eos(str))      ;  ! PointerStmt(label,pointers) {Comment(str)}
 
+//ER550
+ofp-to-ast =
+      ? CrayPointerStmt(label,obj1,obj2,eos("\n"));  ! CrayPointerStmt(label,obj1,obj2)
+  <+  ? CrayPointerStmt(label,obj1,obj2,eos(str)) ;  ! CrayPointerStmt(label,obj1,obj2) {Comment(str)}
+
 //R552
 ofp-to-ast =
       ? ProtectedStmt(label,entnames,eos("\n"))   ;  ! ProtectedStmt(label,entnames)
@@ -530,6 +559,17 @@ ofp-to-ast =
  <+  ? CommonStmt(label,entry,list,eos(str))
   ;  ! CommonStmt(label,<concat>[[entry],list])  {Comment(str)}
 
+//R612
+ofp-to-ast =
+     ? PartRef(name, substring-section-range(ss,range), is)
+  ;  ! Substring(PartRef(name,ss,is), range)
+ <+  ? PartRef(name, ss, substring-section-range(is,range))
+  ;  ! Substring(PartRef(name,ss,is), range)
+
+ofp-to-ast =
+     ? PartRef(name, function-ref-no-args(), no-image-selector())
+  ;  ! FunctionReference(name,[])
+
 //R626
 ofp-to-ast =
      ?AllocateStmt(label,type,allocations,opts,eos("\n"))
@@ -550,8 +590,9 @@ ofp-to-ast =
  <+  ?DeallocateStmt(label,objects,opts,eos(str))
   ;  !DeallocateStmt(label,objects,opts)  {Comment(str)}
 
-//R703
-//  ofp-to-ast:  DefinedUnaryOp(op)           -> OfpDefinedOp(op)
+//OR702
+  ofp-to-ast:  ParensUnaryPlus (operand)      -> Parens(UnaryPlus (operand))
+  ofp-to-ast:  ParensUnaryMinus(operand)      -> Parens(UnaryMinus(operand))
 
 //R713
 //  ofp-to-ast:  RelOp_EQ()                   -> EQ()
@@ -565,20 +606,40 @@ ofp-to-ast =
 //  ofp-to-ast:  DefinedBinaryOp(op)          -> OfpDefinedOp(op)
 
 //R732
-ofp-to-ast:  AssignmentStmt(label,var,expr,eos("\n")) -> AssignmentStmt(label,var,expr)
-ofp-to-ast:  AssignmentStmt(label,var,expr,eos(str) ) -> AssignmentStmt(label,var,expr) {Comment(str)}
+ofp-to-ast =  ?AssignmentStmt(label,var,expr,eos("\n")); !AssignmentStmt(label,var,expr)
+          <+  ?AssignmentStmt(label,var,expr,eos(str) ); !AssignmentStmt(label,var,expr) {Comment(str)}
 
 //R733
-ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos("\n"))
-            -> PointerAssignmentStmt(label,obj,list,expr)
-ofp-to-ast:    PointerAssignmentStmt(label,obj,list,expr,eos(str) )
-            -> PointerAssignmentStmt(label,obj,list,expr) {Comment(str)}
+ofp-to-ast =  ?PointerAssignmentStmt(label,obj,list,expr,eos("\n"))
+            ; !PointerAssignmentStmt(label,obj,list,expr)
+          <+  ?PointerAssignmentStmt(label,obj,list,expr,eos(str) )
+            ; !PointerAssignmentStmt(label,obj,list,expr) {Comment(str)}
 
 //R734
 ofp-to-ast:  no-component-name()                      -> no-name()
 
 //R735
 ofp-to-ast:  BoundsRemapping(lb,ub)                   -> Triplet(lb,ub,no-stride())
+
+//R743
+ofp-to-ast =  ?WhereConstructStmt(label,name,expr,eos("\n")); !WhereConstructStmt(label,name,expr)
+          <+  ?WhereConstructStmt(label,name,expr,eos(str) ); !WhereConstructStmt(label,name,expr) {Comment(str)}
+
+//R745
+//ofp-to-ast =  ?WhereAssignmentStmt(var,expr,eos("\n")); !WhereAssignmentStmt(var,expr)
+//          <+  ?WhereAssignmentStmt(var,expr,eos(str) ); !WhereAssignmentStmt(var,expr) {Comment(str)}
+
+//R747
+ofp-to-ast =  ?MaskedElsewhereStmt(label,expr,name,eos("\n")); !MaskedElsewhereStmt(label,expr,name)
+          <+  ?MaskedElsewhereStmt(label,expr,name,eos(str) ); !MaskedElsewhereStmt(label,expr,name) {Comment(str)}
+
+//R748
+ofp-to-ast =  ?ElsewhereStmt(label,name,eos("\n"))             ;  !ElsewhereStmt(label,name)
+          <+  ?ElsewhereStmt(label,name,eos(str) )             ;  !ElsewhereStmt(label,name) {Comment(str)}
+
+//R749
+ofp-to-ast =  ?EndWhereStmt(label,name,eos("\n"))             ;  !EndWhereStmt(label,name)
+          <+  ?EndWhereStmt(label,name,eos(str) )             ;  !EndWhereStmt(label,name) {Comment(str)}
 
 //R751
 ofp-to-ast =  ?ForallConstructStmt(label,name,header,eos("\n")); !ForallConstructStmt(label,name,header)
@@ -637,6 +698,33 @@ ofp-to-ast =  ?ElseStmt(label,name,eos("\n"))        ;  !ElseStmt(label,name)
 //R836
 ofp-to-ast =  ?EndIfStmt(label,name,eos("\n"))       ;  !EndIfStmt(label,name)
           <+  ?EndIfStmt(label,name,eos(str))        ;  !EndIfStmt(label,name) {Comment(str)}
+
+//R839
+ofp-to-ast =  ?SelectCaseStmt(label,name,expr,eos("\n"))      ;  !SelectCaseStmt(label,name,expr)
+          <+  ?SelectCaseStmt(label,name,expr,eos(str) )      ;  !SelectCaseStmt(label,name,expr) {Comment(str)}
+
+//R840
+ofp-to-ast =  ?CaseStmt(label,select,name,eos("\n"))          ;  !CaseStmt(label,select,name)
+          <+  ?CaseStmt(label,select,name,eos(str) )          ;  !CaseStmt(label,select,name) {Comment(str)}
+
+//R841
+ofp-to-ast =  ?EndSelectStmt(label,name,eos("\n"))            ;  !EndSelectStmt(label,name)
+          <+  ?EndSelectStmt(label,name,eos(str) )            ;  !EndSelectStmt(label,name) {Comment(str)}
+
+//R847
+ofp-to-ast =  ?SelectTypeStmt(label,name1,name2,select,eos("\n")) ;  !SelectTypeStmt(label,name1,name2,select)
+          <+  ?SelectTypeStmt(label,name1,name2,select,eos(str) ) ;  !SelectTypeStmt(label,name1,name2,select) {Comment(str)}
+
+//R848
+ofp-to-ast =  ?TypeGuardStmt(label,typespec,name,eos("\n"))   ;  !TypeGuardStmt(label,typespec,name)
+          <+  ?TypeGuardStmt(label,typespec,name,eos(str))    ;  !TypeGuardStmt(label,typespec,name) {Comment(str)}
+
+ofp-to-ast =  ?ClassGuardStmt(label,typespec,name,eos("\n"))  ;  !ClassGuardStmt(label,typespec,name)
+          <+  ?ClassGuardStmt(label,typespec,name,eos(str))   ;  !ClassGuardStmt(label,typespec,name) {Comment(str)}
+
+//R849
+ofp-to-ast =  ?EndSelectTypeStmt(label,name,eos("\n"))        ;  !EndSelectTypeStmt(label,name)
+          <+  ?EndSelectTypeStmt(label,name,eos(str) )        ;  !EndSelectTypeStmt(label,name) {Comment(str)}
 
 //R850
 ofp-to-ast =  ?ExitStmt(label,name,eos("\n"))        ;  !ExitStmt(label,name)

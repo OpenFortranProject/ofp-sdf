@@ -2,12 +2,29 @@
 !    is PROCEDURE ( [ proc-interface ] ) ,
 !            proc-component-attr-spec-list :: proc-decl-list
 !                                                                                         
+module whut
 
-type feeble
+  type point
+     integer :: x,y
+  end type point
 
-  procedure (), pointer :: foible
-  procedure (bob), pass, private :: foo => bar
-
+  type, extends(point) :: feeble
+     procedure (), pointer, nopass :: foible
+     procedure (bob), pass(a), private, pointer :: foo => bar
+     procedure (bob), pass, public, pointer :: foo => bar
 end type
 
-end
+interface
+   function bob(a)
+     import feeble
+     type(feeble) :: a
+   end function bob
+end interface
+
+contains
+
+  function boo(a)
+    type(point) :: a
+  end function boo
+
+end module whut

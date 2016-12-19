@@ -1,0 +1,6 @@
+a = B(1)(1:5)
+a = P%NAME(1:1)
+a = ID(4:9)
+a = '0123456789'(N:N)
+b = coarray_string(2:3)[5](:)
+END PROGRAM

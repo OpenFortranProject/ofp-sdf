@@ -1,0 +1,7 @@
+INTEGER :: a
+REAL :: b
+TYPE(my_type) :: c
+CLASS(my_class) :: d
+CLASS(*) :: e
+TYPE(*) :: f
+END PROGRAM

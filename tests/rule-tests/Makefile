@@ -15,12 +15,12 @@ check : $(SYNTAX)/Fortran.tbl
            if test $$? != 0 ; then \
              echo $$file "		FAILED!"; \
            fi; \
-           pp-aterm -i $$file.ast -o $$file.ast.aterm; \
+           pp-aterm -i $$file.ast -o $$file.ast.trm; \
         done;
 
 junk : $(SYNTAX)/Fortran.tbl  $(TRANS)/ofp-simplify
 	$(SGLRI) -p $(SYNTAX)/Fortran.tbl -i junk.f90 | $(TRANS)/ofp-simplify | pp-aterm
 
 clean :
-	rm -f *.ast *.ast.aterm
+	rm -f *.ast *.ast.trm
 	rm -f *.o *.mod

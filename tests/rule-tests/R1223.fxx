@@ -1,0 +1,25 @@
+!! R1223 actual-arg
+!    is expr
+!    or variable
+!    or procedure-name
+!    or proc-component-ref
+!    or alt-return-spec
+
+a = foo(.not.B)
+a = foo(b)
+a = foo(udt%bar)
+a = foo(*10)                  ! alt-return-spec
+
+! procedure-name
+!
+!  Originally these were (for example):
+!      a = foo(1)(.not.B)
+!  However, it appears this is incorrect and a '%' must be present
+!  for a proc-component-ref
+!
+a = var(1)%foo(.not.B)
+a = var(1)%foo(b)
+a = var(1)%foo(udt%bar)
+a = var(1)%foo(*10)           ! alt-return-spec
+
+end

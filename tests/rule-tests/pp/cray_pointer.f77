@@ -1,0 +1,2 @@
+POINTER(a,b)
+END PROGRAM
