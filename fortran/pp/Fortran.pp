@@ -222,20 +222,21 @@
 %%   StructureConstructor.2:iter-sep   -- _1 ", ",
 
    %% R458
-   EnumDef                       -- _1 _2 _3,
+   EnumDef                       -- V vs=0 is=2 [_1 _2] _3,
 
    %% R459
-   EnumDefStmt                   -- H hs=1[_1 KW["ENUM, "] H hs=0[KW["BIND(C)"] _2]],
+   EnumDefStmt                   -- H hs=1[_1 H hs=0["ENUM" ", " "BIND(C)"]],
 
    %% R460
-   EnumeratorDefStmt             -- H hs=1[_1 KW["ENUMERATOR ::"] H hs=0[_2 _3]],
+   EnumeratorDefStmt             -- H hs=1[_1 "ENUMERATOR" "::" H hs=0[_2]],
    EnumeratorDefStmt.2:iter-sep  -- _1 ", ",
 
    %% R461
-   Enumerator                    -- _1 KW[" = "] _2,
+   Enumerator                    -- _1 "=" _2,
+ ppEnumerator                    -- _1,
 
    %% R462
-   EndEnumStmt                   -- H hs=1[_1 "END ENUM" _2],
+   EndEnumStmt                   -- H hs=1[_1 "END ENUM"],
 
    %% R463
    BozLiteralConstant_BC         -- H hs=0[_1],
