@@ -69,6 +69,7 @@ signature
     ppTypeBoundProcedureStmt : label * procdecls       -> ppTypeBoundProcedureStmt         // R448
 
     ppTypeParamSpec          : value                   -> ppTypeParamSpec                  // R454
+    ppEnumerator             : name                    -> ppEnumerator                     // R460
 
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
@@ -170,6 +171,9 @@ ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
 
 //R454
 ast-to-pp:  TypeParamSpec(no-keyword(),value)           ->  ppTypeParamSpec(value)
+
+//R460
+ast-to-pp:  Enumerator(name,no-expr())                  ->  ppEnumerator(name)
 
 //R501
 ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)
