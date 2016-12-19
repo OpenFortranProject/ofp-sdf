@@ -12,8 +12,12 @@ signature
     no-program-stmt           : NoProgramStmt   // R1102
     no-program-name           : NoProgramName   // R1103
 
+    NULL_EXPR                 : NULL_EXPR
+
     // SgToken:ROSE_Fortran_Keywords
     //
+    SgToken_ROSE_Fortran_Keywords  :  enum  -> SgToken_ROSE_Fortran_Keywords
+
     FORTRAN_ABSTRACT          : FORTRAN_ABSTRACT
     FORTRAN_ACCESS            : FORTRAN_ACCESS
     FORTRAN_ACTION            : FORTRAN_ACTION
@@ -156,6 +160,8 @@ signature
 
     // SgToken:ROSE_Fortran_Operators
     //
+    SgToken_ROSE_Fortran_Operators  :  enum  -> SgToken_ROSE_Fortran_Operators
+
     FORTRAN_INTRINSIC_PLUS    : FORTRAN_INTRINSIC_PLUS
     FORTRAN_INTRINSIC_MINUS   : FORTRAN_INTRINSIC_MINUS
     FORTRAN_INTRINSIC_POWER   : FORTRAN_INTRINSIC_POWER
@@ -174,6 +180,23 @@ signature
     FORTRAN_INTRINSIC_GT      : FORTRAN_INTRINSIC_GT
     FORTRAN_INTRINSIC_NOT     : FORTRAN_INTRINSIC_NOT
 
+    // SgUntypedType:type_enum
+    //
+    TYPE_UNKNOWN              : TYPE_UNKNOWN
+    TYPE_VOID                 : TYPE_VOID
+    TYPE_INT                  : TYPE_INT
+    TYPE_FLOAT                : TYPE_FLOAT
+    TYPE_DOUBLE               : TYPE_DOUBLE
+    TYPE_COMPLEX              : TYPE_COMPLEX
+    TYPE_CHAR                 : TYPE_CHAR
+    TYPE_LAST                 : TYPE_LAST
+    TYPE_BOOL                 : TYPE_BOOL  //CER-TODO-ROSE
+
+    SgUntypedType             :  string * expr * bool * bool * bool * bool * bool * bool * expr * string * bool * enum -> SgUntypedType
+    SgUntypedType_type_enum   :  enum -> SgUntypedType_type_enum
+
+    SgUntypedExpression       :  enum -> SgUntypedExpression
+
 strategies
 
   main =
@@ -185,33 +208,111 @@ strategies
 
 rules
 
-  sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedType("unknown"),name)
+sg-initialized-name: name -> SgUntypedInitializedName(SgUntypedType("unknown"),name)
+
+sg-expression =
+     ? NULL_EXPR()                     ; ! SgUntypedExpression(<sg-fortran-keyword>FORTRAN_NULL())
+
+sg-fortran-keyword =
+     ? FORTRAN_CONTINUE()              ; ! SgToken_ROSE_Fortran_Keywords(16)
+  <+ ? FORTRAN_FUNCTION()              ; ! SgToken_ROSE_Fortran_Keywords(59)
+  <+ ? FORTRAN_IMPLICIT()              ; ! SgToken_ROSE_Fortran_Keywords(68)
+  <+ ? FORTRAN_MODULE()                ; ! SgToken_ROSE_Fortran_Keywords(78)
+  <+ ? FORTRAN_NULL()                  ; ! SgToken_ROSE_Fortran_Keywords(81)
+  <+ ? FORTRAN_PROGRAM()               ; ! SgToken_ROSE_Fortran_Keywords(97)
+  <+ ? FORTRAN_SUBROUTINE()            ; ! SgToken_ROSE_Fortran_Keywords(113)
+  <+ ? FORTRAN_END_PROGRAM()           ; ! SgToken_ROSE_Fortran_Keywords(126)
+  <+ ? FORTRAN_END_MODULE()            ; ! SgToken_ROSE_Fortran_Keywords(127)
+  <+ ? FORTRAN_END_FUNCTION()          ; ! SgToken_ROSE_Fortran_Keywords(128)
+  <+ ? FORTRAN_END_SUBROUTINE()        ; ! SgToken_ROSE_Fortran_Keywords(129)
+  <+ ? FORTRAN_UNKNOWN()               ; ! SgToken_ROSE_Fortran_Keywords(132)
+  <+ ? FORTRAN_BLOCK()                 ; ! SgToken_ROSE_Fortran_Keywords(132)        // TODO: add to ROSE
+  <+ ? FORTRAN_END_BLOCK()             ; ! SgToken_ROSE_Fortran_Keywords(132)        // TODO: add to ROSE
+
+sg-fortran-operator =
+     ? FORTRAN_INTRINSIC_PLUS()        ; ! SgToken_ROSE_Fortran_Operators(10000)
+  <+ ? FORTRAN_INTRINSIC_MINUS()       ; ! SgToken_ROSE_Fortran_Operators(10001)
+  <+ ? FORTRAN_INTRINSIC_POWER()       ; ! SgToken_ROSE_Fortran_Operators(10002)
+  <+ ? FORTRAN_INTRINSIC_CONCAT()      ; ! SgToken_ROSE_Fortran_Operators(10003)
+  <+ ? FORTRAN_INTRINSIC_TIMES()       ; ! SgToken_ROSE_Fortran_Operators(10004)
+  <+ ? FORTRAN_INTRINSIC_DIVIDE()      ; ! SgToken_ROSE_Fortran_Operators(10005)
+  <+ ? FORTRAN_INTRINSIC_AND()         ; ! SgToken_ROSE_Fortran_Operators(10006)
+  <+ ? FORTRAN_INTRINSIC_OR()          ; ! SgToken_ROSE_Fortran_Operators(10007)
+  <+ ? FORTRAN_INTRINSIC_EQV()         ; ! SgToken_ROSE_Fortran_Operators(10008)
+  <+ ? FORTRAN_INTRINSIC_NEQV()        ; ! SgToken_ROSE_Fortran_Operators(10009)
+  <+ ? FORTRAN_INTRINSIC_EQ()          ; ! SgToken_ROSE_Fortran_Operators(10010)
+  <+ ? FORTRAN_INTRINSIC_NE()          ; ! SgToken_ROSE_Fortran_Operators(10011)
+  <+ ? FORTRAN_INTRINSIC_GE()          ; ! SgToken_ROSE_Fortran_Operators(10012)
+  <+ ? FORTRAN_INTRINSIC_LE()          ; ! SgToken_ROSE_Fortran_Operators(10013)
+  <+ ? FORTRAN_INTRINSIC_LT()          ; ! SgToken_ROSE_Fortran_Operators(10014)
+  <+ ? FORTRAN_INTRINSIC_GT()          ; ! SgToken_ROSE_Fortran_Operators(10015)
+  <+ ? FORTRAN_INTRINSIC_NOT()         ; ! SgToken_ROSE_Fortran_Operators(10016)
+
+//  e_unknown=0,e_void,e_int,e_float,e_double,e_complex,e_char,e_last
+sg-type-enum =
+     ? TYPE_UNKNOWN()                  ; ! SgUntypedType_type_enum(0)
+  <+ ? TYPE_VOID()                     ; ! SgUntypedType_type_enum(1)
+  <+ ? TYPE_INT()                      ; ! SgUntypedType_type_enum(2)
+  <+ ? TYPE_FLOAT()                    ; ! SgUntypedType_type_enum(3)
+  <+ ? TYPE_DOUBLE()                   ; ! SgUntypedType_type_enum(4)
+  <+ ? TYPE_BOOL()                     ; ! SgUntypedType_type_enum(0)  //CER-TODO-ROSE
+
+sg-build-void-type =                     ! SgUntypedType("void",<sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_VOID())
+
+sg-build-intrinsic-type =
+     ? INTEGER()                       ; ! SgUntypedType("integer",<sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_INT())
+  <+ ? REAL()                          ; ! SgUntypedType("float",  <sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
+  <+ ? DOUBLEPRECISION()               ; ! SgUntypedType("double", <sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
+  <+ ? LOGICAL()                       ; ! SgUntypedType("bool",   <sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
+
+sg-build-intrinsic-type(|kind) =
+     ? INTEGER()                       ; ! SgUntypedType("integer",                      kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_INT())
+  <+ ? REAL()                          ; ! SgUntypedType("float",                        kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
+  <+ ? DOUBLEPRECISION()               ; ! SgUntypedType("double",                       kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
+  <+ ? LOGICAL()                       ; ! SgUntypedType("bool",                         kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
 
 //R201
 fast-to-sage:  Program(units)
-               -> SgUntypedFile(SgUntypedGlobalScope("",FORTRAN_UNKNOWN(),
+               -> SgUntypedFile(SgUntypedGlobalScope("",<sg-fortran-keyword>FORTRAN_UNKNOWN(),
                                                         SgUntypedDeclarationStatementList([]),
                                                         SgUntypedStatementList([]),
                                                         SgUntypedFunctionDeclarationList(units)))
 
 //R404
-fast-to-sage:  INTEGER()                     -> SgUntypedType("integer")
-fast-to-sage:  REAL()                        -> SgUntypedType("real")
-fast-to-sage:  DOUBLEPRECISION()             -> SgUntypedType("doubleprecision")
-fast-to-sage:  LOGICAL()                     -> SgUntypedType("logical")
+fast-to-sage:  INTEGER()              -> SgUntypedType("integer",<sg-expression>NULL_EXPR(),0,0,0,
+                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_INT())
+fast-to-sage:  REAL()                 -> SgUntypedType("float",  <sg-expression>NULL_EXPR(),0,0,0,
+                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
+fast-to-sage:  DOUBLEPRECISION()      -> SgUntypedType("double", <sg-expression>NULL_EXPR(),0,0,0,
+                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
+fast-to-sage:  LOGICAL()              -> SgUntypedType("bool",   <sg-expression>NULL_EXPR(),0,0,0,
+                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
 
 //R407
 fast-to-sage:  IntVal(val)
-               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedType("integer"))
+               -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type>INTEGER())
+fast-to-sage:  IntVal(val,Kind(expr))
+               -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type(|expr)>INTEGER())
 
 //R413
 fast-to-sage:  RealVal(val)
-               -> SgUntypedValueExpression(FORTRAN_UNKNOWN(),val,SgUntypedType("real"))
+               -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type>REAL())
+fast-to-sage:  RealVal(val,Kind(expr))
+               -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type(|expr)>REAL())
 
 
 //R501
 fast-to-sage:  TypeDeclarationStmt(label,type,attrs,entities)
-               -> SgUntypedVariableDeclaration(label,FORTRAN_UNKNOWN(),type,
+               -> SgUntypedVariableDeclaration(label,<sg-fortran-keyword>FORTRAN_UNKNOWN(),type,
                                                SgUntypedInitializedNameList(entities))
 
 //R503
@@ -224,7 +325,7 @@ fast-to-sage:  Var(name,type,init)           -> SgUntypedInitializedName(type,na
 //    DimSpec(lower, upper)                  -> PpDimSpec(lower, upper)
 
 //R560 - TODO: implicit-spec-list
-fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,FORTRAN_IMPLICIT())
+fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,<sg-fortran-keyword>FORTRAN_IMPLICIT())
 
 //R562
 //  fast-to-sage:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
@@ -247,65 +348,65 @@ fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,
 //  fast-to-sage:  AllocateCoshapeSpec(no-lower-bound(),ub) -> PpAllocCoshapeSpec(ub)
 //  fast-to-sage:  AllocateCoshapeSpec(lb,ub)               -> PpAllocCoshapeSpec(lb,ub)
 
-fast-to-sage:  VarDef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
-fast-to-sage:  VarRef(name) -> SgUntypedReferenceExpression (FORTRAN_UNKNOWN(),name)
+fast-to-sage:  VarDef(name) -> SgUntypedReferenceExpression (<sg-fortran-keyword>FORTRAN_UNKNOWN(),name)
+fast-to-sage:  VarRef(name) -> SgUntypedReferenceExpression (<sg-fortran-keyword>FORTRAN_UNKNOWN(),name)
 
 // Unary Operators
 //
 fast-to-sage:
-  UnaryPlus(expr)  -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(),"+",expr)
+  UnaryPlus(expr)  -> SgUntypedUnaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_PLUS(),"+",expr)
 fast-to-sage:
-  UnaryMinus(expr) -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",expr)
+  UnaryMinus(expr) -> SgUntypedUnaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_MINUS(),"-",expr)
 fast-to-sage:
-  NOT(expr)        -> SgUntypedUnaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NOT(),".NOT.",expr)
+  NOT(expr)        -> SgUntypedUnaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_NOT(),".NOT.",expr)
 
 // Binary Operators
 //
 fast-to-sage:
-  Power(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_POWER(),"**",e1,e2)
+  Power(e1,e2)  -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_POWER(),"**",e1,e2)
 
 fast-to-sage:
-  Mult(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_TIMES(), "*",e1,e2)
+  Mult(e1,e2)   -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_TIMES(), "*",e1,e2)
 fast-to-sage:
-  Div(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_DIVIDE(),"/",e1,e2)
+  Div(e1,e2)    -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_DIVIDE(),"/",e1,e2)
 
 fast-to-sage:
-  Plus(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_PLUS(), "+",e1,e2)
+  Plus(e1,e2)   -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_PLUS(), "+",e1,e2)
 fast-to-sage:
-  Minus(e1,e2)  -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_MINUS(),"-",e1,e2)
+  Minus(e1,e2)  -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_MINUS(),"-",e1,e2)
 
 fast-to-sage:
-  Concat(e1,e2) -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_CONCAT(),"//",e1,e2)
+  Concat(e1,e2) -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_CONCAT(),"//",e1,e2)
 
 fast-to-sage:
-  EQ(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_EQ(),"==",e1,e2)
+  EQ(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_EQ(),"==",e1,e2)
 fast-to-sage:
-  NE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NE(),"/=",e1,e2)
+  NE(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_NE(),"/=",e1,e2)
 fast-to-sage:
-  LT(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LT(),"<",e1,e2)
+  LT(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_LT(),"<",e1,e2)
 fast-to-sage:
-  LE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_LE(),"<=",e1,e2)
+  LE(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_LE(),"<=",e1,e2)
 fast-to-sage:
-  GT(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_GT(),">",e1,e2)
+  GT(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_GT(),">",e1,e2)
 fast-to-sage:
-  GE(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_GE(),">=",e1,e2)
+  GE(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_GE(),">=",e1,e2)
 
 fast-to-sage:
-  AND(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_AND(),".AND.",e1,e2)
+  AND(e1,e2)    -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_AND(),".AND.",e1,e2)
 fast-to-sage:
-  OR(e1,e2)     -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_OR(), ".OR.", e1,e2)
+  OR(e1,e2)     -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_OR(), ".OR.", e1,e2)
 
 fast-to-sage:
-  EQV(e1,e2)    -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_EQV(), ".EQV.", e1,e2)
+  EQV(e1,e2)    -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_EQV(), ".EQV.", e1,e2)
 fast-to-sage:
-  NEQV(e1,e2)   -> SgUntypedBinaryOperator(FORTRAN_UNKNOWN(),FORTRAN_INTRINSIC_NEQV(),".NEQV.",e1,e2)
+  NEQV(e1,e2)   -> SgUntypedBinaryOperator(<sg-fortran-keyword>FORTRAN_UNKNOWN(),<sg-fortran-operator>FORTRAN_INTRINSIC_NEQV(),".NEQV.",e1,e2)
 
 fast-to-sage:
   Parens(expr)  -> expr
 
 //R732
 fast-to-sage:
-  AssignmentStmt(label,var,expr)    -> SgUntypedAssignmentStatement(label,FORTRAN_UNKNOWN(),var,expr)
+  AssignmentStmt(label,var,expr)    -> SgUntypedAssignmentStatement(label,<sg-fortran-keyword>FORTRAN_UNKNOWN(),var,expr)
 
 //R803
 //  fast-to-sage:
@@ -316,9 +417,9 @@ fast-to-sage =
 {l1,l2,l3
   :  ?Block(label,name,Scope(l1,l2,l3),end)
   ;  !SgUntypedBlockStatement(label,
-                              FORTRAN_BLOCK(),
+                              <sg-fortran-keyword>FORTRAN_BLOCK(),
                               name,
-                              SgUntypedScope(label,FORTRAN_BLOCK(),
+                              SgUntypedScope(label,<sg-fortran-keyword>FORTRAN_BLOCK(),
                                                    SgUntypedDeclarationStatementList(l1),
                                                    SgUntypedStatementList(l2),
                                                    SgUntypedFunctionDeclarationList(l3)),
@@ -327,7 +428,7 @@ fast-to-sage =
 
 //R809
 fast-to-sage:
-  EndBlockStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_BLOCK(),name)
+  EndBlockStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_BLOCK(),name)
 
 //R817
 //  fast-to-sage:
@@ -343,7 +444,7 @@ fast-to-sage:
 
 //R854
 fast-to-sage:
-  ContinueStmt(label)               -> SgUntypedOtherStatement(label,FORTRAN_CONTINUE())
+  ContinueStmt(label)               -> SgUntypedOtherStatement(label,<sg-fortran-keyword>FORTRAN_CONTINUE())
 
 //R860
 //  fast-to-sage:
@@ -354,22 +455,22 @@ fast-to-sage =
 {l1,l2,l3
   :  ?MainProgram(no-program-stmt(),Scope(l1,l2,l3),end)
   ;  !SgUntypedProgramHeaderDeclaration("",
-                                        FORTRAN_PROGRAM(),
+                                        <sg-fortran-keyword>FORTRAN_PROGRAM(),
                                         "",
                                         SgUntypedInitializedNameList([]),
-                                        SgUntypedType("void"),
-                                        SgUntypedFunctionScope("",FORTRAN_PROGRAM(),
-                                                               SgUntypedDeclarationStatementList(l1),
-                                                               SgUntypedStatementList(l2),
-                                                               SgUntypedFunctionDeclarationList(l3)),
+                                        <sg-build-void-type>,
+                                        SgUntypedFunctionScope("",<sg-fortran-keyword>FORTRAN_PROGRAM(),
+                                        SgUntypedDeclarationStatementList(l1),
+                                        SgUntypedStatementList(l2),
+                                        SgUntypedFunctionDeclarationList(l3)),
                                         end)
  <+  ?MainProgram(ProgramStmt(label,name),Scope(l1,l2,l3),end)
   ;  !SgUntypedProgramHeaderDeclaration(label,
-                                        FORTRAN_PROGRAM(),
+                                        <sg-fortran-keyword>FORTRAN_PROGRAM(),
                                         name,
                                         SgUntypedInitializedNameList([]),
-                                        SgUntypedType("void"),
-                                        SgUntypedFunctionScope(label,FORTRAN_PROGRAM(),
+                                        <sg-build-void-type>,
+                                        SgUntypedFunctionScope(label,<sg-fortran-keyword>FORTRAN_PROGRAM(),
                                                                SgUntypedDeclarationStatementList(l1),
                                                                SgUntypedStatementList(l2),
                                                                SgUntypedFunctionDeclarationList(l3)),
@@ -381,16 +482,16 @@ fast-to-sage =
 
 //R1103
 fast-to-sage:
-  EndProgramStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_PROGRAM(),name)
+  EndProgramStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_PROGRAM(),name)
 
 //R1104
 fast-to-sage =
 {l1,l2,l3
   :  ?Module(ModuleStmt(label,name),Scope(l1,l2,l3),end)
   ;  !SgUntypedModuleDeclaration(label,
-                                 FORTRAN_MODULE(),
+                                 <sg-fortran-keyword>FORTRAN_MODULE(),
                                  name,
-                                 SgUntypedModuleScope(label,FORTRAN_MODULE(),
+                                 SgUntypedModuleScope(label,<sg-fortran-keyword>FORTRAN_MODULE(),
                                                       SgUntypedDeclarationStatementList(l1),
                                                       SgUntypedStatementList(l2),
                                                       SgUntypedFunctionDeclarationList(l3)),
@@ -398,7 +499,7 @@ fast-to-sage =
 }
 
 //R1104
-fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_MODULE(),name)
+fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_MODULE(),name)
 
 //R1116
 //  fast-to-sage:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
@@ -406,16 +507,16 @@ fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,FORTRA
 //R1222
 //  fast-to-sage:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
 
-//R1227 - TODO: need SgUntyedFunctionDeclaration constructor in SgUntyped.str
+//R1227 - TODO: need SgUntypedFunctionDeclaration constructor in SgUntyped.str
 //fast-to-sage =
 //{l1,l2,l3
 //  :  ?Function(FunctionStmt(label,prefix,name,args,binding),Scope(l1,l2,l3),end)
 //  ;  !SgUntypedFunctionDeclaration(label,
-//                                     FORTRAN_FUNCTION(),
+//                                     <sg-fortran-keyword>FORTRAN_FUNCTION(),
 //                                     name,
-//                                     <map(sg-initialized-name)>args,
-//                                     SgUntypedType("void"),
-//                                     SgUntypedFunctionScope(label,FORTRAN_FUNCTION(),
+//                                     SgUntypedInitializedNameList(<map(sg-initialized-name)>args),
+//                                     <sg-build-void-type>,
+//                                     SgUntypedFunctionScope(label,<sg-fortran-keyword>FORTRAN_FUNCTION(),
 //                                                            SgUntypedDeclarationStatementList(l1),
 //                                                            SgUntypedStatementList(l2),
 //                                                            SgUntypedFunctionDeclarationList(l3)),
@@ -427,11 +528,11 @@ fast-to-sage =
 {l1,l2,l3
   :  ?Subroutine(SubroutineStmt(label,prefix,name,args,binding),Scope(l1,l2,l3),end)
   ;  !SgUntypedSubroutineDeclaration(label,
-                                     FORTRAN_SUBROUTINE(),
+                                     <sg-fortran-keyword>FORTRAN_SUBROUTINE(),
                                      name,
-                                     <map(sg-initialized-name)>args,
-                                     SgUntypedType("void"),
-                                     SgUntypedFunctionScope(label,FORTRAN_SUBROUTINE(),
+                                     SgUntypedInitializedNameList(<map(sg-initialized-name)>args),
+                                     <sg-build-void-type>,
+                                     SgUntypedFunctionScope(label,<sg-fortran-keyword>FORTRAN_SUBROUTINE(),
                                                             SgUntypedDeclarationStatementList(l1),
                                                             SgUntypedStatementList(l2),
                                                             SgUntypedFunctionDeclarationList(l3)),
@@ -440,7 +541,7 @@ fast-to-sage =
 
 //R1236
 fast-to-sage:
-  EndSubroutineStmt(label,name) -> SgUntypedNamedStatement(label,FORTRAN_END_SUBROUTINE(),name)
+  EndSubroutineStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_SUBROUTINE(),name)
 
 //R1237
 //  fast-to-sage:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
