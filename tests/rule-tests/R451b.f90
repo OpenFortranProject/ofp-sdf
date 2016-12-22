@@ -1,4 +1,4 @@
-!! R455 binding-attr
+!! R451 binding-attr
 !    is PASS [ (arg-name ) ]
 !    or NOPASS
 !    or NON OVERRIDABLE
