@@ -692,6 +692,10 @@ ofp-to-ast =
 ofp-to-ast =  ?EndBlockStmt(label,name,eos("\n"))    ;  !EndBlockStmt(label,name)
           <+  ?EndBlockStmt(label,name,eos(str) )    ;  !EndBlockStmt(label,name) {Comment(str)}
 
+//R816
+ofp-to-ast =  ?LabelDoStmt(label,name,lblref,control,eos("\n")) ;  !LabelDoStmt(label,name,lblref,control)
+          <+  ?LabelDoStmt(label,name,lblref,control,eos(str) ) ;  !LabelDoStmt(label,name,lblref,control) {Comment(str)}
+
 //R817
 ofp-to-ast =  ?NonlabelDoStmt(label,name,control,eos("\n")) ;  !NonlabelDoStmt(label,name,control)
           <+  ?NonlabelDoStmt(label,name,control,eos(str) ) ;  !NonlabelDoStmt(label,name,control) {Comment(str)}
