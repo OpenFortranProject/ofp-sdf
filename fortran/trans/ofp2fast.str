@@ -296,24 +296,24 @@ ofp-to-ast:  KindSelector(k)                    -> Kind(k)
 ofp-to-ast:  KindSelector_STAR(k)               -> Kind(IntVal(k))
 
 //R408
-ofp-to-ast:
-  IntLiteralConstant(val,no-kind())             -> IntVal(val)
-ofp-to-ast:
-  IntLiteralConstant(val,kind)                  -> IntVal(val,Kind(kind))
+ofp-to-ast=
+      ? IntLiteralConstant(val,no-kind())       ; ! IntVal(val)
+   <+ ? IntLiteralConstant(val,kind)            ; ! IntVal(val,Kind(kind))
 
 //R413
-ofp-to-ast:
-  RealLiteralConstant(val,no-kind())            -> RealVal(val)
-ofp-to-ast:
-  RealLiteralConstant(val,kind)                 -> RealVal(val,Kind(kind))
+ofp-to-ast=
+      ? RealLiteralConstant(val,no-kind())      ; ! RealVal(val)
+   <+ ? RealLiteralConstant(val,kind)           ; ! RealVal(val,Kind(kind))
 
 //R420
 ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)
 
 //R421
-ofp-to-ast: LengthSelector(expr)                -> expr
-ofp-to-ast: LengthSelector_STAR(len)            -> IntVal(len)
-ofp-to-ast: no-length-selector()                -> no-char-length()
+ofp-to-ast=
+      ? LengthSelector_STAR(CharLength(STAR())) ; ! STAR()
+  <+  ? LengthSelector_STAR(len)                ; ! IntVal(len)
+  <+  ? LengthSelector(expr)                    ; ! expr
+  <+  ? no-length-selector()                    ; ! no-char-length()
 
 //R424
 ofp-to-ast:  TRUE(no-kind())                    -> TRUE()
