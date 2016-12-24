@@ -1,0 +1,14 @@
+!!
+! Issue #16, https://github.com/OpenFortranProject/ofp-sdf/issues/16
+!
+! The following program will parse ok but fails to unparse because it
+! it isn't transformed to the correct FAST representation:
+!
+!   The FAST ATerm representation is
+!       CHARACTER(IntVal(CharLength(STAR())))
+!   and should be
+!       CHARACTER(STAR())
+!
+character*(*) :: string
+end
+
