@@ -811,22 +811,23 @@
    CloseStmt.2:iter-sep          -- _1 ", ",
 
    %% R910
-   ReadStmt                      -- H hs=1 [_1 H hs=0["READ" "(" _2 ") " _3]],
-   ReadStmt.2:iter-sep           -- _1 ",",
-   ReadStmt.3:iter-sep           -- _1 ", ",
+   ppReadStmt                    -- H hs=1 [_1 H hs=0["READ" "(" _2 ") " _3]],
+   ppReadStmt.2:iter-sep         -- _1 ",",
+   ppReadStmt.3:iter-sep         -- _1 ", ",
 
    ReadFMTStmt                   -- H hs=1 [_1 H hs=0["READ " _2 ", " _3]],
    ReadFMTStmt.3:iter-sep        -- _1 ", ",
 
    %% R911
-   WriteStmt                     -- H hs=1 [_1 H hs=0["WRITE" "("_2") " _3]],
-   WriteStmt.2:iter-sep          -- _1 ",",
-   WriteStmt.3:iter-sep          -- _1 ", ",
+   ppWriteStmt                   -- H hs=1 [_1 H hs=0["WRITE" "("_2") " _3]],
+   ppWriteStmt.2:iter-sep        -- _1 ",",
+   ppWriteStmt.3:iter-sep        -- _1 ", ",
 
    %% R912
    PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
    PrintStmt.3:iter-sep          -- _1 ",",
 
+   FMT-or-NML                    --            _1,
    FMT                           -- "FMT="     _1,
    SIZE                          -- "SIZE="    _1,
    ADVANCE                       -- "ADVANCE=" _1,
