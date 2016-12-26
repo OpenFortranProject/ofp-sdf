@@ -691,31 +691,39 @@
  ppEndIfStmt                     -- H hs=1 [_1 "END IF"           ],
 
    %% R837
-   IfStmt                        -- H hs=1 [_1 KW["IF"] H hs=0["("_2")"] _3],
+   IfStmt                        -- H hs=1 [_1 "IF" H hs=0["("_2")"] _3],
 
    no-else-stmt                  -- ,
 
-   #R838 --,
-   CaseConstruct                 -- _1 _2 _3,
-   CaseStmtBlock                 -- _1 _2,
+   %% R838
+   CaseConstruct                 -- V vs=0 is=2 [_1 _2] _3,
+   CaseStmtBlock                 -- V vs=0 is=2 [_1 _2],
 
-   #R839 --,
-   ppSelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 KW["SELECT CASE"] "("_3")" _4]],
+   %% R839
+   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 ": " "SELECT CASE" "("_3")"]],
+ ppSelectCaseStmt                -- H hs=1[_1 H hs=0 ["SELECT CASE" "("_2")"]],
 
-   #R840 --,
-   CaseStmt                      -- H hs=1[_1 KW["CASE"] H hs=0["("_2")"] H hs=0[_3 _4]],
+   %% R840
+   CaseStmt                      -- H hs=1[_1 "CASE" H hs=0["("_2")"] H hs=0[_3]],
+ ppCaseStmt                      -- H hs=1[_1 "CASE" H hs=0["("_2")"]],
+ ppDefaultCaseStmt               -- H hs=1[_1 "CASE" "DEFAULT"],
+ ppDefaultCaseStmt               -- H hs=1[_1 "CASE" "DEFAULT" H hs=0[_2]],
    CaseStmt.2:iter-sep           -- _1 ", ",
+ ppCaseStmt.2:iter-sep           -- _1 ", ",
 
-   #R841 --,
-   EndSelectStmt                 -- H hs=1[_1 "END SELECT" H hs=0[_2 _3]],
+   %% R841
+   EndSelectStmt                 -- H hs=1[_1 "END SELECT" H hs=0[_2]],
+ ppEndSelectStmt                 -- H hs=1[_1 "END SELECT"],
 
-   #R843 --,
-   DEFAULT                       -- KW["DEFAULT"],
+   %% R843
+   DEFAULT                       -- "DEFAULT",
 
-   #R844 --,
-   CaseValueRange                -- _1 KW[":"] _2,
+   %% R844
+   CaseValueRange                -- _1 ":" _2,
+   no-low                        --,
+   no-high                       --,
 
-   #R845 --,
+   %% R845
    CaseValue                     -- _1,
 
    %% R846
