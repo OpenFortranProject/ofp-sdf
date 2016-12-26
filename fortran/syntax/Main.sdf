@@ -2866,9 +2866,11 @@ context-free syntax
 %%R913
 %%     default-char-expr substituted for scalar-default-char-expr
 %%
-%%     io-unit                       must be first and second (without {UNIT}=)
+%%     io-unit                       must be first            (without {UNIT}=)
 %%     io-unit and format            must be first and second (without {UNIT,FMT}=)
 %% or  io-unit and NamelistGroupName must be first and second (without {UNIT,NML}=)
+%%
+%% thus FMT or NML without specifying FMT or NML is ambiguous
 %%
 %%                    IoUnit                      -> IoControlSpec  {cons("UNIT")}
 %%                    Format                      -> IoControlSpec  {cons("FMT")}
@@ -2897,14 +2899,14 @@ context-free syntax
                               {IoControlSpec ','}+  -> IoControlSpecList    {cons("io-control-spec-list")}
   IoUnitNoKW                  OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
   IoUnitNoKW ',' FormatNoKW   OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
-  IoUnitNoKW ',' NameListNoKW OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
+%%IoUnitNoKW ',' NameListNoKW OptIoControlSpecList  -> IoControlSpecList    {cons("io-control-spec-list")}
 
   ',' {IoControlSpec ','}+                          -> OptIoControlSpecList {cons("comma-list")}
   % empty %                                         -> OptIoControlSpecList {cons("no-list")}
 
   IoUnit                                            -> IoUnitNoKW         {cons("UNIT")}
-  Format                                            -> FormatNoKW         {cons("FMT")}
-  NamelistGroupName                                 -> NameListNoKW       {cons("NML")}
+  Format                                            -> FormatNoKW         {cons("FMT-or-NML")}
+%%NamelistGroupName                                 -> NameListNoKW       {cons("NML")}
 
 %%R914
   IntVariable                                       -> IdVariable     {cons("IdVariable")}

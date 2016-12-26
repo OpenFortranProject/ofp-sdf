@@ -431,12 +431,10 @@ signature
     STAR                            : Format
                                     : DefaultCharExpr -> Format
     IdVariable                      : IntVariable -> IdVariable
-    NML                             : NamelistGroupName -> NameListNoKW
-    FMT                             : Format -> FormatNoKW
+    FMT-or-NML                      : Format -> FormatNoKW
     UNIT                            : IoUnit -> IoUnitNoKW
     no-list                         : OptIoControlSpecList
     comma-list                      : List(IoControlSpec) -> OptIoControlSpecList
-    io-control-spec-list            : IoUnitNoKW * NameListNoKW * OptIoControlSpecList -> IoControlSpecList
     io-control-spec-list            : IoUnitNoKW * FormatNoKW * OptIoControlSpecList -> IoControlSpecList
     io-control-spec-list            : IoUnitNoKW * OptIoControlSpecList -> IoControlSpecList
     io-control-spec-list            : List(IoControlSpec) -> IoControlSpecList

@@ -1204,12 +1204,10 @@ regular tree grammar
     Format                                 -> STAR()
     Format                                 -> DefaultCharExpr
     IdVariable                             -> IdVariable(IntVariable)
-    NameListNoKW                           -> NML(NamelistGroupName)
-    FormatNoKW                             -> FMT(Format)
+    FormatNoKW                             -> FMT-or-NML(Format)
     IoUnitNoKW                             -> UNIT(IoUnit)
     OptIoControlSpecList                   -> no-list()
     OptIoControlSpecList                   -> comma-list(ListPlusOfIoControlSpec0)
-    IoControlSpecList                      -> io-control-spec-list(IoUnitNoKW,NameListNoKW,OptIoControlSpecList)
     IoControlSpecList                      -> io-control-spec-list(IoUnitNoKW,FormatNoKW,OptIoControlSpecList)
     IoControlSpecList                      -> io-control-spec-list(IoUnitNoKW,OptIoControlSpecList)
     IoControlSpecList                      -> io-control-spec-list(ListPlusOfIoControlSpec0)
