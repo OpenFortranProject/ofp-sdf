@@ -107,6 +107,9 @@ signature
     ppDefaultCaseStmt : OptLabel                                    -> ppDefaultCaseStmt
     ppEndSelectStmt   : OptLabel                                    -> ppEndSelectStmt     // R841
 
+    ppReadStmt        : OptLabel * IoControlList * InputList        -> ppReadStmt          // R910
+    ppWriteStmt       : OptLabel * IoControlList * OutputList       -> ppWriteStmt         // R911
+
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
 
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
@@ -131,7 +134,14 @@ strategies
       where(<gt>(<length>,0))
     ; !opt-list(<id>)
 
-  append-colon = ?no-name() < id + !append-colon(<id>)
+// Remove the UNIT appl an io-control-spec if is the first spec in the list.
+//
+  pp-remove-unit =
+      ? [head|tail]
+   ;  ! head
+   ;  ? UNIT(num)
+   ;  ! <concat>[[num], tail]
+  <+  ! <id>
 
 rules
 
@@ -301,6 +311,12 @@ ast-to-pp:  EndSelectStmt(label,no-name())        ->   ppEndSelectStmt(label)
 //R860
 //  ast-to-pp:
 //    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+
+//R910
+ast-to-pp:  ReadStmt(label,cntl,input)       -> ppReadStmt(label,<pp-remove-unit>cntl,input)
+
+//R911
+ast-to-pp:  WriteStmt(label,cntl,output)     -> ppWriteStmt(label,<pp-remove-unit>cntl,output)
 
 //R920
 ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoControl(dovar,begin,end)
