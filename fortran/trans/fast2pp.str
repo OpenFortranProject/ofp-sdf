@@ -84,11 +84,9 @@ signature
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
 
-    ppWhereConstructStmt    : OptLabel * Expr              -> ppWhereConstructStmt
+    ppWhereConstructStmt  : OptLabel * Expr                         -> ppWhereConstructStmt
 
-    ppSaveStmt        : OptLabel                                    -> ppSaveStmt          // R553
-
-    ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
+    ppSaveStmt            : OptLabel                                -> ppSaveStmt          // R553
 
     ppTypeDeclarationStmt : OptLabel * Type * List(EntityDecl)      -> ppTypeDeclarationStmt
 
@@ -102,6 +100,12 @@ signature
     ppElseStmt        : OptLabel                                    -> ppElseStmt          // R835
     ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
     ppIfConstructName : name                                        -> ppIfConstructName
+
+    ppSelectCaseStmt  : OptLabel * CaseExpr                         -> ppSelectCaseStmt    // R838
+    ppCaseStmt        : OptLabel * CaseSelector                     -> ppCaseStmt          // R840
+    ppDefaultCaseStmt : OptLabel * name                             -> ppDefaultCaseStmt
+    ppDefaultCaseStmt : OptLabel                                    -> ppDefaultCaseStmt
+    ppEndSelectStmt   : OptLabel                                    -> ppEndSelectStmt     // R841
 
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
 
@@ -279,8 +283,16 @@ ast-to-pp:  ElseStmt(label,no-name())             ->   ppElseStmt(label)
 ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
 
 //R838
-//  ast-to-pp:
-//    SelectCaseStmt(label,name,expr,eos)    -> ppSelectCaseStmt(label,<append-colon>name,expr,eos)
+ast-to-pp:  SelectCaseStmt(label,no-name(),expr)  ->   ppSelectCaseStmt(label,expr)
+
+//R840
+ast-to-pp =
+      ?CaseStmt(label,DEFAULT(),no-name())         ;  !ppDefaultCaseStmt(label)
+  <+  ?CaseStmt(label,DEFAULT(),name)              ;  !ppDefaultCaseStmt(label,name)
+  <+  ?CaseStmt(label,selector,no-name())          ;  !ppCaseStmt(label,selector)
+
+//R841
+ast-to-pp:  EndSelectStmt(label,no-name())        ->   ppEndSelectStmt(label)
 
 //R847
 //  ast-to-pp:
