@@ -579,7 +579,7 @@ sorts
   CloseStmt                           %% R908
   CloseSpec                           %% R909
 
-  IoUnitNoKW FormatNoKW NameListNoKW
+  IoUnitNoKW FormatNoKW
 
 %% 9.6 Data transfer statements
 
@@ -599,7 +599,7 @@ sorts
   IoImpliedDoInput IoImpliedDoOutput
   OptInputItemList OptOutputItemList
   IoControlSpecList OptIoControlSpecList
-  NoStride
+  NoStride FormatSTAR
 
 %% 9.7 Waiting on pending data transfer
 
@@ -2136,7 +2136,9 @@ context-free syntax
 
 %%R725
   Expr                                     -> DefaultCharExpr
-  "(" IntLiteralConstant ")"               -> DefaultCharExpr  {reject}    %% Fixes AMBIGUOUS Format
+  IntLiteralConstant                       -> DefaultCharExpr  {reject}  %% Fixes AMBIGUOUS IoControlSpecList
+  ComplexLiteralConstant                   -> DefaultCharExpr  {reject}  %% Fixes AMBIGUOUS IoControlSpecList
+  "(" IntLiteralConstant ")"               -> DefaultCharExpr  {reject}  %% Fixes AMBIGUOUS Format
 
 %%R726
   Expr                                     -> IntExpr
@@ -2905,15 +2907,21 @@ context-free syntax
   % empty %                                         -> OptIoControlSpecList {cons("no-list")}
 
   IoUnit                                            -> IoUnitNoKW         {cons("UNIT")}
-  Format                                            -> FormatNoKW         {cons("FMT-or-NML")}
+%%Format                                            -> FormatNoKW         {cons("FMT-or-NML")}
 %%NamelistGroupName                                 -> NameListNoKW       {cons("NML")}
+%% replaced FormatNoKW production with 3 following
+  DefaultCharExpr                                   -> FormatNoKW         {cons("FMT-or-NML")}
+  Label                                             -> FormatNoKW         {cons("FMT")}
+  FormatSTAR                                        -> FormatNoKW         {cons("FMT")}
+
+  '*'                                               -> FormatSTAR     {cons("STAR")}
 
 %%R914
   IntVariable                                       -> IdVariable     {cons("IdVariable")}
 
 %%R915
   DefaultCharExpr                                   -> Format
-%%Label                                             -> Format
+  Label                                             -> Format
   '*'                                               -> Format         {cons("STAR")}
 
 %%R916

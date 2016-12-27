@@ -1202,9 +1202,13 @@ regular tree grammar
     InputItem                              -> IoImpliedDoInput
     InputItem                              -> Variable
     Format                                 -> STAR()
+    Format                                 -> Label
     Format                                 -> DefaultCharExpr
     IdVariable                             -> IdVariable(IntVariable)
-    FormatNoKW                             -> FMT-or-NML(Format)
+    FormatSTAR                             -> STAR()
+    FormatNoKW                             -> FMT(FormatSTAR)
+    FormatNoKW                             -> FMT(Label)
+    FormatNoKW                             -> FMT-or-NML(DefaultCharExpr)
     IoUnitNoKW                             -> UNIT(IoUnit)
     OptIoControlSpecList                   -> no-list()
     OptIoControlSpecList                   -> comma-list(ListPlusOfIoControlSpec0)

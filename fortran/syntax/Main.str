@@ -429,9 +429,13 @@ signature
                                     : IoImpliedDoInput -> InputItem
                                     : Variable -> InputItem
     STAR                            : Format
+                                    : Label -> Format
                                     : DefaultCharExpr -> Format
     IdVariable                      : IntVariable -> IdVariable
-    FMT-or-NML                      : Format -> FormatNoKW
+    STAR                            : FormatSTAR
+    FMT                             : FormatSTAR -> FormatNoKW
+    FMT                             : Label -> FormatNoKW
+    FMT-or-NML                      : DefaultCharExpr -> FormatNoKW
     UNIT                            : IoUnit -> IoUnitNoKW
     no-list                         : OptIoControlSpecList
     comma-list                      : List(IoControlSpec) -> OptIoControlSpecList
