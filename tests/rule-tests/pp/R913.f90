@@ -1,5 +1,5 @@
 13 WRITE(*,FMT=*) a
-WRITE(6,*) b
+WRITE(6,FMT=*) b
 WRITE(10,FMT=*) c
 WRITE(n,FMT=*,IOSTAT=ios) d
 WRITE(*,ERR=999) e
