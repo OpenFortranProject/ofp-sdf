@@ -107,8 +107,12 @@ signature
     ppDefaultCaseStmt : OptLabel                                    -> ppDefaultCaseStmt
     ppEndSelectStmt   : OptLabel                                    -> ppEndSelectStmt     // R841
 
+    ppSyncImagesStmt  : OptLabel * ImageSet * SyncList              -> ppSyncImagesStmt    // R860
+
     ppReadStmt        : OptLabel * IoControlList * InputList        -> ppReadStmt          // R910
+    ppReadFMTStmt     : OptLabel * Format        * InputList        -> ppReadFMTStmt
     ppWriteStmt       : OptLabel * IoControlList * OutputList       -> ppWriteStmt         // R911
+    ppPrintStmt       : OptLabel * Format        * OutputList       -> ppPrintStmt         // R912
 
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
 
@@ -118,8 +122,9 @@ signature
 
 //    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
-    opt-list       : list            -> opt-list
-    append-colon   : name            -> append-colon
+    opt-list          : list            -> opt-list
+    no-comma-opt-list  : list           -> no-comma-opt-list
+    append-colon      : name            -> append-colon
 
 strategies
 
@@ -131,8 +136,12 @@ strategies
     ; outermost(no-to-none)
 
   pp-opt-list =
-      where(<gt>(<length>,0))
-    ; !opt-list(<id>)
+      ? []             ;  ! no-list()
+   <+ ? list           ;  ! opt-list(<id>)
+
+  pp-no-comma-opt-list =
+      ? []             ;  ! no-list()
+   <+ ? list           ;  ! no-comma-opt-list(<id>)
 
 // Remove the UNIT appl an io-control-spec if is the first spec in the list.
 //
@@ -309,14 +318,20 @@ ast-to-pp:  EndSelectStmt(label,no-name())        ->   ppEndSelectStmt(label)
 //    SelectTypeStmt(label,name,name,selector,eos) -> ppSelectTypeStmt(label,<append-colon>name,name,selector,eos)
 
 //R860
-//  ast-to-pp:
-//    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+ast-to-pp:  SyncImagesStmt(label,set,list)        ->   ppSyncImagesStmt(label,set,<pp-opt-list>list)
 
 //R910
-ast-to-pp:  ReadStmt(label,cntl,input)       -> ppReadStmt(label,<pp-remove-unit>cntl,input)
+ast-to-pp =
+      ?ReadStmt(label,cntl,  input)    ;  !ppReadStmt(label,<pp-remove-unit>cntl,<pp-no-comma-opt-list>input)
+  <+  ?ReadFMTStmt(label,format,input) ;  !ppReadFMTStmt(label,format,<pp-opt-list>input)
 
 //R911
-ast-to-pp:  WriteStmt(label,cntl,output)     -> ppWriteStmt(label,<pp-remove-unit>cntl,output)
+ast-to-pp =
+      ?WriteStmt(label,cntl,output)    ;  !ppWriteStmt(label,<pp-remove-unit>cntl,<pp-no-comma-opt-list>output)
+
+//R912
+ast-to-pp =
+      ?PrintStmt(label,format,output)  ;  !ppPrintStmt(label,format,<pp-opt-list>output)
 
 //R920
 ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoControl(dovar,begin,end)
