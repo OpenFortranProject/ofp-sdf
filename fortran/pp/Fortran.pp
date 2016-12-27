@@ -10,7 +10,9 @@
 
    no-list                       -- ,
    opt-list                      -- ", " _1,
-   opt-list.1:iter-sep           -- _1 ", ",
+   opt-list.1:iter-sep           -- _1 ",",
+   no-comma-opt-list             -- " " _1,
+   no-comma-opt-list.1:iter-sep  -- _1 ",",
 
    CONCURRENT                    -- "CONCURRENT",
    Halo                          -- ", " "HALO" "(" _1 ")",
@@ -811,21 +813,17 @@
    CloseStmt.2:iter-sep          -- _1 ", ",
 
    %% R910
-   ppReadStmt                    -- H hs=1 [_1 H hs=0["READ" "(" _2 ") " _3]],
+   ppReadStmt                    -- H hs=1 [_1 H hs=0["READ" "(" _2 ")" _3]],
    ppReadStmt.2:iter-sep         -- _1 ",",
-   ppReadStmt.3:iter-sep         -- _1 ", ",
 
-   ReadFMTStmt                   -- H hs=1 [_1 H hs=0["READ " _2 ", " _3]],
-   ReadFMTStmt.3:iter-sep        -- _1 ", ",
+   ppReadFMTStmt                 -- H hs=1 [_1 H hs=0["READ " _2 _3]],
 
    %% R911
-   ppWriteStmt                   -- H hs=1 [_1 H hs=0["WRITE" "("_2") " _3]],
+   ppWriteStmt                   -- H hs=1 [_1 H hs=0["WRITE" "("_2")" _3]],
    ppWriteStmt.2:iter-sep        -- _1 ",",
-   ppWriteStmt.3:iter-sep        -- _1 ", ",
 
    %% R912
-   PrintStmt                     -- H hs=1 [_1 "PRINT" H hs=0[_2 ", " _3]],
-   PrintStmt.3:iter-sep          -- _1 ",",
+   ppPrintStmt                   -- H hs=1 [_1 "PRINT" H hs=0[_2 _3]],
 
    FMT-or-NML                    --            _1,
    FMT                           -- "FMT="     _1,
