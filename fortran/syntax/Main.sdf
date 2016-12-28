@@ -2973,17 +2973,22 @@ context-free syntax
 %% 9.8 File positioning statements
 %%
 
+%% The following four productions (include FlushStmt) are ambiguous.  The first rule in the
+%% productions with FileUnitNumber without parentheses is ambiguous with a FileUnitNumber
+%% within parentheses because ( Expr ) -> Primary {cons(Parens)}.
+%%
+
 %%R924
   OptLabel 'BACKSPACE' FileUnitNumber              EOS -> BackspaceStmt   {cons("backspace-unit-stmt")}
-  OptLabel 'BACKSPACE' '(' {PositionSpec ','}+ ')' EOS -> BackspaceStmt   {cons("BackspaceStmt")}
+  OptLabel 'BACKSPACE' '(' {PositionSpec ','}+ ')' EOS -> BackspaceStmt   {cons("BackspaceStmt"), prefer}
 
 %%R925
   OptLabel 'END' 'FILE' FileUnitNumber             EOS -> EndfileStmt     {cons("endfile-unit-stmt")}
-  OptLabel 'END' 'FILE' '('{PositionSpec ','}+ ')' EOS -> EndfileStmt     {cons("EndfileStmt")}
+  OptLabel 'END' 'FILE' '('{PositionSpec ','}+ ')' EOS -> EndfileStmt     {cons("EndfileStmt"), prefer}
 
 %%R926
   OptLabel 'REWIND' FileUnitNumber                 EOS -> RewindStmt      {cons("rewind-unit-stmt")}
-  OptLabel 'REWIND' '(' {PositionSpec ','}+ ')'    EOS -> RewindStmt      {cons("RewindStmt")}
+  OptLabel 'REWIND' '(' {PositionSpec ','}+ ')'    EOS -> RewindStmt      {cons("RewindStmt"), prefer}
 
 %%R927
                  FileUnitNumber                        -> PositionSpec    {cons("UNIT")}
@@ -2998,7 +3003,7 @@ context-free syntax
 
 %%R928
   OptLabel 'FLUSH' FileUnitNumber                   EOS -> FlushStmt      {cons("flush-unit-stmt")}
-  OptLabel 'FLUSH' '(' {FlushSpec ','}+ ')'         EOS -> FlushStmt      {cons("FlushStmt")}
+  OptLabel 'FLUSH' '(' {FlushSpec ','}+ ')'         EOS -> FlushStmt      {cons("FlushStmt"), prefer}
 
 %%R929
 %%           int-variable substituted for scalar-int-variable
