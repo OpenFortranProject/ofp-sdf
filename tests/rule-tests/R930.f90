@@ -1,4 +1,4 @@
-!! R929 inquire-stmt
+!! R930 inquire-stmt
 !    is  INQUIRE ( inquire-spec-list )
 !    or  INQUIRE ( IOLENGTH = scalar-int-variable ) output-item-list
 !
