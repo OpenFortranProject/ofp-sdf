@@ -3,8 +3,8 @@
 !    or  ENDFILE ( position-spec-list )
 !
 ! Not tested here: file-unit-number and position-spec-list.
-endfile 10
-endfile (10, iostat=n, err=4)
+13 end file 10
+endfile(10)
+endfile (unit=10, iostat=n, err=4)
 
-end
-
+4 end
