@@ -10,7 +10,7 @@
 CHARACTER :: cvar
 
 10  wait (5, end=99)
-    wait (iomsg=cvar, err=314,eor=99,end=10, UNIT=6)
+    wait (id=ivar,iomsg=cvar, err=314,eor=99,end=10, UNIT=6)
 
 314 CONTINUE
 99  end
