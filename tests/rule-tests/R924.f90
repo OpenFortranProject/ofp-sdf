@@ -3,7 +3,9 @@
 !    or  BACKSPACE ( position-spec-list )
 !
 ! Not tested here: file-unit-number and position-spec-list.
-backspace 10
-backspace (10, iostat=n)
+integer :: unitnumber
+11 backspace 10
+backspace (10)
+backspace (unit=unitnumber, iostat=n)
 
 end
