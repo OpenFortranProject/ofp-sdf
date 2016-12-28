@@ -1,4 +1,4 @@
-!! R924 endfile-stmt
+!! R925 endfile-stmt
 !    is  ENDFILE file-unit-number
 !    or  ENDFILE ( position-spec-list )
 !
