@@ -1,4 +1,4 @@
-!! R927 flush-stmt
+!! R928 flush-stmt
 !    is  FLUSH file-unit-number
 !    or  FLUSH ( flush-spec-list )
 !
