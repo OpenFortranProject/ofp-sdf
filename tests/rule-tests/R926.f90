@@ -4,6 +4,7 @@
 !
 ! Not tested here: file-unit-number and position-spec-list.
 
+integer unitnumber
 11 REWIND(unitnumber)
 rewind unitnumber
 12 rewind 10
