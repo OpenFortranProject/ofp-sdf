@@ -1,4 +1,4 @@
-!! R928 flush-spec
+!! R929 flush-spec
 !    is [UNIT =] file-unit-number
 !    or IOSTAT = scalar-int-variable
 !    or IOMSG = iomsg-variable
