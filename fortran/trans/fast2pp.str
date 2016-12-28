@@ -96,10 +96,7 @@ signature
 
     ppAssociateStmt   : OptLabel * NoName * List(Association)       -> ppAssociateStmt     // R803
 
-    ppIfThenStmt      : OptLabel * OptName * expr                   -> ppIfThenStmt        // R833
-    ppElseStmt        : OptLabel                                    -> ppElseStmt          // R835
-    ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
-    ppIfConstructName : name                                        -> ppIfConstructName
+    ppIfThenStmt      : OptLabel * OptName * LogicalExpr            -> ppIfThenStmt        // R833
 
     ppSelectCaseStmt  : OptLabel * OptName * CaseExpr               -> ppSelectCaseStmt    // R838
     ppDefaultCaseStmt : OptLabel * name                             -> ppDefaultCaseStmt
@@ -297,15 +294,7 @@ ast-to-pp:  Block(label,no-name(),scope,end) -> ppBlock(label,scope,end)
 ast-to-pp:  NonlabelDoStmt(label,no-name(),control) -> ppNonlabelDoStmt(label,control)
 
 //R833
-ast-to-pp =
-      ?IfThenStmt(label,no-name(),expr)            ;  !ppIfThenStmt(label,no-name(),expr)
-  <+  ?IfThenStmt(label,name     ,expr)            ;  !ppIfThenStmt(label,ppIfConstructName(name),expr)
-
-//R835
-ast-to-pp:  ElseStmt(label,no-name())             ->   ppElseStmt(label)
-
-//R836
-ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
+ast-to-pp:  IfThenStmt(label,name,expr)           ->   ppIfThenStmt(label,<pp-append-colon>name,expr)
 
 //R838
 ast-to-pp:  SelectCaseStmt(label,name,expr)       ->   ppSelectCaseStmt(label,<pp-append-colon>name,expr)

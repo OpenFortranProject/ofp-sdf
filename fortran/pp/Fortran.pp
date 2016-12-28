@@ -681,20 +681,20 @@
    ElseIfStmtBlock               -- V vs=0 is=2 [_1 _2],
    ElseStmtBlock                 -- V vs=0 is=2 [_1 _2],
 
-   ppIfThenStmt                  -- H hs=1 [_1    "IF" H hs=0["("_2")"] "THEN"],
-   ppIfThenStmt                  -- H hs=1 [_1 _2 "IF" H hs=0["("_3")"] "THEN"],
-   ppIfConstructName             -- H hs=0 [_1 ":"],
+   %% R833
+   ppIfThenStmt                  -- H hs=1 [_1 H hs=0[_2 "IF" " (" _3 ")"] "THEN"],
 
-   ElseIfStmt                    -- H hs=1 [_1 "ELSE IF" H hs=0["("_2")"] "THEN" _3],
+   %% R834
+   ElseIfStmt                    -- H hs=1 [_1 "ELSE IF" H hs=0["(" _2 ")"] "THEN" _3],
 
-   ElseStmt                      -- H hs=1 [_1 "ELSE" H hs=0[_2]],
- ppElseStmt                      -- H hs=1 [_1 "ELSE"           ],
+   %% R835
+   ElseStmt                      -- H hs=1 [_1 "ELSE" _2],
 
-   EndIfStmt                     -- H hs=1 [_1 "END IF" H hs=0[_2]],
- ppEndIfStmt                     -- H hs=1 [_1 "END IF"           ],
+   %% R836
+   EndIfStmt                     -- H hs=1 [_1 "END IF" _2],
 
    %% R837
-   IfStmt                        -- H hs=1 [_1 "IF" H hs=0["("_2")"] _3],
+   IfStmt                        -- H hs=1 [_1 "IF" H hs=0["(" _2 ")"] _3],
 
    no-else-stmt                  -- ,
 
