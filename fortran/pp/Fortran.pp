@@ -77,7 +77,7 @@
    AssumedClass                  -- "CLASS(*)",
    AssumedType                   -- "TYPE(*)",
 
-   #R404 --,
+   %% R404
    Type                          -- H hs=1[_1 _2],
    INTEGER                       -- "INTEGER",
    INTEGER                       -- "INTEGER" _1,
@@ -117,7 +117,7 @@
    ComplexLiteralConstant        -- "(" _1 "," _2 ")",
    CharLiteralConstant           -- _1 _2,
 
-   #R424 --,
+   %% R424
    TRUE                          -- ".TRUE.",
    FALSE                         -- ".FALSE.",
    TRUE                          -- H hs=0[".TRUE."  "_" _1],
@@ -206,7 +206,7 @@
    DEFERRED                      -- "DEFERRED",
    no-arg-name                   --,
 
-   #R452 --,
+   %% R452
    FinalProcedureStmt            -- H hs=1[_1 "FINAL ::" H hs=0[_2]],
    FinalProcedureStmt.2:iter-sep -- _1 ", ",
 
@@ -246,18 +246,18 @@
    BozLiteralConstant_OC         -- H hs=0[_1],
    BozLiteralConstant_HC         -- H hs=0[_1],
 
-   #R468 --,
+   %% R468
    ArrayConstructor              -- H hs=0["[" _1 "]"],
 
-   #R469 --,
+   %% R469
    AcSpec                        -- _1 _2,
    AcSpec.2:iter-sep             -- _1 ",",
 
-   #R473 --,
-   AcImpliedDo                   -- "("_1 KW[", "] _2")",
+   %% R473
+   AcImpliedDo                   -- "("_1 ", " _2")",
 
-   #R474 --,
-   AcImpliedDoControl            -- _1 KW["="] _2 KW[", "] _3 _4,
+   %% R474
+   AcImpliedDoControl            -- _1 "=" _2 ", " _3 _4,
 
    %% R501
    TypeDeclarationStmt               -- H hs=1 [_1 H hs=0[_2 ", " _3 " :: " _4]],
@@ -286,7 +286,7 @@
    OUT                           -- "OUT",
    INOUT                         -- "INOUT",
 
-   #R503 --,
+   %% R503
    ppVar                         -- _1 _2,
    ppVarLen                      -- _1 "*" _2 _3,
    ppArrayVar                    -- _1 _2 _3,
@@ -311,24 +311,18 @@
    CoarraySpec                   -- "[" _1 "]",
    CoarraySpec.1:iter-sep        -- _1 ",",
 
-   #R511 --,
-   OfpExplicitCoshape            -- _1,
-
    %% R515
    ArraySpec                     -- "(" _1 ")",
    ArraySpec.1:iter-sep          -- _1 ",",
 
-   #R519 --,
-   OfpAssumedOrDeferredShape     -- _1,
+   %% R523
+   IN                            -- "IN",
 
-   #R523 --,
-   IN                            -- KW["IN"],
-
-   #R524 --,
+   %% R524
    AccessStmt                    -- H hs=1[_1 _2 H hs=0[_3]],
    AccessStmt.3:iter-sep         -- _1 ", ",
 
-   #R526 --,
+   %% 526
    AllocatableStmt               -- H hs=1[_1 "ALLOCATABLE ::" H hs=0[_2]],
    AllocatableStmt.2:iter-sep    -- _1 ", ",
 
@@ -336,11 +330,11 @@
    BindStmt                      -- H hs=1[_1 _2 "::" H hs=0[_3]],
    BindStmt.3:iter-sep           -- _1 ", ",
 
-   #R531 --,
+   %% R531
    CodimensionStmt               -- H hs=1[_1 "CODIMENSION ::" H hs=0[_2 _3]],
    CodimensionStmt.2:iter-sep    -- _1 ", ",
 
-   #R532 --,
+   %% R532
    CodimensionDecl               -- _1 "["_2"]",
    CodimensionDecl.2:iter-sep    -- _1 ", ",
 
@@ -358,7 +352,7 @@
    DataStmtSet.2:iter-sep        -- _1 ",",
 
    %% R537
-   DataImpliedDo                 -- "("_1 KW[", "] _2 KW["="] _3 KW[","] _4 _5")",
+   DataImpliedDo                 -- "("_1 ", " _2 "=" _3 "," _4 _5")",
    DataImpliedDo.1:iter-sep      -- _1 ", ",
 
    %% R539
@@ -410,7 +404,7 @@
    SaveStmt                      -- H hs=1[_1 "SAVE ::" H hs=0[_2]],
    SaveStmt.2:iter-sep           -- _1 ", ",
 
-   #R554 --,
+   %% R554
    SavedEntity                   -- _1,
    SavedEntity_CBN               -- _1,
 
@@ -434,8 +428,8 @@
    VolatileStmt.2:iter-sep       -- _1 ", ",
 
    %% R560
-   ppImplicitStmt                -- H hs=1[_1 KW["IMPLICIT NONE"]],
-   ImplicitStmt                  -- H hs=1[_1 KW["IMPLICIT"] H hs=1[_2 _3]],
+   ppImplicitStmt                -- H hs=1[_1 "IMPLICIT NONE"],
+   ImplicitStmt                  -- H hs=1[_1 "IMPLICIT" H hs=1[_2 _3]],
    ImplicitStmt.2:iter-sep       -- _1 ", ",
 
    %% R561
@@ -445,7 +439,7 @@
    %% R562
    LetterSpec                    -- _1 _2,
    ppLetterSpec                  -- _1,
-   ppLetterSpec                  -- _1 KW["-"] _2,
+   ppLetterSpec                  -- _1 "-" _2,
 
    %% R563
    NamelistStmt                  -- H hs=1[_1 "NAMELIST" H hs=0[_2]],
@@ -495,7 +489,7 @@
    no-subscript                     -- ,
    no-stride                        -- ,
 
-   #R626 --,
+   %% R626
    ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3         ")"]],
    ppAllocateStmt                -- H hs=1 [_1 H hs=0["ALLOCATE" "("_2 _3 ", " _4 ")"]],
    ppAllocateStmt.3:iter-sep     -- _1 ",",
@@ -641,7 +635,7 @@
 
    EndForallStmt                 -- H hs=1[_1 "END FORALL" H hs=0[_2]],
 
-   #R801 --,
+   %% R801
    AssociateConstruct            -- _1 _2 _3,
 
    AssociateStmt                 -- H hs=1[_1 H hs=0[_2 "ASSOCIATE" "("_3")"]],
@@ -673,7 +667,7 @@
    %% R822
    EndDoStmt                     -- H hs=1 [_1 "END DO" H hs=0[_2]],
 
-   #R831 --,
+   %% R831
    CycleStmt                     -- H hs=1 [_1 "CYCLE" H hs=0[_2]],
 
    %% R832
@@ -731,7 +725,7 @@
    %% R847
    ppSelectTypeStmt              -- H hs=1[_1 H hs=0[_2 "SELECT TYPE"] H hs=0["("_3 _4")"]],
 
-   #R848 --,
+   %% R848
    TypeGuardStmt                 -- H hs=1[_1 "TYPE IS"  H hs=0["(" _2 ")"] _3],
    ClassGuardStmt                -- H hs=1[_1 "CLASS IS" H hs=0["(" _2 ")"] _3],
    DefaultGuardStmt              -- H hs=1[_1 "CLASS DEFAULT" _2],
@@ -761,7 +755,7 @@
    SyncAllStmt                   -- H hs=1 [_1 "SYNC ALL" H hs=0 ["(" _2 ")"]],
    SyncAllStmt.2:iter-sep        -- _1 ", ",
 
-   #R860 --,
+   %% R860
    SyncImagesStmt                -- H hs=1 [_1 "SYNC IMAGES" H hs=0 ["(" _2 _3 ")"]],
    SyncImagesStmt.3:iter-sep     -- _1 ", ",
  
@@ -775,7 +769,7 @@
 
    UnlockStmt                    -- H hs=1 [_1 "UNLOCK" H hs=0 ["("_2 _3")"]],
 
-   #R900 --,
+   %% R900
    IOMSG                         -- "IOMSG="  _1,
    UNIT                          -- "UNIT="   _1,
    ERR                           -- "ERR="    _1,
@@ -830,14 +824,14 @@
    Format_STAR                   -- "*",
    Format                        -- _1,
 
-   #R917 --,
+   %% R917
    OutputItem                    -- _1,
 
-   #R918 --,
-   IoImpliedDo                   -- "("_1 KW[", "] _2")",
+   %% R918
+   IoImpliedDo                   -- "("_1 ", " _2")",
    IoImpliedDo.1:iter-sep        -- _1 ", ",
 
-   #R919 --,
+   %% R919
    IoImpliedDoObjectList         -- _1,
 
    %% R920
@@ -848,19 +842,19 @@
    WaitStmt                      -- H hs=1 [_1 "WAIT" H hs=0["("_2")"]],
    WaitStmt.2:iter-sep           -- _1 ", ",
 
-   #R924 --,
+   %% R924
    BackspaceStmt                 -- H hs=1 [_1 "BACKSPACE" H hs=0 ["("_2")"]],
    BackspaceStmt.2:iter-sep      -- _1 ", ",
 
-   #R926 --,
+   %% R926
    RewindStmt                    -- H hs=1 [_1 "REWIND" H hs=0["("_2")"]],
    RewindStmt.2:iter-sep         -- _1 ", ",
 
-   #R928 --,
+   %% R928
    FlushStmt                     -- H hs=1 [_1 "FLUSH" H hs=0["("_2")"]],
    FlushStmt.2:iter-sep          -- _1 ", ",
 
-   #R930 --,
+   %% R930
    InquireStmt                   -- H hs=1 [_1 "INQUIRE" H hs=0["("_2")"]],
    InquireStmt.2:iter-sep        -- _1 ", ",
    InquireLengthStmt             -- H hs=1 [_1 "INQUIRE" H hs=0["(" "IOLENGTH=" _2 ")"] H hs=0[_3]],
@@ -961,7 +955,7 @@
    no-program-stmt               -- ,
    no-program-name               -- ,
 
-   #R1104 --,
+   %% R1104
    Module                        -- V vs=0 [_1 _2 _3],
 
    ModuleStmt                    -- H hs=1 [_1     "MODULE" _2],
@@ -976,7 +970,7 @@
    OnlyList                      -- _1,
    OnlyList.1:iter-sep           -- _1 ", ",
 
-   #R1110 --,
+   %% R1110
    ModuleNature                  -- ", " _1 " :: ",
    no-module-nature              --,
 
@@ -984,7 +978,7 @@
    Rename                        -- H hs=0[_1 "=>" _2],
    RenameOp                      -- H hs=0["OPERATOR" "(" _1 ")" "=>" "OPERATOR" "(" _2 ")"],
 
-   #R1116 --,
+   %% R1116
    Submodule                     -- V vs=0 [_1 _2 _3],
 
    SubmoduleStmt                 -- H hs=1 [_1 "SUBMODULE" H hs=0["("_2")"] _3],
@@ -993,7 +987,7 @@
 
    ParentIdentifier              -- _1 _2,
 
-   #R1120 --,
+   %% R1120
    BlockData                     -- V vs=0 is=2 [_1 _2] _3,
 
    BlockDataStmt                 -- H hs=1 [_1 "BLOCK DATA" _2],
@@ -1008,12 +1002,9 @@
    InterfaceBody              -- _1 _2 _3,
    no-generic-spec            --,
 
-   #R1205 --,
+   %% R1205
    ppScope                       -- _1 _2,
    ppScope                       -- _1 _2 _3,
-
-   OfpPrefix                           -- _1,
-   OfpPrefix.1:iter-star               -- _1,
 
    ELEMENTAL                           -- "ELEMENTAL",
    IMPURE                              -- "IMPURE",
@@ -1021,30 +1012,26 @@
    PURE                                -- "PURE",
    RECURSIVE                           -- "RECURSIVE",
 
-   OfpResultName                       -- "RESULT" _1,
-   OfpSuffix                           -- _1,
-   OfpSuffix.1:iter-star               -- _1,
-
-   #R1206 --,
+   %% R1206
    ProcedureStmt                       -- H hs=1[_1 "PROCEDURE ::" H hs=0[_2]],
    ProcedureStmt.2:iter-sep            -- _1 ", ",
    ModuleProcedureStmt                 -- H hs=1[_1 "MODULE PROCEDURE ::" H hs=0[_2]],
    ModuleProcedureStmt.2:iter-sep      -- _1 ", ",
 
-   #R1207 --,
+   %% R1207
    OfpGenericSpec                      -- _1,
    ASSIGNMENT                          -- "ASSIGNMENT(=)",
    OPERATOR                            -- H hs=0[ "OPERATOR" "(" _1 ")" ],
 
-   #R1209 --,
+   %% R1209
    ImportStmt                          -- H hs=1[_1 "IMPORT" H hs=0[_2]],
    ImportStmt.2:iter-sep               -- _1 ", ",
 
-   #R1210 --,
+   %% R1210
    ExternalStmt                        -- H hs=1[_1 "EXTERNAL ::" H hs=0[_2]],
    ExternalStmt.2:iter-sep             -- _1 ", ",
 
-   #R1211 --,
+   %% R1211
    ProcedureDeclarationStmt            --H hs=1[_1 "PROCEDURE" _2 H hs=0["("_3")"] H hs=0[_4]],
    ProcedureDeclarationStmt.4:iter-sep -- _1 ", ",
    no-proc-interface                   -- ,
@@ -1062,15 +1049,15 @@
    Result                              -- " RESULT(" _1 ")",
    no-result                           -- ,
 
-   #R1218 --,
+   %% R1218
    IntrinsicStmt                       -- H hs=1[_1 "INTRINSIC ::" H hs=0[_2]],
    IntrinsicStmt.2:iter-sep            -- _1 ", ",
 
-   #R1219 --,
+   %% R1219
    FunctionReference                   -- H hs=0[_1 "("_2")"],
    FunctionReference.2:iter-sep        -- _1 ",",
 
-   #R1220 --,
+   %% R1220
    CallStmt                            -- H hs=1[_1 "CALL" H hs=0[_2 "("_3")"]],
    CallStmt.3:iter-sep                 -- _1 ",",
 
@@ -1100,7 +1087,7 @@
    no-prefix                           -- ,
    no-subroutine-name                  -- ,
 
-   #R1237 --,
+   %% R1237
    MpSubprogram                        -- _1 _2 _3,
    MpSubprogramStmt                    -- H hs=1 [_1 "MODULE PROCEDURE" _2],
    EndMpSubprogramStmt                 -- H hs=1 [_1 "END PROCEDURE" _2],
