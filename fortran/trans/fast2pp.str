@@ -120,11 +120,12 @@ signature
 
     ppProcDecl        : name                                        -> ppProcDecl           // R1214
 
-//    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
+    ppSelectTypeStmt  : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
     opt-list          : list            -> opt-list
-    no-comma-opt-list  : list           -> no-comma-opt-list
+    no-comma-opt-list : list            -> no-comma-opt-list
     append-colon      : name            -> append-colon
+    append-ptr-assign : name            -> append-ptr-assign
 
 strategies
 
@@ -142,6 +143,14 @@ strategies
   pp-no-comma-opt-list =
       ? []             ;  ! no-list()
    <+ ? list           ;  ! no-comma-opt-list(<id>)
+
+  pp-append-colon =
+      ? no-name()      ;  ! <id>
+   <+ ? name           ;  ! append-colon(<id>)
+
+  pp-append-ptr-assign =
+      ? no-name()      ;  ! <id>
+   <+ ? name           ;  ! append-ptr-assign(<id>)
 
 // Remove the UNIT appl an io-control-spec if is the first spec in the list.
 //
@@ -314,8 +323,8 @@ ast-to-pp =
 ast-to-pp:  EndSelectStmt(label,no-name())        ->   ppEndSelectStmt(label)
 
 //R847
-//  ast-to-pp:
-//    SelectTypeStmt(label,name,name,selector,eos) -> ppSelectTypeStmt(label,<append-colon>name,name,selector,eos)
+ast-to-pp:  SelectTypeStmt(label,conname,name,sel)
+     ->   ppSelectTypeStmt(label,<pp-append-colon>conname,<pp-append-ptr-assign>name,sel)
 
 //R860
 ast-to-pp:  SyncImagesStmt(label,set,list)        ->   ppSyncImagesStmt(label,set,<pp-opt-list>list)
