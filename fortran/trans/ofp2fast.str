@@ -743,9 +743,10 @@ ofp-to-ast =  ?SelectTypeStmt(label,name1,name2,select,eos("\n")) ;  !SelectType
 //R848
 ofp-to-ast =  ?TypeGuardStmt(label,typespec,name,eos("\n"))   ;  !TypeGuardStmt(label,typespec,name)
           <+  ?TypeGuardStmt(label,typespec,name,eos(str))    ;  !TypeGuardStmt(label,typespec,name) {Comment(str)}
-
-ofp-to-ast =  ?ClassGuardStmt(label,typespec,name,eos("\n"))  ;  !ClassGuardStmt(label,typespec,name)
+          <+  ?ClassGuardStmt(label,typespec,name,eos("\n"))  ;  !ClassGuardStmt(label,typespec,name)
           <+  ?ClassGuardStmt(label,typespec,name,eos(str))   ;  !ClassGuardStmt(label,typespec,name) {Comment(str)}
+          <+  ?DefaultGuardStmt(label,name,eos("\n"))         ;  !DefaultGuardStmt(label,name)
+          <+  ?DefaultGuardStmt(label,name,eos(str))          ;  !DefaultGuardStmt(label,name) {Comment(str)}
 
 //R849
 ofp-to-ast =  ?EndSelectTypeStmt(label,name,eos("\n"))        ;  !EndSelectTypeStmt(label,name)
