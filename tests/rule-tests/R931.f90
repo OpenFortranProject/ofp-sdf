@@ -1,4 +1,4 @@
-!! R930 inquire-spec
+!! R931 inquire-spec
 !    is [ UNIT = ] file-unit-number
 !    or FILE = file-name-expr
 !    or ACCESS = scalar-default-char-variable
