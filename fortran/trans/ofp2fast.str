@@ -792,6 +792,10 @@ ofp-to-ast =  ?WaitStmt(label,list,eos("\n"))        ;  !WaitStmt(label,list)
 ofp-to-ast =  ?BackspaceStmt(label,list,eos("\n"))   ;  !BackspaceStmt(label,list)
           <+  ?BackspaceStmt(label,list,eos(str) )   ;  !BackspaceStmt(label,list) {Comment(str)}
 
+//R924
+ofp-to-ast =  ?EndfileStmt(label,list,eos("\n"))     ;  !EndfileStmt(label,list)
+          <+  ?EndfileStmt(label,list,eos(str) )     ;  !EndfileStmt(label,list) {Comment(str)}
+
 //R926
 ofp-to-ast =  ?RewindStmt(label,list,eos("\n"))      ;  !RewindStmt(label,list)
           <+  ?RewindStmt(label,list,eos(str) )      ;  !RewindStmt(label,list) {Comment(str)}
