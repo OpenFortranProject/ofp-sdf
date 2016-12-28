@@ -1,4 +1,4 @@
-!! R921 wait-stmt
+!! R922 wait-stmt
 !    is  WAIT ( wait-spec-list )
 !
 ! Not tested here: wait-spec-list
