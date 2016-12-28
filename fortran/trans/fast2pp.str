@@ -70,6 +70,7 @@ signature
 
     ppTypeParamSpec          : value                   -> ppTypeParamSpec                  // R454
     ppEnumerator             : name                    -> ppEnumerator                     // R460
+    ppAcSpec                 : TypeSpec * List(AcValue)-> ppAcSpec                         // R469
 
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
@@ -119,6 +120,7 @@ signature
     opt-list          : list            -> opt-list
     no-comma-opt-list : list            -> no-comma-opt-list
     append-colon      : name            -> append-colon
+    append-colon-colon: type            -> append-colon-colon
     append-ptr-assign : name            -> append-ptr-assign
 
 strategies
@@ -141,6 +143,10 @@ strategies
   pp-append-colon =
       ? no-name()      ;  ! <id>
    <+ ? name           ;  ! append-colon(<id>)
+
+  pp-append-colon-colon =
+      ? no-type-spec() ;  ! <id>
+   <+ ? type           ;  ! append-colon-colon(<id>)
 
   pp-append-ptr-assign =
       ? no-name()      ;  ! <id>
@@ -200,6 +206,9 @@ ast-to-pp:  TypeParamSpec(no-keyword(),value)           ->  ppTypeParamSpec(valu
 
 //R460
 ast-to-pp:  Enumerator(name,no-expr())                  ->  ppEnumerator(name)
+
+//R469
+ast-to-pp:  AcSpec(type,valuelist)                      ->  ppAcSpec(<pp-append-colon-colon>type,valuelist)
 
 //R501
 ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)

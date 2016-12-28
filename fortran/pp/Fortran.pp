@@ -7,6 +7,7 @@
    no-name                       -- ,
 
    append-colon                  -- _1 ": ",
+   append-colon-colon            -- _1 ":: ",
    append-ptr-assign             -- _1 " => ",
 
    no-list                       -- ,
@@ -250,8 +251,8 @@
    ArrayConstructor              -- H hs=0["[" _1 "]"],
 
    %% R469
-   AcSpec                        -- _1 _2,
-   AcSpec.2:iter-sep             -- _1 ",",
+   ppAcSpec                      -- _1 _2,
+   ppAcSpec.2:iter-sep           -- _1 ",",
 
    %% R473
    AcImpliedDo                   -- "("_1 ", " _2")",
