@@ -101,11 +101,10 @@ signature
     ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
     ppIfConstructName : name                                        -> ppIfConstructName
 
-    ppSelectCaseStmt  : OptLabel * CaseExpr                         -> ppSelectCaseStmt    // R838
-    ppCaseStmt        : OptLabel * CaseSelector                     -> ppCaseStmt          // R840
+    ppSelectCaseStmt  : OptLabel * OptName * CaseExpr               -> ppSelectCaseStmt    // R838
     ppDefaultCaseStmt : OptLabel * name                             -> ppDefaultCaseStmt
-    ppDefaultCaseStmt : OptLabel                                    -> ppDefaultCaseStmt
-    ppEndSelectStmt   : OptLabel                                    -> ppEndSelectStmt     // R841
+
+    ppSelectTypeStmt  : OptLabel * OptName * OptName * Selector     -> ppSelectTypeStmt    // R847
 
     ppSyncImagesStmt  : OptLabel * ImageSet * SyncList              -> ppSyncImagesStmt    // R860
 
@@ -119,8 +118,6 @@ signature
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
 
     ppProcDecl        : name                                        -> ppProcDecl           // R1214
-
-    ppSelectTypeStmt  : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
 
     opt-list          : list            -> opt-list
     no-comma-opt-list : list            -> no-comma-opt-list
@@ -311,16 +308,10 @@ ast-to-pp:  ElseStmt(label,no-name())             ->   ppElseStmt(label)
 ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
 
 //R838
-ast-to-pp:  SelectCaseStmt(label,no-name(),expr)  ->   ppSelectCaseStmt(label,expr)
+ast-to-pp:  SelectCaseStmt(label,name,expr)       ->   ppSelectCaseStmt(label,<pp-append-colon>name,expr)
 
 //R840
-ast-to-pp =
-      ?CaseStmt(label,DEFAULT(),no-name())         ;  !ppDefaultCaseStmt(label)
-  <+  ?CaseStmt(label,DEFAULT(),name)              ;  !ppDefaultCaseStmt(label,name)
-  <+  ?CaseStmt(label,selector,no-name())          ;  !ppCaseStmt(label,selector)
-
-//R841
-ast-to-pp:  EndSelectStmt(label,no-name())        ->   ppEndSelectStmt(label)
+ast-to-pp:  CaseStmt(label,DEFAULT(),name)        ->   ppDefaultCaseStmt(label,name)
 
 //R847
 ast-to-pp:  SelectTypeStmt(label,conname,name,sel)
