@@ -1,4 +1,4 @@
-!! R926 position-spec
+!! R927 position-spec
 !    is  [ UNIT = ] file-unit-number
 !    or  IOMSG = iomsg-variable
 !    or  IOSTAT = scalar-int-variable
