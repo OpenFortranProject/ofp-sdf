@@ -703,20 +703,15 @@
    CaseStmtBlock                 -- V vs=0 is=2 [_1 _2],
 
    %% R839
-   SelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 ": " "SELECT CASE" "("_3")"]],
- ppSelectCaseStmt                -- H hs=1[_1 H hs=0 ["SELECT CASE" "("_2")"]],
+ ppSelectCaseStmt                -- H hs=1[_1 H hs=0 [_2 "SELECT CASE" "("_3")"]],
 
    %% R840
-   CaseStmt                      -- H hs=1[_1 "CASE" H hs=0["("_2")"] H hs=0[_3]],
- ppCaseStmt                      -- H hs=1[_1 "CASE" H hs=0["("_2")"]],
- ppDefaultCaseStmt               -- H hs=1[_1 "CASE" "DEFAULT"],
- ppDefaultCaseStmt               -- H hs=1[_1 "CASE" "DEFAULT" H hs=0[_2]],
+   CaseStmt                      -- H hs=1[_1 "CASE" H hs=0["("_2")"] _3],
+ ppDefaultCaseStmt               -- H hs=1[_1 "CASE" "DEFAULT" _2],
    CaseStmt.2:iter-sep           -- _1 ", ",
- ppCaseStmt.2:iter-sep           -- _1 ", ",
 
    %% R841
-   EndSelectStmt                 -- H hs=1[_1 "END SELECT" H hs=0[_2]],
- ppEndSelectStmt                 -- H hs=1[_1 "END SELECT"],
+   EndSelectStmt                 -- H hs=1[_1 "END SELECT" _2],
 
    %% R843
    DEFAULT                       -- "DEFAULT",
