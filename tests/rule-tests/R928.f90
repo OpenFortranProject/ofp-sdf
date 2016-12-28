@@ -6,7 +6,8 @@
 
 character :: cvar
 
-flush 5
+13 flush 5
+flush(5)
 flush (5, iostat=n, iomsg=cvar, err=10)
 flush (unit=5, iostat=n, iomsg=cvar, err=10)
 
