@@ -7,6 +7,7 @@
    no-name                       -- ,
 
    append-colon                  -- _1 ": ",
+   append-ptr-assign             -- _1 " => ",
 
    no-list                       -- ,
    opt-list                      -- ", " _1,
@@ -730,15 +731,15 @@
 
    %% R846
    SelectTypeConstruct           -- V is=2 [_1 _2] _3,
-   TypeGuardStmtBlock            -- _1 _2,
+   TypeGuardStmtBlock            -- V is=2 [_1 _2],
 
    %% R847
-   SelectTypeStmt                -- H hs=1[H hs=0[_2 _1 "SELECT TYPE"] H hs=0[_3 "("_4")"]],
+   ppSelectTypeStmt              -- H hs=1[_1 H hs=0[_2 "SELECT TYPE"] H hs=0["("_3 _4")"]],
 
    #R848 --,
-   TypeGuardStmt                 -- H hs=1[_1 "TYPE IS"  H hs=0["(" _2 ")" _3]],
-   ClassGuardStmt                -- H hs=1[_1 "CLASS IS" H hs=0["(" _2 ")" _3]],
-   DefaultGuardStmt              -- H hs=1[_1 "CLASS DEFAULT" H hs=0[_2]],
+   TypeGuardStmt                 -- H hs=1[_1 "TYPE IS"  H hs=0["(" _2 ")"] _3],
+   ClassGuardStmt                -- H hs=1[_1 "CLASS IS" H hs=0["(" _2 ")"] _3],
+   DefaultGuardStmt              -- H hs=1[_1 "CLASS DEFAULT" _2],
 
    %% R849
    EndSelectTypeStmt             -- H hs=1 [_1 "END SELECT" _2],
