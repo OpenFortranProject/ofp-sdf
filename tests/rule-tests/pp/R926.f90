@@ -1,3 +1,4 @@
+INTEGER :: unitnumber
 11 REWIND (UNIT=unitnumber)
 REWIND (UNIT=unitnumber)
 12 REWIND (UNIT=10)
