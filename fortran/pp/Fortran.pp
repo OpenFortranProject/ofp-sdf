@@ -816,11 +816,13 @@
    %% R912
    ppPrintStmt                   -- H hs=1 [_1 "PRINT" H hs=0[_2 _3]],
 
+   %% R913
    FMT-or-NML                    --            _1,
-   FMT                           -- "FMT="     _1,
-   SIZE                          -- "SIZE="    _1,
    ADVANCE                       -- "ADVANCE=" _1,
+   FMT                           -- "FMT="     _1,
+   ID                            -- "ID="      _1,
    REC                           -- "REC="     _1,
+   SIZE                          -- "SIZE="    _1,
 
    Format_STAR                   -- "*",
    Format                        -- _1,
@@ -846,6 +848,10 @@
    %% R924
    BackspaceStmt                 -- H hs=1 [_1 "BACKSPACE" H hs=0 ["("_2")"]],
    BackspaceStmt.2:iter-sep      -- _1 ", ",
+
+   %% R925
+   EndfileStmt                   -- H hs=1 [_1 "END FILE" H hs=0 ["("_2")"]],
+   EndfileStmt.2:iter-sep        -- _1 ", ",
 
    %% R926
    RewindStmt                    -- H hs=1 [_1 "REWIND" H hs=0["("_2")"]],
