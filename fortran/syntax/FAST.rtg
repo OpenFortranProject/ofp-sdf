@@ -532,20 +532,6 @@ regular tree grammar
 /* R569 */
     CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
 
-    Expr                              -> OfpAssumedRank
-    Expr                              -> OfpImpliedShape
-    Expr                              -> OfpExplicitShape
-    Expr                              -> OfpExplicitCoshape
-    Expr                              -> OfpAssumedSize
-    Expr                              -> OfpAssumedOrDeferredShape
-
-    OfpIntent                         -> INOUT
-    OfpIntent                         -> OUT
-    OfpIntent                         -> IN
-    INOUT                             -> INOUT()
-    OUT                               -> OUT()
-    IN                                -> IN()
-
     OptInitialization                 -> no-init()
     OptInitialization                 -> Initialization
     Initialization                    -> Expr
