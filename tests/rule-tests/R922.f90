@@ -3,7 +3,11 @@
 !
 ! Not tested here: wait-spec-list
 
-wait (5)
-wait(unit=5, err=10)
+character cvar
 
-end
+10 wait (5, end=99)
+wait (iomsg=cvar, err=314, eor=99, end=10, unit=6)
+
+314 continue
+
+99 end
