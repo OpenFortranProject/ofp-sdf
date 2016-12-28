@@ -1,4 +1,4 @@
-!! R922 wait-spec
+!! R923 wait-spec
 !    is [ UNIT = ] file-unit-number
 !    or END = label
 !    or EOR = label
