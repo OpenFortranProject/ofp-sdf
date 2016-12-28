@@ -377,6 +377,7 @@ signature
     END                             : LblRef -> WaitSpec
     UNIT                            : FileUnitNumber -> WaitSpec
     BackspaceStmt                   : OptLabel * List(PositionSpec) -> BackspaceStmt
+    EndfileStmt                     : OptLabel * List(PositionSpec) -> EndfileStmt
     RewindStmt                      : OptLabel * List(PositionSpec) -> RewindStmt
     UNIT                            : FileUnitNumber -> PositionSpec
     IOSTAT                          : IntVariable -> PositionSpec
@@ -575,6 +576,7 @@ signature
                                     : PrintStmt -> Stmt
                                     : WaitStmt -> Stmt
                                     : BackspaceStmt -> Stmt
+                                    : EndfileStmt -> Stmt
                                     : RewindStmt -> Stmt
                                     : FlushStmt -> Stmt
                                     : InquireStmt -> Stmt

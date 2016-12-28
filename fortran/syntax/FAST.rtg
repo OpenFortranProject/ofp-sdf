@@ -1085,6 +1085,11 @@ regular tree grammar
     Stmt                              -> BackspaceStmt
     BackspaceStmt                     -> BackspaceStmt(OptLabel,ListPlusOfPositionSpec)
 
+/* R925 */
+    Stmt                              -> EndfileStmt
+    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec)
+
+/* R926 */
     Stmt                              -> RewindStmt
     RewindStmt                        -> RewindStmt(OptLabel,ListPlusOfPositionSpec)
 
@@ -1396,9 +1401,6 @@ regular tree grammar
     DataEditDesc                      -> O(OptR,IntLiteralConstant,OptM)
     DataEditDesc                      -> B(OptR,IntLiteralConstant,OptM)
     DataEditDesc                      -> I(OptR,IntLiteralConstant,OptM)
-
-    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec,EOS)
-    EndfileStmt                       -> endfile-unit-stmt(OptLabel,FileUnitNumber,EOS)
 
     NoStride                          -> no-stride()
     IoImpliedDoControl                -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,NoStride)
