@@ -1,4 +1,4 @@
-!! R923 backspace-stmt
+!! R924 backspace-stmt
 !    is  BACKSPACE file-unit-number
 !    or  BACKSPACE ( position-spec-list )
 !
