@@ -273,7 +273,7 @@ ofp-to-ast:  CHARACTER(CharSelector(len,kind))       -> CHARACTER(len,kind)
 ofp-to-ast:  KindSelector(k)                    -> Kind(k)
 ofp-to-ast:  KindSelector_STAR(k)               -> Kind(IntVal(k))
 
-//R408
+//R407
 ofp-to-ast=
       ? IntLiteralConstant(val,no-kind())       ; ! IntVal(val)
    <+ ? IntLiteralConstant(val,kind)            ; ! IntVal(val,Kind(kind))
