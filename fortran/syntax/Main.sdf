@@ -3138,7 +3138,7 @@ context-free syntax
   'E' IntLiteralConstant                -> OptE                 {cons("opt-e")}
   % empty %                             -> OptE                 {cons("no-e")}
 
-  % empty %                             ->  NoIOType            {cons("no-iotype")}
+  % empty %                             -> NoIOType             {cons("no-iotype")}
 
   '(' {VEditDesc ','}+ ')'              -> OptVList             {cons("VEditDescList")}
   % empty %                             -> OptVList             {cons("no-list")}
