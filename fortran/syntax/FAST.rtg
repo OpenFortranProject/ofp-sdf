@@ -2,35 +2,55 @@ regular tree grammar
   start Program
   productions
 
-    OptLabel                          -> Label
-    OptLabel                          -> no-label()
-    Label                             -> <string>
+/*********
+ * ISO/IEC 1539:1991 section R2xx Fortran terms and concepts
+ ********/
 
+/* R201 */
+    Program                           -> Program(ListPlusOfProgramUnit)
+
+/* R202 */
+    ProgramUnit                       -> MainProgram
+
+    Scope                             -> Scope(ListStarOfDecl,ListStarOfStmt,ListStarOfDecl)
+
+/* R215 */
+    Keyword                           -> <string>
+    OptKeyword                        -> Keyword
+    OptKeyword                        -> no-keyword()
+
+/* R306 */
+    Name                              -> <string>
     OptName                           -> Name
     OptName                           -> no-name()
-    Name                              -> <string>
 
-    ListStarOfOfpSuffixSpec0          -> ListPlusOfOfpSuffixSpec0
-    ListStarOfOfpSuffixSpec0          -> <nil>()
-    ListStarOfOfpSuffixSpec0          -> <conc>(ListStarOfOfpSuffixSpec0,ListStarOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListStarOfOfpSuffixSpec0,ListPlusOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListPlusOfOfpSuffixSpec0,ListStarOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListPlusOfOfpSuffixSpec0,ListPlusOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <cons>(OfpSuffixSpec,ListStarOfOfpSuffixSpec0)
-    ListStarOfOfpPrefixSpec0          -> ListPlusOfOfpPrefixSpec0
-    ListStarOfOfpPrefixSpec0          -> <nil>()
-    ListStarOfOfpPrefixSpec0          -> <conc>(ListStarOfOfpPrefixSpec0,ListStarOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListStarOfOfpPrefixSpec0,ListPlusOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListStarOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListPlusOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <cons>(OfpPrefixSpec,ListStarOfOfpPrefixSpec0)
+/* R312 */
+    Label                             -> <string>
+    OptLabel                          -> Label
+    OptLabel                          -> no-label()
 
-    OptMODULE0                        -> <some>(MODULE)
-    OptMODULE0                        -> <none>()
-    OptOfpGenericSpec0                -> <some>(OfpGenericSpec)
-    OptOfpGenericSpec0                -> <none>()
-    OptABSTRACT0                      -> <some>(ABSTRACT)
-    OptABSTRACT0                      -> <none>()
+/* R405 */
+    Kind                              -> Kind(Expr)
+    OptKind                           -> Kind
+    OptKind                           -> no-kind()
+
+/* R407 */
+    IntExpr                           -> IntVal
+    IntVal                            -> IntVal(<string>)
+    IntVal                            -> IntVal(<string>,Kind)
+
+/* R413 */
+    RealExpr                          -> RealVal
+    RealVal                           -> RealVal(<string>)
+    RealVal                           -> RealVal(<string>,Kind)
+
+/* R424 */
+    LogicalExpr                       -> LogicalVal
+    LogicalVal                        -> TRUE()
+    LogicalVal                        -> TRUE(Kind)
+    LogicalVal                        -> FALSE()
+    LogicalVal                        -> FALSE(Kind)
+
     ListStarOfScope0                  -> ListPlusOfScope0
     ListStarOfScope0                  -> <nil>()
     ListStarOfScope0                  -> <conc>(ListStarOfScope0,ListStarOfScope0)
@@ -45,10 +65,6 @@ regular tree grammar
     ListPlusOfDimSpec0                -> <conc>(ListPlusOfDimSpec0,ListStarOfDimSpec0)
     ListPlusOfDimSpec0                -> <conc>(ListPlusOfDimSpec0,ListPlusOfDimSpec0)
     ListPlusOfDimSpec0                -> <cons>(DimSpec,ListStarOfDimSpec0)
-    OptOfpCoshape0                    -> <some>(OfpCoshape)
-    OptOfpCoshape0                    -> <none>()
-    OptOfpShape0                      -> <some>(OfpShape)
-    OptOfpShape0                      -> <none>()
 
     ListStarOfStrChar0                -> <string>
     ListPlusOfStrChar0                -> <string>
@@ -316,11 +332,6 @@ regular tree grammar
     OptSubroutineName                 -> no-subroutine-name()
     SubroutineName                    -> Name
 
-    ArgList                           -> ArgList(ListStarOfOfpDummyArg0)
-    STAR                              -> STAR()
-    OfpDummyArg                       -> STAR(STAR)
-    OfpDummyArg                       -> OfpDummyArg(String)
-
     ArrayConstructor                  -> ArrayConstructor(AcSpec)
     AcSpec                            -> AcSpec(OptTypeSpec,ListStarOfAcValue)
 
@@ -381,24 +392,12 @@ regular tree grammar
     ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct)
     MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct)
 
-
-    Expr                              -> Expr(OfpLiteral)
-    OfpOp                             -> GE
-    OfpOp                             -> GT
-    OfpOp                             -> LE
-    OfpOp                             -> LT
-    OfpOp                             -> NE
-    OfpOp                             -> EQ
     GE                                -> GE()
     GT                                -> GT()
     LE                                -> LE()
     LT                                -> LT()
     NE                                -> NE()
     EQ                                -> EQ()
-    OfpDefinedOp                      -> OfpDefinedOp(String)
-    OfpCoshape                        -> OfpCoshape(ListPlusOfDimSpec0)
-    OfpShape                          -> OfpShape(ListPlusOfDimSpec0)
-    OfpAllocOpt                       -> Expr
 
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
@@ -774,32 +773,6 @@ regular tree grammar
 
     NoTypeSpec                        -> no-type-spec()
 
-    OptKind                           -> no-kind()
-    OptKind                           -> Kind
-    Kind                              -> Kind(Expr)
-
-    IntExpr                           -> IntVal
-    IntVal                            -> IntVal(<string>)
-    IntVal                            -> IntVal(<string>,Kind)
-
-    RealExpr                          -> RealVal
-    RealVal                           -> RealVal(<string>)
-    RealVal                           -> RealVal(<string>,Kind)
-
-    LogicalExpr                       -> LogicalVal
-    LogicalVal                        -> LogicalVal(<string>)
-    LogicalVal                        -> LogicalVal(<string>,Kind)
-
-    OfpOp                             -> OfpOp(String)
-    OfpLiteral                        -> OfpLiteral(String,Type)
-
-    ProgramUnit                       -> MainProgram
-    Program                           -> Program(ListPlusOfProgramUnit)
-    Scope                             -> Scope(ListStarOfDecl,ListStarOfStmt,ListStarOfDecl)
-
-    OfpFile                           -> OfpFile(String)
-    OfpLiteral                        -> OfpLiteral(String)
-
     STAR                              -> <string>
     RECURSIVE                         -> <string>
     PURE                              -> <string>
@@ -1165,10 +1138,6 @@ regular tree grammar
     Rename                            -> Rename(Name,Name)
     Rename                            -> RenameOp(LocalDefinedOperator,UseDefinedOperator)
 
-    Only                              -> Only(OfpGenericSpec)
-    Only                              -> Only(Name)
-    Only                              -> Only(Rename)
-
     Decl                              -> InterfaceBlock
     InterfaceBlock                    -> InterfaceBlock(InterfaceStmt,
                                                           ListStarOfInterfaceSpecification,
@@ -1204,9 +1173,6 @@ regular tree grammar
     GenericSpec                       -> OPERATOR(DefinedOperator)
     GenericSpec                       -> ASSIGNMENT()
     GenericSpec                       -> DefinedIoGenericSpec
-
-    OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
-    OfpGenericSpec                    -> OfpOp(OfpOp)
 
     DefinedIoGenericSpec              -> READ_FORMATTED()
     DefinedIoGenericSpec              -> READ_UNFORMATTED()
@@ -1259,10 +1225,6 @@ regular tree grammar
     Arg                               -> Expr
     Arg                               -> Arg(Keyword,Expr)
     Arg                               -> Arg(OptKeyword,AltReturn)
-
-    OptKeyword                        -> no-keyword()
-    OptKeyword                        -> Keyword
-    Keyword                           -> <string>
 
     AltReturn                         -> AltReturn(Label)
 
@@ -1609,7 +1571,7 @@ regular tree grammar
     DataStmtConstant                  -> ConstantSubobject
     DataStmtConstant                  -> BozLiteralConstant
     DataStmtConstant                  -> CharLiteralConstant
-    DataStmtConstant                  -> LogicalLiteralConstant
+/* DELETE-ME?    DataStmtConstant                  -> LogicalLiteralConstant */
     DataStmtConstant                  -> ComplexLiteralConstant
     NoDataStmtRepeat                  -> no-repeat()
     DataStmtRepeat                    -> IntConstantSubobject
@@ -1715,10 +1677,7 @@ regular tree grammar
 
     OptKindParam                      -> no-kind-param()
     OptKindParam                      -> opt-kind-param(KindParam)
-    LogicalLiteralConstant            -> TRUE()
-    LogicalLiteralConstant            -> TRUE(KindParam)
-    LogicalLiteralConstant            -> FALSE()
-    LogicalLiteralConstant            -> FALSE(KindParam)
+
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
 
@@ -1757,7 +1716,9 @@ regular tree grammar
     NamedConstant                     -> Name
     LiteralConstant                   -> BozLiteralConstant
     LiteralConstant                   -> CharLiteralConstant
-    LiteralConstant                   -> LogicalLiteralConstant
+
+/* DELETE-ME?   LiteralConstant                   -> LogicalLiteralConstant */
+
     LiteralConstant                   -> ComplexLiteralConstant
     LiteralConstant                   -> IntLiteralConstant
     ConstantExpr                      -> LiteralConstant
@@ -2218,7 +2179,7 @@ regular tree grammar
     ListPlusOfRename                 -> <conc>(ListStarOfRename,ListPlusOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListStarOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListPlusOfRename)
-    ListPlusOfRename                 -> <cons>(OfpRename,ListStarOfRename)
+    ListPlusOfRename                 -> <cons>(Rename,ListStarOfRename)
 
     ListStarOfArg                    -> ListPlusOfArg
     ListStarOfArg                    -> <nil>()
