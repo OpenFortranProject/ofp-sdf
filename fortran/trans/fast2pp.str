@@ -173,8 +173,11 @@ ast-to-pp:  Scope(decls,exes,funcs)          -> ppScope(decls,exes,FuncPart(func
 //R404
 ast-to-pp:  CHARACTER(no-char-length(),kind) -> ppCharNoLen(kind)
 
-//R408
+//R407
 ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
+
+//R413
+ast-to-pp:  RealVal(val,Kind(kval))          -> RealVal(val,ppLiteralKind(kval))
 
 //R426
 ast-to-pp =
