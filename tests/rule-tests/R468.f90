@@ -1,4 +1,4 @@
-!! R467 array-constructor
+!! R468 array-constructor
 !    is (/ ac-spec /)
 !    or lbracket ac-spec rbracket
 !
