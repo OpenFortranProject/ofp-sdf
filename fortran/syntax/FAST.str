@@ -2,11 +2,30 @@ module FAST
 
 signature
   constructors
-                                    : Label -> OptLabel
-    no-label                        : OptLabel
-                                    : String -> Label
+    Program                         : List(ProgramUnit) -> Program
+    Scope                           : List(Decl) * List(Stmt) * List(Decl) -> Scope
+                                    : String -> Keyword
+                                    : Keyword -> OptKeyword
+    no-keyword                      : OptKeyword
                                     : Name -> OptName
     no-name                         : OptName
+                                    : String -> Label
+                                    : Label -> OptLabel
+    no-label                        : OptLabel
+    Kind                            : Expr -> Kind
+                                    : Kind -> OptKind
+    no-kind                         : OptKind
+                                    : IntVal -> IntExpr
+    IntVal                          : String -> IntVal
+    IntVal                          : String * Kind -> IntVal
+                                    : RealVal -> RealExpr
+    RealVal                         : String -> RealVal
+    RealVal                         : String * Kind -> RealVal
+                                    : LogicalVal -> LogicalExpr
+    TRUE                            : LogicalVal
+    TRUE                            : Kind -> LogicalVal
+    FALSE                           : LogicalVal
+    FALSE                           : Kind -> LogicalVal
     MpSubprogram                    : MpSubprogramStmt * Scope * EndMpSubprogramStmt -> MpSubprogram
     MpSubprogramStmt                : OptLabel * Name -> MpSubprogramStmt
     EndMpSubprogramStmt             : OptLabel * OptName -> EndMpSubprogramStmt
@@ -52,6 +71,11 @@ signature
     no-block-data-name              : OptBlockDataName
                                     : BlockDataName -> OptBlockDataName
                                     : Name -> BlockDataName
+                                    : MainProgram -> ProgramUnit
+                                    : Function -> ProgramUnit
+                                    : Module -> ProgramUnit
+                                    : Submodule -> ProgramUnit
+                                    : Subroutine -> ProgramUnit
     Subroutine                      : SubroutineStmt * Scope * EndSubroutineStmt -> Subroutine
     SubroutineStmt                  : OptLabel * Prefix * SubroutineName * List(Arg) * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt               : OptLabel * OptSubroutineName -> EndSubroutineStmt
@@ -73,13 +97,6 @@ signature
     MaskedElsewhereStmt             : OptLabel * Expr * OptName -> MaskedElsewhereStmt
     ElsewhereStmt                   : OptLabel * OptName -> ElsewhereStmt
     EndWhereStmt                    : OptLabel * OptName -> EndWhereStmt
-    GE                              : GE
-    GT                              : GT
-    LE                              : LE
-    LT                              : LT
-    NE                              : NE
-    EQ                              : EQ
-    OfpDefinedOp                    : String -> OfpDefinedOp
     VarRef                          : Name -> VarRef
     VarDef                          : Name -> VarDef
     TypeDeclarationStmt             : OptLabel * Type * List(AttrSpec) * List(EntityDecl) -> TypeDeclarationStmt
@@ -241,35 +258,6 @@ signature
     DeallocateStmt                  : OptLabel * List(AllocateObject) * List(DeallocOpt) -> DeallocateStmt
     STAT                            : StatVariable -> DeallocOpt
     ERRMSG                          : ErrmsgVariable -> DeallocOpt
-    no-kind                         : OptKind
-                                    : Kind -> OptKind
-    Kind                            : Expr -> Kind
-                                    : IntVal -> IntExpr
-    IntVal                          : String -> IntVal
-    IntVal                          : String * Kind -> IntVal
-                                    : RealVal -> RealExpr
-    RealVal                         : String -> RealVal
-    RealVal                         : String * Kind -> RealVal
-                                    : LogicalVal -> LogicalExpr
-    LogicalVal                      : String -> LogicalVal
-    LogicalVal                      : String * Kind -> LogicalVal
-                                    : GE -> OfpOp
-                                    : GT -> OfpOp
-                                    : LE -> OfpOp
-                                    : LT -> OfpOp
-                                    : NE -> OfpOp
-                                    : EQ -> OfpOp
-    OfpOp                           : String -> OfpOp
-                                    : Function -> ProgramUnit
-                                    : Module -> ProgramUnit
-                                    : Submodule -> ProgramUnit
-                                    : Subroutine -> ProgramUnit
-                                    : MainProgram -> ProgramUnit
-    Program                         : List(ProgramUnit) -> Program
-    Scope                           : List(Decl) * List(Stmt) * List(Decl) -> Scope
-    OfpLiteral                      : String * Type -> OfpLiteral
-    OfpLiteral                      : String -> OfpLiteral
-                                    : String -> String
     STAR                            : DummyArg
                                     : DummyArgName -> DummyArg
     no-result-name                  : NoResultName
@@ -401,17 +389,14 @@ signature
     EXIST                           : LogicalVariable -> InquireSpec
     ERR                             : LblRef -> InquireSpec
     UNIT                            : FileUnitNumber -> InquireSpec
-    UseStmt                         : OptLabel * OptModuleNature * Name * ListStarOfRename -> UseStmt
-    UseOnlyStmt                     : OptLabel * OptModuleNature * Name * List(Only) -> UseOnlyStmt
+    UseStmt                         : OptLabel * OptModuleNature * Name * List(Rename) -> UseStmt
+    UseOnlyStmt                     : OptLabel * OptModuleNature * Name * ListStarOfOnly -> UseOnlyStmt
                                     : ModuleNature -> OptModuleNature
     no-module-nature                : OptModuleNature
     INTRINSIC                       : ModuleNature
     NONINTRINSIC                    : ModuleNature
     Rename                          : Name * Name -> Rename
     RenameOp                        : LocalDefinedOperator * UseDefinedOperator -> Rename
-    Only                            : OfpGenericSpec -> Only
-    Only                            : Name -> Only
-    Only                            : Rename -> Only
     InterfaceBlock                  : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
                                     : ProcedureStmt -> InterfaceSpecification
     InterfaceStmt                   : OptLabel * OptGenericSpec -> InterfaceStmt
@@ -425,8 +410,6 @@ signature
     OPERATOR                        : DefinedOperator -> GenericSpec
     ASSIGNMENT                      : GenericSpec
                                     : DefinedIoGenericSpec -> GenericSpec
-    OfpDefinedOp                    : OfpDefinedOp -> OfpGenericSpec
-    OfpOp                           : OfpOp -> OfpGenericSpec
     READ_FORMATTED                  : DefinedIoGenericSpec
     READ_UNFORMATTED                : DefinedIoGenericSpec
     WRITE_FORMATTED                 : DefinedIoGenericSpec
@@ -490,9 +473,6 @@ signature
                                     : Expr -> Arg
     Arg                             : Keyword * Expr -> Arg
     Arg                             : OptKeyword * AltReturn -> Arg
-    no-keyword                      : OptKeyword
-                                    : Keyword -> OptKeyword
-                                    : String -> Keyword
     AltReturn                       : Label -> AltReturn
     EntryStmt                       : OptLabel * Name * List(DummyArg) * OptSuffix -> EntryStmt
     ReturnStmt                      : OptLabel * OptExpr -> ReturnStmt
@@ -679,7 +659,6 @@ signature
     Mult                            : Expr * Expr -> Expr
     Power                           : Expr * Expr -> Expr
     DefUnaryExpr                    : DefinedUnaryOp * Expr -> Expr
-    Expr                            : OfpLiteral -> Expr
                                     : FunctionReference -> Expr
                                     : IntExpr -> Expr
                                     : RealExpr -> Expr
@@ -766,7 +745,6 @@ signature
                                     : ConstantSubobject -> DataStmtConstant
                                     : BozLiteralConstant -> DataStmtConstant
                                     : CharLiteralConstant -> DataStmtConstant
-                                    : LogicalLiteralConstant -> DataStmtConstant
                                     : ComplexLiteralConstant -> DataStmtConstant
     no-repeat                       : NoDataStmtRepeat
                                     : IntConstantSubobject -> DataStmtRepeat
@@ -825,8 +803,6 @@ signature
     SequenceStmt                    : OptLabel -> SequenceStmt
     SequenceStmt                    : OptLabel * EOS -> SequenceStmt
                                     : Ident -> ParentTypeName
-    TRUE                            : LogicalLiteralConstant
-    FALSE                           : LogicalLiteralConstant
                                     : Scon -> CharLiteralConstant
                                     : NamedConstant -> ImagPart
                                     : NamedConstant -> RealPart
@@ -839,7 +815,6 @@ signature
                                     : Name -> NamedConstant
                                     : BozLiteralConstant -> LiteralConstant
                                     : CharLiteralConstant -> LiteralConstant
-                                    : LogicalLiteralConstant -> LiteralConstant
                                     : ComplexLiteralConstant -> LiteralConstant
                                     : LiteralConstant -> ConstantExpr
     no-name                         : NoName
