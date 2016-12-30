@@ -29,6 +29,25 @@ regular tree grammar
     OptLabel                          -> Label
     OptLabel                          -> no-label()
 
+/* R404 */
+    Type                              -> unknown-type()
+    Type                              -> IntrinsicType
+    IntrinsicType                     -> INTEGER()
+    IntrinsicType                     -> INTEGER(Kind)
+    IntrinsicType                     -> REAL()
+    IntrinsicType                     -> REAL(Kind)
+    IntrinsicType                     -> DOUBLEPRECISION()
+    IntrinsicType                     -> COMPLEX()
+    IntrinsicType                     -> COMPLEX(Kind)
+    IntrinsicType                     -> DOUBLECOMPLEX()
+    IntrinsicType                     -> LOGICAL()
+    IntrinsicType                     -> LOGICAL(Kind)
+
+    IntrinsicType                     -> CHARACTER(CharLength,Kind)
+    IntrinsicType                     -> CHARACTER(CharLength)
+    IntrinsicType                     -> CHARACTER()
+    IntrinsicType                     -> CHARACTER_LEN(CharLength)
+
 /* R405 */
     Kind                              -> Kind(Expr)
     OptKind                           -> Kind
@@ -50,6 +69,177 @@ regular tree grammar
     LogicalVal                        -> TRUE(Kind)
     LogicalVal                        -> FALSE()
     LogicalVal                        -> FALSE(Kind)
+
+/* R426 */
+    Stmt                              -> DerivedTypeStmt
+    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
+
+/* R429 */
+    Stmt                              -> EndTypeStmt
+    EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
+
+/* R430 */
+    Stmt                              -> SequenceStmt
+    SequenceStmt                      -> SequenceStmt(OptLabel)
+
+    TypeAttrSpec                      -> ABSTRACT()
+    TypeAttrSpec                      -> AccessSpec
+    TypeAttrSpec                      -> BIND()
+    TypeAttrSpec                      -> Extends(ParentTypeName)
+
+    Stmt                              -> TypeParamDefStmt
+    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl)
+
+    TypeParamDecl                     -> TypeParamDecl(Name,OptEqualsExpr)
+
+    OptEqualsExpr                     -> no-expr()
+    OptEqualsExpr                     -> IntExpr
+
+/* R435 */
+    Decl                              -> ComponentDefStmt
+    ComponentDefStmt                  -> DataComponentDefStmt
+
+/* R436 */
+    Stmt                              -> DataComponentDefStmt
+    DataComponentDefStmt              -> DataComponentDefStmt(OptLabel,DeclarationTypeSpec,ListStarOfComponentAttrSpec,ListPlusOfComponentDecl)
+
+/* R437 */
+    ComponentAttrSpec                 -> AccessSpec
+    ComponentAttrSpec                 -> ALLOCATABLE()
+    ComponentAttrSpec                 -> Codimension(CoarraySpec)
+    ComponentAttrSpec                 -> CONTIGUOUS()
+    ComponentAttrSpec                 -> Dimension(ArraySpec)
+    ComponentAttrSpec                 -> POINTER()
+
+/* TODO - SIMPLIFY - Initialization is Init(Expr) always I think (YES, FIXME)*/
+
+/* R438 */
+    Decl                              -> ComponentDecl
+    ComponentDecl                     -> ComponentDecl(Name,ListStarOfRange,ListStarOfRange,OptCharLength,OptComponentInitialization)
+
+/* R440 */
+    Stmt                              -> ProcComponentDefStmt
+    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec,ListPlusOfProcDecl)
+
+    ProcDecl                          -> ProcDecl(Name,ProcPointerInit)
+    ProcDecl                          -> ProcDecl(Name,NoProcPointerInit)
+
+    NoProcPointerInit                 -> no-init()
+    ProcPointerInit                   -> InitialProcTarget
+    ProcPointerInit                   -> NullInit
+
+    InitialProcTarget                 -> ProcedureName
+
+    ProcComponentAttrSpec             -> POINTER()
+    ProcComponentAttrSpec             -> PASS()
+    ProcComponentAttrSpec             -> NOPASS()
+    ProcComponentAttrSpec             -> AccessSpec
+
+    OptComponentInitialization        -> Expr
+    OptComponentInitialization        -> no-init()
+
+    InitialDataTarget                 -> Expr
+
+/* R444 */
+    Decl                              -> PrivateComponentsStmt
+    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel)
+
+/* R445 */
+    Decl                              -> TypeBoundProcPart
+    TypeBoundProcPart                 -> TypeBoundProcPart(OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding)
+
+    OptTypeBoundProcPart              -> TypeBoundProcPart
+    OptTypeBoundProcPart              -> no-type-bound-procedure-part()
+
+/* R446 */
+    BindingPrivateStmt                -> BindingPrivateStmt(OptLabel)
+
+    OptBindingPrivateStmt             -> BindingPrivateStmt
+    OptBindingPrivateStmt             -> no-binding-private-stmt()
+
+/* R447 */
+    TypeBoundProcBinding              -> FinalProcedureStmt
+    TypeBoundProcBinding              -> TypeBoundGenericStmt
+    TypeBoundProcBinding              -> TypeBoundProcedureStmt
+
+/* R448 */
+    Decl                              -> TypeBoundProcedureStmt
+    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt(OptLabel,OptBindingAttrList,ListPlusOfTypeBoundProcDecl)
+
+    TypeBoundProcedureStmt            -> TypeBoundProcedureInterfaceStmt(OptLabel,Name,ListPlusOfBindingAttr,ListPlusOfName)
+
+    OptBindingAttrList                -> no-list()
+    OptBindingAttrList                -> comma-list(ListPlusOfBindingAttr)
+
+/* R449 */
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,NoProcedureName)
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,ProcedureName)
+
+    BindingName                       -> Ident
+
+    ProcedureName                     -> Ident
+    NoProcedureName                   -> no-procedure-name()
+
+/* R450 */
+    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfName)
+
+    TypeParamAttrSpec                 -> LEN()
+    TypeParamAttrSpec                 -> KIND()
+
+/* R451 */
+    BindingAttr                       -> Pass(ArgName)
+    BindingAttr                       -> Pass(NoArgName)
+    BindingAttr                       -> NOPASS()
+    BindingAttr                       -> NON_OVERRIDABLE()
+    BindingAttr                       -> DEFERRED()
+    BindingAttr                       -> AccessSpec
+
+/* R452 */
+    Stmt                              -> FinalProcedureStmt
+    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
+
+/* R453 */
+    Type                              -> DerivedType
+    DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
+
+/* R454 */
+    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
+
+    Type                              -> ArrayType
+    ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
+
+    ArraySpec                         -> ArraySpec(ListStarOfRange)
+    CoarraySpec                       -> CoarraySpec(ListStarOfRange)
+
+    OptArraySpec                      -> ArraySpec(ArraySpec)
+    OptArraySpec                      -> no-list()
+
+    DimSpec                           -> Range
+    DimSpec                           -> STAR()
+    DimSpec                           -> COLON()
+    Range                             -> Range(Expr,Expr)
+
+    Type                              -> DerivedTypeDef
+    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ListStarOfComponentPart,OptTypeBoundProcPart,EndTypeStmt)
+
+/* R458 */
+    EnumDef                           -> EnumDef(EnumDefStmt,ListPlusEnumeratorDefStmt,EndEnumStmt)
+
+/* R459 */
+    Stmt                              -> EnumDefStmt
+    EnumDefStmt                       -> EnumDefStmt(OptLabel)
+
+/* R460 */
+    Stmt                              -> EnumeratorDefStmt
+    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator)
+
+/* R461 */
+    Enumerator                        -> Enumerator(NamedConstant,OptEqualsExpr)
+
+/* R462 */
+    Stmt                              -> EndEnumStmt
+    EndEnumStmt                       -> EndEnumStmt(OptLabel)
+
 
     ListStarOfScope0                  -> ListPlusOfScope0
     ListStarOfScope0                  -> <nil>()
@@ -542,194 +732,6 @@ regular tree grammar
     CharLength                        -> COLON()
 
     Var                               -> Var(Name,Type,OptInitialization)
-
-/* R404 */
-    Type                              -> unknown-type()
-    Type                              -> IntrinsicType
-    IntrinsicType                     -> INTEGER()
-    IntrinsicType                     -> INTEGER(Kind)
-    IntrinsicType                     -> REAL()
-    IntrinsicType                     -> REAL(Kind)
-    IntrinsicType                     -> DOUBLEPRECISION()
-    IntrinsicType                     -> COMPLEX()
-    IntrinsicType                     -> COMPLEX(Kind)
-    IntrinsicType                     -> DOUBLECOMPLEX()
-    IntrinsicType                     -> LOGICAL()
-    IntrinsicType                     -> LOGICAL(Kind)
-
-    IntrinsicType                     -> CHARACTER(CharLength,Kind)
-    IntrinsicType                     -> CHARACTER(CharLength)
-    IntrinsicType                     -> CHARACTER()
-    IntrinsicType                     -> CHARACTER_LEN(CharLength)
-
-/* R453 */
-    Type                              -> DerivedType
-    DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
-
-/* R454 */
-    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
-
-    Type                              -> ArrayType
-    ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
-
-    ArraySpec                         -> ArraySpec(ListStarOfRange)
-    CoarraySpec                       -> CoarraySpec(ListStarOfRange)
-
-    OptArraySpec                      -> ArraySpec(ArraySpec)
-    OptArraySpec                      -> no-list()
-
-    DimSpec                           -> Range
-    DimSpec                           -> STAR()
-    DimSpec                           -> COLON()
-    Range                             -> Range(Expr,Expr)
-
-    Type                              -> DerivedTypeDef
-    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ListStarOfComponentPart,OptTypeBoundProcPart,EndTypeStmt)
-
-    Stmt                              -> DerivedTypeStmt
-    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
-
-/* R429 */
-    Stmt                              -> EndTypeStmt
-    EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
-
-/* R430 */
-    Stmt                              -> SequenceStmt
-    SequenceStmt                      -> SequenceStmt(OptLabel)
-
-    TypeAttrSpec                      -> ABSTRACT()
-    TypeAttrSpec                      -> AccessSpec
-    TypeAttrSpec                      -> BIND()
-    TypeAttrSpec                      -> Extends(ParentTypeName)
-
-    Stmt                              -> TypeParamDefStmt
-    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl)
-
-    TypeParamDecl                     -> TypeParamDecl(Name,OptEqualsExpr)
-
-    OptEqualsExpr                     -> no-expr()
-    OptEqualsExpr                     -> IntExpr
-
-    Decl                              -> ComponentDefStmt
-    ComponentDefStmt                  -> DataComponentDefStmt
-    ComponentDefStmt                  -> ProcComponentDefStmt
-
-    Stmt                              -> DataComponentDefStmt
-    DataComponentDefStmt              -> DataComponentDefStmt(OptLabel,DeclarationTypeSpec,ListStarOfComponentAttrSpec,ListPlusOfComponentDecl)
-
-/* R437 */
-    ComponentAttrSpec                 -> AccessSpec
-    ComponentAttrSpec                 -> ALLOCATABLE()
-    ComponentAttrSpec                 -> Codimension(CoarraySpec)
-    ComponentAttrSpec                 -> CONTIGUOUS()
-    ComponentAttrSpec                 -> Dimension(ArraySpec)
-    ComponentAttrSpec                 -> POINTER()
-
-/* TODO - SIMPLIFY - Initialization is Init(Expr) always I think (YES, FIXME)*/
-
-    Decl                              -> ComponentDecl
-    ComponentDecl                     -> ComponentDecl(Name,ListStarOfRange,ListStarOfRange,OptCharLength,OptComponentInitialization)
-
-    Stmt                              -> ProcComponentDefStmt
-    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec,ListPlusOfProcDecl)
-
-    ProcDecl                          -> ProcDecl(Name,ProcPointerInit)
-    ProcDecl                          -> ProcDecl(Name,NoProcPointerInit)
-
-    NoProcPointerInit                 -> no-init()
-    ProcPointerInit                   -> InitialProcTarget
-    ProcPointerInit                   -> NullInit
-
-    InitialProcTarget                 -> ProcedureName
-
-    ProcComponentAttrSpec             -> POINTER()
-    ProcComponentAttrSpec             -> PASS()
-    ProcComponentAttrSpec             -> NOPASS()
-    ProcComponentAttrSpec             -> AccessSpec
-
-    OptComponentInitialization        -> Expr
-    OptComponentInitialization        -> no-init()
-
-    InitialDataTarget                 -> Expr
-
-/* R444 */
-    Stmt                              -> PrivateComponentsStmt
-    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel)
-
-/* R445 */
-    Decl                              -> TypeBoundProcPart
-    TypeBoundProcPart                 -> TypeBoundProcPart(OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding)
-
-    OptTypeBoundProcPart              -> TypeBoundProcPart
-    OptTypeBoundProcPart              -> no-type-bound-procedure-part()
-
-/* R446 */
-    BindingPrivateStmt                -> BindingPrivateStmt(OptLabel)
-
-    OptBindingPrivateStmt             -> BindingPrivateStmt
-    OptBindingPrivateStmt             -> no-binding-private-stmt()
-
-/* R447 */
-    TypeBoundProcBinding              -> FinalProcedureStmt
-    TypeBoundProcBinding              -> TypeBoundGenericStmt
-    TypeBoundProcBinding              -> TypeBoundProcedureStmt
-
-/* R448 */
-    Decl                              -> TypeBoundProcedureStmt
-    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt(OptLabel,OptBindingAttrList,ListPlusOfTypeBoundProcDecl)
-
-    TypeBoundProcedureStmt            -> TypeBoundProcedureInterfaceStmt(OptLabel,Name,ListPlusOfBindingAttr,ListPlusOfName)
-
-    OptBindingAttrList                -> no-list()
-    OptBindingAttrList                -> comma-list(ListPlusOfBindingAttr)
-
-/* R449 */
-    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,NoProcedureName)
-    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,ProcedureName)
-
-    BindingName                       -> Ident
-
-    ProcedureName                     -> Ident
-    NoProcedureName                   -> no-procedure-name()
-
-/* R450 */
-    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfName)
-
-    TypeParamAttrSpec                 -> LEN()
-    TypeParamAttrSpec                 -> KIND()
-
-/* R451 */
-    BindingAttr                       -> Pass(ArgName)
-    BindingAttr                       -> Pass(NoArgName)
-    BindingAttr                       -> NOPASS()
-    BindingAttr                       -> NON_OVERRIDABLE()
-    BindingAttr                       -> DEFERRED()
-    BindingAttr                       -> AccessSpec
-
-/* R452 */
-    Stmt                              -> FinalProcedureStmt
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
-
-/* R453 */
-/* TODO - DerivedTypeSpec replaced by DerivedType above */
-
-/* R458 */
-    EnumDef                           -> EnumDef(EnumDefStmt,ListPlusEnumeratorDefStmt,EndEnumStmt)
-
-/* R459 */
-    Stmt                              -> EnumDefStmt
-    EnumDefStmt                       -> EnumDefStmt(OptLabel)
-
-/* R460 */
-    Stmt                              -> EnumeratorDefStmt
-    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator)
-
-/* R461 */
-    Enumerator                        -> Enumerator(NamedConstant,OptEqualsExpr)
-
-/* R462 */
-    Stmt                              -> EndEnumStmt
-    EndEnumStmt                       -> EndEnumStmt(OptLabel)
 
 /* R526 */
     Stmt                              -> AllocatableStmt
@@ -1668,11 +1670,6 @@ regular tree grammar
     OptAccessSpec                     -> no-access-spec()
     OptAccessSpec                     -> comma-access-spec(AccessSpec)
 
-/* R430 */
-    SequenceStmt                      -> SequenceStmt(OptLabel,EOS)
-
-    PrivateOrSequence                 -> SequenceStmt
-    PrivateOrSequence                 -> PrivateComponentsStmt
     ParentTypeName                    -> Ident
 
     OptKindParam                      -> no-kind-param()
