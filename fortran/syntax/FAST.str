@@ -12,6 +12,20 @@ signature
                                     : String -> Label
                                     : Label -> OptLabel
     no-label                        : OptLabel
+    INTEGER                         : IntrinsicType
+    INTEGER                         : Kind -> IntrinsicType
+    REAL                            : IntrinsicType
+    REAL                            : Kind -> IntrinsicType
+    DOUBLEPRECISION                 : IntrinsicType
+    COMPLEX                         : IntrinsicType
+    COMPLEX                         : Kind -> IntrinsicType
+    DOUBLECOMPLEX                   : IntrinsicType
+    LOGICAL                         : IntrinsicType
+    LOGICAL                         : Kind -> IntrinsicType
+    CHARACTER                       : CharLength * Kind -> IntrinsicType
+    CHARACTER                       : CharLength -> IntrinsicType
+    CHARACTER                       : IntrinsicType
+    CHARACTER_LEN                   : CharLength -> IntrinsicType
     Kind                            : Expr -> Kind
                                     : Kind -> OptKind
     no-kind                         : OptKind
@@ -26,6 +40,80 @@ signature
     TRUE                            : Kind -> LogicalVal
     FALSE                           : LogicalVal
     FALSE                           : Kind -> LogicalVal
+    DerivedTypeStmt                 : OptLabel * List(TypeAttrSpec) * Name * List(Name) -> DerivedTypeStmt
+    EndTypeStmt                     : OptLabel * Name -> EndTypeStmt
+    SequenceStmt                    : OptLabel -> SequenceStmt
+    ABSTRACT                        : TypeAttrSpec
+                                    : AccessSpec -> TypeAttrSpec
+    BIND                            : TypeAttrSpec
+    Extends                         : ParentTypeName -> TypeAttrSpec
+    TypeParamDefStmt                : OptLabel * OptKind * TypeParamAttrSpec * List(TypeParamDecl) -> TypeParamDefStmt
+    TypeParamDecl                   : Name * OptEqualsExpr -> TypeParamDecl
+                                    : DataComponentDefStmt -> ComponentDefStmt
+    DataComponentDefStmt            : OptLabel * DeclarationTypeSpec * List(ComponentAttrSpec) * List(ComponentDecl) -> DataComponentDefStmt
+                                    : AccessSpec -> ComponentAttrSpec
+    ALLOCATABLE                     : ComponentAttrSpec
+    Codimension                     : CoarraySpec -> ComponentAttrSpec
+    CONTIGUOUS                      : ComponentAttrSpec
+    Dimension                       : ArraySpec -> ComponentAttrSpec
+    POINTER                         : ComponentAttrSpec
+    ComponentDecl                   : Name * List(Range) * List(Range) * OptCharLength * OptComponentInitialization -> ComponentDecl
+    ProcComponentDefStmt            : OptLabel * OptProcInterface * List(ProcComponentAttrSpec) * List(ProcDecl) -> ProcComponentDefStmt
+    ProcDecl                        : Name * ProcPointerInit -> ProcDecl
+    ProcDecl                        : Name * NoProcPointerInit -> ProcDecl
+    no-init                         : NoProcPointerInit
+                                    : InitialProcTarget -> ProcPointerInit
+                                    : NullInit -> ProcPointerInit
+                                    : ProcedureName -> InitialProcTarget
+    POINTER                         : ProcComponentAttrSpec
+    PASS                            : ProcComponentAttrSpec
+    NOPASS                          : ProcComponentAttrSpec
+                                    : AccessSpec -> ProcComponentAttrSpec
+                                    : Expr -> OptComponentInitialization
+    no-init                         : OptComponentInitialization
+                                    : Expr -> InitialDataTarget
+    PrivateComponentsStmt           : OptLabel -> PrivateComponentsStmt
+    TypeBoundProcPart               : OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcPart
+    BindingPrivateStmt              : OptLabel -> BindingPrivateStmt
+                                    : BindingPrivateStmt -> OptBindingPrivateStmt
+    no-binding-private-stmt         : OptBindingPrivateStmt
+                                    : FinalProcedureStmt -> TypeBoundProcBinding
+                                    : TypeBoundGenericStmt -> TypeBoundProcBinding
+                                    : TypeBoundProcedureStmt -> TypeBoundProcBinding
+    TypeBoundProcedureStmt          : OptLabel * OptBindingAttrList * List(TypeBoundProcDecl) -> TypeBoundProcedureStmt
+    TypeBoundProcedureInterfaceStmt : OptLabel * Name * List(BindingAttr) * List(Name) -> TypeBoundProcedureStmt
+    no-list                         : OptBindingAttrList
+    comma-list                      : List(BindingAttr) -> OptBindingAttrList
+    TypeBoundProcDecl               : BindingName * NoProcedureName -> TypeBoundProcDecl
+    TypeBoundProcDecl               : BindingName * ProcedureName -> TypeBoundProcDecl
+                                    : Ident -> ProcedureName
+    no-procedure-name               : NoProcedureName
+    TypeBoundGenericStmt            : OptLabel * OptAccessSpec * GenericSpec * List(Name) -> TypeBoundGenericStmt
+    LEN                             : TypeParamAttrSpec
+    KIND                            : TypeParamAttrSpec
+    Pass                            : ArgName -> BindingAttr
+    Pass                            : NoArgName -> BindingAttr
+    NOPASS                          : BindingAttr
+    NON_OVERRIDABLE                 : BindingAttr
+    DEFERRED                        : BindingAttr
+                                    : AccessSpec -> BindingAttr
+    FinalProcedureStmt              : OptLabel * List(Name) -> FinalProcedureStmt
+    DerivedType                     : Name * List(TypeParamSpec) -> DerivedType
+    TypeParamSpec                   : Keyword * TypeParamValue -> TypeParamSpec
+    unknown-type                    : Type
+                                    : IntrinsicType -> Type
+                                    : DerivedType -> Type
+                                    : ArrayType -> Type
+    ArrayType                       : Type * List(Range) * List(Range) -> ArrayType
+    ArraySpec                       : List(Range) -> ArraySpec
+    CoarraySpec                     : List(Range) -> CoarraySpec
+    ArraySpec                       : ArraySpec -> OptArraySpec
+    no-list                         : OptArraySpec
+    Range                           : Expr * Expr -> Range
+    EnumDefStmt                     : OptLabel -> EnumDefStmt
+    EnumeratorDefStmt               : OptLabel * List(Enumerator) -> EnumeratorDefStmt
+    Enumerator                      : NamedConstant * OptEqualsExpr -> Enumerator
+    EndEnumStmt                     : OptLabel -> EndEnumStmt
     MpSubprogram                    : MpSubprogramStmt * Scope * EndMpSubprogramStmt -> MpSubprogram
     MpSubprogramStmt                : OptLabel * Name -> MpSubprogramStmt
     EndMpSubprogramStmt             : OptLabel * OptName -> EndMpSubprogramStmt
@@ -43,6 +131,8 @@ signature
     LanguageBinding                 : OptLanguageBindingName -> LanguageBinding
     no-binding-name                 : OptLanguageBindingName
                                     : BindingName -> OptLanguageBindingName
+                                    : Ident -> BindingName
+    BindingName                     : String -> BindingName
     MainProgram                     : ProgramStmt * Scope * EndProgramStmt -> MainProgram
     ProgramStmt                     : OptLabel * Name -> ProgramStmt
     EndProgramStmt                  : OptLabel * OptProgramName -> EndProgramStmt
@@ -153,96 +243,6 @@ signature
     STAR                            : CharLength
     COLON                           : CharLength
     Var                             : Name * Type * OptInitialization -> Var
-    INTEGER                         : IntrinsicType
-    INTEGER                         : Kind -> IntrinsicType
-    REAL                            : IntrinsicType
-    REAL                            : Kind -> IntrinsicType
-    DOUBLEPRECISION                 : IntrinsicType
-    COMPLEX                         : IntrinsicType
-    COMPLEX                         : Kind -> IntrinsicType
-    DOUBLECOMPLEX                   : IntrinsicType
-    LOGICAL                         : IntrinsicType
-    LOGICAL                         : Kind -> IntrinsicType
-    CHARACTER                       : CharLength * Kind -> IntrinsicType
-    CHARACTER                       : CharLength -> IntrinsicType
-    CHARACTER                       : IntrinsicType
-    CHARACTER_LEN                   : CharLength -> IntrinsicType
-    DerivedType                     : Name * List(TypeParamSpec) -> DerivedType
-    TypeParamSpec                   : Keyword * TypeParamValue -> TypeParamSpec
-    unknown-type                    : Type
-                                    : IntrinsicType -> Type
-                                    : DerivedType -> Type
-                                    : ArrayType -> Type
-    ArrayType                       : Type * List(Range) * List(Range) -> ArrayType
-    ArraySpec                       : List(Range) -> ArraySpec
-    CoarraySpec                     : List(Range) -> CoarraySpec
-    ArraySpec                       : ArraySpec -> OptArraySpec
-    no-list                         : OptArraySpec
-    Range                           : Expr * Expr -> Range
-    DerivedTypeStmt                 : OptLabel * List(TypeAttrSpec) * Name * List(Name) -> DerivedTypeStmt
-    EndTypeStmt                     : OptLabel * Name -> EndTypeStmt
-    ABSTRACT                        : TypeAttrSpec
-                                    : AccessSpec -> TypeAttrSpec
-    BIND                            : TypeAttrSpec
-    Extends                         : ParentTypeName -> TypeAttrSpec
-    TypeParamDefStmt                : OptLabel * OptKind * TypeParamAttrSpec * List(TypeParamDecl) -> TypeParamDefStmt
-    TypeParamDecl                   : Name * OptEqualsExpr -> TypeParamDecl
-                                    : DataComponentDefStmt -> ComponentDefStmt
-                                    : ProcComponentDefStmt -> ComponentDefStmt
-    DataComponentDefStmt            : OptLabel * DeclarationTypeSpec * List(ComponentAttrSpec) * List(ComponentDecl) -> DataComponentDefStmt
-                                    : AccessSpec -> ComponentAttrSpec
-    ALLOCATABLE                     : ComponentAttrSpec
-    Codimension                     : CoarraySpec -> ComponentAttrSpec
-    CONTIGUOUS                      : ComponentAttrSpec
-    Dimension                       : ArraySpec -> ComponentAttrSpec
-    POINTER                         : ComponentAttrSpec
-    ComponentDecl                   : Name * List(Range) * List(Range) * OptCharLength * OptComponentInitialization -> ComponentDecl
-    ProcComponentDefStmt            : OptLabel * OptProcInterface * List(ProcComponentAttrSpec) * List(ProcDecl) -> ProcComponentDefStmt
-    ProcDecl                        : Name * ProcPointerInit -> ProcDecl
-    ProcDecl                        : Name * NoProcPointerInit -> ProcDecl
-    no-init                         : NoProcPointerInit
-                                    : InitialProcTarget -> ProcPointerInit
-                                    : NullInit -> ProcPointerInit
-                                    : ProcedureName -> InitialProcTarget
-    POINTER                         : ProcComponentAttrSpec
-    PASS                            : ProcComponentAttrSpec
-    NOPASS                          : ProcComponentAttrSpec
-                                    : AccessSpec -> ProcComponentAttrSpec
-                                    : Expr -> OptComponentInitialization
-    no-init                         : OptComponentInitialization
-                                    : Expr -> InitialDataTarget
-    PrivateComponentsStmt           : OptLabel -> PrivateComponentsStmt
-    TypeBoundProcPart               : OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcPart
-    BindingPrivateStmt              : OptLabel -> BindingPrivateStmt
-                                    : BindingPrivateStmt -> OptBindingPrivateStmt
-    no-binding-private-stmt         : OptBindingPrivateStmt
-                                    : FinalProcedureStmt -> TypeBoundProcBinding
-                                    : TypeBoundGenericStmt -> TypeBoundProcBinding
-                                    : TypeBoundProcedureStmt -> TypeBoundProcBinding
-    TypeBoundProcedureStmt          : OptLabel * OptBindingAttrList * List(TypeBoundProcDecl) -> TypeBoundProcedureStmt
-    TypeBoundProcedureInterfaceStmt : OptLabel * Name * List(BindingAttr) * List(Name) -> TypeBoundProcedureStmt
-    no-list                         : OptBindingAttrList
-    comma-list                      : List(BindingAttr) -> OptBindingAttrList
-    TypeBoundProcDecl               : BindingName * NoProcedureName -> TypeBoundProcDecl
-    TypeBoundProcDecl               : BindingName * ProcedureName -> TypeBoundProcDecl
-    BindingName                     : String -> BindingName
-                                    : Ident -> BindingName
-                                    : Ident -> ProcedureName
-    no-procedure-name               : NoProcedureName
-    TypeBoundGenericStmt            : OptLabel * OptAccessSpec * GenericSpec * List(Name) -> TypeBoundGenericStmt
-    LEN                             : TypeParamAttrSpec
-    KIND                            : TypeParamAttrSpec
-    Pass                            : ArgName -> BindingAttr
-    Pass                            : NoArgName -> BindingAttr
-    NOPASS                          : BindingAttr
-    NON_OVERRIDABLE                 : BindingAttr
-    DEFERRED                        : BindingAttr
-                                    : AccessSpec -> BindingAttr
-    FinalProcedureStmt              : OptLabel * List(Name) -> FinalProcedureStmt
-    EnumDefStmt                     : OptLabel -> EnumDefStmt
-    EnumeratorDefStmt               : OptLabel * List(Enumerator) -> EnumeratorDefStmt
-    Enumerator                      : NamedConstant * OptEqualsExpr -> Enumerator
-    EndEnumStmt                     : OptLabel -> EndEnumStmt
     AllocatableStmt                 : OptLabel * List(AllocatableDecl) -> AllocatableStmt
                                     : Var -> AllocatableDecl
     AsynchronousStmt                : OptLabel * List(Name) -> AsynchronousStmt
@@ -432,6 +432,11 @@ signature
                                     : ProcInterface -> OptProcInterface
                                     : DeclarationTypeSpec -> ProcInterface
                                     : Name -> ProcInterface
+                                    : ComponentDefStmt -> Decl
+                                    : ComponentDecl -> Decl
+                                    : PrivateComponentsStmt -> Decl
+                                    : TypeBoundProcPart -> Decl
+                                    : TypeBoundProcedureStmt -> Decl
                                     : MpSubprogram -> Decl
                                     : BlockDataStmt -> Decl
                                     : EndBlockDataStmt -> Decl
@@ -454,10 +459,6 @@ signature
                                     : NamelistStmt -> Decl
                                     : EquivalenceStmt -> Decl
                                     : CommonStmt -> Decl
-                                    : ComponentDefStmt -> Decl
-                                    : ComponentDecl -> Decl
-                                    : TypeBoundProcPart -> Decl
-                                    : TypeBoundProcedureStmt -> Decl
                                     : InterfaceBlock -> Decl
                                     : InterfaceSpecification -> Decl
                                     : ProcedureStmt -> Decl
@@ -484,6 +485,16 @@ signature
     IOSTAT                          : IntVariable -> ConnectSpec
     ERR                             : LblRef -> ConnectSpec
     UNIT                            : FileUnitNumber -> ConnectSpec
+                                    : DerivedTypeStmt -> Stmt
+                                    : EndTypeStmt -> Stmt
+                                    : SequenceStmt -> Stmt
+                                    : TypeParamDefStmt -> Stmt
+                                    : DataComponentDefStmt -> Stmt
+                                    : ProcComponentDefStmt -> Stmt
+                                    : FinalProcedureStmt -> Stmt
+                                    : EnumDefStmt -> Stmt
+                                    : EnumeratorDefStmt -> Stmt
+                                    : EndEnumStmt -> Stmt
                                     : FunctionStmt -> Stmt
                                     : EndFunctionStmt -> Stmt
                                     : SubroutineStmt -> Stmt
@@ -498,17 +509,6 @@ signature
                                     : ElsewhereStmt -> Stmt
                                     : EndWhereStmt -> Stmt
                                     : AccessStmt -> Stmt
-                                    : DerivedTypeStmt -> Stmt
-                                    : EndTypeStmt -> Stmt
-                                    : SequenceStmt -> Stmt
-                                    : TypeParamDefStmt -> Stmt
-                                    : DataComponentDefStmt -> Stmt
-                                    : ProcComponentDefStmt -> Stmt
-                                    : PrivateComponentsStmt -> Stmt
-                                    : FinalProcedureStmt -> Stmt
-                                    : EnumDefStmt -> Stmt
-                                    : EnumeratorDefStmt -> Stmt
-                                    : EndEnumStmt -> Stmt
                                     : AllocatableStmt -> Stmt
                                     : AsynchronousStmt -> Stmt
                                     : AllocateStmt -> Stmt
@@ -800,8 +800,6 @@ signature
                                     : Ident -> ArgName
     no-access-spec                  : OptAccessSpec
     comma-access-spec               : AccessSpec -> OptAccessSpec
-    SequenceStmt                    : OptLabel -> SequenceStmt
-    SequenceStmt                    : OptLabel * EOS -> SequenceStmt
                                     : Ident -> ParentTypeName
                                     : Scon -> CharLiteralConstant
                                     : NamedConstant -> ImagPart
@@ -820,7 +818,6 @@ signature
     no-name                         : NoName
                                     : String -> Name
                                     : Ident -> Name
-    eos                             : EOStmt -> EOS
                                     : LblDef -> LblRef
                                     : String -> Dop
                                     : String -> HexConstant
@@ -831,7 +828,6 @@ signature
                                     : String -> Ident
                                     : String -> Letter
                                     : String -> LblDef
-                                    : String -> EOStmt
 
 
 signature
