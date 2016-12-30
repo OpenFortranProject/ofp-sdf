@@ -180,6 +180,9 @@
    PASS                          -- "PASS",
    NOPASS                        -- "NOPASS",
 
+   %% R444
+   PrivateComponentsStmt         -- H hs=1 [_1 "PRIVATE"],
+
    %% R445
    TypeBoundProcPart             -- "CONTAINS" _1 _2,
 
