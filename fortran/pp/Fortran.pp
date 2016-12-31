@@ -53,6 +53,9 @@
    %% R312
    Label                         -- _1,
 
+   %% Include line
+   IncludeStmt                   -- H hs=1["INCLUDE" _1],
+
    %% R401
    COLON                         -- ":",
 
@@ -648,8 +651,8 @@
 
    Association                   -- _1 "=>" _2,
 
-   Block                         -- H [_1 _2 ":" "BLOCK"] _3 _4,
-   ppBlock                       -- H [_1 "BLOCK"] _2 _3,
+   Block                         -- V is=2 [H [_1 _2 ":" "BLOCK"] _3] _4,
+   ppBlock                       -- V is=2 [H [_1 "BLOCK"] _2] _3,
    EndBlockStmt                  -- H [_1 "END BLOCK" _2],
 
    %% R814
@@ -869,6 +872,9 @@
    InquireStmt.2:iter-sep        -- _1 ", ",
    InquireLengthStmt             -- H hs=1 [_1 "INQUIRE" H hs=0["(" "IOLENGTH=" _2 ")"] H hs=0[_3]],
    InquireLengthStmt.3:iter-sep  -- _1 ", ",
+
+   %% R931
+   EXIST                         -- "EXIST=" _1,
 
    %% R1001
    FormatStmt                    -- H hs=1[_1 H hs=0 ["FORMAT" "("_2")"]],
