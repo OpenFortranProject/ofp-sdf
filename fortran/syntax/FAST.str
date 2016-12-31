@@ -12,6 +12,7 @@ signature
                                     : String -> Label
                                     : Label -> OptLabel
     no-label                        : OptLabel
+    IncludeStmt                     : String -> IncludeStmt
     INTEGER                         : IntrinsicType
     INTEGER                         : Kind -> IntrinsicType
     REAL                            : IntrinsicType
@@ -485,6 +486,7 @@ signature
     IOSTAT                          : IntVariable -> ConnectSpec
     ERR                             : LblRef -> ConnectSpec
     UNIT                            : FileUnitNumber -> ConnectSpec
+                                    : IncludeStmt -> Stmt
                                     : DerivedTypeStmt -> Stmt
                                     : EndTypeStmt -> Stmt
                                     : SequenceStmt -> Stmt

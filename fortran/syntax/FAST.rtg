@@ -29,6 +29,10 @@ regular tree grammar
     OptLabel                          -> Label
     OptLabel                          -> no-label()
 
+/* Include Line */
+    Stmt                              -> IncludeStmt
+    IncludeStmt                       -> IncludeStmt(<string>)
+
 /* R404 */
     Type                              -> unknown-type()
     Type                              -> IntrinsicType
