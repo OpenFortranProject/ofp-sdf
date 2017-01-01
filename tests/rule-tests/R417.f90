@@ -1,4 +1,4 @@
-!! R422 complex-literal-constant
+!! R417 complex-literal-constant
 !    is ( real-part , imag-part )
 
 COMPLEX :: z = (0.0098,0.e9)
