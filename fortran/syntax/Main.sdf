@@ -64,6 +64,7 @@ sorts
   CharConstant                        %% R308
   LblRef                              %% R312
 
+  IncludeStmt                         %% not an actual statement
   OptLabel
 
 %% 4.2 Type parameters
@@ -809,6 +810,15 @@ context-free syntax
   LblDef                                -> OptLabel
   % empty %                             -> OptLabel         {cons("no-label")}
 
+%% Include line (not an actual statement; label not allowed)
+%%
+  'INCLUDE' CharLiteralConstant      EOS -> IncludeStmt     {cons("IncludeStmt")}
+
+  IncludeStmt                            -> ProgramUnit           %% allows before/after a program-unit
+  IncludeStmt                            -> DeclarationConstruct  {prefer}
+  IncludeStmt                            -> ExecutableConstruct
+
+
 %%%%%%%%%%
 %% Fortran ISO/IEC 1539:1991 4xx DataTypes
 %%%%%%%%%%
@@ -929,20 +939,20 @@ context-free syntax
   '(' 'KIND' '=' Expr ',' 'LEN' '=' TypeParamValue   ')'       -> CharSelector     {cons("CharSelector_KIND_LEN")}
   '(' 'KIND' '=' Expr               NoLengthSelector ')'       -> CharSelector     {cons("CharSelector_KIND_LEN")}
 
-  % empty %                                                    -> NoLengthSelector {cons("no-length-selector")}
+  % empty %                                                    -> NoLengthSelector {cons("no-char-length")}
 
   CharSelector                                                 -> OptCharSelector
   % empty %                                                    -> OptCharSelector  {cons("no-char-selector")}
 
 %%R421
-  '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector")}
-  '('           TypeParamValue ')'                             -> LengthSelector  {cons("LengthSelector")}
-  '*' CharLength ','                                           -> LengthSelector  {cons("LengthSelector_STAR")}
-  '*' CharLength                                               -> LengthSelector  {cons("LengthSelector_STAR")}
+  '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("length-selector")}
+  '('           TypeParamValue ')'                             -> LengthSelector  {cons("length-selector")}
+  '*' CharLength ','                                           -> LengthSelector  {cons("length-selector")}
+  '*' CharLength                                               -> LengthSelector  {cons("length-selector")}
 
 %%R422
-  '(' TypeParamValue ')'                                       -> CharLength      {cons("CharLength")}
-  Icon                                                         -> CharLength
+  '(' TypeParamValue ')'                                       -> CharLength      {cons("char-length")}
+  Icon                                                         -> CharLength      {cons("IntVal")}  %% FAST term
 
 %%R423
   KindParam '_' Scon                    -> CharLiteralConstant     {cons("CharLiteralConstant")}
@@ -3042,7 +3052,7 @@ context-free syntax
   'DIRECT'       '='  DefaultCharExpr                  -> InquireSpec  {cons("DIRECT")}
   'ENCODING'     '='  DefaultCharExpr                  -> InquireSpec  {cons("ENCODING")}
   'ERR'          '='  LblRef                           -> InquireSpec  {cons("ERR")}
-  'EXIST '       '='  LogicalVariable                  -> InquireSpec  {cons("EXIST")}
+  'EXIST'        '='  LogicalVariable                  -> InquireSpec  {cons("EXIST")}
   'FORM'         '='  DefaultCharExpr                  -> InquireSpec  {cons("FORM")}
   'FORMATTED'    '='  DefaultCharExpr                  -> InquireSpec  {cons("FORMATTED")}
   'ID'           '='  IntExpr                          -> InquireSpec  {cons("ID")}
