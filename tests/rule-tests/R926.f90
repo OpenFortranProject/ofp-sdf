@@ -1,12 +1,13 @@
-!! R926 position-spec
-!    is  [ UNIT = ] file-unit-number
-!    or  IOMSG = iomsg-variable
-!    or  IOSTAT = scalar-int-variable
-!    or  ERR = label
+!! R926 rewind-stmt
+!    is  REWIND file-unit-number
+!    or  REWIND ( position-spec-list )
+!
+! Not tested here: file-unit-number and position-spec-list.
 
-character cvar
+integer unitnumber
+11 REWIND(unitnumber)
+rewind unitnumber
+12 rewind 10
+rewind (10, iostat=n, err=4)
 
-backspace (iomsg=CVAR, unit=5)
-rewind (5, iomsg=cvar,err=314,iostat=iugly)
-
-314 end
+4 end

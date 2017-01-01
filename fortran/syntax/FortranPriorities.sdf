@@ -1,0 +1,51 @@
+context-free priorities
+
+%% See Clause 7.1.3 for precedence of operators
+
+%% defined-unary-op has highest priority followed by **
+%%
+    DefinedUnaryOp Expr   -> Expr {cons("DefUnaryExpr")}
+  >
+    Expr '**' Expr        -> Expr {cons("Power"), right}
+  >
+  { left:
+    Expr '*' Expr       -> Expr {cons("Mult"), left}
+    Expr '/' Expr       -> Expr {cons("Div"),  left}
+  }
+  >
+  {
+    '+' Expr            -> Expr {cons("UnaryPlus")}
+    '-' Expr            -> Expr {cons("UnaryMinus")}
+  }
+  >
+  { left:
+    Expr '+'  Expr      -> Expr {cons("Plus"),  left}
+    Expr '-'  Expr      -> Expr {cons("Minus"), left}
+  }
+  > Expr '//' Expr      -> Expr {cons("Concat"), left}
+  >
+  { left:
+    Expr '.EQ.' Expr    -> Expr {cons("EQ"), left}
+    Expr '.NE.' Expr    -> Expr {cons("NE"), left}
+    Expr '.LT.' Expr    -> Expr {cons("LT"), left}
+    Expr '.LE.' Expr    -> Expr {cons("LE"), left}
+    Expr '.GT.' Expr    -> Expr {cons("GT"), left}
+    Expr '.GE.' Expr    -> Expr {cons("GE"), left}
+    Expr '=='   Expr    -> Expr {cons("EQ"), left}
+    Expr '/='   Expr    -> Expr {cons("NE"), left}
+    Expr '<'    Expr    -> Expr {cons("LT"), left}
+    Expr '<='   Expr    -> Expr {cons("LE"), left}
+    Expr '>'    Expr    -> Expr {cons("GT"), left}
+    Expr '>='   Expr    -> Expr {cons("GE"), left}
+  }
+  >      '.NOT.' Expr   -> Expr {cons("NOT")}
+  > Expr '.AND.' Expr   -> Expr {cons("AND"), left}
+  > Expr '.OR.'  Expr   -> Expr {cons("OR"),  left}
+  >
+  { left:
+    Expr '.EQV.'  Expr  -> Expr {cons("EQV"),  left}
+    Expr '.NEQV.' Expr  -> Expr {cons("NEQV"), left}
+  }
+%%
+%% defined-binary-op has lowest priority
+  > Expr DefinedBinaryOp Expr -> Expr {cons("DefBinExpr"), left}

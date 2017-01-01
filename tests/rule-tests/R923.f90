@@ -1,9 +1,16 @@
-!! R923 backspace-stmt
-!    is  BACKSPACE file-unit-number
-!    or  BACKSPACE ( position-spec-list )
-!
-! Not tested here: file-unit-number and position-spec-list.
-backspace 10
-backspace (10, iostat=n)
+!! R923 wait-spec
+!    is [ UNIT = ] file-unit-number
+!    or END = label
+!    or EOR = label
+!    or ERR = label
+!    or ID = scalar-int-expr
+!    or IOMSG = iomsg-variable
+!    or IOSTAT = scalar-int-variable
 
-end
+CHARACTER :: cvar
+
+10  wait (5, end=99)
+    wait (id=ivar,iomsg=cvar, err=314,eor=99,end=10, UNIT=6)
+
+314 CONTINUE
+99  end

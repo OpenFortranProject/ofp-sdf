@@ -1,5 +1,5 @@
-READ(UNIT=10) 
-READ(UNIT=10,FMT=*) a, b
-READ 5, a, b, c
+READ(10)
+READ(10,FMT=*) a,b
+READ 5, a,b,c
 5 FORMAT(2E16.3,I5)
 END PROGRAM

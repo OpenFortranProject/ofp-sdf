@@ -1,0 +1,5 @@
+CHARACTER(1) :: str1
+CHARACTER(2) :: str2
+CHARACTER(3) :: str3
+CHARACTER(:), ALLOCATABLE :: str_colon
+END PROGRAM

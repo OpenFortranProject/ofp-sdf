@@ -1,14 +1,12 @@
-!! R927 flush-stmt
-!    is  FLUSH file-unit-number
-!    or  FLUSH ( flush-spec-list )
-!
-! Not tested here: file-unit-number.
+!! R927 position-spec
+!    is  [ UNIT = ] file-unit-number
+!    or  IOMSG = iomsg-variable
+!    or  IOSTAT = scalar-int-variable
+!    or  ERR = label
 
-character :: cvar
+character cvar
 
-flush 5
-flush (5, iostat=n, iomsg=cvar, err=10)
-flush (unit=5, iostat=n, iomsg=cvar, err=10)
+backspace (iomsg=CVAR, unit=5)
+rewind (5, iomsg=cvar,err=314,iostat=iugly)
 
-10 end
-
+314 end

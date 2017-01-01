@@ -25,6 +25,7 @@ signature
     ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
 
     ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
+    ppArrayVarLen  : Name * ArrayType * Length * Init  -> ppArrayVarLen
     ppRange        : upper-bound                       -> ppRange
     ppTriplet      : lb * ub * OptColon * stride       -> ppTriplet
 
@@ -54,12 +55,22 @@ signature
     ppSectionSubscripts : ss             -> ppSectionSubscripts
     ppImageSelector     : ss             -> ppImageSelector
 
+    ppTypeBoundProcDecl      : name                    -> ppTypeBoundProcDecl
+
     ppDerivedType            : name                    -> ppDerivedType
     ppDerivedTypeStmt        : label * name            -> ppDerivedTypeStmt
     ppDerivedTypeStmt_attrs  : label * attrs * name    -> ppDerivedTypeStmt_attrs
     ppDerivedTypeStmt_params : label * name * params   -> ppDerivedTypeStmt_params
 
-    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt
+    ppDataComponentDefStmt   : label * type * comps    -> ppDataComponentDefStmt           // R431
+
+    ppTypeParamDecl          : name                    -> ppTypeParamDecl                  // R432
+
+    ppTypeBoundProcedureStmt : label * procdecls       -> ppTypeBoundProcedureStmt         // R448
+
+    ppTypeParamSpec          : value                   -> ppTypeParamSpec                  // R454
+    ppEnumerator             : name                    -> ppEnumerator                     // R460
+    ppAcSpec                 : TypeSpec * List(AcValue)-> ppAcSpec                         // R469
 
     ppAllocateStmt      : label * spec * allocs        -> ppAllocateStmt
     ppAllocateStmt      : label * spec * allocs * opts -> ppAllocateStmt
@@ -74,11 +85,9 @@ signature
     ppPointerAssignmentStmt : label * obj * bounds * expr  -> ppPointerAssignmentStmt
     ppDataPointerObject     : var                          -> ppDataPointObject
 
-    ppWhereConstructStmt    : OptLabel * Expr              -> ppWhereConstructStmt
+    ppWhereConstructStmt  : OptLabel * Expr                         -> ppWhereConstructStmt
 
-    ppSaveStmt        : OptLabel                                    -> ppSaveStmt          // R553
-
-    ppSelectCaseStmt  : OptLabel * CaseConstructName * CaseExpr     -> ppSelectCaseStmt    // R838
+    ppSaveStmt            : OptLabel                                -> ppSaveStmt          // R553
 
     ppTypeDeclarationStmt : OptLabel * Type * List(EntityDecl)      -> ppTypeDeclarationStmt
 
@@ -88,19 +97,31 @@ signature
 
     ppAssociateStmt   : OptLabel * NoName * List(Association)       -> ppAssociateStmt     // R803
 
-    ppIfThenStmt      : OptLabel * OptName * expr                   -> ppIfThenStmt        // R833
-    ppElseStmt        : OptLabel                                    -> ppElseStmt          // R835
-    ppEndIfStmt       : OptLabel                                    -> ppEndIfStmt         // R836
-    ppIfConstructName : name                                        -> ppIfConstructName
+    ppIfThenStmt      : OptLabel * OptName * LogicalExpr            -> ppIfThenStmt        // R833
+
+    ppSelectCaseStmt  : OptLabel * OptName * CaseExpr               -> ppSelectCaseStmt    // R838
+    ppDefaultCaseStmt : OptLabel * name                             -> ppDefaultCaseStmt
+
+    ppSelectTypeStmt  : OptLabel * OptName * OptName * Selector     -> ppSelectTypeStmt    // R847
+
+    ppSyncImagesStmt  : OptLabel * ImageSet * SyncList              -> ppSyncImagesStmt    // R860
+
+    ppReadStmt        : OptLabel * IoControlList * InputList        -> ppReadStmt          // R910
+    ppReadFMTStmt     : OptLabel * Format        * InputList        -> ppReadFMTStmt
+    ppWriteStmt       : OptLabel * IoControlList * OutputList       -> ppWriteStmt         // R911
+    ppPrintStmt       : OptLabel * Format        * OutputList       -> ppPrintStmt         // R912
 
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
 
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
 
-//    ppSelectTypeStmt : OptLabel * NoSelectConstructName * OptAssociateName * Selector -> ppSelectTypeStmt  //R847
+    ppProcDecl        : name                                        -> ppProcDecl           // R1214
 
-    opt-list       : list            -> opt-list
-    append-colon   : name            -> append-colon
+    opt-list          : list            -> opt-list
+    no-comma-opt-list : list            -> no-comma-opt-list
+    append-colon      : name            -> append-colon
+    append-colon-colon: type            -> append-colon-colon
+    append-ptr-assign : name            -> append-ptr-assign
 
 strategies
 
@@ -112,10 +133,33 @@ strategies
     ; outermost(no-to-none)
 
   pp-opt-list =
-      where(<gt>(<length>,0))
-    ; !opt-list(<id>)
+      ? []             ;  ! no-list()
+   <+ ? list           ;  ! opt-list(<id>)
 
-  append-colon = ?no-name() < id + !append-colon(<id>)
+  pp-no-comma-opt-list =
+      ? []             ;  ! no-list()
+   <+ ? list           ;  ! no-comma-opt-list(<id>)
+
+  pp-append-colon =
+      ? no-name()      ;  ! <id>
+   <+ ? name           ;  ! append-colon(<id>)
+
+  pp-append-colon-colon =
+      ? no-type-spec() ;  ! <id>
+   <+ ? type           ;  ! append-colon-colon(<id>)
+
+  pp-append-ptr-assign =
+      ? no-name()      ;  ! <id>
+   <+ ? name           ;  ! append-ptr-assign(<id>)
+
+// Remove the UNIT appl an io-control-spec if is the first spec in the list.
+//
+  pp-remove-unit =
+      ? [head|tail]
+   ;  ! head
+   ;  ? UNIT(num)
+   ;  ! <concat>[[num], tail]
+  <+  ! <id>
 
 rules
 
@@ -129,8 +173,11 @@ ast-to-pp:  Scope(decls,exes,funcs)          -> ppScope(decls,exes,FuncPart(func
 //R404
 ast-to-pp:  CHARACTER(no-char-length(),kind) -> ppCharNoLen(kind)
 
-//R408
+//R407
 ast-to-pp:  IntVal(val,Kind(kval))           -> IntVal(val,ppLiteralKind(kval))
+
+//R413
+ast-to-pp:  RealVal(val,Kind(kval))          -> RealVal(val,ppLiteralKind(kval))
 
 //R426
 ast-to-pp =
@@ -139,24 +186,54 @@ ast-to-pp =
   <+  ?DerivedTypeStmt(label,[],name,params)  ;  !ppDerivedTypeStmt_params(label,name,params)
 
 //R431
-ast-to-pp:  DataComponentDefStmt(label,type,[],comps)->  ppDataComponentDefStmt(label,type,comps)
+ast-to-pp:  DataComponentDefStmt(label,type,[],comps)   ->  ppDataComponentDefStmt(label,type,comps)
+
+//R432
+ast-to-pp:  TypeParamDecl(name,no-expr())               ->  ppTypeParamDecl(name)
+
+//R440
+ast-to-pp:  Pass(no-arg-name())                         ->  PASS()
+
+//R445
+ast-to-pp:  TypeBoundProcedureStmt(label,[],procs)      -> ppTypeBoundProcedureStmt(label,procs)
+
+
+//R449
+ast-to-pp:  TypeBoundProcDecl(name,no-procedure-name()) -> ppTypeBoundProcDecl(name)
 
 //R453
-ast-to-pp:  DerivedType(name,[])                     ->  ppDerivedType(name)
+ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
+
+//R454
+ast-to-pp:  TypeParamSpec(no-keyword(),value)           ->  ppTypeParamSpec(value)
+
+//R460
+ast-to-pp:  Enumerator(name,no-expr())                  ->  ppEnumerator(name)
+
+//R469
+ast-to-pp:  AcSpec(type,valuelist)                      ->  ppAcSpec(<pp-append-colon-colon>type,valuelist)
 
 //R501
-ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)  ->  ppTypeDeclarationStmt(label,type,vars)
+ast-to-pp:  TypeDeclarationStmt(label,type,[],vars)     ->  ppTypeDeclarationStmt(label,type,vars)
 
 //R503
-ast-to-pp:    Var(name,ArrayType(type,dims,[]),init)
-           -> ppArrayVar(name,ppArrayType(dims),init)
-ast-to-pp:    Var(name,ArrayType(type,[],codims),init)
-           -> ppArrayVar(name,ppCoarrayType(codims),init)
-ast-to-pp:    Var(name,ArrayType(type,dims,codims),init)
-           -> ppArrayVar(name,ppArrayType(dims,codims),init)
+ast-to-pp =
+      ? Var(name,ArrayType(CHARACTER_LEN(len),dims,[]),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,[]),init)
+    ; ! ppArrayVar(name,ppArrayType(dims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),[],codims),init)
+    ; ! ppArrayVarLen(name,ppCoarrayType(codims),len,init)
+   <+ ? Var(name,ArrayType(type,[],codims),init)
+    ; ! ppArrayVar(name,ppCoarrayType(codims),init)
+   <+ ? Var(name,ArrayType(CHARACTER_LEN(len),dims,codims),init)
+    ; ! ppArrayVarLen(name,ppArrayType(dims,codims),len,init)
+   <+ ? Var(name,ArrayType(type,dims,codims),init)
+    ; ! ppArrayVar(name,ppArrayType(dims,codims),init)
 
-ast-to-pp:    Var(name,CHARACTER_LEN(len),init)    -> ppVarLen(name,len,init)
-ast-to-pp:    Var(name,type,init)                  -> ppVar(name,init)
+ast-to-pp =
+      ? Var(name,CHARACTER_LEN(len),init)   ; ! ppVarLen(name,len,init)
+  <+  ? Var(name,type,init)                 ; ! ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
@@ -229,27 +306,33 @@ ast-to-pp:  Block(label,no-name(),scope,end) -> ppBlock(label,scope,end)
 ast-to-pp:  NonlabelDoStmt(label,no-name(),control) -> ppNonlabelDoStmt(label,control)
 
 //R833
-ast-to-pp =
-      ?IfThenStmt(label,no-name(),expr)            ;  !ppIfThenStmt(label,no-name(),expr)
-  <+  ?IfThenStmt(label,name     ,expr)            ;  !ppIfThenStmt(label,ppIfConstructName(name),expr)
-
-//R835
-ast-to-pp:  ElseStmt(label,no-name())             ->   ppElseStmt(label)
-
-//R836
-ast-to-pp:  EndIfStmt(label,no-name())            ->   ppEndIfStmt(label)
+ast-to-pp:  IfThenStmt(label,name,expr)           ->   ppIfThenStmt(label,<pp-append-colon>name,expr)
 
 //R838
-//  ast-to-pp:
-//    SelectCaseStmt(label,name,expr,eos)    -> ppSelectCaseStmt(label,<append-colon>name,expr,eos)
+ast-to-pp:  SelectCaseStmt(label,name,expr)       ->   ppSelectCaseStmt(label,<pp-append-colon>name,expr)
+
+//R840
+ast-to-pp:  CaseStmt(label,DEFAULT(),name)        ->   ppDefaultCaseStmt(label,name)
 
 //R847
-//  ast-to-pp:
-//    SelectTypeStmt(label,name,name,selector,eos) -> ppSelectTypeStmt(label,<append-colon>name,name,selector,eos)
+ast-to-pp:  SelectTypeStmt(label,conname,name,sel)
+     ->   ppSelectTypeStmt(label,<pp-append-colon>conname,<pp-append-ptr-assign>name,sel)
 
 //R860
-//  ast-to-pp:
-//    SyncImagesStmt(label,set,list,eos)     -> SyncImagesStmt(label,set,<pp-opt-list>(list))
+ast-to-pp:  SyncImagesStmt(label,set,list)        ->   ppSyncImagesStmt(label,set,<pp-opt-list>list)
+
+//R910
+ast-to-pp =
+      ?ReadStmt(label,cntl,  input)    ;  !ppReadStmt(label,<pp-remove-unit>cntl,<pp-no-comma-opt-list>input)
+  <+  ?ReadFMTStmt(label,format,input) ;  !ppReadFMTStmt(label,format,<pp-opt-list>input)
+
+//R911
+ast-to-pp =
+      ?WriteStmt(label,cntl,output)    ;  !ppWriteStmt(label,<pp-remove-unit>cntl,<pp-no-comma-opt-list>output)
+
+//R912
+ast-to-pp =
+      ?PrintStmt(label,format,output)  ;  !ppPrintStmt(label,format,<pp-opt-list>output)
 
 //R920
 ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoControl(dovar,begin,end)
@@ -257,14 +340,11 @@ ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoCon
 //R1109
 ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
 
+//R1214
+ast-to-pp:  ProcDecl(name,no-init())         -> ppProcDecl(name)
+
 //R1222
 ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
-
-//R1227
-//  ast-to-pp:  OfpFunction(name, scope)     -> ppFunction(scope)
-
-//R1233
-//  ast-to-pp:  OfpSubroutine(name, scope)   -> ppSubroutine(scope)
 
 //R1237
 //ast-to-pp:  MpSubprogram(name, scope)        -> ppMpSubprogram(scope)

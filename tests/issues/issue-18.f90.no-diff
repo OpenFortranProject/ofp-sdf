@@ -1,0 +1,15 @@
+!! This file tests for blank and comment lines within continuation
+!
+integer a, b, & ! initial comment
+  ! comment line1 followed by blank line
+
+  ! comment line2
+        b, d
+
+integer x, y, & ! initial comment
+  ! comment line1 followed by blank line
+
+  ! comment line2
+        &z
+
+end

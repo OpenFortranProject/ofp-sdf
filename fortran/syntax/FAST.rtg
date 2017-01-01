@@ -2,35 +2,249 @@ regular tree grammar
   start Program
   productions
 
-    OptLabel                          -> Label
-    OptLabel                          -> no-label()
-    Label                             -> <string>
+/*********
+ * ISO/IEC 1539:1991 section R2xx Fortran terms and concepts
+ ********/
 
+/* R201 */
+    Program                           -> Program(ListPlusOfProgramUnit)
+
+/* R202 */
+    ProgramUnit                       -> MainProgram
+
+    Scope                             -> Scope(ListStarOfDecl,ListStarOfStmt,ListStarOfDecl)
+
+/* R215 */
+    Keyword                           -> <string>
+    OptKeyword                        -> Keyword
+    OptKeyword                        -> no-keyword()
+
+/* R306 */
+    Name                              -> <string>
     OptName                           -> Name
     OptName                           -> no-name()
-    Name                              -> <string>
 
-    ListStarOfOfpSuffixSpec0          -> ListPlusOfOfpSuffixSpec0
-    ListStarOfOfpSuffixSpec0          -> <nil>()
-    ListStarOfOfpSuffixSpec0          -> <conc>(ListStarOfOfpSuffixSpec0,ListStarOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListStarOfOfpSuffixSpec0,ListPlusOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListPlusOfOfpSuffixSpec0,ListStarOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <conc>(ListPlusOfOfpSuffixSpec0,ListPlusOfOfpSuffixSpec0)
-    ListPlusOfOfpSuffixSpec0          -> <cons>(OfpSuffixSpec,ListStarOfOfpSuffixSpec0)
-    ListStarOfOfpPrefixSpec0          -> ListPlusOfOfpPrefixSpec0
-    ListStarOfOfpPrefixSpec0          -> <nil>()
-    ListStarOfOfpPrefixSpec0          -> <conc>(ListStarOfOfpPrefixSpec0,ListStarOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListStarOfOfpPrefixSpec0,ListPlusOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListStarOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <conc>(ListPlusOfOfpPrefixSpec0,ListPlusOfOfpPrefixSpec0)
-    ListPlusOfOfpPrefixSpec0          -> <cons>(OfpPrefixSpec,ListStarOfOfpPrefixSpec0)
+/* R312 */
+    Label                             -> <string>
+    OptLabel                          -> Label
+    OptLabel                          -> no-label()
 
-    OptMODULE0                        -> <some>(MODULE)
-    OptMODULE0                        -> <none>()
-    OptOfpGenericSpec0                -> <some>(OfpGenericSpec)
-    OptOfpGenericSpec0                -> <none>()
-    OptABSTRACT0                      -> <some>(ABSTRACT)
-    OptABSTRACT0                      -> <none>()
+/* Include Line */
+    Stmt                              -> IncludeStmt
+    IncludeStmt                       -> IncludeStmt(<string>)
+
+/* R404 */
+    Type                              -> unknown-type()
+    Type                              -> IntrinsicType
+    IntrinsicType                     -> INTEGER()
+    IntrinsicType                     -> INTEGER(Kind)
+    IntrinsicType                     -> REAL()
+    IntrinsicType                     -> REAL(Kind)
+    IntrinsicType                     -> DOUBLEPRECISION()
+    IntrinsicType                     -> COMPLEX()
+    IntrinsicType                     -> COMPLEX(Kind)
+    IntrinsicType                     -> DOUBLECOMPLEX()
+    IntrinsicType                     -> LOGICAL()
+    IntrinsicType                     -> LOGICAL(Kind)
+
+    IntrinsicType                     -> CHARACTER(CharLength,Kind)
+    IntrinsicType                     -> CHARACTER(CharLength)
+    IntrinsicType                     -> CHARACTER()
+    IntrinsicType                     -> CHARACTER_LEN(CharLength)
+
+/* R405 */
+    Kind                              -> Kind(Expr)
+    OptKind                           -> Kind
+    OptKind                           -> no-kind()
+
+/* R407 */
+    IntExpr                           -> IntVal
+    IntVal                            -> IntVal(<string>)
+    IntVal                            -> IntVal(<string>,Kind)
+
+/* R413 */
+    RealExpr                          -> RealVal
+    RealVal                           -> RealVal(<string>)
+    RealVal                           -> RealVal(<string>,Kind)
+
+/* R424 */
+    LogicalExpr                       -> LogicalVal
+    LogicalVal                        -> TRUE()
+    LogicalVal                        -> TRUE(Kind)
+    LogicalVal                        -> FALSE()
+    LogicalVal                        -> FALSE(Kind)
+
+/* R426 */
+    Stmt                              -> DerivedTypeStmt
+    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
+
+/* R429 */
+    Stmt                              -> EndTypeStmt
+    EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
+
+/* R430 */
+    Stmt                              -> SequenceStmt
+    SequenceStmt                      -> SequenceStmt(OptLabel)
+
+    TypeAttrSpec                      -> ABSTRACT()
+    TypeAttrSpec                      -> AccessSpec
+    TypeAttrSpec                      -> BIND()
+    TypeAttrSpec                      -> Extends(ParentTypeName)
+
+    Stmt                              -> TypeParamDefStmt
+    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl)
+
+    TypeParamDecl                     -> TypeParamDecl(Name,OptEqualsExpr)
+
+    OptEqualsExpr                     -> no-expr()
+    OptEqualsExpr                     -> IntExpr
+
+/* R435 */
+    Decl                              -> ComponentDefStmt
+    ComponentDefStmt                  -> DataComponentDefStmt
+
+/* R436 */
+    Stmt                              -> DataComponentDefStmt
+    DataComponentDefStmt              -> DataComponentDefStmt(OptLabel,DeclarationTypeSpec,ListStarOfComponentAttrSpec,ListPlusOfComponentDecl)
+
+/* R437 */
+    ComponentAttrSpec                 -> AccessSpec
+    ComponentAttrSpec                 -> ALLOCATABLE()
+    ComponentAttrSpec                 -> Codimension(CoarraySpec)
+    ComponentAttrSpec                 -> CONTIGUOUS()
+    ComponentAttrSpec                 -> Dimension(ArraySpec)
+    ComponentAttrSpec                 -> POINTER()
+
+/* TODO - SIMPLIFY - Initialization is Init(Expr) always I think (YES, FIXME)*/
+
+/* R438 */
+    Decl                              -> ComponentDecl
+    ComponentDecl                     -> ComponentDecl(Name,ListStarOfRange,ListStarOfRange,OptCharLength,OptComponentInitialization)
+
+/* R440 */
+    Stmt                              -> ProcComponentDefStmt
+    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec,ListPlusOfProcDecl)
+
+    ProcDecl                          -> ProcDecl(Name,ProcPointerInit)
+    ProcDecl                          -> ProcDecl(Name,NoProcPointerInit)
+
+    NoProcPointerInit                 -> no-init()
+    ProcPointerInit                   -> InitialProcTarget
+    ProcPointerInit                   -> NullInit
+
+    InitialProcTarget                 -> ProcedureName
+
+    ProcComponentAttrSpec             -> POINTER()
+    ProcComponentAttrSpec             -> PASS()
+    ProcComponentAttrSpec             -> NOPASS()
+    ProcComponentAttrSpec             -> AccessSpec
+
+    OptComponentInitialization        -> Expr
+    OptComponentInitialization        -> no-init()
+
+    InitialDataTarget                 -> Expr
+
+/* R444 */
+    Decl                              -> PrivateComponentsStmt
+    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel)
+
+/* R445 */
+    Decl                              -> TypeBoundProcPart
+    TypeBoundProcPart                 -> TypeBoundProcPart(OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding)
+
+    OptTypeBoundProcPart              -> TypeBoundProcPart
+    OptTypeBoundProcPart              -> no-type-bound-procedure-part()
+
+/* R446 */
+    BindingPrivateStmt                -> BindingPrivateStmt(OptLabel)
+
+    OptBindingPrivateStmt             -> BindingPrivateStmt
+    OptBindingPrivateStmt             -> no-binding-private-stmt()
+
+/* R447 */
+    TypeBoundProcBinding              -> FinalProcedureStmt
+    TypeBoundProcBinding              -> TypeBoundGenericStmt
+    TypeBoundProcBinding              -> TypeBoundProcedureStmt
+
+/* R448 */
+    Decl                              -> TypeBoundProcedureStmt
+    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt(OptLabel,OptBindingAttrList,ListPlusOfTypeBoundProcDecl)
+
+    TypeBoundProcedureStmt            -> TypeBoundProcedureInterfaceStmt(OptLabel,Name,ListPlusOfBindingAttr,ListPlusOfName)
+
+    OptBindingAttrList                -> no-list()
+    OptBindingAttrList                -> comma-list(ListPlusOfBindingAttr)
+
+/* R449 */
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,NoProcedureName)
+    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,ProcedureName)
+
+    BindingName                       -> Ident
+
+    ProcedureName                     -> Ident
+    NoProcedureName                   -> no-procedure-name()
+
+/* R450 */
+    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfName)
+
+    TypeParamAttrSpec                 -> LEN()
+    TypeParamAttrSpec                 -> KIND()
+
+/* R451 */
+    BindingAttr                       -> Pass(ArgName)
+    BindingAttr                       -> Pass(NoArgName)
+    BindingAttr                       -> NOPASS()
+    BindingAttr                       -> NON_OVERRIDABLE()
+    BindingAttr                       -> DEFERRED()
+    BindingAttr                       -> AccessSpec
+
+/* R452 */
+    Stmt                              -> FinalProcedureStmt
+    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
+
+/* R453 */
+    Type                              -> DerivedType
+    DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
+
+/* R454 */
+    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
+
+    Type                              -> ArrayType
+    ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
+
+    ArraySpec                         -> ArraySpec(ListStarOfRange)
+    CoarraySpec                       -> CoarraySpec(ListStarOfRange)
+
+    OptArraySpec                      -> ArraySpec(ArraySpec)
+    OptArraySpec                      -> no-list()
+
+    DimSpec                           -> Range
+    DimSpec                           -> STAR()
+    DimSpec                           -> COLON()
+    Range                             -> Range(Expr,Expr)
+
+    Type                              -> DerivedTypeDef
+    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ListStarOfComponentPart,OptTypeBoundProcPart,EndTypeStmt)
+
+/* R458 */
+    EnumDef                           -> EnumDef(EnumDefStmt,ListPlusEnumeratorDefStmt,EndEnumStmt)
+
+/* R459 */
+    Stmt                              -> EnumDefStmt
+    EnumDefStmt                       -> EnumDefStmt(OptLabel)
+
+/* R460 */
+    Stmt                              -> EnumeratorDefStmt
+    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator)
+
+/* R461 */
+    Enumerator                        -> Enumerator(NamedConstant,OptEqualsExpr)
+
+/* R462 */
+    Stmt                              -> EndEnumStmt
+    EndEnumStmt                       -> EndEnumStmt(OptLabel)
+
+
     ListStarOfScope0                  -> ListPlusOfScope0
     ListStarOfScope0                  -> <nil>()
     ListStarOfScope0                  -> <conc>(ListStarOfScope0,ListStarOfScope0)
@@ -45,10 +259,6 @@ regular tree grammar
     ListPlusOfDimSpec0                -> <conc>(ListPlusOfDimSpec0,ListStarOfDimSpec0)
     ListPlusOfDimSpec0                -> <conc>(ListPlusOfDimSpec0,ListPlusOfDimSpec0)
     ListPlusOfDimSpec0                -> <cons>(DimSpec,ListStarOfDimSpec0)
-    OptOfpCoshape0                    -> <some>(OfpCoshape)
-    OptOfpCoshape0                    -> <none>()
-    OptOfpShape0                      -> <some>(OfpShape)
-    OptOfpShape0                      -> <none>()
 
     ListStarOfStrChar0                -> <string>
     ListPlusOfStrChar0                -> <string>
@@ -76,27 +286,6 @@ regular tree grammar
     ListPlusOfVEditDesc0              -> <conc>(ListPlusOfVEditDesc0,ListPlusOfVEditDesc0)
     ListPlusOfVEditDesc0              -> <cons>(VEditDesc,ListStarOfVEditDesc0)
 
-    ListStarOfTypeGuardStmtAndBlock0  -> ListPlusOfTypeGuardStmtAndBlock0
-    ListStarOfTypeGuardStmtAndBlock0  -> <nil>()
-    ListStarOfTypeGuardStmtAndBlock0  -> <conc>(ListStarOfTypeGuardStmtAndBlock0,ListStarOfTypeGuardStmtAndBlock0)
-    ListPlusOfTypeGuardStmtAndBlock0  -> <conc>(ListStarOfTypeGuardStmtAndBlock0,ListPlusOfTypeGuardStmtAndBlock0)
-    ListPlusOfTypeGuardStmtAndBlock0  -> <conc>(ListPlusOfTypeGuardStmtAndBlock0,ListStarOfTypeGuardStmtAndBlock0)
-    ListPlusOfTypeGuardStmtAndBlock0  -> <conc>(ListPlusOfTypeGuardStmtAndBlock0,ListPlusOfTypeGuardStmtAndBlock0)
-    ListPlusOfTypeGuardStmtAndBlock0  -> <cons>(TypeGuardStmtAndBlock,ListStarOfTypeGuardStmtAndBlock0)
-    ListStarOfCaseValueRange0         -> ListPlusOfCaseValueRange0
-    ListStarOfCaseValueRange0         -> <nil>()
-    ListStarOfCaseValueRange0         -> <conc>(ListStarOfCaseValueRange0,ListStarOfCaseValueRange0)
-    ListPlusOfCaseValueRange0         -> <conc>(ListStarOfCaseValueRange0,ListPlusOfCaseValueRange0)
-    ListPlusOfCaseValueRange0         -> <conc>(ListPlusOfCaseValueRange0,ListStarOfCaseValueRange0)
-    ListPlusOfCaseValueRange0         -> <conc>(ListPlusOfCaseValueRange0,ListPlusOfCaseValueRange0)
-    ListPlusOfCaseValueRange0         -> <cons>(CaseValueRange,ListStarOfCaseValueRange0)
-    ListStarOfCaseStmtAndBlock0       -> ListPlusOfCaseStmtAndBlock0
-    ListStarOfCaseStmtAndBlock0       -> <nil>()
-    ListStarOfCaseStmtAndBlock0       -> <conc>(ListStarOfCaseStmtAndBlock0,ListStarOfCaseStmtAndBlock0)
-    ListPlusOfCaseStmtAndBlock0       -> <conc>(ListStarOfCaseStmtAndBlock0,ListPlusOfCaseStmtAndBlock0)
-    ListPlusOfCaseStmtAndBlock0       -> <conc>(ListPlusOfCaseStmtAndBlock0,ListStarOfCaseStmtAndBlock0)
-    ListPlusOfCaseStmtAndBlock0       -> <conc>(ListPlusOfCaseStmtAndBlock0,ListPlusOfCaseStmtAndBlock0)
-    ListPlusOfCaseStmtAndBlock0       -> <cons>(CaseStmtAndBlock,ListStarOfCaseStmtAndBlock0)
     ListStarOfElseIfStmtAndBlock0     -> ListPlusOfElseIfStmtAndBlock0
     ListStarOfElseIfStmtAndBlock0     -> <nil>()
     ListStarOfElseIfStmtAndBlock0     -> <conc>(ListStarOfElseIfStmtAndBlock0,ListStarOfElseIfStmtAndBlock0)
@@ -195,20 +384,6 @@ regular tree grammar
     ListPlusOfDeferredCoshapeSpec0    -> <conc>(ListPlusOfDeferredCoshapeSpec0,ListPlusOfDeferredCoshapeSpec0)
     ListPlusOfDeferredCoshapeSpec0    -> <cons>(DeferredCoshapeSpec,ListStarOfDeferredCoshapeSpec0)
 
-    ListStarOfEnumerator0             -> ListPlusOfEnumerator0
-    ListStarOfEnumerator0             -> <nil>()
-    ListStarOfEnumerator0             -> <conc>(ListStarOfEnumerator0,ListStarOfEnumerator0)
-    ListPlusOfEnumerator0             -> <conc>(ListStarOfEnumerator0,ListPlusOfEnumerator0)
-    ListPlusOfEnumerator0             -> <conc>(ListPlusOfEnumerator0,ListStarOfEnumerator0)
-    ListPlusOfEnumerator0             -> <conc>(ListPlusOfEnumerator0,ListPlusOfEnumerator0)
-    ListPlusOfEnumerator0             -> <cons>(Enumerator,ListStarOfEnumerator0)
-    ListStarOfEnumeratorDefStmt0      -> ListPlusOfEnumeratorDefStmt0
-    ListStarOfEnumeratorDefStmt0      -> <nil>()
-    ListStarOfEnumeratorDefStmt0      -> <conc>(ListStarOfEnumeratorDefStmt0,ListStarOfEnumeratorDefStmt0)
-    ListPlusOfEnumeratorDefStmt0      -> <conc>(ListStarOfEnumeratorDefStmt0,ListPlusOfEnumeratorDefStmt0)
-    ListPlusOfEnumeratorDefStmt0      -> <conc>(ListPlusOfEnumeratorDefStmt0,ListStarOfEnumeratorDefStmt0)
-    ListPlusOfEnumeratorDefStmt0      -> <conc>(ListPlusOfEnumeratorDefStmt0,ListPlusOfEnumeratorDefStmt0)
-    ListPlusOfEnumeratorDefStmt0      -> <cons>(EnumeratorDefStmt,ListStarOfEnumeratorDefStmt0)
     ListStarOfComponentSpec0          -> ListPlusOfComponentSpec0
     ListStarOfComponentSpec0          -> <nil>()
     ListStarOfComponentSpec0          -> <conc>(ListStarOfComponentSpec0,ListStarOfComponentSpec0)
@@ -217,35 +392,6 @@ regular tree grammar
     ListPlusOfComponentSpec0          -> <conc>(ListPlusOfComponentSpec0,ListPlusOfComponentSpec0)
     ListPlusOfComponentSpec0          -> <cons>(ComponentSpec,ListStarOfComponentSpec0)
 
-    ListStarOfFinalSubroutineName0    -> ListPlusOfFinalSubroutineName0
-    ListStarOfFinalSubroutineName0    -> <nil>()
-    ListStarOfFinalSubroutineName0    -> <conc>(ListStarOfFinalSubroutineName0,ListStarOfFinalSubroutineName0)
-    ListPlusOfFinalSubroutineName0    -> <conc>(ListStarOfFinalSubroutineName0,ListPlusOfFinalSubroutineName0)
-    ListPlusOfFinalSubroutineName0    -> <conc>(ListPlusOfFinalSubroutineName0,ListStarOfFinalSubroutineName0)
-    ListPlusOfFinalSubroutineName0    -> <conc>(ListPlusOfFinalSubroutineName0,ListPlusOfFinalSubroutineName0)
-    ListPlusOfFinalSubroutineName0    -> <cons>(FinalSubroutineName,ListStarOfFinalSubroutineName0)
-    ListStarOfBindingName0            -> ListPlusOfBindingName0
-    ListStarOfBindingName0            -> <nil>()
-    ListStarOfBindingName0            -> <conc>(ListStarOfBindingName0,ListStarOfBindingName0)
-    ListPlusOfBindingName0            -> <conc>(ListStarOfBindingName0,ListPlusOfBindingName0)
-    ListPlusOfBindingName0            -> <conc>(ListPlusOfBindingName0,ListStarOfBindingName0)
-    ListPlusOfBindingName0            -> <conc>(ListPlusOfBindingName0,ListPlusOfBindingName0)
-    ListPlusOfBindingName0            -> <cons>(BindingName,ListStarOfBindingName0)
-    ListStarOfBindingAttr0            -> ListPlusOfBindingAttr0
-    ListStarOfBindingAttr0            -> <nil>()
-    ListStarOfBindingAttr0            -> <conc>(ListStarOfBindingAttr0,ListStarOfBindingAttr0)
-    ListPlusOfBindingAttr0            -> <conc>(ListStarOfBindingAttr0,ListPlusOfBindingAttr0)
-    ListPlusOfBindingAttr0            -> <conc>(ListPlusOfBindingAttr0,ListStarOfBindingAttr0)
-    ListPlusOfBindingAttr0            -> <conc>(ListPlusOfBindingAttr0,ListPlusOfBindingAttr0)
-    ListPlusOfBindingAttr0            -> <cons>(BindingAttr,ListStarOfBindingAttr0)
-    ListStarOfTypeBoundProcDecl0      -> ListPlusOfTypeBoundProcDecl0
-    ListStarOfTypeBoundProcDecl0      -> <nil>()
-    ListStarOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListStarOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListStarOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <conc>(ListPlusOfTypeBoundProcDecl0,ListPlusOfTypeBoundProcDecl0)
-    ListPlusOfTypeBoundProcDecl0      -> <cons>(TypeBoundProcDecl,ListStarOfTypeBoundProcDecl0)
-
     ListStarOfDeferredShapeSpec0      -> ListPlusOfDeferredShapeSpec0
     ListStarOfDeferredShapeSpec0      -> <nil>()
     ListStarOfDeferredShapeSpec0      -> <conc>(ListStarOfDeferredShapeSpec0,ListStarOfDeferredShapeSpec0)
@@ -253,14 +399,6 @@ regular tree grammar
     ListPlusOfDeferredShapeSpec0      -> <conc>(ListPlusOfDeferredShapeSpec0,ListStarOfDeferredShapeSpec0)
     ListPlusOfDeferredShapeSpec0      -> <conc>(ListPlusOfDeferredShapeSpec0,ListPlusOfDeferredShapeSpec0)
     ListPlusOfDeferredShapeSpec0      -> <cons>(DeferredShapeSpec,ListStarOfDeferredShapeSpec0)
-
-    ListStarOfTypeParamName0          -> ListPlusOfTypeParamName0
-    ListStarOfTypeParamName0          -> <nil>()
-    ListStarOfTypeParamName0          -> <conc>(ListStarOfTypeParamName0,ListStarOfTypeParamName0)
-    ListPlusOfTypeParamName0          -> <conc>(ListStarOfTypeParamName0,ListPlusOfTypeParamName0)
-    ListPlusOfTypeParamName0          -> <conc>(ListPlusOfTypeParamName0,ListStarOfTypeParamName0)
-    ListPlusOfTypeParamName0          -> <conc>(ListPlusOfTypeParamName0,ListPlusOfTypeParamName0)
-    ListPlusOfTypeParamName0          -> <cons>(TypeParamName,ListStarOfTypeParamName0)
 
     ListStarOfLetter0                 -> <string>
     ListPlusOfLetter0                 -> <string>
@@ -388,11 +526,6 @@ regular tree grammar
     OptSubroutineName                 -> no-subroutine-name()
     SubroutineName                    -> Name
 
-    ArgList                           -> ArgList(ListStarOfOfpDummyArg0)
-    STAR                              -> STAR()
-    OfpDummyArg                       -> STAR(STAR)
-    OfpDummyArg                       -> OfpDummyArg(String)
-
     ArrayConstructor                  -> ArrayConstructor(AcSpec)
     AcSpec                            -> AcSpec(OptTypeSpec,ListStarOfAcValue)
 
@@ -453,24 +586,12 @@ regular tree grammar
     ElsewhereClause                   -> ElsewhereClause(ElsewhereStmt,ListStarOfWhereBodyConstruct)
     MaskedElsewhereClause             -> MaskedElsewhereClause(MaskedElsewhereStmt,ListStarOfWhereBodyConstruct)
 
-
-    Expr                              -> Expr(OfpLiteral)
-    OfpOp                             -> GE
-    OfpOp                             -> GT
-    OfpOp                             -> LE
-    OfpOp                             -> LT
-    OfpOp                             -> NE
-    OfpOp                             -> EQ
     GE                                -> GE()
     GT                                -> GT()
     LE                                -> LE()
     LT                                -> LT()
     NE                                -> NE()
     EQ                                -> EQ()
-    OfpDefinedOp                      -> OfpDefinedOp(String)
-    OfpCoshape                        -> OfpCoshape(ListPlusOfDimSpec0)
-    OfpShape                          -> OfpShape(ListPlusOfDimSpec0)
-    OfpAllocOpt                       -> Expr
 
     VarRef                            -> VarRef(Name)
     VarDef                            -> VarDef(Name)
@@ -604,20 +725,6 @@ regular tree grammar
 /* R569 */
     CommonBlockObject                 -> CommonBlockObject(VariableName,OptArraySpec)
 
-    Expr                              -> OfpAssumedRank
-    Expr                              -> OfpImpliedShape
-    Expr                              -> OfpExplicitShape
-    Expr                              -> OfpExplicitCoshape
-    Expr                              -> OfpAssumedSize
-    Expr                              -> OfpAssumedOrDeferredShape
-
-    OfpIntent                         -> INOUT
-    OfpIntent                         -> OUT
-    OfpIntent                         -> IN
-    INOUT                             -> INOUT()
-    OUT                               -> OUT()
-    IN                                -> IN()
-
     OptInitialization                 -> no-init()
     OptInitialization                 -> Initialization
     Initialization                    -> Expr
@@ -630,136 +737,16 @@ regular tree grammar
 
     Var                               -> Var(Name,Type,OptInitialization)
 
-/* R404 */
-    Type                              -> unknown-type()
-    Type                              -> IntrinsicType
-    IntrinsicType                     -> INTEGER()
-    IntrinsicType                     -> INTEGER(Kind)
-    IntrinsicType                     -> REAL()
-    IntrinsicType                     -> REAL(Kind)
-    IntrinsicType                     -> DOUBLEPRECISION()
-    IntrinsicType                     -> COMPLEX()
-    IntrinsicType                     -> COMPLEX(Kind)
-    IntrinsicType                     -> DOUBLECOMPLEX()
-    IntrinsicType                     -> LOGICAL()
-    IntrinsicType                     -> LOGICAL(Kind)
-
-    IntrinsicType                     -> CHARACTER(CharLength,Kind)
-    IntrinsicType                     -> CHARACTER(CharLength)
-    IntrinsicType                     -> CHARACTER()
-    IntrinsicType                     -> CHARACTER_LEN(CharLength)
-
-/* R453 */
-    Type                              -> DerivedType
-    DerivedType                       -> DerivedType(Name,ListStarOfTypeParamSpec)
-/* TODO - replace with DerivedTyped */
-    DerivedTypeSpec                   -> DerivedTypeSpec(TypeName,OptTypeParamSpecList)
-
-/* R454 */
-    TypeParamSpec                     -> TypeParamSpec(Keyword,TypeParamValue)
-
-    Type                              -> ArrayType
-    ArrayType                         -> ArrayType(Type,ListStarOfRange,ListStarOfRange)
-
-    ArraySpec                         -> ArraySpec(ListStarOfRange)
-    CoarraySpec                       -> CoarraySpec(ListStarOfRange)
-
-    OptArraySpec                      -> ArraySpec(ArraySpec)
-    OptArraySpec                      -> no-list()
-
-    DimSpec                           -> Range
-    DimSpec                           -> STAR()
-    DimSpec                           -> COLON()
-    Range                             -> Range(Expr,Expr)
-
-    Type                              -> DerivedTypeDef
-    DerivedTypeDef                    -> DerivedTypeDef(DerivedTypeStmt,ListStarOfTypeParamDefStmt,ListStarOfPrivateOrSequence,ListStarOfComponentPart,OptTypeBoundProcPart,EndTypeStmt)
-
-    Stmt                              -> DerivedTypeStmt
-    DerivedTypeStmt                   -> DerivedTypeStmt(OptLabel,ListStarOfTypeAttrSpec,Name,ListStarOfName)
-
-/* R429 */
-    Stmt                              -> EndTypeStmt
-    EndTypeStmt                       -> EndTypeStmt(OptLabel,Name)
-
-/* R430 */
-    Stmt                              -> SequenceStmt
-    SequenceStmt                      -> SequenceStmt(OptLabel)
-
-    TypeAttrSpec                      -> ABSTRACT()
-    TypeAttrSpec                      -> AccessSpec
-    TypeAttrSpec                      -> BIND()
-    TypeAttrSpec                      -> Extends(ParentTypeName)
-
-    Stmt                              -> TypeParamDefStmt
-    TypeParamDefStmt                  -> TypeParamDefStmt(OptLabel,OptKind,TypeParamAttrSpec,ListPlusOfTypeParamDecl)
-
-    TypeParamDecl                     -> TypeParamDecl(Name,OptEqualsExpr)
-
-    OptEqualsExpr                     -> no-expr()
-    OptEqualsExpr                     -> IntExpr
-
-    Decl                              -> ComponentDefStmt
-    ComponentDefStmt                  -> DataComponentDefStmt
-    ComponentDefStmt                  -> ProcComponentDefStmt
-
-    Stmt                              -> DataComponentDefStmt
-    DataComponentDefStmt              -> DataComponentDefStmt(OptLabel,DeclarationTypeSpec,ListStarOfComponentAttrSpec,ListPlusOfComponentDecl)
-
-/* R437 */
-    ComponentAttrSpec                 -> AccessSpec
-    ComponentAttrSpec                 -> ALLOCATABLE()
-    ComponentAttrSpec                 -> Codimension(CoarraySpec)
-    ComponentAttrSpec                 -> CONTIGUOUS()
-    ComponentAttrSpec                 -> Dimension(ArraySpec)
-    ComponentAttrSpec                 -> POINTER()
-
-/* TODO - SIMPLIFY - Initialization is Init(Expr) always I think */
-
-    Decl                              -> ComponentDecl
-    ComponentDecl                     -> ComponentDecl(Name,ListStarOfRange,ListStarOfRange,OptCharLength,OptComponentInitialization)
-
-    Stmt                              -> ProcComponentDefStmt
-    ProcComponentDefStmt              -> ProcComponentDefStmt(OptLabel,OptProcInterface,ListPlusOfProcComponentAttrSpec,ListPlusOfProcDecl)
-
-    ProcDecl                          -> ProcDecl(Name,ProcPointerInit)
-    ProcDecl                          -> ProcDecl(Name,NoProcPointerInit)
-
-    NoProcPointerInit                 -> no-init()
-    ProcPointerInit                   -> InitialProcTarget
-    ProcPointerInit                   -> NullInit
-
-    InitialProcTarget                 -> ProcedureName
-
-    ProcComponentAttrSpec             -> POINTER()
-    ProcComponentAttrSpec             -> PASS()
-    ProcComponentAttrSpec             -> NOPASS()
-    ProcComponentAttrSpec             -> AccessSpec
-
-    OptComponentInitialization        -> Expr
-    OptComponentInitialization        -> no-init()
-
-    InitialDataTarget                 -> Expr
-
-    Decl                              -> TypeBoundProcPart
-    TypeBoundProcPart                 -> TypeBoundProcPart(OptBindingPrivateStmt,ListStarOfTypeBoundProcBinding)
-
-    OptTypeBoundProcPart              -> TypeBoundProcPart
-    OptTypeBoundProcPart              -> no-type-bound-procedure-part()
-
-    Stmt                              -> PrivateComponentsStmt
-    PrivateComponentsStmt             -> PrivateComponentsStmt(OptLabel)
-
-    Stmt                              -> FinalProcedureStmt
-    FinalProcedureStmt                -> FinalProcedureStmt(OptLabel,ListPlusOfName)
-
+/* R526 */
     Stmt                              -> AllocatableStmt
     AllocatableStmt                   -> AllocatableStmt(OptLabel,ListPlusOfAllocatableDecl)
     AllocatableDecl                   -> Var
 
+/* R528 */
     Stmt                              -> AsynchronousStmt
     AsynchronousStmt                  -> AsynchronousStmt(OptLabel,ListPlusOfName)
 
+/* R626 */
     Stmt                              -> AllocateStmt
     AllocateStmt                      -> AllocateStmt(OptLabel,OptTypeSpec,ListStarOfAllocation,ListStarOfAllocOpt)
     AllocOpt                          -> ERRMSG(ErrmsgVariable)
@@ -792,32 +779,6 @@ regular tree grammar
 
     NoTypeSpec                        -> no-type-spec()
 
-    OptKind                           -> no-kind()
-    OptKind                           -> Kind
-    Kind                              -> Kind(Expr)
-
-    IntExpr                           -> IntVal
-    IntVal                            -> IntVal(<string>)
-    IntVal                            -> IntVal(<string>,Kind)
-
-    RealExpr                          -> RealVal
-    RealVal                           -> RealVal(<string>)
-    RealVal                           -> RealVal(<string>,Kind)
-
-    LogicalExpr                       -> LogicalVal
-    LogicalVal                        -> LogicalVal(<string>)
-    LogicalVal                        -> LogicalVal(<string>,Kind)
-
-    OfpOp                             -> OfpOp(String)
-    OfpLiteral                        -> OfpLiteral(String,Type)
-
-    ProgramUnit                       -> MainProgram
-    Program                           -> Program(ListPlusOfProgramUnit)
-    Scope                             -> Scope(ListStarOfDecl,ListStarOfStmt,ListStarOfDecl)
-
-    OfpFile                           -> OfpFile(String)
-    OfpLiteral                        -> OfpLiteral(String)
-
     STAR                              -> <string>
     RECURSIVE                         -> <string>
     PURE                              -> <string>
@@ -831,8 +792,6 @@ regular tree grammar
 
     SeparateModuleSubprogram          -> SeparateModuleSubprogram(MpSubprogramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
 
-    ProcedureName                     -> Ident
-    NoProcedureName                   -> no-procedure-name()
 
     DummyArg                          -> STAR()
     DummyArg                          -> DummyArgName
@@ -954,40 +913,102 @@ regular tree grammar
     Stmt                              -> EndIfStmt
     EndIfStmt                         -> EndIfStmt(OptLabel,OptName)
 
+/* R838 */
+    CaseConstruct                     -> CaseConstruct(SelectCaseStmt,ListStarOfCaseStmtAndBlock,EndSelectStmt)
+
+/* R839 */
+    Stmt                              -> SelectCaseStmt
+    SelectCaseStmt                    -> SelectCaseStmt(OptLabel,OptName,Expr)
+
+/* R840 */
+    Stmt                              -> CaseStmt
+    CaseStmt                          -> CaseStmt(OptLabel,CaseSelector,OptName)
+
+/* R841 */
+    Stmt                              -> EndSelectStmt
+    EndSelectStmt                     -> EndSelectStmt(OptLabel,OptName)
+
+/* R843 */
+    CaseSelector                      -> paren-list(ListPlusOfCaseValueRange)
+    CaseSelector                      -> DEFAULT()
+
+/* R844 */
+    CaseValueRange                    -> CaseValue(CaseValue)
+    CaseValueRange                    -> CaseValueRange(CaseValue,NoHigh)
+    CaseValueRange                    -> CaseValueRange(NoLow,CaseValue)
+    CaseValueRange                    -> CaseValueRange(CaseValue,CaseValue)
+
+/* R845 */
+    CaseValue                         -> ConstantExpr
+    NoHigh                            -> no-high()
+    NoLow                             -> no-low()
+
+/* R846 */
+    SelectTypeConstruct               -> SelectTypeConstruct(SelectTypeStmt,ListStarOfTypeGuardStmtAndBlock,EndSelectTypeStmt)
+
+    CaseStmtAndBlock                  -> CaseStmtBlock(CaseStmt,Block)
+    TypeGuardStmtAndBlock             -> TypeGuardStmtBlock(TypeGuardStmt,Block)
+
+/* R847 */
+    Stmt                              -> SelectTypeStmt
+    SelectTypeStmt                    -> SelectTypeStmt(OptLabel,OptName,OptName,Selector)
+
+/* R848 */
+    Stmt                              -> TypeGuardStmt
+    TypeGuardStmt                     -> TypeGuardStmt(OptLabel,Type,OptName)
+    TypeGuardStmt                     -> ClassGuardStmt(OptLabel,DerivedType,OptName)
+    TypeGuardStmt                     -> DefaultGuardStmt(OptLabel,OptName)
+
+/* R849 */
+    Stmt                              -> EndSelectTypeStmt
+    EndSelectTypeStmt                 -> EndSelectTypeStmt(OptLabel,OptName)
+
+/* R850 */
     Stmt                              -> ExitStmt
     ExitStmt                          -> ExitStmt(OptLabel,Name)
 
+/* R851 */
     Stmt                              -> GotoStmt
     GotoStmt                          -> GotoStmt(OptLabel,LblRef)
 
+/* R852 */
     Stmt                              -> ComputedGotoStmt
     ComputedGotoStmt                  -> ComputedGotoStmt(OptLabel,ListPlusOfLblRef,Expr)
 
+/* R853 */
     Stmt                              -> ArithmeticIfStmt
     ArithmeticIfStmt                  -> ArithmeticIfStmt(OptLabel,Expr,LblRef,LblRef,LblRef)
 
+/* R854 */
     Stmt                              -> ContinueStmt
     ContinueStmt                      -> ContinueStmt(OptLabel)
 
+/* R855 */
     Stmt                              -> StopStmt
     StopStmt                          -> StopStmt(OptLabel,OptStopCode)
 
+/* R856 */
     Stmt                              -> ErrorStopStmt
     ErrorStopStmt                     -> ErrorStopStmt(OptLabel,OptStopCode)
 
-    OptStopCode                       -> no-stop-code()
-    OptStopCode                       -> StopCode
+/* R857 */
     StopCode                          -> Expr
+    OptStopCode                       -> StopCode
+    OptStopCode                       -> no-stop-code()
 
+/* Deleted */
     Stmt                              -> PauseStmt(OptLabel,OptStopCode)
     PauseStmt                         -> PauseStmt(OptLabel,OptStopCode)
 
+/* R858 */
     Stmt                              -> SyncAllStmt
     SyncAllStmt                       -> SyncAllStmt(OptLabel,ListStarOfSyncStat)
 
+/* R859 */
     SyncStat                          -> ERRMSG(ErrmsgVariable)
     SyncStat                          -> STAT(StatVariable)
 
+/* R860 */
     Stmt                              -> SyncImagesStmt
     SyncImagesStmt                    -> SyncImagesStmt(OptLabel,ImageSet,ListStarOfSyncStat)
 
@@ -1043,6 +1064,11 @@ regular tree grammar
     Stmt                              -> BackspaceStmt
     BackspaceStmt                     -> BackspaceStmt(OptLabel,ListPlusOfPositionSpec)
 
+/* R925 */
+    Stmt                              -> EndfileStmt
+    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec)
+
+/* R926 */
     Stmt                              -> RewindStmt
     RewindStmt                        -> RewindStmt(OptLabel,ListPlusOfPositionSpec)
 
@@ -1118,10 +1144,6 @@ regular tree grammar
     Rename                            -> Rename(Name,Name)
     Rename                            -> RenameOp(LocalDefinedOperator,UseDefinedOperator)
 
-    Only                              -> Only(OfpGenericSpec)
-    Only                              -> Only(Name)
-    Only                              -> Only(Rename)
-
     Decl                              -> InterfaceBlock
     InterfaceBlock                    -> InterfaceBlock(InterfaceStmt,
                                                           ListStarOfInterfaceSpecification,
@@ -1158,9 +1180,6 @@ regular tree grammar
     GenericSpec                       -> ASSIGNMENT()
     GenericSpec                       -> DefinedIoGenericSpec
 
-    OfpGenericSpec                    -> OfpDefinedOp(OfpDefinedOp)
-    OfpGenericSpec                    -> OfpOp(OfpOp)
-
     DefinedIoGenericSpec              -> READ_FORMATTED()
     DefinedIoGenericSpec              -> READ_UNFORMATTED()
     DefinedIoGenericSpec              -> WRITE_FORMATTED()
@@ -1187,6 +1206,7 @@ regular tree grammar
     Decl                              -> ImportStmt
     ImportStmt                        -> ImportStmt(OptLabel,ListStarOfName)
 
+/* R1210 */
     Decl                              -> ExternalStmt
     ExternalStmt                      -> ExternalStmt(OptLabel,ListPlusOfName)
 
@@ -1211,10 +1231,6 @@ regular tree grammar
     Arg                               -> Expr
     Arg                               -> Arg(Keyword,Expr)
     Arg                               -> Arg(OptKeyword,AltReturn)
-
-    OptKeyword                        -> no-keyword()
-    OptKeyword                        -> Keyword
-    Keyword                           -> <string>
 
     AltReturn                         -> AltReturn(Label)
 
@@ -1354,9 +1370,6 @@ regular tree grammar
     DataEditDesc                      -> B(OptR,IntLiteralConstant,OptM)
     DataEditDesc                      -> I(OptR,IntLiteralConstant,OptM)
 
-    EndfileStmt                       -> EndfileStmt(OptLabel,ListPlusOfPositionSpec,EOS)
-    EndfileStmt                       -> endfile-unit-stmt(OptLabel,FileUnitNumber,EOS)
-
     NoStride                          -> no-stride()
     IoImpliedDoControl                -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,NoStride)
     IoImpliedDoControl                -> IoImpliedDoControl(DoVariable,IntExpr,IntExpr,IntExpr)
@@ -1415,38 +1428,6 @@ regular tree grammar
     IoUnit                            -> IntExpr
 
 
-    OptSelectConstructName            -> no-name()
-    OptSelectConstructName            -> SelectConstructName
-    NoSelectConstructName             -> no-name()
-    SelectConstructName               -> Ident
-    EndSelectTypeStmt                 -> EndSelectTypeStmt(OptLabel,OptSelectConstructName,EOS)
-    TypeGuardStmt                     -> DefaultGuardStmt(OptLabel,OptSelectConstructName,EOS)
-    TypeGuardStmt                     -> ClassGuardStmt(OptLabel,DerivedTypeSpec,OptSelectConstructName,EOS)
-    TypeGuardStmt                     -> TypeGuardStmt(OptLabel,TypeSpec,OptSelectConstructName,EOS)
-
-    SelectTypeStmt                    -> SelectTypeStmt(OptLabel,NoSelectConstructName,OptAssociateName,Selector,EOS)
-    SelectTypeStmt                    -> SelectTypeStmt(OptLabel,SelectConstructName,OptAssociateName,Selector,EOS)
-    TypeGuardStmtAndBlock             -> TypeGuardStmtBlock(TypeGuardStmt,Block)
-    SelectTypeConstruct               -> SelectTypeConstruct(SelectTypeStmt,ListStarOfTypeGuardStmtAndBlock0,EndSelectTypeStmt)
-    CaseValue                         -> ConstantExpr
-    NoHigh                            -> no-high()
-    NoLow                             -> no-low()
-    CaseValueRange                    -> CaseValueRange(CaseValue,CaseValue)
-    CaseValueRange                    -> CaseValueRange(NoLow,CaseValue)
-    CaseValueRange                    -> CaseValueRange(CaseValue,NoHigh)
-    CaseValueRange                    -> CaseValue(CaseValue)
-    CaseSelector                      -> DEFAULT()
-    CaseSelector                      -> paren-list(ListPlusOfCaseValueRange0)
-    CaseExpr                          -> Expr
-    EndSelectStmt                     -> EndSelectStmt(OptLabel,NoName,EOS)
-    EndSelectStmt                     -> EndSelectStmt(OptLabel,CaseConstructName,EOS)
-    CaseStmt                          -> CaseStmt(OptLabel,CaseSelector,NoName,EOS)
-    CaseStmt                          -> CaseStmt(OptLabel,CaseSelector,CaseConstructName,EOS)
-    CaseConstructName                 -> Ident
-    SelectCaseStmt                    -> SelectCaseStmt(OptLabel,NoName,CaseExpr,EOS)
-    SelectCaseStmt                    -> SelectCaseStmt(OptLabel,CaseConstructName,CaseExpr,EOS)
-    CaseStmtAndBlock                  -> CaseStmtBlock(CaseStmt,Block)
-    CaseConstruct                     -> CaseConstruct(SelectCaseStmt,ListStarOfCaseStmtAndBlock0,EndSelectStmt)
     IfStmt                            -> IfStmt(OptLabel,LogicalExpr,ActionStmt)
 
     OptElseStmtAndBlock               -> no-else-stmt()
@@ -1596,7 +1577,7 @@ regular tree grammar
     DataStmtConstant                  -> ConstantSubobject
     DataStmtConstant                  -> BozLiteralConstant
     DataStmtConstant                  -> CharLiteralConstant
-    DataStmtConstant                  -> LogicalLiteralConstant
+/* DELETE-ME?    DataStmtConstant                  -> LogicalLiteralConstant */
     DataStmtConstant                  -> ComplexLiteralConstant
     NoDataStmtRepeat                  -> no-repeat()
     DataStmtRepeat                    -> IntConstantSubobject
@@ -1678,60 +1659,26 @@ regular tree grammar
     BozLiteralConstant                -> BozLiteralConstant_HC(HexConstant)
     BozLiteralConstant                -> BozLiteralConstant_OC(OctalConstant)
     BozLiteralConstant                -> BozLiteralConstant_BC(BinaryConstant)
-    EndEnumStmt                       -> EndEnumStmt(OptLabel,EOS)
+
     OptEqualsExpr                     -> no-expr()
     OptEqualsExpr                     -> equals-expr(IntConstantExpr)
-    Enumerator                        -> Enumerator(NamedConstant,OptEqualsExpr)
-    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator0,EOS)
-    EnumeratorDefStmt                 -> EnumeratorDefStmt(OptLabel,ListPlusOfEnumerator0,EOS)
-    EnumDefStmt                       -> EnumDefStmt(OptLabel,EOS)
-    EnumDef                           -> EnumDef(EnumDefStmt,ListPlusOfEnumeratorDefStmt0,EndEnumStmt)
+
     ComponentDataSource               -> Expr
     ComponentSpec                     -> ComponentSpec(Keyword,ComponentDataSource)
     ComponentSpec                     -> ComponentSpec(NoKeyword,ComponentDataSource)
-    StructureConstructor              -> StructureConstructor(DerivedTypeSpec,ListStarOfComponentSpec0)
+    StructureConstructor              -> StructureConstructor(DerivedType,ListStarOfComponentSpec0)
 
     NoArgName                         -> no-arg-name()
     ArgName                           -> Ident
-    BindingAttr                       -> AccessSpec
-    BindingAttr                       -> DEFERRED()
-    BindingAttr                       -> NON_OVERRIDABLE()
-    BindingAttr                       -> NOPASS()
-    BindingAttr                       -> Pass(NoArgName)
-    BindingAttr                       -> Pass(ArgName)
+
     OptAccessSpec                     -> no-access-spec()
     OptAccessSpec                     -> comma-access-spec(AccessSpec)
-    TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfBindingName0,EOS)
-    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,NoProcedureName)
-    TypeBoundProcDecl                 -> TypeBoundProcDecl(BindingName,ProcedureName)
-    BindingName                       -> Ident
-    TypeBoundProcedureStmt            -> TypeBoundProcedureInterfaceStmt(OptLabel,InterfaceName,ListPlusOfBindingAttr0,ListPlusOfBindingName0,EOS)
-    OptBindingAttrList                -> no-list()
-    OptBindingAttrList                -> no-list()
-    OptBindingAttrList                -> comma-list(ListPlusOfBindingAttr0)
-    TypeBoundProcedureStmt            -> TypeBoundProcedureStmt(OptLabel,OptBindingAttrList,ListPlusOfTypeBoundProcDecl0,EOS)
-    TypeBoundProcBinding              -> FinalProcedureStmt
-    TypeBoundProcBinding              -> TypeBoundGenericStmt
-    TypeBoundProcBinding              -> TypeBoundProcedureStmt
-    OptBindingPrivateStmt             -> no-binding-private-stmt()
-    OptBindingPrivateStmt             -> BindingPrivateStmt
-    BindingPrivateStmt                -> BindingPrivateStmt(OptLabel,EOS)
 
-    TypeParamAttrSpec                 -> LEN()
-    TypeParamAttrSpec                 -> KIND()
-
-    SequenceStmt                      -> SequenceStmt(OptLabel,EOS)
-
-    PrivateOrSequence                 -> SequenceStmt
-    PrivateOrSequence                 -> PrivateComponentsStmt
     ParentTypeName                    -> Ident
 
     OptKindParam                      -> no-kind-param()
     OptKindParam                      -> opt-kind-param(KindParam)
-    LogicalLiteralConstant            -> TRUE()
-    LogicalLiteralConstant            -> TRUE(KindParam)
-    LogicalLiteralConstant            -> FALSE()
-    LogicalLiteralConstant            -> FALSE(KindParam)
+
     CharLiteralConstant               -> Scon
     CharLiteralConstant               -> CharLiteralConstant(KindParam,Scon)
 
@@ -1753,10 +1700,12 @@ regular tree grammar
 
     DeclarationTypeSpec               -> AssumedType()
     DeclarationTypeSpec               -> AssumedClass()
+/* TODO - DerivedTypeSpec replaced by DerivedType above */
     DeclarationTypeSpec               -> class-type-spec(DerivedTypeSpec)
     DeclarationTypeSpec               -> derived-type-spec(DerivedTypeSpec)
     DeclarationTypeSpec               -> IntrinsicType(IntrinsicTypeSpec)
     DeclarationTypeSpec               -> IntrinsicType(IntrinsicTypeSpec)
+/* TODO - TypeSpec replaced by Type above */
     TypeSpec                          -> DerivedTypeSpec
     TypeSpec                          -> IntrinsicTypeSpec
     TypeParamValue                    -> COLON()
@@ -1768,7 +1717,9 @@ regular tree grammar
     NamedConstant                     -> Name
     LiteralConstant                   -> BozLiteralConstant
     LiteralConstant                   -> CharLiteralConstant
-    LiteralConstant                   -> LogicalLiteralConstant
+
+/* DELETE-ME?   LiteralConstant                   -> LogicalLiteralConstant */
+
     LiteralConstant                   -> ComplexLiteralConstant
     LiteralConstant                   -> IntLiteralConstant
     ConstantExpr                      -> LiteralConstant
@@ -1841,54 +1792,7 @@ regular tree grammar
     ListPlusOfAcValue                 -> <conc>(ListPlusOfAcValue,ListPlusOfAcValue)
     ListPlusOfAcValue                 -> <cons>(AcValue,ListStarOfAcValue)
 
-    ListStarOfTypeParamDefStmt        -> ListPlusOfTypeParamDefStmt
-    ListStarOfTypeParamDefStmt        -> <nil>()
-    ListStarOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
-    ListPlusOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
-    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
-    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
-    ListPlusOfTypeParamDefStmt        -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt)
-
-    ListStarOfComponentDefStmt        -> ListPlusOfComponentDefStmt
-    ListStarOfComponentDefStmt        -> <nil>()
-    ListStarOfComponentDefStmt        -> <conc>(ListStarOfComponentDefStmt,ListStarOfComponentDefStmt)
-    ListPlusOfComponentDefStmt        -> <conc>(ListStarOfComponentDefStmt,ListPlusOfComponentDefStmt)
-    ListPlusOfComponentDefStmt        -> <conc>(ListPlusOfComponentDefStmt,ListStarOfComponentDefStmt)
-    ListPlusOfComponentDefStmt        -> <conc>(ListPlusOfComponentDefStmt,ListPlusOfComponentDefStmt)
-    ListPlusOfComponentDefStmt        -> <cons>(ComponentDefStmt,ListStarOfComponentDefStmt)
-
-    ListStarOfComponentAttrSpec       -> ListPlusOfComponentAttrSpec
-    ListStarOfComponentAttrSpec       -> <nil>()
-    ListStarOfComponentAttrSpec       -> <conc>(ListStarOfComponentAttrSpec,ListStarOfComponentAttrSpec)
-    ListPlusOfComponentAttrSpec       -> <conc>(ListStarOfComponentAttrSpec,ListPlusOfComponentAttrSpec)
-    ListPlusOfComponentAttrSpec       -> <conc>(ListPlusOfComponentAttrSpec,ListStarOfComponentAttrSpec)
-    ListPlusOfComponentAttrSpec       -> <conc>(ListPlusOfComponentAttrSpec,ListPlusOfComponentAttrSpec)
-    ListPlusOfComponentAttrSpec       -> <cons>(ComponentAttrSpec,ListStarOfComponentAttrSpec)
-
-    ListStarOfComponentDecl           -> ListPlusOfComponentDecl
-    ListStarOfComponentDecl           -> <nil>()
-    ListStarOfComponentDecl           -> <conc>(ListStarOfComponentDecl,ListStarOfComponentDecl)
-    ListPlusOfComponentDecl           -> <conc>(ListStarOfComponentDecl,ListPlusOfComponentDecl)
-    ListPlusOfComponentDecl           -> <conc>(ListPlusOfComponentDecl,ListStarOfComponentDecl)
-    ListPlusOfComponentDecl           -> <conc>(ListPlusOfComponentDecl,ListPlusOfComponentDecl)
-    ListPlusOfComponentDecl           -> <cons>(ComponentDecl,ListStarOfComponentDecl)
-
-    ListStarOfProcDecl                -> ListPlusOfProcDecl
-    ListStarOfProcDecl                -> <nil>()
-    ListStarOfProcDecl                -> <conc>(ListStarOfProcDecl,ListStarOfProcDecl)
-    ListPlusOfProcDecl                -> <conc>(ListStarOfProcDecl,ListPlusOfProcDecl)
-    ListPlusOfProcDecl                -> <conc>(ListPlusOfProcDecl,ListStarOfProcDecl)
-    ListPlusOfProcDecl                -> <conc>(ListPlusOfProcDecl,ListPlusOfProcDecl)
-    ListPlusOfProcDecl                -> <cons>(ProcDecl,ListStarOfProcDecl)
-
-    ListStarOfProcComponentAttrSpec   -> ListPlusOfProcComponentAttrSpec
-    ListStarOfProcComponentAttrSpec   -> <nil>()
-    ListStarOfProcComponentAttrSpec   -> <conc>(ListStarOfProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
-    ListPlusOfProcComponentAttrSpec   -> <conc>(ListStarOfProcComponentAttrSpec,ListPlusOfProcComponentAttrSpec)
-    ListPlusOfProcComponentAttrSpec   -> <conc>(ListPlusOfProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
-    ListPlusOfProcComponentAttrSpec   -> <conc>(ListPlusOfProcComponentAttrSpec,ListPlusOfProcComponentAttrSpec)
-    ListPlusOfProcComponentAttrSpec   -> <cons>(ProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
-
+/* R428 */
     ListStarOfPrivateOrSequence       -> ListPlusOfPrivateOrSequence
     ListStarOfPrivateOrSequence       -> <nil>()
     ListStarOfPrivateOrSequence       -> <conc>(ListStarOfPrivateOrSequence,ListStarOfPrivateOrSequence)
@@ -1897,6 +1801,98 @@ regular tree grammar
     ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
     ListPlusOfPrivateOrSequence       -> <cons>(PrivateOrSequence,ListStarOfPrivateOrSequence)
 
+/* R431 */
+    ListStarOfTypeParamDefStmt        -> ListPlusOfTypeParamDefStmt
+    ListStarOfTypeParamDefStmt        -> <nil>()
+    ListStarOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListStarOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListStarOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <conc>(ListPlusOfTypeParamDefStmt,ListPlusOfTypeParamDefStmt)
+    ListPlusOfTypeParamDefStmt        -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt)
+
+/* R434 */
+    ListStarOfComponentDefStmt        -> ListPlusOfComponentDefStmt
+    ListStarOfComponentDefStmt        -> <nil>()
+    ListStarOfComponentDefStmt        -> <conc>(ListStarOfComponentDefStmt,ListStarOfComponentDefStmt)
+    ListPlusOfComponentDefStmt        -> <conc>(ListStarOfComponentDefStmt,ListPlusOfComponentDefStmt)
+    ListPlusOfComponentDefStmt        -> <conc>(ListPlusOfComponentDefStmt,ListStarOfComponentDefStmt)
+    ListPlusOfComponentDefStmt        -> <conc>(ListPlusOfComponentDefStmt,ListPlusOfComponentDefStmt)
+    ListPlusOfComponentDefStmt        -> <cons>(ComponentDefStmt,ListStarOfComponentDefStmt)
+
+/* R437 */
+    ListStarOfComponentAttrSpec       -> ListPlusOfComponentAttrSpec
+    ListStarOfComponentAttrSpec       -> <nil>()
+    ListStarOfComponentAttrSpec       -> <conc>(ListStarOfComponentAttrSpec,ListStarOfComponentAttrSpec)
+    ListPlusOfComponentAttrSpec       -> <conc>(ListStarOfComponentAttrSpec,ListPlusOfComponentAttrSpec)
+    ListPlusOfComponentAttrSpec       -> <conc>(ListPlusOfComponentAttrSpec,ListStarOfComponentAttrSpec)
+    ListPlusOfComponentAttrSpec       -> <conc>(ListPlusOfComponentAttrSpec,ListPlusOfComponentAttrSpec)
+    ListPlusOfComponentAttrSpec       -> <cons>(ComponentAttrSpec,ListStarOfComponentAttrSpec)
+
+/* R438 */
+    ListStarOfComponentDecl           -> ListPlusOfComponentDecl
+    ListStarOfComponentDecl           -> <nil>()
+    ListStarOfComponentDecl           -> <conc>(ListStarOfComponentDecl,ListStarOfComponentDecl)
+    ListPlusOfComponentDecl           -> <conc>(ListStarOfComponentDecl,ListPlusOfComponentDecl)
+    ListPlusOfComponentDecl           -> <conc>(ListPlusOfComponentDecl,ListStarOfComponentDecl)
+    ListPlusOfComponentDecl           -> <conc>(ListPlusOfComponentDecl,ListPlusOfComponentDecl)
+    ListPlusOfComponentDecl           -> <cons>(ComponentDecl,ListStarOfComponentDecl)
+
+/* R428 */
+    ListStarOfPrivateOrSequence       -> ListPlusOfPrivateOrSequence
+    ListStarOfPrivateOrSequence       -> <nil>()
+    ListStarOfPrivateOrSequence       -> <conc>(ListStarOfPrivateOrSequence,ListStarOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListStarOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListStarOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <conc>(ListPlusOfPrivateOrSequence,ListPlusOfPrivateOrSequence)
+    ListPlusOfPrivateOrSequence       -> <cons>(PrivateOrSequence,ListStarOfPrivateOrSequence)
+
+/* R441 */
+    ListStarOfProcComponentAttrSpec   -> ListPlusOfProcComponentAttrSpec
+    ListStarOfProcComponentAttrSpec   -> <nil>()
+    ListStarOfProcComponentAttrSpec   -> <conc>(ListStarOfProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
+    ListPlusOfProcComponentAttrSpec   -> <conc>(ListStarOfProcComponentAttrSpec,ListPlusOfProcComponentAttrSpec)
+    ListPlusOfProcComponentAttrSpec   -> <conc>(ListPlusOfProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
+    ListPlusOfProcComponentAttrSpec   -> <conc>(ListPlusOfProcComponentAttrSpec,ListPlusOfProcComponentAttrSpec)
+    ListPlusOfProcComponentAttrSpec   -> <cons>(ProcComponentAttrSpec,ListStarOfProcComponentAttrSpec)
+
+/* R449 */
+    ListStarOfTypeBoundProcDecl       -> ListPlusOfTypeBoundProcDecl
+    ListStarOfTypeBoundProcDecl       -> <nil>()
+    ListStarOfTypeBoundProcDecl       -> <conc>(ListStarOfTypeBoundProcDecl,ListStarOfTypeBoundProcDecl)
+    ListPlusOfTypeBoundProcDecl       -> <conc>(ListStarOfTypeBoundProcDecl,ListPlusOfTypeBoundProcDecl)
+    ListPlusOfTypeBoundProcDecl       -> <conc>(ListPlusOfTypeBoundProcDecl,ListStarOfTypeBoundProcDecl)
+    ListPlusOfTypeBoundProcDecl       -> <conc>(ListPlusOfTypeBoundProcDecl,ListPlusOfTypeBoundProcDecl)
+    ListPlusOfTypeBoundProcDecl       -> <cons>(TypeBoundProcDecl,ListStarOfTypeBoundProcDecl)
+
+
+/* R451 */
+    ListStarOfBindingAttr             -> ListPlusOfBindingAttr
+    ListStarOfBindingAttr             -> <nil>()
+    ListStarOfBindingAttr             -> <conc>(ListStarOfBindingAttr,ListStarOfBindingAttr)
+    ListPlusOfBindingAttr             -> <conc>(ListStarOfBindingAttr,ListPlusOfBindingAttr)
+    ListPlusOfBindingAttr             -> <conc>(ListPlusOfBindingAttr,ListStarOfBindingAttr)
+    ListPlusOfBindingAttr             -> <conc>(ListPlusOfBindingAttr,ListPlusOfBindingAttr)
+    ListPlusOfBindingAttr             -> <cons>(BindingAttr,ListStarOfBindingAttr)
+
+/* R460 */
+    ListStarEnumeratorDefStmt         -> ListPlusEnumeratorDefStmt
+    ListStarEnumeratorDefStmt         -> <nil>()
+    ListStarEnumeratorDefStmt         -> <conc>(ListStarEnumeratorDefStmt,ListStarEnumeratorDefStmt)
+    ListPlusEnumeratorDefStmt         -> <conc>(ListStarEnumeratorDefStmt,ListPlusEnumeratorDefStmt)
+    ListPlusEnumeratorDefStmt         -> <conc>(ListPlusEnumeratorDefStmt,ListStarEnumeratorDefStmt)
+    ListPlusEnumeratorDefStmt         -> <conc>(ListPlusEnumeratorDefStmt,ListPlusEnumeratorDefStmt)
+    ListPlusEnumeratorDefStmt         -> <cons>(EnumeratorDefStmt,ListStarEnumeratorDefStmt)
+
+/* R461 */
+    ListStarOfEnumerator              -> ListPlusOfEnumerator
+    ListStarOfEnumerator              -> <nil>()
+    ListStarOfEnumerator              -> <conc>(ListStarOfEnumerator,ListStarOfEnumerator)
+    ListPlusOfEnumerator              -> <conc>(ListStarOfEnumerator,ListPlusOfEnumerator)
+    ListPlusOfEnumerator              -> <conc>(ListPlusOfEnumerator,ListStarOfEnumerator)
+    ListPlusOfEnumerator              -> <conc>(ListPlusOfEnumerator,ListPlusOfEnumerator)
+    ListPlusOfEnumerator              -> <cons>(Enumerator,ListStarOfEnumerator)
+
+/* R525 */
     ListStarOfAccessId                -> ListPlusOfAccessId
     ListStarOfAccessId                -> <nil>()
     ListStarOfAccessId                -> <conc>(ListStarOfAccessId,ListStarOfAccessId)
@@ -2184,7 +2180,7 @@ regular tree grammar
     ListPlusOfRename                 -> <conc>(ListStarOfRename,ListPlusOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListStarOfRename)
     ListPlusOfRename                 -> <conc>(ListPlusOfRename,ListPlusOfRename)
-    ListPlusOfRename                 -> <cons>(OfpRename,ListStarOfRename)
+    ListPlusOfRename                 -> <cons>(Rename,ListStarOfRename)
 
     ListStarOfArg                    -> ListPlusOfArg
     ListStarOfArg                    -> <nil>()
@@ -2315,6 +2311,33 @@ regular tree grammar
     ListPlusOfMaskedElsewhereClause  -> <conc>(ListPlusOfMaskedElsewhereClause,ListPlusOfMaskedElsewhereClause)
     ListPlusOfMaskedElsewhereClause  -> <cons>(MaskedElsewhereClause,ListStarOfMaskedElsewhereClause)
 
+/* R838 */
+    ListStarOfCaseStmtAndBlock       -> ListPlusOfCaseStmtAndBlock
+    ListStarOfCaseStmtAndBlock       -> <nil>()
+    ListStarOfCaseStmtAndBlock       -> <conc>(ListStarOfCaseStmtAndBlock,ListStarOfCaseStmtAndBlock)
+    ListPlusOfCaseStmtAndBlock       -> <conc>(ListStarOfCaseStmtAndBlock,ListPlusOfCaseStmtAndBlock)
+    ListPlusOfCaseStmtAndBlock       -> <conc>(ListPlusOfCaseStmtAndBlock,ListStarOfCaseStmtAndBlock)
+    ListPlusOfCaseStmtAndBlock       -> <conc>(ListPlusOfCaseStmtAndBlock,ListPlusOfCaseStmtAndBlock)
+    ListPlusOfCaseStmtAndBlock       -> <cons>(CaseStmtAndBlock,ListStarOfCaseStmtAndBlock)
+
+/* R844 */
+    ListStarOfCaseValueRange         -> ListPlusOfCaseValueRange
+    ListStarOfCaseValueRange         -> <nil>()
+    ListStarOfCaseValueRange         -> <conc>(ListStarOfCaseValueRange,ListStarOfCaseValueRange)
+    ListPlusOfCaseValueRange         -> <conc>(ListStarOfCaseValueRange,ListPlusOfCaseValueRange)
+    ListPlusOfCaseValueRange         -> <conc>(ListPlusOfCaseValueRange,ListStarOfCaseValueRange)
+    ListPlusOfCaseValueRange         -> <conc>(ListPlusOfCaseValueRange,ListPlusOfCaseValueRange)
+    ListPlusOfCaseValueRange         -> <cons>(CaseValueRange,ListStarOfCaseValueRange)
+
+/* R846 */
+    ListStarOfTypeGuardStmtAndBlock  -> ListPlusOfTypeGuardStmtAndBlock
+    ListStarOfTypeGuardStmtAndBlock  -> <nil>()
+    ListStarOfTypeGuardStmtAndBlock  -> <conc>(ListStarOfTypeGuardStmtAndBlock,ListStarOfTypeGuardStmtAndBlock)
+    ListPlusOfTypeGuardStmtAndBlock  -> <conc>(ListStarOfTypeGuardStmtAndBlock,ListPlusOfTypeGuardStmtAndBlock)
+    ListPlusOfTypeGuardStmtAndBlock  -> <conc>(ListPlusOfTypeGuardStmtAndBlock,ListStarOfTypeGuardStmtAndBlock)
+    ListPlusOfTypeGuardStmtAndBlock  -> <conc>(ListPlusOfTypeGuardStmtAndBlock,ListPlusOfTypeGuardStmtAndBlock)
+    ListPlusOfTypeGuardStmtAndBlock  -> <cons>(TypeGuardStmtAndBlock,ListStarOfTypeGuardStmtAndBlock)
+
 /* R913 */
     ListStarOfIoControlSpec          -> ListPlusOfIoControlSpec
     ListStarOfIoControlSpec          -> <nil>()
@@ -2341,6 +2364,15 @@ regular tree grammar
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
     ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
+
+/* R1214 */
+    ListStarOfProcDecl                -> ListPlusOfProcDecl
+    ListStarOfProcDecl                -> <nil>()
+    ListStarOfProcDecl                -> <conc>(ListStarOfProcDecl,ListStarOfProcDecl)
+    ListPlusOfProcDecl                -> <conc>(ListStarOfProcDecl,ListPlusOfProcDecl)
+    ListPlusOfProcDecl                -> <conc>(ListPlusOfProcDecl,ListStarOfProcDecl)
+    ListPlusOfProcDecl                -> <conc>(ListPlusOfProcDecl,ListPlusOfProcDecl)
+    ListPlusOfProcDecl                -> <cons>(ProcDecl,ListStarOfProcDecl)
 
 /* R1230 */
     ListStarOfDummyArgName            -> ListPlusOfDummyArgName

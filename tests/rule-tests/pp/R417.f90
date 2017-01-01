@@ -1,0 +1,3 @@
+COMPLEX :: z = (0.0098,0.e9)
+COMPLEX :: y = (1.,13.e9)
+END PROGRAM
