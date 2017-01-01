@@ -1,14 +1,20 @@
-!! R444 component-array-spec
-!    is explicit-shape-spec -list
-!    or deferred-shape-spec -list
+!! R444 private-components-stmt
+!    is PRIVATE
 !
-type ugly
-	real truth(:)
-	real beauty(:,:,:,:,:)
-    integer foo(2,3,4,a,x)
-    real bar(y)
-    real lies(8)
-end type
+! From Note 4.41
+!
+module whut
 
-end
+TYPE POINT
+13  PRIVATE
+    REAL :: X, Y
+END TYPE POINT
 
+14 type Whoot
+  private
+15 integer i,j,k
+16 end type
+
+17 contains
+
+18 end module
