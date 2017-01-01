@@ -1937,15 +1937,15 @@ regular tree grammar
     LogicalLiteralConstant                 -> TRUE(NoKindParam)
     CharLiteralConstant                    -> Scon
     CharLiteralConstant                    -> CharLiteralConstant(KindParam,Scon)
-    CharLength                             -> Icon
-    CharLength                             -> CharLength(TypeParamValue)
-    LengthSelector                         -> LengthSelector_STAR(CharLength)
-    LengthSelector                         -> LengthSelector_STAR(CharLength)
-    LengthSelector                         -> LengthSelector(TypeParamValue)
-    LengthSelector                         -> LengthSelector(TypeParamValue)
+    CharLength                             -> IntVal(Icon)
+    CharLength                             -> char-length(TypeParamValue)
+    LengthSelector                         -> length-selector(CharLength)
+    LengthSelector                         -> length-selector(CharLength)
+    LengthSelector                         -> length-selector(TypeParamValue)
+    LengthSelector                         -> length-selector(TypeParamValue)
     OptCharSelector                        -> no-char-selector()
     OptCharSelector                        -> CharSelector
-    NoLengthSelector                       -> no-length-selector()
+    NoLengthSelector                       -> no-char-length()
     CharSelector                           -> CharSelector_KIND_LEN(Expr,NoLengthSelector)
     CharSelector                           -> CharSelector_KIND_LEN(Expr,TypeParamValue)
     CharSelector                           -> CharSelector(TypeParamValue,Expr)
@@ -2000,6 +2000,10 @@ regular tree grammar
     TypeParamValue                         -> COLON()
     TypeParamValue                         -> STAR()
     TypeParamValue                         -> Expr
+    ExecutableConstruct                    -> IncludeStmt
+    DeclarationConstruct                   -> IncludeStmt
+    ProgramUnit                            -> IncludeStmt
+    IncludeStmt                            -> IncludeStmt(CharLiteralConstant,EOS)
     OptLabel                               -> no-label()
     OptLabel                               -> LblDef
     Label                                  -> LblDef

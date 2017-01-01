@@ -234,15 +234,6 @@ signature
                                     : BackspaceStmt -> ActionStmt
                                     : AssignmentStmt -> ActionStmt
                                     : AllocateStmt -> ActionStmt
-                                    : WhereConstruct -> ExecutableConstruct
-                                    : SelectTypeConstruct -> ExecutableConstruct
-                                    : IfConstruct -> ExecutableConstruct
-                                    : ForallConstruct -> ExecutableConstruct
-                                    : CriticalConstruct -> ExecutableConstruct
-                                    : CaseConstruct -> ExecutableConstruct
-                                    : BlockConstruct -> ExecutableConstruct
-                                    : AssociateConstruct -> ExecutableConstruct
-                                    : ActionStmt -> ExecutableConstruct
                                     : SubroutineSubprogram -> InternalSubprogram
                                     : FunctionSubprogram -> InternalSubprogram
     no-subprogram-part              : OptInternalSubprogramPart
@@ -255,15 +246,6 @@ signature
                                     : ExecutableConstruct -> SpecAndExecConstruct
                                     : DeclarationConstruct -> SpecAndExecConstruct
                                     : ImplicitStmt -> SpecAndExecConstruct
-                                    : TypeDeclarationStmt -> DeclarationConstruct
-                                    : OtherSpecificationStmt -> DeclarationConstruct
-                                    : ProcedureDeclarationStmt -> DeclarationConstruct
-                                    : ParameterStmt -> DeclarationConstruct
-                                    : InterfaceBlock -> DeclarationConstruct
-                                    : FormatStmt -> DeclarationConstruct
-                                    : EnumDef -> DeclarationConstruct
-                                    : EntryStmt -> DeclarationConstruct
-                                    : DerivedTypeDef -> DeclarationConstruct
                                     : EntryStmt -> ImplicitPartStmt
                                     : FormatStmt -> ImplicitPartStmt
                                     : ParameterStmt -> ImplicitPartStmt
@@ -276,11 +258,6 @@ signature
     initial-spec-part               : List(UseStmt) * List(ImportStmt) -> InitialSpecPart
                                     : SubroutineSubprogram -> ExternalSubprogram
                                     : FunctionSubprogram -> ExternalSubprogram
-                                    : BlockData -> ProgramUnit
-                                    : Submodule -> ProgramUnit
-                                    : Module -> ProgramUnit
-                                    : ExternalSubprogram -> ProgramUnit
-                                    : MainProgram -> ProgramUnit
     no-comments                     : OptStartCommentBlock
                                     : StartCommentBlock -> OptStartCommentBlock
     Program                         : OptStartCommentBlock * List(ProgramUnit) -> Program
@@ -1096,13 +1073,13 @@ signature
     TRUE                            : NoKindParam -> LogicalLiteralConstant
                                     : Scon -> CharLiteralConstant
     CharLiteralConstant             : KindParam * Scon -> CharLiteralConstant
-                                    : Icon -> CharLength
-    CharLength                      : TypeParamValue -> CharLength
-    LengthSelector_STAR             : CharLength -> LengthSelector
-    LengthSelector                  : TypeParamValue -> LengthSelector
+    IntVal                          : Icon -> CharLength
+    char-length                     : TypeParamValue -> CharLength
+    length-selector                 : CharLength -> LengthSelector
+    length-selector                 : TypeParamValue -> LengthSelector
     no-char-selector                : OptCharSelector
                                     : CharSelector -> OptCharSelector
-    no-length-selector              : NoLengthSelector
+    no-char-length                  : NoLengthSelector
     CharSelector_KIND_LEN           : Expr * NoLengthSelector -> CharSelector
     CharSelector_KIND_LEN           : Expr * TypeParamValue -> CharSelector
     CharSelector                    : TypeParamValue * Expr -> CharSelector
@@ -1151,6 +1128,33 @@ signature
     COLON                           : TypeParamValue
     STAR                            : TypeParamValue
                                     : Expr -> TypeParamValue
+                                    : WhereConstruct -> ExecutableConstruct
+                                    : SelectTypeConstruct -> ExecutableConstruct
+                                    : IfConstruct -> ExecutableConstruct
+                                    : ForallConstruct -> ExecutableConstruct
+                                    : CriticalConstruct -> ExecutableConstruct
+                                    : CaseConstruct -> ExecutableConstruct
+                                    : BlockConstruct -> ExecutableConstruct
+                                    : AssociateConstruct -> ExecutableConstruct
+                                    : ActionStmt -> ExecutableConstruct
+                                    : IncludeStmt -> ExecutableConstruct
+                                    : TypeDeclarationStmt -> DeclarationConstruct
+                                    : OtherSpecificationStmt -> DeclarationConstruct
+                                    : ProcedureDeclarationStmt -> DeclarationConstruct
+                                    : ParameterStmt -> DeclarationConstruct
+                                    : InterfaceBlock -> DeclarationConstruct
+                                    : FormatStmt -> DeclarationConstruct
+                                    : EnumDef -> DeclarationConstruct
+                                    : EntryStmt -> DeclarationConstruct
+                                    : DerivedTypeDef -> DeclarationConstruct
+                                    : IncludeStmt -> DeclarationConstruct
+                                    : BlockData -> ProgramUnit
+                                    : Submodule -> ProgramUnit
+                                    : Module -> ProgramUnit
+                                    : ExternalSubprogram -> ProgramUnit
+                                    : MainProgram -> ProgramUnit
+                                    : IncludeStmt -> ProgramUnit
+    IncludeStmt                     : CharLiteralConstant * EOS -> IncludeStmt
     no-label                        : OptLabel
                                     : LblDef -> OptLabel
                                     : LblDef -> Label
