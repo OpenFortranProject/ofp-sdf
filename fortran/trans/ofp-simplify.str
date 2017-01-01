@@ -78,6 +78,12 @@ ofp-simplify-ast:  initial-spec-part(l1,l2)       -> InitialSpecPart(<conc>(l1,l
 ofp-simplify-ast:  derived-type-spec(DerivedTypeSpec(name,list))   -> DerivedType(name,list)
 ofp-simplify-ast:  class-type-spec(  DerivedTypeSpec(name,list))   -> Class(name,list)
 
+//R421
+ofp-simplify-ast:  length-selector(expr)          -> expr
+
+//R422
+ofp-simplify-ast:  char-length(expr)              -> expr
+
 //R461
 ofp-simplify-ast:  equals-expr(expr)              -> expr
 
