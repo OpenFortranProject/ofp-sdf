@@ -1,0 +1,117 @@
+Program(
+  "!! R626 allocate-stmt\n!    is  ALLOCATE ( [ type-spec :: ] allocation-list [, alloc-opt-list ] )\n!\n! Tested separately are: type-spec (R402) and allocation-list (R631).\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([ALLOCATABLE()])
+          , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl(
+                "X"
+              , ArraySpec([AssumedShape(no-lower-bound())])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "Y"
+              , ArraySpec([AssumedShape(no-lower-bound()), AssumedShape(no-lower-bound())])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("4", no-kind())), no-kind())))
+          , no-list()
+          , [EntityDecl("blah", no-list(), no-list(), no-char-length(), Init("\"blah\""))]
+          , eos("\n\n")
+          )
+        , AllocateStmt(
+            "10"
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , INTEGER(no-kind())
+          , [ Allocation(
+                DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , comma-list(
+              [ STAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))
+              , ERRMSG(DataRef([PartRef("blah", no-section-subscripts(), no-image-selector())]))
+              , SOURCE(DataRef([PartRef("k", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n\n! NOTE 6.19\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
+              , [ AllocateShapeSpec(
+                    UnaryMinus(IntLiteralConstant("3", no-kind()))
+                  , DataRef([PartRef("M", no-section-subscripts(), no-image-selector())])
+                  )
+                , AllocateShapeSpec(IntLiteralConstant("0", no-kind()), IntLiteralConstant("9", no-kind()))
+                ]
+              , no-list()
+              )
+            ]
+          , comma-list(
+              [STAT(DataRef([PartRef("IERR_ALLOC", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

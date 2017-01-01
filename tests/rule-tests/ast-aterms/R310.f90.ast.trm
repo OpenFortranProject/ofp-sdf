@@ -1,0 +1,33 @@
+Program(
+  "!! R310 defined-operator\n!    is defined-unary-op        R703\n!    or defined-binary-op       R723\n!    or extended-intrinsic-op   R311\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".unaryop."), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(".unaryop."), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".binaryop."), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(".binaryop."), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(PowerOp()), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(PowerOp()), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(ConcatOp()), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(ConcatOp()), eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

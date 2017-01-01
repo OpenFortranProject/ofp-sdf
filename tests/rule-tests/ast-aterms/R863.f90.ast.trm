@@ -1,0 +1,45 @@
+Program(
+  "!! R863 lock-stmt\n!    is LOCK ( lock-variable [ , lock-stat-list ] )\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [EntityDecl("flag", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("a_lock_variable", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n\n   ")
+          )
+        , LockStmt(
+            no-label()
+          , DataRef([PartRef("a_lock_variable", no-section-subscripts(), no-image-selector())])
+          , no-list()
+          , eos("\n")
+          )
+        , LockStmt(
+            "13"
+          , DataRef([PartRef("msg", no-section-subscripts(), no-image-selector())])
+          , comma-list(
+              [ ACQUIRED_LOCK(DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())]))
+              , STAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

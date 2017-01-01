@@ -1,0 +1,31 @@
+Program(
+  "!! R549 named-constant-def\n!    is named-constant = initialization-expr\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ParameterStmt(
+            no-label()
+          , [ NamedConstantDef("foo", RealLiteralConstant("3.14159", no-kind()))
+            , NamedConstantDef("bar", RealLiteralConstant("2.81828", no-kind()))
+            , NamedConstantDef("truth", IntLiteralConstant("64", no-kind()))
+            ]
+          , eos("\n")
+          )
+        , ParameterStmt(
+            no-label()
+          , [NamedConstantDef("beauty", IntLiteralConstant("5", no-kind()))]
+          , eos("\n")
+          )
+        , ParameterStmt(
+            no-label()
+          , [NamedConstantDef("ugly", DataRef([PartRef("truth", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

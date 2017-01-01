@@ -1,0 +1,31 @@
+Program(
+  "!! R641 dealloc-opt\n!    is STAT = stat-variable\n!    or ERRMSG = errmsg-variable\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DeallocateStmt(
+            no-label()
+          , [DataRef([PartRef("this", no-section-subscripts(), no-image-selector())])]
+          , comma-list(
+              [STAT(DataRef([PartRef("test", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n")
+          )
+        , DeallocateStmt(
+            no-label()
+          , [DataRef([PartRef("that", no-section-subscripts(), no-image-selector())])]
+          , comma-list(
+              [ STAT(DataRef([PartRef("test", no-section-subscripts(), no-image-selector())]))
+              , ERRMSG(DataRef([PartRef("whatever", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

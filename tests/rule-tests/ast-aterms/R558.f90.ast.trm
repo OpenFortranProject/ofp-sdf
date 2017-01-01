@@ -1,0 +1,22 @@
+Program(
+  "!! R558 value-stmt\n!    is VALUE [ :: ] dummy-arg-name-list\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "val"
+      , ["a", "b", "c", "z"]
+      , no-language-binding()
+      , eos("\n\n")
+      )
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ValueStmt("10", ["z"], eos("\n"))
+        , ValueStmt(no-label(), ["A", "B", "c"], eos("\n\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    )
+  ]
+)

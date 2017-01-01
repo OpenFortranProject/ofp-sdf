@@ -1,0 +1,118 @@
+Program(
+  "!! R515 array-spec\n!    is explicit-shape-spec-list\n!    or assumed-shape-spec-list\n!    or deferred-shape-spec-list\n!    or assumed-size-spec\n!    or implied-shape-spec -list\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "x"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("314159", no-kind()))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "y"
+              , ArraySpec(
+                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("31", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("41", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("59", no-kind()))
+                  , ExplicitShape(IntLiteralConstant("2", no-kind()), IntLiteralConstant("6", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
+                  ]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "bar"
+              , ArraySpec(
+                  AssumedSize(
+                    [ExplicitShape(IntLiteralConstant("2", no-kind()), IntLiteralConstant("6", no-kind()))]
+                  , IntLiteralConstant("5", no-kind())
+                  )
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            "3"
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "truth"
+              , ArraySpec(
+                  AssumedSize(
+                    [ ExplicitShape(no-lower-bound(), IntLiteralConstant("31", no-kind()))
+                    , ExplicitShape(no-lower-bound(), IntLiteralConstant("41", no-kind()))
+                    ]
+                  , no-lower-bound()
+                  )
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "beauty"
+              , ArraySpec(
+                  [AssumedShape(IntLiteralConstant("31", no-kind())), AssumedShape(IntLiteralConstant("41", no-kind()))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "ugly"
+              , ArraySpec([AssumedShape(no-lower-bound()), AssumedShape(no-lower-bound())])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

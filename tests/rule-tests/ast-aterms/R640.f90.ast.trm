@@ -1,0 +1,62 @@
+Program(
+  "!! R640 deallocate-stmt\n!    is  DEALLOCATE ( allocate-object-list [, dealloc-opt-list] )\n!\n! Tested separately is: allocate-object-list (R632).\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([ALLOCATABLE()])
+          , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("X", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("3", no-kind())), no-kind())))
+          , no-list()
+          , [EntityDecl("m", no-list(), no-list(), no-char-length(), Init("\"err\""))]
+          , eos("\n\n")
+          )
+        , DeallocateStmt(
+            "13"
+          , [DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])]
+          , no-list()
+          , eos("\n")
+          )
+        , DeallocateStmt(
+            no-label()
+          , [DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])]
+          , comma-list(
+              [STAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n")
+          )
+        , DeallocateStmt(
+            no-label()
+          , [DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])]
+          , comma-list(
+              [ STAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))
+              , ERRMSG(DataRef([PartRef("m", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n\n! NOTE 6.22\n")
+          )
+        , DeallocateStmt(
+            no-label()
+          , [ DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
+            ]
+          , no-list()
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

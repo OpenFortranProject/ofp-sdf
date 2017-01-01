@@ -1,0 +1,15 @@
+Program(
+  "!! R851 goto-stmt\n!  is GO TO label\n\n    "
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ GotoStmt(no-label(), "10", eos("\n "))
+        , GotoStmt("9", "10", eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("10", no-program-name(), eos("\n"))
+    )
+  ]
+)

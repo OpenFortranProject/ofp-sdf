@@ -1,0 +1,23 @@
+Program(
+  "!! R853 arithmetic-if-stmt\n!    is  IF ( scalar-numeric-expr ) label, label, label\n!\n! Tested here: arithmetic-if-stmt\n!\n! Not tested here: scalar-numeric-expr and label.\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ArithmeticIfStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , "10"
+          , "20"
+          , "30"
+          , eos("\n\n")
+          )
+        , ContinueStmt("10", eos("\n"))
+        , ContinueStmt("20", eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("30", no-program-name(), eos("\n\n"))
+    )
+  ]
+)

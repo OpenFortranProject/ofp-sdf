@@ -1,0 +1,40 @@
+Program(
+  "!! R505 initialization\n!           is  = initialization-expr\n!           or  => null-init\n!           or => initial-data-target\n!\n! Tested separately are: R730 (initialization-expr) and R507 (null-init).\n!\n! initialization is tested as part of an entity-decl (R503) that is part of\n! a type-declaration-stmt (R501).\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl(
+               "a"
+             , no-list()
+             , no-list()
+             , no-char-length()
+             , Init(IntLiteralConstant("1", no-kind()))
+             )]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([POINTER()])
+          , [ EntityDecl(
+                "b"
+              , no-list()
+              , no-list()
+              , no-char-length()
+              , PointerInit(FunctionReference(ProcedureDesignator("NULL"), []))
+              )
+            ]
+          , eos("\n!TODO-F08 - test initial-data-target\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

@@ -1,0 +1,76 @@
+Program(
+  "!! R443 component-decl\n!    is component-name [ ( component-array-spec ) ] [ lbracket co-array-spec rbracket ]\n!                      [ * char-length ] [ component-initialization ]\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "nasty", no-list(), eos("\n\t"))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER(no-kind()))
+              , no-list()
+              , [ ComponentDecl("truth", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("beauty", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("ugly", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("lies", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL(no-kind()))
+              , no-list()
+              , [ ComponentDecl(
+                    "foo"
+                  , ArraySpec(
+                      [ ExplicitShape(no-lower-bound(), IntLiteralConstant("3", no-kind()))
+                      , ExplicitShape(no-lower-bound(), IntLiteralConstant("4", no-kind()))
+                      , ExplicitShape(IntLiteralConstant("5", no-kind()), IntLiteralConstant("9", no-kind()))
+                      ]
+                    )
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("!TODO-F08 , bar[:]\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER(no-kind()))
+              , no-list()
+              , [ComponentDecl("this", no-list(), no-list(), opt-char-length("35"), no-init())]
+              , eos("!TODO-F08 , that =4;\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL(no-kind()))
+              , no-list()
+              , [ ComponentDecl(
+                    "ridiculous"
+                  , ArraySpec(
+                      [ ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
+                      , ExplicitShape(no-lower-bound(), IntLiteralConstant("6", no-kind()))
+                      ]
+                    )
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("!TODO-F08 [:]*12=>theother()\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

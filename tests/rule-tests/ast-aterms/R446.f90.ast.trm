@@ -1,0 +1,21 @@
+Program(
+  "!! R446 proc-component-attr-spec\n!    is POINTER\n!    or PASS [ (arg-name ) ]\n!    or NOPASS\n!    or access-spec\n! \n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "truth", no-list(), eos("\n!TODO-F08 contains\n!TODO-F08 \tprocedure, pass(beauty) :: foo\n"))
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "truth", eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

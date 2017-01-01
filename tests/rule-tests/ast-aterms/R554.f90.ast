@@ -1,0 +1,1 @@
+Program("!! R554 saved-entity\n!    is object-name\n!    or proc-pointer-name\n!    or / common-block-name /\n\n",[MainProgram(no-program-stmt,initial-spec-part([],[]),SpecAndExecPart([SaveStmt(no-label,[SavedEntity("this"),SavedEntity("that"),SavedEntity("theother")],eos("\n\n"))]),no-subprogram-part,EndProgramStmt(no-label,no-program-name,eos("\n")))])

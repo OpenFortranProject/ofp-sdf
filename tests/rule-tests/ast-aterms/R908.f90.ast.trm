@@ -1,0 +1,23 @@
+Program(
+  "!! R908 close-stmt\n!    is  CLOSE ( close-spec-list )\n! \n! Not tested here: close-spec-list\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ CloseStmt(
+            no-label()
+          , [UNIT(IntLiteralConstant("1", no-kind())), ERR("10")]
+          , eos("\n")
+          )
+        , CloseStmt(
+            no-label()
+          , [UNIT(IntLiteralConstant("2", no-kind()))]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("10", no-program-name(), eos("\n"))
+    )
+  ]
+)

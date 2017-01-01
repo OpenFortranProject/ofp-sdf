@@ -1,0 +1,34 @@
+Program(
+  "!! R928 flush-spec\n!    is [UNIT =] file-unit-number\n!    or IOSTAT = scalar-int-variable\n!    or IOMSG = iomsg-variable\n!    or ERR = label\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , FlushStmt(
+            "11"
+          , [UNIT(IntLiteralConstant("5", no-kind()))]
+          , eos("\n")
+          )
+        , FlushStmt(
+            "12"
+          , [ UNIT(IntLiteralConstant("6", no-kind()))
+            , IOSTAT(DataRef([PartRef("ifoo", no-section-subscripts(), no-image-selector())]))
+            , ERR("13")
+            , IOMSG(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("13", no-program-name(), eos("\n"))
+    )
+  ]
+)

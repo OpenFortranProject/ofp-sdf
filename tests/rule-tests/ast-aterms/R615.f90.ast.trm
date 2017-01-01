@@ -1,0 +1,37 @@
+Program(
+  "!! R615 complex-part-designator\n!    is designator % RE\n!    or designator % IM\n!\n!  NOTE 6.6\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("impedance", no-section-subscripts(), no-image-selector()), PartRef("re", no-section-subscripts(), no-image-selector())]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("fft", no-section-subscripts(), no-image-selector()), PartRef("im", no-section-subscripts(), no-image-selector())]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("x", no-section-subscripts(), no-image-selector()), PartRef("im", no-section-subscripts(), no-image-selector())]
+            )
+          , RealLiteralConstant("0.0", no-kind())
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

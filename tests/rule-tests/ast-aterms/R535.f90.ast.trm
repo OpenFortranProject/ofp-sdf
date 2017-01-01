@@ -1,0 +1,94 @@
+Program(
+  "!! R535 data-stmt-set\n!    is data-stmt-object-list / data-stmt-value -list /\n!\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataRef([PartRef("truth", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("beauty", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("ugly", no-section-subscripts(), no-image-selector())])
+              ]
+            , [ DataStmtValue(no-repeat(), IntLiteralConstant("3", no-kind()))
+              , DataStmtValue(no-repeat(), IntLiteralConstant("14", no-kind()))
+              , DataStmtValue(no-repeat(), IntLiteralConstant("15", no-kind()))
+              ]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+              , DataImpliedDo(
+                  [ DataRef(
+                      [PartRef("z", no-section-subscripts(), no-image-selector()), PartRef("d", no-section-subscripts(), no-image-selector())]
+                    )
+                  , DataImpliedDo(
+                      [ DataRef(
+                          [ PartRef(
+                              "B"
+                            , paren-list(
+                                [ DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                                , DataRef([PartRef("j", no-section-subscripts(), no-image-selector())])
+                                ]
+                              )
+                            , no-image-selector()
+                            )
+                          ]
+                        )
+                      ]
+                    , DataIDoVariable(VarRef("j"))
+                    , IntLiteralConstant("1", no-kind())
+                    , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                    , no-expr()
+                    )
+                  ]
+                , DataIDoVariable(VarRef("i"))
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("100", no-kind())
+                , opt-expr(FunctionReference(ProcedureDesignator("foo"), []))
+                )
+              ]
+            , [DataStmtValue(DataStmtRepeat("3"), RealLiteralConstant("1.0", no-kind()))]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [DataRef([PartRef("myname", no-section-subscripts(), no-image-selector())])]
+            , [ DataStmtValue(
+                  no-repeat()
+                , DataRef(
+                    [PartRef(
+                       "person"
+                     , paren-list([IntLiteralConstant("21", no-kind()), "'john'"])
+                     , no-image-selector()
+                     )]
+                  )
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataRef(
+                  [PartRef("a", no-section-subscripts(), no-image-selector()), PartRef("b", no-section-subscripts(), no-image-selector())]
+                )
+              ]
+            , [DataStmtValue(no-repeat(), DataRef([PartRef("jj", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

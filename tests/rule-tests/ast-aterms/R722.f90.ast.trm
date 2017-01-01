@@ -1,0 +1,120 @@
+Program(
+  "!! R722 expr\n!    is [ expr defined-binary-op ] level-5-expr\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("10", no-kind())), no-kind())))
+          , no-list()
+          , [EntityDecl("H", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("set", no-list()))
+          , no-list()
+          , [EntityDecl("s", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("s", no-section-subscripts(), no-image-selector())])
+          , DefBinExpr(
+              Parens(
+                DefBinExpr(IntLiteralConstant("1", no-kind()), ".intersect.", IntLiteralConstant("2", no-kind()))
+              )
+            , ".UNION."
+            , Parens(Minus(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind())))
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , EQ(
+              Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+            , Mult(IntLiteralConstant("2", no-kind()), IntLiteralConstant("4", no-kind()))
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("s", no-section-subscripts(), no-image-selector())])
+          , DefUnaryExpr(
+              ".inverse."
+            , Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , AND(
+              Parens(
+                EQ(
+                  Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
+                , IntLiteralConstant("3", no-kind())
+                )
+              )
+            , Parens(
+                EQ(
+                  Parens(Mult(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind())))
+                , IntLiteralConstant("12", no-kind())
+                )
+              )
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , EQ(
+              Concat("\"E\"", "\"G\"")
+            , Substring(
+                DataRef([PartRef("H", no-section-subscripts(), no-image-selector())])
+              , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("10", no-kind()))
+              )
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , Plus(
+              IntLiteralConstant("1", no-kind())
+            , Mult(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()))
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , Mult(
+              Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
+            , IntLiteralConstant("3", no-kind())
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

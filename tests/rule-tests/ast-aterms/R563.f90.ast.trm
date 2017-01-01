@@ -1,0 +1,40 @@
+Program(
+  "!! R563 namelist-stmt\n!    is NAMELIST\n!         / namelist-group-name / namelist-group-object-list\n!         [ [ , ] / namelist-group-name / namelist-group-object-list ] ...\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ NamelistStmt(
+            "11"
+          , name-list-entry-list-tail(
+              name-list-entry-list-tail(
+                name-list-entry-list-tail(
+                  name-list-entry-list-head(NamelistEntry("Name1", [VarRef("i"), VarRef("j")]))
+                , NamelistEntry("Name2", [VarRef("k"), VarRef("l")])
+                )
+              , NamelistEntry("Name3", [VarRef("m")])
+              )
+            , NamelistEntry(
+                "Name4"
+              , [VarRef("n"), VarRef("o"), VarRef("p")]
+              )
+            )
+          , eos("\n")
+          )
+        , NamelistStmt(
+            no-label()
+          , name-list-entry-list-head(
+              NamelistEntry(
+                "namelistname"
+              , [VarRef("a"), VarRef("b"), VarRef("c")]
+              )
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

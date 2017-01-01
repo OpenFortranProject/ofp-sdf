@@ -1,0 +1,51 @@
+Program(
+  "!! R741 where-stmt\n!    is WHERE ( mask-expr ) where-assignment-stmt\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "Doit"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "A"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n")
+          )
+        , WhereStmt(
+            "10"
+          , DataRef([PartRef("Doit", no-section-subscripts(), no-image-selector())])
+          , AssignmentStmt(
+              no-label()
+            , DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
+            , IntLiteralConstant("13", no-kind())
+            , eos("\n\n")
+            )
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

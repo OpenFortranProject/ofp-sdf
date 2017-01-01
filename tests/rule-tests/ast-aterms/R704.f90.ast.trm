@@ -1,0 +1,31 @@
+Program(
+  "!! R704 mult-operand\n!    is level-1-expr [ power-op mult-operand ]\n!\n!  mult-operand is a power-op\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , Power(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , Power(
+              IntLiteralConstant("1", no-kind())
+            , Power(
+                Parens(UnaryMinus(IntLiteralConstant("2", no-kind())))
+              , IntLiteralConstant("3", no-kind())
+              )
+            )
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

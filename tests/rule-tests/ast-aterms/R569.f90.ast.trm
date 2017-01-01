@@ -1,0 +1,50 @@
+Program(
+  "!! R569 common-block-object\n!   is variable-name [ ( array-spec ) ]\n!   or proc-pointer-name\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ CommonStmt(
+            no-label()
+          , CommonBlockEntry(
+              no-name()
+            , [ CommonBlockObject(VarRef("truth"), no-list())
+              , CommonBlockObject(VarRef("beauty"), no-list())
+              , CommonBlockObject(VarRef("ugly"), no-list())
+              , CommonBlockObject(VarRef("lies"), no-list())
+              ]
+            )
+          , []
+          , eos("\n")
+          )
+        , CommonStmt(
+            no-label()
+          , CommonBlockEntry(
+              no-name()
+            , [ CommonBlockObject(
+                  VarRef("foo")
+                , ArraySpec(
+                    [ ExplicitShape(IntLiteralConstant("3", no-kind()), IntLiteralConstant("8", no-kind()))
+                    , ExplicitShape(no-lower-bound(), IntLiteralConstant("4", no-kind()))
+                    , ExplicitShape(
+                        no-lower-bound()
+                      , Plus(
+                          IntLiteralConstant("5", no-kind())
+                        , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
+                        )
+                      )
+                    ]
+                  )
+                )
+              ]
+            )
+          , []
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

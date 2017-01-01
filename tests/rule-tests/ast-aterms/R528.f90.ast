@@ -1,0 +1,1 @@
+Program("!! R528 asynchronous-stmt\n!   is ASYNCHRONOUS [ :: ] object-name-list\n\n",[MainProgram(no-program-stmt,initial-spec-part([],[]),SpecAndExecPart([AsynchronousStmt("10",["a"],eos("\n")),AsynchronousStmt(no-label,["B","C","scalar"],eos("\n\n"))]),no-subprogram-part,EndProgramStmt(no-label,no-program-name,eos("\n")))])

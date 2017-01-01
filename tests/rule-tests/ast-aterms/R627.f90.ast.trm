@@ -1,0 +1,80 @@
+Program(
+  "!! R627 alloc-opt\n!    is ERRMSG = errmsg-variable\n!    or MOLD = source-expr\n!    or SOURCE = source-expr\n!    or STAT = stat-variable\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("array", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(no-lower-bound(), IntLiteralConstant("5", no-kind()))]
+              , no-list()
+              )
+            ]
+          , comma-list(
+              [ERRMSG(DataRef([PartRef("a", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n! NOTE 6.17\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
+              , [ AllocateShapeSpec(
+                    UnaryMinus(IntLiteralConstant("3", no-kind()))
+                  , DataRef([PartRef("M", no-section-subscripts(), no-image-selector())])
+                  )
+                , AllocateShapeSpec(IntLiteralConstant("0", no-kind()), IntLiteralConstant("9", no-kind()))
+                ]
+              , no-list()
+              )
+            ]
+          , comma-list(
+              [STAT(DataRef([PartRef("IERR_ALLOC", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n! NOTE 6.19\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("NEW", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , comma-list(
+              [SOURCE(DataRef([PartRef("OLD", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n")
+          )
+        , AllocateStmt(
+            "10"
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("new", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , comma-list(
+              [ SOURCE(DataRef([PartRef("old", no-section-subscripts(), no-image-selector())]))
+              , ERRMSG(DataRef([PartRef("a", no-section-subscripts(), no-image-selector())]))
+              , STAT(DataRef([PartRef("ierr", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,13 @@
+Program(
+  "!! R854 continue-stmt\n!    is  CONTINUE\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ContinueStmt(no-label(), eos("\n")), ContinueStmt("99", eos("\n\n"))]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

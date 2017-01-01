@@ -1,0 +1,28 @@
+Program(
+  "!! R564 namelist-group-object\n!    is variable-name\n\n! Testing namelist-group-object-list.\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ NamelistStmt(
+            no-label()
+          , name-list-entry-list-head(
+              NamelistEntry(
+                "foo"
+              , [VarRef("bar"), VarRef("truth"), VarRef("beauty")]
+              )
+            )
+          , eos("\n")
+          )
+        , NamelistStmt(
+            "10"
+          , name-list-entry-list-head(NamelistEntry("ugly", [VarRef("lies")]))
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

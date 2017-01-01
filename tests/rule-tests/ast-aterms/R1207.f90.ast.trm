@@ -1,0 +1,33 @@
+Program(
+  "! Testing generic-spec, R1207\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), "binky", eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), "binky", eos("\n!TODO-F08? INTERFACE OPERATOR(.abstract.)\n!TODO-F08? END INTERFACE OPERATOR(.abstract.)\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_LE()), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_LE()), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(MINUS()), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(MINUS()), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), ASSIGNMENT(), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), ASSIGNMENT(), eos("\n!TODO-F08? INTERFACE WRITE(UNFORMATTED)\n!TODO-F08? END INTERFACE WRITE(UNFORMATTED)\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

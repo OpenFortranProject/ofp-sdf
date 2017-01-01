@@ -1,0 +1,80 @@
+Program(
+  "!! R601 designator\n!    is  object-name\n!    or  array-element\n!    or  array-section\n!    or  complex-part-designator\n!    or  structure-component\n!    or  substring\n! \n! Full tests for each of the alternatives is done separately.  \n!\n! designator tested as part of a variable (R602), which is used as part of \n! an assignment-stmt (R732).\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "T", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER(no-kind()))
+              , no-list()
+              , [ComponentDecl("b", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "a"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("T", no-list()))
+          , no-list()
+          , [EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("a", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())]
+            )
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , Substring(
+              DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+            )
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("c", no-section-subscripts(), no-image-selector()), PartRef("b", no-section-subscripts(), no-image-selector())]
+            )
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

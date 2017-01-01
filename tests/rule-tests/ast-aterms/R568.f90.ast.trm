@@ -1,0 +1,49 @@
+Program(
+  "!! R568 common-stmt\n!    is COMMON [       / [ common-block-name ] / ] common-block-object-list\n!              [ [ , ] / [ common-block-name ] /   common-block-object-list ] ...\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ CommonStmt(
+            no-label()
+          , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i"), no-list())])
+          , []
+          , eos("\n")
+          )
+        , CommonStmt(
+            no-label()
+          , CommonBlockEntry(
+              "name1"
+            , [CommonBlockObject(VarRef("i1"), no-list()), CommonBlockObject(VarRef("i2"), no-list())]
+            )
+          , []
+          , eos("\n")
+          )
+        , CommonStmt(
+            "10"
+          , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i2"), no-list())])
+          , []
+          , eos("\n")
+          )
+        , CommonStmt(
+            no-label()
+          , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i3"), no-list())])
+          , [CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("j"), no-list())])]
+          , eos("\n")
+          )
+        , CommonStmt(
+            no-label()
+          , CommonBlockEntry("name1", [CommonBlockObject(VarRef("i4"), no-list())])
+          , [ CommonBlockEntry("name2", [CommonBlockObject(VarRef("j1"), no-list())])
+            , CommonBlockEntry("name3", [CommonBlockObject(VarRef("k"), no-list())])
+            , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("l"), no-list())])
+            ]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

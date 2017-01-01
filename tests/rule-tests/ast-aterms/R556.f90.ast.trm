@@ -1,0 +1,33 @@
+Program(
+  "!! R556 target-stmt\n!    is TARGET [ :: ] target-decl-list\n!\n! from NOTE 5.36\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TargetStmt(
+            no-label()
+          , [ TargetDecl(
+                "A"
+              , ArraySpec(
+                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
+                  ]
+                )
+              , no-list()
+              )
+            , TargetDecl("B", no-list(), no-list())
+            ]
+          , eos("\n")
+          )
+        , TargetStmt(
+            "7"
+          , [TargetDecl("z", no-list(), no-list())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

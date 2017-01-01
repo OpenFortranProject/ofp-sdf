@@ -1,0 +1,50 @@
+Program(
+  "!! R432 type-param-decl\n!    is type-param-name [ = scalar-int-initialization-expr ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , no-list()
+            , "big_deal"
+            , paren-list(["k", "d", "l"])
+            , eos("\n   ")
+            )
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [ TypeParamDecl(
+                    "k"
+                  , equals-expr(
+                      DataRef(
+                        [PartRef("kind", paren-list([RealLiteralConstant("0.0", no-kind())]), no-image-selector())]
+                      )
+                    )
+                  )
+                , TypeParamDecl("d", equals-expr(IntLiteralConstant("13", no-kind())))
+                ]
+              , eos("\n   ")
+              )
+            , TypeParamDefStmt(
+                no-label()
+              , KindSelector(IntLiteralConstant("4", no-kind()))
+              , LEN()
+              , [TypeParamDecl("l", equals-expr(IntLiteralConstant("13", no-kind())))]
+              , eos("\n")
+              )
+            ]
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

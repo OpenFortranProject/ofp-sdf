@@ -1,0 +1,40 @@
+Program(
+  "!! R720 or-op\n!    is  .OR.\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , OR(TRUE(no-kind()), FALSE(no-kind()))
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , OR(
+              OR(
+                DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+              )
+            , NOT(FALSE(no-kind()))
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

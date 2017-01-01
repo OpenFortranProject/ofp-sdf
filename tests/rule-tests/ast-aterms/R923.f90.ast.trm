@@ -1,0 +1,21 @@
+Program(
+  "!! R923 backspace-stmt\n!    is  BACKSPACE file-unit-number\n!    or  BACKSPACE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ backspace-unit-stmt(no-label(), IntLiteralConstant("10", no-kind()), eos("\n"))
+        , BackspaceStmt(
+            no-label()
+          , [ UNIT(IntLiteralConstant("10", no-kind()))
+            , IOSTAT(DataRef([PartRef("n", no-section-subscripts(), no-image-selector())]))
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,26 @@
+Program(
+  "!! R845 if-stmt\n!    is  IF ( scalar-logical-expr ) action-stmt\n!\n! Not tested here are: scalar-logical-expr and action-stmt.\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ IfStmt(
+            no-label()
+          , EQ(
+              DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+            )
+          , AssignmentStmt(
+              no-label()
+            , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+            , IntLiteralConstant("1", no-kind())
+            , eos("\n\n")
+            )
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

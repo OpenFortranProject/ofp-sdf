@@ -1,0 +1,288 @@
+Program(
+  "!! R838 case-construct\n!\n!      case-construct  is  select-case-stmt\n!                            [ case-stmt\n!                                block ] ...\n!                          end-select-stmt\n!\n!      select-case-stmt  is  [ case-construct-name: ] SELECT CASE ( case-expr )\n!\n!      case-stmt  is  CASE case-selector [ case-construct-name ]\n!  \n!      end-select-stmt  is  END SELECT [ case-construct-name ]\n!\n!      case-expr  is  scalar-int-expr\n!                 or  scalar-char-expr\n!                 or  scalar-logical-expr\n!\n!      case-selector  is  ( case-value-range-list )\n!                     or  DEFAULT\n!\n!      case-value-range  is  case-value\n!                        or  case-value :\n!                        or  : case-value\n!                        or  case-value : case-value\n! \n!      case-value  is  scalar-int-initialization-expr\n!                  or  scalar-char-initialization-expr\n!                  or  scalar-logical-initialization-expr\n!\n! Tested here: case-construct, select-case-stmt, case-stmt, end-select-stmt,\n! case-expr, case-selector, case-value-range, case-value-range-list,  \n! case-value, and case-construct-name.\n!\n! Not tested here are: scalar-int-expr, scalar-char-expr, scalar-logical-expr, \n! scalar-int-initialization-expr, scalar-char-initialization-expr,  \n! scalar-logical-initialization-expr, and block.\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("y", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [EntityDecl("flag", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              "10"
+            , no-name()
+            , DataRef([PartRef("n", no-section-subscripts(), no-image-selector())])
+            , eos("\n")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  "11"
+                , paren-list([CaseValue(IntLiteralConstant("1", no-kind()))])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("1", no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list(
+                    [CaseValueRange(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()))]
+                  )
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("2", no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list(
+                    [CaseValueRange(IntLiteralConstant("5", no-kind()), IntLiteralConstant("8", no-kind()))]
+                  )
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("8", no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list(
+                    [ CaseValueRange(IntLiteralConstant("10", no-kind()), IntLiteralConstant("12", no-kind()))
+                    , CaseValueRange(IntLiteralConstant("14", no-kind()), IntLiteralConstant("15", no-kind()))
+                    , CaseValue(IntLiteralConstant("22", no-kind()))
+                    ]
+                  )
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("15", no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValueRange(IntLiteralConstant("33", no-kind()), no-high())])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("33", no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("0", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectStmt("12", no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              no-label()
+            , no-name()
+            , DataRef([PartRef("n", no-section-subscripts(), no-image-selector())])
+            , eos("\n   ")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValueRange(no-low(), IntLiteralConstant("3", no-kind()))])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("3", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(no-label(), no-name(), "'a'", eos("\n   "))
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValue("'a'")])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+                    , "'a'"
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+                    , "'b'"
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              no-label()
+            , no-name()
+            , GT(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("2", no-kind())
+              )
+            , eos("\n   ")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValue(TRUE(no-kind()))])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
+                    , TRUE(no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
+                    , FALSE(no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              no-label()
+            , "my_case"
+            , GT(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("2", no-kind())
+              )
+            , eos("\n   ")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValue(TRUE(no-kind()))])
+                , "my_case"
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
+                    , TRUE(no-kind())
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), "my_case", eos("\n      "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
+                    , FALSE(no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectStmt(no-label(), "my_case", eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

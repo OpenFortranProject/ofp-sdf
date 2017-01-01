@@ -1,0 +1,39 @@
+Program(
+  "!! R831 cycle-stmt\n!      cycle-stmt  is  CYCLE [ do-construct-name ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n")
+          )
+        , CycleStmt("20", no-name(), eos("\n"))
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , "my_do"
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , CycleStmt(no-label(), "my_do", eos("\n"))
+        , EndDoStmt(no-label(), "my_do", eos("\n\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

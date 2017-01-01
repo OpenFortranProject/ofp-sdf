@@ -1,0 +1,39 @@
+Program(
+  "!! R1236 end-subroutine-stmt\n!     is END [ SUBROUTINE [ subroutine-name ] ]\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(no-label(), no-prefix(), "foo1", no-list(), no-language-binding(), eos("\n"))
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    )
+  , SubroutineSubprogram(
+      SubroutineStmt(no-label(), no-prefix(), "foo2", no-list(), no-language-binding(), eos("\n"))
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), "foo2", eos("\n"))
+    )
+  , SubroutineSubprogram(
+      SubroutineStmt(no-label(), no-prefix(), "foo3", no-list(), no-language-binding(), eos("\n"))
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), "foo3", eos("\n"))
+    )
+  , SubroutineSubprogram(
+      SubroutineStmt(no-label(), no-prefix(), "foo4", no-list(), no-language-binding(), eos("\n"))
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n\n"))
+    )
+  , MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

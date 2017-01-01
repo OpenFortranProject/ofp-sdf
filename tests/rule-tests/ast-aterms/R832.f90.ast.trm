@@ -1,0 +1,178 @@
+Program(
+  "!! R832 if-construct\n!    is  if-then-stmt\n!              block\n!          [ else-if-smt \n!              block ] ...\n!          [ else-stmt \n!              block ]\n!         end-if-stmt\n!\n! Also tests rules R841 (if-then-stmt), R842 (else-if-stmt), R843 (else-stmt), \n! R844 (end-if-stmt), and if-construct-name.  Does not test \n! scalar-logical-expr.\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ IfConstruct(
+            IfThenStmt(
+              "10"
+            , no-name()
+            , EQ(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+              )
+            , eos("\n   ")
+            )
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                , IntLiteralConstant("1", no-kind())
+                , eos("\n")
+                )
+              ]
+            )
+          , [ ElseIfStmtBlock(
+                ElseIfStmt(
+                  "11"
+                , LT(
+                    DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                  , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+                  )
+                , no-name()
+                , eos("\n   ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("0", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , ElseStmtBlock(
+              ElseStmt("12", no-name(), eos("\n   "))
+            , Block(
+                [ AssignmentStmt(
+                    no-label()
+                  , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                  , UnaryMinus(IntLiteralConstant("1", no-kind()))
+                  , eos("\n")
+                  )
+                ]
+              )
+            )
+          , EndIfStmt("13", no-name(), eos("\n\n"))
+          )
+        , IfConstruct(
+            IfThenStmt(
+              no-label()
+            , no-name()
+            , EQ(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+              )
+            , eos("\n   ")
+            )
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                , IntLiteralConstant("1", no-kind())
+                , eos("\n")
+                )
+              ]
+            )
+          , []
+          , ElseStmtBlock(
+              ElseStmt(no-label(), no-name(), eos("\n   "))
+            , Block(
+                [ AssignmentStmt(
+                    no-label()
+                  , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                  , UnaryMinus(IntLiteralConstant("1", no-kind()))
+                  , eos("\n")
+                  )
+                ]
+              )
+            )
+          , EndIfStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , IfConstruct(
+            IfThenStmt(
+              no-label()
+            , no-name()
+            , EQ(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+              )
+            , eos("\n   ")
+            )
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                , IntLiteralConstant("1", no-kind())
+                , eos("\n")
+                )
+              ]
+            )
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , IfConstruct(
+            IfThenStmt(
+              no-label()
+            , "my_if"
+            , EQ(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+              )
+            , eos("\n   ")
+            )
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                , IntLiteralConstant("1", no-kind())
+                , eos("\n")
+                )
+              ]
+            )
+          , [ ElseIfStmtBlock(
+                ElseIfStmt(
+                  no-label()
+                , LT(
+                    DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                  , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
+                  )
+                , "my_if"
+                , eos("\n   ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("0", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , ElseStmtBlock(
+              ElseStmt(no-label(), "my_if", eos("\n   "))
+            , Block(
+                [ AssignmentStmt(
+                    no-label()
+                  , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                  , UnaryMinus(IntLiteralConstant("1", no-kind()))
+                  , eos("\n")
+                  )
+                ]
+              )
+            )
+          , EndIfStmt(no-label(), "my_if", eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

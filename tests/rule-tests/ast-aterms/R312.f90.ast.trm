@@ -1,0 +1,36 @@
+Program(
+  "!! R312 label\n!    is digit [digit [digit [digit [digit ]]]]\n!\n! Test label_list with a list of length 1,2,3.\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ComputedGotoStmt(
+            no-label()
+          , ["0555"]
+          , DataRef([PartRef("iblah", no-section-subscripts(), no-image-selector())])
+          , eos("\n")
+          )
+        , ComputedGotoStmt(
+            no-label()
+          , ["550", "01234"]
+          , DataRef([PartRef("iblah", no-section-subscripts(), no-image-selector())])
+          , eos("\n")
+          )
+        , ComputedGotoStmt(
+            no-label()
+          , ["0314", "15", "9"]
+          , DataRef([PartRef("iblah", no-section-subscripts(), no-image-selector())])
+          , eos("\n\n")
+          )
+        , ContinueStmt("9", eos("\n"))
+        , ContinueStmt("15", eos("\n"))
+        , ContinueStmt("0314", eos("\n"))
+        , ContinueStmt("0555", eos("\n"))
+        , ContinueStmt("550", eos("\n\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("01234", no-program-name(), eos("\n"))
+    )
+  ]
+)

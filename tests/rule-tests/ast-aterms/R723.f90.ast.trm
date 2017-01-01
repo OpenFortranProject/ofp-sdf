@@ -1,0 +1,29 @@
+Program(
+  "!! R723 defined-binary-op\n!    is . letter [ letter ] ... .\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DefBinExpr(IntLiteralConstant("1", no-kind()), ".union.", IntLiteralConstant("2", no-kind()))
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DefBinExpr(
+              DefBinExpr(IntLiteralConstant("1", no-kind()), ".union.", IntLiteralConstant("2", no-kind()))
+            , ".disunion."
+            , IntLiteralConstant("3", no-kind())
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

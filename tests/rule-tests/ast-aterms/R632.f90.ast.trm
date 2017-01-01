@@ -1,0 +1,22 @@
+Program(
+  "!! R632 allocate-object\n!    is variable-name\n!    or structure-component\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DeallocateStmt(
+            no-label()
+          , [ DataRef([PartRef("this", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("that", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("theother", no-section-subscripts(), no-image-selector())])
+            ]
+          , no-list()
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

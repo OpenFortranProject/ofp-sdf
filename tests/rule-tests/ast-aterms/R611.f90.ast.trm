@@ -1,0 +1,91 @@
+Program(
+  "!! R611 data-ref\n!    is part-ref [ % part-ref ] ...\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "TB", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER(no-kind()))
+              , no-list()
+              , [ComponentDecl("c", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "TB", eos("\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "TA", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , derived-type-spec(DerivedTypeSpec("TB", no-list()))
+              , no-list()
+              , [ComponentDecl("b", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "TA", eos("\n\n"))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("TA", no-list()))
+          , no-list()
+          , [ EntityDecl("lhs_a", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("TB", no-list()))
+          , no-list()
+          , [EntityDecl("lhs_b", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("lhs_c", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("lhs_a", no-section-subscripts(), no-image-selector())])
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("lhs_b", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("a", no-section-subscripts(), no-image-selector()), PartRef("b", no-section-subscripts(), no-image-selector())]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("lhs_c", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("a", no-section-subscripts(), no-image-selector())
+              , PartRef("b", no-section-subscripts(), no-image-selector())
+              , PartRef("c", no-section-subscripts(), no-image-selector())
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

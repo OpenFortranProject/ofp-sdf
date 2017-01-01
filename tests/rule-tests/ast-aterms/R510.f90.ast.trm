@@ -1,0 +1,20 @@
+Program(
+  "!! R510 deferred-coshape-spec\n!    is :\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [EntityDecl("T", no-list(), CoarraySpec([DeferredCoshape()]), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

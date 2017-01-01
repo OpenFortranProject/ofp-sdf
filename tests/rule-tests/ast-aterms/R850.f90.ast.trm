@@ -1,0 +1,27 @@
+Program(
+  "!! R850 exit-stmt\n!    is EXIT [ construct-name ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ NonlabelDoStmt(
+            no-label()
+          , "loop"
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("3", no-kind())
+            , no-expr()
+            )
+          , eos("\n")
+          )
+        , ExitStmt("3", no-name(), eos("\n    "))
+        , ExitStmt(no-label(), "loop", eos("\n"))
+        , EndDoStmt(no-label(), "loop", eos("\n\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

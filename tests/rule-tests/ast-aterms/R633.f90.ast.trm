@@ -1,0 +1,37 @@
+Program(
+  "!! R630 allocate-shape-spec\n!    is [ lower-bound-expr : ] upper-bound-expr\n\n! parses as section-subscript, this means that there is no stride and if hasUpperBound\n! is false, hasLowerBound must be true and is the upper-bound-expr\n\n    "
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(no-lower-bound(), IntLiteralConstant("3", no-kind()))]
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("! 3 must be converted to upper-bound-expr\n    ")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(IntLiteralConstant("3", no-kind()), IntLiteralConstant("5", no-kind()))]
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("! 3 is lower-bound-expr and 5 is upper-bound-expr\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

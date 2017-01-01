@@ -1,0 +1,106 @@
+Program(
+  "!! R560 implicit-stmt\n!\n! From NOTE 5.39\n!\n! Implicit typing is not affected by BLOCK constructs. For example, in\n!\n!TODO - very AMBIGUOS\n\n     "
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "S"
+      , ["N"]
+      , no-language-binding()
+      , eos("\n       !...\n       ")
+      )
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ IfConstruct(
+            IfThenStmt(
+              no-label()
+            , no-name()
+            , GT(
+                DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("0", no-kind())
+              )
+            , eos("\n         ")
+            )
+          , Block(
+              [ BlockConstruct(
+                  BlockStmt(no-label(), no-name(), eos("\n           "))
+                , SpecificationPart([], [], no-implicit-part(), [])
+                , Block(
+                    [ AssignmentStmt(
+                        no-label()
+                      , DataRef([PartRef("NSQP", no-section-subscripts(), no-image-selector())])
+                      , FunctionReference(
+                          ProcedureDesignator("CEILING")
+                        , [ ActualArgSpec(
+                              no-keyword()
+                            , DataRef(
+                                [ PartRef(
+                                    "SQRT"
+                                  , paren-list(
+                                      [ DataRef(
+                                          [ PartRef(
+                                              "DBLE"
+                                            , paren-list([DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])])
+                                            , no-image-selector()
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    )
+                                  , no-image-selector()
+                                  )
+                                ]
+                              )
+                            )
+                          ]
+                        )
+                      , eos("\n         ")
+                      )
+                    ]
+                  )
+                , EndBlockStmt(no-label(), no-name(), eos("\n       "))
+                )
+              ]
+            )
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name(), eos("\n!...\n       "))
+          )
+        , IfConstruct(
+            IfThenStmt(
+              no-label()
+            , no-name()
+            , GT(
+                DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("0", no-kind())
+              )
+            , eos("\n         ")
+            )
+          , Block(
+              [ BlockConstruct(
+                  BlockStmt(no-label(), no-name(), eos("\n           "))
+                , SpecificationPart([], [], no-implicit-part(), [])
+                , Block(
+                    [ PrintStmt(
+                        no-label()
+                      , STAR()
+                      , comma-list([DataRef([PartRef("NSQP", no-section-subscripts(), no-image-selector())])])
+                      , eos("\n         ")
+                      )
+                    ]
+                  )
+                , EndBlockStmt(no-label(), no-name(), eos("\n       "))
+                )
+              ]
+            )
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name(), eos("\n     "))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n!\n! even if the only two appearances of NSQP are within the BLOCK constructs,\n! the scope of NSQP is the whole subroutine S.\n"))
+    )
+  ]
+)

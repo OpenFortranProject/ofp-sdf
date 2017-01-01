@@ -1,0 +1,11 @@
+Program(
+  "!! R462 enum-def\n!   is enum-def-stmt\n!         enumerator-def-stmt [ enumerator-def-stmt ] ...\n!      end-enum-stmt\n!\n!TODO-F08 enum, bind(C)\n!TODO-F08 \tenumerator truth, beauty, ugly, lies\n!TODO-F08 end enum \n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

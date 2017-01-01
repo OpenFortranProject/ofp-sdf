@@ -1,0 +1,108 @@
+Program(
+  "!! R509 coarray-spec\n!    is deferred-coshape-spec-list\n!    or explicit-coshape-spec\n!\n! From NOTE 5.7\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "A"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+                )
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "B"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n! from NOTE 5.8\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "W"
+              , ArraySpec(
+                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("100", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("100", no-kind()))
+                  ]
+                )
+              , CoarraySpec(
+                  explicit-coshape-spec-list(
+                    [ExplicitCoshape(LowerCobound(IntLiteralConstant("0", no-kind())), IntLiteralConstant("2", no-kind()))]
+                  , final-cobounds-entry(no-lower-bound())
+                  )
+                )
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , comma-list([Codimension(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))])
+          , [EntityDecl("X", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , comma-list(
+              [ Codimension(
+                  explicit-coshape-spec-list(
+                    [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("3", no-kind()))]
+                  , final-cobounds-entry(no-lower-bound())
+                  )
+                )
+              ]
+            )
+          , [EntityDecl(
+               "Y"
+             , ArraySpec([AssumedShape(no-lower-bound())])
+             , no-list()
+             , no-char-length()
+             , no-init()
+             )]
+          , eos("\n\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl(
+                "x"
+              , no-list()
+              , CoarraySpec(
+                  explicit-coshape-spec-list(
+                    [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("3", no-kind()))]
+                  , final-cobounds-entry(no-lower-bound())
+                  )
+                )
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

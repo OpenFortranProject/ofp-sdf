@@ -1,0 +1,42 @@
+Program(
+  "!! R860 sync-images-stmt\n!    is SYNC IMAGES ( image-set [ , sync-stat-list ] )\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("msg", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("me", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n   ")
+          )
+        , SyncImagesStmt(no-label(), IntLiteralConstant("1", no-kind()), no-list(), eos("\n   "))
+        , SyncImagesStmt(no-label(), STAR(), no-list(), eos("\n "))
+        , SyncImagesStmt(
+            "1"
+          , Plus(
+              DataRef([PartRef("me", no-section-subscripts(), no-image-selector())])
+            , IntLiteralConstant("1", no-kind())
+            )
+          , comma-list(
+              [ STAT(DataRef([PartRef("me", no-section-subscripts(), no-image-selector())]))
+              , ERRMSG(DataRef([PartRef("msg", no-section-subscripts(), no-image-selector())]))
+              ]
+            )
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

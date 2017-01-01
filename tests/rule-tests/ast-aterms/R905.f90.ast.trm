@@ -1,0 +1,19 @@
+Program(
+  "!! R905 connect-spec\n!    is [ UNIT = ] file-unit-number\n!    or ACCESS = scalar-default-char-expr\n!    or ACTION = scalar-default-char-expr\n!    or ASYNCHRONOUS = scalar-default-char-expr\n!    or BLANK = scalar-default-char-expr\n!    or DECIMAL = scalar-default-char-expr\n!    or DELIM = scalar-default-char-expr\n!    or ENCODING = scalar-default-char-expr\n!    or ERR = label\n!    or FILE = file-name-expr\n!    or FORM = scalar-default-char-expr\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n!    or NEWUNIT = scalar-int-variable\n!    or PAD = scalar-default-char-expr\n!    or POSITION = scalar-default-char-expr\n!    or RECL = scalar-int-expr\n!    or ROUND = scalar-default-char-expr\n!    or SIGN = scalar-default-char-expr\n!    or STATUS = scalar-default-char-expr\n!    or TEAM = image-team\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ OpenStmt(
+            no-label()
+          , [ACCESS("'SEQUENTIAL'"), DECIMAL("'POINT'"), BLANK("\"ZERO\"")]
+          , eos("\n")
+          )
+        , OpenStmt(no-label(), [STATUS("'new'")], eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

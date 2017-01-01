@@ -1,0 +1,154 @@
+Program(
+  "!! R846 select-type-construct\n!      select-type-construct  is  select-type-stmt\n!                                   [ type-guard-stmt \n!                                       block ] ...\n!                                 end-select-type-stmt\n!\n!      select-type-stmt  is  [ select-construct-name : ] SELECT TYPE \n!                              ( [ associate-name => ] selector)\n!\n!      type-guard-stmt  is  TYPE IS ( type-spec) [ select-construct-name ]\n!                       or  CLASS IS ( type-spec ) [ select-construct-name ]\n!                       or  CLASS DEFAULT [ select-construct-name ]\n!\n!      end-select-type-stmt  is  END SELECT [ select-construct-name ]\n!\n! Tested here: select-type-construct, select-type-stmt, type-guard-stmt, and \n! end-select-type-stmt.\n!\n! Not tested here: block, select-construct-name, associate-name, selector, \n! and type-spec\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ SelectTypeConstruct(
+            SelectTypeStmt(
+              "10"
+            , no-name()
+            , a-name("a")
+            , DataRef([PartRef("p", no-section-subscripts(), no-image-selector())])
+            , eos("\n")
+            )
+          , [ TypeGuardStmtBlock(
+                ClassGuardStmt("11", DerivedTypeSpec("point", no-list()), no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("1", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                TypeGuardStmt("12", DerivedTypeSpec("point_3d", no-list()), no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("2", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                DefaultGuardStmt("13", no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("3", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectTypeStmt("14", no-name(), eos("\n\n"))
+          )
+        , SelectTypeConstruct(
+            SelectTypeStmt(
+              no-label()
+            , no-name()
+            , no-name()
+            , DataRef([PartRef("p", no-section-subscripts(), no-image-selector())])
+            , eos("\n")
+            )
+          , [ TypeGuardStmtBlock(
+                ClassGuardStmt(no-label(), DerivedTypeSpec("point", no-list()), no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("1", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", no-list()), no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("2", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                DefaultGuardStmt(no-label(), no-name(), eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("3", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectTypeStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , SelectTypeConstruct(
+            SelectTypeStmt(
+              no-label()
+            , "my_select"
+            , no-name()
+            , DataRef([PartRef("p", no-section-subscripts(), no-image-selector())])
+            , eos("\n")
+            )
+          , [ TypeGuardStmtBlock(
+                ClassGuardStmt(no-label(), DerivedTypeSpec("point", no-list()), "my_select", eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("1", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", no-list()), "my_select", eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("2", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            , TypeGuardStmtBlock(
+                DefaultGuardStmt(no-label(), "my_select", eos("\n   "))
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntLiteralConstant("3", no-kind())
+                    , eos("\n")
+                    )
+                  ]
+                )
+              )
+            ]
+          , EndSelectTypeStmt(no-label(), "my_select", eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

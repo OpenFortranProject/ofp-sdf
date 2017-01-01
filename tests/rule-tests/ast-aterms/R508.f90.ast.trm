@@ -1,0 +1,29 @@
+Program(
+  "!! R508 language-binding-spec\n! is BIND (C [, NAME = scalar-char-initialization-expr ])\n\n"
+, [ Module(
+      ModuleStmt(no-label(), "R508", eos("\n\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([LanguageBinding(no-binding-name())])
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            "10"
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([LanguageBinding(BindingName("\"cint\""))])
+          , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,43 @@
+Program(
+  "!!!!!!!!!!!\n! R1112.f90 - test of R1112 only attribute\n!\n\n!! Module for subsequent tests\n!\n"
+, [ Module(
+      ModuleStmt(no-label(), "mymodule", eos("\n  "))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl("this", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("that", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("theother", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("there", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n"))
+    )
+  , MainProgram(
+      no-program-stmt()
+    , initial-spec-part(
+        [ UseOnlyStmt(
+            no-label()
+          , no-module-nature()
+          , "mymodule"
+          , OnlyList(["this", "that", "theother"])
+          , eos("\n")
+          )
+        ]
+      , []
+      )
+    , SpecAndExecPart([])
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

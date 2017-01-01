@@ -1,0 +1,31 @@
+Program(
+  "!! R1214 proc-decl\n!       is procedure-entity-name [ => proc-pointer-init ]\n\n! Testing proc decl list.\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ProcedureDeclarationStmt(
+            no-label()
+          , no-proc-interface()
+          , no-list()
+          , [ProcDecl("foo", no-init())]
+          , eos("\n")
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , no-proc-interface()
+          , no-list()
+          , [ ProcDecl("truth", no-init())
+            , ProcDecl("beauty", no-init())
+            , ProcDecl("ugly", no-init())
+            , ProcDecl("lies", no-init())
+            ]
+          , eos("\n!TODO-F08 proc-pointer-init\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

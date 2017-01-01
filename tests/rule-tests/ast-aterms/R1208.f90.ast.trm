@@ -1,0 +1,33 @@
+Program(
+  "! Testing dtio-generic-spec, R1208\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), READ_FORMATTED(), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), READ_FORMATTED(), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), READ_UNFORMATTED(), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), READ_UNFORMATTED(), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), WRITE_FORMATTED(), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), WRITE_FORMATTED(), eos("\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), WRITE_UNFORMATTED(), eos("\n"))
+          , []
+          , EndInterfaceStmt(no-label(), WRITE_UNFORMATTED(), eos("\n\n!TODO - check for F2008 completeness\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

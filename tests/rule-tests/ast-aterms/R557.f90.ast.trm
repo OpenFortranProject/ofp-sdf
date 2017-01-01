@@ -1,0 +1,48 @@
+Program(
+  "!! R557 target-decl\n!    is object-name [ ( array-spec ) ]\n!       [ lbracket coarray-spec rbracket ]\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TargetStmt(
+            "13"
+          , [ TargetDecl(
+                "A"
+              , ArraySpec(
+                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
+                  ]
+                )
+              , CoarraySpec(
+                  explicit-coshape-spec-list(
+                    [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))]
+                  , final-cobounds-entry(no-lower-bound())
+                  )
+                )
+              )
+            , TargetDecl("B", no-list(), no-list())
+            ]
+          , eos("\n   ")
+          )
+        , TargetStmt(
+            no-label()
+          , [TargetDecl("A", no-list(), CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound()))))]
+          , eos("\n   ")
+          )
+        , TargetStmt(
+            no-label()
+          , [ TargetDecl(
+                "B"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , CoarraySpec([DeferredCoshape()])
+              )
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

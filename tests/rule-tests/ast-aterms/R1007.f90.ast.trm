@@ -1,0 +1,274 @@
+Program(
+  "!! R1007 data-edit-desc\n!     is  Iw[.m]\n!     or  Bw[.m]\n!     or  Ow[.m]\n!     or  Zw[.m]\n!     or  Fw.d\n!     or  Ew.d[Ee]\n!     or  ENw.d[Ee]\n!     or  ESw.d[Ee]\n!     or  Gw.d[Ee]\n!     or  Lw\n!     or  A[w]\n!     or  Dw.d\n!     or  DT[char-literal-constant][(v-list)]\n!\n!      w  is  int-literal-constant\n!      m  is  int-literal-constant\n!      d  is  int-literal-constant\n!      e  is  int-literal-constant\n!      v  is  signed-int-literal-constant\n!\n! Tested as part of a format-stmt.\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ FormatStmt(
+            "001"
+          , FormatSpec(
+              format-items-first(I(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "002"
+          , FormatSpec(
+              format-items-first(
+                I(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , opt-m(IntLiteralConstant("2", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "003"
+          , FormatSpec(
+              format-items-first(B(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "004"
+          , FormatSpec(
+              format-items-first(
+                B(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , opt-m(IntLiteralConstant("2", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "005"
+          , FormatSpec(
+              format-items-first(O(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "006"
+          , FormatSpec(
+              format-items-first(
+                O(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , opt-m(IntLiteralConstant("2", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "007"
+          , FormatSpec(
+              format-items-first(Z(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "008"
+          , FormatSpec(
+              format-items-first(
+                Z(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , opt-m(IntLiteralConstant("2", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "009"
+          , FormatSpec(
+              format-items-first(
+                F(no-r(), IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "010"
+          , FormatSpec(
+              format-items-first(
+                E(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , no-e()
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "011"
+          , FormatSpec(
+              format-items-first(
+                E(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , opt-e(IntLiteralConstant("2", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "012"
+          , FormatSpec(
+              format-items-first(
+                EN(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , no-e()
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "013"
+          , FormatSpec(
+              format-items-first(
+                EN(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , opt-e(IntLiteralConstant("3", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "014"
+          , FormatSpec(
+              format-items-first(
+                ES(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , no-e()
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "015"
+          , FormatSpec(
+              format-items-first(
+                ES(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , opt-e(IntLiteralConstant("3", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "016"
+          , FormatSpec(
+              format-items-first(
+                G(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , no-e()
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "017"
+          , FormatSpec(
+              format-items-first(
+                G(
+                  no-r()
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("2", no-kind())
+                , opt-e(IntLiteralConstant("3", no-kind()))
+                )
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "018"
+          , FormatSpec(format-items-first(L(no-r(), IntLiteralConstant("1", no-kind()))), no-list())
+          , eos("\n")
+          )
+        , FormatStmt(
+            "019"
+          , FormatSpec(format-items-first(A(no-r(), no-w())), no-list())
+          , eos("\n")
+          )
+        , FormatStmt(
+            "020"
+          , FormatSpec(
+              format-items-first(A(no-r(), opt-w(IntLiteralConstant("1", no-kind()))))
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "021"
+          , FormatSpec(
+              format-items-first(
+                D(no-r(), IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+              )
+            , no-list()
+            )
+          , eos("\n")
+          )
+        , FormatStmt(
+            "022"
+          , FormatSpec(format-items-first(DT(no-r(), "'hello'", no-list())), no-list())
+          , eos("\n")
+          )
+        , FormatStmt(
+            "023"
+          , FormatSpec(
+              format-items-first(
+                DT(no-r(), "'hello'", VEditDescList([IntLiteralConstant("10", no-kind())]))
+              )
+            , no-list()
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

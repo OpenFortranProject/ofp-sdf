@@ -1,0 +1,110 @@
+Program(
+  "!! R445 type-bound-procedure-part\n!    is contains-stmt [ binding-private-stmt ] [ type-bound-proc-binding ] ...\n!\n! NOTE 4.43\n\n"
+, [ Module(
+      ModuleStmt(no-label(), "myjunk", eos("\n\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "POINT", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL(no-kind()))
+              , no-list()
+              , [ ComponentDecl("X", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("Y", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n")
+              )
+            ]
+          , TypeBoundProcedurePart(
+              ContainsStmt(no-label(), eos("\n  "))
+            , no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass(no-arg-name())])
+                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT", eos("\n\n"))
+          )
+        ]
+      )
+    , ModuleSubprogramPart(
+        ContainsStmt(no-label(), eos("\n\n"))
+      , [ FunctionSubprogram(
+            FunctionStmt(
+              no-label()
+            , [IntrinsicType(REAL(no-kind()))]
+            , "POINT_LENGTH"
+            , ["A", "B"]
+            , no-suffix()
+            , eos("\n  ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , class-type-spec(DerivedTypeSpec("POINT", no-list()))
+                , comma-list([Intent(IN())])
+                , [ EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())
+                  , EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
+                  ]
+                , eos("\n  ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("POINT_LENGTH", no-section-subscripts(), no-image-selector())])
+                , FunctionReference(
+                    ProcedureDesignator("SQRT")
+                  , [ ActualArgSpec(
+                        no-keyword()
+                      , Plus(
+                          Power(
+                            Parens(
+                              Minus(
+                                DataRef(
+                                  [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                )
+                              , DataRef(
+                                  [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                )
+                              )
+                            )
+                          , IntLiteralConstant("2", no-kind())
+                          )
+                        , Power(
+                            Parens(
+                              Minus(
+                                DataRef(
+                                  [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                )
+                              , DataRef(
+                                  [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                )
+                              )
+                            )
+                          , IntLiteralConstant("2", no-kind())
+                          )
+                        )
+                      )
+                    ]
+                  )
+                , eos("\n")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndFunctionStmt(no-label(), "POINT_LENGTH", eos("\n\n"))
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    )
+  ]
+)

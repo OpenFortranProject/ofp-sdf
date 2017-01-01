@@ -1,0 +1,186 @@
+Program(
+  "!! R537 data-implied-do\n!    is ( data-i-do-object-list, data-i-do-variable\n!       = scalar-int-constant-expr, scalar-int-constant-expr [ , scalar-int-constant-expr ] )\n!\n! TODO- Fix AMBIGUITIES\n!\n! From NOTE 5.29\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("10", no-kind())), no-kind())))
+          , no-list()
+          , [EntityDecl("NAME", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list(
+              [Dimension(
+                 [ExplicitShape(IntLiteralConstant("0", no-kind()), IntLiteralConstant("9", no-kind()))]
+               )]
+            )
+          , [EntityDecl("MILES", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , comma-list(
+              [ Dimension(
+                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("100", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("100", no-kind()))
+                  ]
+                )
+              ]
+            )
+          , [EntityDecl("SKEW", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("NODE", no-list()))
+          , comma-list([POINTER()])
+          , [EntityDecl("HEAD_OF_LIST", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("PERSON", no-list()))
+          , no-list()
+          , [ EntityDecl("MYNAME", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("YOURNAME", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSetList_2(
+              DataStmtSet(
+                [DataRef([PartRef("NAME", no-section-subscripts(), no-image-selector())])]
+              , [DataStmtValue(no-repeat(), "'JOHN DOE'")]
+              )
+            , DataStmtSet(
+                [DataRef([PartRef("MILES", no-section-subscripts(), no-image-selector())])]
+              , [DataStmtValue(DataStmtRepeat("10"), IntLiteralConstant("0", no-kind()))]
+              )
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataImpliedDo(
+                  [ DataImpliedDo(
+                      [ DataRef(
+                          [ PartRef(
+                              "SKEW"
+                            , paren-list(
+                                [ DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])
+                                , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                                ]
+                              )
+                            , no-image-selector()
+                            )
+                          ]
+                        )
+                      ]
+                    , DataIDoVariable(VarRef("J"))
+                    , IntLiteralConstant("1", no-kind())
+                    , DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])
+                    , no-expr()
+                    )
+                  ]
+                , DataIDoVariable(VarRef("K"))
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("100", no-kind())
+                , no-expr()
+                )
+              ]
+            , [DataStmtValue(DataStmtRepeat("5050"), RealLiteralConstant("0.0", no-kind()))]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataImpliedDo(
+                  [ DataImpliedDo(
+                      [ DataRef(
+                          [ PartRef(
+                              "SKEW"
+                            , paren-list(
+                                [ DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])
+                                , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                                ]
+                              )
+                            , no-image-selector()
+                            )
+                          ]
+                        )
+                      ]
+                    , DataIDoVariable(VarRef("J"))
+                    , Plus(
+                        DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])
+                      , IntLiteralConstant("1", no-kind())
+                      )
+                    , IntLiteralConstant("100", no-kind())
+                    , no-expr()
+                    )
+                  ]
+                , DataIDoVariable(VarRef("K"))
+                , IntLiteralConstant("1", no-kind())
+                , IntLiteralConstant("99", no-kind())
+                , no-expr()
+                )
+              ]
+            , [DataStmtValue(DataStmtRepeat("4950"), RealLiteralConstant("1.0", no-kind()))]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [DataRef([PartRef("HEAD_OF_LIST", no-section-subscripts(), no-image-selector())])]
+            , [DataStmtValue(no-repeat(), StructureConstructor(DerivedTypeSpec("NULL", no-list()), []))]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [DataRef([PartRef("MYNAME", no-section-subscripts(), no-image-selector())])]
+            , [ DataStmtValue(
+                  no-repeat()
+                , DataRef(
+                    [PartRef(
+                       "PERSON"
+                     , paren-list([IntLiteralConstant("21", no-kind()), "'JOHN SMITH'"])
+                     , no-image-selector()
+                     )]
+                  )
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataRef(
+                  [PartRef("YOURNAME", no-section-subscripts(), no-image-selector()), PartRef("AGE", no-section-subscripts(), no-image-selector())]
+                )
+              , DataRef(
+                  [PartRef("YOURNAME", no-section-subscripts(), no-image-selector()), PartRef("NAME", no-section-subscripts(), no-image-selector())]
+                )
+              ]
+            , [DataStmtValue(no-repeat(), IntLiteralConstant("35", no-kind())), DataStmtValue(no-repeat(), "'FRED BROWN'")]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

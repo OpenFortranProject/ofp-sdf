@@ -1,0 +1,19 @@
+Program(
+  "! R1101d.f90 - test of R1101 main-program\n!\n!   main-program is [ program-stmt ] [\n!      specification-part ] [ execution-part ] [\n!      internal-subprogram-part ] end-program-stmt program-stmt is\n!      PROGRAM program-name end-program-stmt is END [ PROGRAM [\n!      program-name ] ] Not tested here: specification-part,\n!      execution-part, and internal-subprogram-part.\n\n! Add an optional execution-part\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "my_prog", eos("\n  "))
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), "my_prog", eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,48 @@
+Program(
+  "!! R523 intent-spec\n!    is  IN\n!    or  OUT\n!    or  INOUT\n!\n! Tested as part of attr-spec (R502), which is part of a \n! type-declaration-stmt (R501).\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "FooBar"
+      , ["a", "b", "c", "D"]
+      , no-language-binding()
+      , eos("\n\n")
+      )
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([Intent(IN())])
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([Intent(OUT())])
+          , [EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([Intent(INOUT())])
+          , [EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            "20"
+          , IntrinsicType(INTEGER(no-kind()))
+          , comma-list([Intent(INOUT())])
+          , [EntityDecl("d", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndSubroutineStmt("10", no-subroutine-name(), eos("\n\n"))
+    )
+  ]
+)

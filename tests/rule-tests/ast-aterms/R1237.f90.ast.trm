@@ -1,0 +1,35 @@
+Program(
+  "!! R1237 separate-module-subprogram\n!     is mp-subprogram-stmt\n!           [ specification-part ]\n!           [ execution-part ]\n!           [ internal-subprogram-part ]\n!        end-mp-subprogram-stmt\n!\n"
+, [ Module(
+      ModuleStmt(no-label(), "mod", eos("\n"))
+    , SpecificationPart([], [], no-implicit-part(), [])
+    , ModuleSubprogramPart(
+        ContainsStmt(no-label(), eos("\n   "))
+      , [ SeparateModuleSubprogram(
+            MpSubprogramStmt(no-label(), "modproc", eos("\n      "))
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , IntrinsicType(INTEGER(no-kind()))
+                , no-list()
+                , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n      ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                , IntLiteralConstant("3", no-kind())
+                , eos("\n   ")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndMpSubprogramStmt(no-label(), "modproc", eos("\n"))
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "mod", eos("\n\n"))
+    )
+  ]
+)

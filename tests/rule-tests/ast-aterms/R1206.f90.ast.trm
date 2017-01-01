@@ -1,0 +1,104 @@
+Program(
+  "!! R1206 procedure-stmt\n!     is [ MODULE ] PROCEDURE [ :: ] procedure-name-list\n\n"
+, [ Module(
+      ModuleStmt("10", "PSM", eos("\n\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ InterfaceBlock(
+            InterfaceStmt("11", "PSI", eos("\n   ! First without the optional MODULE\n   "))
+          , [ ProcedureStmt(no-label(), ["a"], eos("\n"))
+            , ProcedureStmt("12", ["b", "c"], eos("\n   \n   ! Now with the MODULE\n   "))
+            , ModuleProcedureStmt(no-label(), ["d"], eos("\n"))
+            , ModuleProcedureStmt("13", ["e", "f"], eos("\n"))
+            ]
+          , EndInterfaceStmt("14", no-generic-spec(), eos("\n\n"))
+          )
+        ]
+      )
+    , ModuleSubprogramPart(
+        ContainsStmt("15", eos("\n  "))
+      , [ SubroutineSubprogram(
+            SubroutineStmt(no-label(), no-prefix(), "a", no-list(), no-language-binding(), eos("\n  "))
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+          )
+        , SubroutineSubprogram(
+            SubroutineStmt(
+              "16"
+            , no-prefix()
+            , "b"
+            , ["i"]
+            , no-language-binding()
+            , eos("\n  ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n  "))
+          )
+        , SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "c"
+            , ["i", "j"]
+            , no-language-binding()
+            , eos("\n  ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n  "))
+          )
+        , SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "d"
+            , ["x"]
+            , no-language-binding()
+            , eos("\n  ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n  "))
+          )
+        , SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "e"
+            , ["x", "y"]
+            , no-language-binding()
+            , eos("\n")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt("17", no-subroutine-name(), eos("\n  "))
+          )
+        , SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "f"
+            , ["x", "y", "z"]
+            , no-language-binding()
+            , eos("\n  ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart([])
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+          )
+        ]
+      )
+    , EndModuleStmt("18", no-module-name(), eos("\n\n\n"))
+    )
+  ]
+)

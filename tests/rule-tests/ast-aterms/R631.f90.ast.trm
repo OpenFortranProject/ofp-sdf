@@ -1,0 +1,105 @@
+Program(
+  "!! R631 allocation\n!    is allocate-object [ ( allocate-shape-spec-list ) ]\n!                       [ lbracket allocate-co-array-spec rbracket ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("this", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("that", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            , Allocation(
+                DataRef([PartRef("theother", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("\n\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("T", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , AllocateCoarraySpec([AllocateCoshapeSpec(no-lower-bound(), IntLiteralConstant("3", no-kind()))], no-lower-bound())
+              )
+            ]
+          , no-list()
+          , eos("\n\n! NOTE 6.18\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("T", no-section-subscripts(), no-image-selector())])
+              , no-list()
+              , AllocateCoarraySpec(no-list(), no-lower-bound())
+              )
+            ]
+          , no-list()
+          , eos("\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef(
+                  [PartRef("T", no-section-subscripts(), no-image-selector()), PartRef("AAC", no-section-subscripts(), no-image-selector())]
+                )
+              , [AllocateShapeSpec(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("\n")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef(
+                  [ PartRef(
+                      "T"
+                    , no-section-subscripts()
+                    , ImageSelector([DataRef([PartRef("Q", no-section-subscripts(), no-image-selector())])])
+                    )
+                  , PartRef("AAC", no-section-subscripts(), no-image-selector())
+                  ]
+                )
+              , [AllocateShapeSpec(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))]
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("! MUST be executed on image Q to be correct\n\n   ")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                DataRef([PartRef("T", no-section-subscripts(), no-image-selector())])
+              , [AllocateShapeSpec(no-lower-bound(), IntLiteralConstant("9", no-kind()))]
+              , no-list()
+              )
+            ]
+          , no-list()
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

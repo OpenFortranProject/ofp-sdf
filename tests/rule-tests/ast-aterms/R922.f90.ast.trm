@@ -1,0 +1,36 @@
+Program(
+  "!! R922 wait-spec\n!    is [ UNIT = ] file-unit-number\n!    or END = label\n!    or EOR = label\n!    or ERR = label\n!    or ID = scalar-int-expr\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , WaitStmt(
+            "10"
+          , [UNIT(IntLiteralConstant("5", no-kind())), END("99")]
+          , eos("\n    ")
+          )
+        , WaitStmt(
+            no-label()
+          , [ IOMSG(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+            , ERR("314")
+            , EOR("99")
+            , END("10")
+            , UNIT(IntLiteralConstant("6", no-kind()))
+            ]
+          , eos("\n\n")
+          )
+        , ContinueStmt("314", eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("99", no-program-name(), eos("\n"))
+    )
+  ]
+)

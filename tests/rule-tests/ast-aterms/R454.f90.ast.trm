@@ -1,0 +1,43 @@
+Program(
+  "!! R454 type-param-spec\n!   is [ keyword = ] type-param-value\n!\n\n"
+, [ Module(
+      ModuleStmt(no-label(), "TPS", eos("\n\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , no-list()
+            , "param1"
+            , paren-list(["k"])
+            , eos("\n!TODO-F08   INTEGER, KIND :: k\n")
+            )
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , no-list()
+            , "param2"
+            , paren-list(["k1", "k2"])
+            , eos("\n!TODO-F08   INTEGER, KIND :: k1, k2\n")
+            )
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n!TODO-F08 type(param1(4))   :: beauty\n!TODO-F08 type(param2(4,8)) :: beast\n!TODO-F08 type(ugly(dim=a)) :: lies\n!TODO-F08 type(this(3,4,that=5)) :: theother\n\n"))
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    )
+  ]
+)

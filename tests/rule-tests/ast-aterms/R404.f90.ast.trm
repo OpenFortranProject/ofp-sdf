@@ -1,0 +1,118 @@
+Program(
+  "!! R404 intrinsic-type-spec\n!    is INTEGER [ kind-selector ]\n!    or REAL [ kind-selector ]\n!    or DOUBLE PRECISION\n!    or COMPLEX [ kind-selector ]\n!    or CHARACTER [ char-selector ]\n!    or LOGICAL [ kind-selector ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , no-list()
+          , [EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , no-list()
+          , [EntityDecl("d", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(DOUBLEPRECISION())
+          , no-list()
+          , [EntityDecl("e", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(DOUBLEPRECISION())
+          , no-list()
+          , [EntityDecl("f", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(COMPLEX(no-kind()))
+          , no-list()
+          , [EntityDecl("g", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(COMPLEX(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , no-list()
+          , [EntityDecl("h", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(DOUBLECOMPLEX())
+          , no-list()
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(DOUBLECOMPLEX())
+          , no-list()
+          , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("k", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("1", no-kind())), no-kind())))
+          , no-list()
+          , [EntityDecl("l", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(no-kind()))
+          , no-list()
+          , [EntityDecl("m", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL(KindSelector(IntLiteralConstant("1", no-kind()))))
+          , no-list()
+          , [EntityDecl("n", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("foo", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    )
+  ]
+)

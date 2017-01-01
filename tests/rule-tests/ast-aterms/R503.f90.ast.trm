@@ -1,0 +1,34 @@
+Program(
+  "!! R503 entity-decl\n!    is object-name [( array-spec )]\n!                   [ lbracket co-array-spec rbracket ]\n!                   [ * char-length ] [ initialization ]\n!    or function-name [ * char-length ]\n\n!TODO-F08 - improve test e.g. for co-array-spec\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [ EntityDecl("x", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("y", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("z", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("what", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("ever", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL(no-kind()))
+          , no-list()
+          , [ EntityDecl("truth", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("beauty", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

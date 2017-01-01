@@ -1,0 +1,95 @@
+Program(
+  "!! R524 access-stmt\n!    is access-spec [ [ :: ] access-id-list ]\n\n"
+, [ Module(
+      ModuleStmt(no-label(), "ex", eos("\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ AccessStmt("10", PRIVATE(), [], eos("\n    "))
+        , AccessStmt(no-label(), PUBLIC(), ["boo", ASSIGNMENT()], eos("\n    "))
+        , AccessStmt(
+            no-label()
+          , PUBLIC()
+          , ["binky", "bonky", OPERATOR(PLUS())]
+          , eos("\n\n")
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), ASSIGNMENT(), eos("\n   "))
+          , [ InterfaceBody(
+                SubroutineStmt(
+                  no-label()
+                , no-prefix()
+                , "LOGICAL_TO_NUMERIC"
+                , ["N", "B"]
+                , no-language-binding()
+                , eos("\n      ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(INTEGER(no-kind()))
+                    , comma-list([Intent(OUT())])
+                    , [EntityDecl("N", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n      ")
+                    )
+                  , TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(LOGICAL(no-kind()))
+                    , comma-list([Intent(IN())])
+                    , [EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              , EndSubroutineStmt(no-label(), "LOGICAL_TO_NUMERIC", eos("\n"))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), ASSIGNMENT(), eos("\n\n"))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(PLUS()), eos("\n   "))
+          , [ InterfaceBody(
+                FunctionStmt(
+                  no-label()
+                , [IntrinsicType(LOGICAL(no-kind()))]
+                , "LOGICAL_ADD"
+                , ["N", "B"]
+                , no-suffix()
+                , eos("\n      ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(LOGICAL(no-kind()))
+                    , comma-list([Intent(IN())])
+                    , [EntityDecl("N", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n      ")
+                    )
+                  , TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(LOGICAL(no-kind()))
+                    , comma-list([Intent(IN())])
+                    , [EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              , EndFunctionStmt(no-label(), "LOGICAL_ADD", eos("\n"))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), OPERATOR(PLUS()), eos("\n\n"))
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndModuleStmt(no-label(), "ex", eos("\n"))
+    )
+  ]
+)

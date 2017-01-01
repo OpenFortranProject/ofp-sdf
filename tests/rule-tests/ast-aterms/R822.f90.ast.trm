@@ -1,0 +1,185 @@
+Program(
+  "!! R822 block-do-construct\n!      block-do-construct  is  do-stmt\n!                                do-block\n!                              end-do\n!\n!      do-stmt  is  label-do-stmt\n!               or  nonlabel-do-stmt\n!\n!      label-do-stmt  is  [ do-construct-name : ] DO label [ loop-control ]\n!\n!      nonlabel-do-stmt  is  [ do-construct-name : ] DO [ loop-control ]\n!\n!      loop-control  is  [,] do-variable = scalar-int-expr, scalar-int-expr\n!                          [ , scalar-int-expr ]\n!                    or  [,] WHILE ( scalar-logical-expr )\n!\n!      do-variable  is  scalar-int-variable\n!\n!      do-block  is  block\n!\n!      end-do  is  end-do-stmt\n!              or  continue-stmt\n!\n!      end-do-stmt  is  END DO [ do-construct-name ]\n!\n! Tested here: block-do-construct, do-stmt, end-do, label-do-stmt, \n! nonlabel-do-stmt, do-construct-name, loop-control, and end-do-stmt.\n! \n! Not tested here: do-block, do-variable, scalar-int-expr, \n! scalar-logical-expr, block, and continue-stmt.\n\n! Test the label and nonlabel stmts\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ LabelDoStmt(no-label(), no-name(), "10", no-loop-control(), eos("\n   "))
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt("10", no-name(), eos("\n\n"))
+        , LabelDoStmt(
+            no-label()
+          , no-name()
+          , "10"
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt("10", no-name(), eos("\n\n! Test the loop-control forms\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , opt-expr(IntLiteralConstant("2", no-kind()))
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , opt-expr(IntLiteralConstant("2", no-kind()))
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopWhileControl(
+              GT(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("2", no-kind())
+              )
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopWhileControl(
+              GT(
+                DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+              , IntLiteralConstant("2", no-kind())
+              )
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n! Test the end-do forms\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , no-name()
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), no-name(), eos("\n\n"))
+        , LabelDoStmt(
+            no-label()
+          , no-name()
+          , "10"
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("1", no-kind())
+          , eos("\n")
+          )
+        , ContinueStmt("10", eos("\n\n! Test the allowance of a do-construct-name\n"))
+        , NonlabelDoStmt(
+            no-label()
+          , "my_do"
+          , LoopControl(
+              VarRef("i")
+            , IntLiteralConstant("1", no-kind())
+            , IntLiteralConstant("10", no-kind())
+            , no-expr()
+            )
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+          , IntLiteralConstant("2", no-kind())
+          , eos("\n")
+          )
+        , EndDoStmt(no-label(), "my_do", eos("\n\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

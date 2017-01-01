@@ -1,0 +1,36 @@
+Program(
+  "!! R926 position-spec\n!    is  [ UNIT = ] file-unit-number\n!    or  IOMSG = iomsg-variable\n!    or  IOSTAT = scalar-int-variable\n!    or  ERR = label\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , BackspaceStmt(
+            no-label()
+          , [ IOMSG(DataRef([PartRef("CVAR", no-section-subscripts(), no-image-selector())]))
+            , UNIT(IntLiteralConstant("5", no-kind()))
+            ]
+          , eos("\n")
+          )
+        , RewindStmt(
+            no-label()
+          , [ UNIT(IntLiteralConstant("5", no-kind()))
+            , IOMSG(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+            , ERR("314")
+            , IOSTAT(DataRef([PartRef("iugly", no-section-subscripts(), no-image-selector())]))
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt("314", no-program-name(), eos("\n"))
+    )
+  ]
+)

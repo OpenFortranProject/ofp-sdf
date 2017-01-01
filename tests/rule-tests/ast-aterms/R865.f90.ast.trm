@@ -1,0 +1,48 @@
+Program(
+  "!! R865 unlock-stmt\n!    is UNLOCK ( lock-variable [ , sync-stat-list ] )\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(COMPLEX(no-kind()))
+          , no-list()
+          , [EntityDecl("comp", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(no-char-selector()))
+          , no-list()
+          , [EntityDecl("err", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER(no-kind()))
+          , no-list()
+          , [EntityDecl("a_lock_variable", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , UnlockStmt(
+            "999"
+          , DataRef([PartRef("comp", no-section-subscripts(), no-image-selector())])
+          , no-list()
+          , eos("\n    ")
+          )
+        , UnlockStmt(
+            no-label()
+          , DataRef([PartRef("a_lock_variable", no-section-subscripts(), no-image-selector())])
+          , comma-list(
+              [ERRMSG(DataRef([PartRef("err", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

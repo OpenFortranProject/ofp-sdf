@@ -1,0 +1,69 @@
+Program(
+  "!! R560 implicit-stmt\n!\n! From NOTE 5.38\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "MAIN", eos("\n     "))
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(
+               derived-type-spec(DerivedTypeSpec("BLOB", no-list()))
+             , [LetterSpec("A", no-letter())]
+             )]
+          , eos("\n       ")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "BLOB", no-list(), eos("\n         "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER(no-kind()))
+              , no-list()
+              , [ComponentDecl("I", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n       ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "BLOB", eos("\n       "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("BLOB", no-list()))
+          , no-list()
+          , [EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n       ")
+          )
+        , CallStmt(no-label(), ProcedureDesignator("STEVE"), no-list(), eos("\n     "))
+        ]
+      )
+    , SubprogramPart(
+        ContainsStmt(no-label(), eos("\n       "))
+      , [ SubroutineSubprogram(
+            SubroutineStmt(no-label(), no-prefix(), "STEVE", no-list(), no-language-binding(), eos("\n         "))
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , IntrinsicType(INTEGER(no-kind()))
+                , no-list()
+                , [EntityDecl("BLOB", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n         !..\n         ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("AA", no-section-subscripts(), no-image-selector())])
+                , DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
+                , eos("\n         !..\n       ")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), "STEVE", eos("\n     "))
+          )
+        ]
+      )
+    , EndProgramStmt(no-label(), "MAIN", eos("\n"))
+    )
+  ]
+)

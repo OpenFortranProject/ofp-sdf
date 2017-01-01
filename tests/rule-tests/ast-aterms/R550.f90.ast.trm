@@ -1,0 +1,23 @@
+Program(
+  "!! R550 pointer-stmt\n!    is POINTER [ :: ] pointer-decl-list\n!\n!! R551 pointer-decl\n!    is object-name [ ( deferred-shape-spec-list ) ]\n!    or proc-entity-name\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ PointerStmt(
+            no-label()
+          , [PointerDecl("this", no-list()), PointerDecl("that", no-list()), PointerDecl("theother", no-list())]
+          , eos("\n")
+          )
+        , PointerStmt(
+            "10"
+          , [PointerDecl("A", [AssumedShape(no-lower-bound()), AssumedShape(no-lower-bound())])]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)
