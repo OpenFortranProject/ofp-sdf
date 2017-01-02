@@ -1,0 +1,20 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [FormatStmt("010", FormatSpec([CS("'(10f8.2)'")], [])){Comment("
+
+")}]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+
+")}
+    )
+  ]
+){Comment("!! R2021 char-string-edit-desc
+!     is  char-literal-constant
+!
+")}

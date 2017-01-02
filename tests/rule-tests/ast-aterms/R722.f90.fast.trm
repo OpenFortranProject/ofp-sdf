@@ -1,0 +1,103 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("10"))
+          , []
+          , [Var("H", CHARACTER(IntVal("10")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [Var("a", LOGICAL(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("i", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("set", [])
+          , []
+          , [Var("s", DerivedType("set", []), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("s")
+          , DefBinExpr(
+              Parens(DefBinExpr(IntVal("1"), ".intersect.", IntVal("2")))
+            , ".UNION."
+            , Parens(Minus(IntVal("3"), IntVal("4")))
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQ(
+              Plus(IntVal("1"), IntVal("2"))
+            , Mult(IntVal("2"), IntVal("4"))
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("s")
+          , DefUnaryExpr(".inverse.", Parens(Plus(IntVal("1"), IntVal("2"))))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , AND(
+              Parens(
+                EQ(
+                  Parens(Plus(IntVal("1"), IntVal("2")))
+                , IntVal("3")
+                )
+              )
+            , Parens(
+                EQ(
+                  Parens(Mult(IntVal("3"), IntVal("4")))
+                , IntVal("12")
+                )
+              )
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQ(
+              Concat("\"E\"", "\"G\"")
+            , Substring(VarRef("H"), SubstringRange(IntVal("1"), IntVal("10")))
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("i")
+          , Plus(IntVal("1"), Mult(IntVal("2"), IntVal("3")))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("i")
+          , Mult(
+              Parens(Plus(IntVal("1"), IntVal("2")))
+            , IntVal("3")
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R722 expr
+!    is [ expr defined-binary-op ] level-5-expr
+")}

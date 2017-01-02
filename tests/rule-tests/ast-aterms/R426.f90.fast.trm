@@ -1,0 +1,42 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "DTS"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt("10", [], "binky", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , [ABSTRACT(), PRIVATE()]
+            , "boopy"
+            , ["l", "m"]
+            )
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "boopy"){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  ]
+){Comment("!! R426 derived-type-stmt
+!    is TYPE [ [ , type-attr-spec-list ] :: ] type-name [ ( type-param-name-list ) ]
+
+")}

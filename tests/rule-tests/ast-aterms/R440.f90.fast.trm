@@ -1,0 +1,108 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "whut"){Comment("
+
+  ")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "point", []){Comment("
+     ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , []
+              , [Var("x", INTEGER(), no-init()), Var("y", INTEGER(), no-init())]
+              ){Comment("
+  ")}
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "point"){Comment("
+
+  ")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [Extends("point")], "feeble", []){Comment("
+     ")}
+          , []
+          , []
+          , [ ProcComponentDefStmt(
+                no-label()
+              , no-proc-interface()
+              , [POINTER(), NOPASS()]
+              , [ProcDecl("foible", no-init())]
+              , eos("\n     ")
+              )
+            , ProcComponentDefStmt(
+                no-label()
+              , "bob"
+              , [Pass("a"), PRIVATE(), POINTER()]
+              , [ProcDecl("foo", "bar")]
+              , eos("\n     ")
+              )
+            , ProcComponentDefStmt(
+                no-label()
+              , "bob"
+              , [Pass(no-arg-name()), PUBLIC(), POINTER()]
+              , [ProcDecl("foo", "bar")]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                FunctionStmt(no-label(), [], "bob", ["a"], no-result(), no-language-binding())
+              , [ ImportStmt(no-label(), ["feeble"]){Comment("
+     ")}
+                , TypeDeclarationStmt(
+                    no-label()
+                  , DerivedType("feeble", [])
+                  , []
+                  , [Var("a", DerivedType("feeble", []), no-init())]
+                  ){Comment("
+   ")}
+                ]
+              , EndFunctionStmt(no-label(), "bob")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , [ Function(
+            FunctionStmt(no-label(), [], "boo", ["a"], no-result(), no-language-binding())
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , DerivedType("point", [])
+                , []
+                , [Var("a", DerivedType("point", []), no-init())]
+                ){Comment("
+  ")}
+              ]
+            , []
+            , []
+            )
+          , EndFunctionStmt(no-label(), "boo"){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "whut")
+    )
+  ]
+){Comment("!! R440 proc-component-def-stmt
+!    is PROCEDURE ( [ proc-interface ] ) ,
+!            proc-component-attr-spec-list :: proc-decl-list
+!                                                                                         
+")}

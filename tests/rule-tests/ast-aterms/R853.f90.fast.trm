@@ -1,0 +1,25 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ArithmeticIfStmt(no-label(), VarRef("x"), "10", "20", "30"){Comment("
+
+")}
+        , ContinueStmt("10")
+        , ContinueStmt("20")
+        ]
+      , []
+      )
+    , EndProgramStmt("30", no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R853 arithmetic-if-stmt
+!    is  IF ( scalar-numeric-expr ) label, label, label
+!
+! Tested here: arithmetic-if-stmt
+!
+! Not tested here: scalar-numeric-expr and label.
+")}

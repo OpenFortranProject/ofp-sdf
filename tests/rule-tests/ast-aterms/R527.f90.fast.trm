@@ -1,0 +1,59 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ AllocatableStmt(
+            no-label()
+          , [ Var(
+                "coscalar"
+              , ArrayType(unknown-type(), [], CoarraySpec([Range(no-lower-bound(), STAR())]))
+              , no-init()
+              )
+            ]
+          ){Comment("
+   ")}
+        , AllocatableStmt(
+            no-label()
+          , [ Var(
+                "coarray"
+              , ArrayType(
+                  unknown-type()
+                , []
+                , CoarraySpec(
+                    [ Range(no-lower-bound(), IntVal("5"))
+                    , Range(IntVal("3"), IntVal("7"))
+                    , Range(no-lower-bound(), STAR())
+                    ]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+   ")}
+        , AllocatableStmt(
+            no-label()
+          , [ Var(
+                "combo"
+              , ArrayType(
+                  unknown-type()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , CoarraySpec([Range(no-lower-bound(), STAR())])
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R527 allocatable-decl
+!    is object-name [ ( array-spec ) ] [ lbracket co-array-spec rbracket ]
+
+   ")}

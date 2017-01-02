@@ -1,0 +1,105 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , [Dimension([Range(no-lower-bound(), IntVal("10"))])]
+          , [ Var("IL1", LOGICAL(), no-init())
+            , Var("ISay", LOGICAL(), no-init())
+            , Var("HalfTrue", LOGICAL(), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Dimension([Range(no-lower-bound(), IntVal("10"))])]
+          , [ Var("IO1", INTEGER(), no-init())
+            , Var("IR5", INTEGER(), no-init())
+            , Var("ZEPS", INTEGER(), no-init())
+            , Var("ZERO", INTEGER(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ WhereConstruct(
+            WhereConstructStmt("10", "NoNoNo", VarRef("ISay")){Comment("
+  ")}
+          , [ AssignmentStmt(
+                "11"
+              , VarDef("IO1")
+              , Minus(VarRef("IR5"), VarRef("IO1"))
+              ){Comment("
+  ")}
+            , WhereStmt(
+                "12"
+              , LT(VarRef("IO1"), VarRef("ZEPS"))
+              , AssignmentStmt(no-label(), VarDef("IO1"), VarRef("ZERO"))
+              )
+            ]
+          , [ MaskedElsewhereClause(
+                MaskedElsewhereStmt("13", VarRef("HalfTrue"), "NoNoNo"){Comment("
+  ")}
+              , [AssignmentStmt(
+                   "14"
+                 , VarDef("IO1")
+                 , Plus(VarRef("IR5"), VarRef("IO1"))
+                 )]
+              )
+            ]
+          , ElsewhereClause(
+              ElsewhereStmt("15", "NoNoNo"){Comment("
+  ")}
+            , [AssignmentStmt("16", VarDef("IO1"), VarRef("ZERO"))]
+            )
+          , EndWhereStmt("17", "NoNoNo")
+          )
+        , WhereConstruct(
+            WhereConstructStmt(no-label(), no-name(), VarRef("IL1"))
+          , []
+          , []
+          , no-elsewhere-clause()
+          , EndWhereStmt(no-label(), no-name())
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R742 where-construct
+!    is where-construct-stmt
+!          [ where-body-construct ] ...
+!       [ masked-elsewhere-stmt
+!          [ where-body-construct ] ... ] ...
+!       [ elsewhere-stmt
+!          [ where-body-construct ] ... ]
+!       end-where-stmt
+!
+!  R743 where-construct-stmt
+!    is [where-construct-name :] WHERE ( mask-expr )
+!
+!  R744 where-body-construct
+!    is where-assignment-stmt
+!    or where-stmt
+!    or where-construct
+!
+!  R745 where-assigment-stmt
+!    is assignment-stmt
+!
+!  R746 masked-expression
+!    is logical-expr
+!
+!  R747 masked-elsewhere-stmt
+!    is ELSEWHERE (mask-expr ) [where-construct-name ]
+!
+!  R748 elsewhere-stmt
+!    is ELSEWHERE [where-construct-name ]
+!
+!  R749 end-where-stmt
+!    is END WHERE [where-construct-name ]
+!
+
+")}

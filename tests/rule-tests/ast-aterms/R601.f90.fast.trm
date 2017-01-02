@@ -1,0 +1,80 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "T", []){Comment("
+  ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("b", INTEGER(), no-init())]
+             )]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name())
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "a"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("2"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("T", [])
+          , []
+          , [Var("c", DerivedType("T", []), no-init())]
+          )
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("a"), IntVal("1"))
+        , AssignmentStmt(
+            no-label()
+          , PartRef("a", [IntVal("1")], no-image-selector())
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , Substring(VarRef("a"), SubstringRange(IntVal("1"), IntVal("2")))
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("c"), VarRef("b")])
+          , IntVal("1")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R601 designator
+!    is  object-name
+!    or  array-element
+!    or  array-section
+!    or  complex-part-designator
+!    or  structure-component
+!    or  substring
+! 
+! Full tests for each of the alternatives is done separately.  
+!
+! designator tested as part of a variable (R602), which is used as part of 
+! an assignment-stmt (R732).
+
+")}

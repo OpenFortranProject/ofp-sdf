@@ -1,0 +1,51 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [ Var("a", LOGICAL(), no-init())
+            , Var("b", LOGICAL(), no-init())
+            , Var("c", LOGICAL(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("a"), TRUE())
+        , AssignmentStmt(no-label(), VarDef("a"), TRUE(IntVal("4")))
+        , AssignmentStmt(no-label(), VarDef("b"), FALSE())
+        , AssignmentStmt(no-label(), VarDef("b"), FALSE(IntVal("1")))
+        , AssignmentStmt(no-label(), VarDef("a"), NOT(VarRef("b")))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , AND(VarRef("b"), VarRef("c"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , AND(AND(VarRef("a"), VarRef("b")), VarRef("c"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , AND(
+              AND(NOT(VarRef("a")), VarRef("b"))
+            , NOT(VarRef("c"))
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R719 and-op
+!    is .AND.
+
+")}

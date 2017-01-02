@@ -1,0 +1,21 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ IntrinsicStmt(no-label(), ["sin"])
+        , IntrinsicStmt(no-label(), ["exp", "mod"])
+        , IntrinsicStmt(no-label(), ["cos"])
+        , IntrinsicStmt(no-label(), ["tan", "atan"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R1218 intrinsic-stmt
+!    is INTRINSIC [ :: ] intrinsic-procedure-name-list
+
+")}

@@ -1,0 +1,83 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(PowerOp()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(TIMES()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(DIV()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(PLUS()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(MINUS()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(ConcatOp()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_EQ()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_EQ()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_NE()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_NE()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_LT()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_LT()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_LE()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_LE()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_GT()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_GT()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(RelOp_GE()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(RelOp_GE()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(NotOp()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(AndOp()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(OrOp()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(OrOp()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(EquivOp_EQV()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(EquivOp_NEQV()))
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R309 intrinsic-operator
+!    is power-op     **
+!    or mult-op       * | /
+!    or add-op        + | -
+!    or concat-op    //
+!    or rel-op       .EQ. | .NE. | .LT. | ...
+!    or not-op       .NOT.
+!    or and-op       .AND.
+!    or or-op        .OR.
+!    or equiv-op
+
+")}

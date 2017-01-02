@@ -1,0 +1,56 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        no-label()
+      , []
+      , "FooBar"
+      , ["a", "b", "c", "D"]
+      , no-language-binding()
+      ){Comment("
+
+")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Intent(IN())]
+          , [Var("a", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Intent(OUT())]
+          , [Var("b", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Intent(INOUT())]
+          , [Var("c", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            "20"
+          , INTEGER()
+          , [Intent(INOUT())]
+          , [Var("d", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt("10", no-subroutine-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R523 intent-spec
+!    is  IN
+!    or  OUT
+!    or  INOUT
+!
+! Tested as part of attr-spec (R502), which is part of a 
+! type-declaration-stmt (R501).
+
+")}

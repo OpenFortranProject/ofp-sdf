@@ -1,0 +1,67 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "MAIN"){Comment("
+     ")}
+    , Scope(
+        []
+      , [ ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(DerivedType("BLOB", []), [LetterSpec("A", no-letter())])]
+          , eos("\n       ")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "BLOB", []){Comment("
+         ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("I", INTEGER(), no-init())]
+             ){Comment("
+       ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "BLOB"){Comment("
+       ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("BLOB", [])
+          , []
+          , [Var("B", DerivedType("BLOB", []), no-init())]
+          ){Comment("
+       ")}
+        , CallStmt(no-label(), "STEVE", []){Comment("
+     ")}
+        ]
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "STEVE", [], no-language-binding()){Comment("
+         ")}
+          , Scope(
+              [TypeDeclarationStmt(
+                 no-label()
+               , INTEGER()
+               , []
+               , [Var("BLOB", INTEGER(), no-init())]
+               ){Comment("
+         !..
+         ")}]
+            , [AssignmentStmt(no-label(), VarDef("AA"), VarRef("B")){Comment("
+         !..
+       ")}]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), "STEVE"){Comment("
+     ")}
+          )
+        ]
+      )
+    , EndProgramStmt(no-label(), "MAIN")
+    )
+  ]
+){Comment("!! R560 implicit-stmt
+!
+! From NOTE 5.38
+!
+")}

@@ -1,0 +1,55 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [ Var("a", LOGICAL(), no-init())
+            , Var("b", LOGICAL(), no-init())
+            , Var("c", LOGICAL(), no-init())
+            , Var("d", LOGICAL(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQV(VarRef("b"), VarRef("c"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , NEQV(VarRef("b"), VarRef("c"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQV(
+              NEQV(VarRef("a"), VarRef("b"))
+            , AND(VarRef("c"), VarRef("d"))
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQV(
+              AND(VarRef("b"), VarRef("c"))
+            , NOT(VarRef("d"))
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R721 equiv-op
+!    is .EQV.
+!    or .NEQV.
+")}

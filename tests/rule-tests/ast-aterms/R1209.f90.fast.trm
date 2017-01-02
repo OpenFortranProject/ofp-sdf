@@ -1,0 +1,69 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "import_stmt"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var("a", INTEGER(), no-init())
+            , Var("b", INTEGER(), no-init())
+            , Var("c", INTEGER(), no-init())
+            ]
+          ){Comment("
+
+")}
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+     ! No optional parts.
+!TODO-F08     IMPORT
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "sub"){Comment("
+
+   ")}
+              )
+            , InterfaceBody(
+                SubroutineStmt(no-label(), [], "sub1", [], no-language-binding()){Comment("
+     ! Optional import-name-list
+!TODO-F08     IMPORT a, b
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "sub1"){Comment("
+
+   ")}
+              )
+            , InterfaceBody(
+                SubroutineStmt(no-label(), [], "sub2", [], no-language-binding()){Comment("
+     ! Optional import-name-list with :: separater.
+!TODO-F08     IMPORT :: a, b, c
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "sub2")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name()){Comment("
+
+
+")}
+    )
+  ]
+){Comment("! Test import-stmt
+!      import-stmt  is  IMPORT [ [::] import-name-list ]
+!
+! Not tested here: import-name-list
+! 
+! import-stmt is only allowed in an interface-body (C1210).
+")}

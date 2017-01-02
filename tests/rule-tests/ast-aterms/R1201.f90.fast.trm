@@ -1,0 +1,77 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(InterfaceStmt(no-label(), no-generic-spec()), [], EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+! Include a generic-spec in the interface-stmt and end-interface-stmt
+")})
+        , InterfaceBlock(InterfaceStmt(no-label(), "foo"), [], EndInterfaceStmt(no-label(), "foo"){Comment("
+
+! abstract interface-stmt
+")})
+        , InterfaceBlock(AbstractInterfaceStmt(no-label()), [], EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+! Include an optional interface-specification
+")})
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "sub")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+! Include multiple optional interface-specification
+")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "bub", [], no-language-binding()){Comment("
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "bub"){Comment("
+   ")}
+              )
+            , InterfaceBody(
+                FunctionStmt(no-label(), [], "foo", [], no-result(), no-language-binding())
+              , []
+              , EndFunctionStmt(no-label(), "foo")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("! Test interface-block
+!      interface-block  is  interface-stmt
+!                             [ interface-specificiation ] ...
+!                           end-interface-stmt
+!
+!      interface-specification  is  interface-body
+!                               or  procedure-stmt
+!
+!      interface-stmt  is  INTERFACE [ generic-spec ]
+!                      or  ABSTRACT INTERFACE
+!
+!      end-interface-stmt  is  END INTERFACE [ generic-spec ]
+!
+! Not tested here: interface-body, procedure-stmt, and generic-spec.
+
+! Include none of the optional parts.
+")}

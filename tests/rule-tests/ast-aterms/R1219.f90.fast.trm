@@ -1,0 +1,33 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(no-label(), VarDef("a"), FunctionReference("foo", [])){Comment("
+
+!! these are parsed as data-ref
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("foo", [IntVal("1")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("foo", [VarRef("m")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("foo", [IntVal("1"), IntVal("2")])
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("! R1219 function-reference
+!   is procedure-designator ( [ actual-arg-spec-list ] )
+")}

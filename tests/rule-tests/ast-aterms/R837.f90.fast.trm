@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ IfStmt(
+            "13"
+          , LT(VarRef("a"), IntVal("13"))
+          , AssignmentStmt(no-label(), VarDef("a"), IntVal("13")){Comment("
+   ")}
+          )
+        , IfStmt(
+            no-label()
+          , NE(VarRef("b"), IntVal("14"))
+          , AssignmentStmt(no-label(), VarDef("b"), IntVal("14")){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R837 if-stmt
+!      if-stmt     is IF ( scalar-logical-expr ) action-stmt
+
+")}

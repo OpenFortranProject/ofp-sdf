@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [POINTER()]
+          , [Var("a", REAL(), no-init()), Var("b", REAL(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ NullifyStmt("13", [VarRef("a")], eos("\n"))
+        , NullifyStmt(
+            no-label()
+          , [DataRef([VarRef("a"), VarRef("b")])]
+          , eos("\n\n")
+          )
+        , NullifyStmt(
+            no-label()
+          , [VarRef("a"), VarRef("b")]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R638 nullify-stmt
+!    is  NULLIFY ( pointer-object-list )
+!
+! Tested separetly is: pointer-object-list (R639)
+
+")}

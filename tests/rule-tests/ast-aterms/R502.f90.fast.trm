@@ -1,0 +1,148 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PRIVATE()]
+          , [Var("a", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [ALLOCATABLE()]
+          , [Var("b", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [ASYNCHRONOUS()]
+          , [Var("c", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Codimension([Range(no-lower-bound(), STAR())])]
+          , [Var("co", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [CONTIGUOUS()]
+          , [Var("cont", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Dimension([Range(no-lower-bound(), COLON())])]
+          , [Var("d", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [EXTERNAL()]
+          , [Var("e", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Intent(IN())]
+          , [Var("f", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [INTRINSIC()]
+          , [Var("g", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [LanguageBinding(no-binding-name())]
+          , [Var("h", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [OPTIONAL()]
+          , [Var("i", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [Var("j", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [POINTER()]
+          , [Var("k", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PROTECTED()]
+          , [Var("l", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [SAVE()]
+          , [Var("m", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [TARGET()]
+          , [Var("n", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [VALUE()]
+          , [Var("o", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [VOLATILE()]
+          , [Var("p", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R502 attr-spec
+!                 is  access-spec 
+!                 or  ALLOCATABLE
+!                 or  ASYNCHRONOUS
+!                 or  CODIMENSION [ coarray-spec ]
+!                 or  CONTIGUOUS
+!                 or  dimension-spec
+!                 or  EXTERNAL
+!                 or  INTENT ( intent-spec )
+!                 or  INTRINSIC
+!                 or  language-binding-spec
+!                 or  OPTIONAL
+!                 or  PARAMETER
+!                 or  POINTER
+!                 or  PROTECTED
+!                 or  SAVE
+!                 or  TARGET
+!                 or  VALUE
+!                 or  VOLATILE
+! 
+! Tested separately are: R507 (access-spec), R509 (dimension-spec), 
+! R523 (intent-spec), and R508 (language-binding-spec).
+!
+
+")}

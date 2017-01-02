@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(no-label(), VarDef("X"), ArrayConstructor(AcSpec(INTEGER(), [])))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("Y")
+          , ArrayConstructor(
+              AcSpec(
+                REAL()
+              , [VarRef("a"), VarRef("b"), VarRef("c")]
+              )
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("Z")
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [VarRef("x"), VarRef("y"), VarRef("z")]
+              )
+            )
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R469 ac-spec
+!    is type-spec ::
+!    or [type-spec ::] ac-value-list
+
+")}

@@ -1,0 +1,90 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("9"))
+          , []
+          , [Var("name", CHARACTER(IntVal("9")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "miles"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("i")]
+              , [DataStmtValue(no-repeat(), IntVal("13"))]
+              )
+            , DataStmtSet(
+                [VarRef("j")]
+              , [DataStmtValue(no-repeat(), IntVal("14"))]
+              )
+            , DataStmtSet(
+                [VarRef("k")]
+              , [DataStmtValue(no-repeat(), IntVal("15"))]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("ii")]
+              , [DataStmtValue(no-repeat(), IntVal("16"))]
+              )
+            , DataStmtSet(
+                [VarRef("jj")]
+              , [DataStmtValue(no-repeat(), IntVal("17"))]
+              )
+            , DataStmtSet(
+                [VarRef("kk")]
+              , [DataStmtValue(no-repeat(), IntVal("18"))]
+              )
+            ]
+          ){Comment("
+
+")}
+        , DataStmt(
+            "10"
+          , [DataStmtSet(
+               [VarRef("bandaid")]
+             , [DataStmtValue(no-repeat(), IntVal("3"))]
+             )]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet([VarRef("name")], [DataStmtValue(no-repeat(), "'Mary Beth'")])
+            , DataStmtSet(
+                [VarRef("MILES")]
+              , [DataStmtValue(DataStmtRepeat("10"), IntVal("1"))]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R534 data-stmt
+!    is DATA data-stmt-set [ [ , ] data-stmt-set ] ...
+
+")}

@@ -1,0 +1,31 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TargetStmt(
+            no-label()
+          , [ TargetDecl(
+                "A"
+              , ArraySpec(
+                  [Range(no-lower-bound(), IntVal("1000")), Range(no-lower-bound(), IntVal("1000"))]
+                )
+              , []
+              )
+            , TargetDecl("B", [], [])
+            ]
+          )
+        , TargetStmt("7", [TargetDecl("z", [], [])]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R556 target-stmt
+!    is TARGET [ :: ] target-decl-list
+!
+! from NOTE 5.36
+")}

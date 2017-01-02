@@ -1,0 +1,82 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ FormatStmt("001", FormatSpec([T(IntVal("1"))], []))
+        , FormatStmt("002", FormatSpec([TL(IntVal("1"))], []))
+        , FormatStmt("003", FormatSpec([TR(IntVal("1"))], []))
+        , FormatStmt("004", FormatSpec([X(IntVal("1"))], []))
+        , FormatStmt("005", FormatSpec([SLASH(no-r())], [])){Comment("
+! This next one doesn't actually seem to be accepted correctly because it 
+! separates the 1 and the / though they should be considered together.
+")}
+        , FormatStmt("006", FormatSpec([SLASH(IntVal("1"))], [])){Comment("
+! This next one seems to cause an extra control-edit-desc to be generated that
+! is an empty-string.
+")}
+        , FormatStmt("007", FormatSpec([COLON_ED()], []))
+        , FormatStmt("008", FormatSpec([SS()], []))
+        , FormatStmt("009", FormatSpec([SP()], [])){Comment("
+! This next one isn't correctly accepted.
+")}
+        , FormatStmt("010", FormatSpec([S()], []))
+        , FormatStmt("011", FormatSpec([P(IntVal("1"))], []))
+        , FormatStmt("012", FormatSpec([BN()], []))
+        , FormatStmt("013", FormatSpec([BZ()], []))
+        , FormatStmt("014", FormatSpec([RU()], []))
+        , FormatStmt("015", FormatSpec([RD()], []))
+        , FormatStmt("016", FormatSpec([RZ()], []))
+        , FormatStmt("017", FormatSpec([RN()], []))
+        , FormatStmt("018", FormatSpec([RC()], []))
+        , FormatStmt("019", FormatSpec([RP()], []))
+        , FormatStmt("020", FormatSpec([DC()], []))
+        , FormatStmt("021", FormatSpec([DP()], [])){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1013 control-edit-desc
+!     is  position-edit-desc
+!     or  [r]/
+!     or  :
+!     or  sign-edit-desc
+!     or  kP
+!     or  blank-interp-edit-desc
+!     or  round-edit-desc
+!     or  decimal-edit-desc
+!
+!      k  is  signed-int-literal-constant
+!
+!      position-edit-desc  is  Tn
+!                          or  TLn
+!                          or  TRn
+!                          or  nX
+! 
+!      n  is  int-literal-constant
+!
+!      sign-edit-desc  is  SS
+!                      or  SP
+!                      or  S
+! 
+!      blank-interp-edit-desc  is  BN
+!                              or  BZ
+!
+!      round-edit-desc  is  RU
+!                       or  RD
+!                       or  RZ
+!                       or  RN
+!                       or  RC
+!                       or  RP
+!
+!      decimal-edit-desc  is  DC
+!                         or  DP
+!
+! Tested as part of a format-stmt.
+")}

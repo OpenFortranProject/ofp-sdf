@@ -1,0 +1,19 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ VolatileStmt("10", ["z"])
+        , VolatileStmt(no-label(), ["A", "B", "c"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R559 volatile-stmt
+!    is VOLATILE [ :: ] object-name-list
+
+")}

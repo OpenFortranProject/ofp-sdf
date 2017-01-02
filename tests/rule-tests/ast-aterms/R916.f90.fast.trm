@@ -1,0 +1,40 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ReadFMTStmt(no-label(), STAR(), [VarRef("truth"), VarRef("beauty")])
+        , ReadFMTStmt(
+            no-label()
+          , STAR()
+          , [VarRef("or"), VarRef("ugly"), VarRef("lies")]
+          ){Comment("
+
+")}
+        , ReadStmt(
+            "9"
+          , [UNIT(IntVal("1")), FMT(STAR())]
+          , [ IoImpliedDo(
+                [VarRef("A")]
+              , IoImpliedDoControl(
+                  VarRef("i")
+                , IntVal("1")
+                , IntVal("10")
+                , IntVal("2")
+                )
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R916 input-item
+!    is variable
+!    or io-implied-do
+!
+")}

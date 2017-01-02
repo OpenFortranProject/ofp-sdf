@@ -1,0 +1,18 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(InterfaceStmt("10", no-generic-spec()), [], EndInterfaceStmt(no-label(), no-generic-spec()))
+        , InterfaceBlock(InterfaceStmt(no-label(), "binky"), [], EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+!TODO-F08 ABSTRACT INTERFACE
+!TODO-F08 END INTERFACE
+")})
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("! Testing interface-stmt, R1203
+")}

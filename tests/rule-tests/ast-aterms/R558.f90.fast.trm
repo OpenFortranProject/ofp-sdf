@@ -1,0 +1,27 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        no-label()
+      , []
+      , "val"
+      , ["a", "b", "c", "z"]
+      , no-language-binding()
+      ){Comment("
+
+")}
+    , Scope(
+        [ ValueStmt("10", ["z"])
+        , ValueStmt(no-label(), ["A", "B", "c"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R558 value-stmt
+!    is VALUE [ :: ] dummy-arg-name-list
+
+")}

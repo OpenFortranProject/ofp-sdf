@@ -1,0 +1,45 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "mymodule"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var("this", INTEGER(), no-init())
+            , Var("that", INTEGER(), no-init())
+            , Var("theother", INTEGER(), no-init())
+            , Var("there", INTEGER(), no-init())
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name()){Comment("
+
+")}
+    )
+  , MainProgram(
+      no-program-stmt()
+    , Scope(
+        [UseOnlyStmt(
+           no-label()
+         , no-module-nature()
+         , "mymodule"
+         , OnlyList(["this", "that", "theother"])
+         )]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!!!!!!!!!!!
+! R1112.f90 - test of R1112 only attribute
+!
+
+!! Module for subsequent tests
+!
+")}

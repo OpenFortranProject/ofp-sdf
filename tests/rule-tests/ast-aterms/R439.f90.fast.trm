@@ -1,0 +1,123 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [ Var("a", INTEGER(), Init(IntVal("3")))
+            , Var("x", INTEGER(), Init(IntVal("4")))
+            , Var("y", INTEGER(), Init(IntVal("13")))
+            ]
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "ugly", []){Comment("
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , [POINTER()]
+              , [ Var(
+                    "truth"
+                  , ArrayType(REAL(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+  ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , [POINTER()]
+              , [ Var(
+                    "beauty"
+                  , ArrayType(
+                      REAL()
+                    , ArraySpec(
+                        [ Range(no-lower-bound(), COLON())
+                        , Range(no-lower-bound(), COLON())
+                        , Range(no-lower-bound(), COLON())
+                        , Range(no-lower-bound(), COLON())
+                        , Range(no-lower-bound(), COLON())
+                        ]
+                      )
+                    , []
+                    )
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+  ")}
+            , DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , []
+              , [ Var(
+                    "foo"
+                  , ArrayType(
+                      INTEGER()
+                    , ArraySpec(
+                        [ Range(no-lower-bound(), IntVal("2"))
+                        , Range(no-lower-bound(), IntVal("3"))
+                        , Range(no-lower-bound(), IntVal("4"))
+                        , Range(no-lower-bound(), VarRef("a"))
+                        , Range(no-lower-bound(), VarRef("x"))
+                        ]
+                      )
+                    , []
+                    )
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+  ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [ Var(
+                    "bar"
+                  , ArrayType(
+                      REAL()
+                    , ArraySpec([Range(no-lower-bound(), VarRef("y"))])
+                    , []
+                    )
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+  ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [ Var(
+                    "lies"
+                  , ArrayType(
+                      REAL()
+                    , ArraySpec([Range(no-lower-bound(), IntVal("8"))])
+                    , []
+                    )
+                  , no-init()
+                  )
+                ]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name())
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R439 component-array-spec
+!    is explicit-shape-spec-list
+!    or deferred-shape-spec-list
+!
+")}

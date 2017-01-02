@@ -1,0 +1,31 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DefBinExpr(IntVal("1"), ".union.", IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DefBinExpr(
+              DefBinExpr(IntVal("1"), ".union.", IntVal("2"))
+            , ".disunion."
+            , IntVal("3")
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R723 defined-binary-op
+!    is . letter [ letter ] ... .
+
+")}

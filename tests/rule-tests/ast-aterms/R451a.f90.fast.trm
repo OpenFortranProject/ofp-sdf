@@ -1,0 +1,54 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "truth", [])
+          , []
+          , []
+          , []
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass("beauty")]
+                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-arg-name()), DEFERRED()]
+                , [TypeBoundProcDecl("boo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [NON_OVERRIDABLE(), PRIVATE()]
+                , [TypeBoundProcDecl("hoo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [PUBLIC()]
+                , [TypeBoundProcDecl("loo", no-procedure-name()), TypeBoundProcDecl("doo", "goo")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "truth")
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R451 binding-attr
+!    is PASS [ (arg-name ) ]
+!    or NOPASS
+!    or NON_OVERRIDABLE
+!    or DEFERRED
+!    or access-spec
+! 
+")}

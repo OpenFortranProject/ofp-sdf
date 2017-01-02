@@ -1,0 +1,43 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [Var("stop_code", INTEGER(), Init(IntVal("999")))]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , [PARAMETER()]
+          , [Var("char_stop", CHARACTER(), Init("\"stop please\""))]
+          ){Comment("
+
+")}
+        ]
+      , [ StopStmt(no-label(), no-stop-code())
+        , StopStmt("13", "'end of program'")
+        , StopStmt(no-label(), IntVal("1"))
+        , StopStmt(no-label(), VarRef("stop_code"))
+        , StopStmt(no-label(), IntVal("123"))
+        , StopStmt(no-label(), IntVal("1234"))
+        , StopStmt(no-label(), VarRef("char_stop")){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R855 stop-stmt
+!    is  STOP [ stop-code ]
+!  
+!      stop-code  is  scalar-char-constant
+!                 or  digit [ digit [ digit [ digit [ digit ] ] ] ] 
+!
+! Not tested here: scalar-char-constant
+
+")}

@@ -1,0 +1,40 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ OpenStmt(
+            no-label()
+          , [ACCESS("'SEQUENTIAL'"), DECIMAL("'POINT'"), BLANK("\"ZERO\"")]
+          )
+        , OpenStmt(no-label(), [STATUS("'new'")])
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R905 connect-spec
+!    is [ UNIT = ] file-unit-number
+!    or ACCESS = scalar-default-char-expr
+!    or ACTION = scalar-default-char-expr
+!    or ASYNCHRONOUS = scalar-default-char-expr
+!    or BLANK = scalar-default-char-expr
+!    or DECIMAL = scalar-default-char-expr
+!    or DELIM = scalar-default-char-expr
+!    or ENCODING = scalar-default-char-expr
+!    or ERR = label
+!    or FILE = file-name-expr
+!    or FORM = scalar-default-char-expr
+!    or IOMSG = iomsg-variable
+!    or IOSTAT = scalar-int-variable
+!    or NEWUNIT = scalar-int-variable
+!    or PAD = scalar-default-char-expr
+!    or POSITION = scalar-default-char-expr
+!    or RECL = scalar-int-expr
+!    or ROUND = scalar-default-char-expr
+!    or SIGN = scalar-default-char-expr
+!    or STATUS = scalar-default-char-expr
+!    or TEAM = image-team
+
+")}

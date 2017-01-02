@@ -1,0 +1,94 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [ALLOCATABLE()]
+          , [ Var("a", INTEGER(), no-init())
+            , Var("b", INTEGER(), no-init())
+            , Var(
+                "X"
+              , ArrayType(INTEGER(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+              , no-init()
+              )
+            , Var(
+                "Y"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("4"))
+          , []
+          , [Var("blah", CHARACTER(IntVal("4")), Init("\"blah\""))]
+          ){Comment("
+
+")}
+        ]
+      , [ AllocateStmt(
+            "10"
+          , no-type-spec()
+          , [ Allocation(VarRef("a"), [], [])
+            , Allocation(VarRef("b"), [], [])
+            ]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , INTEGER()
+          , [ Allocation(VarRef("a"), [], [])
+            , Allocation(VarRef("b"), [], [])
+            ]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(VarRef("a"), [], [])]
+          , [STAT(VarRef("i")), ERRMSG(VarRef("blah")), SOURCE(VarRef("k"))]
+          ){Comment("
+
+! NOTE 6.19
+")}
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("X")
+              , [Range(no-lower-bound(), VarRef("N"))]
+              , []
+              )
+            , Allocation(
+                VarRef("B")
+              , [ Range(UnaryMinus(IntVal("3")), VarRef("M"))
+                , Range(IntVal("0"), IntVal("9"))
+                ]
+              , []
+              )
+            ]
+          , [STAT(VarRef("IERR_ALLOC"))]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R626 allocate-stmt
+!    is  ALLOCATE ( [ type-spec :: ] allocation-list [, alloc-opt-list ] )
+!
+! Tested separately are: type-spec (R402) and allocation-list (R631).
+
+")}

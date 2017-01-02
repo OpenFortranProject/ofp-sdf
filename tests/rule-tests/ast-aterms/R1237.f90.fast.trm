@@ -1,0 +1,38 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "mod")
+    , Scope(
+        []
+      , []
+      , [ MpSubprogram(
+            MpSubprogramStmt(no-label(), "modproc"){Comment("
+      ")}
+          , Scope(
+              [TypeDeclarationStmt(
+                 no-label()
+               , INTEGER()
+               , []
+               , [Var("i", INTEGER(), no-init())]
+               ){Comment("
+      ")}]
+            , [AssignmentStmt(no-label(), VarDef("i"), IntVal("3")){Comment("
+   ")}]
+            , []
+            )
+          , EndMpSubprogramStmt(no-label(), "modproc")
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "mod"){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1237 separate-module-subprogram
+!     is mp-subprogram-stmt
+!           [ specification-part ]
+!           [ execution-part ]
+!           [ internal-subprogram-part ]
+!        end-mp-subprogram-stmt
+!
+")}

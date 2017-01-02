@@ -1,0 +1,22 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [SaveStmt(
+           no-label()
+         , [SavedEntity("this"), SavedEntity("that"), SavedEntity("theother")]
+         ){Comment("
+
+")}]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R554 saved-entity
+!    is object-name
+!    or proc-pointer-name
+!    or / common-block-name /
+
+")}

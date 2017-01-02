@@ -1,0 +1,50 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [ALLOCATABLE()]
+          , [ Var("a", INTEGER(), no-init())
+            , Var("B", INTEGER(), no-init())
+            , Var("X", INTEGER(), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("3"))
+          , []
+          , [Var("m", CHARACTER(IntVal("3")), Init("\"err\""))]
+          ){Comment("
+
+")}
+        ]
+      , [ DeallocateStmt("13", [VarRef("a")], [])
+        , DeallocateStmt(
+            no-label()
+          , [VarRef("a")]
+          , [STAT(VarRef("i"))]
+          )
+        , DeallocateStmt(
+            no-label()
+          , [VarRef("a")]
+          , [STAT(VarRef("i")), ERRMSG(VarRef("m"))]
+          ){Comment("
+
+! NOTE 6.22
+")}
+        , DeallocateStmt(no-label(), [VarRef("X"), VarRef("B")], []){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R640 deallocate-stmt
+!    is  DEALLOCATE ( allocate-object-list [, dealloc-opt-list] )
+!
+! Tested separately is: allocate-object-list (R632).
+")}

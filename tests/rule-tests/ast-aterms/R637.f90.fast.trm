@@ -1,0 +1,53 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("A1")
+              , []
+              , [Range(no-lower-bound(), IntVal("3")), Range(no-lower-bound(), "*")]
+              )
+            ]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("A2")
+              , []
+              , [Range(IntVal("2"), IntVal("3")), Range(no-lower-bound(), "*")]
+              )
+            ]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("A3")
+              , []
+              , [ Range(no-lower-bound(), IntVal("2"))
+                , Range(IntVal("3"), IntVal("4"))
+                , Range(no-lower-bound(), "*")
+                ]
+              )
+            ]
+          , []
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R637 allocate-coshape-spec
+!    is [ lower-bound-expr : ] upper-bound-expr
+!
+")}

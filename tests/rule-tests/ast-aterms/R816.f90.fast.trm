@@ -1,0 +1,62 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ CaseConstruct(
+            SelectCaseStmt(no-label(), no-name(), VarRef("ifoo"), eos("\n"))
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValueRange(no-low(), UnaryMinus(IntVal("1")))]
+                , no-name()
+                , eos("\n\t")
+                )
+              , [AssignmentStmt(no-label(), VarDef("this"), VarRef("that"))]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValue(IntVal("0"))]
+                , no-name()
+                , eos("\n\t")
+                )
+              , [AssignmentStmt(no-label(), VarDef("that"), VarRef("the"))]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [ CaseValueRange(IntVal("1"), IntVal("3"))
+                  , CaseValue(IntVal("5"))
+                  , CaseValue(IntVal("7"))
+                  ]
+                , no-name()
+                , eos("\n\t")
+                )
+              , [AssignmentStmt(no-label(), VarDef("the"), VarRef("other"))]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValue(IntVal("4")), CaseValueRange(IntVal("8"), no-high())]
+                , no-name()
+                , eos("\n\t")
+                )
+              , [AssignmentStmt(no-label(), VarDef("other"), VarRef("bar"))]
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n"))
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R816 case-value-range
+!    is case-value
+!    or case-value :
+!    or : case-value
+!    or case-value : case-value
+
+")}

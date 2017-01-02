@@ -1,0 +1,41 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ PointerAssignmentStmt(
+            "13"
+          , DataPointerObject(VarRef("pointer_foo"), no-name())
+          , [ Triplet(IntVal("3"), IntVal("4"), no-stride())
+            , Triplet(IntVal("7"), IntVal("8"), no-stride())
+            ]
+          , VarRef("bar")
+          ){Comment("
+   ")}
+        , PointerAssignmentStmt(
+            no-label()
+          , DataPointerObject(VarRef("pointer"), no-name())
+          , []
+          , VarRef("target")
+          ){Comment("
+   ")}
+        , PointerAssignmentStmt(
+            no-label()
+          , DataPointerObject(VarRef("pointer"), "pointer_name")
+          , []
+          , DataRef([VarRef("target"), VarRef("target_name")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R733 pointer-assignment-stmt
+!    is data-pointer-object [ (bounds-spec-list) ] => data-target
+!    or data-pointer-object (bounds-remapping-list ) => data-target
+!    proc-pointer-object => proc-target
+
+")}

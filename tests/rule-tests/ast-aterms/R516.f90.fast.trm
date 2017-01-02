@@ -1,0 +1,38 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ CommonStmt(
+            no-label()
+          , [ CommonBlockEntry(
+                no-name()
+              , [ CommonBlockObject(
+                    VarRef("foo")
+                  , ArraySpec(
+                      [ Range(no-lower-bound(), IntVal("1"))
+                      , Range(no-lower-bound(), IntVal("2"))
+                      , Range(no-lower-bound(), IntVal("3"))
+                      ]
+                    )
+                  )
+                , CommonBlockObject(
+                    VarRef("bar")
+                  , ArraySpec(
+                      [Range(IntVal("4"), IntVal("5")), Range(no-lower-bound(), IntVal("6"))]
+                    )
+                  )
+                ]
+              )
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R512 explicit-shape-spec
+!  is [ lower-bound : ] upper-bound
+
+")}

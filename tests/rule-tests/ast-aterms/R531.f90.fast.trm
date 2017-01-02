@@ -1,0 +1,34 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ CodimensionStmt(
+            no-label()
+          , [CodimensionDecl("a", [Range(no-lower-bound(), STAR())])]
+          , eos("\n   ")
+          )
+        , CodimensionStmt(
+            "13"
+          , [ CodimensionDecl(
+                "b"
+              , [Range(no-lower-bound(), IntVal("3")), Range(no-lower-bound(), STAR())]
+              )
+            , CodimensionDecl("c", [Range(no-lower-bound(), COLON())])
+            ]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R531 codimension-stmt
+!    is CODIMENSION [ :: ] codimension-decl-list
+!
+!! R532 codimension-decl
+!    is coarray-name lbracket coarray-spec rbracket
+!
+! from NOTE 5.28
+   ")}

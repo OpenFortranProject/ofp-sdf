@@ -1,0 +1,55 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "whut"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "POINT", [])
+          , []
+          , [PrivateComponentsStmt("13", eos("\n    "))]
+          , [ DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [Var("X", REAL(), no-init()), Var("Y", REAL(), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "POINT"){Comment("
+
+")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt("14", [], "Whoot", []){Comment("
+  ")}
+          , []
+          , [PrivateComponentsStmt(no-label(), eos("\n"))]
+          , [ DataComponentDefStmt(
+                "15"
+              , INTEGER()
+              , []
+              , [ Var("i", INTEGER(), no-init())
+                , Var("j", INTEGER(), no-init())
+                , Var("k", INTEGER(), no-init())
+                ]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt("16", no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt("18", no-module-name())
+    )
+  ]
+){Comment("!! R444 private-components-stmt
+!    is PRIVATE
+!
+! From Note 4.41
+!
+")}

@@ -1,0 +1,155 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt("13", [], "person", []){Comment("
+   ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , []
+              , [Var("age", INTEGER(), no-init())]
+              ){Comment("
+   ")}
+            , DataComponentDefStmt(
+                no-label()
+              , CHARACTER(IntVal("50"))
+              , []
+              , [Var("name", CHARACTER(IntVal("50")), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt("14", "person"){Comment("
+
+")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "point", []){Comment("! A base type
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [Var("X", REAL(), no-init()), Var("Y", REAL(), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "POINT")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [Extends("POINT")], "COLOR_POINT", []){Comment("! An extension of TYPE(POINT)
+  ! Components X and Y, and component name POINT, inherited from parent
+  ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("COLOR", INTEGER(), no-init())]
+             )]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "COLOR_POINT"){Comment("
+
+")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("person", [])
+          , []
+          , [Var("p", DerivedType("person", []), no-init())]
+          ){Comment("
+
+!! NOTE 4.59
+!
+")}
+        , TypeDeclarationStmt(
+            "15"
+          , DerivedType("point", [])
+          , []
+          , [ Var(
+                "PV"
+              , DerivedType("point", [])
+              , Init(
+                  PartRef("POINT", [RealVal("1.0"), RealVal("2.0")], no-image-selector())
+                )
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("color_point", [])
+          , []
+          , [ Var("cp1", DerivedType("color_point", []), no-init())
+            , Var("cp2", DerivedType("color_point", []), no-init())
+            , Var("cp3", DerivedType("color_point", []), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("cp1")
+          , FunctionReference(
+              "COLOR_POINT"
+            , [ Arg(
+                  "point"
+                , PartRef("point", [IntVal("1"), IntVal("2")], no-image-selector())
+                )
+              , Arg("color", IntVal("3"))
+              ]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("cp2")
+          , FunctionReference(
+              "COLOR_POINT"
+            , [Arg("point", VarRef("PV")), Arg("color", IntVal("3"))]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("cp3")
+          , FunctionReference(
+              "COLOR_POINT"
+            , [IntVal("1"), IntVal("2"), IntVal("3")]
+            )
+          ){Comment("
+
+!! NOTE 4.60
+!
+")}
+        , AssignmentStmt(
+            "16"
+          , VarDef("p")
+          , FunctionReference("PERSON", [IntVal("21"), "'JOHN SMITH'"])
+          ){Comment("
+! This could also be written as
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("p")
+          , FunctionReference(
+              "PERSON"
+            , [Arg("NAME", "'JOHN SMITH'"), Arg("AGE", IntVal("21"))]
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R456 component-spec
+!   is [ keyword = ] component-data-source
+
+")}

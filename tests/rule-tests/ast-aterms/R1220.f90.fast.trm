@@ -1,0 +1,33 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ CallStmt(no-label(), "foo1", [])
+        , CallStmt(no-label(), "foo2", [])
+        , CallStmt(no-label(), "foo3", [RealVal("1.")])
+        , CallStmt(no-label(), "foo4", [IntVal("1"), IntVal("2")])
+        , CallStmt(no-label(), "foo5", [VarRef("a")])
+        , CallStmt(
+            no-label()
+          , "foo6"
+          , [Arg("key1", NOT(VarRef("B")))]
+          )
+        , CallStmt(no-label(), "foo7", [Arg("key2", VarRef("b"))])
+        , CallStmt(
+            no-label()
+          , "foo8"
+          , [Arg("key3", DataRef([VarRef("udt"), VarRef("bar")]))]
+          )
+        , CallStmt(no-label(), "foo9", [Arg("keyword", AltReturn("10"))])
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!!
+! R1220 call-stmt
+!    is CALL procedure-designator [ ( [ actual-arg-spec-list ] ) ]
+!
+")}

@@ -1,0 +1,19 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ AsynchronousStmt("10", ["a"])
+        , AsynchronousStmt(no-label(), ["B", "C", "scalar"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R528 asynchronous-stmt
+!   is ASYNCHRONOUS [ :: ] object-name-list
+
+")}

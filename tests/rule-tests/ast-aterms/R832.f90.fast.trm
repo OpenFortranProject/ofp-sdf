@@ -1,0 +1,89 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ IfConstruct(
+            IfThenStmt("10", no-name(), EQ(VarRef("x"), VarRef("y"))){Comment("
+   ")}
+          , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
+          , [ ElseIfStmtBlock(
+                ElseIfStmt("11", LT(VarRef("x"), VarRef("y")), no-name()){Comment("
+   ")}
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("0"))]
+              )
+            ]
+          , ElseStmtBlock(
+              ElseStmt("12", no-name()){Comment("
+   ")}
+            , [AssignmentStmt(no-label(), VarDef("x"), UnaryMinus(IntVal("1")))]
+            )
+          , EndIfStmt("13", no-name()){Comment("
+
+")}
+          )
+        , IfConstruct(
+            IfThenStmt(no-label(), no-name(), EQ(VarRef("x"), VarRef("y"))){Comment("
+   ")}
+          , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
+          , []
+          , ElseStmtBlock(
+              ElseStmt(no-label(), no-name()){Comment("
+   ")}
+            , [AssignmentStmt(no-label(), VarDef("x"), UnaryMinus(IntVal("1")))]
+            )
+          , EndIfStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , IfConstruct(
+            IfThenStmt(no-label(), no-name(), EQ(VarRef("x"), VarRef("y"))){Comment("
+   ")}
+          , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , IfConstruct(
+            IfThenStmt(no-label(), "my_if", EQ(VarRef("x"), VarRef("y"))){Comment("
+   ")}
+          , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
+          , [ ElseIfStmtBlock(
+                ElseIfStmt(no-label(), LT(VarRef("x"), VarRef("y")), "my_if"){Comment("
+   ")}
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("0"))]
+              )
+            ]
+          , ElseStmtBlock(
+              ElseStmt(no-label(), "my_if"){Comment("
+   ")}
+            , [AssignmentStmt(no-label(), VarDef("x"), UnaryMinus(IntVal("1")))]
+            )
+          , EndIfStmt(no-label(), "my_if"){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R832 if-construct
+!    is  if-then-stmt
+!              block
+!          [ else-if-smt 
+!              block ] ...
+!          [ else-stmt 
+!              block ]
+!         end-if-stmt
+!
+! Also tests rules R841 (if-then-stmt), R842 (else-if-stmt), R843 (else-stmt), 
+! R844 (end-if-stmt), and if-construct-name.  Does not test 
+! scalar-logical-expr.
+
+")}

@@ -1,0 +1,25 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ PointerAssignmentStmt(
+            no-label()
+          , DataPointerObject(VarRef("pointer_foo"), no-name())
+          , [ Triplet(IntVal("3"), no-upper-bound(), no-stride())
+            , Triplet(IntVal("7"), no-upper-bound(), no-stride())
+            ]
+          , VarRef("bar")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R737 bounds-spec
+!    is lower-bound-expr :
+
+")}

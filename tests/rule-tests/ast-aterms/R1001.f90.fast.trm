@@ -1,0 +1,282 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ FormatStmt(
+            "0010"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , I(no-r(), IntVal("1"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0011"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , I(no-r(), IntVal("1"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0020"
+          , FormatSpec(
+              [ P(IntVal("1"))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0021"
+          , FormatSpec(
+              [ P(IntVal("1"))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0030"
+          , FormatSpec(
+              [ P(IntVal("1"))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+              , I(no-r(), IntVal("10"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0031"
+          , FormatSpec(
+              [ P(IntVal("1"))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+              , I(no-r(), IntVal("10"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0040"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , I(IntVal("22"), IntVal("3"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0041"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , I(IntVal("22"), IntVal("3"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0050"
+          , FormatSpec([SLASH(no-r()), SLASH(no-r())], [])
+          )
+        , FormatStmt(
+            "0051"
+          , FormatSpec([SLASH(no-r()), SLASH(no-r())], [])
+          )
+        , FormatStmt("0060", FormatSpec([COLON_ED()], []))
+        , FormatStmt("0070", FormatSpec([COLON_ED(), COLON_ED(), COLON_ED()], []))
+        , FormatStmt("0071", FormatSpec([COLON_ED(), COLON_ED(), COLON_ED()], []))
+        , FormatStmt("0080", FormatSpec([COLON_ED(), COLON_ED()], []))
+        , FormatStmt("0081", FormatSpec([COLON_ED(), COLON_ED()], []))
+        , FormatStmt(
+            "0090"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0100"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , R(
+                  no-r()
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0101"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , R(
+                  no-r()
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0111"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0112"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("'Dates:'")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0121"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              , X(IntVal("1"))
+              , CS("'isn''t'")
+              , X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0122"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              , X(IntVal("1"))
+              , CS("'isn''t'")
+              , X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0131"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , R(
+                  IntVal("2")
+                , [ F(no-r(), IntVal("10"), IntVal("3"))
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0132"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , R(
+                  IntVal("2")
+                , [ F(no-r(), IntVal("10"), IntVal("3"))
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0141"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "0142"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              , F(no-r(), IntVal("10"), IntVal("3"))
+              , I(no-r(), IntVal("5"), no-m())
+              ]
+            , []
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1001 format-stmt
+!     is  FORMAT format-specification
+!   
+!! R1002 format-specification
+!     is  ( [ format-item-list ] )
+!     or  ( [ format-items, ] unlimited-format-item )
+!
+! Not [completely] tested here: format-item-list.
+!
+! Duplicate statements occur to test unparsing. These duplicates
+! should be symantically the same (needs to be checked) and
+! should unparse the same way.
+!
+")}

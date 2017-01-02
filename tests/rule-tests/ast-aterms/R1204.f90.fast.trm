@@ -1,0 +1,24 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(InterfaceStmt(no-label(), no-generic-spec()), [], EndInterfaceStmt("10", no-generic-spec()){Comment("
+!TODO-F08 INTERFACE
+!TODO-F08 END INTERFACE ASSIGNMENT ( = )
+")})
+        , InterfaceBlock(InterfaceStmt(no-label(), "BINKY"), [], EndInterfaceStmt(no-label(), "binky"){Comment("
+!TODO-F08 INTERFACE
+!TODO-F08 ENDINTERFACE write ( formatted )
+")})
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R1204 end-interface-stmt
+!     is END INTERFACE [ generic-spec ]
+!
+
+")}

@@ -1,0 +1,42 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("1"))
+          , []
+          , [Var("str1", CHARACTER(IntVal("1")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("2"))
+          , []
+          , [Var("str2", CHARACTER(IntVal("2")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("3"))
+          , []
+          , [Var("str3", CHARACTER(IntVal("3")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(COLON())
+          , [ALLOCATABLE()]
+          , [Var("str_colon", CHARACTER(COLON()), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R421 length-selector
+!    is ( [ LEN = ] type-param-value )
+!    or * char-length [ , ]
+
+")}

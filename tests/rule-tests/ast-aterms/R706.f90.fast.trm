@@ -1,0 +1,28 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(no-label(), VarDef("a"), UnaryPlus(IntVal("1")))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Minus(IntVal("3"), IntVal("1"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Plus(Minus(IntVal("3"), IntVal("1")), IntVal("2"))
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R706 level-2-expr
+!    is [ [ level-2-expr ] add-op ] add-operand
+!
+!  level-2-expr is an add-op
+
+")}

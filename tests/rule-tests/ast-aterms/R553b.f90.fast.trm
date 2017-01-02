@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ CommonStmt(
+            no-label()
+          , [CommonBlockEntry("common_block_name", [CommonBlockObject(VarRef("a"), [])])]
+          ){Comment("
+
+")}
+        , SaveStmt("10", [SavedEntity("i"), SavedEntity("j")])
+        , SaveStmt(no-label(), [SavedEntity("k"), CommonBlockName("common_block_name")]){Comment("
+
+! From NOTE 5.35
+")}
+        , SaveStmt(
+            no-label()
+          , [ SavedEntity("A")
+            , SavedEntity("B")
+            , SavedEntity("C")
+            , CommonBlockName("BLOCKA")
+            , SavedEntity("D")
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R553 save-stmt
+!    is POINTER [ :: ] pointer-decl-list
+
+")}

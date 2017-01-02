@@ -1,0 +1,20 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ CloseStmt(no-label(), [UNIT(IntVal("1")), ERR("10")])
+        , CloseStmt(no-label(), [UNIT(IntVal("2"))]){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("10", no-program-name())
+    )
+  ]
+){Comment("!! R908 close-stmt
+!    is  CLOSE ( close-spec-list )
+! 
+! Not tested here: close-spec-list
+")}

@@ -1,0 +1,18 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "AR", [STAR()], no-language-binding())
+    , Scope(
+        []
+      , [ ReturnStmt("11", no-expr())
+        , ReturnStmt(no-label(), IntVal("1"))
+        , ReturnStmt(no-label(), VarRef("ival"))
+        ]
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R1241 return-stmt
+!    is RETURN [ scalar-int-expr ]
+
+")}

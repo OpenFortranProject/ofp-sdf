@@ -1,0 +1,47 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ WriteStmt(no-label(), [UNIT(IntVal("5"))], [])
+        , WriteStmt(
+            no-label()
+          , [UNIT(IntVal("6")), FMT(IntVal("10"))]
+          , []
+          )
+        , WriteStmt(
+            no-label()
+          , [UNIT(IntVal("6")), FMT(IntVal("10")), ASYNCHRONOUS("\"YES\"")]
+          , [VarRef("i")]
+          )
+        , WriteStmt(
+            no-label()
+          , [ UNIT(IntVal("5"))
+            , DECIMAL("\"point\"")
+            , ERR("12")
+            , FMT(IntVal("10"))
+            ]
+          , [VarRef("a"), VarRef("b"), VarRef("c")]
+          )
+        , WriteStmt(
+            no-label()
+          , [ERR("12"), UNIT(IntVal("5"))]
+          , []
+          ){Comment("
+
+")}
+        , FormatStmt(
+            "10"
+          , FormatSpec([I(no-r(), IntVal("5"), no-m())], [])
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt("12", no-program-name())
+    )
+  ]
+){Comment("!! R911 write-stmt
+!    is  WRITE ( io-control-spec-list ) [ output-item-list ]
+!
+! Not tested here: io-control-spec-list and output-item-list.
+")}

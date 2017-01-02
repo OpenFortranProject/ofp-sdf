@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "coolguy", ["k1", "k2"]){Comment("
+	")}
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [TypeParamDecl("k1", no-expr()), TypeParamDecl("k2", no-expr())]
+              )
+            ]
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "coolguy"){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R101 xyz-list (generic-name-list)
+!
+!    xyz-list  is xyz [ , xyz ] ...
+!    xyz-name  is name
+!
+
+! Check for generic name list. Using parameterized derived type.
+")}

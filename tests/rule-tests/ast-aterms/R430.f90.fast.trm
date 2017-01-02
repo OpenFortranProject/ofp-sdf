@@ -1,0 +1,26 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "seq_type", []){Comment("
+  ")}
+          , []
+          , [SequenceStmt(no-label())]
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R430 sequence-stmt
+!    is SEQUENCE
+
+")}

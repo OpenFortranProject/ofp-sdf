@@ -1,0 +1,43 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ WaitStmt("10", [UNIT(IntVal("5")), END("99")]){Comment("
+    ")}
+        , WaitStmt(
+            no-label()
+          , [ ID(VarRef("ivar"))
+            , IOMSG(VarRef("cvar"))
+            , ERR("314")
+            , EOR("99")
+            , END("10")
+            , UNIT(IntVal("6"))
+            ]
+          ){Comment("
+
+")}
+        , ContinueStmt("314")
+        ]
+      , []
+      )
+    , EndProgramStmt("99", no-program-name())
+    )
+  ]
+){Comment("!! R923 wait-spec
+!    is [ UNIT = ] file-unit-number
+!    or END = label
+!    or EOR = label
+!    or ERR = label
+!    or ID = scalar-int-expr
+!    or IOMSG = iomsg-variable
+!    or IOSTAT = scalar-int-variable
+
+")}

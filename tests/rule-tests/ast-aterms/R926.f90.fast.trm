@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("unitnumber", INTEGER(), no-init())]
+         )]
+      , [ amb(
+            [ RewindStmt("11", [UNIT(Parens(VarRef("unitnumber")))])
+            , RewindStmt("11", [UNIT(VarRef("unitnumber"))])
+            ]
+          )
+        , RewindStmt(no-label(), [UNIT(VarRef("unitnumber"))])
+        , RewindStmt("12", [UNIT(IntVal("10"))])
+        , RewindStmt(
+            no-label()
+          , [UNIT(IntVal("10")), IOSTAT(VarRef("n")), ERR("4")]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("4", no-program-name())
+    )
+  ]
+){Comment("!! R926 rewind-stmt
+!    is  REWIND file-unit-number
+!    or  REWIND ( position-spec-list )
+!
+! Not tested here: file-unit-number and position-spec-list.
+
+")}

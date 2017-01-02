@@ -1,0 +1,30 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        "5"
+      , []
+      , "Fibbed"
+      , ["a", "b", "c", "d", "e", "f"]
+      , no-language-binding()
+      ){Comment("
+
+")}
+    , Scope(
+        [ IntentStmt("10", IN(), ["A", "B", "C"]){Comment("
+   ")}
+        , IntentStmt(no-label(), INOUT(), ["d", "e", "f"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt("15", "Fibbed")
+    )
+  ]
+){Comment("!! R546 intent-stmt
+!    is INTENT ( intent-spec ) [ :: ] dummy-arg-name-list
+
+! intent-spec tested in R523
+
+")}

@@ -1,0 +1,76 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [ DataImpliedDo(
+                    [ PartRef("truth", [VarRef("i")], no-image-selector())
+                    , PartRef("beauty", [VarRef("i")], no-image-selector())
+                    ]
+                  , DataIDoVariable(VarRef("i"))
+                  , IntVal("1")
+                  , IntVal("2")
+                  , IntVal("3")
+                  )
+                ]
+              , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [ DataImpliedDo(
+                    [ PartRef("ugly", [VarRef("i")], no-image-selector())
+                    , PartRef("lies", [VarRef("i")], no-image-selector())
+                    , PartRef("this", [VarRef("i")], no-image-selector())
+                    , PartRef("that", [VarRef("i")], no-image-selector())
+                    , PartRef("theother", [VarRef("i")], no-image-selector())
+                    ]
+                  , DataIDoVariable(VarRef("i"))
+                  , IntVal("1")
+                  , IntVal("2")
+                  , IntVal("3")
+                  )
+                ]
+              , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [ DataImpliedDo(
+                    [ DataImpliedDo(
+                        [PartRef("foo", [VarRef("j"), VarRef("i")], no-image-selector())]
+                      , DataIDoVariable(VarRef("i"))
+                      , IntVal("1")
+                      , VarRef("j")
+                      , no-expr()
+                      )
+                    ]
+                  , DataIDoVariable(VarRef("j"))
+                  , IntVal("1")
+                  , IntVal("5")
+                  , no-expr()
+                  )
+                ]
+              , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
+              )
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R538 data-i-do-object
+!    is array-element
+!    or scalar-structure-component
+!    or data-implied-do
+!
+")}

@@ -1,0 +1,72 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "truth", [])
+          , []
+          , []
+          , []
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [NOPASS(), DEFERRED()]
+                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [PRIVATE(), NOPASS()]
+                , [TypeBoundProcDecl("beauty", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [NON_OVERRIDABLE()]
+                , [TypeBoundProcDecl("ugly", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-arg-name())]
+                , [TypeBoundProcDecl("lies", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass("woohoo")]
+                , [TypeBoundProcDecl("bar", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [PUBLIC()]
+                , [TypeBoundProcDecl("that", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , [PRIVATE()]
+                , [TypeBoundProcDecl("theother", no-procedure-name())]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "truth")
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R451 binding-attr
+!    is PASS [ (arg-name ) ]
+!    or NOPASS
+!    or NON OVERRIDABLE
+!    or DEFERRED
+!    or access-spec
+!
+")}

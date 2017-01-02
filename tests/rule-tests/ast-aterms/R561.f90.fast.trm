@@ -1,0 +1,50 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ImplicitStmt(
+            "10"
+          , [ImplicitSpec(
+               INTEGER(Kind(IntVal("4")))
+             , [LetterSpec("i", no-letter())]
+             )]
+          , eos("\n")
+          )
+        , ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(DerivedType("FooBar", []), [LetterSpec("i", no-letter())])]
+          , eos("\n")
+          )
+        , ImplicitStmt(
+            no-label()
+          , [ ImplicitSpec(
+                INTEGER()
+              , [LetterSpec("i", no-letter()), LetterSpec("j", no-letter())]
+              )
+            , ImplicitSpec(
+                REAL()
+              , [LetterSpec("k", no-letter()), LetterSpec("l", no-letter()), LetterSpec("m", no-letter())]
+              )
+            , ImplicitSpec(
+                INTEGER()
+              , [LetterSpec("s", "w"), LetterSpec("z", no-letter())]
+              )
+            ]
+          , eos("\n")
+          )
+        , ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(REAL(), [LetterSpec("a", no-letter())])]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R561 implicit-spec
+!    is declaration-type-spec ( letter-spec-list )
+
+")}

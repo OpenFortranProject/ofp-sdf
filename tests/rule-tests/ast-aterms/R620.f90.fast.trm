@@ -1,0 +1,163 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "foo", ["A", "B"], no-language-binding()){Comment("
+
+")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(REAL(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+              , no-init()
+              )
+            , Var(
+                "B"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "array"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "arr"
+              , ArrayType(
+                  REAL()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("10")), Range(no-lower-bound(), IntVal("10"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "int_array"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("array", [IntVal("1")])
+          ){Comment("! subscript
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(VarRef("array"), SubstringRange(no-lower-bound(), no-upper-bound()))
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(VarRef("array"), SubstringRange(IntVal("1"), no-upper-bound()))
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(VarRef("array"), SubstringRange(no-lower-bound(), IntVal("2")))
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(VarRef("array"), SubstringRange(IntVal("1"), IntVal("2")))
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "array"
+            , [Triplet(no-subscript(), no-subscript(), IntVal("3"))]
+            , no-image-selector()
+            )
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "array"
+            , [Triplet(IntVal("1"), no-subscript(), IntVal("3"))]
+            , no-image-selector()
+            )
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "array"
+            , [Triplet(no-subscript(), IntVal("2"), IntVal("3"))]
+            , no-image-selector()
+            )
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "array"
+            , [Triplet(IntVal("1"), IntVal("2"), IntVal("3"))]
+            , no-image-selector()
+            )
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("B")
+          , PartRef(
+              "arr"
+            , [ Triplet(IntVal("1"), IntVal("2"), IntVal("3"))
+              , Triplet(IntVal("5"), IntVal("10"), IntVal("2"))
+              ]
+            , no-image-selector()
+            )
+          ){Comment("! subscript-triplet
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("array", [VarRef("int_array")])
+          ){Comment("! vector-subscript
+
+")}
+        ]
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R620 section-subscript
+!    is [ subscript ] : [ subscript ] [ : stride ]
+
+")}

@@ -1,0 +1,83 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ProcedureDeclarationStmt("13", no-proc-interface(), [], [ProcDecl("a1", no-init())])
+        , ProcedureDeclarationStmt(
+            no-label()
+          , no-proc-interface()
+          , []
+          , [ProcDecl("a2", no-init()), ProcDecl("b2", no-init())]
+          ){Comment("
+
+! Test with optional proc-interface.
+")}
+        , ProcedureDeclarationStmt(no-label(), "c", [], [ProcDecl("a3", no-init())])
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "c"
+          , []
+          , [ProcDecl("a4", no-init()), ProcDecl("b4", no-init())]
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("4")))
+          , []
+          , [ProcDecl("a5", no-init())]
+          ){Comment("
+
+! Test with optional ::
+")}
+        , ProcedureDeclarationStmt(no-label(), "c", [], [ProcDecl("a6", no-init())]){Comment("
+
+! Test with optional proc-attr-spec
+")}
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "c"
+          , [LanguageBinding(no-binding-name()), PUBLIC(), POINTER()]
+          , [ProcDecl("a7", no-init()), ProcDecl("b7", no-init())]
+          ){Comment("
+
+! Test with optional null-init
+")}
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "c"
+          , [POINTER()]
+          , [ProcDecl("func_ptr", FunctionReference("NULL", [])), ProcDecl("b8", no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("! R1211 procedure-declaration-stmt
+!                      is  PROCEDURE ( [ proc-interface ] ) 
+!                                        [ [ , proc-attr-spec ] ... :: ] 
+!                                        proc-decl-list
+!
+!      proc-interface  is  interface-name
+!                      or  declaration-type-spec
+!
+!      proc-attr-spec  is  access-spec
+!                      or  proc-language-binding-spec
+!                      or  INTENT ( intent-spec )
+!                      or  OPTIONAL
+!                      or  POINTER
+!                      or  SAVE
+!
+!      proc-decl  is  procedure-entity-name [ => null-init ]
+!
+!      interface-name  is  name
+!
+! Not tested here: name, declaration-type-spec, access-spec, 
+! proc-language-binding-spec, intent-spec, procedure-entity-name, and 
+! null-init.
+
+! Test with no optional parts.
+")}

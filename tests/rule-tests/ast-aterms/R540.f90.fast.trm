@@ -1,0 +1,73 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("10"))
+          , []
+          , [Var("NAME", CHARACTER(IntVal("10")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [Dimension([Range(IntVal("0"), IntVal("9"))])]
+          , [Var("MILES", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("truth"), VarRef("beauty"), VarRef("ugly")]
+              , [ DataStmtValue(no-repeat(), RealVal("3.14159"))
+                , DataStmtValue(no-repeat(), RealVal("2.81828"))
+                , DataStmtValue(no-repeat(), IntVal("6"))
+                ]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [DataStmtSet(
+               [VarRef("foo")]
+             , [DataStmtValue(no-repeat(), IntVal("3"))]
+             )]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("bar"), VarRef("this"), VarRef("that"), VarRef("theother")]
+              , [ DataStmtValue(DataStmtRepeat("2"), IntVal("3"))
+                , DataStmtValue(DataStmtRepeat("2"), RealVal("7.6"))
+                ]
+              )
+            ]
+          ){Comment("
+
+! From NOTE 5.29
+")}
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet([VarRef("NAME")], [DataStmtValue(no-repeat(), "\"JOHN DOE\"")])
+            , DataStmtSet(
+                [VarRef("MILES")]
+              , [DataStmtValue(DataStmtRepeat("10"), IntVal("0"))]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R540 data-stmt-value
+! [ data-stmt-repeat * ] data-stmt-constant
+!
+! TODO- Fix AMBIGUITIES
+!
+")}

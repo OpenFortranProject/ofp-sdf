@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [Var("flag", LOGICAL(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("i", INTEGER(), no-init()), Var("a_lock_variable", INTEGER(), no-init())]
+          ){Comment("
+
+   ")}
+        ]
+      , [ LockStmt(no-label(), VarRef("a_lock_variable"), [])
+        , LockStmt(
+            "13"
+          , VarRef("msg")
+          , [ACQUIRED_LOCK(VarRef("flag")), STAT(VarRef("i"))]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R863 lock-stmt
+!    is LOCK ( lock-variable [ , lock-stat-list ] )
+!
+")}

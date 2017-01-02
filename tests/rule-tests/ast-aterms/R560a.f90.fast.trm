@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ImplicitStmt("10", []){Comment("
+
+")}]
+      , [ ImplicitStmt(
+            no-label()
+          , [ ImplicitSpec(
+                REAL()
+              , [LetterSpec("X", no-letter()), LetterSpec("y", no-letter()), LetterSpec("Z", no-letter())]
+              )
+            , ImplicitSpec(
+                INTEGER()
+              , [LetterSpec("i", no-letter()), LetterSpec("j", no-letter()), LetterSpec("k", "L")]
+              )
+            ]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R560 implicit-stmt
+!    is IMPLICIT implicit-spec-list
+!    or IMPLICIT NONE
+!
+!! R561 implicit-spec
+!    is declaration-type-spec ( letter-spec-list )
+!
+!! R562 letter-spec
+!    is letter [ – letter ]
+
+")}

@@ -1,0 +1,41 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "my_prog"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , REAL()
+         , []
+         , [Var("i", REAL(), no-init())]
+         ){Comment("
+  ")}]
+      , [AssignmentStmt(no-label(), VarDef("i"), IntVal("1"))]
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), "sub")
+          )
+        ]
+      )
+    , EndProgramStmt(no-label(), "my_prog")
+    )
+  ]
+){Comment("! Test main-program
+!
+!      main-program  is  [ program-stmt ]
+!                          [ specification-part ]
+!                          [ execution-part ]
+!                          [ internal-subprogram-part ]
+!                        end-program-stmt
+!
+!      program-stmt  is  PROGRAM program-name
+!
+!      end-program-stmt  is  END [ PROGRAM [ program-name ] ]
+!
+! Not tested here: specification-part, execution-part, and 
+! internal-subprogram-part.
+
+! Add all of the optionals together.
+")}

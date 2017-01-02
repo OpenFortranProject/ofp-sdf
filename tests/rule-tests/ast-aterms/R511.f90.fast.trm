@@ -1,0 +1,97 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A1"
+              , ArrayType(REAL(), [], CoarraySpec([Range(no-lower-bound(), STAR())]))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A2"
+              , ArrayType(REAL(), [], CoarraySpec([Range(no-lower-bound(), STAR())]))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A3"
+              , ArrayType(
+                  REAL()
+                , []
+                , CoarraySpec(
+                    [Range(no-lower-bound(), IntVal("7")), Range(no-lower-bound(), STAR())]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A4"
+              , ArrayType(
+                  REAL()
+                , []
+                , CoarraySpec(
+                    [Range(IntVal("2"), IntVal("7")), Range(no-lower-bound(), STAR())]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A5"
+              , ArrayType(
+                  REAL()
+                , []
+                , CoarraySpec(
+                    [ Range(no-lower-bound(), IntVal("5"))
+                    , Range(no-lower-bound(), IntVal("5"))
+                    , Range(no-lower-bound(), IntVal("5"))
+                    , Range(no-lower-bound(), STAR())
+                    ]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+
+")}
+    )
+  ]
+){Comment("!! R511 explicit-coshape-spec
+!    is [ [ lower-cobound : ] upper-cobound, ]... [ lower-cobound : ] *
+!
+")}

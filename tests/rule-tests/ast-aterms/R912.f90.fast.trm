@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ PrintStmt("13", STAR(), ["\"hello\"", FunctionReference("that_image", [])])
+        , PrintStmt(
+            no-label()
+          , IntVal("5")
+          , [VarRef("a"), VarRef("b"), VarRef("c")]
+          )
+        , PrintStmt(no-label(), IntVal("10"), [IntVal("1")])
+        , PrintStmt(no-label(), "'(10f8.2)'", [VarRef("a"), VarRef("b")]){Comment("
+
+")}
+        , FormatStmt(
+            "5"
+          , FormatSpec(
+              [F(IntVal("10"), IntVal("8"), IntVal("2"))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "10"
+          , FormatSpec([I(no-r(), IntVal("5"), no-m())], [])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R912 print-stmt
+!    is  PRINT format [, output-item-list ]
+!
+! Not tested here: format and output-item-list.
+")}

@@ -1,0 +1,47 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [Dimension([Range(no-lower-bound(), IntVal("10"))])]
+          , [ Var("B", REAL(), no-init())
+            , Var("Y", REAL(), no-init())
+            , Var("Z", REAL(), no-init())
+            ]
+          ){Comment("
+
+")}
+        , EquivalenceStmt(
+            no-label()
+          , [ EquivalenceSet(
+                [VarRef("a"), PartRef("b", [IntVal("3")], no-image-selector())]
+              )
+            ]
+          )
+        , EquivalenceStmt(
+            no-label()
+          , [ EquivalenceSet(
+                [ VarRef("x")
+                , PartRef("y", [IntVal("2")], no-image-selector())
+                , PartRef("z", [IntVal("4")], no-image-selector())
+                ]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R567 equivalence-object
+!    is variable-name
+!    or array-element
+!    or substring
+
+")}

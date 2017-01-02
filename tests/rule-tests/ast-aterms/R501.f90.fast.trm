@@ -1,0 +1,201 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("x", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("y", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [POINTER()]
+          , [Var("xptr", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [POINTER(), ALLOCATABLE()]
+          , [Var("yptr", INTEGER(), no-init())]
+          ){Comment("
+
+! test entity_decl_list
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [Var("a", REAL(), no-init()), Var("b", REAL(), no-init())]
+          ){Comment("
+
+! intrinsic-type-spec with kind-selector
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("4")))
+          , []
+          , [Var("m", INTEGER(Kind(IntVal("4"))), no-init())]
+          ){Comment("
+
+! intrinsic-type-spec with char-selector
+")}
+        , TypeDeclarationStmt(
+            "10"
+          , CHARACTER(IntVal("10"), IntVal("1"))
+          , []
+          , [Var("string", CHARACTER(IntVal("10"), IntVal("1")), no-init())]
+          ){Comment("
+
+! From NOTE 5.1
+
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , [ Dimension(
+                [Range(no-lower-bound(), IntVal("5")), Range(no-lower-bound(), IntVal("5"))]
+              )
+            ]
+          , [Var("MASK1", LOGICAL(), no-init()), Var("MASK2", LOGICAL(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [ Var(
+                "CUBE_ROOT"
+              , COMPLEX()
+              , Init(ComplexLiteralConstant(SignedRealLiteralConstant(MINUS(), RealVal("0.5")), RealVal("0.866")))
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [ Var(
+                "SHORT"
+              , INTEGER()
+              , Init(PartRef("SELECTED_INT_KIND", [IntVal("4")], no-image-selector()))
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(VarRef("SHORT")))
+          , []
+          , [Var("K", INTEGER(Kind(VarRef("SHORT"))), no-init())]
+          ){Comment("!  Range at least -9999 to 9999.
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+          , []
+          , [ Var(
+                "A"
+              , REAL(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL(Kind(IntVal("2")))
+          , []
+          , [Var("B", REAL(Kind(IntVal("2"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , COMPLEX(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+          , []
+          , [ Var(
+                "C"
+              , COMPLEX(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("10"), IntVal("2"))
+          , []
+          , [Var("A", CHARACTER(IntVal("10"), IntVal("2")), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [ Var("B", CHARACTER(), no-init())
+            , Var("C", CHARACTER_LEN(IntVal("20")), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("PERSON", [])
+          , []
+          , [Var("CHAIRMAN", DerivedType("PERSON", []), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("NODE", [])
+          , [POINTER()]
+          , [Var(
+               "HEAD"
+             , DerivedType("NODE", [])
+             , PointerInit(FunctionReference("NULL", []))
+             )]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType(
+              "humongous_matrix"
+            , [TypeParamSpec("k", IntVal("8")), TypeParamSpec("d", IntVal("1000"))]
+            )
+          , []
+          , [ Var(
+                "mat"
+              , DerivedType(
+                  "humongous_matrix"
+                , [TypeParamSpec("k", IntVal("8")), TypeParamSpec("d", IntVal("1000"))]
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R501 type-declaration-stmt
+!    is declaration-type-spec [ [ , attr-spec ] ... :: ] entity-decl-list
+
+! intrinsic-type-spec, no attrs, w/ double colon
+")}

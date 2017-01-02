@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [Var(
+               "z"
+             , COMPLEX()
+             , Init(ComplexLiteralConstant(RealVal("0.0098"), RealVal("0.e9")))
+             )]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [Var(
+               "y"
+             , COMPLEX()
+             , Init(ComplexLiteralConstant(RealVal("1."), RealVal("13.e9")))
+             )]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R417 complex-literal-constant
+!    is ( real-part , imag-part )
+
+")}

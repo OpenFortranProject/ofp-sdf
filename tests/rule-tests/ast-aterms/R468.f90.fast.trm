@@ -1,0 +1,61 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DimensionStmt(
+            no-label()
+          , [ ArrayNameSpec("X", [Range(no-lower-bound(), IntVal("3"))])
+            , ArrayNameSpec(
+                "Y"
+              , [Range(no-lower-bound(), IntVal("3")), Range(no-lower-bound(), IntVal("2"))]
+              )
+            ]
+          )
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("X")
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [RealVal("3.2"), RealVal("4.01"), RealVal("6.5")]
+              )
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("Y")
+          , FunctionReference(
+              "RESHAPE"
+            , [ Arg(
+                  "SOURCE"
+                , ArrayConstructor(
+                    AcSpec(
+                      no-type-spec()
+                    , [ RealVal("2.0")
+                      , ArrayConstructor(AcSpec(no-type-spec(), [RealVal("4.5"), RealVal("4.5")]))
+                      , VarRef("X")
+                      ]
+                    )
+                  )
+                )
+              , Arg(
+                  "SHAPE"
+                , ArrayConstructor(AcSpec(no-type-spec(), [IntVal("3"), IntVal("2")]))
+                )
+              ]
+            )
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R468 array-constructor
+!    is (/ ac-spec /)
+!    or lbracket ac-spec rbracket
+!
+! NOTE 4.68
+!
+")}

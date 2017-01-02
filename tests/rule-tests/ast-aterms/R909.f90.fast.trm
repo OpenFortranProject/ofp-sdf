@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("msg", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ CloseStmt(no-label(), [UNIT(IntVal("10"))])
+        , CloseStmt(no-label(), [UNIT(IntVal("10"))])
+        , CloseStmt(
+            no-label()
+          , [UNIT(IntVal("20")), STATUS("'keep'"), ERR("1235")]
+          )
+        , CloseStmt(
+            "1235"
+          , [UNIT(IntVal("10")), IOSTAT(VarRef("ivar")), IOMSG(VarRef("msg"))]
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R909 close-spec
+!    is [ UNIT = ] file-unit-number
+!    or IOSTAT = scalar-int-variable
+!    or IOMSG = iomsg-variable
+!    or ERR = label
+!    or STATUS = scalar-default-char-expr
+
+")}

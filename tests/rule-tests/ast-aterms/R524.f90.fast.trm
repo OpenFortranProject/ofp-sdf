@@ -1,0 +1,84 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "ex")
+    , Scope(
+        [ AccessStmt("10", PRIVATE(), []){Comment("
+    ")}
+        , AccessStmt(no-label(), PUBLIC(), ["boo", ASSIGNMENT()]){Comment("
+    ")}
+        , AccessStmt(no-label(), PUBLIC(), ["binky", "bonky", OPERATOR(PLUS())]){Comment("
+
+")}
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), ASSIGNMENT()){Comment("
+   ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "LOGICAL_TO_NUMERIC", ["N", "B"], no-language-binding()){Comment("
+      ")}
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , INTEGER()
+                  , [Intent(OUT())]
+                  , [Var("N", INTEGER(), no-init())]
+                  ){Comment("
+      ")}
+                , TypeDeclarationStmt(
+                    no-label()
+                  , LOGICAL()
+                  , [Intent(IN())]
+                  , [Var("B", LOGICAL(), no-init())]
+                  ){Comment("
+   ")}
+                ]
+              , EndSubroutineStmt(no-label(), "LOGICAL_TO_NUMERIC")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), ASSIGNMENT()){Comment("
+
+")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(PLUS())){Comment("
+   ")}
+          , [ InterfaceBody(
+                FunctionStmt(
+                  no-label()
+                , [LOGICAL()]
+                , "LOGICAL_ADD"
+                , ["N", "B"]
+                , no-result()
+                , no-language-binding()
+                )
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , LOGICAL()
+                  , [Intent(IN())]
+                  , [Var("N", LOGICAL(), no-init())]
+                  ){Comment("
+      ")}
+                , TypeDeclarationStmt(
+                    no-label()
+                  , LOGICAL()
+                  , [Intent(IN())]
+                  , [Var("B", LOGICAL(), no-init())]
+                  ){Comment("
+   ")}
+                ]
+              , EndFunctionStmt(no-label(), "LOGICAL_ADD")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), OPERATOR(PLUS())){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), "ex")
+    )
+  ]
+){Comment("!! R524 access-stmt
+!    is access-spec [ [ :: ] access-id-list ]
+
+")}

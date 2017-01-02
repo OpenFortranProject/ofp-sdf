@@ -1,0 +1,31 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "R508"){Comment("
+
+")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [LanguageBinding(no-binding-name())]
+          , [Var("i", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            "10"
+          , INTEGER()
+          , [LanguageBinding(BindingName("\"cint\""))]
+          , [Var("j", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  ]
+){Comment("!! R508 language-binding-spec
+! is BIND (C [, NAME = scalar-char-initialization-expr ])
+
+")}

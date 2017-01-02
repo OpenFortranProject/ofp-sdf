@@ -1,0 +1,46 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(no-label(), VarDef("A"), IntVal("1"))
+        , AssignmentStmt(
+            no-label()
+          , PartRef("B", [IntVal("1")], no-image-selector())
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , Substring(VarRef("B"), SubstringRange(IntVal("1"), IntVal("5")))
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("P"), VarRef("AGE")])
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("B", [IntVal("1")], no-image-selector()), VarRef("AGE")]
+            )
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , PartRef("A", [IntVal("1"), IntVal("1")], no-image-selector())
+          , IntVal("1")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R602 variable
+!    is designator
+!    or expr
+
+")}

@@ -1,0 +1,42 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ AllocatableStmt("10", [Var("a", unknown-type(), no-init())])
+        , AllocatableStmt(
+            no-label()
+          , [ Var(
+                "B"
+              , ArrayType(
+                  unknown-type()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "C"
+              , ArrayType(unknown-type(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+              , no-init()
+              )
+            , Var("scalar", unknown-type(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R526 allocatable-stmt
+!    is ALLOCATABLE [ :: ] allocatable-decl-list
+!
+!  allocatable-decl
+!    is object-name [ ( array-spec ) ] [ lbracket co-array-spec rbracket ]
+
+!TODO-F08 add co-array-spec
+
+")}

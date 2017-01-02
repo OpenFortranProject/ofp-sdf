@@ -1,0 +1,28 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "T"
+              , ArrayType(REAL(), [], CoarraySpec([Range(no-lower-bound(), COLON())]))
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R510 deferred-coshape-spec
+!    is :
+
+")}

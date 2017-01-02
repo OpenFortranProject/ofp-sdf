@@ -1,0 +1,21 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ DeallocateStmt(
+            no-label()
+          , [VarRef("this"), VarRef("that"), VarRef("theother")]
+          , []
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R632 allocate-object
+!    is variable-name
+!    or structure-component
+
+")}

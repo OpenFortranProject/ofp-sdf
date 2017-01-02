@@ -1,0 +1,58 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(VarRef("A1"), [], [Range(no-lower-bound(), "*")])]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               VarRef("A2")
+             , []
+             , [Range(IntVal("3"), "*")]
+             )]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("A3")
+              , []
+              , [Range(no-lower-bound(), IntVal("1")), Range(no-lower-bound(), "*")]
+              )
+            ]
+          , []
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("A4")
+              , []
+              , [ Range(no-lower-bound(), IntVal("3"))
+                , Range(no-lower-bound(), IntVal("13"))
+                , Range(IntVal("4"), "*")
+                ]
+              )
+            ]
+          , []
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R636 allocate-coarray-spec
+!    is [ allocate-coshape-spec-list , ] [ lower-bound-expr : ] *
+!
+")}

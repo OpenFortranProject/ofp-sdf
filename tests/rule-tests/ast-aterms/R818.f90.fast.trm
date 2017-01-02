@@ -1,0 +1,42 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ BlockDoConstruct(
+            NonlabelDoStmt(
+              no-label()
+            , no-name()
+            , LoopConcurrentControl(
+                ForallHeader(
+                  no-type-spec()
+                , [ForallTripletSpec("I", IntVal("1"), VarRef("N"), no-forall-step())]
+                , no-mask-expr()
+                )
+              )
+            ){Comment("
+      ")}
+          , [ AssignmentStmt(
+                no-label()
+              , PartRef("A", [VarRef("I")], no-image-selector())
+              , FunctionReference("B", [VarRef("I")])
+              ){Comment("
+   ")}
+            ]
+          , EndDoStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R818 loop-control
+!    is [ , ] do-variable = scalar-int-expr, scalar-int-expr [ , scalar-int-expr ]
+!    or [ , ] WHILE ( scalar-logical-expr )
+!    or [ , ] CONCURRENT forall-header
+!
+! from NOTE 8.10
+   ")}

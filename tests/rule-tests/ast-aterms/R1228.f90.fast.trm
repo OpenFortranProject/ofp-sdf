@@ -1,0 +1,39 @@
+Program(
+  [ Function(
+      FunctionStmt("11", [], "foo", [], no-result(), no-language-binding())
+    , Scope([], [], [])
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , Function(
+      FunctionStmt(
+        no-label()
+      , []
+      , "boo"
+      , ["a", "b"]
+      , no-result()
+      , no-language-binding()
+      )
+    , Scope([], [], [])
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , Function(
+      FunctionStmt(no-label(), [INTEGER()], "coo", [], no-result(), no-language-binding())
+    , Scope([], [], [])
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , Function(
+      FunctionStmt(no-label(), [], "doo", [], no-result(), LanguageBinding(no-binding-name()))
+    , Scope([], [], [])
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , MainProgram(
+      no-program-stmt()
+    , Scope([], [], [])
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R1228 function-stmt
+!    is   [ prefix ] FUNCTION function-name
+!                ( [ dummy-arg-name-list ] ) [ suffix ]
+
+")}

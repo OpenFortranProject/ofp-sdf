@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ CriticalConstruct(
+            CriticalStmt("10", no-name(), eos("\n      "))
+          , [ AssignmentStmt(
+                no-label()
+              , PartRef("GLOBAL_COUNTER", no-section-subscripts(), [IntVal("1")])
+              , Plus(
+                  PartRef("GLOBAL_COUNTER", no-section-subscripts(), [IntVal("1")])
+                , IntVal("1")
+                )
+              )
+            ]
+          , EndCriticalStmt("11", no-name(), eos("\n\n "))
+          )
+        , CriticalConstruct(
+            CriticalStmt(no-label(), no-name(), eos("\n "))
+          , []
+          , EndCriticalStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R810 critical-construct
+!    is critical-stmt
+!          block
+!       end-critical-stmt
+!
+! from NOTE 8.5
+")}

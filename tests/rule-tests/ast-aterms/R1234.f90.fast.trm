@@ -1,0 +1,27 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt("11", [], "foo", [], no-language-binding())
+    , Scope([], [], [])
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  , Subroutine(
+      SubroutineStmt(no-label(), [], "boo", ["a", "b"], no-language-binding())
+    , Scope([], [], [])
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  , Subroutine(
+      SubroutineStmt(no-label(), [PURE()], "coo", [], no-language-binding())
+    , Scope([], [], [])
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  , Subroutine(
+      SubroutineStmt(no-label(), [], "doo", [], LanguageBinding(no-binding-name()))
+    , Scope([], [], [])
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R1234 subroutine-stmt
+!    is [ prefix ] SUBROUTINE subroutine-name
+!           [ ( [ dummy-arg-list ] ) [ proc-language-binding-spec ] ]
+
+")}

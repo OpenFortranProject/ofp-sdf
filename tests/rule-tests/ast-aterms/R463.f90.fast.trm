@@ -1,0 +1,50 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("16")))
+          , [PARAMETER()]
+          , [Var(
+               "ieee64_two"
+             , INTEGER(Kind(IntVal("16")))
+             , Init(BozLiteralConstant_HC("Z'4000000000000000'"))
+             )]
+          ){Comment("
+
+    ")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("b"), BozLiteralConstant_BC("B\"0110\"")){Comment("
+    ")}
+        , AssignmentStmt(no-label(), VarDef("b"), BozLiteralConstant_BC("b'100100'")){Comment("
+    ")}
+        , AssignmentStmt(no-label(), VarDef("o"), BozLiteralConstant_OC("o'01234567'")){Comment("
+    ")}
+        , AssignmentStmt(no-label(), VarDef("o"), BozLiteralConstant_OC("O\"01234567\"")){Comment("
+    ")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , Plus(BozLiteralConstant_HC("Z'0123456789'"), BozLiteralConstant_HC("z'abcdefABCDEF'"))
+          ){Comment("
+    ")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , Plus(BozLiteralConstant_HC("z\"0123456789\""), BozLiteralConstant_HC("Z\"abcdefABCDEF\""))
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R463 boz-literal-constant
+!   is binary-constant
+!   or octal-constant
+!   or hex-constant
+
+    ")}

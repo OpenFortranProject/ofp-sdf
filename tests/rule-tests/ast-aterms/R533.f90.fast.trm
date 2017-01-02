@@ -1,0 +1,17 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ContiguousStmt("13", ["a"], eos("\n"))
+        , ContiguousStmt(no-label(), ["b", "c", "d"], eos("\n\n"))
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R533 contiguous-stmt
+!    is CONTIGUOUS [ :: ] object-name-list
+!
+")}

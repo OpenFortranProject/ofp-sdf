@@ -1,0 +1,191 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [Var("y", CHARACTER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [Var("flag", LOGICAL(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ CaseConstruct(
+            SelectCaseStmt("10", no-name(), VarRef("n"), eos("\n"))
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  "11"
+                , [CaseValue(IntVal("1"))]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1")){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValueRange(IntVal("2"), IntVal("3"))]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("2")){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValueRange(IntVal("5"), IntVal("8"))]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("8")){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [ CaseValueRange(IntVal("10"), IntVal("12"))
+                  , CaseValueRange(IntVal("14"), IntVal("15"))
+                  , CaseValue(IntVal("22"))
+                  ]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("15")){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValueRange(IntVal("33"), no-high())]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("33")){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("x"), IntVal("0"))]
+              )
+            ]
+          , EndSelectStmt("12", no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(no-label(), no-name(), VarRef("n"), eos("\n   "))
+          , [ CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , [CaseValueRange(no-low(), IntVal("3"))]
+                , no-name()
+                , eos("\n      ")
+                )
+              , [AssignmentStmt(no-label(), VarDef("i"), IntVal("3"))]
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(no-label(), no-name(), "'a'", eos("\n   "))
+          , [ CaseStmtBlock(
+                CaseStmt(no-label(), [CaseValue("'a'")], no-name(), eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("y"), "'a'"){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("y"), "'b'")]
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              no-label()
+            , no-name()
+            , GT(VarRef("x"), IntVal("2"))
+            , eos("\n   ")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(no-label(), [CaseValue(TRUE())], no-name(), eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("flag"), TRUE()){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("flag"), FALSE())]
+              )
+            ]
+          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , CaseConstruct(
+            SelectCaseStmt(
+              no-label()
+            , "my_case"
+            , GT(VarRef("x"), IntVal("2"))
+            , eos("\n   ")
+            )
+          , [ CaseStmtBlock(
+                CaseStmt(no-label(), [CaseValue(TRUE())], "my_case", eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("flag"), TRUE()){Comment("
+   ")}]
+              )
+            , CaseStmtBlock(
+                CaseStmt(no-label(), DEFAULT(), "my_case", eos("\n      "))
+              , [AssignmentStmt(no-label(), VarDef("flag"), FALSE())]
+              )
+            ]
+          , EndSelectStmt(no-label(), "my_case", eos("\n\n"))
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R838 case-construct
+!
+!      case-construct  is  select-case-stmt
+!                            [ case-stmt
+!                                block ] ...
+!                          end-select-stmt
+!
+!      select-case-stmt  is  [ case-construct-name: ] SELECT CASE ( case-expr )
+!
+!      case-stmt  is  CASE case-selector [ case-construct-name ]
+!  
+!      end-select-stmt  is  END SELECT [ case-construct-name ]
+!
+!      case-expr  is  scalar-int-expr
+!                 or  scalar-char-expr
+!                 or  scalar-logical-expr
+!
+!      case-selector  is  ( case-value-range-list )
+!                     or  DEFAULT
+!
+!      case-value-range  is  case-value
+!                        or  case-value :
+!                        or  : case-value
+!                        or  case-value : case-value
+! 
+!      case-value  is  scalar-int-initialization-expr
+!                  or  scalar-char-initialization-expr
+!                  or  scalar-logical-initialization-expr
+!
+! Tested here: case-construct, select-case-stmt, case-stmt, end-select-stmt,
+! case-expr, case-selector, case-value-range, case-value-range-list,  
+! case-value, and case-construct-name.
+!
+! Not tested here are: scalar-int-expr, scalar-char-expr, scalar-logical-expr, 
+! scalar-int-initialization-expr, scalar-char-initialization-expr,  
+! scalar-logical-initialization-expr, and block.
+
+")}

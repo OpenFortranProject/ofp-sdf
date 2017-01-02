@@ -1,0 +1,66 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("x")
+          , ArrayConstructor(
+              AcSpec(
+                REAL()
+              , [RealVal("3.1"), RealVal("4.1"), RealVal("5.9265")]
+              )
+            )
+          ){Comment("
+
+! Test of ac-implied-do
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("A")
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [ AcImpliedDo(
+                    [VarRef("I")]
+                  , AcImpliedDoControl(VarRef("I"), IntVal("1"), IntVal("1075"), no-expr())
+                  )
+                ]
+              )
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("B")
+          , ArrayConstructor(
+              AcSpec(
+                DerivedTypeSpec("TYPE", [TypeParamSpec(no-keyword(), VarRef("Z"))])
+              , [ RealVal("3.6")
+                , AcImpliedDo(
+                    [Div(RealVal("3.6"), VarRef("I"))]
+                  , AcImpliedDoControl(
+                      VarRef("I")
+                    , IntVal("1")
+                    , VarRef("N")
+                    , IntVal("2")
+                    )
+                  )
+                ]
+              )
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R472 ac-value
+!    is expr
+!    or ac-implied-do
+
+! Test of expr in ac_value_list
+")}
