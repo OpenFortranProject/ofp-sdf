@@ -6,88 +6,52 @@ Program(
     , SpecAndExecPart(
         [ FormatStmt(
             "001"
-          , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(I(no-r(), IntVal("1"), no-m())), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "002"
           , FormatSpec(
-              format-items-first(
-                I(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , opt-m(IntLiteralConstant("2", no-kind()))
-                )
-              )
+              format-items-first(I(no-r(), IntVal("1"), opt-m(IntVal("2"))))
             , no-list()
             )
           , eos("\n")
           )
         , FormatStmt(
             "003"
-          , FormatSpec(
-              format-items-first(B(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(B(no-r(), IntVal("1"), no-m())), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "004"
           , FormatSpec(
-              format-items-first(
-                B(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , opt-m(IntLiteralConstant("2", no-kind()))
-                )
-              )
+              format-items-first(B(no-r(), IntVal("1"), opt-m(IntVal("2"))))
             , no-list()
             )
           , eos("\n")
           )
         , FormatStmt(
             "005"
-          , FormatSpec(
-              format-items-first(O(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(O(no-r(), IntVal("1"), no-m())), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "006"
           , FormatSpec(
-              format-items-first(
-                O(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , opt-m(IntLiteralConstant("2", no-kind()))
-                )
-              )
+              format-items-first(O(no-r(), IntVal("1"), opt-m(IntVal("2"))))
             , no-list()
             )
           , eos("\n")
           )
         , FormatStmt(
             "007"
-          , FormatSpec(
-              format-items-first(Z(no-r(), IntLiteralConstant("1", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(Z(no-r(), IntVal("1"), no-m())), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "008"
           , FormatSpec(
-              format-items-first(
-                Z(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , opt-m(IntLiteralConstant("2", no-kind()))
-                )
-              )
+              format-items-first(Z(no-r(), IntVal("1"), opt-m(IntVal("2"))))
             , no-list()
             )
           , eos("\n")
@@ -95,9 +59,7 @@ Program(
         , FormatStmt(
             "009"
           , FormatSpec(
-              format-items-first(
-                F(no-r(), IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
-              )
+              format-items-first(F(no-r(), IntVal("1"), IntVal("2")))
             , no-list()
             )
           , eos("\n")
@@ -105,14 +67,7 @@ Program(
         , FormatStmt(
             "010"
           , FormatSpec(
-              format-items-first(
-                E(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , no-e()
-                )
-              )
+              format-items-first(E(no-r(), IntVal("1"), IntVal("2"), no-e()))
             , no-list()
             )
           , eos("\n")
@@ -123,9 +78,9 @@ Program(
               format-items-first(
                 E(
                   no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-e(IntLiteralConstant("2", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-e(IntVal("2"))
                 )
               )
             , no-list()
@@ -135,14 +90,7 @@ Program(
         , FormatStmt(
             "012"
           , FormatSpec(
-              format-items-first(
-                EN(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , no-e()
-                )
-              )
+              format-items-first(EN(no-r(), IntVal("1"), IntVal("2"), no-e()))
             , no-list()
             )
           , eos("\n")
@@ -153,9 +101,9 @@ Program(
               format-items-first(
                 EN(
                   no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-e(IntLiteralConstant("3", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-e(IntVal("3"))
                 )
               )
             , no-list()
@@ -165,14 +113,7 @@ Program(
         , FormatStmt(
             "014"
           , FormatSpec(
-              format-items-first(
-                ES(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , no-e()
-                )
-              )
+              format-items-first(ES(no-r(), IntVal("1"), IntVal("2"), no-e()))
             , no-list()
             )
           , eos("\n")
@@ -183,9 +124,9 @@ Program(
               format-items-first(
                 ES(
                   no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-e(IntLiteralConstant("3", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-e(IntVal("3"))
                 )
               )
             , no-list()
@@ -195,14 +136,7 @@ Program(
         , FormatStmt(
             "016"
           , FormatSpec(
-              format-items-first(
-                G(
-                  no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , no-e()
-                )
-              )
+              format-items-first(G(no-r(), IntVal("1"), IntVal("2"), no-e()))
             , no-list()
             )
           , eos("\n")
@@ -213,9 +147,9 @@ Program(
               format-items-first(
                 G(
                   no-r()
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-e(IntLiteralConstant("3", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-e(IntVal("3"))
                 )
               )
             , no-list()
@@ -224,7 +158,7 @@ Program(
           )
         , FormatStmt(
             "018"
-          , FormatSpec(format-items-first(L(no-r(), IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(L(no-r(), IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt(
@@ -234,18 +168,13 @@ Program(
           )
         , FormatStmt(
             "020"
-          , FormatSpec(
-              format-items-first(A(no-r(), opt-w(IntLiteralConstant("1", no-kind()))))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(A(no-r(), opt-w(IntVal("1")))), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "021"
           , FormatSpec(
-              format-items-first(
-                D(no-r(), IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
-              )
+              format-items-first(D(no-r(), IntVal("1"), IntVal("2")))
             , no-list()
             )
           , eos("\n")
@@ -258,9 +187,7 @@ Program(
         , FormatStmt(
             "023"
           , FormatSpec(
-              format-items-first(
-                DT(no-r(), "'hello'", VEditDescList([IntLiteralConstant("10", no-kind())]))
-              )
+              format-items-first(DT(no-r(), "'hello'", VEditDescList([IntVal("10")])))
             , no-list()
             )
           , eos("\n\n")
