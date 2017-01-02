@@ -10,8 +10,8 @@ Program(
               no-list()
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(I(no-r(), IntLiteralConstant("12", no-kind()), no-m()))
-                , I(no-r(), IntLiteralConstant("1", no-kind()), no-m())
+                  format-items-first(I(no-r(), IntVal("12"), no-m()))
+                , I(no-r(), IntVal("1"), no-m())
                 )
               )
             )
@@ -21,26 +21,21 @@ Program(
             "002"
           , FormatSpec(
               format-items(
-                format-items-first(P(IntLiteralConstant("1", no-kind())))
-              , E(
-                  no-r()
-                , IntLiteralConstant("12", no-kind())
-                , IntLiteralConstant("4", no-kind())
-                , no-e()
-                )
+                format-items-first(P(IntVal("1")))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
               )
-            , UnlimitedFormatItem(format-items-first(I(no-r(), IntLiteralConstant("10", no-kind()), no-m())))
+            , UnlimitedFormatItem(format-items-first(I(no-r(), IntVal("10"), no-m())))
             )
           , eos("\n")
           )
         , FormatStmt(
             "003"
           , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("12", no-kind()), no-m()))
+              format-items-first(I(no-r(), IntVal("12"), no-m()))
             , UnlimitedFormatItem(
                 format-items(
                   format-items(format-items-first(SLASH(no-r())), CS("'Dates:'"))
-                , I(IntLiteralConstant("22", no-kind()), IntLiteralConstant("3", no-kind()), no-m())
+                , I(IntVal("22"), IntVal("3"), no-m())
                 )
               )
             )
@@ -51,17 +46,15 @@ Program(
           , FormatSpec(
               format-items(
                 format-items(
-                  format-items-first(I(no-r(), IntLiteralConstant("12", no-kind()), no-m()))
+                  format-items-first(I(no-r(), IntVal("12"), no-m()))
                 , SLASH(no-r())
                 )
               , CS("' Dates: '")
               )
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(
-                    I(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()), no-m())
-                  )
-                , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                  format-items-first(I(IntVal("2"), IntVal("3"), no-m()))
+                , I(no-r(), IntVal("5"), no-m())
                 )
               )
             )
@@ -72,17 +65,15 @@ Program(
           , FormatSpec(
               format-items(
                 format-items(
-                  format-items-first(I(no-r(), IntLiteralConstant("12", no-kind()), no-m()))
+                  format-items-first(I(no-r(), IntVal("12"), no-m()))
                 , SLASH(no-r())
                 )
               , CS("'Dates:'")
               )
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(
-                    I(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()), no-m())
-                  )
-                , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                  format-items-first(I(IntVal("2"), IntVal("3"), no-m()))
+                , I(no-r(), IntVal("5"), no-m())
                 )
               )
             )
@@ -93,17 +84,15 @@ Program(
           , FormatSpec(
               format-items(
                 format-items(
-                  format-items-first(I(no-r(), IntLiteralConstant("12", no-kind()), no-m()))
+                  format-items-first(I(no-r(), IntVal("12"), no-m()))
                 , SLASH(no-r())
                 )
               , CS("'Dates:'")
               )
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(
-                    I(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()), no-m())
-                  )
-                , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                  format-items-first(I(IntVal("2"), IntVal("3"), no-m()))
+                , I(no-r(), IntVal("5"), no-m())
                 )
               )
             )
@@ -115,17 +104,17 @@ Program(
               format-items(
                 format-items(
                   format-items(
-                    format-items-first(X(IntLiteralConstant("1", no-kind())))
-                  , I(no-r(), IntLiteralConstant("1", no-kind()), no-m())
+                    format-items-first(X(IntVal("1")))
+                  , I(no-r(), IntVal("1"), no-m())
                   )
-                , X(IntLiteralConstant("1", no-kind()))
+                , X(IntVal("1"))
                 )
               , CS("'isn''t'")
               )
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(X(IntLiteralConstant("1", no-kind())))
-                , I(no-r(), IntLiteralConstant("1", no-kind()), no-m())
+                  format-items-first(X(IntVal("1")))
+                , I(no-r(), IntVal("1"), no-m())
                 )
               )
             )
@@ -134,13 +123,11 @@ Program(
         , FormatStmt(
             "013"
           , FormatSpec(
-              format-items-first(X(IntLiteralConstant("1", no-kind())))
+              format-items-first(X(IntVal("1")))
             , UnlimitedFormatItem(
                 format-items(
-                  format-items-first(
-                    F(no-r(), IntLiteralConstant("10", no-kind()), IntLiteralConstant("3", no-kind()))
-                  )
-                , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                  format-items-first(F(no-r(), IntVal("10"), IntVal("3")))
+                , I(no-r(), IntVal("5"), no-m())
                 )
               )
             )
@@ -150,22 +137,22 @@ Program(
             "014"
           , FormatSpec(
               format-items(
-                format-items-first(X(IntLiteralConstant("1", no-kind())))
-              , F(no-r(), IntLiteralConstant("10", no-kind()), IntLiteralConstant("3", no-kind()))
+                format-items-first(X(IntVal("1")))
+              , F(no-r(), IntVal("10"), IntVal("3"))
               )
             , UnlimitedFormatItem(
                 format-items(
                   format-items(
                     format-items(
                       format-items(
-                        format-items-first(I(no-r(), IntLiteralConstant("5", no-kind()), no-m()))
-                      , F(no-r(), IntLiteralConstant("10", no-kind()), IntLiteralConstant("3", no-kind()))
+                        format-items-first(I(no-r(), IntVal("5"), no-m()))
+                      , F(no-r(), IntVal("10"), IntVal("3"))
                       )
-                    , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                    , I(no-r(), IntVal("5"), no-m())
                     )
-                  , F(no-r(), IntLiteralConstant("10", no-kind()), IntLiteralConstant("3", no-kind()))
+                  , F(no-r(), IntVal("10"), IntVal("3"))
                   )
-                , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+                , I(no-r(), IntVal("5"), no-m())
                 )
               )
             )
