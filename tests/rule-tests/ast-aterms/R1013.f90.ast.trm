@@ -6,22 +6,22 @@ Program(
     , SpecAndExecPart(
         [ FormatStmt(
             "001"
-          , FormatSpec(format-items-first(T(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(T(IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "002"
-          , FormatSpec(format-items-first(TL(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(TL(IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "003"
-          , FormatSpec(format-items-first(TR(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(TR(IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt(
             "004"
-          , FormatSpec(format-items-first(X(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(X(IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt(
@@ -31,7 +31,7 @@ Program(
           )
         , FormatStmt(
             "006"
-          , FormatSpec(format-items-first(SLASH(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(SLASH(IntVal("1"))), no-list())
           , eos("\n! This next one seems to cause an extra control-edit-desc to be generated that\n! is an empty-string.\n")
           )
         , FormatStmt("007", FormatSpec(format-items-first(COLON_ED()), no-list()), eos("\n"))
@@ -40,7 +40,7 @@ Program(
         , FormatStmt("010", FormatSpec(format-items-first(S()), no-list()), eos("\n"))
         , FormatStmt(
             "011"
-          , FormatSpec(format-items-first(P(IntLiteralConstant("1", no-kind()))), no-list())
+          , FormatSpec(format-items-first(P(IntVal("1"))), no-list())
           , eos("\n")
           )
         , FormatStmt("012", FormatSpec(format-items-first(BN()), no-list()), eos("\n"))
