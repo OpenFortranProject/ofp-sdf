@@ -1,0 +1,29 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ProcedureDeclarationStmt(no-label(), no-proc-interface(), [], [ProcDecl("foo", no-init())])
+        , ProcedureDeclarationStmt(
+            no-label()
+          , no-proc-interface()
+          , []
+          , [ ProcDecl("truth", no-init())
+            , ProcDecl("beauty", no-init())
+            , ProcDecl("ugly", no-init())
+            , ProcDecl("lies", no-init())
+            ]
+          ){Comment("
+!TODO-F08 proc-pointer-init
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R1214 proc-decl
+!       is procedure-entity-name [ => proc-pointer-init ]
+
+! Testing proc decl list.
+")}

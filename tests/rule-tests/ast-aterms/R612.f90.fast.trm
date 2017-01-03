@@ -1,0 +1,54 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , Substring(VarRef("a"), SubstringRange(IntVal("1"), IntVal("3")))
+          , IntVal("3")
+          )
+        , AssignmentStmt(no-label(), VarDef("a"), IntVal("3")){Comment("
+
+")}
+        , AssignmentStmt(no-label(), VarDef("c"), VarRef("s"))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("c")
+          , FunctionReference("s", [IntVal("1"), IntVal("2")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("c")
+          , PartRef("s", no-section-subscripts(), [IntVal("1"), IntVal("2")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("c")
+          , PartRef("s", [IntVal("1")], [IntVal("3")])
+          ){Comment("
+
+   ")}
+        , AssignmentStmt(
+            no-label()
+          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , IntVal("1")
+          ){Comment("
+   ")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("b")
+          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R612 part-ref
+!    is part-name [ ( section-subscript-list ) ] [ image-selector ]
+!
+")}

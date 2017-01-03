@@ -1,0 +1,34 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DimensionStmt(
+            "10"
+          , [ArrayNameSpec("A", [Range(no-lower-bound(), IntVal("1"))])]
+          )
+        , DimensionStmt(
+            no-label()
+          , [ ArrayNameSpec(
+                "array_A"
+              , [Range(no-lower-bound(), IntVal("2")), Range(no-lower-bound(), IntVal("3"))]
+              )
+            , ArrayNameSpec(
+                "array_B"
+              , [Range(no-lower-bound(), IntVal("4")), Range(no-lower-bound(), IntVal("5"))]
+              )
+            , ArrayNameSpec("array_C", [Range(no-lower-bound(), COLON())])
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R545 dimension-stmt
+!    is DIMENSION [ :: ] dimension-decl-list
+
+")}

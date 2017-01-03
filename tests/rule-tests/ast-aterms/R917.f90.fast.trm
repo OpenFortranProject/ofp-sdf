@@ -1,0 +1,44 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ WriteStmt(
+            no-label()
+          , [UNIT(STAR()), FMT(STAR())]
+          , [VarRef("truth"), VarRef("beauty")]
+          )
+        , WriteStmt(
+            no-label()
+          , [UNIT(STAR()), FMT(STAR())]
+          , [VarRef("or"), VarRef("ugly"), Plus(IntVal("1"), IntVal("3"))]
+          ){Comment("
+
+")}
+        , WriteStmt(
+            no-label()
+          , [UNIT(IntVal("1"))]
+          , [ IoImpliedDo(
+                [VarRef("a")]
+              , IoImpliedDoControl(
+                  VarRef("i")
+                , IntVal("1")
+                , IntVal("2")
+                , IntVal("3")
+                )
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R917 output-item
+!    is expr
+!    or io-implied-do
+!
+")}

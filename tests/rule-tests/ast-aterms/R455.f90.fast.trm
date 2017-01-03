@@ -1,0 +1,47 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "point", []){Comment("
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , []
+              , [Var("i", INTEGER(), no-init()), Var("j", INTEGER(), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("POINT", [])
+          , []
+          , [ Var(
+                "PV"
+              , DerivedType("POINT", [])
+              , Init(
+                  PartRef("POINT", [RealVal("1.0"), RealVal("2.0")], no-image-selector())
+                )
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R455 structure-constructor
+!    is derived-type-spec ( [ component-spec-list ] )
+
+")}

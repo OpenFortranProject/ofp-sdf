@@ -1,0 +1,45 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ReadStmt(no-label(), [UNIT(IntVal("10"))], [])
+        , ReadStmt(
+            no-label()
+          , [UNIT(IntVal("10")), FMT(STAR())]
+          , [VarRef("a"), VarRef("b")]
+          ){Comment("
+
+")}
+        , ReadFMTStmt(
+            no-label()
+          , IntVal("5")
+          , [VarRef("a"), VarRef("b"), VarRef("c")]
+          ){Comment("
+
+")}
+        , FormatStmt(
+            "5"
+          , FormatSpec(
+              [ E(IntVal("2"), IntVal("16"), IntVal("3"), no-e())
+              , I(no-r(), IntVal("5"), no-m())
+              ]
+            , []
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R910 read-stmt
+!    is  READ (io-control-spec-list ) [ input-item-list ]
+!    or  READ format [, input-item-list ]
+!
+! Not tested here: io-control-spec-list, input-item-list, and format
+")}

@@ -1,0 +1,35 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("r")
+          , DataRef([VarRef("impedance"), VarRef("re")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("i")
+          , DataRef([VarRef("fft"), VarRef("im")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("x"), VarRef("im")])
+          , RealVal("0.0")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R615 complex-part-designator
+!    is designator % RE
+!    or designator % IM
+!
+!  NOTE 6.6
+!
+")}

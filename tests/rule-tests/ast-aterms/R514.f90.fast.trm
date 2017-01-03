@@ -1,0 +1,98 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        no-label()
+      , []
+      , "EX"
+      , ["N", "A", "B"]
+      , no-language-binding()
+      ){Comment("
+   ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [ Dimension(
+                [Range(no-lower-bound(), VarRef("N")), Range(no-lower-bound(), IntVal("10"))]
+              )
+            ]
+          , [Var("W", REAL(), no-init())]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(REAL(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+              , no-init()
+              )
+            , Var(
+                "B"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(IntVal("0"), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [POINTER()]
+          , [ Var(
+                "D"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [Dimension([Range(no-lower-bound(), COLON())]), POINTER()]
+          , [Var("P", REAL(), no-init())]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [ALLOCATABLE(), Dimension([Range(no-lower-bound(), COLON())])]
+          , [Var("E", REAL(), no-init())]
+          ){Comment("! Allocatable array
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [PARAMETER()]
+          , [ Var(
+                "V"
+              , ArrayType(REAL(), ArraySpec(Range(IntVal("0"), STAR())), [])
+              , Init(
+                  ArrayConstructor(AcSpec(no-type-spec(), [RealVal("0.1"), RealVal("1.1")]))
+                )
+              )
+            ]
+          ){Comment("! Implied-shape array
+")}
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R514 dimension-spec
+!    is DIMENSION ( array-spec )
+!
+! From NOTE 5.12
+")}

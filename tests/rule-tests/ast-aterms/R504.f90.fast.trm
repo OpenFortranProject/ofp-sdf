@@ -1,0 +1,27 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("a", INTEGER(), no-init())]
+         ){Comment("
+
+")}]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R504 object-name
+!    is  name
+!
+! object-name is tested as part of an entity-decl (R503) that is part of 
+! a type-declaration-stmt (R501).
+
+")}

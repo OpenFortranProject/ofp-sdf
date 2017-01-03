@@ -1,0 +1,14 @@
+Program(
+  [ Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-parent-submodule-name()), "submod")
+    , Scope([], [], [])
+    , EndSubmoduleStmt(no-label(), "submod")
+    )
+  ]
+){Comment("!! R1116 submodule
+!     is submodule-stmt
+!           [ specification-part ]
+!           [ module-subprogram-part ]
+!        end-submodule-stmt
+!
+")}

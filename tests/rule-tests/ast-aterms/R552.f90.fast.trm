@@ -1,0 +1,19 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ProtectedStmt("13", ["a", "b", "c"])
+        , ProtectedStmt(no-label(), ["d"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R552 protected-stmt
+!    is PROTECTED [ :: ] entity-name-list
+!
+")}

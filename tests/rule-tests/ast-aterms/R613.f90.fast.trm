@@ -1,0 +1,44 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("scalar_parent"), VarRef("scalar_field")])
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef(
+              [PartRef("array_parent", [VarRef("j")], no-image-selector()), VarRef("scalar_field")]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef(
+                  "array_parent"
+                , [Triplet(IntVal("1"), VarRef("n"), no-stride())]
+                , no-image-selector()
+                )
+              , VarRef("scalar_field")
+              ]
+            )
+          , IntVal("1")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R613 structure-component
+!    is data-ref
+!
+! NOTE 6.4
+!
+")}

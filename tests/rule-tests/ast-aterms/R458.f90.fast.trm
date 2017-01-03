@@ -1,0 +1,29 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ EnumDef(
+            EnumDefStmt("10", eos("\n"))
+          , [ EnumeratorDefStmt(
+                "11"
+              , [Enumerator("RED", IntVal("4")), Enumerator("BLUE", IntVal("9"))]
+              , eos("\n     ")
+              )
+            , EnumeratorDefStmt(no-label(), [Enumerator("YELLOW", no-expr())], eos("\n"))
+            ]
+          , EndEnumStmt("12", eos("\n\n"))
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R458 enum-def
+!    is enum-def-stmt enumerator-def-stmt
+!            [ enumerator-def-stmt ] ... end-enum-stmt
+!
+! NOTE 4.67
+
+")}

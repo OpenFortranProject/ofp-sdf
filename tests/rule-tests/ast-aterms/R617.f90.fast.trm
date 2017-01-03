@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("array", [IntVal("1"), IntVal("2")])
+          ){Comment("
+
+! NOTE 6.11
+")}
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [VarRef("SCALAR_PARENT"), PartRef("ARRAY_FIELD", [VarRef("J")], no-image-selector())]
+            )
+          , IntVal("1")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R617 array-element
+!    is data-ref
+!
+
+! NOTE 6.9
+")}

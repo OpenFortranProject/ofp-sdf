@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Power(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Power(
+              IntVal("1")
+            , Power(Parens(UnaryMinus(IntVal("2"))), IntVal("3"))
+            )
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R704 mult-operand
+!    is level-1-expr [ power-op mult-operand ]
+!
+!  mult-operand is a power-op
+
+")}

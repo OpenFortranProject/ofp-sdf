@@ -1,0 +1,43 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ InquireStmt(no-label(), [UNIT(IntVal("10"))])
+        , InquireStmt(no-label(), [FILE("'foo.txt'"), BLANK(VarRef("cvar"))])
+        , InquireStmt(
+            no-label()
+          , [UNIT(IntVal("10")), BLANK(VarRef("cvar"))]
+          )
+        , InquireStmt(
+            no-label()
+          , [ENCODING(VarRef("cvar")), UNIT(IntVal("10"))]
+          )
+        , InquireLengthStmt(
+            no-label()
+          , VarRef("ix")
+          , [VarRef("a"), VarRef("b"), VarRef("c")]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R930 inquire-stmt
+!    is  INQUIRE ( inquire-spec-list )
+!    or  INQUIRE ( IOLENGTH = scalar-int-variable ) output-item-list
+!
+! Not tested here: inquire-spec-list, scalar-int-variable, and
+!  output-item-list.
+
+")}

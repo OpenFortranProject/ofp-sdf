@@ -1,0 +1,24 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        no-label()
+      , []
+      , "foo"
+      , ["A", "b", "C", "d"]
+      , no-language-binding()
+      )
+    , Scope(
+        [ OptionalStmt("10", ["a", "B"]){Comment("
+   ")}
+        , OptionalStmt(no-label(), ["c", "D"])
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R547 optional-stmt
+!    is OPTIONAL [ :: ] dummy-arg-name-list
+
+")}

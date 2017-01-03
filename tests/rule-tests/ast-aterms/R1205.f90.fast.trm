@@ -1,0 +1,79 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                FunctionStmt(no-label(), [], "foo", [], no-result(), no-language-binding())
+              , []
+              , EndFunctionStmt(no-label(), "foo")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+! Test subroutines.
+")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+    ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+    ")}
+              , []
+              , EndSubroutineStmt(no-label(), "sub")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+! Test both together; this is not a test of an interface-body, but actually
+! a test of interface-specification, which allows for multiple interface-body.
+")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+   ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "dub", [], no-language-binding()){Comment("
+   ")}
+              , []
+              , EndSubroutineStmt(no-label(), "dub"){Comment("
+   ")}
+              )
+            , InterfaceBody(
+                FunctionStmt(no-label(), [], "bar", [], no-result(), no-language-binding())
+              , []
+              , EndFunctionStmt(no-label(), "bar")
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+   
+")}
+    )
+  ]
+){Comment("!! R1205 interface-body
+!                is  function-stmt
+!                        [ specification-part ]
+!                      end-function-stmt
+!                or  subroutine-stmt
+!                        [ specification-part ]
+!                      end-subroutine-stmt
+!
+! Not tested here: function-stmt, specification-part, end-function-stmt, 
+! subroutine-stmt, and end-subroutine-stmt.
+!
+! interface-body tested as part of an interface-block.
+
+! Test functions.
+")}

@@ -1,0 +1,113 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "TPS"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "param1", ["k"]){Comment("
+  ")}
+          , [TypeParamDefStmt(no-label(), no-kind(), KIND(), [TypeParamDecl("k", no-expr())])]
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "param2", ["k1", "k2"]){Comment("
+  ")}
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [TypeParamDecl("k1", no-expr()), TypeParamDecl("k2", no-expr())]
+              )
+            ]
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("param1", [TypeParamSpec(no-keyword(), IntVal("4"))])
+          , []
+          , [ Var(
+                "beauty"
+              , DerivedType("param1", [TypeParamSpec(no-keyword(), IntVal("4"))])
+              , no-init()
+              )
+            ]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType(
+              "param2"
+            , [TypeParamSpec(no-keyword(), IntVal("4")), TypeParamSpec(no-keyword(), IntVal("8"))]
+            )
+          , []
+          , [ Var(
+                "beast"
+              , DerivedType(
+                  "param2"
+                , [TypeParamSpec(no-keyword(), IntVal("4")), TypeParamSpec(no-keyword(), IntVal("8"))]
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("ugly", [TypeParamSpec("dim", VarRef("a"))])
+          , []
+          , [ Var(
+                "lies"
+              , DerivedType("ugly", [TypeParamSpec("dim", VarRef("a"))])
+              , no-init()
+              )
+            ]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType(
+              "this"
+            , [ TypeParamSpec(no-keyword(), IntVal("3"))
+              , TypeParamSpec(no-keyword(), IntVal("4"))
+              , TypeParamSpec("that", IntVal("5"))
+              ]
+            )
+          , []
+          , [ Var(
+                "theother"
+              , DerivedType(
+                  "this"
+                , [ TypeParamSpec(no-keyword(), IntVal("3"))
+                  , TypeParamSpec(no-keyword(), IntVal("4"))
+                  , TypeParamSpec("that", IntVal("5"))
+                  ]
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  ]
+){Comment("!! R454 type-param-spec
+!   is [ keyword = ] type-param-value
+!
+
+")}

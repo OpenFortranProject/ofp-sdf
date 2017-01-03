@@ -1,0 +1,26 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "mymodule")
+    , Scope(
+        [ AccessStmt("10", PRIVATE(), ["foo", "bar"]){Comment("
+	")}
+        , AccessStmt(no-label(), PUBLIC(), ["this", "that", "theother"])
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), "mymodule"){Comment("
+
+")}
+    )
+  , MainProgram(
+      no-program-stmt()
+    , Scope([], [], [])
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R525 access-id
+!    is use-name
+!    or generic-spec
+
+")}

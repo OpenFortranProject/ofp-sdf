@@ -1,0 +1,29 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ComputedGotoStmt(no-label(), ["0555"], VarRef("iblah"))
+        , ComputedGotoStmt(no-label(), ["550", "01234"], VarRef("iblah"))
+        , ComputedGotoStmt(no-label(), ["0314", "15", "9"], VarRef("iblah")){Comment("
+
+")}
+        , ContinueStmt("9")
+        , ContinueStmt("15")
+        , ContinueStmt("0314")
+        , ContinueStmt("0555")
+        , ContinueStmt("550"){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("01234", no-program-name())
+    )
+  ]
+){Comment("!! R312 label
+!    is digit [digit [digit [digit [digit ]]]]
+!
+! Test label_list with a list of length 1,2,3.
+!
+")}

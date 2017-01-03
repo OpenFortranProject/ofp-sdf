@@ -1,0 +1,45 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ CommonStmt(
+            no-label()
+          , [ CommonBlockEntry(
+                no-name()
+              , [ CommonBlockObject(VarRef("truth"), [])
+                , CommonBlockObject(VarRef("beauty"), [])
+                , CommonBlockObject(VarRef("ugly"), [])
+                , CommonBlockObject(VarRef("lies"), [])
+                ]
+              )
+            ]
+          )
+        , CommonStmt(
+            no-label()
+          , [ CommonBlockEntry(
+                no-name()
+              , [ CommonBlockObject(
+                    VarRef("foo")
+                  , ArraySpec(
+                      [ Range(IntVal("3"), IntVal("8"))
+                      , Range(no-lower-bound(), IntVal("4"))
+                      , Range(no-lower-bound(), Plus(IntVal("5"), VarRef("r")))
+                      ]
+                    )
+                  )
+                ]
+              )
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R569 common-block-object
+!   is variable-name [ ( array-spec ) ]
+!   or proc-pointer-name
+
+")}

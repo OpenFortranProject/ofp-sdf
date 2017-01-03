@@ -1,0 +1,84 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "S", ["N"], no-language-binding()){Comment("
+       !...
+       ")}
+    , Scope(
+        []
+      , [ IfConstruct(
+            IfThenStmt(no-label(), no-name(), GT(VarRef("N"), IntVal("0"))){Comment("
+         ")}
+          , [ Block(
+                no-label()
+              , no-name()
+              , Scope(
+                  []
+                , [ AssignmentStmt(
+                      no-label()
+                    , VarDef("NSQP")
+                    , FunctionReference(
+                        "CEILING"
+                      , [ PartRef(
+                            "SQRT"
+                          , [PartRef("DBLE", [VarRef("N")], no-image-selector())]
+                          , no-image-selector()
+                          )
+                        ]
+                      )
+                    ){Comment("
+         ")}
+                  ]
+                , []
+                )
+              , EndBlockStmt(no-label(), no-name()){Comment("
+       ")}
+              ){Comment("
+           ")}
+            ]
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name()){Comment("
+!...
+       ")}
+          )
+        , IfConstruct(
+            IfThenStmt(no-label(), no-name(), GT(VarRef("N"), IntVal("0"))){Comment("
+         ")}
+          , [ Block(
+                no-label()
+              , no-name()
+              , Scope(
+                  []
+                , [PrintStmt(no-label(), STAR(), [VarRef("NSQP")]){Comment("
+         ")}]
+                , []
+                )
+              , EndBlockStmt(no-label(), no-name()){Comment("
+       ")}
+              ){Comment("
+           ")}
+            ]
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), no-name()){Comment("
+     ")}
+          )
+        ]
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+!
+! even if the only two appearances of NSQP are within the BLOCK constructs,
+! the scope of NSQP is the whole subroutine S.
+")}
+    )
+  ]
+){Comment("!! R560 implicit-stmt
+!
+! From NOTE 5.39
+!
+! Implicit typing is not affected by BLOCK constructs. For example, in
+!
+!TODO - very AMBIGUOS
+
+     ")}

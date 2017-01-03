@@ -1,0 +1,120 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ FormatStmt(
+            "001"
+          , [ UnlimitedFormatItem(
+                [ I(no-r(), IntVal("12"), no-m())
+                , I(no-r(), IntVal("1"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "002"
+          , [ P(IntVal("1"))
+            , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+            , UnlimitedFormatItem([I(no-r(), IntVal("10"), no-m())])
+            ]
+          )
+        , FormatStmt(
+            "003"
+          , [ I(no-r(), IntVal("12"), no-m())
+            , UnlimitedFormatItem(
+                [ SLASH(no-r())
+                , CS("'Dates:'")
+                , I(IntVal("22"), IntVal("3"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "009"
+          , [ I(no-r(), IntVal("12"), no-m())
+            , SLASH(no-r())
+            , CS("' Dates: '")
+            , UnlimitedFormatItem(
+                [ I(IntVal("2"), IntVal("3"), no-m())
+                , I(no-r(), IntVal("5"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "010"
+          , [ I(no-r(), IntVal("12"), no-m())
+            , SLASH(no-r())
+            , CS("'Dates:'")
+            , UnlimitedFormatItem(
+                [ I(IntVal("2"), IntVal("3"), no-m())
+                , I(no-r(), IntVal("5"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "011"
+          , [ I(no-r(), IntVal("12"), no-m())
+            , SLASH(no-r())
+            , CS("'Dates:'")
+            , UnlimitedFormatItem(
+                [ I(IntVal("2"), IntVal("3"), no-m())
+                , I(no-r(), IntVal("5"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "012"
+          , [ X(IntVal("1"))
+            , I(no-r(), IntVal("1"), no-m())
+            , X(IntVal("1"))
+            , CS("'isn''t'")
+            , UnlimitedFormatItem(
+                [X(IntVal("1")), I(no-r(), IntVal("1"), no-m())]
+              )
+            ]
+          )
+        , FormatStmt(
+            "013"
+          , [ X(IntVal("1"))
+            , UnlimitedFormatItem(
+                [ F(no-r(), IntVal("10"), IntVal("3"))
+                , I(no-r(), IntVal("5"), no-m())
+                ]
+              )
+            ]
+          )
+        , FormatStmt(
+            "014"
+          , [ X(IntVal("1"))
+            , F(no-r(), IntVal("10"), IntVal("3"))
+            , UnlimitedFormatItem(
+                [ I(no-r(), IntVal("5"), no-m())
+                , F(no-r(), IntVal("10"), IntVal("3"))
+                , I(no-r(), IntVal("5"), no-m())
+                , F(no-r(), IntVal("10"), IntVal("3"))
+                , I(no-r(), IntVal("5"), no-m())
+                ]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1002 format-specification
+!     is  ( [ format-item-list ] )
+!     or  ( [ format-items, ] unlimited-format-item )
+!
+! Not [completely] tested here: format-item-list.
+!
+")}

@@ -1,0 +1,93 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "atype", []){Comment("
+  ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("dim", INTEGER(), no-init())]
+             )]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "x"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("2"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("atype", [])
+          , []
+          , [Var("z", DerivedType("atype", []), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("a"), IntVal("3"))
+        , AssignmentStmt(no-label(), VarDef("a"), VarRef("a"))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("x")
+          , ArrayConstructor(AcSpec(no-type-spec(), [IntVal("3"), IntVal("3")]))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference(
+              "y"
+            , [IntVal("3"), IntVal("2"), IntVal("1")]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , FunctionReference("func", [IntVal("1")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef([VarRef("z"), VarRef("dim")])
+          )
+        , AssignmentStmt(no-label(), VarDef("a"), Parens(IntVal("3"))){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R701 primary
+!    is  constant
+!    or  designator
+!    or  array-constructor
+!    or  structure-constructor
+!    or  function-reference
+!    or  type-param-inquiry
+!    or  type-param-name
+!    or  ( expr )
+!
+! Each alternative is tested separately in the corresponding rule tests.
+! primary is tested as an rhs.
+")}

@@ -1,0 +1,81 @@
+Program(
+  [ Module(
+      ModuleStmt("10", "PSM"){Comment("
+
+")}
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt("11", "PSI"){Comment("
+   ! First without the optional MODULE
+   ")}
+          , [ ProcedureStmt(no-label(), ["a"])
+            , ProcedureStmt("12", ["b", "c"]){Comment("
+   
+   ! Now with the MODULE
+   ")}
+            , ModuleProcedureStmt(no-label(), ["d"])
+            , ModuleProcedureStmt("13", ["e", "f"])
+            ]
+          , EndInterfaceStmt("14", no-generic-spec()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "a", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-subroutine-name())
+          )
+        , Subroutine(
+            SubroutineStmt("16", [], "b", ["i"], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+  ")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "c", ["i", "j"], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+  ")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "d", ["x"], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+  ")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "e", ["x", "y"], no-language-binding())
+          , Scope([], [], [])
+          , EndSubroutineStmt("17", no-subroutine-name()){Comment("
+  ")}
+          )
+        , Subroutine(
+            SubroutineStmt(
+              no-label()
+            , []
+            , "f"
+            , ["x", "y", "z"]
+            , no-language-binding()
+            ){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-subroutine-name())
+          )
+        ]
+      )
+    , EndModuleStmt("18", no-module-name()){Comment("
+
+
+")}
+    )
+  ]
+){Comment("!! R1206 procedure-stmt
+!     is [ MODULE ] PROCEDURE [ :: ] procedure-name-list
+
+")}

@@ -1,0 +1,193 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ FormatStmt(
+            "001"
+          , FormatSpec([I(no-r(), IntVal("1"), no-m())], [])
+          )
+        , FormatStmt(
+            "002"
+          , FormatSpec(
+              [I(no-r(), IntVal("1"), opt-m(IntVal("2")))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "003"
+          , FormatSpec([B(no-r(), IntVal("1"), no-m())], [])
+          )
+        , FormatStmt(
+            "004"
+          , FormatSpec(
+              [B(no-r(), IntVal("1"), opt-m(IntVal("2")))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "005"
+          , FormatSpec([O(no-r(), IntVal("1"), no-m())], [])
+          )
+        , FormatStmt(
+            "006"
+          , FormatSpec(
+              [O(no-r(), IntVal("1"), opt-m(IntVal("2")))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "007"
+          , FormatSpec([Z(no-r(), IntVal("1"), no-m())], [])
+          )
+        , FormatStmt(
+            "008"
+          , FormatSpec(
+              [Z(no-r(), IntVal("1"), opt-m(IntVal("2")))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "009"
+          , FormatSpec(
+              [F(no-r(), IntVal("1"), IntVal("2"))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "010"
+          , FormatSpec(
+              [E(no-r(), IntVal("1"), IntVal("2"), no-e())]
+            , []
+            )
+          )
+        , FormatStmt(
+            "011"
+          , FormatSpec(
+              [E(
+                 no-r()
+               , IntVal("1")
+               , IntVal("2")
+               , opt-e(IntVal("2"))
+               )]
+            , []
+            )
+          )
+        , FormatStmt(
+            "012"
+          , FormatSpec(
+              [EN(no-r(), IntVal("1"), IntVal("2"), no-e())]
+            , []
+            )
+          )
+        , FormatStmt(
+            "013"
+          , FormatSpec(
+              [EN(
+                 no-r()
+               , IntVal("1")
+               , IntVal("2")
+               , opt-e(IntVal("3"))
+               )]
+            , []
+            )
+          )
+        , FormatStmt(
+            "014"
+          , FormatSpec(
+              [ES(no-r(), IntVal("1"), IntVal("2"), no-e())]
+            , []
+            )
+          )
+        , FormatStmt(
+            "015"
+          , FormatSpec(
+              [ES(
+                 no-r()
+               , IntVal("1")
+               , IntVal("2")
+               , opt-e(IntVal("3"))
+               )]
+            , []
+            )
+          )
+        , FormatStmt(
+            "016"
+          , FormatSpec(
+              [G(no-r(), IntVal("1"), IntVal("2"), no-e())]
+            , []
+            )
+          )
+        , FormatStmt(
+            "017"
+          , FormatSpec(
+              [G(
+                 no-r()
+               , IntVal("1")
+               , IntVal("2")
+               , opt-e(IntVal("3"))
+               )]
+            , []
+            )
+          )
+        , FormatStmt(
+            "018"
+          , FormatSpec([L(no-r(), IntVal("1"))], [])
+          )
+        , FormatStmt("019", FormatSpec([A(no-r(), no-w())], []))
+        , FormatStmt(
+            "020"
+          , FormatSpec([A(no-r(), opt-w(IntVal("1")))], [])
+          )
+        , FormatStmt(
+            "021"
+          , FormatSpec(
+              [D(no-r(), IntVal("1"), IntVal("2"))]
+            , []
+            )
+          )
+        , FormatStmt(
+            "022"
+          , FormatSpec([DT(no-r(), "'hello'", [])], [])
+          )
+        , FormatStmt(
+            "023"
+          , FormatSpec(
+              [DT(no-r(), "'hello'", VEditDescList([IntVal("10")]))]
+            , []
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1007 data-edit-desc
+!     is  Iw[.m]
+!     or  Bw[.m]
+!     or  Ow[.m]
+!     or  Zw[.m]
+!     or  Fw.d
+!     or  Ew.d[Ee]
+!     or  ENw.d[Ee]
+!     or  ESw.d[Ee]
+!     or  Gw.d[Ee]
+!     or  Lw
+!     or  A[w]
+!     or  Dw.d
+!     or  DT[char-literal-constant][(v-list)]
+!
+!      w  is  int-literal-constant
+!      m  is  int-literal-constant
+!      d  is  int-literal-constant
+!      e  is  int-literal-constant
+!      v  is  signed-int-literal-constant
+!
+! Tested as part of a format-stmt.
+!
+")}

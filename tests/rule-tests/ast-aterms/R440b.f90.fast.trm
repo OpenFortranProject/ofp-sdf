@@ -1,0 +1,154 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "points")
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "POINT", []){Comment("
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [Var("X", REAL(), no-init()), Var("Y", REAL(), no-init())]
+              ){Comment("
+
+")}
+            ]
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-arg-name())]
+                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT"){Comment("
+
+")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [Extends("point")], "POINT_3D", []){Comment("
+  ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , REAL()
+             , []
+             , [Var("Z", REAL(), no-init())]
+             )]
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-arg-name())]
+                , [TypeBoundProcDecl("LENGTH", "POINT_3D_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT_3D"){Comment("
+
+")}
+          )
+        ]
+      , []
+      , [ Function(
+            FunctionStmt(
+              no-label()
+            , [REAL()]
+            , "POINT_LENGTH"
+            , ["A", "B"]
+            , no-result()
+            , no-language-binding()
+            )
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , Class("POINT", [])
+                , [Intent(IN())]
+                , [ Var("A", Class("POINT", []), no-init())
+                  , Var("B", Class("POINT", []), no-init())
+                  ]
+                )
+              ]
+            , [ AssignmentStmt(
+                  no-label()
+                , VarDef("POINT_LENGTH")
+                , FunctionReference(
+                    "SQRT"
+                  , [ Plus(
+                        Power(
+                          Parens(
+                            Minus(
+                              DataRef([VarRef("A"), VarRef("X")])
+                            , DataRef([VarRef("B"), VarRef("X")])
+                            )
+                          )
+                        , IntVal("2")
+                        )
+                      , Power(
+                          Parens(
+                            Minus(
+                              DataRef([VarRef("A"), VarRef("Y")])
+                            , DataRef([VarRef("B"), VarRef("Y")])
+                            )
+                          )
+                        , IntVal("2")
+                        )
+                      )
+                    ]
+                  )
+                )
+              ]
+            , []
+            )
+          , EndFunctionStmt(no-label(), "POINT_LENGTH")
+          )
+        , Function(
+            FunctionStmt(
+              no-label()
+            , [REAL()]
+            , "POINT_3D_LENGTH"
+            , ["A", "B"]
+            , no-result()
+            , no-language-binding()
+            )
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , Class("POINT_3D", [])
+                , [Intent(IN())]
+                , [Var("A", Class("POINT_3D", []), no-init())]
+                )
+              , TypeDeclarationStmt(
+                  no-label()
+                , Class("point", [])
+                , [Intent(IN())]
+                , [Var("B", Class("point", []), no-init())]
+                )
+              ]
+            , [ SelectTypeConstruct(
+                  SelectTypeStmt(no-label(), no-name(), no-name(), VarRef("B"), eos("\n  "))
+                , [ TypeGuardStmtBlock(
+                      ClassGuardStmt(no-label(), DerivedTypeSpec("POINT_3D", []), no-name(), eos("\n"))
+                    , []
+                    )
+                  ]
+                , EndSelectTypeStmt(no-label(), no-name(), eos("\n"))
+                )
+              ]
+            , []
+            )
+          , EndFunctionStmt(no-label(), "point_3d_length")
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "points")
+    )
+  ]
+)

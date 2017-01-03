@@ -1,0 +1,46 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [PUBLIC()], "A", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name())
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [PRIVATE()], "a", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+! From NOTE 5.3
+")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [PRIVATE()]
+          , [ Var("X", REAL(), no-init())
+            , Var("Y", REAL(), no-init())
+            , Var("Z", REAL(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R507 access-spec
+!    is PUBLIC
+!    or PRIVATE
+
+")}

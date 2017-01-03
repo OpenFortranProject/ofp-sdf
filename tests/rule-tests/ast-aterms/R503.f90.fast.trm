@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var("x", INTEGER(), no-init())
+            , Var("y", INTEGER(), no-init())
+            , Var("z", INTEGER(), no-init())
+            , Var("what", INTEGER(), no-init())
+            , Var("ever", INTEGER(), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [Var("truth", REAL(), no-init()), Var("beauty", REAL(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R503 entity-decl
+!    is object-name [( array-spec )]
+!                   [ lbracket co-array-spec rbracket ]
+!                   [ * char-length ] [ initialization ]
+!    or function-name [ * char-length ]
+
+!TODO-F08 - improve test e.g. for co-array-spec
+
+")}

@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ BindStmt("10", LanguageBinding(no-binding-name()), ["i", "j"]){Comment("
+    ")}
+        , BindStmt(no-label(), LanguageBinding(BindingName("'binky'")), ["zztop"]){Comment("
+
+")}
+        , CommonStmt(
+            no-label()
+          , [CommonBlockEntry("common_block_name", [CommonBlockObject(VarRef("zztop"), [])])]
+          )
+        , BindStmt(
+            no-label()
+          , LanguageBinding(no-binding-name())
+          , ["B", "C", CommonBlockName("common_block_name")]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R529 bind-stmt
+
+")}

@@ -1,0 +1,68 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("a", INTEGER(), no-init())]
+          ){Comment("! alt1
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [Var("b", REAL(), no-init())]
+          ){Comment("! alt2
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("my_type", [])
+          , []
+          , [Var("c", DerivedType("my_type", []), no-init())]
+          ){Comment("! alt3
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , Class("my_class", [])
+          , []
+          , [Var("d", Class("my_class", []), no-init())]
+          ){Comment("! alt4
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , AssumedClass()
+          , []
+          , [Var("e", AssumedClass(), no-init())]
+          ){Comment("! alt5
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , AssumedType()
+          , []
+          , [Var("f", AssumedType(), no-init())]
+          ){Comment("! alt6
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R403 declaration-type-spec
+!    is  intrinsic-type-spec (R404)
+!    or  TYPE ( intrinsic-type-spec )
+!    or  TYPE ( derived-type-spec )
+!    or  CLASS ( derived-type-spec )
+!    or  CLASS ( * )
+!    or  TYPE  ( * )
+!
+! Tested separately are: R404 and R457.
+!
+! declaration-type-spec is tested as part of a type-declaration-stmt (R501).
+")}

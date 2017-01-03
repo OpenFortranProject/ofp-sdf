@@ -1,0 +1,27 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ NamelistStmt(
+            no-label()
+          , [NamelistEntry(
+               "foo"
+             , [VarRef("bar"), VarRef("truth"), VarRef("beauty")]
+             )]
+          )
+        , NamelistStmt("10", [NamelistEntry("ugly", [VarRef("lies")])]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R564 namelist-group-object
+!    is variable-name
+
+! Testing namelist-group-object-list.
+
+")}

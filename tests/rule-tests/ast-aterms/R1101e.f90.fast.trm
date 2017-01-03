@@ -1,0 +1,23 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "my_prog"){Comment("
+  ")}
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("i"), IntVal("1"))]
+      , []
+      )
+    , EndProgramStmt(no-label(), "my_prog")
+    )
+  ]
+){Comment("! R1101d.f90 - test of R1101 main-program
+!
+!   main-program is [ program-stmt ] [
+!      specification-part ] [ execution-part ] [
+!      internal-subprogram-part ] end-program-stmt program-stmt is
+!      PROGRAM program-name end-program-stmt is END [ PROGRAM [
+!      program-name ] ] Not tested here: specification-part,
+!      execution-part, and internal-subprogram-part.
+
+! Add an optional execution-part
+")}

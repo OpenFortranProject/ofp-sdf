@@ -1,0 +1,152 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "a")
+    , Scope([], [], [])
+    , EndModuleStmt(no-label(), no-module-name()){Comment("
+
+! Include the optional MODULE in end-module-stmt
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "b")
+    , Scope([], [], [])
+    , EndModuleStmt(no-label(), no-module-name()){Comment("
+
+! Include optional MODULE and module-name in end-module-stmt.
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "c")
+    , Scope([], [], [])
+    , EndModuleStmt(no-label(), "c"){Comment("
+
+! Include an optional specification-part
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "d"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("i", INTEGER(), no-init())]
+         )]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), "d"){Comment("
+
+! Include an optional module-subprogram-part
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "e")
+    , Scope(
+        []
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), "sub"){Comment("
+  ")}
+          )
+        , Function(
+            FunctionStmt(no-label(), [], "foo", [], no-result(), no-language-binding())
+          , Scope(
+              []
+            , [AssignmentStmt(no-label(), VarDef("foo"), IntVal("13")){Comment("
+  ")}]
+            , []
+            )
+          , EndFunctionStmt(no-label(), "foo")
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "e"){Comment("
+
+! Include an optional separate-module-subprogram
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "f")
+    , Scope(
+        []
+      , []
+      , [ MpSubprogram(
+            MpSubprogramStmt(no-label(), "mp"){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndMpSubprogramStmt(no-label(), "mp")
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "f"){Comment("
+
+! Include all optional parts
+")}
+    )
+  , Module(
+      ModuleStmt(no-label(), "g"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("i", INTEGER(), no-init())]
+         )]
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "sub", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), "sub"){Comment("
+  ")}
+          )
+        , Function(
+            FunctionStmt(no-label(), [], "foo", [], no-result(), no-language-binding())
+          , Scope(
+              []
+            , [AssignmentStmt(no-label(), VarDef("foo"), IntVal("13")){Comment("
+  ")}]
+            , []
+            )
+          , EndFunctionStmt(no-label(), "foo"){Comment("
+  ")}
+          )
+        , MpSubprogram(
+            MpSubprogramStmt(no-label(), "mp"){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndMpSubprogramStmt(no-label(), "mp")
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "g")
+    )
+  ]
+){Comment("! Test module
+!      module  is  module-stmt
+!                    [ specification-part ]
+!                    [ module-subprogram-part ]
+!                  end-module-stmt
+!
+!      module-stmt  is  MODULE module-name
+!
+!      end-module-stmt  is  END [ MODULE [ module-name ] ]
+!
+!      module-subprogram-part  is  contains-stmt 
+!                                    module-subprogram
+!                                    [ module-subprogram ] ...
+!
+!      module-subprogram  is  function-subprogram 
+!                         or  subroutine-subprogram
+!
+! Not tested here: specification-part, function-subprogram, and 
+! subroutine-subprogram.
+
+! None of the optional parts included
+")}

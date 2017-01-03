@@ -1,0 +1,25 @@
+Program(
+  [ Function(
+      FunctionStmt(no-label(), [], "E_STMT", ["x"], no-result(), no-language-binding())
+    , Scope(
+        [ EntryStmt("11", "binky", [], no-suffix()){Comment("
+   ")}
+        , EntryStmt(no-label(), "bonky", ["a", "b", "c"], no-suffix()){Comment("
+   ")}
+        , EntryStmt(
+            no-label()
+          , "pop"
+          , ["y"]
+          , Suffix(Result("z"), no-language-binding())
+          )
+        ]
+      , []
+      , []
+      )
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  ]
+){Comment("!! R1240 entry-stmt
+!      is ENTRY entry-name [ ( [ dummy-arg-list ] ) [ suffix ] ]
+
+")}

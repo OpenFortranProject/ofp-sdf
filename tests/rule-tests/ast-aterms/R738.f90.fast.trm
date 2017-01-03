@@ -1,0 +1,31 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ PointerAssignmentStmt(
+            no-label()
+          , DataPointerObject(VarRef("myptr"), no-name())
+          , [ Triplet(IntVal("4"), IntVal("5"), no-stride())
+            , Triplet(IntVal("7"), IntVal("9"), no-stride())
+            ]
+          , PartRef(
+              "this"
+            , [ Triplet(IntVal("3"), IntVal("4"), no-stride())
+              , Triplet(IntVal("5"), IntVal("6"), no-stride())
+              ]
+            , no-image-selector()
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R738 bounds-remapping
+!    is lower-bound-expr : upper-bound-expr
+
+")}

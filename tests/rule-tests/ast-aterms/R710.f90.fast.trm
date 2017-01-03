@@ -1,0 +1,40 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [ Var(
+                "a"
+              , ArrayType(
+                  CHARACTER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("12"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("a"), Concat("'AB'", "'BC'"))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Concat(Concat("'Hell'", "'o'"), "' world!'")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R710 level-3-expr
+!    is [ level-3-expr concat-op ] level-2-expr
+!
+!  level-3-expr is a concat-op
+
+")}

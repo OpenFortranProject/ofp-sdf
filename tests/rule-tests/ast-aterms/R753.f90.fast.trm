@@ -1,0 +1,74 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ForallConstruct(
+            ForallConstructStmt(
+              "10"
+            , no-name()
+            , ForallHeader(
+                no-type-spec()
+              , [ ForallTripletSpec("ii", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("jj", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("kk", IntVal("4"), IntVal("8"), no-forall-step())
+                ]
+              , no-mask-expr()
+              )
+            )
+          , []
+          , EndForallStmt("11", no-name())
+          )
+        , ForallConstruct(
+            ForallConstructStmt(
+              no-label()
+            , no-name()
+            , ForallHeader(
+                no-type-spec()
+              , [ForallTripletSpec("ii", IntVal("1"), VarRef("nn"), no-forall-step())]
+              , no-mask-expr()
+              )
+            )
+          , []
+          , EndForallStmt(no-label(), no-name())
+          )
+        , ForallConstruct(
+            ForallConstructStmt(
+              no-label()
+            , no-name()
+            , ForallHeader(
+                no-type-spec()
+              , [ForallTripletSpec("ii", IntVal("1"), VarRef("nn"), IntVal("5"))]
+              , no-mask-expr()
+              )
+            )
+          , []
+          , EndForallStmt(no-label(), no-name())
+          )
+        , ForallConstruct(
+            ForallConstructStmt(
+              no-label()
+            , no-name()
+            , ForallHeader(
+                no-type-spec()
+              , [ ForallTripletSpec("ii", IntVal("1"), IntVal("30"), VarRef("N"))
+                , ForallTripletSpec("jj", VarRef("K"), IntVal("5"), IntVal("3"))
+                ]
+              , no-mask-expr()
+              )
+            )
+          , []
+          , EndForallStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R755 forall-triplet-spec
+!    is index-name = subscript : subscript [ : stride]
+
+")}

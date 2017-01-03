@@ -1,0 +1,40 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [Var("comp", COMPLEX(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [Var("err", CHARACTER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("a_lock_variable", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ UnlockStmt("999", VarRef("comp"), []){Comment("
+    ")}
+        , UnlockStmt(no-label(), VarRef("a_lock_variable"), [ERRMSG(VarRef("err"))]){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R865 unlock-stmt
+!    is UNLOCK ( lock-variable [ , sync-stat-list ] )
+!
+")}

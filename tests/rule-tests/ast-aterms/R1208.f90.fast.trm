@@ -1,0 +1,23 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(InterfaceStmt(no-label(), READ_FORMATTED()), [], EndInterfaceStmt(no-label(), READ_FORMATTED()))
+        , InterfaceBlock(InterfaceStmt(no-label(), READ_UNFORMATTED()), [], EndInterfaceStmt(no-label(), READ_UNFORMATTED()))
+        , InterfaceBlock(InterfaceStmt(no-label(), WRITE_FORMATTED()), [], EndInterfaceStmt(no-label(), WRITE_FORMATTED()))
+        , InterfaceBlock(InterfaceStmt(no-label(), WRITE_UNFORMATTED()), [], EndInterfaceStmt(no-label(), WRITE_UNFORMATTED()){Comment("
+
+!TODO - check for F2008 completeness
+
+")})
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("! Testing dtio-generic-spec, R1208
+")}

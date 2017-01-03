@@ -1,0 +1,55 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [ABSTRACT(), Extends("truth")], "beauty", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "beauty")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [ABSTRACT()], "ugly", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "ugly")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [ABSTRACT(), BIND()], "lies", [])
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "lies")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , [ABSTRACT(), Extends("foo"), BIND()]
+            , "bar"
+            , []
+            )
+          , []
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name())
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R427 type-attr-spec
+!    is ABSTRACT
+!    or access-spec
+!    or BIND (C)
+!    or EXTENDS ( parent-type-name )
+
+")}

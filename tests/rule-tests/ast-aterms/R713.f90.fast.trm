@@ -1,0 +1,88 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQ(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , EQ(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , NE(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , NE(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , LT(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , LT(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , LE(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , LE(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , GT(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , GT(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , GE(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , GE(IntVal("1"), IntVal("2"))
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R713 rel-op
+!   is .EQ.
+!   or .NE.
+!   or .LT.
+!   or .LE.
+!   or .GT.
+!   or .GE.
+!   or ==
+!   or /=
+!   or <
+!   or <=
+!   or >
+!   or >=
+
+")}

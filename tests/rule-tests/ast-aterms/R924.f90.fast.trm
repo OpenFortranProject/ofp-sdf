@@ -1,0 +1,34 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("unitnumber", INTEGER(), no-init())]
+         )]
+      , [ BackspaceStmt("11", [UNIT(IntVal("10"))])
+        , amb(
+            [ BackspaceStmt(no-label(), [UNIT(Parens(IntVal("10")))])
+            , BackspaceStmt(no-label(), [UNIT(IntVal("10"))])
+            ]
+          )
+        , BackspaceStmt(
+            no-label()
+          , [UNIT(VarRef("unitnumber")), IOSTAT(VarRef("n"))]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R924 backspace-stmt
+!    is  BACKSPACE file-unit-number
+!    or  BACKSPACE ( position-spec-list )
+!
+! Not tested here: file-unit-number and position-spec-list.
+")}

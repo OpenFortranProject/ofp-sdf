@@ -1,0 +1,51 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("b")
+          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          ){Comment("
+
+! NOTE 6.17
+")}
+        , AssignmentStmt(
+            no-label()
+          , PartRef(
+              "A"
+            , [Triplet(no-subscript(), no-subscript(), no-stride())]
+            , [IntVal("1"), IntVal("4")]
+            )
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("b")
+          , PartRef(
+              "A"
+            , [Triplet(no-subscript(), no-subscript(), no-stride())]
+            , [IntVal("1"), IntVal("4")]
+            )
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R624 image-selector
+!    is lbracket cosubscript-list rbracket
+!
+!! R625 cosubscript
+!    is scalar-int-expr
+!
+")}

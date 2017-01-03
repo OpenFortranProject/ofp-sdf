@@ -1,0 +1,38 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ Block(
+            no-label()
+          , "named_block"
+          , Scope(
+              [TypeDeclarationStmt(
+                 no-label()
+               , INTEGER()
+               , []
+               , [Var("b", INTEGER(), no-init())]
+               ){Comment("
+      ")}]
+            , [AssignmentStmt(no-label(), VarDef("a"), IntVal("3")){Comment("
+   ")}]
+            , []
+            )
+          , EndBlockStmt(no-label(), "named_block"){Comment("
+
+")}
+          ){Comment("
+      ")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R807 block-construct
+!    is block-stmt
+!          [ specification-part ]
+!          block
+!       end-block-stmt
+!
+   ")}

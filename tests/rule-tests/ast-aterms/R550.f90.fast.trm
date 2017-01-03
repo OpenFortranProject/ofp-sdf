@@ -1,0 +1,32 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ PointerStmt(
+            no-label()
+          , [PointerDecl("this", []), PointerDecl("that", []), PointerDecl("theother", [])]
+          )
+        , PointerStmt(
+            "10"
+          , [PointerDecl(
+               "A"
+             , [Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())]
+             )]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R550 pointer-stmt
+!    is POINTER [ :: ] pointer-decl-list
+!
+!! R551 pointer-decl
+!    is object-name [ ( deferred-shape-spec-list ) ]
+!    or proc-entity-name
+
+")}

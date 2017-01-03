@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ BackspaceStmt(
+            no-label()
+          , [IOMSG(VarRef("CVAR")), UNIT(IntVal("5"))]
+          )
+        , RewindStmt(
+            no-label()
+          , [ UNIT(IntVal("5"))
+            , IOMSG(VarRef("cvar"))
+            , ERR("314")
+            , IOSTAT(VarRef("iugly"))
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("314", no-program-name())
+    )
+  ]
+){Comment("!! R927 position-spec
+!    is  [ UNIT = ] file-unit-number
+!    or  IOMSG = iomsg-variable
+!    or  IOSTAT = scalar-int-variable
+!    or  ERR = label
+
+")}

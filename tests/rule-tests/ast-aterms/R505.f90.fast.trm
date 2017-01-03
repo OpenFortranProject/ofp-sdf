@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("a", INTEGER(), Init(IntVal("1")))]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [POINTER()]
+          , [Var("b", INTEGER(), PointerInit(FunctionReference("NULL", [])))]
+          ){Comment("
+!TODO-F08 - test initial-data-target
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R505 initialization
+!           is  = initialization-expr
+!           or  => null-init
+!           or => initial-data-target
+!
+! Tested separately are: R730 (initialization-expr) and R507 (null-init).
+!
+! initialization is tested as part of an entity-decl (R503) that is part of
+! a type-declaration-stmt (R501).
+
+")}

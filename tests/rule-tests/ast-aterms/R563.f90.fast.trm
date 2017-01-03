@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ NamelistStmt(
+            "11"
+          , [ NamelistEntry("Name1", [VarRef("i"), VarRef("j")])
+            , NamelistEntry("Name2", [VarRef("k"), VarRef("l")])
+            , NamelistEntry("Name3", [VarRef("m")])
+            , NamelistEntry(
+                "Name4"
+              , [VarRef("n"), VarRef("o"), VarRef("p")]
+              )
+            ]
+          )
+        , NamelistStmt(
+            no-label()
+          , [NamelistEntry(
+               "namelistname"
+             , [VarRef("a"), VarRef("b"), VarRef("c")]
+             )]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R563 namelist-stmt
+!    is NAMELIST
+!         / namelist-group-name / namelist-group-object-list
+!         [ [ , ] / namelist-group-name / namelist-group-object-list ] ...
+
+")}

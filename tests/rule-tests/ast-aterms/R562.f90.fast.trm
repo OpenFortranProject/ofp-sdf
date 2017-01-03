@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ImplicitStmt(
+            no-label()
+          , [ ImplicitSpec(
+                REAL()
+              , [LetterSpec("a", no-letter()), LetterSpec("b", no-letter()), LetterSpec("c", no-letter())]
+              )
+            ]
+          , eos("\n")
+          )
+        , ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(REAL(), [LetterSpec("D", "g")])]
+          , eos("\n")
+          )
+        , ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(INTEGER(), [LetterSpec("y", no-letter())])]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R562 letter-spec
+!    is letter [ – letter ]
+
+")}

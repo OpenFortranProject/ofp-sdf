@@ -1,0 +1,25 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ IfStmt(
+            no-label()
+          , EQ(VarRef("x"), VarRef("y"))
+          , AssignmentStmt(no-label(), VarDef("x"), IntVal("1")){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R845 if-stmt
+!    is  IF ( scalar-logical-expr ) action-stmt
+!
+! Not tested here are: scalar-logical-expr and action-stmt.
+")}

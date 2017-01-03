@@ -1,0 +1,29 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(VarRef("my_string"), SubstringRange(IntVal("2"), IntVal("3")))
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R608 substring
+!    is  parent-string ( substring-range )
+!
+! Tested separately are: R609 (parent-string) and R610 (substring-range).
+!
+! substring tested as part of a designator, which can be part of a primary, 
+! so tested as a rhs to an assignment-stmt.
+
+")}

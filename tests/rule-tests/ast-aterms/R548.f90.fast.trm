@@ -1,0 +1,24 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ParameterStmt("10", [NamedConstantDef("i", IntVal("0"))])
+        , ParameterStmt(
+            no-label()
+          , [NamedConstantDef("j", PartRef("kind", [IntVal("1")], no-image-selector()))]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R548 parameter-stmt
+!   is PARAMETER ( named-constant-def-list )
+
+")}

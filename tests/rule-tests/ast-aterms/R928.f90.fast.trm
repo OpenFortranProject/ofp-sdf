@@ -1,0 +1,51 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ FlushStmt("13", [UNIT(IntVal("5"))])
+        , amb(
+            [ FlushStmt(no-label(), [UNIT(Parens(IntVal("5")))])
+            , FlushStmt(no-label(), [UNIT(IntVal("5"))])
+            ]
+          )
+        , FlushStmt(
+            no-label()
+          , [ UNIT(IntVal("5"))
+            , IOSTAT(VarRef("n"))
+            , IOMSG(VarRef("cvar"))
+            , ERR("10")
+            ]
+          )
+        , FlushStmt(
+            no-label()
+          , [ UNIT(IntVal("5"))
+            , IOSTAT(VarRef("n"))
+            , IOMSG(VarRef("cvar"))
+            , ERR("10")
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("10", no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R928 flush-stmt
+!    is  FLUSH file-unit-number
+!    or  FLUSH ( flush-spec-list )
+!
+! Not tested here: file-unit-number.
+
+")}

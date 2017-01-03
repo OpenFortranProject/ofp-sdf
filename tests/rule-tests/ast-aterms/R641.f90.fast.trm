@@ -1,0 +1,26 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ DeallocateStmt(
+            no-label()
+          , [VarRef("this")]
+          , [STAT(VarRef("test"))]
+          )
+        , DeallocateStmt(
+            no-label()
+          , [VarRef("that")]
+          , [STAT(VarRef("test")), ERRMSG(VarRef("whatever"))]
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R641 dealloc-opt
+!    is STAT = stat-variable
+!    or ERRMSG = errmsg-variable
+
+")}

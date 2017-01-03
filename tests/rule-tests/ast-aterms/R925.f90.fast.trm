@@ -1,0 +1,32 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ EndfileStmt("13", [UNIT(IntVal("10"))], eos("\n"))
+        , amb(
+            [ EndfileStmt(
+                no-label()
+              , [UNIT(Parens(IntVal("10")))]
+              , eos("\n")
+              )
+            , EndfileStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
+            ]
+          )
+        , EndfileStmt(
+            no-label()
+          , [UNIT(IntVal("10")), IOSTAT(VarRef("n")), ERR("4")]
+          , eos("\n\n")
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt("4", no-program-name())
+    )
+  ]
+){Comment("!! R925 endfile-stmt
+!    is  ENDFILE file-unit-number
+!    or  ENDFILE ( position-spec-list )
+!
+! Not tested here: file-unit-number and position-spec-list.
+")}

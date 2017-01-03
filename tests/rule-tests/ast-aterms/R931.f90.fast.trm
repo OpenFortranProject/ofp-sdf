@@ -1,0 +1,74 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ InquireStmt(
+            no-label()
+          , [ UNIT(IntVal("5"))
+            , ACCESS(VarRef("cvar"))
+            , ACTION(VarRef("cvar"))
+            , ASYNCHRONOUS(VarRef("cvar"))
+            ]
+          )
+        , InquireStmt(
+            no-label()
+          , [BLANK(VarRef("cvar")), UNIT(IntVal("6")), ERR("13")]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("13", no-program-name())
+    )
+  ]
+){Comment("!! R931 inquire-spec
+!    is [ UNIT = ] file-unit-number
+!    or FILE = file-name-expr
+!    or ACCESS = scalar-default-char-variable
+!    or ACTION = scalar-default-char-variable
+!    or ASYNCHRONOUS = scalar-default-char-variable
+!    or BLANK = scalar-default-char-variable
+!    or DECIMAL = scalar-default-char-variable
+!    or DELIM = scalar-default-char-variable
+!    or DIRECT = scalar-default-char-variable
+!    or ENCODING = scalar-default-char-variable
+!    or ERR = label
+!    or EXIST = scalar-default-logical-variable
+!    or FORM = scalar-default-char-variable
+!    or FORMATTED = scalar-default-char-variable
+!    or ID = scalar-int-expr
+!    or IOMSG = iomsg-variable
+!    or IOSTAT = scalar-int-variable
+!    or NAME = scalar-default-char-variable
+!    or NAMED = scalar-default-logical-variable
+!    or NEXTREC = scalar-int-variable
+!    or NUMBER = scalar-int-variable
+!    or OPENED = scalar-default-logical-variable
+!    or PAD = scalar-default-char-variable
+!    or PENDING = scalar-default-logical-variable
+!    or POS = scalar-int-variable
+!    or POSITION = scalar-default-char-variable
+!    or READ = scalar-default-char-variable
+!    or READWRITE = scalar-default-char-variable
+!    or RECL = scalar-int-variable
+!    or ROUND = scalar-default-char-variable
+!    or SEQUENTIAL = scalar-default-char-variable
+!    or SIGN = scalar-default-char-variable
+!    or SIZE = scalar-int-variable
+!    or STREAM = scalar-default-char-variable
+!    or TEAM = image-team
+!    or UNFORMATTED = scalar-default-char-variable
+!    or WRITE = scalar-default-char-variable
+
+!TODO-F08 - add more components to test
+
+")}

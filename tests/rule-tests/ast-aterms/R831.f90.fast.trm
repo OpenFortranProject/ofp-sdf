@@ -1,0 +1,40 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ BlockDoConstruct(
+            NonlabelDoStmt(
+              no-label()
+            , no-name()
+            , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
+            )
+          , [CycleStmt("20", no-name())]
+          , EndDoStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        , BlockDoConstruct(
+            NonlabelDoStmt(
+              no-label()
+            , "my_do"
+            , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
+            ){Comment("
+   ")}
+          , [CycleStmt(no-label(), "my_do")]
+          , EndDoStmt(no-label(), "my_do"){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R831 cycle-stmt
+!      cycle-stmt  is  CYCLE [ do-construct-name ]
+
+")}

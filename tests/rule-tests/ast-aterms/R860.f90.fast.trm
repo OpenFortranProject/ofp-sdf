@@ -1,0 +1,38 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [Var("msg", CHARACTER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("me", INTEGER(), no-init())]
+          ){Comment("
+
+   ")}
+        ]
+      , [ SyncImagesStmt(no-label(), IntVal("1"), []){Comment("
+   ")}
+        , SyncImagesStmt(no-label(), STAR(), []){Comment("
+ ")}
+        , SyncImagesStmt(
+            "1"
+          , Plus(VarRef("me"), IntVal("1"))
+          , [STAT(VarRef("me")), ERRMSG(VarRef("msg"))]
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R860 sync-images-stmt
+!    is SYNC IMAGES ( image-set [ , sync-stat-list ] )
+!
+")}

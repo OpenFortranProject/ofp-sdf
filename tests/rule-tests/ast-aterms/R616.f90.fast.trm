@@ -1,0 +1,65 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , DataRef([VarRef("a"), VarRef("kind")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , DataRef([VarRef("s"), VarRef("len")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , DataRef(
+              [PartRef("b", [IntVal("10")], no-image-selector()), VarRef("kind")]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("z")
+          , DataRef([VarRef("p"), VarRef("dim")])
+          ){Comment("
+
+")}
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("a"), VarRef("kind")])
+          , VarRef("z")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("s"), VarRef("len")])
+          , VarRef("z")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("b", [IntVal("10")], no-image-selector()), VarRef("kind")]
+            )
+          , VarRef("z")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("p"), VarRef("dim")])
+          , VarRef("z")
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R615 type-param-inquiry
+!    is designator % type-param-name
+!
+!  NOTE 6.8
+
+")}

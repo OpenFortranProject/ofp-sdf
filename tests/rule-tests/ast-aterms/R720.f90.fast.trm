@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [Var("a", LOGICAL(), no-init()), Var("b", LOGICAL(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("a"), OR(TRUE(), FALSE()))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , OR(OR(VarRef("a"), VarRef("b")), NOT(FALSE()))
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R720 or-op
+!    is  .OR.
+")}

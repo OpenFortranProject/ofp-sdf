@@ -1,0 +1,26 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ParameterStmt(
+            no-label()
+          , [ NamedConstantDef("foo", RealVal("3.14159"))
+            , NamedConstantDef("bar", RealVal("2.81828"))
+            , NamedConstantDef("truth", IntVal("64"))
+            ]
+          )
+        , ParameterStmt(no-label(), [NamedConstantDef("beauty", IntVal("5"))])
+        , ParameterStmt(no-label(), [NamedConstantDef("ugly", VarRef("truth"))]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R549 named-constant-def
+!    is named-constant = initialization-expr
+
+")}

@@ -1,0 +1,102 @@
+Program(
+  [ Module(
+      ModuleStmt("9", "myjunk"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "point", [])
+          , []
+          , []
+          , []
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [FinalProcedureStmt("13", ["foo", "bar"]){Comment("
+   ")}, FinalProcedureStmt(no-label(), ["binky"])]
+            )
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "foo", ["arg"], no-language-binding())
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , DerivedType("point", [])
+                , []
+                , [ Var(
+                      "arg"
+                    , ArrayType(
+                        DerivedType("point", [])
+                      , ArraySpec([Range(no-lower-bound(), IntVal("1"))])
+                      , []
+                      )
+                    , no-init()
+                    )
+                  ]
+                )
+              ]
+            , []
+            , []
+            )
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+
+")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "bar", ["arg"], no-language-binding())
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , DerivedType("point", [])
+                , []
+                , [ Var(
+                      "arg"
+                    , ArrayType(
+                        DerivedType("point", [])
+                      , ArraySpec(
+                          [Range(no-lower-bound(), IntVal("1")), Range(no-lower-bound(), IntVal("1"))]
+                        )
+                      , []
+                      )
+                    , no-init()
+                    )
+                  ]
+                )
+              ]
+            , []
+            , []
+            )
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+
+")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "binky", ["arg"], no-language-binding())
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , DerivedType("point", [])
+                , []
+                , [Var("arg", DerivedType("point", []), no-init())]
+                )
+              ]
+            , []
+            , []
+            )
+          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndModuleStmt("15", no-module-name())
+    )
+  ]
+){Comment("!! R452 final-procedure-stmt
+!    is FINAL [ :: ] final-subroutine-name-list
+
+")}

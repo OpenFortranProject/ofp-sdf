@@ -1,0 +1,45 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ CommonStmt(
+            no-label()
+          , [CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i"), [])])]
+          )
+        , CommonStmt(
+            no-label()
+          , [ CommonBlockEntry(
+                "name1"
+              , [CommonBlockObject(VarRef("i1"), []), CommonBlockObject(VarRef("i2"), [])]
+              )
+            ]
+          )
+        , CommonStmt(
+            "10"
+          , [CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i2"), [])])]
+          )
+        , CommonStmt(
+            no-label()
+          , [ CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("i3"), [])])
+            , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("j"), [])])
+            ]
+          )
+        , CommonStmt(
+            no-label()
+          , [ CommonBlockEntry("name1", [CommonBlockObject(VarRef("i4"), [])])
+            , CommonBlockEntry("name2", [CommonBlockObject(VarRef("j1"), [])])
+            , CommonBlockEntry("name3", [CommonBlockObject(VarRef("k"), [])])
+            , CommonBlockEntry(no-name(), [CommonBlockObject(VarRef("l"), [])])
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R568 common-stmt
+!    is COMMON [       / [ common-block-name ] / ] common-block-object-list
+!              [ [ , ] / [ common-block-name ] /   common-block-object-list ] ...
+")}

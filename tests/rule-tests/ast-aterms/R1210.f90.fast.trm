@@ -1,0 +1,24 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ ExternalStmt("10", ["a"])
+        , ExternalStmt(no-label(), ["b", "c"])
+        , ExternalStmt(no-label(), ["d"])
+        , ExternalStmt(no-label(), ["e", "f"]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("! Test external-stmt
+!      external-stmt  is  EXTERNAL [ :: ] external-name-list
+!
+! Not tested here: external-name-list
+")}

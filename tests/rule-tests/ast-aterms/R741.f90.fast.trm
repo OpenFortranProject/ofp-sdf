@@ -1,0 +1,53 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [ Var(
+                "Doit"
+              , ArrayType(
+                  LOGICAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ WhereStmt(
+            "10"
+          , VarRef("Doit")
+          , AssignmentStmt(no-label(), VarDef("A"), IntVal("13")){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R741 where-stmt
+!    is WHERE ( mask-expr ) where-assignment-stmt
+")}

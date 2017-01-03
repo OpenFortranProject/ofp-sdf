@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ PrintStmt(no-label(), STAR(), [VarRef("a")])
+        , PrintStmt(no-label(), IntVal("10"), [VarRef("b")])
+        , PrintStmt(no-label(), "'(10f8.2)'", [VarRef("c")]){Comment("
+
+")}
+        , FormatStmt(
+            "10"
+          , FormatSpec([I(no-r(), IntVal("5"), no-m())], [])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R914 format
+!    is  default-char-expr
+!    or  label
+!    or  *
+!
+! Not tested here: default-char-expr and label.
+
+")}

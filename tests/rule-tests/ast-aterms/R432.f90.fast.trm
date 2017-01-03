@@ -1,0 +1,41 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "big_deal", ["k", "d", "l"]){Comment("
+   ")}
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [ TypeParamDecl("k", PartRef("kind", [RealVal("0.0")], no-image-selector()))
+                , TypeParamDecl("d", IntVal("13"))
+                ]
+              ){Comment("
+   ")}
+            , TypeParamDefStmt(
+                no-label()
+              , Kind(IntVal("4"))
+              , LEN()
+              , [TypeParamDecl("l", IntVal("13"))]
+              )
+            ]
+          , []
+          , []
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R432 type-param-decl
+!    is type-param-name [ = scalar-int-initialization-expr ]
+
+")}

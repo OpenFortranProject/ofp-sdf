@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".unaryop."))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(".unaryop."))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".binaryop."))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(".binaryop."))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(PowerOp()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(PowerOp()))
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(ConcatOp()))
+          , []
+          , EndInterfaceStmt(no-label(), OPERATOR(ConcatOp()))
+          )
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R310 defined-operator
+!    is defined-unary-op        R703
+!    or defined-binary-op       R723
+!    or extended-intrinsic-op   R311
+
+")}

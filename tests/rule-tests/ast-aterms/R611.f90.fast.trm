@@ -1,0 +1,81 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "TB", []){Comment("
+  ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("c", INTEGER(), no-init())]
+             )]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "TB")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "TA", []){Comment("
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , DerivedType("TB", [])
+              , []
+              , [Var("b", DerivedType("TB", []), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "TA"){Comment("
+
+")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("TA", [])
+          , []
+          , [ Var("lhs_a", DerivedType("TA", []), no-init())
+            , Var("a", DerivedType("TA", []), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("TB", [])
+          , []
+          , [Var("lhs_b", DerivedType("TB", []), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("lhs_c", INTEGER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("lhs_a"), VarRef("a"))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("lhs_b")
+          , DataRef([VarRef("a"), VarRef("b")])
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("lhs_c")
+          , DataRef([VarRef("a"), VarRef("b"), VarRef("c")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R611 data-ref
+!    is part-ref [ % part-ref ] ...
+!
+")}

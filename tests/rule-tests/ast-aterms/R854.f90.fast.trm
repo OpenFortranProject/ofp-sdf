@@ -1,0 +1,13 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope([], [ContinueStmt(no-label()), ContinueStmt("99"){Comment("
+
+")}], [])
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R854 continue-stmt
+!    is  CONTINUE
+
+")}

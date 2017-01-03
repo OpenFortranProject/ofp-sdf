@@ -1,0 +1,72 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("truth"), VarRef("beauty"), VarRef("ugly")]
+              , [ DataStmtValue(no-repeat(), IntVal("3"))
+                , DataStmtValue(no-repeat(), IntVal("14"))
+                , DataStmtValue(no-repeat(), IntVal("15"))
+                ]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [ VarRef("a")
+                , DataImpliedDo(
+                    [ DataRef([VarRef("z"), VarRef("d")])
+                    , DataImpliedDo(
+                        [PartRef("B", [VarRef("i"), VarRef("j")], no-image-selector())]
+                      , DataIDoVariable(VarRef("j"))
+                      , IntVal("1")
+                      , VarRef("i")
+                      , no-expr()
+                      )
+                    ]
+                  , DataIDoVariable(VarRef("i"))
+                  , IntVal("1")
+                  , IntVal("100")
+                  , FunctionReference("foo", [])
+                  )
+                ]
+              , [DataStmtValue(DataStmtRepeat("3"), RealVal("1.0"))]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [VarRef("myname")]
+              , [DataStmtValue(
+                   no-repeat()
+                 , PartRef("person", [IntVal("21"), "'john'"], no-image-selector())
+                 )]
+              )
+            ]
+          )
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [DataRef([VarRef("a"), VarRef("b")])]
+              , [DataStmtValue(no-repeat(), VarRef("jj"))]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R535 data-stmt-set
+!    is data-stmt-object-list / data-stmt-value -list /
+!
+
+")}

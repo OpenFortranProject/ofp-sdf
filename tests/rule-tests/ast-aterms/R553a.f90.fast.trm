@@ -1,0 +1,13 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope([SaveStmt(no-label(), []){Comment("
+
+")}], [], [])
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R553 save-stmt
+!    is SAVE [ [ :: ] saved-entity-list ]
+
+")}

@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ FlushStmt("11", [UNIT(IntVal("5"))])
+        , FlushStmt(
+            "12"
+          , [ UNIT(IntVal("6"))
+            , IOSTAT(VarRef("ifoo"))
+            , ERR("13")
+            , IOMSG(VarRef("cvar"))
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("13", no-program-name())
+    )
+  ]
+){Comment("!! R929 flush-spec
+!    is [UNIT =] file-unit-number
+!    or IOSTAT = scalar-int-variable
+!    or IOMSG = iomsg-variable
+!    or ERR = label
+
+")}

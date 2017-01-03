@@ -1,0 +1,153 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "EXAMPLE_MODULE"){Comment("
+   ")}
+    , Scope(
+        [ ImplicitStmt(no-label(), []){Comment("
+!   ...
+   ")}
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+      ")}
+          , [ InterfaceBody(
+                FunctionStmt(no-label(), [], "FUN", ["I"], no-result(), no-language-binding())
+              , [TypeDeclarationStmt(
+                   no-label()
+                 , INTEGER()
+                 , []
+                 , [Var("FUN", INTEGER(), no-init())]
+                 ){Comment("! be declared explicitly
+      ")}]
+              , EndFunctionStmt(no-label(), "FUN"){Comment("
+   ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec())
+          )
+        ]
+      , []
+      , [ Function(
+            FunctionStmt(no-label(), [], "JFUN", ["J"], no-result(), no-language-binding())
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , INTEGER()
+                , []
+                , [Var("JFUN", INTEGER(), no-init()), Var("J", INTEGER(), no-init())]
+                ){Comment("! be declared explicitly.
+!      ...
+   ")}
+              ]
+            , []
+            , []
+            )
+          , EndFunctionStmt(no-label(), "JFUN"){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "EXAMPLE_MODULE")
+    )
+  , Subroutine(
+      SubroutineStmt(no-label(), [], "SUB", [], no-language-binding()){Comment("
+   ")}
+    , Scope(
+        []
+      , [ ImplicitStmt(
+            no-label()
+          , [ImplicitSpec(COMPLEX(), [LetterSpec("C", no-letter())])]
+          , eos("\n   ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("C")
+          , ComplexLiteralConstant(RealVal("3.0"), RealVal("2.0"))
+          ){Comment("! C is implicitly declared COMPLEX
+!   ...
+")}
+        ]
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "SUB1", [], no-language-binding()){Comment("
+      ")}
+          , Scope(
+              []
+            , [ ImplicitStmt(
+                  no-label()
+                , [ImplicitSpec(
+                     INTEGER()
+                   , [LetterSpec("A", no-letter()), LetterSpec("C", no-letter())]
+                   )]
+                , eos("\n      ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , VarDef("C")
+                , ComplexLiteralConstant(RealVal("0.0"), RealVal("0.0"))
+                ){Comment("! C is host associated and of
+                      ! type complex
+      ")}
+              , AssignmentStmt(no-label(), VarDef("Z"), RealVal("1.0")){Comment("! Z is implicitly declared REAL
+      ")}
+              , AssignmentStmt(no-label(), VarDef("A"), IntVal("2")){Comment("! A is implicitly declared INTEGER
+      ")}
+              , AssignmentStmt(no-label(), VarDef("CC"), IntVal("1")){Comment("! CC is implicitly declared INTEGER
+! ...
+   ")}
+              ]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), "SUB1"){Comment("
+   ")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "SUB2", [], no-language-binding()){Comment("
+      ")}
+          , Scope(
+              []
+            , [AssignmentStmt(no-label(), VarDef("Z"), RealVal("2.0")){Comment("! Z is implicitly declared REAL and
+                      ! is different from the variable of
+                      ! the same name in SUB1
+!      ...
+   ")}]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), "SUB2"){Comment("
+   ")}
+          )
+        , Subroutine(
+            SubroutineStmt(no-label(), [], "SUB3", [], no-language-binding()){Comment("
+      ")}
+          , Scope(
+              [UseStmt(no-label(), no-module-nature(), "EXAMPLE_MODULE", []){Comment("! Accesses integer function FUN
+                          ! by use association
+      ")}]
+            , [AssignmentStmt(
+                 no-label()
+               , VarDef("Q")
+               , FunctionReference("FUN", [VarRef("K")])
+               ){Comment("! Q is implicitly declared REAL and
+!      ...                ! K is implicitly declared INTEGER
+   ")}]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), "SUB3")
+          )
+        ]
+      )
+    , EndSubroutineStmt(no-label(), "SUB")
+    )
+  ]
+){Comment("!! R560 implicit-stmt
+!    is IMPLICIT implicit-spec-list
+!    or IMPLICIT NONE
+!
+!! R561 implicit-spec
+!    is declaration-type-spec ( letter-spec-list )
+!
+!! R562 letter-spec
+!    is letter [ – letter ]
+!
+! From NOTE 5.37
+
+")}

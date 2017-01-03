@@ -1,0 +1,198 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "A"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("b", INTEGER(), no-init()), Var("c", INTEGER(), no-init())]
+          ){Comment("
+  ")}
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "aReal", []){Comment("
+    ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , REAL()
+             , []
+             , [Var("zzz", REAL(), no-init())]
+             ){Comment("
+  ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name()){Comment("
+  ")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".yourop.")){Comment("
+    ")}
+          , [ InterfaceBody(
+                FunctionStmt(
+                  no-label()
+                , [INTEGER()]
+                , "add_op"
+                , ["a", "b"]
+                , no-result()
+                , no-language-binding()
+                )
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , INTEGER()
+                  , [Intent(IN())]
+                  , [Var("a", INTEGER(), no-init()), Var("b", INTEGER(), no-init())]
+                  ){Comment("
+    ")}
+                ]
+              , EndFunctionStmt(no-label(), no-function-name()){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), OPERATOR(".yourop.")){Comment("
+  ")}
+          )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), OPERATOR(".yourotherop.")){Comment("
+    ")}
+          , [ InterfaceBody(
+                FunctionStmt(
+                  no-label()
+                , [INTEGER()]
+                , "neg_op"
+                , ["a"]
+                , no-result()
+                , no-language-binding()
+                )
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , INTEGER()
+                  , [Intent(IN())]
+                  , [Var("a", INTEGER(), no-init())]
+                  ){Comment("
+    ")}
+                ]
+              , EndFunctionStmt(no-label(), no-function-name()){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), OPERATOR(".yourotherop."))
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  , Module(
+      ModuleStmt(no-label(), "AA"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("b", INTEGER(), no-init()), Var("c", INTEGER(), no-init())]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  , Module(
+      ModuleStmt(no-label(), "AAA"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("m", INTEGER(), no-init()), Var("n", INTEGER(), no-init())]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-module-name()){Comment("
+
+! Test with none of the optional parts
+")}
+    )
+  , MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ UseStmt(no-label(), no-module-nature(), "a", []){Comment("
+
+! Include optional module nature
+")}
+        , UseStmt(no-label(), ModuleNature(INTRINSIC()), "iso_c_binding", [])
+        , UseStmt(no-label(), ModuleNature(NON_INTRINSIC()), "A", []){Comment("
+
+! Include optional rename-list
+")}
+        , UseStmt(
+            no-label()
+          , no-module-nature()
+          , "aa"
+          , [Rename("d", "b"), Rename("e", "c")]
+          )
+        , UseStmt(
+            no-label()
+          , no-module-nature()
+          , "a"
+          , [ RenameOp(".myop.", ".yourop.")
+            , Rename("integer", "aReal")
+            , Rename("b", "c")
+            , RenameOp(".myotherop.", ".yourotherop.")
+            ]
+          ){Comment("
+
+! Include optional only clause
+")}
+        , UseOnlyStmt(
+            no-label()
+          , no-module-nature()
+          , "aaa"
+          , OnlyList(["m", Rename("f", "n")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("! Test use-stmt
+!      use-stmt  is  USE [ [, module-nature ] :: ] module-name [, rename-list ]
+!                or  USE [ [, module-nature ] :: ] module-name, 
+!                      ONLY : [ only-list ]
+!
+!      module-nature  is  INTRINSIC
+!                     or  NON_INTRINSIC
+!
+!      rename  is  local-name => use-name
+!              or  OPERATOR(local-defined-operator) =>
+!                    OPERATOR(use-defined-operator)
+!
+!      only  is  generic-spec
+!            or  only-use-name
+!            or  rename
+!
+!      only-use-name  is  use-name
+!
+!      local-defined-operator  is  defined-unary-op
+!                              or  defined-binary-op
+!
+!      use-defined-operator  is  defined-unary-op
+!                            or  defined-binary-op
+!
+! Not tested here: generic-spec, only-use-name, local-name, use-name,  
+! defined-binary-op, and defined-unary-op.
+!
+!! modules for subsequent tests
+!
+")}

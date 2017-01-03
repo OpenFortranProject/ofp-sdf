@@ -1,0 +1,103 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), VarRef("N"))])
+                , CoarraySpec([Range(no-lower-bound(), STAR())])
+                )
+              , no-init()
+              )
+            , Var(
+                "B"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), VarRef("N"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+! from NOTE 5.8
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "W"
+              , ArrayType(
+                  REAL()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("100")), Range(no-lower-bound(), IntVal("100"))]
+                  )
+                , CoarraySpec(
+                    [Range(IntVal("0"), IntVal("2")), Range(no-lower-bound(), STAR())]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [Codimension([Range(no-lower-bound(), STAR())])]
+          , [Var("X", REAL(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [Codimension(
+               [Range(no-lower-bound(), IntVal("3")), Range(no-lower-bound(), STAR())]
+             )]
+          , [ Var(
+                "Y"
+              , ArrayType(REAL(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "x"
+              , ArrayType(
+                  REAL()
+                , []
+                , CoarraySpec(
+                    [Range(no-lower-bound(), IntVal("3")), Range(no-lower-bound(), STAR())]
+                  )
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R509 coarray-spec
+!    is deferred-coshape-spec-list
+!    or explicit-coshape-spec
+!
+! From NOTE 5.7
+")}

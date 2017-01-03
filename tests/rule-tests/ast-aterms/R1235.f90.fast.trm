@@ -1,0 +1,22 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "DA", [], no-language-binding()){Comment("
+  ")}
+    , Scope(
+        [ EntryStmt(no-label(), "foo1", ["a"], no-suffix()){Comment("
+  ")}
+        , EntryStmt(no-label(), "foo2", [STAR()], no-suffix()){Comment("
+  ")}
+        , EntryStmt(no-label(), "foo3", ["a", STAR(), "c"], no-suffix())
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    )
+  ]
+){Comment("!! R1235 dummy-arg and dummy-arg-list
+!    is  dummy-arg-name
+!    or  *
+
+")}

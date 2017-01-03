@@ -1,0 +1,100 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "myjunk"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "POINT", []){Comment("
+  ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , []
+              , [Var("X", REAL(), no-init()), Var("Y", REAL(), no-init())]
+              )
+            ]
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-arg-name())]
+                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT"){Comment("
+
+")}
+          )
+        ]
+      , []
+      , [ Function(
+            FunctionStmt(
+              no-label()
+            , [REAL()]
+            , "POINT_LENGTH"
+            , ["A", "B"]
+            , no-result()
+            , no-language-binding()
+            )
+          , Scope(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , Class("POINT", [])
+                , [Intent(IN())]
+                , [ Var("A", Class("POINT", []), no-init())
+                  , Var("B", Class("POINT", []), no-init())
+                  ]
+                ){Comment("
+  ")}
+              ]
+            , [ AssignmentStmt(
+                  no-label()
+                , VarDef("POINT_LENGTH")
+                , FunctionReference(
+                    "SQRT"
+                  , [ Plus(
+                        Power(
+                          Parens(
+                            Minus(
+                              DataRef([VarRef("A"), VarRef("X")])
+                            , DataRef([VarRef("B"), VarRef("X")])
+                            )
+                          )
+                        , IntVal("2")
+                        )
+                      , Power(
+                          Parens(
+                            Minus(
+                              DataRef([VarRef("A"), VarRef("Y")])
+                            , DataRef([VarRef("B"), VarRef("Y")])
+                            )
+                          )
+                        , IntVal("2")
+                        )
+                      )
+                    ]
+                  )
+                )
+              ]
+            , []
+            )
+          , EndFunctionStmt(no-label(), "POINT_LENGTH"){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), no-module-name())
+    )
+  ]
+){Comment("!! R445 type-bound-procedure-part
+!    is contains-stmt [ binding-private-stmt ] [ type-bound-proc-binding ] ...
+!
+! NOTE 4.43
+
+")}

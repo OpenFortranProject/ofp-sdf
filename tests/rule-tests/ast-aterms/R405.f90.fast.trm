@@ -1,0 +1,107 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [Var("foo", INTEGER(), Init(IntVal("8")))]
+          ){Comment("
+
+")}
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("4")))
+          , [PARAMETER()]
+          , [Var(
+               "i"
+             , INTEGER(Kind(IntVal("4")))
+             , Init(IntVal("4"))
+             )]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("4")))
+          , []
+          , [Var("p", INTEGER(Kind(IntVal("4"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(VarRef("foo")))
+          , []
+          , [Var("bar", INTEGER(Kind(VarRef("foo"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(IntVal("8")))
+          , []
+          , [Var("j", INTEGER(Kind(IntVal("8"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(PartRef("KIND", [IntVal("4")], no-image-selector())))
+          , []
+          , [ Var(
+                "k"
+              , INTEGER(Kind(PartRef("KIND", [IntVal("4")], no-image-selector())))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(VarRef("i")))
+          , []
+          , [Var("m", INTEGER(Kind(VarRef("i"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(PartRef("KIND", [VarRef("j")], no-image-selector())))
+          , []
+          , [ Var(
+                "n"
+              , INTEGER(Kind(PartRef("KIND", [VarRef("j")], no-image-selector())))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(VarRef("i")))
+          , []
+          , [Var("o", INTEGER(Kind(VarRef("i"))), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER(Kind(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector())))
+          , []
+          , [ Var(
+                "d"
+              , INTEGER(Kind(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector())))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL(Kind(IntVal("4")))
+          , []
+          , [Var("q", REAL(Kind(IntVal("4"))), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R405 kind-selector
+!    is ( [ KIND = ] scalar-int-initialization-expr )
+!
+! kind-selector can have an expr so there are too many to test all of them, 
+! but we can test some common ones.
+
+")}

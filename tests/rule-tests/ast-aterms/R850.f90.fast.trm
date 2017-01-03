@@ -1,0 +1,27 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ BlockDoConstruct(
+            NonlabelDoStmt(
+              no-label()
+            , "loop"
+            , LoopControl(VarRef("i"), IntVal("1"), IntVal("3"), no-expr())
+            )
+          , [ExitStmt("3", no-name()){Comment("
+    ")}, ExitStmt(no-label(), "loop")]
+          , EndDoStmt(no-label(), "loop"){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R850 exit-stmt
+!    is EXIT [ construct-name ]
+
+")}

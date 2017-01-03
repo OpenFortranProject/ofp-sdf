@@ -1,0 +1,16 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [GotoStmt(no-label(), "10"){Comment("
+ ")}, GotoStmt("9", "10")]
+      , []
+      )
+    , EndProgramStmt("10", no-program-name())
+    )
+  ]
+){Comment("!! R851 goto-stmt
+!  is GO TO label
+
+    ")}

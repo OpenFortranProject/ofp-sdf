@@ -1,0 +1,30 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ComputedGotoStmt(
+            no-label()
+          , ["1", "20", "12345"]
+          , UnaryMinus(IntVal("5"))
+          ){Comment("
+  ")}
+        , ComputedGotoStmt(no-label(), ["1", "20", "12345"], IntVal("5")){Comment("
+
+")}
+        , ContinueStmt("1")
+        , ContinueStmt("20"){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("12345", no-program-name())
+    )
+  ]
+){Comment("!! R852 computed-goto-stmt
+!    is GO TO ( label-list ) [ , ] scalar-int-expr
+
+!R313 test for label and label-list
+
+  ")}

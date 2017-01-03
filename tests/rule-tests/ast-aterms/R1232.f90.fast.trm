@@ -1,0 +1,47 @@
+Program(
+  [ Function(
+      FunctionStmt(no-label(), [], "foo1", [], no-result(), no-language-binding())
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("foo1"), RealVal("1.0"))]
+      , []
+      )
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , Function(
+      FunctionStmt(no-label(), [], "foo2", [], no-result(), no-language-binding())
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("foo2"), RealVal("2.0"))]
+      , []
+      )
+    , EndFunctionStmt(no-label(), "foo2")
+    )
+  , Function(
+      FunctionStmt(no-label(), [], "foo3", [], no-result(), no-language-binding())
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("foo3"), RealVal("3.0"))]
+      , []
+      )
+    , EndFunctionStmt(no-label(), "foo3")
+    )
+  , Function(
+      FunctionStmt(no-label(), [], "foo4", [], no-result(), no-language-binding())
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("foo4"), RealVal("4.0"))]
+      , []
+      )
+    , EndFunctionStmt(no-label(), no-function-name())
+    )
+  , MainProgram(
+      no-program-stmt()
+    , Scope([], [], [])
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R1232 end-function-stmt
+!     is END [ FUNCTION [ function-name ] ]
+!
+")}

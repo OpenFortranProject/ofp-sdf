@@ -1,0 +1,39 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , CHARACTER()
+         , []
+         , [Var("cvar", CHARACTER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ WaitStmt("10", [UNIT(IntVal("5")), END("99")])
+        , WaitStmt(
+            no-label()
+          , [ IOMSG(VarRef("cvar"))
+            , ERR("314")
+            , EOR("99")
+            , END("10")
+            , UNIT(IntVal("6"))
+            ]
+          ){Comment("
+
+")}
+        , ContinueStmt("314"){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt("99", no-program-name())
+    )
+  ]
+){Comment("!! R922 wait-stmt
+!    is  WAIT ( wait-spec-list )
+!
+! Not tested here: wait-spec-list
+
+")}

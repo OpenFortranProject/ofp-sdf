@@ -1,0 +1,29 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("x", INTEGER(), no-init())]
+         ){Comment("
+
+")}]
+      , [ RewindStmt(no-label(), [UNIT(IntVal("9"))])
+        , RewindStmt(no-label(), [UNIT(VarRef("x"))]){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R902 file-unit-number
+!    is  scalar-int-expr
+! 
+! Test as part of a rewind-stmt.
+")}

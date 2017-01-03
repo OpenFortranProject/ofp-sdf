@@ -1,0 +1,27 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , PartRef("co", no-section-subscripts(), [IntVal("3"), IntVal("1")])
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("b")
+          , PartRef("co", no-section-subscripts(), [IntVal("3")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R614 coindexed-named-object
+!    is data-ref
+!
+")}

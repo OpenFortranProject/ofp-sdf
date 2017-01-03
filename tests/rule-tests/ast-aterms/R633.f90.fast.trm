@@ -1,0 +1,41 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               VarRef("x")
+             , [Range(no-lower-bound(), IntVal("3"))]
+             , []
+             )]
+          , []
+          ){Comment("! 3 must be converted to upper-bound-expr
+    ")}
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [ Allocation(
+                VarRef("x")
+              , [Range(IntVal("3"), IntVal("5"))]
+              , []
+              )
+            ]
+          , []
+          ){Comment("! 3 is lower-bound-expr and 5 is upper-bound-expr
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R630 allocate-shape-spec
+!    is [ lower-bound-expr : ] upper-bound-expr
+
+! parses as section-subscript, this means that there is no stride and if hasUpperBound
+! is false, hasLowerBound must be true and is the upper-bound-expr
+
+    ")}

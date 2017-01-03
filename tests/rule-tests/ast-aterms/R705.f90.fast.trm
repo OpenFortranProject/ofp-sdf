@@ -1,0 +1,27 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Mult(IntVal("1"), IntVal("2"))
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Div(Mult(IntVal("1"), IntVal("2")), IntVal("3"))
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R705 add-operand
+!    is [ add-operand mult-op ] mult-operand
+!
+!  add-operand is a mult-op
+
+")}

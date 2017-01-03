@@ -1,0 +1,80 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [Dimension([Range(no-lower-bound(), IntVal("10"))])]
+          , [ Var("B", REAL(), no-init())
+            , Var("Y", REAL(), no-init())
+            , Var("Z", REAL(), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("4"))
+          , []
+          , [ Var("A", CHARACTER(IntVal("4")), no-init())
+            , Var("B", CHARACTER(IntVal("4")), no-init())
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("3"))
+          , []
+          , [ Var(
+                "C"
+              , ArrayType(
+                  CHARACTER(IntVal("3"))
+                , ArraySpec([Range(no-lower-bound(), IntVal("2"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        , EquivalenceStmt(
+            "10"
+          , [ EquivalenceSet(
+                [VarRef("a"), PartRef("b", [IntVal("3")], no-image-selector())]
+              )
+            , EquivalenceSet(
+                [ VarRef("x")
+                , PartRef("y", [IntVal("2")], no-image-selector())
+                , PartRef("z", [IntVal("4")], no-image-selector())
+                ]
+              )
+            ]
+          ){Comment("
+
+! From NOTE 5.42
+")}
+        , EquivalenceStmt(
+            no-label()
+          , [ EquivalenceSet(
+                [VarRef("A"), PartRef("C", [IntVal("1")], no-image-selector())]
+              )
+            , EquivalenceSet(
+                [VarRef("B"), PartRef("C", [IntVal("2")], no-image-selector())]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R565 equivalence-stmt
+!    is EQUIVALENCE equivalence-set-list
+!
+!! R566 equivalence-set
+!    is ( equivalence-object , equivalence-object-list )
+!
+")}

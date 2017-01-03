@@ -1,0 +1,130 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "x"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("314159"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "y"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [ Range(no-lower-bound(), IntVal("31"))
+                    , Range(no-lower-bound(), IntVal("41"))
+                    , Range(no-lower-bound(), IntVal("59"))
+                    , Range(IntVal("2"), IntVal("6"))
+                    , Range(no-lower-bound(), IntVal("5"))
+                    ]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "bar"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    AssumedSize(
+                      [Range(IntVal("2"), IntVal("6"))]
+                    , IntVal("5")
+                    )
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            "3"
+          , REAL()
+          , []
+          , [ Var(
+                "truth"
+              , ArrayType(
+                  REAL()
+                , ArraySpec(
+                    AssumedSize(
+                      [Range(no-lower-bound(), IntVal("31")), Range(no-lower-bound(), IntVal("41"))]
+                    , no-lower-bound()
+                    )
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "beauty"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [Range(IntVal("31"), COLON()), Range(IntVal("41"), COLON())]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "ugly"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R515 array-spec
+!    is explicit-shape-spec-list
+!    or assumed-shape-spec-list
+!    or deferred-shape-spec-list
+!    or assumed-size-spec
+!    or implied-shape-spec -list
+
+")}

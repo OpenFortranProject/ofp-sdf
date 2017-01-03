@@ -1,0 +1,182 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ FormatStmt(
+            "5"
+          , FormatSpec(
+              [ P(IntVal("1"))
+              , E(no-r(), IntVal("12"), IntVal("4"), no-e())
+              , I(no-r(), IntVal("10"), no-m())
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "9"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          ){Comment("
+
+!! Optional comma
+!
+")}
+        , FormatStmt(
+            "10"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "11"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "12"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , SLASH(no-r())
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "13"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , COLON_ED()
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "14"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , COLON_ED()
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          )
+        , FormatStmt(
+            "15"
+          , FormatSpec(
+              [ I(no-r(), IntVal("12"), no-m())
+              , COLON_ED()
+              , CS("' Dates: '")
+              , R(
+                  IntVal("2")
+                , [ I(IntVal("2"), IntVal("3"), no-m())
+                  , I(no-r(), IntVal("5"), no-m())
+                  ]
+                )
+              ]
+            , []
+            )
+          ){Comment("
+
+!
+! NOTE 10.3
+!
+")}
+        ]
+      , [ WriteStmt(
+            no-label()
+          , [UNIT(IntVal("6")), FMT(IntVal("100"))]
+          , [IntVal("2"), IntVal("3")]
+          )
+        , FormatStmt(
+            "100"
+          , FormatSpec(
+              [ X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              , X(IntVal("1"))
+              , CS("'ISN''T'")
+              , X(IntVal("1"))
+              , I(no-r(), IntVal("1"), no-m())
+              ]
+            , []
+            )
+          ){Comment("
+    ")}
+        , WriteStmt(
+            no-label()
+          , [UNIT(IntVal("6")), FMT("'(1X, I1, 1X, ''ISN''''T'', 1X, I1)'")]
+          , [IntVal("2"), IntVal("3")]
+          ){Comment("
+    ")}
+        , WriteStmt(
+            no-label()
+          , [UNIT(IntVal("6")), FMT("'(A)'")]
+          , ["' 2 ISN''T 3'"]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R1003 format-items
+!     format-item [ [ , ] format-item ] ...
+!
+! NOTE 10.1
+!
+")}
