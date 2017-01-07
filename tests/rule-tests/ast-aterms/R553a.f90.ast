@@ -1,1 +1,0 @@
-Program("!! R553 save-stmt\n!    is SAVE [ [ :: ] saved-entity-list ]\n\n",[MainProgram(no-program-stmt,initial-spec-part([],[]),SpecAndExecPart([SaveStmt(no-label,[],eos("\n\n"))]),no-subprogram-part,EndProgramStmt(no-label,no-program-name,eos("\n")))])

@@ -1,1 +1,0 @@
-Program("!! R2021 char-string-edit-desc\n!     is  char-literal-constant\n!\n",[MainProgram(no-program-stmt,initial-spec-part([],[]),SpecAndExecPart([FormatStmt("010",FormatSpec(format-items-first(CS("'(10f8.2)'")),no-list),eos("\n\n"))]),no-subprogram-part,EndProgramStmt(no-label,no-program-name,eos("\n\n\n")))])
