@@ -13,9 +13,20 @@ check : $(SYNTAX)/Fortran.tbl
            echo "Running test $$file"; \
            $(SGLRI) -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
            if test $$? != 0 ; then \
-             echo $$file "		FAILED!"; \
+             echo $$file "		Parsing FAILED!"; \
            fi; \
            pp-aterm -i $$file.ast -o $$file.ast.trm; \
+           diff $$file.ast.trm ast-aterms/$$file.ast.trm; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAILED!"; \
+             exit 1; \
+           fi; \
+           $(TRANS)/ofp2fast -i $$file.ast | pp-aterm -o $$file.fast.trm; \
+           diff $$file.fast.trm ast-aterms/$$file.fast.trm; \
+           if test $$? != 0 ; then \
+             echo $$file "		FAST FAILED!"; \
+             exit 1; \
+           fi; \
         done;
 
 junk : $(SYNTAX)/Fortran.tbl  $(TRANS)/ofp-simplify
