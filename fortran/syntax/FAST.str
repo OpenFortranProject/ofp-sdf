@@ -115,6 +115,9 @@ signature
     EnumeratorDefStmt               : OptLabel * List(Enumerator) -> EnumeratorDefStmt
     Enumerator                      : NamedConstant * OptEqualsExpr -> Enumerator
     EndEnumStmt                     : OptLabel -> EndEnumStmt
+    HexVal                          : String -> BozLiteralConstant
+    OctVal                          : String -> BozLiteralConstant
+    BinVal                          : String -> BozLiteralConstant
     MpSubprogram                    : MpSubprogramStmt * Scope * EndMpSubprogramStmt -> MpSubprogram
     MpSubprogramStmt                : OptLabel * Name -> MpSubprogramStmt
     EndMpSubprogramStmt             : OptLabel * OptName -> EndMpSubprogramStmt
@@ -747,7 +750,6 @@ signature
                                     : ConstantSubobject -> DataStmtConstant
                                     : BozLiteralConstant -> DataStmtConstant
                                     : CharLiteralConstant -> DataStmtConstant
-                                    : ComplexLiteralConstant -> DataStmtConstant
     no-repeat                       : NoDataStmtRepeat
                                     : IntConstantSubobject -> DataStmtRepeat
                                     : Icon -> DataStmtRepeat
@@ -790,9 +792,6 @@ signature
     AcImpliedDo                     : List(AcValue) * AcImpliedDoControl -> AcImpliedDo
                                     : AcImpliedDo -> AcValue
                                     : Expr -> AcValue
-    BozLiteralConstant_HC           : HexConstant -> BozLiteralConstant
-    BozLiteralConstant_OC           : OctalConstant -> BozLiteralConstant
-    BozLiteralConstant_BC           : BinaryConstant -> BozLiteralConstant
                                     : IntExpr -> OptEqualsExpr
     no-expr                         : OptEqualsExpr
                                     : Expr -> ComponentDataSource
@@ -804,9 +803,6 @@ signature
     comma-access-spec               : AccessSpec -> OptAccessSpec
                                     : Ident -> ParentTypeName
                                     : Scon -> CharLiteralConstant
-                                    : NamedConstant -> ImagPart
-                                    : NamedConstant -> RealPart
-    ComplexLiteralConstant          : RealPart * ImagPart -> ComplexLiteralConstant
     AssumedType                     : DeclarationTypeSpec
     AssumedClass                    : DeclarationTypeSpec
     COLON                           : TypeParamValue
@@ -815,16 +811,13 @@ signature
                                     : Name -> NamedConstant
                                     : BozLiteralConstant -> LiteralConstant
                                     : CharLiteralConstant -> LiteralConstant
-                                    : ComplexLiteralConstant -> LiteralConstant
+                                    : IntVal -> LiteralConstant
                                     : LiteralConstant -> ConstantExpr
     no-name                         : NoName
                                     : String -> Name
                                     : Ident -> Name
                                     : LblDef -> LblRef
                                     : String -> Dop
-                                    : String -> HexConstant
-                                    : String -> OctalConstant
-                                    : String -> BinaryConstant
                                     : String -> Scon
                                     : String -> Icon
                                     : String -> Ident

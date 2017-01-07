@@ -244,6 +244,14 @@ regular tree grammar
     Stmt                              -> EndEnumStmt
     EndEnumStmt                       -> EndEnumStmt(OptLabel)
 
+/* R463 */
+    HexConstant                       -> <string>
+    OctalConstant                     -> <string>
+    BinaryConstant                    -> <string>
+    BozLiteralConstant                -> HexVal(<string>)
+    BozLiteralConstant                -> OctVal(<string>)
+    BozLiteralConstant                -> BinVal(<string>)
+
 
     ListStarOfScope0                  -> ListPlusOfScope0
     ListStarOfScope0                  -> <nil>()
@@ -1578,6 +1586,7 @@ regular tree grammar
     DataStmtConstant                  -> BozLiteralConstant
     DataStmtConstant                  -> CharLiteralConstant
 /* DELETE-ME?    DataStmtConstant                  -> LogicalLiteralConstant */
+
     DataStmtConstant                  -> ComplexLiteralConstant
     NoDataStmtRepeat                  -> no-repeat()
     DataStmtRepeat                    -> IntConstantSubobject
@@ -1656,10 +1665,6 @@ regular tree grammar
     AcValue                           -> Expr
     NoAcValueList                     -> no-list()
 
-    BozLiteralConstant                -> BozLiteralConstant_HC(HexConstant)
-    BozLiteralConstant                -> BozLiteralConstant_OC(OctalConstant)
-    BozLiteralConstant                -> BozLiteralConstant_BC(BinaryConstant)
-
     OptEqualsExpr                     -> no-expr()
     OptEqualsExpr                     -> equals-expr(IntConstantExpr)
 
@@ -1688,7 +1693,7 @@ regular tree grammar
     RealPart                          -> NamedConstant
     RealPart                          -> SignedRealLiteralConstant
     RealPart                          -> SignedIntLiteralConstant
-    ComplexLiteralConstant            -> ComplexLiteralConstant(RealPart,ImagPart)
+
     Sign                              -> MINUS()
     Sign                              -> PLUS()
     DigitString                       -> Icon
@@ -1721,7 +1726,7 @@ regular tree grammar
 /* DELETE-ME?   LiteralConstant                   -> LogicalLiteralConstant */
 
     LiteralConstant                   -> ComplexLiteralConstant
-    LiteralConstant                   -> IntLiteralConstant
+    LiteralConstant                   -> IntVal
     ConstantExpr                      -> LiteralConstant
 
     NoName                            -> no-name()
@@ -1731,9 +1736,7 @@ regular tree grammar
     LblRef                            -> LblDef
     Dop                               -> <string>
     ScalarIntLiteralConstant          -> <string>
-    HexConstant                       -> <string>
-    OctalConstant                     -> <string>
-    BinaryConstant                    -> <string>
+
     Rcon                              -> <string>
     Character                         -> <string>
     Scon                              -> <string>
