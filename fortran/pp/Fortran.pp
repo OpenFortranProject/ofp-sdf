@@ -47,9 +47,6 @@
    ExecPart                      -- V vs=0 is=0[_1],
    FuncPart                      -- V ["\nCONTAINS\n" _1],
 
-   %% R305
-   IntLiteralConstant            -- _1 _2,
-
    %% R312
    Label                         -- _1,
 
@@ -98,7 +95,6 @@
    CHARACTER                     -- "CHARACTER" "(" _1 ")",
    CHARACTER                     -- "CHARACTER" "(" _1 ",KIND=" _2 ")",
    ppCharNoLen                   -- "CHARACTER" "(" "KIND=" _1 ")",
-   no-length-selector            --,
 
    %% R406
    SignedIntLiteralConstant      -- _1 _2,
@@ -249,9 +245,9 @@
    EndEnumStmt                   -- H hs=1[_1 "END ENUM"],
 
    %% R463
-   BozLiteralConstant_BC         -- H hs=0[_1],
-   BozLiteralConstant_OC         -- H hs=0[_1],
-   BozLiteralConstant_HC         -- H hs=0[_1],
+   BinVal                        -- H hs=0[_1],
+   OctVal                        -- H hs=0[_1],
+   HexVal                        -- H hs=0[_1],
 
    %% R468
    ArrayConstructor              -- H hs=0["[" _1 "]"],
