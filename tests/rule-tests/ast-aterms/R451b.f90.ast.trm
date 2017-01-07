@@ -1,0 +1,67 @@
+Program(
+  "!! R451 binding-attr\n!    is PASS [ (arg-name ) ]\n!    or NOPASS\n!    or NON OVERRIDABLE\n!    or DEFERRED\n!    or access-spec\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "truth", no-list(), eos("\n"))
+          , []
+          , []
+          , []
+          , TypeBoundProcedurePart(
+              ContainsStmt(no-label(), eos("\n  "))
+            , no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([NOPASS(), DEFERRED()])
+                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([PRIVATE(), NOPASS()])
+                , [TypeBoundProcDecl("beauty", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([NON_OVERRIDABLE()])
+                , [TypeBoundProcDecl("ugly", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass(no-arg-name())])
+                , [TypeBoundProcDecl("lies", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass("woohoo")])
+                , [TypeBoundProcDecl("bar", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([PUBLIC()])
+                , [TypeBoundProcDecl("that", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([PRIVATE()])
+                , [TypeBoundProcDecl("theother", no-procedure-name())]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "truth", eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)
