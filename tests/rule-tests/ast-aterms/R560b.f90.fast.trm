@@ -122,13 +122,14 @@ Program(
               [UseStmt(no-label(), no-module-nature(), "EXAMPLE_MODULE", []){Comment("! Accesses integer function FUN
                           ! by use association
       ")}]
-            , [AssignmentStmt(
-                 no-label()
-               , VarDef("Q")
-               , FunctionReference("FUN", [VarRef("K")])
-               ){Comment("! Q is implicitly declared REAL and
+            , [ AssignmentStmt(
+                  no-label()
+                , VarDef("Q")
+                , PartRef("FUN", [VarRef("K")], no-image-selector())
+                ){Comment("! Q is implicitly declared REAL and
 !      ...                ! K is implicitly declared INTEGER
-   ")}]
+   ")}
+              ]
             , []
             )
           , EndSubroutineStmt(no-label(), "SUB3")

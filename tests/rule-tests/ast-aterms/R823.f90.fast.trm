@@ -8,8 +8,8 @@ Program(
           , no-name()
           , "10"
           , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("\n   ")
-          )
+          ){Comment("
+   ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("2"))
         , PrintStmt("10", STAR(), ["'end of do loop 10'"]){Comment("
 
@@ -20,8 +20,8 @@ Program(
           , no-name()
           , "20"
           , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("! outer-shared-do-construct\n   ")
-          )
+          ){Comment("! outer-shared-do-construct
+   ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("2")){Comment("
    ")}
         , LabelDoStmt(
@@ -29,8 +29,8 @@ Program(
           , no-name()
           , "20"
           , LoopControl(VarRef("j"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("! outer-shared-do-construct\n      ")
-          )
+          ){Comment("! outer-shared-do-construct
+      ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("3")){Comment("
       ")}
         , LabelDoStmt(
@@ -38,8 +38,8 @@ Program(
           , no-name()
           , "20"
           , LoopControl(VarRef("k"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("! inner-shared-do-construct\n         ")
-          )
+          ){Comment("! inner-shared-do-construct
+         ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("4"))
         , PrintStmt("20", STAR(), ["\"end of do loop 20\""]){Comment("
 

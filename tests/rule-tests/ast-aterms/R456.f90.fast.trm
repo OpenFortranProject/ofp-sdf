@@ -96,7 +96,7 @@ Program(
       , [ AssignmentStmt(
             no-label()
           , VarDef("cp1")
-          , FunctionReference(
+          , PartRef(
               "COLOR_POINT"
             , [ Arg(
                   "point"
@@ -104,22 +104,25 @@ Program(
                 )
               , Arg("color", IntVal("3"))
               ]
+            , no-image-selector()
             )
           )
         , AssignmentStmt(
             no-label()
           , VarDef("cp2")
-          , FunctionReference(
+          , PartRef(
               "COLOR_POINT"
             , [Arg("point", VarRef("PV")), Arg("color", IntVal("3"))]
+            , no-image-selector()
             )
           )
         , AssignmentStmt(
             no-label()
           , VarDef("cp3")
-          , FunctionReference(
+          , PartRef(
               "COLOR_POINT"
             , [IntVal("1"), IntVal("2"), IntVal("3")]
+            , no-image-selector()
             )
           ){Comment("
 
@@ -129,16 +132,17 @@ Program(
         , AssignmentStmt(
             "16"
           , VarDef("p")
-          , FunctionReference("PERSON", [IntVal("21"), "'JOHN SMITH'"])
+          , PartRef("PERSON", [IntVal("21"), "'JOHN SMITH'"], no-image-selector())
           ){Comment("
 ! This could also be written as
 ")}
         , AssignmentStmt(
             no-label()
           , VarDef("p")
-          , FunctionReference(
+          , PartRef(
               "PERSON"
             , [Arg("NAME", "'JOHN SMITH'"), Arg("AGE", IntVal("21"))]
+            , no-image-selector()
             )
           ){Comment("
 

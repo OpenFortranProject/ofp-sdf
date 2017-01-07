@@ -3,15 +3,17 @@ Program(
       no-program-stmt()
     , Scope(
         [ EnumDef(
-            EnumDefStmt("10", eos("\n"))
+            EnumDefStmt("10")
           , [ EnumeratorDefStmt(
                 "11"
               , [Enumerator("RED", IntVal("4")), Enumerator("BLUE", IntVal("9"))]
-              , eos("\n     ")
-              )
-            , EnumeratorDefStmt(no-label(), [Enumerator("YELLOW", no-expr())], eos("\n"))
+              ){Comment("
+     ")}
+            , EnumeratorDefStmt(no-label(), [Enumerator("YELLOW", no-expr())])
             ]
-          , EndEnumStmt("12", eos("\n\n"))
+          , EndEnumStmt("12"){Comment("
+
+")}
           )
         ]
       , []

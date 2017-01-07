@@ -7,7 +7,8 @@ Program(
         [ DerivedTypeDef(
             DerivedTypeStmt(no-label(), [], "POINT", [])
           , []
-          , [PrivateComponentsStmt("13", eos("\n    "))]
+          , [PrivateComponentsStmt("13"){Comment("
+    ")}]
           , [ DataComponentDefStmt(
                 no-label()
               , REAL()
@@ -24,7 +25,7 @@ Program(
             DerivedTypeStmt("14", [], "Whoot", []){Comment("
   ")}
           , []
-          , [PrivateComponentsStmt(no-label(), eos("\n"))]
+          , [PrivateComponentsStmt(no-label())]
           , [ DataComponentDefStmt(
                 "15"
               , INTEGER()

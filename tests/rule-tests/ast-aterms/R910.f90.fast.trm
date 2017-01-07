@@ -13,7 +13,7 @@ Program(
 ")}
         , ReadFMTStmt(
             no-label()
-          , IntVal("5")
+          , "5"
           , [VarRef("a"), VarRef("b"), VarRef("c")]
           ){Comment("
 

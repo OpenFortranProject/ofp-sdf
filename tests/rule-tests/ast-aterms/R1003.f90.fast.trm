@@ -136,7 +136,7 @@ Program(
         ]
       , [ WriteStmt(
             no-label()
-          , [UNIT(IntVal("6")), FMT(IntVal("100"))]
+          , [UNIT(IntVal("6")), FMT("100")]
           , [IntVal("2"), IntVal("3")]
           )
         , FormatStmt(
@@ -155,13 +155,13 @@ Program(
     ")}
         , WriteStmt(
             no-label()
-          , [UNIT(IntVal("6")), FMT("'(1X, I1, 1X, ''ISN''''T'', 1X, I1)'")]
+          , [UNIT(IntVal("6")), FMT-or-NML("'(1X, I1, 1X, ''ISN''''T'', 1X, I1)'")]
           , [IntVal("2"), IntVal("3")]
           ){Comment("
     ")}
         , WriteStmt(
             no-label()
-          , [UNIT(IntVal("6")), FMT("'(A)'")]
+          , [UNIT(IntVal("6")), FMT-or-NML("'(A)'")]
           , ["' 2 ISN''T 3'"]
           ){Comment("
 

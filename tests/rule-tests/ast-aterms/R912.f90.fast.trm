@@ -6,10 +6,10 @@ Program(
       , [ PrintStmt("13", STAR(), ["\"hello\"", FunctionReference("that_image", [])])
         , PrintStmt(
             no-label()
-          , IntVal("5")
+          , "5"
           , [VarRef("a"), VarRef("b"), VarRef("c")]
           )
-        , PrintStmt(no-label(), IntVal("10"), [IntVal("1")])
+        , PrintStmt(no-label(), "10", [IntVal("1")])
         , PrintStmt(no-label(), "'(10f8.2)'", [VarRef("a"), VarRef("b")]){Comment("
 
 ")}

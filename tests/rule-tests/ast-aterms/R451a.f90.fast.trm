@@ -13,25 +13,24 @@ Program(
                   no-label()
                 , [Pass("beauty")]
                 , [TypeBoundProcDecl("foo", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [Pass(no-arg-name()), DEFERRED()]
                 , [TypeBoundProcDecl("boo", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [NON_OVERRIDABLE(), PRIVATE()]
                 , [TypeBoundProcDecl("hoo", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [PUBLIC()]
                 , [TypeBoundProcDecl("loo", no-procedure-name()), TypeBoundProcDecl("doo", "goo")]
-                , eos("\n")
                 )
               ]
             )

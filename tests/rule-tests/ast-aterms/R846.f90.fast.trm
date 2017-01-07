@@ -4,55 +4,70 @@ Program(
     , Scope(
         []
       , [ SelectTypeConstruct(
-            SelectTypeStmt("10", no-name(), "a", VarRef("p"), eos("\n"))
+            SelectTypeStmt("10", no-name(), "a", VarRef("p"))
           , [ TypeGuardStmtBlock(
-                ClassGuardStmt("11", DerivedTypeSpec("point", []), no-name(), eos("\n   "))
+                ClassGuardStmt("11", DerivedTypeSpec("point", []), no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
               )
             , TypeGuardStmtBlock(
-                TypeGuardStmt("12", DerivedTypeSpec("point_3d", []), no-name(), eos("\n   "))
+                TypeGuardStmt("12", DerivedTypeSpec("point_3d", []), no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("2"))]
               )
             , TypeGuardStmtBlock(
-                DefaultGuardStmt("13", no-name(), eos("\n   "))
+                DefaultGuardStmt("13", no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("3"))]
               )
             ]
-          , EndSelectTypeStmt("14", no-name(), eos("\n\n"))
+          , EndSelectTypeStmt("14", no-name()){Comment("
+
+")}
           )
         , SelectTypeConstruct(
-            SelectTypeStmt(no-label(), no-name(), no-name(), VarRef("p"), eos("\n"))
+            SelectTypeStmt(no-label(), no-name(), no-name(), VarRef("p"))
           , [ TypeGuardStmtBlock(
-                ClassGuardStmt(no-label(), DerivedTypeSpec("point", []), no-name(), eos("\n   "))
+                ClassGuardStmt(no-label(), DerivedTypeSpec("point", []), no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
               )
             , TypeGuardStmtBlock(
-                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", []), no-name(), eos("\n   "))
+                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", []), no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("2"))]
               )
             , TypeGuardStmtBlock(
-                DefaultGuardStmt(no-label(), no-name(), eos("\n   "))
+                DefaultGuardStmt(no-label(), no-name()){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("3"))]
               )
             ]
-          , EndSelectTypeStmt(no-label(), no-name(), eos("\n\n"))
+          , EndSelectTypeStmt(no-label(), no-name()){Comment("
+
+")}
           )
         , SelectTypeConstruct(
-            SelectTypeStmt(no-label(), "my_select", no-name(), VarRef("p"), eos("\n"))
+            SelectTypeStmt(no-label(), "my_select", no-name(), VarRef("p"))
           , [ TypeGuardStmtBlock(
-                ClassGuardStmt(no-label(), DerivedTypeSpec("point", []), "my_select", eos("\n   "))
+                ClassGuardStmt(no-label(), DerivedTypeSpec("point", []), "my_select"){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))]
               )
             , TypeGuardStmtBlock(
-                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", []), "my_select", eos("\n   "))
+                TypeGuardStmt(no-label(), DerivedTypeSpec("point_3d", []), "my_select"){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("2"))]
               )
             , TypeGuardStmtBlock(
-                DefaultGuardStmt(no-label(), "my_select", eos("\n   "))
+                DefaultGuardStmt(no-label(), "my_select"){Comment("
+   ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("3"))]
               )
             ]
-          , EndSelectTypeStmt(no-label(), "my_select", eos("\n\n"))
+          , EndSelectTypeStmt(no-label(), "my_select"){Comment("
+
+")}
           )
         ]
       , []

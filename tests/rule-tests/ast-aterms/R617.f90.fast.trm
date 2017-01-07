@@ -6,7 +6,7 @@ Program(
       , [ AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("array", [IntVal("1"), IntVal("2")])
+          , PartRef("array", [IntVal("1"), IntVal("2")], no-image-selector())
           ){Comment("
 
 ! NOTE 6.11

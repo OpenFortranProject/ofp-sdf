@@ -4,23 +4,19 @@ Program(
     , Scope(
         []
       , [ CaseConstruct(
-            SelectCaseStmt(no-label(), no-name(), VarRef("ifoo"), eos("\n"))
+            SelectCaseStmt(no-label(), no-name(), VarRef("ifoo"))
           , [ CaseStmtBlock(
                 CaseStmt(
                   no-label()
                 , [CaseValueRange(no-low(), UnaryMinus(IntVal("1")))]
                 , no-name()
-                , eos("\n\t")
-                )
+                ){Comment("
+	")}
               , [AssignmentStmt(no-label(), VarDef("this"), VarRef("that"))]
               )
             , CaseStmtBlock(
-                CaseStmt(
-                  no-label()
-                , [CaseValue(IntVal("0"))]
-                , no-name()
-                , eos("\n\t")
-                )
+                CaseStmt(no-label(), [CaseValue(IntVal("0"))], no-name()){Comment("
+	")}
               , [AssignmentStmt(no-label(), VarDef("that"), VarRef("the"))]
               )
             , CaseStmtBlock(
@@ -31,8 +27,8 @@ Program(
                   , CaseValue(IntVal("7"))
                   ]
                 , no-name()
-                , eos("\n\t")
-                )
+                ){Comment("
+	")}
               , [AssignmentStmt(no-label(), VarDef("the"), VarRef("other"))]
               )
             , CaseStmtBlock(
@@ -40,12 +36,12 @@ Program(
                   no-label()
                 , [CaseValue(IntVal("4")), CaseValueRange(IntVal("8"), no-high())]
                 , no-name()
-                , eos("\n\t")
-                )
+                ){Comment("
+	")}
               , [AssignmentStmt(no-label(), VarDef("other"), VarRef("bar"))]
               )
             ]
-          , EndSelectStmt(no-label(), no-name(), eos("\n"))
+          , EndSelectStmt(no-label(), no-name())
           )
         ]
       , []

@@ -10,17 +10,17 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("foo", [IntVal("1")])
+          , PartRef("foo", [IntVal("1")], no-image-selector())
           )
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("foo", [VarRef("m")])
+          , PartRef("foo", [VarRef("m")], no-image-selector())
           )
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("foo", [IntVal("1"), IntVal("2")])
+          , PartRef("foo", [IntVal("1"), IntVal("2")], no-image-selector())
           )
         ]
       , []

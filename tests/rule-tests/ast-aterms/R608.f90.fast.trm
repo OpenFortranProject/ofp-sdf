@@ -6,7 +6,11 @@ Program(
       , [ AssignmentStmt(
             no-label()
           , VarDef("a")
-          , Substring(VarRef("my_string"), SubstringRange(IntVal("2"), IntVal("3")))
+          , PartRef(
+              "my_string"
+            , [Triplet(IntVal("2"), IntVal("3"), no-stride())]
+            , no-image-selector()
+            )
           ){Comment("
 
 ")}

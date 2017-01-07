@@ -65,31 +65,43 @@ Program(
       , [ AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("array", [IntVal("1")])
+          , PartRef("array", [IntVal("1")], no-image-selector())
           ){Comment("! subscript
 ")}
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , Substring(VarRef("array"), SubstringRange(no-lower-bound(), no-upper-bound()))
+          , PartRef("array", [Triplet(no-subscript(), no-subscript(), no-stride())], no-image-selector())
           ){Comment("! subscript-triplet
 ")}
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , Substring(VarRef("array"), SubstringRange(IntVal("1"), no-upper-bound()))
+          , PartRef(
+              "array"
+            , [Triplet(IntVal("1"), no-subscript(), no-stride())]
+            , no-image-selector()
+            )
           ){Comment("! subscript-triplet
 ")}
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , Substring(VarRef("array"), SubstringRange(no-lower-bound(), IntVal("2")))
+          , PartRef(
+              "array"
+            , [Triplet(no-subscript(), IntVal("2"), no-stride())]
+            , no-image-selector()
+            )
           ){Comment("! subscript-triplet
 ")}
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , Substring(VarRef("array"), SubstringRange(IntVal("1"), IntVal("2")))
+          , PartRef(
+              "array"
+            , [Triplet(IntVal("1"), IntVal("2"), no-stride())]
+            , no-image-selector()
+            )
           ){Comment("! subscript-triplet
 ")}
         , AssignmentStmt(
@@ -147,7 +159,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("array", [VarRef("int_array")])
+          , PartRef("array", [VarRef("int_array")], no-image-selector())
           ){Comment("! vector-subscript
 
 ")}

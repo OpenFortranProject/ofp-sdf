@@ -6,21 +6,17 @@ Program(
       , [ WriteStmt(no-label(), [UNIT(IntVal("5"))], [])
         , WriteStmt(
             no-label()
-          , [UNIT(IntVal("6")), FMT(IntVal("10"))]
+          , [UNIT(IntVal("6")), FMT("10")]
           , []
           )
         , WriteStmt(
             no-label()
-          , [UNIT(IntVal("6")), FMT(IntVal("10")), ASYNCHRONOUS("\"YES\"")]
+          , [UNIT(IntVal("6")), FMT("10"), ASYNCHRONOUS("\"YES\"")]
           , [VarRef("i")]
           )
         , WriteStmt(
             no-label()
-          , [ UNIT(IntVal("5"))
-            , DECIMAL("\"point\"")
-            , ERR("12")
-            , FMT(IntVal("10"))
-            ]
+          , [UNIT(IntVal("5")), DECIMAL("\"point\""), ERR("12"), FMT("10")]
           , [VarRef("a"), VarRef("b"), VarRef("c")]
           )
         , WriteStmt(

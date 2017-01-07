@@ -74,7 +74,11 @@ Program(
           , VarDef("a")
           , EQ(
               Concat("\"E\"", "\"G\"")
-            , Substring(VarRef("H"), SubstringRange(IntVal("1"), IntVal("10")))
+            , PartRef(
+                "H"
+              , [Triplet(IntVal("1"), IntVal("10"), no-stride())]
+              , no-image-selector()
+              )
             )
           )
         , AssignmentStmt(

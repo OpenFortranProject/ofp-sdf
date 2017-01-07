@@ -25,7 +25,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("Y")
-          , FunctionReference(
+          , PartRef(
               "RESHAPE"
             , [ Arg(
                   "SOURCE"
@@ -44,6 +44,7 @@ Program(
                 , ArrayConstructor(AcSpec(no-type-spec(), [IntVal("3"), IntVal("2")]))
                 )
               ]
+            , no-image-selector()
             )
           )
         ]

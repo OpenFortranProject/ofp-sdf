@@ -11,7 +11,11 @@ Program(
           )
         , AssignmentStmt(
             no-label()
-          , Substring(VarRef("B"), SubstringRange(IntVal("1"), IntVal("5")))
+          , PartRef(
+              "B"
+            , [Triplet(IntVal("1"), IntVal("5"), no-stride())]
+            , no-image-selector()
+            )
           , IntVal("1")
           )
         , AssignmentStmt(

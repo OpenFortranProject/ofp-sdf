@@ -8,11 +8,7 @@ Program(
          , []
          , [Var("unitnumber", INTEGER(), no-init())]
          )]
-      , [ amb(
-            [ RewindStmt("11", [UNIT(Parens(VarRef("unitnumber")))])
-            , RewindStmt("11", [UNIT(VarRef("unitnumber"))])
-            ]
-          )
+      , [ RewindStmt("11", [UNIT(VarRef("unitnumber"))])
         , RewindStmt(no-label(), [UNIT(VarRef("unitnumber"))])
         , RewindStmt("12", [UNIT(IntVal("10"))])
         , RewindStmt(

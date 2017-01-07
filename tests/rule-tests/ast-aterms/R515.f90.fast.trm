@@ -48,10 +48,7 @@ Program(
               , ArrayType(
                   INTEGER()
                 , ArraySpec(
-                    AssumedSize(
-                      [Range(IntVal("2"), IntVal("6"))]
-                    , IntVal("5")
-                    )
+                    [Range(IntVal("2"), IntVal("6")), Range(IntVal("5"), STAR())]
                   )
                 , []
                 )
@@ -68,10 +65,10 @@ Program(
               , ArrayType(
                   REAL()
                 , ArraySpec(
-                    AssumedSize(
-                      [Range(no-lower-bound(), IntVal("31")), Range(no-lower-bound(), IntVal("41"))]
-                    , no-lower-bound()
-                    )
+                    [ Range(no-lower-bound(), IntVal("31"))
+                    , Range(no-lower-bound(), IntVal("41"))
+                    , Range(no-lower-bound(), STAR())
+                    ]
                   )
                 , []
                 )

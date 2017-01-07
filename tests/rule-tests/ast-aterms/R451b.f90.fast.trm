@@ -13,44 +13,31 @@ Program(
                   no-label()
                 , [NOPASS(), DEFERRED()]
                 , [TypeBoundProcDecl("foo", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [PRIVATE(), NOPASS()]
                 , [TypeBoundProcDecl("beauty", no-procedure-name())]
-                , eos("\n  ")
-                )
-              , TypeBoundProcedureStmt(
-                  no-label()
-                , [NON_OVERRIDABLE()]
-                , [TypeBoundProcDecl("ugly", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
+              , TypeBoundProcedureStmt(no-label(), [NON_OVERRIDABLE()], [TypeBoundProcDecl("ugly", no-procedure-name())]){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [Pass(no-arg-name())]
                 , [TypeBoundProcDecl("lies", no-procedure-name())]
-                , eos("\n  ")
-                )
+                ){Comment("
+  ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [Pass("woohoo")]
                 , [TypeBoundProcDecl("bar", no-procedure-name())]
-                , eos("\n  ")
-                )
-              , TypeBoundProcedureStmt(
-                  no-label()
-                , [PUBLIC()]
-                , [TypeBoundProcDecl("that", no-procedure-name())]
-                , eos("\n  ")
-                )
-              , TypeBoundProcedureStmt(
-                  no-label()
-                , [PRIVATE()]
-                , [TypeBoundProcDecl("theother", no-procedure-name())]
-                , eos("\n")
-                )
+                ){Comment("
+  ")}
+              , TypeBoundProcedureStmt(no-label(), [PUBLIC()], [TypeBoundProcDecl("that", no-procedure-name())]){Comment("
+  ")}
+              , TypeBoundProcedureStmt(no-label(), [PRIVATE()], [TypeBoundProcDecl("theother", no-procedure-name())])
               ]
             )
           , EndTypeStmt(no-label(), "truth")

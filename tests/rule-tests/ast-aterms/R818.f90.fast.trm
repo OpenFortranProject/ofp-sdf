@@ -19,7 +19,7 @@ Program(
           , [ AssignmentStmt(
                 no-label()
               , PartRef("A", [VarRef("I")], no-image-selector())
-              , FunctionReference("B", [VarRef("I")])
+              , PartRef("B", [VarRef("I")], no-image-selector())
               ){Comment("
    ")}
             ]

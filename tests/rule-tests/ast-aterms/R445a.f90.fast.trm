@@ -18,13 +18,11 @@ Program(
             ]
           , TypeBoundProcPart(
               no-binding-private-stmt()
-            , [ TypeBoundProcedureStmt(
-                  no-label()
-                , [Pass(no-arg-name())]
-                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
-                , eos("\n")
-                )
-              ]
+            , [TypeBoundProcedureStmt(
+                 no-label()
+               , [Pass(no-arg-name())]
+               , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+               )]
             )
           , EndTypeStmt(no-label(), "POINT"){Comment("
 
@@ -55,7 +53,7 @@ Program(
             , [ AssignmentStmt(
                   no-label()
                 , VarDef("POINT_LENGTH")
-                , FunctionReference(
+                , PartRef(
                     "SQRT"
                   , [ Plus(
                         Power(
@@ -78,6 +76,7 @@ Program(
                         )
                       )
                     ]
+                  , no-image-selector()
                   )
                 )
               ]

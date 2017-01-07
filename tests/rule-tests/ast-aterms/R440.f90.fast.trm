@@ -32,21 +32,20 @@ Program(
               , no-proc-interface()
               , [POINTER(), NOPASS()]
               , [ProcDecl("foible", no-init())]
-              , eos("\n     ")
-              )
+              ){Comment("
+     ")}
             , ProcComponentDefStmt(
                 no-label()
               , "bob"
               , [Pass("a"), PRIVATE(), POINTER()]
               , [ProcDecl("foo", "bar")]
-              , eos("\n     ")
-              )
+              ){Comment("
+     ")}
             , ProcComponentDefStmt(
                 no-label()
               , "bob"
               , [Pass(no-arg-name()), PUBLIC(), POINTER()]
               , [ProcDecl("foo", "bar")]
-              , eos("\n")
               )
             ]
           , no-type-bound-procedure-part()

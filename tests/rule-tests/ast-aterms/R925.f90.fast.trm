@@ -3,21 +3,14 @@ Program(
       no-program-stmt()
     , Scope(
         []
-      , [ EndfileStmt("13", [UNIT(IntVal("10"))], eos("\n"))
-        , amb(
-            [ EndfileStmt(
-                no-label()
-              , [UNIT(Parens(IntVal("10")))]
-              , eos("\n")
-              )
-            , EndfileStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
-            ]
-          )
+      , [ EndfileStmt("13", [UNIT(IntVal("10"))])
+        , EndfileStmt(no-label(), [UNIT(IntVal("10"))])
         , EndfileStmt(
             no-label()
           , [UNIT(IntVal("10")), IOSTAT(VarRef("n")), ERR("4")]
-          , eos("\n\n")
-          )
+          ){Comment("
+
+")}
         ]
       , []
       )

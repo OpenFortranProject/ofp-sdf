@@ -4,7 +4,7 @@ Program(
     , Scope(
         []
       , [ PrintStmt(no-label(), STAR(), [VarRef("a")])
-        , PrintStmt(no-label(), IntVal("10"), [VarRef("b")])
+        , PrintStmt(no-label(), "10", [VarRef("b")])
         , PrintStmt(no-label(), "'(10f8.2)'", [VarRef("c")]){Comment("
 
 ")}

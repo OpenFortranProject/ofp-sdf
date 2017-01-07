@@ -52,15 +52,16 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference(
+          , PartRef(
               "y"
             , [IntVal("3"), IntVal("2"), IntVal("1")]
+            , no-image-selector()
             )
           )
         , AssignmentStmt(
             no-label()
           , VarDef("a")
-          , FunctionReference("func", [IntVal("1")])
+          , PartRef("func", [IntVal("1")], no-image-selector())
           )
         , AssignmentStmt(
             no-label()

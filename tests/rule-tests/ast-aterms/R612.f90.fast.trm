@@ -5,7 +5,11 @@ Program(
         []
       , [ AssignmentStmt(
             no-label()
-          , Substring(VarRef("a"), SubstringRange(IntVal("1"), IntVal("3")))
+          , PartRef(
+              "a"
+            , [Triplet(IntVal("1"), IntVal("3"), no-stride())]
+            , no-image-selector()
+            )
           , IntVal("3")
           )
         , AssignmentStmt(no-label(), VarDef("a"), IntVal("3")){Comment("
@@ -15,7 +19,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("c")
-          , FunctionReference("s", [IntVal("1"), IntVal("2")])
+          , PartRef("s", [IntVal("1"), IntVal("2")], no-image-selector())
           )
         , AssignmentStmt(
             no-label()

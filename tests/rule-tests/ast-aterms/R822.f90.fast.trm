@@ -3,7 +3,8 @@ Program(
       no-program-stmt()
     , Scope(
         []
-      , [ LabelDoStmt(no-label(), no-name(), "10", no-loop-control(), eos("\n   "))
+      , [ LabelDoStmt(no-label(), no-name(), "10", no-loop-control()){Comment("
+   ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))
         , EndDoStmt("10", no-name()){Comment("
 
@@ -13,8 +14,8 @@ Program(
           , no-name()
           , "10"
           , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("\n   ")
-          )
+          ){Comment("
+   ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))
         , EndDoStmt("10", no-name()){Comment("
 
@@ -108,8 +109,8 @@ Program(
           , no-name()
           , "10"
           , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
-          , eos("\n   ")
-          )
+          ){Comment("
+   ")}
         , AssignmentStmt(no-label(), VarDef("x"), IntVal("1"))
         , ContinueStmt("10"){Comment("
 

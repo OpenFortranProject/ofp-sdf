@@ -18,14 +18,10 @@ Program(
 ")}
         ]
       , [ CaseConstruct(
-            SelectCaseStmt("10", no-name(), VarRef("n"), eos("\n"))
+            SelectCaseStmt("10", no-name(), VarRef("n"))
           , [ CaseStmtBlock(
-                CaseStmt(
-                  "11"
-                , [CaseValue(IntVal("1"))]
-                , no-name()
-                , eos("\n      ")
-                )
+                CaseStmt("11", [CaseValue(IntVal("1"))], no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("1")){Comment("
    ")}]
               )
@@ -34,8 +30,8 @@ Program(
                   no-label()
                 , [CaseValueRange(IntVal("2"), IntVal("3"))]
                 , no-name()
-                , eos("\n      ")
-                )
+                ){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("2")){Comment("
    ")}]
               )
@@ -44,8 +40,8 @@ Program(
                   no-label()
                 , [CaseValueRange(IntVal("5"), IntVal("8"))]
                 , no-name()
-                , eos("\n      ")
-                )
+                ){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("8")){Comment("
    ")}]
               )
@@ -57,93 +53,96 @@ Program(
                   , CaseValue(IntVal("22"))
                   ]
                 , no-name()
-                , eos("\n      ")
-                )
+                ){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("15")){Comment("
    ")}]
               )
             , CaseStmtBlock(
-                CaseStmt(
-                  no-label()
-                , [CaseValueRange(IntVal("33"), no-high())]
-                , no-name()
-                , eos("\n      ")
-                )
+                CaseStmt(no-label(), [CaseValueRange(IntVal("33"), no-high())], no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("33")){Comment("
    ")}]
               )
             , CaseStmtBlock(
-                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+                CaseStmt(no-label(), DEFAULT(), no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("x"), IntVal("0"))]
               )
             ]
-          , EndSelectStmt("12", no-name(), eos("\n\n"))
+          , EndSelectStmt("12", no-name()){Comment("
+
+")}
           )
         , CaseConstruct(
-            SelectCaseStmt(no-label(), no-name(), VarRef("n"), eos("\n   "))
+            SelectCaseStmt(no-label(), no-name(), VarRef("n")){Comment("
+   ")}
           , [ CaseStmtBlock(
-                CaseStmt(
-                  no-label()
-                , [CaseValueRange(no-low(), IntVal("3"))]
-                , no-name()
-                , eos("\n      ")
-                )
+                CaseStmt(no-label(), [CaseValueRange(no-low(), IntVal("3"))], no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("i"), IntVal("3"))]
               )
             ]
-          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          , EndSelectStmt(no-label(), no-name()){Comment("
+
+")}
           )
         , CaseConstruct(
-            SelectCaseStmt(no-label(), no-name(), "'a'", eos("\n   "))
+            SelectCaseStmt(no-label(), no-name(), "'a'"){Comment("
+   ")}
           , [ CaseStmtBlock(
-                CaseStmt(no-label(), [CaseValue("'a'")], no-name(), eos("\n      "))
+                CaseStmt(no-label(), [CaseValue("'a'")], no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("y"), "'a'"){Comment("
    ")}]
               )
             , CaseStmtBlock(
-                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+                CaseStmt(no-label(), DEFAULT(), no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("y"), "'b'")]
               )
             ]
-          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          , EndSelectStmt(no-label(), no-name()){Comment("
+
+")}
           )
         , CaseConstruct(
-            SelectCaseStmt(
-              no-label()
-            , no-name()
-            , GT(VarRef("x"), IntVal("2"))
-            , eos("\n   ")
-            )
+            SelectCaseStmt(no-label(), no-name(), GT(VarRef("x"), IntVal("2"))){Comment("
+   ")}
           , [ CaseStmtBlock(
-                CaseStmt(no-label(), [CaseValue(TRUE())], no-name(), eos("\n      "))
+                CaseStmt(no-label(), [CaseValue(TRUE())], no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("flag"), TRUE()){Comment("
    ")}]
               )
             , CaseStmtBlock(
-                CaseStmt(no-label(), DEFAULT(), no-name(), eos("\n      "))
+                CaseStmt(no-label(), DEFAULT(), no-name()){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("flag"), FALSE())]
               )
             ]
-          , EndSelectStmt(no-label(), no-name(), eos("\n\n"))
+          , EndSelectStmt(no-label(), no-name()){Comment("
+
+")}
           )
         , CaseConstruct(
-            SelectCaseStmt(
-              no-label()
-            , "my_case"
-            , GT(VarRef("x"), IntVal("2"))
-            , eos("\n   ")
-            )
+            SelectCaseStmt(no-label(), "my_case", GT(VarRef("x"), IntVal("2"))){Comment("
+   ")}
           , [ CaseStmtBlock(
-                CaseStmt(no-label(), [CaseValue(TRUE())], "my_case", eos("\n      "))
+                CaseStmt(no-label(), [CaseValue(TRUE())], "my_case"){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("flag"), TRUE()){Comment("
    ")}]
               )
             , CaseStmtBlock(
-                CaseStmt(no-label(), DEFAULT(), "my_case", eos("\n      "))
+                CaseStmt(no-label(), DEFAULT(), "my_case"){Comment("
+      ")}
               , [AssignmentStmt(no-label(), VarDef("flag"), FALSE())]
               )
             ]
-          , EndSelectStmt(no-label(), "my_case", eos("\n\n"))
+          , EndSelectStmt(no-label(), "my_case"){Comment("
+
+")}
           )
         ]
       , []

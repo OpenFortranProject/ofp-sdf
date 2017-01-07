@@ -9,11 +9,7 @@ Program(
          , [Var("unitnumber", INTEGER(), no-init())]
          )]
       , [ BackspaceStmt("11", [UNIT(IntVal("10"))])
-        , amb(
-            [ BackspaceStmt(no-label(), [UNIT(Parens(IntVal("10")))])
-            , BackspaceStmt(no-label(), [UNIT(IntVal("10"))])
-            ]
-          )
+        , BackspaceStmt(no-label(), [UNIT(IntVal("10"))])
         , BackspaceStmt(
             no-label()
           , [UNIT(VarRef("unitnumber")), IOSTAT(VarRef("n"))]

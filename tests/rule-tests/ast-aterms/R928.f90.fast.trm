@@ -11,11 +11,7 @@ Program(
 
 ")}]
       , [ FlushStmt("13", [UNIT(IntVal("5"))])
-        , amb(
-            [ FlushStmt(no-label(), [UNIT(Parens(IntVal("5")))])
-            , FlushStmt(no-label(), [UNIT(IntVal("5"))])
-            ]
-          )
+        , FlushStmt(no-label(), [UNIT(IntVal("5"))])
         , FlushStmt(
             no-label()
           , [ UNIT(IntVal("5"))

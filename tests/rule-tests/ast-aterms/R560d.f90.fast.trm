@@ -16,7 +16,7 @@ Program(
                 , [ AssignmentStmt(
                       no-label()
                     , VarDef("NSQP")
-                    , FunctionReference(
+                    , PartRef(
                         "CEILING"
                       , [ PartRef(
                             "SQRT"
@@ -24,6 +24,7 @@ Program(
                           , no-image-selector()
                           )
                         ]
+                      , no-image-selector()
                       )
                     ){Comment("
          ")}

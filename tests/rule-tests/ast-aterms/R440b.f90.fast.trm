@@ -18,13 +18,11 @@ Program(
             ]
           , TypeBoundProcPart(
               no-binding-private-stmt()
-            , [ TypeBoundProcedureStmt(
-                  no-label()
-                , [Pass(no-arg-name())]
-                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
-                , eos("\n")
-                )
-              ]
+            , [TypeBoundProcedureStmt(
+                 no-label()
+               , [Pass(no-arg-name())]
+               , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+               )]
             )
           , EndTypeStmt(no-label(), "POINT"){Comment("
 
@@ -43,13 +41,11 @@ Program(
              )]
           , TypeBoundProcPart(
               no-binding-private-stmt()
-            , [ TypeBoundProcedureStmt(
-                  no-label()
-                , [Pass(no-arg-name())]
-                , [TypeBoundProcDecl("LENGTH", "POINT_3D_LENGTH")]
-                , eos("\n")
-                )
-              ]
+            , [TypeBoundProcedureStmt(
+                 no-label()
+               , [Pass(no-arg-name())]
+               , [TypeBoundProcDecl("LENGTH", "POINT_3D_LENGTH")]
+               )]
             )
           , EndTypeStmt(no-label(), "POINT_3D"){Comment("
 
@@ -79,7 +75,7 @@ Program(
             , [ AssignmentStmt(
                   no-label()
                 , VarDef("POINT_LENGTH")
-                , FunctionReference(
+                , PartRef(
                     "SQRT"
                   , [ Plus(
                         Power(
@@ -102,6 +98,7 @@ Program(
                         )
                       )
                     ]
+                  , no-image-selector()
                   )
                 )
               ]
@@ -133,13 +130,10 @@ Program(
                 )
               ]
             , [ SelectTypeConstruct(
-                  SelectTypeStmt(no-label(), no-name(), no-name(), VarRef("B"), eos("\n  "))
-                , [ TypeGuardStmtBlock(
-                      ClassGuardStmt(no-label(), DerivedTypeSpec("POINT_3D", []), no-name(), eos("\n"))
-                    , []
-                    )
-                  ]
-                , EndSelectTypeStmt(no-label(), no-name(), eos("\n"))
+                  SelectTypeStmt(no-label(), no-name(), no-name(), VarRef("B")){Comment("
+  ")}
+                , [TypeGuardStmtBlock(ClassGuardStmt(no-label(), DerivedTypeSpec("POINT_3D", []), no-name()), [])]
+                , EndSelectTypeStmt(no-label(), no-name())
                 )
               ]
             , []

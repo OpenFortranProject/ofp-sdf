@@ -46,7 +46,11 @@ Program(
           )
         , AssignmentStmt(
             no-label()
-          , Substring(VarRef("a"), SubstringRange(IntVal("1"), IntVal("2")))
+          , PartRef(
+              "a"
+            , [Triplet(IntVal("1"), IntVal("2"), no-stride())]
+            , no-image-selector()
+            )
           , IntVal("1")
           )
         , AssignmentStmt(

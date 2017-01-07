@@ -24,27 +24,27 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , CHARACTER(IntVal(CharLength(IntVal("3"))))
+          , CHARACTER(IntVal("3"))
           , []
-          , [Var("str3", CHARACTER(IntVal(CharLength(IntVal("3")))), no-init())]
+          , [Var("str3", CHARACTER(IntVal("3")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , CHARACTER(IntVal(CharLength(VarRef("a"))))
+          , CHARACTER(VarRef("a"))
           , []
-          , [Var("stra", CHARACTER(IntVal(CharLength(VarRef("a")))), no-init())]
+          , [Var("stra", CHARACTER(VarRef("a")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , CHARACTER(IntVal(CharLength(STAR())))
+          , CHARACTER(STAR())
           , []
-          , [Var("str_star", CHARACTER(IntVal(CharLength(STAR()))), no-init())]
+          , [Var("str_star", CHARACTER(STAR()), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , CHARACTER(IntVal(CharLength(COLON())))
+          , CHARACTER(COLON())
           , [ALLOCATABLE()]
-          , [Var("str_colon", CHARACTER(IntVal(CharLength(COLON()))), no-init())]
+          , [Var("str_colon", CHARACTER(COLON()), no-init())]
           ){Comment("
 
 ")}

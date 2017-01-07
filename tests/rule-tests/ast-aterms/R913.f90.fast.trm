@@ -35,7 +35,7 @@ Program(
             , IOSTAT(VarRef("i"))
             , ADVANCE("\"yes\"")
             , REC(IntVal("2"))
-            , FMT(IntVal("10"))
+            , FMT("10")
             ]
           , [VarRef("f")]
           ){Comment("
