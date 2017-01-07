@@ -1,0 +1,7 @@
+INTEGER, PARAMETER :: N = 10
+INTEGER :: i, j, Y(10,10)
+INTEGER :: A(10,10), X(10), Z(10,10)
+13 FORALL (I=1:N) A(I,I) = X(I)
+FORALL (I=1:N, J=1:N) Z(I,J) = 1.0/REAL(I+J-1)
+FORALL (I=1:N, J=1:N, Y(I,J) /= 0 .AND. I /= J) Z(I,J) = 1.0/Y(I,J)
+END PROGRAM
