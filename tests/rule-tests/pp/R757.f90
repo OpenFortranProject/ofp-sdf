@@ -1,5 +1,5 @@
 INTEGER :: A(10)
 FORALL (i=1:10)
-A(i) = 13
+  A(i) = 13
 END FORALL 
 END PROGRAM
