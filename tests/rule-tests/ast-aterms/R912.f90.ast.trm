@@ -7,12 +7,14 @@ Program(
         [ PrintStmt(
             "13"
           , STAR()
-          , comma-list(["\"hello\"", FunctionReference(ProcedureDesignator("that_image"), [])])
+          , comma-list(
+              ["\"hello\"", DataRef([PartRef("that_image", function-ref-no-args(), no-image-selector())])]
+            )
           , eos("\n")
           )
         , PrintStmt(
             no-label()
-          , IntLiteralConstant("5", no-kind())
+          , "5"
           , comma-list(
               [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
@@ -23,8 +25,8 @@ Program(
           )
         , PrintStmt(
             no-label()
-          , IntLiteralConstant("10", no-kind())
-          , comma-list([IntLiteralConstant("1", no-kind())])
+          , "10"
+          , comma-list([IntVal("1")])
           , eos("\n")
           )
         , PrintStmt(
@@ -40,23 +42,14 @@ Program(
         , FormatStmt(
             "5"
           , FormatSpec(
-              format-items-first(
-                F(
-                  IntLiteralConstant("10", no-kind())
-                , IntLiteralConstant("8", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                )
-              )
+              format-items-first(F(IntVal("10"), IntVal("8"), IntVal("2")))
             , no-list()
             )
           , eos("\n")
           )
         , FormatStmt(
             "10"
-          , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("5", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(I(no-r(), IntVal("5"), no-m())), no-list())
           , eos("\n\n")
           )
         ]

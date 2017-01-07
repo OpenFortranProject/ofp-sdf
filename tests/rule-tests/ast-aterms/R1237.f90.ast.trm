@@ -11,7 +11,7 @@ Program(
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
-                , IntrinsicType(INTEGER(no-kind()))
+                , IntrinsicType(INTEGER())
                 , no-list()
                 , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
                 , eos("\n      ")
@@ -19,7 +19,7 @@ Program(
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
-                , IntLiteralConstant("3", no-kind())
+                , IntVal("3")
                 , eos("\n   ")
                 )
               ]

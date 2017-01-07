@@ -8,7 +8,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())
@@ -21,7 +21,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(REAL(no-kind()))
+              , IntrinsicType(REAL())
               , no-list()
               , [ComponentDecl("zzz", no-list(), no-list(), no-char-length(), no-init())]
               , eos("\n  ")
@@ -35,7 +35,7 @@ Program(
           , [ InterfaceBody(
                 FunctionStmt(
                   no-label()
-                , [IntrinsicType(INTEGER(no-kind()))]
+                , [IntrinsicType(INTEGER())]
                 , "add_op"
                 , ["a", "b"]
                 , no-suffix()
@@ -47,7 +47,7 @@ Program(
                 , no-implicit-part()
                 , [ TypeDeclarationStmt(
                       no-label()
-                    , IntrinsicType(INTEGER(no-kind()))
+                    , IntrinsicType(INTEGER())
                     , comma-list([Intent(IN())])
                     , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
                       , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
@@ -66,7 +66,7 @@ Program(
           , [ InterfaceBody(
                 FunctionStmt(
                   no-label()
-                , [IntrinsicType(INTEGER(no-kind()))]
+                , [IntrinsicType(INTEGER())]
                 , "neg_op"
                 , ["a"]
                 , no-suffix()
@@ -78,7 +78,7 @@ Program(
                 , no-implicit-part()
                 , [ TypeDeclarationStmt(
                       no-label()
-                    , IntrinsicType(INTEGER(no-kind()))
+                    , IntrinsicType(INTEGER())
                     , comma-list([Intent(IN())])
                     , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
                     , eos("\n    ")
@@ -103,7 +103,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())
@@ -123,7 +123,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl("m", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("n", no-list(), no-list(), no-char-length(), no-init())

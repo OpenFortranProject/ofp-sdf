@@ -12,7 +12,7 @@ Program(
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ ReturnStmt("11", no-expr(), eos("\n"))
-        , ReturnStmt(no-label(), IntLiteralConstant("1", no-kind()), eos("\n"))
+        , ReturnStmt(no-label(), IntVal("1"), eos("\n"))
         , ReturnStmt(
             no-label()
           , DataRef([PartRef("ival", no-section-subscripts(), no-image-selector())])

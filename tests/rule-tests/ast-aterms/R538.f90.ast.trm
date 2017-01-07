@@ -26,12 +26,12 @@ Program(
                     )
                   ]
                 , DataIDoVariable(VarRef("i"))
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-expr(IntLiteralConstant("3", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-expr(IntVal("3"))
                 )
               ]
-            , [DataStmtValue(DataStmtRepeat("15"), RealLiteralConstant("0.", no-kind()))]
+            , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
             )
           , eos("\n")
           )
@@ -81,12 +81,12 @@ Program(
                     )
                   ]
                 , DataIDoVariable(VarRef("i"))
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("2", no-kind())
-                , opt-expr(IntLiteralConstant("3", no-kind()))
+                , IntVal("1")
+                , IntVal("2")
+                , opt-expr(IntVal("3"))
                 )
               ]
-            , [DataStmtValue(DataStmtRepeat("15"), RealLiteralConstant("0.", no-kind()))]
+            , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
             )
           , eos("\n")
           )
@@ -109,18 +109,18 @@ Program(
                         )
                       ]
                     , DataIDoVariable(VarRef("i"))
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , DataRef([PartRef("j", no-section-subscripts(), no-image-selector())])
                     , no-expr()
                     )
                   ]
                 , DataIDoVariable(VarRef("j"))
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("5", no-kind())
+                , IntVal("1")
+                , IntVal("5")
                 , no-expr()
                 )
               ]
-            , [DataStmtValue(DataStmtRepeat("15"), RealLiteralConstant("0.", no-kind()))]
+            , [DataStmtValue(DataStmtRepeat("15"), RealVal("0."))]
             )
           , eos("\n")
           )

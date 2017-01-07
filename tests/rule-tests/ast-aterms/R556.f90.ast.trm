@@ -9,9 +9,7 @@ Program(
           , [ TargetDecl(
                 "A"
               , ArraySpec(
-                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
-                  ]
+                  [ExplicitShape(no-lower-bound(), IntVal("1000")), ExplicitShape(no-lower-bound(), IntVal("1000"))]
                 )
               , no-list()
               )

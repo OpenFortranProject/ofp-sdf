@@ -24,12 +24,12 @@ Program(
             , [ CommonBlockObject(
                   VarRef("foo")
                 , ArraySpec(
-                    [ ExplicitShape(IntLiteralConstant("3", no-kind()), IntLiteralConstant("8", no-kind()))
-                    , ExplicitShape(no-lower-bound(), IntLiteralConstant("4", no-kind()))
+                    [ ExplicitShape(IntVal("3"), IntVal("8"))
+                    , ExplicitShape(no-lower-bound(), IntVal("4"))
                     , ExplicitShape(
                         no-lower-bound()
                       , Plus(
-                          IntLiteralConstant("5", no-kind())
+                          IntVal("5")
                         , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
                         )
                       )

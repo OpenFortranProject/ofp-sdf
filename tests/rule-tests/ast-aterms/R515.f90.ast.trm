@@ -6,11 +6,11 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "x"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("314159", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("314159"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -20,16 +20,16 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "y"
               , ArraySpec(
-                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("31", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("41", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("59", no-kind()))
-                  , ExplicitShape(IntLiteralConstant("2", no-kind()), IntLiteralConstant("6", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
+                  [ ExplicitShape(no-lower-bound(), IntVal("31"))
+                  , ExplicitShape(no-lower-bound(), IntVal("41"))
+                  , ExplicitShape(no-lower-bound(), IntVal("59"))
+                  , ExplicitShape(IntVal("2"), IntVal("6"))
+                  , ExplicitShape(no-lower-bound(), IntVal("5"))
                   ]
                 )
               , no-list()
@@ -41,14 +41,14 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "bar"
               , ArraySpec(
                   AssumedSize(
-                    [ExplicitShape(IntLiteralConstant("2", no-kind()), IntLiteralConstant("6", no-kind()))]
-                  , IntLiteralConstant("5", no-kind())
+                    [ExplicitShape(IntVal("2"), IntVal("6"))]
+                  , IntVal("5")
                   )
                 )
               , no-list()
@@ -60,15 +60,13 @@ Program(
           )
         , TypeDeclarationStmt(
             "3"
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "truth"
               , ArraySpec(
                   AssumedSize(
-                    [ ExplicitShape(no-lower-bound(), IntLiteralConstant("31", no-kind()))
-                    , ExplicitShape(no-lower-bound(), IntLiteralConstant("41", no-kind()))
-                    ]
+                    [ExplicitShape(no-lower-bound(), IntVal("31")), ExplicitShape(no-lower-bound(), IntVal("41"))]
                   , no-lower-bound()
                   )
                 )
@@ -81,13 +79,11 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "beauty"
-              , ArraySpec(
-                  [AssumedShape(IntLiteralConstant("31", no-kind())), AssumedShape(IntLiteralConstant("41", no-kind()))]
-                )
+              , ArraySpec([AssumedShape(IntVal("31")), AssumedShape(IntVal("41"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -97,7 +93,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "ugly"

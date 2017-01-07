@@ -9,7 +9,7 @@ Program(
           , no-type-spec()
           , [ Allocation(
                 DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-              , [AllocateShapeSpec(no-lower-bound(), IntLiteralConstant("3", no-kind()))]
+              , [AllocateShapeSpec(no-lower-bound(), IntVal("3"))]
               , no-list()
               )
             ]
@@ -21,7 +21,7 @@ Program(
           , no-type-spec()
           , [ Allocation(
                 DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-              , [AllocateShapeSpec(IntLiteralConstant("3", no-kind()), IntLiteralConstant("5", no-kind()))]
+              , [AllocateShapeSpec(IntVal("3"), IntVal("5"))]
               , no-list()
               )
             ]

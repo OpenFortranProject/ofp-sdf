@@ -32,7 +32,7 @@ Program(
           , [ Allocation(
                 DataRef([PartRef("T", no-section-subscripts(), no-image-selector())])
               , no-list()
-              , AllocateCoarraySpec([AllocateCoshapeSpec(no-lower-bound(), IntLiteralConstant("3", no-kind()))], no-lower-bound())
+              , AllocateCoarraySpec([AllocateCoshapeSpec(no-lower-bound(), IntVal("3"))], no-lower-bound())
               )
             ]
           , no-list()
@@ -89,7 +89,7 @@ Program(
           , no-type-spec()
           , [ Allocation(
                 DataRef([PartRef("T", no-section-subscripts(), no-image-selector())])
-              , [AllocateShapeSpec(no-lower-bound(), IntLiteralConstant("9", no-kind()))]
+              , [AllocateShapeSpec(no-lower-bound(), IntVal("9"))]
               , no-list()
               )
             ]

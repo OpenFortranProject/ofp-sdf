@@ -13,12 +13,7 @@ Program(
                   , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
                   , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
                   ]
-                , IoImpliedDoControl(
-                    VarRef("i")
-                  , IntLiteralConstant("1", no-kind())
-                  , IntLiteralConstant("2", no-kind())
-                  , no-stride()
-                  )
+                , IoImpliedDoControl(VarRef("i"), IntVal("1"), IntVal("2"), no-stride())
                 )
               ]
             )
@@ -35,9 +30,9 @@ Program(
                   ]
                 , IoImpliedDoControl(
                     VarRef("i")
-                  , IntLiteralConstant("1", no-kind())
-                  , IntLiteralConstant("10", no-kind())
-                  , IntLiteralConstant("2", no-kind())
+                  , IntVal("1")
+                  , IntVal("10")
+                  , IntVal("2")
                   )
                 )
               ]

@@ -6,20 +6,14 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
-          , [EntityDecl(
-               "a"
-             , no-list()
-             , no-list()
-             , no-char-length()
-             , Init(IntLiteralConstant("1", no-kind()))
-             )]
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), Init(IntVal("1")))]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([POINTER()])
           , [ EntityDecl(
                 "b"

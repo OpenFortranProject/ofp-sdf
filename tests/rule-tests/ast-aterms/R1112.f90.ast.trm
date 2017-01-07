@@ -8,7 +8,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl("this", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("that", no-list(), no-list(), no-char-length(), no-init())

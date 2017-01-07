@@ -25,7 +25,7 @@ Program(
           , DataRef(
               [PartRef("x", no-section-subscripts(), no-image-selector()), PartRef("im", no-section-subscripts(), no-image-selector())]
             )
-          , RealLiteralConstant("0.0", no-kind())
+          , RealVal("0.0")
           , eos("\n\n")
           )
         ]

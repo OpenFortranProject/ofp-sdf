@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([ALLOCATABLE()])
           , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
@@ -29,7 +29,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("4", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("4")), no-kind())))
           , no-list()
           , [EntityDecl("blah", no-list(), no-list(), no-char-length(), Init("\"blah\""))]
           , eos("\n\n")
@@ -53,7 +53,7 @@ Program(
           )
         , AllocateStmt(
             no-label()
-          , INTEGER(no-kind())
+          , INTEGER()
           , [ Allocation(
                 DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
               , no-list()
@@ -95,10 +95,10 @@ Program(
             , Allocation(
                 DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
               , [ AllocateShapeSpec(
-                    UnaryMinus(IntLiteralConstant("3", no-kind()))
+                    UnaryMinus(IntVal("3"))
                   , DataRef([PartRef("M", no-section-subscripts(), no-image-selector())])
                   )
-                , AllocateShapeSpec(IntLiteralConstant("0", no-kind()), IntLiteralConstant("9", no-kind()))
+                , AllocateShapeSpec(IntVal("0"), IntVal("9"))
                 ]
               , no-list()
               )

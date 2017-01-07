@@ -6,33 +6,21 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PARAMETER()])
-          , [EntityDecl(
-               "foo"
-             , no-list()
-             , no-list()
-             , no-char-length()
-             , Init(IntLiteralConstant("8", no-kind()))
-             )]
+          , [EntityDecl("foo", no-list(), no-list(), no-char-length(), Init(IntVal("8")))]
           , eos("\n\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , IntrinsicType(INTEGER(Kind(IntVal("4"))))
           , comma-list([PARAMETER()])
-          , [EntityDecl(
-               "i"
-             , no-list()
-             , no-list()
-             , no-char-length()
-             , Init(IntLiteralConstant("4", no-kind()))
-             )]
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), Init(IntVal("4")))]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , IntrinsicType(INTEGER(Kind(IntVal("4"))))
           , no-list()
           , [EntityDecl("p", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -40,7 +28,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(
-              INTEGER(KindSelector(DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())])))
+              INTEGER(Kind(DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())])))
             )
           , no-list()
           , [EntityDecl("bar", no-list(), no-list(), no-char-length(), no-init())]
@@ -48,7 +36,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("8", no-kind()))))
+          , IntrinsicType(INTEGER(Kind(IntVal("8"))))
           , no-list()
           , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -57,9 +45,9 @@ Program(
             no-label()
           , IntrinsicType(
               INTEGER(
-                KindSelector(
+                Kind(
                   DataRef(
-                    [PartRef("KIND", paren-list([IntLiteralConstant("4", no-kind())]), no-image-selector())]
+                    [PartRef("KIND", paren-list([IntVal("4")]), no-image-selector())]
                   )
                 )
               )
@@ -71,7 +59,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(
-              INTEGER(KindSelector(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])))
+              INTEGER(Kind(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])))
             )
           , no-list()
           , [EntityDecl("m", no-list(), no-list(), no-char-length(), no-init())]
@@ -81,7 +69,7 @@ Program(
             no-label()
           , IntrinsicType(
               INTEGER(
-                KindSelector(
+                Kind(
                   DataRef(
                     [ PartRef(
                         "KIND"
@@ -100,7 +88,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(
-              INTEGER(KindSelector(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])))
+              INTEGER(Kind(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])))
             )
           , no-list()
           , [EntityDecl("o", no-list(), no-list(), no-char-length(), no-init())]
@@ -110,9 +98,9 @@ Program(
             no-label()
           , IntrinsicType(
               INTEGER(
-                KindSelector(
+                Kind(
                   DataRef(
-                    [PartRef("SELECTED_INT_KIND", paren-list([IntLiteralConstant("12", no-kind())]), no-image-selector())]
+                    [PartRef("SELECTED_INT_KIND", paren-list([IntVal("12")]), no-image-selector())]
                   )
                 )
               )
@@ -123,7 +111,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(KindSelector_STAR("4")))
+          , IntrinsicType(REAL(Kind(IntVal("4"))))
           , no-list()
           , [EntityDecl("q", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")

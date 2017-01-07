@@ -17,7 +17,7 @@ Program(
             , no-name()
             , GT(
                 DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
-              , IntLiteralConstant("0", no-kind())
+              , IntVal("0")
               )
             , eos("\n         ")
             )
@@ -29,28 +29,31 @@ Program(
                     [ AssignmentStmt(
                         no-label()
                       , DataRef([PartRef("NSQP", no-section-subscripts(), no-image-selector())])
-                      , FunctionReference(
-                          ProcedureDesignator("CEILING")
-                        , [ ActualArgSpec(
-                              no-keyword()
-                            , DataRef(
-                                [ PartRef(
-                                    "SQRT"
-                                  , paren-list(
-                                      [ DataRef(
-                                          [ PartRef(
-                                              "DBLE"
-                                            , paren-list([DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])])
-                                            , no-image-selector()
+                      , DataRef(
+                          [ PartRef(
+                              "CEILING"
+                            , paren-list(
+                                [ DataRef(
+                                    [ PartRef(
+                                        "SQRT"
+                                      , paren-list(
+                                          [ DataRef(
+                                              [ PartRef(
+                                                  "DBLE"
+                                                , paren-list([DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])])
+                                                , no-image-selector()
+                                                )
+                                              ]
                                             )
                                           ]
                                         )
-                                      ]
-                                    )
-                                  , no-image-selector()
+                                      , no-image-selector()
+                                      )
+                                    ]
                                   )
                                 ]
                               )
+                            , no-image-selector()
                             )
                           ]
                         )
@@ -72,7 +75,7 @@ Program(
             , no-name()
             , GT(
                 DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
-              , IntLiteralConstant("0", no-kind())
+              , IntVal("0")
               )
             , eos("\n         ")
             )

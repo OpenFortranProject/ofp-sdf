@@ -8,18 +8,13 @@ Program(
             no-label()
           , no-name()
           , "10"
-          , LoopControl(
-              VarRef("i")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
           , eos("\n   ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("2", no-kind())
+          , IntVal("2")
           , eos("\n")
           )
         , PrintStmt("10", STAR(), comma-list(["'end of do loop 10'"]), eos("\n\n! Test the outer-shared-do-construct\n"))
@@ -27,54 +22,39 @@ Program(
             no-label()
           , no-name()
           , "20"
-          , LoopControl(
-              VarRef("i")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
           , eos("! outer-shared-do-construct\n   ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("2", no-kind())
+          , IntVal("2")
           , eos("\n   ")
           )
         , LabelDoStmt(
             no-label()
           , no-name()
           , "20"
-          , LoopControl(
-              VarRef("j")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("j"), IntVal("1"), IntVal("10"), no-expr())
           , eos("! outer-shared-do-construct\n      ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("3", no-kind())
+          , IntVal("3")
           , eos("\n      ")
           )
         , LabelDoStmt(
             no-label()
           , no-name()
           , "20"
-          , LoopControl(
-              VarRef("k")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("k"), IntVal("1"), IntVal("10"), no-expr())
           , eos("! inner-shared-do-construct\n         ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("4", no-kind())
+          , IntVal("4")
           , eos("\n")
           )
         , PrintStmt("20", STAR(), comma-list(["\"end of do loop 20\""]), eos("\n\n"))

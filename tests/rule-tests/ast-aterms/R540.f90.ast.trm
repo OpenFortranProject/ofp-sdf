@@ -6,18 +6,16 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("10", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("10")), no-kind())))
           , no-list()
           , [EntityDecl("NAME", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list(
-              [Dimension(
-                 [ExplicitShape(IntLiteralConstant("0", no-kind()), IntLiteralConstant("9", no-kind()))]
-               )]
+              [Dimension([ExplicitShape(IntVal("0"), IntVal("9"))])]
             )
           , [EntityDecl("MILES", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
@@ -29,9 +27,9 @@ Program(
               , DataRef([PartRef("beauty", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("ugly", no-section-subscripts(), no-image-selector())])
               ]
-            , [ DataStmtValue(no-repeat(), RealLiteralConstant("3.14159", no-kind()))
-              , DataStmtValue(no-repeat(), RealLiteralConstant("2.81828", no-kind()))
-              , DataStmtValue(no-repeat(), IntLiteralConstant("6", no-kind()))
+            , [ DataStmtValue(no-repeat(), RealVal("3.14159"))
+              , DataStmtValue(no-repeat(), RealVal("2.81828"))
+              , DataStmtValue(no-repeat(), IntVal("6"))
               ]
             )
           , eos("\n")
@@ -40,7 +38,7 @@ Program(
             no-label()
           , DataStmtSet(
               [DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())])]
-            , [DataStmtValue(no-repeat(), IntLiteralConstant("3", no-kind()))]
+            , [DataStmtValue(no-repeat(), IntVal("3"))]
             )
           , eos("\n")
           )
@@ -52,8 +50,8 @@ Program(
               , DataRef([PartRef("that", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("theother", no-section-subscripts(), no-image-selector())])
               ]
-            , [ DataStmtValue(DataStmtRepeat("2"), IntLiteralConstant("3", no-kind()))
-              , DataStmtValue(DataStmtRepeat("2"), RealLiteralConstant("7.6", no-kind()))
+            , [ DataStmtValue(DataStmtRepeat("2"), IntVal("3"))
+              , DataStmtValue(DataStmtRepeat("2"), RealVal("7.6"))
               ]
             )
           , eos("\n\n! From NOTE 5.29\n")
@@ -67,7 +65,7 @@ Program(
               )
             , DataStmtSet(
                 [DataRef([PartRef("MILES", no-section-subscripts(), no-image-selector())])]
-              , [DataStmtValue(DataStmtRepeat("10"), IntLiteralConstant("0", no-kind()))]
+              , [DataStmtValue(DataStmtRepeat("10"), IntVal("0"))]
               )
             )
           , eos("\n\n")

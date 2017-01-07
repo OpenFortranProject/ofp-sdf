@@ -6,13 +6,13 @@ Program(
     , SpecAndExecPart(
         [ ReadStmt(
             no-label()
-          , io-control-spec-list(UNIT(IntLiteralConstant("10", no-kind())), no-list())
+          , io-control-spec-list(UNIT(IntVal("10")), no-list())
           , []
           , eos("\n")
           )
         , ReadStmt(
             no-label()
-          , io-control-spec-list(UNIT(IntLiteralConstant("10", no-kind())), FMT(STAR()), no-list())
+          , io-control-spec-list(UNIT(IntVal("10")), FMT(STAR()), no-list())
           , [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
             , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
             ]
@@ -20,7 +20,7 @@ Program(
           )
         , ReadFMTStmt(
             no-label()
-          , IntLiteralConstant("5", no-kind())
+          , "5"
           , comma-list(
               [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
@@ -34,14 +34,9 @@ Program(
           , FormatSpec(
               format-items(
                 format-items-first(
-                  E(
-                    IntLiteralConstant("2", no-kind())
-                  , IntLiteralConstant("16", no-kind())
-                  , IntLiteralConstant("3", no-kind())
-                  , no-e()
-                  )
+                  E(IntVal("2"), IntVal("16"), IntVal("3"), no-e())
                 )
-              , I(no-r(), IntLiteralConstant("5", no-kind()), no-m())
+              , I(no-r(), IntVal("5"), no-m())
               )
             , no-list()
             )

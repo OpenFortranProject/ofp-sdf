@@ -6,14 +6,14 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("y", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [EntityDecl("flag", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
@@ -28,7 +28,7 @@ Program(
           , [ CaseStmtBlock(
                 CaseStmt(
                   "11"
-                , paren-list([CaseValue(IntLiteralConstant("1", no-kind()))])
+                , paren-list([CaseValue(IntVal("1"))])
                 , no-name()
                 , eos("\n      ")
                 )
@@ -36,7 +36,41 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValueRange(IntVal("2"), IntVal("3"))])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntVal("2")
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              )
+            , CaseStmtBlock(
+                CaseStmt(
+                  no-label()
+                , paren-list([CaseValueRange(IntVal("5"), IntVal("8"))])
+                , no-name()
+                , eos("\n      ")
+                )
+              , Block(
+                  [ AssignmentStmt(
+                      no-label()
+                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
+                    , IntVal("8")
                     , eos("\n   ")
                     )
                   ]
@@ -46,47 +80,9 @@ Program(
                 CaseStmt(
                   no-label()
                 , paren-list(
-                    [CaseValueRange(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()))]
-                  )
-                , no-name()
-                , eos("\n      ")
-                )
-              , Block(
-                  [ AssignmentStmt(
-                      no-label()
-                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("2", no-kind())
-                    , eos("\n   ")
-                    )
-                  ]
-                )
-              )
-            , CaseStmtBlock(
-                CaseStmt(
-                  no-label()
-                , paren-list(
-                    [CaseValueRange(IntLiteralConstant("5", no-kind()), IntLiteralConstant("8", no-kind()))]
-                  )
-                , no-name()
-                , eos("\n      ")
-                )
-              , Block(
-                  [ AssignmentStmt(
-                      no-label()
-                    , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("8", no-kind())
-                    , eos("\n   ")
-                    )
-                  ]
-                )
-              )
-            , CaseStmtBlock(
-                CaseStmt(
-                  no-label()
-                , paren-list(
-                    [ CaseValueRange(IntLiteralConstant("10", no-kind()), IntLiteralConstant("12", no-kind()))
-                    , CaseValueRange(IntLiteralConstant("14", no-kind()), IntLiteralConstant("15", no-kind()))
-                    , CaseValue(IntLiteralConstant("22", no-kind()))
+                    [ CaseValueRange(IntVal("10"), IntVal("12"))
+                    , CaseValueRange(IntVal("14"), IntVal("15"))
+                    , CaseValue(IntVal("22"))
                     ]
                   )
                 , no-name()
@@ -96,7 +92,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("15", no-kind())
+                    , IntVal("15")
                     , eos("\n   ")
                     )
                   ]
@@ -105,7 +101,7 @@ Program(
             , CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValueRange(IntLiteralConstant("33", no-kind()), no-high())])
+                , paren-list([CaseValueRange(IntVal("33"), no-high())])
                 , no-name()
                 , eos("\n      ")
                 )
@@ -113,7 +109,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("33", no-kind())
+                    , IntVal("33")
                     , eos("\n   ")
                     )
                   ]
@@ -125,7 +121,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("0", no-kind())
+                    , IntVal("0")
                     , eos("\n")
                     )
                   ]
@@ -144,7 +140,7 @@ Program(
           , [ CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValueRange(no-low(), IntLiteralConstant("3", no-kind()))])
+                , paren-list([CaseValueRange(no-low(), IntVal("3"))])
                 , no-name()
                 , eos("\n      ")
                 )
@@ -152,7 +148,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("3", no-kind())
+                    , IntVal("3")
                     , eos("\n")
                     )
                   ]
@@ -201,14 +197,14 @@ Program(
             , no-name()
             , GT(
                 DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-              , IntLiteralConstant("2", no-kind())
+              , IntVal("2")
               )
             , eos("\n   ")
             )
           , [ CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValue(TRUE(no-kind()))])
+                , paren-list([CaseValue(TRUE())])
                 , no-name()
                 , eos("\n      ")
                 )
@@ -216,7 +212,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
-                    , TRUE(no-kind())
+                    , TRUE()
                     , eos("\n   ")
                     )
                   ]
@@ -228,7 +224,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
-                    , FALSE(no-kind())
+                    , FALSE()
                     , eos("\n")
                     )
                   ]
@@ -243,14 +239,14 @@ Program(
             , "my_case"
             , GT(
                 DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-              , IntLiteralConstant("2", no-kind())
+              , IntVal("2")
               )
             , eos("\n   ")
             )
           , [ CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValue(TRUE(no-kind()))])
+                , paren-list([CaseValue(TRUE())])
                 , "my_case"
                 , eos("\n      ")
                 )
@@ -258,7 +254,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
-                    , TRUE(no-kind())
+                    , TRUE()
                     , eos("\n   ")
                     )
                   ]
@@ -270,7 +266,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("flag", no-section-subscripts(), no-image-selector())])
-                    , FALSE(no-kind())
+                    , FALSE()
                     , eos("\n")
                     )
                   ]

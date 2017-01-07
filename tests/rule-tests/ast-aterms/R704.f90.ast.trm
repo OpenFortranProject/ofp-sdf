@@ -7,18 +7,15 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Power(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+          , Power(IntVal("1"), IntVal("2"))
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
           , Power(
-              IntLiteralConstant("1", no-kind())
-            , Power(
-                Parens(UnaryMinus(IntLiteralConstant("2", no-kind())))
-              , IntLiteralConstant("3", no-kind())
-              )
+              IntVal("1")
+            , Power(Parens(UnaryMinus(IntVal("2"))), IntVal("3"))
             )
           , eos("\n")
           )

@@ -22,7 +22,7 @@ Program(
           , [ Allocation(
                 DataRef([PartRef("A2", no-section-subscripts(), no-image-selector())])
               , no-list()
-              , AllocateCoarraySpec(no-list(), IntLiteralConstant("3", no-kind()))
+              , AllocateCoarraySpec(no-list(), IntVal("3"))
               )
             ]
           , no-list()
@@ -34,7 +34,7 @@ Program(
           , [ Allocation(
                 DataRef([PartRef("A3", no-section-subscripts(), no-image-selector())])
               , no-list()
-              , AllocateCoarraySpec([AllocateCoshapeSpec(no-lower-bound(), IntLiteralConstant("1", no-kind()))], no-lower-bound())
+              , AllocateCoarraySpec([AllocateCoshapeSpec(no-lower-bound(), IntVal("1"))], no-lower-bound())
               )
             ]
           , no-list()
@@ -47,10 +47,8 @@ Program(
                 DataRef([PartRef("A4", no-section-subscripts(), no-image-selector())])
               , no-list()
               , AllocateCoarraySpec(
-                  [ AllocateCoshapeSpec(no-lower-bound(), IntLiteralConstant("3", no-kind()))
-                  , AllocateCoshapeSpec(no-lower-bound(), IntLiteralConstant("13", no-kind()))
-                  ]
-                , IntLiteralConstant("4", no-kind())
+                  [AllocateCoshapeSpec(no-lower-bound(), IntVal("3")), AllocateCoshapeSpec(no-lower-bound(), IntVal("13"))]
+                , IntVal("4")
                 )
               )
             ]

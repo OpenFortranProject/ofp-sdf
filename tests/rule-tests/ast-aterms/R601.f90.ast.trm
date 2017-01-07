@@ -10,7 +10,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(INTEGER(no-kind()))
+              , IntrinsicType(INTEGER())
               , no-list()
               , [ComponentDecl("b", no-list(), no-list(), no-char-length(), no-init())]
               , eos("\n")
@@ -21,11 +21,11 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "a"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("2"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -43,24 +43,28 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [PartRef("a", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())]
+              [PartRef("a", paren-list([IntVal("1")]), no-image-selector())]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
-          , Substring(
-              DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "a"
+                , paren-list([Triplet(IntVal("1"), IntVal("2"), no-stride())])
+                , no-image-selector()
+                )
+              ]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
@@ -68,7 +72,7 @@ Program(
           , DataRef(
               [PartRef("c", no-section-subscripts(), no-image-selector()), PartRef("b", no-section-subscripts(), no-image-selector())]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n\n")
           )
         ]

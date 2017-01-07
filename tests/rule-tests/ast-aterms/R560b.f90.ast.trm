@@ -23,7 +23,7 @@ Program(
                 , no-implicit-part()
                 , [ TypeDeclarationStmt(
                       no-label()
-                    , IntrinsicType(INTEGER(no-kind()))
+                    , IntrinsicType(INTEGER())
                     , no-list()
                     , [EntityDecl("FUN", no-list(), no-list(), no-char-length(), no-init())]
                     , eos("! be declared explicitly\n      ")
@@ -52,7 +52,7 @@ Program(
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
-                , IntrinsicType(INTEGER(no-kind()))
+                , IntrinsicType(INTEGER())
                 , no-list()
                 , [ EntityDecl("JFUN", no-list(), no-list(), no-char-length(), no-init())
                   , EntityDecl("J", no-list(), no-list(), no-char-length(), no-init())
@@ -74,13 +74,13 @@ Program(
     , SpecAndExecPart(
         [ ImplicitStmt(
             no-label()
-          , [ImplicitSpec(IntrinsicType(COMPLEX(no-kind())), [LetterSpec("C", no-letter())])]
+          , [ImplicitSpec(IntrinsicType(COMPLEX()), [LetterSpec("C", no-letter())])]
           , eos("\n   ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("C", no-section-subscripts(), no-image-selector())])
-          , ComplexLiteralConstant(RealLiteralConstant("3.0", no-kind()), RealLiteralConstant("2.0", no-kind()))
+          , ComplexLiteralConstant(RealVal("3.0"), RealVal("2.0"))
           , eos("! C is implicitly declared COMPLEX\n!   ...\n")
           )
         ]
@@ -94,7 +94,7 @@ Program(
               [ ImplicitStmt(
                   no-label()
                 , [ ImplicitSpec(
-                      IntrinsicType(INTEGER(no-kind()))
+                      IntrinsicType(INTEGER())
                     , [LetterSpec("A", no-letter()), LetterSpec("C", no-letter())]
                     )
                   ]
@@ -103,25 +103,25 @@ Program(
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("C", no-section-subscripts(), no-image-selector())])
-                , ComplexLiteralConstant(RealLiteralConstant("0.0", no-kind()), RealLiteralConstant("0.0", no-kind()))
+                , ComplexLiteralConstant(RealVal("0.0"), RealVal("0.0"))
                 , eos("! C is host associated and of\n                      ! type complex\n      ")
                 )
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("Z", no-section-subscripts(), no-image-selector())])
-                , RealLiteralConstant("1.0", no-kind())
+                , RealVal("1.0")
                 , eos("! Z is implicitly declared REAL\n      ")
                 )
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
-                , IntLiteralConstant("2", no-kind())
+                , IntVal("2")
                 , eos("! A is implicitly declared INTEGER\n      ")
                 )
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("CC", no-section-subscripts(), no-image-selector())])
-                , IntLiteralConstant("1", no-kind())
+                , IntVal("1")
                 , eos("! CC is implicitly declared INTEGER\n! ...\n   ")
                 )
               ]
@@ -136,7 +136,7 @@ Program(
               [ AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("Z", no-section-subscripts(), no-image-selector())])
-                , RealLiteralConstant("2.0", no-kind())
+                , RealVal("2.0")
                 , eos("! Z is implicitly declared REAL and\n                      ! is different from the variable of\n                      ! the same name in SUB1\n!      ...\n   ")
                 )
               ]
@@ -154,9 +154,13 @@ Program(
               [ AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("Q", no-section-subscripts(), no-image-selector())])
-                , FunctionReference(
-                    ProcedureDesignator("FUN")
-                  , [ActualArgSpec(no-keyword(), DataRef([PartRef("K", no-section-subscripts(), no-image-selector())]))]
+                , DataRef(
+                    [ PartRef(
+                        "FUN"
+                      , paren-list([DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])])
+                      , no-image-selector()
+                      )
+                    ]
                   )
                 , eos("! Q is implicitly declared REAL and\n!      ...                ! K is implicitly declared INTEGER\n   ")
                 )

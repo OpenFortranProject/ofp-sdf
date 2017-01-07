@@ -7,12 +7,7 @@ Program(
         [ NonlabelDoStmt(
             no-label()
           , no-name()
-          , LoopControl(
-              VarRef("i")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
           , eos("\n")
           )
         , CycleStmt("20", no-name(), eos("\n"))
@@ -20,12 +15,7 @@ Program(
         , NonlabelDoStmt(
             no-label()
           , "my_do"
-          , LoopControl(
-              VarRef("i")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("10", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("10"), no-expr())
           , eos("\n   ")
           )
         , CycleStmt(no-label(), "my_do", eos("\n"))

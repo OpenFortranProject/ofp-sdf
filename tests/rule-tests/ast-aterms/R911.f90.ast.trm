@@ -6,25 +6,21 @@ Program(
     , SpecAndExecPart(
         [ WriteStmt(
             no-label()
-          , io-control-spec-list(UNIT(IntLiteralConstant("5", no-kind())), no-list())
+          , io-control-spec-list(UNIT(IntVal("5")), no-list())
+          , []
+          , eos("\n")
+          )
+        , WriteStmt(
+            no-label()
+          , io-control-spec-list(UNIT(IntVal("6")), FMT("10"), no-list())
           , []
           , eos("\n")
           )
         , WriteStmt(
             no-label()
           , io-control-spec-list(
-              UNIT(IntLiteralConstant("6", no-kind()))
-            , FMT(IntLiteralConstant("10", no-kind()))
-            , no-list()
-            )
-          , []
-          , eos("\n")
-          )
-        , WriteStmt(
-            no-label()
-          , io-control-spec-list(
-              UNIT(IntLiteralConstant("6", no-kind()))
-            , FMT(IntLiteralConstant("10", no-kind()))
+              UNIT(IntVal("6"))
+            , FMT("10")
             , comma-list([ASYNCHRONOUS("\"YES\"")])
             )
           , [DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])]
@@ -33,10 +29,8 @@ Program(
         , WriteStmt(
             no-label()
           , io-control-spec-list(
-              UNIT(IntLiteralConstant("5", no-kind()))
-            , comma-list(
-                [DECIMAL("\"point\""), ERR("12"), FMT(IntLiteralConstant("10", no-kind()))]
-              )
+              UNIT(IntVal("5"))
+            , comma-list([DECIMAL("\"point\""), ERR("12"), FMT("10")])
             )
           , [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
             , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
@@ -46,16 +40,13 @@ Program(
           )
         , WriteStmt(
             no-label()
-          , io-control-spec-list([ERR("12"), UNIT(IntLiteralConstant("5", no-kind()))])
+          , io-control-spec-list([ERR("12"), UNIT(IntVal("5"))])
           , []
           , eos("\n\n")
           )
         , FormatStmt(
             "10"
-          , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("5", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(I(no-r(), IntVal("5"), no-m())), no-list())
           , eos("\n")
           )
         ]

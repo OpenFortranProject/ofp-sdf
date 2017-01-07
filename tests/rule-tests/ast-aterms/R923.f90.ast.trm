@@ -1,21 +1,37 @@
 Program(
-  "!! R923 backspace-stmt\n!    is  BACKSPACE file-unit-number\n!    or  BACKSPACE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
+  "!! R923 wait-spec\n!    is [ UNIT = ] file-unit-number\n!    or END = label\n!    or EOR = label\n!    or ERR = label\n!    or ID = scalar-int-expr\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
-        [ backspace-unit-stmt(no-label(), IntLiteralConstant("10", no-kind()), eos("\n"))
-        , BackspaceStmt(
+        [ TypeDeclarationStmt(
             no-label()
-          , [ UNIT(IntLiteralConstant("10", no-kind()))
-            , IOSTAT(DataRef([PartRef("n", no-section-subscripts(), no-image-selector())]))
+          , IntrinsicType(CHARACTER())
+          , no-list()
+          , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , WaitStmt(
+            "10"
+          , [UNIT(IntVal("5")), END("99")]
+          , eos("\n    ")
+          )
+        , WaitStmt(
+            no-label()
+          , [ ID(DataRef([PartRef("ivar", no-section-subscripts(), no-image-selector())]))
+            , IOMSG(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+            , ERR("314")
+            , EOR("99")
+            , END("10")
+            , UNIT(IntVal("6"))
             ]
           , eos("\n\n")
           )
+        , ContinueStmt("314", eos("\n"))
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt("99", no-program-name(), eos("\n"))
     )
   ]
 )

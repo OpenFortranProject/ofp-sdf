@@ -7,7 +7,7 @@ Program(
         [ ImplicitStmt(
             "10"
           , [ ImplicitSpec(
-                IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+                IntrinsicType(INTEGER(Kind(IntVal("4"))))
               , [LetterSpec("i", no-letter())]
               )
             ]
@@ -24,15 +24,15 @@ Program(
         , ImplicitStmt(
             no-label()
           , [ ImplicitSpec(
-                IntrinsicType(INTEGER(no-kind()))
+                IntrinsicType(INTEGER())
               , [LetterSpec("i", no-letter()), LetterSpec("j", no-letter())]
               )
             , ImplicitSpec(
-                IntrinsicType(REAL(no-kind()))
+                IntrinsicType(REAL())
               , [LetterSpec("k", no-letter()), LetterSpec("l", no-letter()), LetterSpec("m", no-letter())]
               )
             , ImplicitSpec(
-                IntrinsicType(INTEGER(no-kind()))
+                IntrinsicType(INTEGER())
               , [LetterSpec("s", "w"), LetterSpec("z", no-letter())]
               )
             ]
@@ -40,7 +40,7 @@ Program(
           )
         , ImplicitStmt(
             no-label()
-          , [ImplicitSpec(IntrinsicType(REAL(no-kind())), [LetterSpec("a", no-letter())])]
+          , [ImplicitSpec(IntrinsicType(REAL()), [LetterSpec("a", no-letter())])]
           , eos("\n\n")
           )
         ]

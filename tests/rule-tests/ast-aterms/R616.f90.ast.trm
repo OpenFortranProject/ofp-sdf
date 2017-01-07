@@ -24,7 +24,7 @@ Program(
             no-label()
           , DataRef([PartRef("z", no-section-subscripts(), no-image-selector())])
           , DataRef(
-              [ PartRef("b", paren-list([IntLiteralConstant("10", no-kind())]), no-image-selector())
+              [ PartRef("b", paren-list([IntVal("10")]), no-image-selector())
               , PartRef("kind", no-section-subscripts(), no-image-selector())
               ]
             )
@@ -57,7 +57,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [ PartRef("b", paren-list([IntLiteralConstant("10", no-kind())]), no-image-selector())
+              [ PartRef("b", paren-list([IntVal("10")]), no-image-selector())
               , PartRef("kind", no-section-subscripts(), no-image-selector())
               ]
             )

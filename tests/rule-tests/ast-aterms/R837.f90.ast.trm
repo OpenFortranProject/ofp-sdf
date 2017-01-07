@@ -8,12 +8,12 @@ Program(
             "13"
           , LT(
               DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("13", no-kind())
+            , IntVal("13")
             )
           , AssignmentStmt(
               no-label()
             , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("13", no-kind())
+            , IntVal("13")
             , eos("\n   ")
             )
           )
@@ -21,12 +21,12 @@ Program(
             no-label()
           , NE(
               DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("14", no-kind())
+            , IntVal("14")
             )
           , AssignmentStmt(
               no-label()
             , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("14", no-kind())
+            , IntVal("14")
             , eos("\n\n")
             )
           )

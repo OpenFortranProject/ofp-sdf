@@ -1,16 +1,47 @@
 Program(
-  "!! R455 binding-attr\n!    is PASS [ (arg-name ) ]\n!    or NOPASS\n!    or NON OVERRIDABLE\n!    or DEFERRED\n!    or access-spec\n!\n"
+  "!! R455 structure-constructor\n!    is derived-type-spec ( [ component-spec-list ] )\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
-            DerivedTypeStmt(no-label(), no-list(), "truth", no-list(), eos("\n!TODO-F08 contains\n!TODO-F08 \tprocedure, nopass, deferred :: foo\n!TODO-F08 \tprocedure, private, nopass :: beauty\n!TODO-F08 \tprocedure, non_overridable :: ugly\n!TODO-F08 \tprocedure, pass :: lies\n!TODO-F08 \tprocedure, pass (woohoo) :: bar\n!TODO-F08 \tprocedure, public :: that\n!TODO-F08 \tprocedure, private :: theother\n"))
+            DerivedTypeStmt(no-label(), no-list(), "point", no-list(), eos("\n  "))
           , []
           , []
-          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ ComponentDecl("i", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("j", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n")
+              )
+            ]
           , no-type-bound-procedure-part()
-          , EndTypeStmt(no-label(), "truth", eos("\n"))
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("POINT", no-list()))
+          , no-list()
+          , [ EntityDecl(
+                "PV"
+              , no-list()
+              , no-list()
+              , no-char-length()
+              , Init(
+                  DataRef(
+                    [PartRef(
+                       "POINT"
+                     , paren-list([RealVal("1.0"), RealVal("2.0")])
+                     , no-image-selector()
+                     )]
+                  )
+                )
+              )
+            ]
+          , eos("\n\n")
           )
         ]
       )

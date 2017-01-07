@@ -6,10 +6,8 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
-          , comma-list(
-              [Dimension([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])]
-            )
+          , IntrinsicType(REAL())
+          , comma-list([Dimension([ExplicitShape(no-lower-bound(), IntVal("10"))])])
           , [ EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("Y", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("Z", no-list(), no-list(), no-char-length(), no-init())
@@ -18,7 +16,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("4", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("4")), no-kind())))
           , no-list()
           , [ EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
@@ -27,11 +25,11 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("3", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("3")), no-kind())))
           , no-list()
           , [ EntityDecl(
                 "C"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("2"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -43,18 +41,17 @@ Program(
             "10"
           , [ equivalence-set-list(
                 DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-              , [ DataRef(
-                    [PartRef("b", paren-list([IntLiteralConstant("3", no-kind())]), no-image-selector())]
-                  )
-                ]
+              , [DataRef(
+                   [PartRef("b", paren-list([IntVal("3")]), no-image-selector())]
+                 )]
               )
             , equivalence-set-list(
                 DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
               , [ DataRef(
-                    [PartRef("y", paren-list([IntLiteralConstant("2", no-kind())]), no-image-selector())]
+                    [PartRef("y", paren-list([IntVal("2")]), no-image-selector())]
                   )
                 , DataRef(
-                    [PartRef("z", paren-list([IntLiteralConstant("4", no-kind())]), no-image-selector())]
+                    [PartRef("z", paren-list([IntVal("4")]), no-image-selector())]
                   )
                 ]
               )
@@ -65,17 +62,15 @@ Program(
             no-label()
           , [ equivalence-set-list(
                 DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
-              , [ DataRef(
-                    [PartRef("C", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())]
-                  )
-                ]
+              , [DataRef(
+                   [PartRef("C", paren-list([IntVal("1")]), no-image-selector())]
+                 )]
               )
             , equivalence-set-list(
                 DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
-              , [ DataRef(
-                    [PartRef("C", paren-list([IntLiteralConstant("2", no-kind())]), no-image-selector())]
-                  )
-                ]
+              , [DataRef(
+                   [PartRef("C", paren-list([IntVal("2")]), no-image-selector())]
+                 )]
               )
             ]
           , eos("\n\n")

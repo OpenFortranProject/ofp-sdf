@@ -6,11 +6,11 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [ EntityDecl(
                 "a"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("12", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("12"))])
               , no-list()
               , no-char-length()
               , no-init()

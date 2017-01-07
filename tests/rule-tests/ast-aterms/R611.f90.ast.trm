@@ -10,7 +10,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(INTEGER(no-kind()))
+              , IntrinsicType(INTEGER())
               , no-list()
               , [ComponentDecl("c", no-list(), no-list(), no-char-length(), no-init())]
               , eos("\n")
@@ -52,7 +52,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("lhs_c", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")

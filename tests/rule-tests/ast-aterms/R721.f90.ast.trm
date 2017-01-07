@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())

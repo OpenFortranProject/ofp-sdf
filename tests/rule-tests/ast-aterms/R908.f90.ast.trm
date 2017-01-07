@@ -6,14 +6,10 @@ Program(
     , SpecAndExecPart(
         [ CloseStmt(
             no-label()
-          , [UNIT(IntLiteralConstant("1", no-kind())), ERR("10")]
+          , [UNIT(IntVal("1")), ERR("10")]
           , eos("\n")
           )
-        , CloseStmt(
-            no-label()
-          , [UNIT(IntLiteralConstant("2", no-kind()))]
-          , eos("\n\n")
-          )
+        , CloseStmt(no-label(), [UNIT(IntVal("2"))], eos("\n\n"))
         ]
       )
     , no-subprogram-part()

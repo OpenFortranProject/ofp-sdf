@@ -9,8 +9,8 @@ Program(
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
           , ArrayConstructor(
               AcSpec(
-                type-spec-colon(REAL(no-kind()))
-              , [RealLiteralConstant("3.1", no-kind()), RealLiteralConstant("4.1", no-kind()), RealLiteralConstant("5.9265", no-kind())]
+                type-spec-colon(REAL())
+              , [RealVal("3.1"), RealVal("4.1"), RealVal("5.9265")]
               )
             )
           , eos("\n\n! Test of ac-implied-do\n")
@@ -23,12 +23,7 @@ Program(
                 no-type-spec()
               , [ AcImpliedDo(
                     [DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])]
-                  , AcImpliedDoControl(
-                      VarRef("I")
-                    , IntLiteralConstant("1", no-kind())
-                    , IntLiteralConstant("1075", no-kind())
-                    , no-expr()
-                    )
+                  , AcImpliedDoControl(VarRef("I"), IntVal("1"), IntVal("1075"), no-expr())
                   )
                 ]
               )
@@ -48,18 +43,17 @@ Program(
                     )
                   )
                 )
-              , [ RealLiteralConstant("3.6", no-kind())
+              , [ RealVal("3.6")
                 , AcImpliedDo(
-                    [ Div(
-                        RealLiteralConstant("3.6", no-kind())
-                      , DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
-                      )
-                    ]
+                    [Div(
+                       RealVal("3.6")
+                     , DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                     )]
                   , AcImpliedDoControl(
                       VarRef("I")
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
-                    , opt-expr(IntLiteralConstant("2", no-kind()))
+                    , opt-expr(IntVal("2"))
                     )
                   )
                 ]

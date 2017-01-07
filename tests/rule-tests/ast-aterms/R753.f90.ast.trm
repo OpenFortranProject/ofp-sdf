@@ -10,24 +10,9 @@ Program(
             , no-name()
             , ForallHeader(
                 no-type-spec()
-              , [ ForallTripletSpec(
-                    "ii"
-                  , IntLiteralConstant("1", no-kind())
-                  , IntLiteralConstant("10", no-kind())
-                  , no-forall-step()
-                  )
-                , ForallTripletSpec(
-                    "jj"
-                  , IntLiteralConstant("1", no-kind())
-                  , IntLiteralConstant("10", no-kind())
-                  , no-forall-step()
-                  )
-                , ForallTripletSpec(
-                    "kk"
-                  , IntLiteralConstant("4", no-kind())
-                  , IntLiteralConstant("8", no-kind())
-                  , no-forall-step()
-                  )
+              , [ ForallTripletSpec("ii", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("jj", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("kk", IntVal("4"), IntVal("8"), no-forall-step())
                 ]
               , no-mask-expr()
               )
@@ -44,7 +29,7 @@ Program(
                 no-type-spec()
               , [ ForallTripletSpec(
                     "ii"
-                  , IntLiteralConstant("1", no-kind())
+                  , IntVal("1")
                   , DataRef([PartRef("nn", no-section-subscripts(), no-image-selector())])
                   , no-forall-step()
                   )
@@ -64,9 +49,9 @@ Program(
                 no-type-spec()
               , [ ForallTripletSpec(
                     "ii"
-                  , IntLiteralConstant("1", no-kind())
+                  , IntVal("1")
                   , DataRef([PartRef("nn", no-section-subscripts(), no-image-selector())])
-                  , colon-forall-step(IntLiteralConstant("5", no-kind()))
+                  , colon-forall-step(IntVal("5"))
                   )
                 ]
               , no-mask-expr()
@@ -84,15 +69,15 @@ Program(
                 no-type-spec()
               , [ ForallTripletSpec(
                     "ii"
-                  , IntLiteralConstant("1", no-kind())
-                  , IntLiteralConstant("30", no-kind())
+                  , IntVal("1")
+                  , IntVal("30")
                   , colon-forall-step(DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))
                   )
                 , ForallTripletSpec(
                     "jj"
                   , DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])
-                  , IntLiteralConstant("5", no-kind())
-                  , colon-forall-step(IntLiteralConstant("3", no-kind()))
+                  , IntVal("5")
+                  , colon-forall-step(IntVal("3"))
                   )
                 ]
               , no-mask-expr()

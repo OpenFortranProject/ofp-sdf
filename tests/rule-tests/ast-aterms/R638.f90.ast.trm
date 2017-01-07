@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([POINTER()])
           , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())

@@ -12,16 +12,13 @@ Program(
           )
         , WriteStmt(
             no-label()
-          , io-control-spec-list(UNIT(IntLiteralConstant("6", no-kind())), FMT(STAR()), no-list())
+          , io-control-spec-list(UNIT(IntVal("6")), FMT(STAR()), no-list())
           , [DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])]
           , eos("\n")
           )
         , WriteStmt(
             no-label()
-          , io-control-spec-list(
-              UNIT(IntLiteralConstant("10", no-kind()))
-            , comma-list([FMT(STAR())])
-            )
+          , io-control-spec-list(UNIT(IntVal("10")), comma-list([FMT(STAR())]))
           , [DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])]
           , eos("\n")
           )
@@ -45,13 +42,13 @@ Program(
         , WriteStmt(
             no-label()
           , io-control-spec-list(
-              UNIT(IntLiteralConstant("10", no-kind()))
+              UNIT(IntVal("10"))
             , comma-list(
                 [ ERR("999")
                 , IOSTAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))
                 , ADVANCE("\"yes\"")
-                , REC(IntLiteralConstant("2", no-kind()))
-                , FMT(IntLiteralConstant("10", no-kind()))
+                , REC(IntVal("2"))
+                , FMT("10")
                 ]
               )
             )
@@ -60,10 +57,7 @@ Program(
           )
         , FormatStmt(
             "10"
-          , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("3", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(I(no-r(), IntVal("3"), no-m())), no-list())
           , eos("\n\n")
           )
         ]

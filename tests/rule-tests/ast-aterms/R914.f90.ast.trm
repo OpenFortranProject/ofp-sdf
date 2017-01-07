@@ -12,7 +12,7 @@ Program(
           )
         , PrintStmt(
             no-label()
-          , IntLiteralConstant("10", no-kind())
+          , "10"
           , comma-list([DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])])
           , eos("\n")
           )
@@ -24,10 +24,7 @@ Program(
           )
         , FormatStmt(
             "10"
-          , FormatSpec(
-              format-items-first(I(no-r(), IntLiteralConstant("5", no-kind()), no-m()))
-            , no-list()
-            )
+          , FormatSpec(format-items-first(I(no-r(), IntVal("5"), no-m())), no-list())
           , eos("\n\n")
           )
         ]

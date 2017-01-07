@@ -1,93 +1,50 @@
 Program(
-  "!! R444 component-array-spec\n!    is explicit-shape-spec -list\n!    or deferred-shape-spec -list\n!\n"
-, [ MainProgram(
-      no-program-stmt()
-    , initial-spec-part([], [])
-    , SpecAndExecPart(
-        [ DerivedTypeDef(
-            DerivedTypeStmt(no-label(), no-list(), "ugly", no-list(), eos("\n\t"))
+  "!! R444 private-components-stmt\n!    is PRIVATE\n!\n! From Note 4.41\n!\n"
+, [ Module(
+      ModuleStmt(no-label(), "whut", eos("\n\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "POINT", no-list(), eos("\n"))
           , []
-          , []
+          , [PrivateComponentsStmt("13", eos("\n    "))]
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(REAL(no-kind()))
+              , IntrinsicType(REAL())
               , no-list()
-              , [ComponentDecl("truth", ArraySpec([DeferredShape()]), no-list(), no-char-length(), no-init())]
-              , eos("\n\t")
-              )
-            , DataComponentDefStmt(
-                no-label()
-              , IntrinsicType(REAL(no-kind()))
-              , no-list()
-              , [ ComponentDecl(
-                    "beauty"
-                  , ArraySpec([DeferredShape(), DeferredShape(), DeferredShape(), DeferredShape(), DeferredShape()])
-                  , no-list()
-                  , no-char-length()
-                  , no-init()
-                  )
-                ]
-              , eos("\n    ")
-              )
-            , DataComponentDefStmt(
-                no-label()
-              , IntrinsicType(INTEGER(no-kind()))
-              , no-list()
-              , [ ComponentDecl(
-                    "foo"
-                  , ArraySpec(
-                      [ ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))
-                      , ExplicitShape(no-lower-bound(), IntLiteralConstant("3", no-kind()))
-                      , ExplicitShape(no-lower-bound(), IntLiteralConstant("4", no-kind()))
-                      , ExplicitShape(no-lower-bound(), DataRef([PartRef("a", no-section-subscripts(), no-image-selector())]))
-                      , ExplicitShape(no-lower-bound(), DataRef([PartRef("x", no-section-subscripts(), no-image-selector())]))
-                      ]
-                    )
-                  , no-list()
-                  , no-char-length()
-                  , no-init()
-                  )
-                ]
-              , eos("\n    ")
-              )
-            , DataComponentDefStmt(
-                no-label()
-              , IntrinsicType(REAL(no-kind()))
-              , no-list()
-              , [ ComponentDecl(
-                    "bar"
-                  , ArraySpec(
-                      [ExplicitShape(no-lower-bound(), DataRef([PartRef("y", no-section-subscripts(), no-image-selector())]))]
-                    )
-                  , no-list()
-                  , no-char-length()
-                  , no-init()
-                  )
-                ]
-              , eos("\n    ")
-              )
-            , DataComponentDefStmt(
-                no-label()
-              , IntrinsicType(REAL(no-kind()))
-              , no-list()
-              , [ ComponentDecl(
-                    "lies"
-                  , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("8", no-kind()))])
-                  , no-list()
-                  , no-char-length()
-                  , no-init()
-                  )
+              , [ ComponentDecl("X", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("Y", no-list(), no-list(), no-char-length(), no-init())
                 ]
               , eos("\n")
               )
             ]
           , no-type-bound-procedure-part()
-          , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
+          , EndTypeStmt(no-label(), "POINT", eos("\n\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt("14", no-list(), "Whoot", no-list(), eos("\n  "))
+          , []
+          , [PrivateComponentsStmt(no-label(), eos("\n"))]
+          , [ DataComponentDefStmt(
+                "15"
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ ComponentDecl("i", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("j", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("k", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt("16", no-name(), eos("\n\n"))
           )
         ]
       )
-    , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , ModuleSubprogramPart(ContainsStmt("17", eos("\n\n")), [])
+    , EndModuleStmt("18", no-module-name(), eos("\n"))
     )
   ]
 )

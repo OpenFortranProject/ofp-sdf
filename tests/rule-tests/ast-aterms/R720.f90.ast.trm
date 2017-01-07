@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
@@ -16,7 +16,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , OR(TRUE(no-kind()), FALSE(no-kind()))
+          , OR(TRUE(), FALSE())
           , eos("\n")
           )
         , AssignmentStmt(
@@ -27,7 +27,7 @@ Program(
                 DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
               )
-            , NOT(FALSE(no-kind()))
+            , NOT(FALSE())
             )
           , eos("\n\n")
           )

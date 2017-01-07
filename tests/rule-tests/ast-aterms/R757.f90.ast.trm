@@ -6,11 +6,11 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "A"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -24,12 +24,7 @@ Program(
             , no-name()
             , ForallHeader(
                 no-type-spec()
-              , [ForallTripletSpec(
-                   "i"
-                 , IntLiteralConstant("1", no-kind())
-                 , IntLiteralConstant("10", no-kind())
-                 , no-forall-step()
-                 )]
+              , [ForallTripletSpec("i", IntVal("1"), IntVal("10"), no-forall-step())]
               , no-mask-expr()
               )
             , eos("\n  ")
@@ -44,7 +39,7 @@ Program(
                     )
                   ]
                 )
-              , IntLiteralConstant("13", no-kind())
+              , IntVal("13")
               , eos("\n")
               )
             ]

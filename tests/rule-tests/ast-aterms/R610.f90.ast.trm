@@ -7,60 +7,71 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Substring(
-              DataRef(
-                [PartRef("b", paren-list([IntLiteralConstant("3", no-kind())]), no-image-selector())]
-              )
-            , SubstringRange(no-lower-bound(), no-upper-bound())
+          , DataRef(
+              [ PartRef(
+                  "b"
+                , substring-section-range([IntVal("3")], SubstringRange(no-lower-bound(), no-upper-bound()))
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Substring(
-              DataRef(
-                [PartRef("b", paren-list([IntLiteralConstant("3", no-kind())]), no-image-selector())]
-              )
-            , SubstringRange(IntLiteralConstant("1", no-kind()), no-upper-bound())
+          , DataRef(
+              [ PartRef(
+                  "b"
+                , substring-section-range([IntVal("3")], SubstringRange(IntVal("1"), no-upper-bound()))
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Substring(
-              DataRef(
-                [PartRef("b", paren-list([IntLiteralConstant("3", no-kind())]), no-image-selector())]
-              )
-            , SubstringRange(no-lower-bound(), IntLiteralConstant("2", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "b"
+                , substring-section-range([IntVal("3")], SubstringRange(no-lower-bound(), IntVal("2")))
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Substring(
-              DataRef(
-                [PartRef("b", paren-list([IntLiteralConstant("3", no-kind())]), no-image-selector())]
-              )
-            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "b"
+                , substring-section-range(
+                    [IntVal("3")]
+                  , SubstringRange(IntVal("1"), IntVal("2"))
+                  )
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Substring(
-              DataRef(
-                [ PartRef(
-                    "z"
-                  , paren-list([IntLiteralConstant("3", no-kind())])
-                  , ImageSelector([IntLiteralConstant("13", no-kind())])
+          , DataRef(
+              [ PartRef(
+                  "z"
+                , paren-list([IntVal("3")])
+                , substring-section-range(
+                    ImageSelector([IntVal("13")])
+                  , SubstringRange(IntVal("1"), IntVal("2"))
                   )
-                ]
-              )
-            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
+                )
+              ]
             )
           , eos("\n\n")
           )

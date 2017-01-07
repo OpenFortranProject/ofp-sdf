@@ -18,7 +18,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , eos("\n")
                     )
                   ]
@@ -30,7 +30,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("2", no-kind())
+                    , IntVal("2")
                     , eos("\n")
                     )
                   ]
@@ -42,7 +42,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("3", no-kind())
+                    , IntVal("3")
                     , eos("\n")
                     )
                   ]
@@ -65,7 +65,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , eos("\n")
                     )
                   ]
@@ -77,7 +77,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("2", no-kind())
+                    , IntVal("2")
                     , eos("\n")
                     )
                   ]
@@ -89,7 +89,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("3", no-kind())
+                    , IntVal("3")
                     , eos("\n")
                     )
                   ]
@@ -112,7 +112,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , eos("\n")
                     )
                   ]
@@ -124,7 +124,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("2", no-kind())
+                    , IntVal("2")
                     , eos("\n")
                     )
                   ]
@@ -136,7 +136,7 @@ Program(
                   [ AssignmentStmt(
                       no-label()
                     , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                    , IntLiteralConstant("3", no-kind())
+                    , IntVal("3")
                     , eos("\n")
                     )
                   ]

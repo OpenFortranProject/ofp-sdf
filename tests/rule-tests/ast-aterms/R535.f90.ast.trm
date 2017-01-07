@@ -11,9 +11,9 @@ Program(
               , DataRef([PartRef("beauty", no-section-subscripts(), no-image-selector())])
               , DataRef([PartRef("ugly", no-section-subscripts(), no-image-selector())])
               ]
-            , [ DataStmtValue(no-repeat(), IntLiteralConstant("3", no-kind()))
-              , DataStmtValue(no-repeat(), IntLiteralConstant("14", no-kind()))
-              , DataStmtValue(no-repeat(), IntLiteralConstant("15", no-kind()))
+            , [ DataStmtValue(no-repeat(), IntVal("3"))
+              , DataStmtValue(no-repeat(), IntVal("14"))
+              , DataStmtValue(no-repeat(), IntVal("15"))
               ]
             )
           , eos("\n")
@@ -41,18 +41,18 @@ Program(
                         )
                       ]
                     , DataIDoVariable(VarRef("j"))
-                    , IntLiteralConstant("1", no-kind())
+                    , IntVal("1")
                     , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
                     , no-expr()
                     )
                   ]
                 , DataIDoVariable(VarRef("i"))
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("100", no-kind())
-                , opt-expr(FunctionReference(ProcedureDesignator("foo"), []))
+                , IntVal("1")
+                , IntVal("100")
+                , opt-expr(DataRef([PartRef("foo", function-ref-no-args(), no-image-selector())]))
                 )
               ]
-            , [DataStmtValue(DataStmtRepeat("3"), RealLiteralConstant("1.0", no-kind()))]
+            , [DataStmtValue(DataStmtRepeat("3"), RealVal("1.0"))]
             )
           , eos("\n")
           )
@@ -63,11 +63,7 @@ Program(
             , [ DataStmtValue(
                   no-repeat()
                 , DataRef(
-                    [PartRef(
-                       "person"
-                     , paren-list([IntLiteralConstant("21", no-kind()), "'john'"])
-                     , no-image-selector()
-                     )]
+                    [PartRef("person", paren-list([IntVal("21"), "'john'"]), no-image-selector())]
                   )
                 )
               ]

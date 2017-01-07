@@ -5,7 +5,7 @@ Program(
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ ErrorStopStmt(no-label(), no-stop-code(), eos("\n   "))
-        , ErrorStopStmt(no-label(), IntLiteralConstant("33", no-kind()), eos("\n"))
+        , ErrorStopStmt(no-label(), IntVal("33"), eos("\n"))
         ]
       )
     , no-subprogram-part()

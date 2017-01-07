@@ -7,16 +7,16 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , DefBinExpr(IntLiteralConstant("1", no-kind()), ".union.", IntLiteralConstant("2", no-kind()))
+          , DefBinExpr(IntVal("1"), ".union.", IntVal("2"))
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
           , DefBinExpr(
-              DefBinExpr(IntLiteralConstant("1", no-kind()), ".union.", IntLiteralConstant("2", no-kind()))
+              DefBinExpr(IntVal("1"), ".union.", IntVal("2"))
             , ".disunion."
-            , IntLiteralConstant("3", no-kind())
+            , IntVal("3")
             )
           , eos("\n\n")
           )

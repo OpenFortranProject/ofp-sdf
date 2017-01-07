@@ -12,13 +12,20 @@ Program(
             , no-list()
             , "param1"
             , paren-list(["k"])
-            , eos("\n!TODO-F08   INTEGER, KIND :: k\n")
+            , eos("\n  ")
             )
-          , []
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [TypeParamDecl("k", no-expr())]
+              , eos("\n")
+              )
+            ]
           , []
           , []
           , no-type-bound-procedure-part()
-          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
           )
         , DerivedTypeDef(
             DerivedTypeStmt(
@@ -26,13 +33,74 @@ Program(
             , no-list()
             , "param2"
             , paren-list(["k1", "k2"])
-            , eos("\n!TODO-F08   INTEGER, KIND :: k1, k2\n")
+            , eos("\n  ")
             )
-          , []
+          , [ TypeParamDefStmt(
+                no-label()
+              , no-kind()
+              , KIND()
+              , [TypeParamDecl("k1", no-expr()), TypeParamDecl("k2", no-expr())]
+              , eos("\n")
+              )
+            ]
           , []
           , []
           , no-type-bound-procedure-part()
-          , EndTypeStmt(no-label(), no-name(), eos("\n\n!TODO-F08 type(param1(4))   :: beauty\n!TODO-F08 type(param2(4,8)) :: beast\n!TODO-F08 type(ugly(dim=a)) :: lies\n!TODO-F08 type(this(3,4,that=5)) :: theother\n\n"))
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(
+              DerivedTypeSpec("param1", paren-list([TypeParamSpec(no-keyword(), IntVal("4"))]))
+            )
+          , no-list()
+          , [EntityDecl("beauty", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(
+              DerivedTypeSpec(
+                "param2"
+              , paren-list(
+                  [TypeParamSpec(no-keyword(), IntVal("4")), TypeParamSpec(no-keyword(), IntVal("8"))]
+                )
+              )
+            )
+          , no-list()
+          , [EntityDecl("beast", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(
+              DerivedTypeSpec(
+                "ugly"
+              , paren-list(
+                  [TypeParamSpec("dim", DataRef([PartRef("a", no-section-subscripts(), no-image-selector())]))]
+                )
+              )
+            )
+          , no-list()
+          , [EntityDecl("lies", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(
+              DerivedTypeSpec(
+                "this"
+              , paren-list(
+                  [ TypeParamSpec(no-keyword(), IntVal("3"))
+                  , TypeParamSpec(no-keyword(), IntVal("4"))
+                  , TypeParamSpec("that", IntVal("5"))
+                  ]
+                )
+              )
+            )
+          , no-list()
+          , [EntityDecl("theother", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
           )
         ]
       )

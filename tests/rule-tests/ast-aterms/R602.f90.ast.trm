@@ -7,24 +7,28 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [PartRef("B", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())]
+              [PartRef("B", paren-list([IntVal("1")]), no-image-selector())]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
-          , Substring(
-              DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
-            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("5", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "B"
+                , paren-list([Triplet(IntVal("1"), IntVal("5"), no-stride())])
+                , no-image-selector()
+                )
+              ]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
@@ -32,30 +36,29 @@ Program(
           , DataRef(
               [PartRef("P", no-section-subscripts(), no-image-selector()), PartRef("AGE", no-section-subscripts(), no-image-selector())]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [ PartRef("B", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())
+              [ PartRef("B", paren-list([IntVal("1")]), no-image-selector())
               , PartRef("AGE", no-section-subscripts(), no-image-selector())
               ]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [ PartRef(
-                  "A"
-                , paren-list([IntLiteralConstant("1", no-kind()), IntLiteralConstant("1", no-kind())])
-                , no-image-selector()
-                )
-              ]
+              [PartRef(
+                 "A"
+               , paren-list([IntVal("1"), IntVal("1")])
+               , no-image-selector()
+               )]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n\n")
           )
         ]

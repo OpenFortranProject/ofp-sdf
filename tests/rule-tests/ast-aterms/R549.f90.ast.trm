@@ -6,15 +6,15 @@ Program(
     , SpecAndExecPart(
         [ ParameterStmt(
             no-label()
-          , [ NamedConstantDef("foo", RealLiteralConstant("3.14159", no-kind()))
-            , NamedConstantDef("bar", RealLiteralConstant("2.81828", no-kind()))
-            , NamedConstantDef("truth", IntLiteralConstant("64", no-kind()))
+          , [ NamedConstantDef("foo", RealVal("3.14159"))
+            , NamedConstantDef("bar", RealVal("2.81828"))
+            , NamedConstantDef("truth", IntVal("64"))
             ]
           , eos("\n")
           )
         , ParameterStmt(
             no-label()
-          , [NamedConstantDef("beauty", IntLiteralConstant("5", no-kind()))]
+          , [NamedConstantDef("beauty", IntVal("5"))]
           , eos("\n")
           )
         , ParameterStmt(

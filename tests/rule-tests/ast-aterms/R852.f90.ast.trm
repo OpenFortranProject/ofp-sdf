@@ -7,13 +7,13 @@ Program(
         [ ComputedGotoStmt(
             no-label()
           , ["1", "20", "12345"]
-          , UnaryMinus(IntLiteralConstant("5", no-kind()))
+          , UnaryMinus(IntVal("5"))
           , eos("\n  ")
           )
         , ComputedGotoStmt(
             no-label()
           , ["1", "20", "12345"]
-          , IntLiteralConstant("5", no-kind())
+          , IntVal("5")
           , eos("\n\n")
           )
         , ContinueStmt("1", eos("\n"))

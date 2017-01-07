@@ -1,36 +1,39 @@
 Program(
-  "!! R926 position-spec\n!    is  [ UNIT = ] file-unit-number\n!    or  IOMSG = iomsg-variable\n!    or  IOSTAT = scalar-int-variable\n!    or  ERR = label\n\n"
+  "!! R926 rewind-stmt\n!    is  REWIND file-unit-number\n!    or  REWIND ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(INTEGER())
           , no-list()
-          , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
-          , eos("\n\n")
-          )
-        , BackspaceStmt(
-            no-label()
-          , [ IOMSG(DataRef([PartRef("CVAR", no-section-subscripts(), no-image-selector())]))
-            , UNIT(IntLiteralConstant("5", no-kind()))
-            ]
+          , [EntityDecl("unitnumber", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , RewindStmt(
+            "11"
+          , [UNIT(DataRef([PartRef("unitnumber", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n")
+          )
+        , rewind-unit-stmt(
             no-label()
-          , [ UNIT(IntLiteralConstant("5", no-kind()))
-            , IOMSG(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
-            , ERR("314")
-            , IOSTAT(DataRef([PartRef("iugly", no-section-subscripts(), no-image-selector())]))
+          , DataRef([PartRef("unitnumber", no-section-subscripts(), no-image-selector())])
+          , eos("\n")
+          )
+        , rewind-unit-stmt("12", IntVal("10"), eos("\n"))
+        , RewindStmt(
+            no-label()
+          , [ UNIT(IntVal("10"))
+            , IOSTAT(DataRef([PartRef("n", no-section-subscripts(), no-image-selector())]))
+            , ERR("4")
             ]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("314", no-program-name(), eos("\n"))
+    , EndProgramStmt("4", no-program-name(), eos("\n"))
     )
   ]
 )

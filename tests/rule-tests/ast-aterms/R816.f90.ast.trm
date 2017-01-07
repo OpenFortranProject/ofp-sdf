@@ -14,7 +14,7 @@ Program(
           , [ CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValueRange(no-low(), UnaryMinus(IntLiteralConstant("1", no-kind())))])
+                , paren-list([CaseValueRange(no-low(), UnaryMinus(IntVal("1")))])
                 , no-name()
                 , eos("\n\t")
                 )
@@ -31,7 +31,7 @@ Program(
             , CaseStmtBlock(
                 CaseStmt(
                   no-label()
-                , paren-list([CaseValue(IntLiteralConstant("0", no-kind()))])
+                , paren-list([CaseValue(IntVal("0"))])
                 , no-name()
                 , eos("\n\t")
                 )
@@ -49,9 +49,9 @@ Program(
                 CaseStmt(
                   no-label()
                 , paren-list(
-                    [ CaseValueRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("3", no-kind()))
-                    , CaseValue(IntLiteralConstant("5", no-kind()))
-                    , CaseValue(IntLiteralConstant("7", no-kind()))
+                    [ CaseValueRange(IntVal("1"), IntVal("3"))
+                    , CaseValue(IntVal("5"))
+                    , CaseValue(IntVal("7"))
                     ]
                   )
                 , no-name()
@@ -71,7 +71,7 @@ Program(
                 CaseStmt(
                   no-label()
                 , paren-list(
-                    [CaseValue(IntLiteralConstant("4", no-kind())), CaseValueRange(IntLiteralConstant("8", no-kind()), no-high())]
+                    [CaseValue(IntVal("4")), CaseValueRange(IntVal("8"), no-high())]
                   )
                 , no-name()
                 , eos("\n\t")

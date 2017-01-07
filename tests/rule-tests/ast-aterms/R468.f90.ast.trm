@@ -1,40 +1,58 @@
 Program(
-  "!! R468 ac-spec\n!    is type-spec ::\n!    or [type-spec ::] ac-value-list\n\n"
+  "!! R468 array-constructor\n!    is (/ ac-spec /)\n!    or lbracket ac-spec rbracket\n!\n! NOTE 4.68\n!\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
-        [ AssignmentStmt(
+        [ DimensionStmt(
             no-label()
-          , DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
-          , ArrayConstructor(AcSpec(INTEGER(no-kind()), no-list()))
+          , [ ArrayNameSpec("X", [ExplicitShape(no-lower-bound(), IntVal("3"))])
+            , ArrayNameSpec(
+                "Y"
+              , [ExplicitShape(no-lower-bound(), IntVal("3")), ExplicitShape(no-lower-bound(), IntVal("2"))]
+              )
+            ]
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
-          , DataRef([PartRef("Y", no-section-subscripts(), no-image-selector())])
+          , DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
           , ArrayConstructor(
               AcSpec(
-                type-spec-colon(REAL(no-kind()))
-              , [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-                , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
-                , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
-                ]
+                no-type-spec()
+              , [RealVal("3.2"), RealVal("4.01"), RealVal("6.5")]
               )
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
-          , DataRef([PartRef("Z", no-section-subscripts(), no-image-selector())])
-          , ArrayConstructor(
-              AcSpec(
-                no-type-spec()
-              , [ DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-                , DataRef([PartRef("y", no-section-subscripts(), no-image-selector())])
-                , DataRef([PartRef("z", no-section-subscripts(), no-image-selector())])
-                ]
-              )
+          , DataRef([PartRef("Y", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "RESHAPE"
+                , paren-list(
+                    [ ActualArgSpec(
+                        "SOURCE"
+                      , ArrayConstructor(
+                          AcSpec(
+                            no-type-spec()
+                          , [ RealVal("2.0")
+                            , ArrayConstructor(AcSpec(no-type-spec(), [RealVal("4.5"), RealVal("4.5")]))
+                            , DataRef([PartRef("X", no-section-subscripts(), no-image-selector())])
+                            ]
+                          )
+                        )
+                      )
+                    , ActualArgSpec(
+                        "SHAPE"
+                      , ArrayConstructor(AcSpec(no-type-spec(), [IntVal("3"), IntVal("2")]))
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n")
           )

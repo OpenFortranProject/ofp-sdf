@@ -6,11 +6,11 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [ EntityDecl(
                 "Doit"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -20,11 +20,11 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "A"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -38,7 +38,7 @@ Program(
           , AssignmentStmt(
               no-label()
             , DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("13", no-kind())
+            , IntVal("13")
             , eos("\n\n")
             )
           )

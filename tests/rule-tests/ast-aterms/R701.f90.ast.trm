@@ -10,7 +10,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(INTEGER(no-kind()))
+              , IntrinsicType(INTEGER())
               , no-list()
               , [ComponentDecl("dim", no-list(), no-list(), no-char-length(), no-init())]
               , eos("\n")
@@ -21,11 +21,11 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "x"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("2"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -43,7 +43,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("3", no-kind())
+          , IntVal("3")
           , eos("\n")
           )
         , AssignmentStmt(
@@ -55,22 +55,18 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])
-          , ArrayConstructor(
-              AcSpec(
-                no-type-spec()
-              , [IntLiteralConstant("3", no-kind()), IntLiteralConstant("3", no-kind())]
-              )
-            )
+          , ArrayConstructor(AcSpec(no-type-spec(), [IntVal("3"), IntVal("3")]))
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("y")
-            , [ ActualArgSpec(no-keyword(), IntLiteralConstant("3", no-kind()))
-              , ActualArgSpec(no-keyword(), IntLiteralConstant("2", no-kind()))
-              , ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "y"
+                , paren-list([IntVal("3"), IntVal("2"), IntVal("1")])
+                , no-image-selector()
+                )
               ]
             )
           , eos("\n")
@@ -78,9 +74,8 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("func")
-            , [ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))]
+          , DataRef(
+              [PartRef("func", paren-list([IntVal("1")]), no-image-selector())]
             )
           , eos("\n")
           )
@@ -95,7 +90,7 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , Parens(IntLiteralConstant("3", no-kind()))
+          , Parens(IntVal("3"))
           , eos("\n\n")
           )
         ]

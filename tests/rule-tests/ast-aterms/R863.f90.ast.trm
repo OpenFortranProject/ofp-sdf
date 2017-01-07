@@ -6,14 +6,14 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [EntityDecl("flag", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("a_lock_variable", no-list(), no-list(), no-char-length(), no-init())

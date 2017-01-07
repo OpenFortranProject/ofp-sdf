@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [EntityDecl("T", no-list(), CoarraySpec([DeferredCoshape()]), no-char-length(), no-init())]
           , eos("\n\n")

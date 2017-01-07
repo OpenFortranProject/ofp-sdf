@@ -6,34 +6,28 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PARAMETER()])
-          , [EntityDecl(
-               "stop_code"
-             , no-list()
-             , no-list()
-             , no-char-length()
-             , Init(IntLiteralConstant("999", no-kind()))
-             )]
+          , [EntityDecl("stop_code", no-list(), no-list(), no-char-length(), Init(IntVal("999")))]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , comma-list([PARAMETER()])
           , [EntityDecl("char_stop", no-list(), no-list(), no-char-length(), Init("\"stop please\""))]
           , eos("\n\n")
           )
         , StopStmt(no-label(), no-stop-code(), eos("\n"))
         , StopStmt("13", "'end of program'", eos("\n"))
-        , StopStmt(no-label(), IntLiteralConstant("1", no-kind()), eos("\n"))
+        , StopStmt(no-label(), IntVal("1"), eos("\n"))
         , StopStmt(
             no-label()
           , DataRef([PartRef("stop_code", no-section-subscripts(), no-image-selector())])
           , eos("\n")
           )
-        , StopStmt(no-label(), IntLiteralConstant("123", no-kind()), eos("\n"))
-        , StopStmt(no-label(), IntLiteralConstant("1234", no-kind()), eos("\n"))
+        , StopStmt(no-label(), IntVal("123"), eos("\n"))
+        , StopStmt(no-label(), IntVal("1234"), eos("\n"))
         , StopStmt(
             no-label()
           , DataRef([PartRef("char_stop", no-section-subscripts(), no-image-selector())])

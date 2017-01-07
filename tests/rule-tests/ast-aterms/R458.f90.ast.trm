@@ -8,8 +8,8 @@ Program(
             EnumDefStmt("10", eos("\n"))
           , [ EnumeratorDefStmt(
                 "11"
-              , [ Enumerator("RED", equals-expr(IntLiteralConstant("4", no-kind())))
-                , Enumerator("BLUE", equals-expr(IntLiteralConstant("9", no-kind())))
+              , [ Enumerator("RED", equals-expr(IntVal("4")))
+                , Enumerator("BLUE", equals-expr(IntVal("9")))
                 ]
               , eos("\n     ")
               )

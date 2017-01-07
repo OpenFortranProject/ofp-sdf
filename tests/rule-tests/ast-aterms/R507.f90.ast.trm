@@ -34,7 +34,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([PRIVATE()])
           , [ EntityDecl("X", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("Y", no-list(), no-list(), no-char-length(), no-init())

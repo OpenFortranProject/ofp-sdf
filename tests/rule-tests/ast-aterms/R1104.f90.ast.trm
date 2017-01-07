@@ -26,7 +26,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -55,7 +55,7 @@ Program(
               [ AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())])
-                , IntLiteralConstant("13", no-kind())
+                , IntVal("13")
                 , eos("\n  ")
                 )
               ]
@@ -91,7 +91,7 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -114,7 +114,7 @@ Program(
               [ AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())])
-                , IntLiteralConstant("13", no-kind())
+                , IntVal("13")
                 , eos("\n  ")
                 )
               ]

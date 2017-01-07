@@ -12,7 +12,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(REAL(no-kind()))
+              , IntrinsicType(REAL())
               , no-list()
               , [ ComponentDecl("X", no-list(), no-list(), no-char-length(), no-init())
                 , ComponentDecl("Y", no-list(), no-list(), no-char-length(), no-init())
@@ -40,7 +40,7 @@ Program(
       , [ FunctionSubprogram(
             FunctionStmt(
               no-label()
-            , [IntrinsicType(REAL(no-kind()))]
+            , [IntrinsicType(REAL())]
             , "POINT_LENGTH"
             , ["A", "B"]
             , no-suffix()
@@ -60,38 +60,41 @@ Program(
               , AssignmentStmt(
                   no-label()
                 , DataRef([PartRef("POINT_LENGTH", no-section-subscripts(), no-image-selector())])
-                , FunctionReference(
-                    ProcedureDesignator("SQRT")
-                  , [ ActualArgSpec(
-                        no-keyword()
-                      , Plus(
-                          Power(
-                            Parens(
-                              Minus(
-                                DataRef(
-                                  [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                , DataRef(
+                    [ PartRef(
+                        "SQRT"
+                      , paren-list(
+                          [ Plus(
+                              Power(
+                                Parens(
+                                  Minus(
+                                    DataRef(
+                                      [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  , DataRef(
+                                      [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  )
                                 )
-                              , DataRef(
-                                  [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                              , IntVal("2")
+                              )
+                            , Power(
+                                Parens(
+                                  Minus(
+                                    DataRef(
+                                      [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  , DataRef(
+                                      [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  )
                                 )
+                              , IntVal("2")
                               )
                             )
-                          , IntLiteralConstant("2", no-kind())
-                          )
-                        , Power(
-                            Parens(
-                              Minus(
-                                DataRef(
-                                  [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
-                                )
-                              , DataRef(
-                                  [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
-                                )
-                              )
-                            )
-                          , IntLiteralConstant("2", no-kind())
-                          )
+                          ]
                         )
+                      , no-image-selector()
                       )
                     ]
                   )

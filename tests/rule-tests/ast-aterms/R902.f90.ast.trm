@@ -6,12 +6,12 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("x", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
           )
-        , rewind-unit-stmt(no-label(), IntLiteralConstant("9", no-kind()), eos("\n"))
+        , rewind-unit-stmt(no-label(), IntVal("9"), eos("\n"))
         , rewind-unit-stmt(
             no-label()
           , DataRef([PartRef("x", no-section-subscripts(), no-image-selector())])

@@ -6,126 +6,126 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PRIVATE()])
           , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([ALLOCATABLE()])
           , [EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([ASYNCHRONOUS()])
           , [EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([Codimension(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))])
           , [EntityDecl("co", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([CONTIGUOUS()])
           , [EntityDecl("cont", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([Dimension([AssumedShape(no-lower-bound())])])
           , [EntityDecl("d", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([EXTERNAL()])
           , [EntityDecl("e", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([Intent(IN())])
           , [EntityDecl("f", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([INTRINSIC()])
           , [EntityDecl("g", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([LanguageBinding(no-binding-name())])
           , [EntityDecl("h", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([OPTIONAL()])
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PARAMETER()])
           , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([POINTER()])
           , [EntityDecl("k", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PROTECTED()])
           , [EntityDecl("l", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([SAVE()])
           , [EntityDecl("m", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([TARGET()])
           , [EntityDecl("n", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([VALUE()])
           , [EntityDecl("o", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([VOLATILE()])
           , [EntityDecl("p", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")

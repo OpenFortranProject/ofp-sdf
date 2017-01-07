@@ -27,14 +27,14 @@ Program(
           )
         , ReadStmt(
             "9"
-          , io-control-spec-list(UNIT(IntLiteralConstant("1", no-kind())), FMT(STAR()), no-list())
+          , io-control-spec-list(UNIT(IntVal("1")), FMT(STAR()), no-list())
           , [ IoImpliedDo(
                 [DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])]
               , IoImpliedDoControl(
                   VarRef("i")
-                , IntLiteralConstant("1", no-kind())
-                , IntLiteralConstant("10", no-kind())
-                , IntLiteralConstant("2", no-kind())
+                , IntVal("1")
+                , IntVal("10")
+                , IntVal("2")
                 )
               )
             ]

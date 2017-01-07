@@ -6,25 +6,25 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("msg", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("me", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n   ")
           )
-        , SyncImagesStmt(no-label(), IntLiteralConstant("1", no-kind()), no-list(), eos("\n   "))
+        , SyncImagesStmt(no-label(), IntVal("1"), no-list(), eos("\n   "))
         , SyncImagesStmt(no-label(), STAR(), no-list(), eos("\n "))
         , SyncImagesStmt(
             "1"
           , Plus(
               DataRef([PartRef("me", no-section-subscripts(), no-image-selector())])
-            , IntLiteralConstant("1", no-kind())
+            , IntVal("1")
             )
           , comma-list(
               [ STAT(DataRef([PartRef("me", no-section-subscripts(), no-image-selector())]))

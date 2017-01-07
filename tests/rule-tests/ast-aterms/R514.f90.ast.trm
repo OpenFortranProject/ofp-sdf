@@ -13,11 +13,11 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list(
               [ Dimension(
                   [ ExplicitShape(no-lower-bound(), DataRef([PartRef("N", no-section-subscripts(), no-image-selector())]))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))
+                  , ExplicitShape(no-lower-bound(), IntVal("10"))
                   ]
                 )
               ]
@@ -27,7 +27,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A"
@@ -38,7 +38,7 @@ Program(
               )
             , EntityDecl(
                 "B"
-              , ArraySpec([AssumedShape(IntLiteralConstant("0", no-kind()))])
+              , ArraySpec([AssumedShape(IntVal("0"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -48,7 +48,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([POINTER()])
           , [ EntityDecl(
                 "D"
@@ -62,34 +62,29 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([Dimension([AssumedShape(no-lower-bound())]), POINTER()])
           , [EntityDecl("P", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n   ")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([ALLOCATABLE(), Dimension([AssumedShape(no-lower-bound())])])
           , [EntityDecl("E", no-list(), no-list(), no-char-length(), no-init())]
           , eos("! Allocatable array\n   ")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , comma-list([PARAMETER()])
           , [ EntityDecl(
                 "V"
-              , ArraySpec(AssumedOrImpliedSpec(IntLiteralConstant("0", no-kind())))
+              , ArraySpec(AssumedOrImpliedSpec(IntVal("0")))
               , no-list()
               , no-char-length()
               , Init(
-                  ArrayConstructor(
-                    AcSpec(
-                      no-type-spec()
-                    , [RealLiteralConstant("0.1", no-kind()), RealLiteralConstant("1.1", no-kind())]
-                    )
-                  )
+                  ArrayConstructor(AcSpec(no-type-spec(), [RealVal("0.1"), RealVal("1.1")]))
                 )
               )
             ]

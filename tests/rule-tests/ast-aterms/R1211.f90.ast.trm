@@ -34,7 +34,7 @@ Program(
           )
         , ProcedureDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , IntrinsicType(INTEGER(Kind(IntVal("4"))))
           , no-list()
           , [ProcDecl("a5", no-init())]
           , eos("\n\n! Test with optional ::\n")

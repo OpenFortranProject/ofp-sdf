@@ -8,14 +8,14 @@ Program(
       , no-implicit-part()
       , [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([LanguageBinding(no-binding-name())])
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             "10"
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([LanguageBinding(BindingName("\"cint\""))])
           , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")

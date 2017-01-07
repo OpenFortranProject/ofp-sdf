@@ -7,11 +7,12 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("array")
-            , [ ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))
-              , ActualArgSpec(no-keyword(), IntLiteralConstant("2", no-kind()))
-              ]
+          , DataRef(
+              [PartRef(
+                 "array"
+               , paren-list([IntVal("1"), IntVal("2")])
+               , no-image-selector()
+               )]
             )
           , eos("\n\n! NOTE 6.11\n")
           )
@@ -26,7 +27,7 @@ Program(
                 )
               ]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n\n")
           )
         ]

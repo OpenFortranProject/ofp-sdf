@@ -6,21 +6,21 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(COMPLEX(no-kind()))
+          , IntrinsicType(COMPLEX())
           , no-list()
           , [EntityDecl("comp", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("err", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("a_lock_variable", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")

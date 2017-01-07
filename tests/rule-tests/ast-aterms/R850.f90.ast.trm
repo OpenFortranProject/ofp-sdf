@@ -7,12 +7,7 @@ Program(
         [ NonlabelDoStmt(
             no-label()
           , "loop"
-          , LoopControl(
-              VarRef("i")
-            , IntLiteralConstant("1", no-kind())
-            , IntLiteralConstant("3", no-kind())
-            , no-expr()
-            )
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("3"), no-expr())
           , eos("\n")
           )
         , ExitStmt("3", no-name(), eos("\n    "))

@@ -16,8 +16,8 @@ Program(
               , no-list()
               , CoarraySpec(
                   explicit-coshape-spec-list(
-                    [ ExplicitCoshape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                    , ExplicitCoshape(LowerCobound(IntLiteralConstant("3", no-kind())), IntLiteralConstant("7", no-kind()))
+                    [ ExplicitCoshape(no-lower-bound(), IntVal("5"))
+                    , ExplicitCoshape(LowerCobound(IntVal("3")), IntVal("7"))
                     ]
                   , final-cobounds-entry(no-lower-bound())
                   )

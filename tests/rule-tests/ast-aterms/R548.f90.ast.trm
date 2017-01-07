@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ ParameterStmt(
             "10"
-          , [NamedConstantDef("i", IntLiteralConstant("0", no-kind()))]
+          , [NamedConstantDef("i", IntVal("0"))]
           , eos("\n")
           )
         , ParameterStmt(
@@ -14,7 +14,7 @@ Program(
           , [ NamedConstantDef(
                 "j"
               , DataRef(
-                  [PartRef("kind", paren-list([IntLiteralConstant("1", no-kind())]), no-image-selector())]
+                  [PartRef("kind", paren-list([IntVal("1")]), no-image-selector())]
                 )
               )
             ]

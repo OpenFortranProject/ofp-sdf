@@ -7,35 +7,39 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(ProcedureDesignator("foo"), [])
+          , DataRef([PartRef("foo", function-ref-no-args(), no-image-selector())])
           , eos("\n\n!! these are parsed as data-ref\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("foo")
-            , [ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))]
+          , DataRef(
+              [PartRef("foo", paren-list([IntVal("1")]), no-image-selector())]
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("foo")
-            , [ActualArgSpec(no-keyword(), DataRef([PartRef("m", no-section-subscripts(), no-image-selector())]))]
-            )
-          , eos("\n")
-          )
-        , AssignmentStmt(
-            no-label()
-          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("foo")
-            , [ ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))
-              , ActualArgSpec(no-keyword(), IntLiteralConstant("2", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list([DataRef([PartRef("m", no-section-subscripts(), no-image-selector())])])
+                , no-image-selector()
+                )
               ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef(
+                 "foo"
+               , paren-list([IntVal("1"), IntVal("2")])
+               , no-image-selector()
+               )]
             )
           , eos("\n")
           )

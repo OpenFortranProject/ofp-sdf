@@ -8,11 +8,11 @@ Program(
         , ImplicitStmt(
             no-label()
           , [ ImplicitSpec(
-                IntrinsicType(REAL(no-kind()))
+                IntrinsicType(REAL())
               , [LetterSpec("X", no-letter()), LetterSpec("y", no-letter()), LetterSpec("Z", no-letter())]
               )
             , ImplicitSpec(
-                IntrinsicType(INTEGER(no-kind()))
+                IntrinsicType(INTEGER())
               , [LetterSpec("i", no-letter()), LetterSpec("j", no-letter()), LetterSpec("k", "L")]
               )
             ]

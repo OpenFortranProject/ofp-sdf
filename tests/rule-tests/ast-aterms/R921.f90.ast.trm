@@ -6,12 +6,12 @@ Program(
     , SpecAndExecPart(
         [ WaitStmt(
             no-label()
-          , [UNIT(IntLiteralConstant("5", no-kind()))]
+          , [UNIT(IntVal("5"))]
           , eos("\n")
           )
         , WaitStmt(
             no-label()
-          , [UNIT(IntLiteralConstant("5", no-kind())), ERR("10")]
+          , [UNIT(IntVal("5")), ERR("10")]
           , eos("\n\n")
           )
         ]

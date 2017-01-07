@@ -8,16 +8,16 @@ Program(
             no-label()
           , DataPointerObject(VarRef("myptr"), no-component-name())
           , paren-list(
-              [ BoundsRemapping(IntLiteralConstant("4", no-kind()), IntLiteralConstant("5", no-kind()))
-              , BoundsRemapping(IntLiteralConstant("7", no-kind()), IntLiteralConstant("9", no-kind()))
+              [ BoundsRemapping(IntVal("4"), IntVal("5"))
+              , BoundsRemapping(IntVal("7"), IntVal("9"))
               ]
             )
           , DataRef(
               [ PartRef(
                   "this"
                 , paren-list(
-                    [ Triplet(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind()), no-stride())
-                    , Triplet(IntLiteralConstant("5", no-kind()), IntLiteralConstant("6", no-kind()), no-stride())
+                    [ Triplet(IntVal("3"), IntVal("4"), no-stride())
+                    , Triplet(IntVal("5"), IntVal("6"), no-stride())
                     ]
                   )
                 , no-image-selector()

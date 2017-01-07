@@ -6,16 +6,12 @@ Program(
     , SpecAndExecPart(
         [ OpenStmt(
             no-label()
-          , [ UNIT(IntLiteralConstant("10", no-kind()))
+          , [ UNIT(IntVal("10"))
             , FILE(DataRef([PartRef("foo", no-section-subscripts(), no-image-selector())]))
             ]
           , eos("\n")
           )
-        , OpenStmt(
-            no-label()
-          , [UNIT(IntLiteralConstant("1", no-kind()))]
-          , eos("\n\n")
-          )
+        , OpenStmt(no-label(), [UNIT(IntVal("1"))], eos("\n\n"))
         ]
       )
     , no-subprogram-part()

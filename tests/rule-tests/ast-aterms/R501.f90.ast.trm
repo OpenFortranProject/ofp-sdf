@@ -6,35 +6,35 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("x", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("y", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([POINTER()])
           , [EntityDecl("xptr", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([POINTER(), ALLOCATABLE()])
           , [EntityDecl("yptr", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n! test entity_decl_list\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())
@@ -43,27 +43,25 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(KindSelector(IntLiteralConstant("4", no-kind()))))
+          , IntrinsicType(INTEGER(Kind(IntVal("4"))))
           , no-list()
           , [EntityDecl("m", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n! intrinsic-type-spec with char-selector\n")
           )
         , TypeDeclarationStmt(
             "10"
-          , IntrinsicType(
-              CHARACTER(CharSelector_KIND_LEN(IntLiteralConstant("1", no-kind()), IntLiteralConstant("10", no-kind())))
-            )
+          , IntrinsicType(CHARACTER(CharSelector_KIND_LEN(IntVal("1"), IntVal("10"))))
           , no-list()
           , [EntityDecl("string", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n! From NOTE 5.1\n\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -73,12 +71,10 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , comma-list(
               [ Dimension(
-                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                  ]
+                  [ExplicitShape(no-lower-bound(), IntVal("5")), ExplicitShape(no-lower-bound(), IntVal("5"))]
                 )
               ]
             )
@@ -89,26 +85,21 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(COMPLEX(no-kind()))
+          , IntrinsicType(COMPLEX())
           , no-list()
           , [ EntityDecl(
                 "CUBE_ROOT"
               , no-list()
               , no-list()
               , no-char-length()
-              , Init(
-                  ComplexLiteralConstant(
-                    SignedRealLiteralConstant(MINUS(), RealLiteralConstant("0.5", no-kind()))
-                  , RealLiteralConstant("0.866", no-kind())
-                  )
-                )
+              , Init(ComplexLiteralConstant(SignedRealLiteralConstant(MINUS(), RealVal("0.5")), RealVal("0.866")))
               )
             ]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , comma-list([PARAMETER()])
           , [ EntityDecl(
                 "SHORT"
@@ -117,7 +108,7 @@ Program(
               , no-char-length()
               , Init(
                   DataRef(
-                    [PartRef("SELECTED_INT_KIND", paren-list([IntLiteralConstant("4", no-kind())]), no-image-selector())]
+                    [PartRef("SELECTED_INT_KIND", paren-list([IntVal("4")]), no-image-selector())]
                   )
                 )
               )
@@ -127,7 +118,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(
-              INTEGER(KindSelector(DataRef([PartRef("SHORT", no-section-subscripts(), no-image-selector())])))
+              INTEGER(Kind(DataRef([PartRef("SHORT", no-section-subscripts(), no-image-selector())])))
             )
           , no-list()
           , [EntityDecl("K", no-list(), no-list(), no-char-length(), no-init())]
@@ -137,9 +128,9 @@ Program(
             no-label()
           , IntrinsicType(
               REAL(
-                KindSelector(
+                Kind(
                   DataRef(
-                    [PartRef("KIND", paren-list([RealLiteralConstant("0.0D0", no-kind())]), no-image-selector())]
+                    [PartRef("KIND", paren-list([RealVal("0.0D0")]), no-image-selector())]
                   )
                 )
               )
@@ -150,7 +141,7 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(KindSelector(IntLiteralConstant("2", no-kind()))))
+          , IntrinsicType(REAL(Kind(IntVal("2"))))
           , no-list()
           , [EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -159,9 +150,9 @@ Program(
             no-label()
           , IntrinsicType(
               COMPLEX(
-                KindSelector(
+                Kind(
                   DataRef(
-                    [PartRef("KIND", paren-list([RealLiteralConstant("0.0D0", no-kind())]), no-image-selector())]
+                    [PartRef("KIND", paren-list([RealVal("0.0D0")]), no-image-selector())]
                   )
                 )
               )
@@ -172,19 +163,17 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(
-              CHARACTER(CharSelector(IntLiteralConstant("10", no-kind()), IntLiteralConstant("2", no-kind())))
-            )
+          , IntrinsicType(CHARACTER(CharSelector(IntVal("10"), IntVal("2"))))
           , no-list()
           , [EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [ EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
-            , EntityDecl("C", no-list(), no-list(), opt-char-length("20"), no-init())
+            , EntityDecl("C", no-list(), no-list(), opt-char-length(IntVal("20")), no-init())
             ]
           , eos("\n")
           )
@@ -215,9 +204,7 @@ Program(
               DerivedTypeSpec(
                 "humongous_matrix"
               , paren-list(
-                  [ TypeParamSpec("k", IntLiteralConstant("8", no-kind()))
-                  , TypeParamSpec("d", IntLiteralConstant("1000", no-kind()))
-                  ]
+                  [TypeParamSpec("k", IntVal("8")), TypeParamSpec("d", IntVal("1000"))]
                 )
               )
             )

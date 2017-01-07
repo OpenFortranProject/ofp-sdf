@@ -9,15 +9,10 @@ Program(
           , [ TargetDecl(
                 "A"
               , ArraySpec(
-                  [ ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
-                  , ExplicitShape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))
-                  ]
+                  [ExplicitShape(no-lower-bound(), IntVal("1000")), ExplicitShape(no-lower-bound(), IntVal("1000"))]
                 )
               , CoarraySpec(
-                  explicit-coshape-spec-list(
-                    [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("1000", no-kind()))]
-                  , final-cobounds-entry(no-lower-bound())
-                  )
+                  explicit-coshape-spec-list([ExplicitCoshape(no-lower-bound(), IntVal("1000"))], final-cobounds-entry(no-lower-bound()))
                 )
               )
             , TargetDecl("B", no-list(), no-list())
@@ -33,7 +28,7 @@ Program(
             no-label()
           , [ TargetDecl(
                 "B"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , CoarraySpec([DeferredCoshape()])
               )
             ]

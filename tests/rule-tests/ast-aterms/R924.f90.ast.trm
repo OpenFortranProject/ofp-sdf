@@ -1,22 +1,29 @@
 Program(
-  "!! R924 endfile-stmt\n!    is  ENDFILE file-unit-number\n!    or  ENDFILE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
+  "!! R924 backspace-stmt\n!    is  BACKSPACE file-unit-number\n!    or  BACKSPACE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
-        [ endfile-unit-stmt(no-label(), IntLiteralConstant("10", no-kind()), eos("\n"))
-        , EndfileStmt(
+        [ TypeDeclarationStmt(
             no-label()
-          , [ UNIT(IntLiteralConstant("10", no-kind()))
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("unitnumber", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , backspace-unit-stmt("11", IntVal("10"), eos("\n"))
+        , BackspaceStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
+        , BackspaceStmt(
+            no-label()
+          , [ UNIT(DataRef([PartRef("unitnumber", no-section-subscripts(), no-image-selector())]))
             , IOSTAT(DataRef([PartRef("n", no-section-subscripts(), no-image-selector())]))
-            , ERR("4")
             ]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
     )
   ]
 )

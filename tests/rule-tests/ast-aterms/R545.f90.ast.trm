@@ -6,22 +6,18 @@ Program(
     , SpecAndExecPart(
         [ DimensionStmt(
             "10"
-          , [ArrayNameSpec("A", [ExplicitShape(no-lower-bound(), IntLiteralConstant("1", no-kind()))])]
+          , [ArrayNameSpec("A", [ExplicitShape(no-lower-bound(), IntVal("1"))])]
           , eos("\n")
           )
         , DimensionStmt(
             no-label()
           , [ ArrayNameSpec(
                 "array_A"
-              , [ ExplicitShape(no-lower-bound(), IntLiteralConstant("2", no-kind()))
-                , ExplicitShape(no-lower-bound(), IntLiteralConstant("3", no-kind()))
-                ]
+              , [ExplicitShape(no-lower-bound(), IntVal("2")), ExplicitShape(no-lower-bound(), IntVal("3"))]
               )
             , ArrayNameSpec(
                 "array_B"
-              , [ ExplicitShape(no-lower-bound(), IntLiteralConstant("4", no-kind()))
-                , ExplicitShape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                ]
+              , [ExplicitShape(no-lower-bound(), IntVal("4")), ExplicitShape(no-lower-bound(), IntVal("5"))]
               )
             , ArrayNameSpec("array_C", [AssumedShape(no-lower-bound())])
             ]

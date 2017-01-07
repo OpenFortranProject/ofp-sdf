@@ -6,10 +6,8 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
-          , comma-list(
-              [Dimension([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])]
-            )
+          , IntrinsicType(LOGICAL())
+          , comma-list([Dimension([ExplicitShape(no-lower-bound(), IntVal("10"))])])
           , [ EntityDecl("IL1", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("ISay", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("HalfTrue", no-list(), no-list(), no-char-length(), no-init())
@@ -18,10 +16,8 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
-          , comma-list(
-              [Dimension([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])]
-            )
+          , IntrinsicType(INTEGER())
+          , comma-list([Dimension([ExplicitShape(no-lower-bound(), IntVal("10"))])])
           , [ EntityDecl("IO1", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("IR5", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("ZEPS", no-list(), no-list(), no-char-length(), no-init())

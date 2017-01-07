@@ -12,7 +12,7 @@ Program(
                 no-type-spec()
               , [ ForallTripletSpec(
                     "I"
-                  , IntLiteralConstant("1", no-kind())
+                  , IntVal("1")
                   , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
                   , no-forall-step()
                   )
@@ -32,9 +32,13 @@ Program(
                 )
               ]
             )
-          , FunctionReference(
-              ProcedureDesignator("B")
-            , [ActualArgSpec(no-keyword(), DataRef([PartRef("I", no-section-subscripts(), no-image-selector())]))]
+          , DataRef(
+              [ PartRef(
+                  "B"
+                , paren-list([DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])])
+                , no-image-selector()
+                )
+              ]
             )
           , eos("\n   ")
           )

@@ -6,7 +6,7 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A1"
@@ -20,12 +20,12 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A2"
               , no-list()
-              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(LowerCobound(IntLiteralConstant("3", no-kind())))))
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(LowerCobound(IntVal("3")))))
               , no-char-length()
               , no-init()
               )
@@ -34,16 +34,13 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A3"
               , no-list()
               , CoarraySpec(
-                  explicit-coshape-spec-list(
-                    [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("7", no-kind()))]
-                  , final-cobounds-entry(no-lower-bound())
-                  )
+                  explicit-coshape-spec-list([ExplicitCoshape(no-lower-bound(), IntVal("7"))], final-cobounds-entry(no-lower-bound()))
                 )
               , no-char-length()
               , no-init()
@@ -53,15 +50,15 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A4"
               , no-list()
               , CoarraySpec(
                   explicit-coshape-spec-list(
-                    [ExplicitCoshape(LowerCobound(IntLiteralConstant("2", no-kind())), IntLiteralConstant("7", no-kind()))]
-                  , final-cobounds-entry(LowerCobound(IntLiteralConstant("5", no-kind())))
+                    [ExplicitCoshape(LowerCobound(IntVal("2")), IntVal("7"))]
+                  , final-cobounds-entry(LowerCobound(IntVal("5")))
                   )
                 )
               , no-char-length()
@@ -72,16 +69,16 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [ EntityDecl(
                 "A5"
               , no-list()
               , CoarraySpec(
                   explicit-coshape-spec-list(
-                    [ ExplicitCoshape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                    , ExplicitCoshape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
-                    , ExplicitCoshape(no-lower-bound(), IntLiteralConstant("5", no-kind()))
+                    [ ExplicitCoshape(no-lower-bound(), IntVal("5"))
+                    , ExplicitCoshape(no-lower-bound(), IntVal("5"))
+                    , ExplicitCoshape(no-lower-bound(), IntVal("5"))
                     ]
                   , final-cobounds-entry(no-lower-bound())
                   )

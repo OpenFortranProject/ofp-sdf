@@ -7,7 +7,7 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("foo1", no-section-subscripts(), no-image-selector())])
-          , RealLiteralConstant("1.0", no-kind())
+          , RealVal("1.0")
           , eos("\n")
           )
         ]
@@ -22,7 +22,7 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("foo2", no-section-subscripts(), no-image-selector())])
-          , RealLiteralConstant("2.0", no-kind())
+          , RealVal("2.0")
           , eos("\n")
           )
         ]
@@ -37,7 +37,7 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("foo3", no-section-subscripts(), no-image-selector())])
-          , RealLiteralConstant("3.0", no-kind())
+          , RealVal("3.0")
           , eos("\n")
           )
         ]
@@ -52,7 +52,7 @@ Program(
         [ AssignmentStmt(
             no-label()
           , DataRef([PartRef("foo4", no-section-subscripts(), no-image-selector())])
-          , RealLiteralConstant("4.0", no-kind())
+          , RealVal("4.0")
           , eos("\n")
           )
         ]

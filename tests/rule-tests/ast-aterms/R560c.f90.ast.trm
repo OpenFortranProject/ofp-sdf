@@ -18,7 +18,7 @@ Program(
           , []
           , [ DataComponentDefStmt(
                 no-label()
-              , IntrinsicType(INTEGER(no-kind()))
+              , IntrinsicType(INTEGER())
               , no-list()
               , [ComponentDecl("I", no-list(), no-list(), no-char-length(), no-init())]
               , eos("\n       ")
@@ -45,7 +45,7 @@ Program(
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
-                , IntrinsicType(INTEGER(no-kind()))
+                , IntrinsicType(INTEGER())
                 , no-list()
                 , [EntityDecl("BLOB", no-list(), no-list(), no-char-length(), no-init())]
                 , eos("\n         !..\n         ")

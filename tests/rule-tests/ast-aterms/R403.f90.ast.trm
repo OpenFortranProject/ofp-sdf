@@ -6,14 +6,14 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
           , eos("! alt1\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(REAL(no-kind()))
+          , IntrinsicType(REAL())
           , no-list()
           , [EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())]
           , eos("! alt2\n")

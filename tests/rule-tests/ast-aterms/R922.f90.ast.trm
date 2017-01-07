@@ -1,20 +1,20 @@
 Program(
-  "!! R922 wait-spec\n!    is [ UNIT = ] file-unit-number\n!    or END = label\n!    or EOR = label\n!    or ERR = label\n!    or ID = scalar-int-expr\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n\n"
+  "!! R922 wait-stmt\n!    is  WAIT ( wait-spec-list )\n!\n! Not tested here: wait-spec-list\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
           )
         , WaitStmt(
             "10"
-          , [UNIT(IntLiteralConstant("5", no-kind())), END("99")]
-          , eos("\n    ")
+          , [UNIT(IntVal("5")), END("99")]
+          , eos("\n")
           )
         , WaitStmt(
             no-label()
@@ -22,11 +22,11 @@ Program(
             , ERR("314")
             , EOR("99")
             , END("10")
-            , UNIT(IntLiteralConstant("6", no-kind()))
+            , UNIT(IntVal("6"))
             ]
           , eos("\n\n")
           )
-        , ContinueStmt("314", eos("\n"))
+        , ContinueStmt("314", eos("\n\n"))
         ]
       )
     , no-subprogram-part()

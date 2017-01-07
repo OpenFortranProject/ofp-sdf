@@ -6,17 +6,21 @@ Program(
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
-          , Substring(
-              DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-            , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("3", no-kind()))
+          , DataRef(
+              [ PartRef(
+                  "a"
+                , paren-list([Triplet(IntVal("1"), IntVal("3"), no-stride())])
+                , no-image-selector()
+                )
+              ]
             )
-          , IntLiteralConstant("3", no-kind())
+          , IntVal("3")
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
-          , IntLiteralConstant("3", no-kind())
+          , IntVal("3")
           , eos("\n\n")
           )
         , AssignmentStmt(
@@ -28,11 +32,24 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
-          , FunctionReference(
-              ProcedureDesignator("s")
-            , [ ActualArgSpec(no-keyword(), IntLiteralConstant("1", no-kind()))
-              , ActualArgSpec(no-keyword(), IntLiteralConstant("2", no-kind()))
-              ]
+          , DataRef(
+              [PartRef(
+                 "s"
+               , paren-list([IntVal("1"), IntVal("2")])
+               , no-image-selector()
+               )]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef(
+                 "s"
+               , no-section-subscripts()
+               , ImageSelector([IntVal("1"), IntVal("2")])
+               )]
             )
           , eos("\n")
           )
@@ -42,21 +59,8 @@ Program(
           , DataRef(
               [ PartRef(
                   "s"
-                , no-section-subscripts()
-                , ImageSelector([IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())])
-                )
-              ]
-            )
-          , eos("\n")
-          )
-        , AssignmentStmt(
-            no-label()
-          , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
-          , DataRef(
-              [ PartRef(
-                  "s"
-                , paren-list([IntLiteralConstant("1", no-kind())])
-                , ImageSelector([IntLiteralConstant("3", no-kind())])
+                , paren-list([IntVal("1")])
+                , ImageSelector([IntVal("3")])
                 )
               ]
             )
@@ -65,16 +69,16 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef(
-              [PartRef("a", no-section-subscripts(), ImageSelector([IntLiteralConstant("3", no-kind())]))]
+              [PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")]))]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n   ")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
           , DataRef(
-              [PartRef("a", no-section-subscripts(), ImageSelector([IntLiteralConstant("3", no-kind())]))]
+              [PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")]))]
             )
           , eos("\n\n")
           )

@@ -6,29 +6,21 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("msg", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
           )
+        , CloseStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
+        , CloseStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
         , CloseStmt(
             no-label()
-          , [UNIT(IntLiteralConstant("10", no-kind()))]
-          , eos("\n")
-          )
-        , CloseStmt(
-            no-label()
-          , [UNIT(IntLiteralConstant("10", no-kind()))]
-          , eos("\n")
-          )
-        , CloseStmt(
-            no-label()
-          , [UNIT(IntLiteralConstant("20", no-kind())), STATUS("'keep'"), ERR("1235")]
+          , [UNIT(IntVal("20")), STATUS("'keep'"), ERR("1235")]
           , eos("\n")
           )
         , CloseStmt(
             "1235"
-          , [ UNIT(IntLiteralConstant("10", no-kind()))
+          , [ UNIT(IntVal("10"))
             , IOSTAT(DataRef([PartRef("ivar", no-section-subscripts(), no-image-selector())]))
             , IOMSG(DataRef([PartRef("msg", no-section-subscripts(), no-image-selector())]))
             ]

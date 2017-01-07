@@ -24,7 +24,7 @@ Program(
   , FunctionSubprogram(
       FunctionStmt(
         no-label()
-      , [IntrinsicType(INTEGER(no-kind()))]
+      , [IntrinsicType(INTEGER())]
       , "coo"
       , []
       , no-suffix()

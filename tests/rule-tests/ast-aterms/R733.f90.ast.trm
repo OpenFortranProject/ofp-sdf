@@ -8,8 +8,8 @@ Program(
             "13"
           , DataPointerObject(VarRef("pointer_foo"), no-component-name())
           , paren-list(
-              [ BoundsRemapping(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind()))
-              , BoundsRemapping(IntLiteralConstant("7", no-kind()), IntLiteralConstant("8", no-kind()))
+              [ BoundsRemapping(IntVal("3"), IntVal("4"))
+              , BoundsRemapping(IntVal("7"), IntVal("8"))
               ]
             )
           , DataRef([PartRef("bar", no-section-subscripts(), no-image-selector())])

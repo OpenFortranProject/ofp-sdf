@@ -41,7 +41,7 @@ Program(
                 , no-list()
                 , [ EntityDecl(
                       "arg"
-                    , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("1", no-kind()))])
+                    , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("1"))])
                     , no-list()
                     , no-char-length()
                     , no-init()
@@ -72,9 +72,7 @@ Program(
                 , [ EntityDecl(
                       "arg"
                     , ArraySpec(
-                        [ ExplicitShape(no-lower-bound(), IntLiteralConstant("1", no-kind()))
-                        , ExplicitShape(no-lower-bound(), IntLiteralConstant("1", no-kind()))
-                        ]
+                        [ExplicitShape(no-lower-bound(), IntVal("1")), ExplicitShape(no-lower-bound(), IntVal("1"))]
                       )
                     , no-list()
                     , no-char-length()

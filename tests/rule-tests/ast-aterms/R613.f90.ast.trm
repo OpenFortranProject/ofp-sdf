@@ -9,7 +9,7 @@ Program(
           , DataRef(
               [PartRef("scalar_parent", no-section-subscripts(), no-image-selector()), PartRef("scalar_field", no-section-subscripts(), no-image-selector())]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n")
           )
         , AssignmentStmt(
@@ -33,7 +33,7 @@ Program(
                   "array_parent"
                 , paren-list(
                     [ Triplet(
-                        IntLiteralConstant("1", no-kind())
+                        IntVal("1")
                       , DataRef([PartRef("n", no-section-subscripts(), no-image-selector())])
                       , no-stride()
                       )
@@ -44,7 +44,7 @@ Program(
               , PartRef("scalar_field", no-section-subscripts(), no-image-selector())
               ]
             )
-          , IntLiteralConstant("1", no-kind())
+          , IntVal("1")
           , eos("\n\n")
           )
         ]

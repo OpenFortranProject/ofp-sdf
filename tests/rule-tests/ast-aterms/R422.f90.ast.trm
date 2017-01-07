@@ -1,41 +1,76 @@
 Program(
-  "!! R422 complex-literal-constant\n!    is ( real-part , imag-part )\n\n"
-, [ MainProgram(
-      no-program-stmt()
+  "!! R422 char-length\n!    is ( type-param-value )\n!￼￼￼￼or int-literal-constant\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "whoot"
+      , ["str_star"]
+      , no-language-binding()
+      , eos("\n")
+      )
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(COMPLEX(no-kind()))
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), Init(IntVal("13")))]
+          , eos("\n\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("1")), no-kind())))
           , no-list()
-          , [ EntityDecl(
-                "z"
-              , no-list()
-              , no-list()
-              , no-char-length()
-              , Init(ComplexLiteralConstant(RealLiteralConstant("0.0098", no-kind()), RealLiteralConstant("0.e9", no-kind())))
-              )
-            ]
+          , [EntityDecl("str1", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(COMPLEX(no-kind()))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("2")), no-kind())))
           , no-list()
-          , [ EntityDecl(
-                "y"
-              , no-list()
-              , no-list()
-              , no-char-length()
-              , Init(ComplexLiteralConstant(RealLiteralConstant("1.", no-kind()), RealLiteralConstant("13.e9", no-kind())))
+          , [EntityDecl("str2", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(char-length(IntVal("3"))), no-kind())))
+          , no-list()
+          , [EntityDecl("str3", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(
+              CHARACTER(
+                CharSelector(
+                  length-selector(char-length(DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])))
+                , no-kind()
+                )
               )
-            ]
+            )
+          , no-list()
+          , [EntityDecl("stra", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(char-length(STAR())), no-kind())))
+          , no-list()
+          , [EntityDecl("str_star", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(char-length(COLON())), no-kind())))
+          , comma-list([ALLOCATABLE()])
+          , [EntityDecl("str_colon", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
     )
   ]
 )

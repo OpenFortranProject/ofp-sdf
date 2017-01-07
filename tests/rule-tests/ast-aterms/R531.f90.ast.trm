@@ -13,10 +13,7 @@ Program(
             "13"
           , [ CodimensionDecl(
                 "b"
-              , explicit-coshape-spec-list(
-                  [ExplicitCoshape(no-lower-bound(), IntLiteralConstant("3", no-kind()))]
-                , final-cobounds-entry(no-lower-bound())
-                )
+              , explicit-coshape-spec-list([ExplicitCoshape(no-lower-bound(), IntVal("3"))], final-cobounds-entry(no-lower-bound()))
               )
             , CodimensionDecl("c", [DeferredCoshape()])
             ]

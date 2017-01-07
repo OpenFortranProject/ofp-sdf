@@ -6,18 +6,18 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("9", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("9")), no-kind())))
           , no-list()
           , [EntityDecl("name", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [ EntityDecl(
                 "miles"
-              , ArraySpec([ExplicitShape(no-lower-bound(), IntLiteralConstant("10", no-kind()))])
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
               , no-list()
               , no-char-length()
               , no-init()
@@ -31,16 +31,16 @@ Program(
               DataStmtSetList_2(
                 DataStmtSet(
                   [DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])]
-                , [DataStmtValue(no-repeat(), IntLiteralConstant("13", no-kind()))]
+                , [DataStmtValue(no-repeat(), IntVal("13"))]
                 )
               , DataStmtSet(
                   [DataRef([PartRef("j", no-section-subscripts(), no-image-selector())])]
-                , [DataStmtValue(no-repeat(), IntLiteralConstant("14", no-kind()))]
+                , [DataStmtValue(no-repeat(), IntVal("14"))]
                 )
               )
             , DataStmtSet(
                 [DataRef([PartRef("k", no-section-subscripts(), no-image-selector())])]
-              , [DataStmtValue(no-repeat(), IntLiteralConstant("15", no-kind()))]
+              , [DataStmtValue(no-repeat(), IntVal("15"))]
               )
             )
           , eos("\n")
@@ -51,16 +51,16 @@ Program(
               DataStmtSetList_2(
                 DataStmtSet(
                   [DataRef([PartRef("ii", no-section-subscripts(), no-image-selector())])]
-                , [DataStmtValue(no-repeat(), IntLiteralConstant("16", no-kind()))]
+                , [DataStmtValue(no-repeat(), IntVal("16"))]
                 )
               , DataStmtSet(
                   [DataRef([PartRef("jj", no-section-subscripts(), no-image-selector())])]
-                , [DataStmtValue(no-repeat(), IntLiteralConstant("17", no-kind()))]
+                , [DataStmtValue(no-repeat(), IntVal("17"))]
                 )
               )
             , DataStmtSet(
                 [DataRef([PartRef("kk", no-section-subscripts(), no-image-selector())])]
-              , [DataStmtValue(no-repeat(), IntLiteralConstant("18", no-kind()))]
+              , [DataStmtValue(no-repeat(), IntVal("18"))]
               )
             )
           , eos("\n\n")
@@ -69,7 +69,7 @@ Program(
             "10"
           , DataStmtSet(
               [DataRef([PartRef("bandaid", no-section-subscripts(), no-image-selector())])]
-            , [DataStmtValue(no-repeat(), IntLiteralConstant("3", no-kind()))]
+            , [DataStmtValue(no-repeat(), IntVal("3"))]
             )
           , eos("\n")
           )
@@ -82,7 +82,7 @@ Program(
               )
             , DataStmtSet(
                 [DataRef([PartRef("MILES", no-section-subscripts(), no-image-selector())])]
-              , [DataStmtValue(DataStmtRepeat("10"), IntLiteralConstant("1", no-kind()))]
+              , [DataStmtValue(DataStmtRepeat("10"), IntVal("1"))]
               )
             )
           , eos("\n\n")

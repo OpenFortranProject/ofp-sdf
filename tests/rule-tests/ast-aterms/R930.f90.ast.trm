@@ -1,37 +1,49 @@
 Program(
-  "!! R930 inquire-spec\n!    is [ UNIT = ] file-unit-number\n!    or FILE = file-name-expr\n!    or ACCESS = scalar-default-char-variable\n!    or ACTION = scalar-default-char-variable\n!    or ASYNCHRONOUS = scalar-default-char-variable\n!    or BLANK = scalar-default-char-variable\n!    or DECIMAL = scalar-default-char-variable\n!    or DELIM = scalar-default-char-variable\n!    or DIRECT = scalar-default-char-variable\n!    or ENCODING = scalar-default-char-variable\n!    or ERR = label\n!    or EXIST = scalar-default-logical-variable\n!    or FORM = scalar-default-char-variable\n!    or FORMATTED = scalar-default-char-variable\n!    or ID = scalar-int-expr\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n!    or NAME = scalar-default-char-variable\n!    or NAMED = scalar-default-logical-variable\n!    or NEXTREC = scalar-int-variable\n!    or NUMBER = scalar-int-variable\n!    or OPENED = scalar-default-logical-variable\n!    or PAD = scalar-default-char-variable\n!    or PENDING = scalar-default-logical-variable\n!    or POS = scalar-int-variable\n!    or POSITION = scalar-default-char-variable\n!    or READ = scalar-default-char-variable\n!    or READWRITE = scalar-default-char-variable\n!    or RECL = scalar-int-variable\n!    or ROUND = scalar-default-char-variable\n!    or SEQUENTIAL = scalar-default-char-variable\n!    or SIGN = scalar-default-char-variable\n!    or SIZE = scalar-int-variable\n!    or STREAM = scalar-default-char-variable\n!    or TEAM = image-team\n!    or UNFORMATTED = scalar-default-char-variable\n!    or WRITE = scalar-default-char-variable\n\n!TODO-F08 - add more components to test\n\n"
+  "!! R930 inquire-stmt\n!    is  INQUIRE ( inquire-spec-list )\n!    or  INQUIRE ( IOLENGTH = scalar-int-variable ) output-item-list\n!\n! Not tested here: inquire-spec-list, scalar-int-variable, and\n!  output-item-list.\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(no-char-selector()))
+          , IntrinsicType(CHARACTER())
           , no-list()
           , [EntityDecl("cvar", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n\n")
           )
+        , InquireStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
         , InquireStmt(
             no-label()
-          , [ UNIT(IntLiteralConstant("5", no-kind()))
-            , ACCESS(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
-            , ACTION(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
-            , ASYNCHRONOUS(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+          , [FILE("'foo.txt'"), BLANK(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n")
+          )
+        , InquireStmt(
+            no-label()
+          , [ UNIT(IntVal("10"))
+            , BLANK(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
             ]
           , eos("\n")
           )
         , InquireStmt(
             no-label()
-          , [ BLANK(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
-            , UNIT(IntLiteralConstant("6", no-kind()))
-            , ERR("13")
+          , [ ENCODING(DataRef([PartRef("cvar", no-section-subscripts(), no-image-selector())]))
+            , UNIT(IntVal("10"))
+            ]
+          , eos("\n")
+          )
+        , InquireLengthStmt(
+            no-label()
+          , DataRef([PartRef("ix", no-section-subscripts(), no-image-selector())])
+          , [ DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+            , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
             ]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("13", no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
     )
   ]
 )

@@ -1,35 +1,122 @@
 Program(
-  "!! R440 proc-component-def-stmt\n!    is PROCEDURE ( [ proc-interface ] ) ,\n!            proc-component-attr-spec-list :: proc-decl-list\n!                                                                                         \n\n"
-, [ MainProgram(
-      no-program-stmt()
-    , initial-spec-part([], [])
-    , SpecAndExecPart(
-        [ DerivedTypeDef(
-            DerivedTypeStmt(no-label(), no-list(), "feeble", no-list(), eos("\n\n  "))
+  "!! R440 proc-component-def-stmt\n!    is PROCEDURE ( [ proc-interface ] ) ,\n!            proc-component-attr-spec-list :: proc-decl-list\n!                                                                                         \n"
+, [ Module(
+      ModuleStmt(no-label(), "whut", eos("\n\n  "))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "point", no-list(), eos("\n     "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ ComponentDecl("x", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("y", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "point", eos("\n\n  "))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , comma-list([Extends("point")])
+            , "feeble"
+            , no-list()
+            , eos("\n     ")
+            )
           , []
           , []
           , [ ProcComponentDefStmt(
                 no-label()
               , no-proc-interface()
-              , [POINTER()]
+              , [POINTER(), NOPASS()]
               , [ProcDecl("foible", no-init())]
-              , eos("\n  ")
+              , eos("\n     ")
               )
             , ProcComponentDefStmt(
                 no-label()
               , "bob"
-              , [Pass(no-arg-name()), PRIVATE()]
+              , [Pass("a"), PRIVATE(), POINTER()]
               , [ProcDecl("foo", "bar")]
-              , eos("\n\n")
+              , eos("\n     ")
+              )
+            , ProcComponentDefStmt(
+                no-label()
+              , "bob"
+              , [Pass(no-arg-name()), PUBLIC(), POINTER()]
+              , [ProcDecl("foo", "bar")]
+              , eos("\n")
               )
             ]
           , no-type-bound-procedure-part()
           , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
           )
+        , InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec(), eos("\n   "))
+          , [ InterfaceBody(
+                FunctionStmt(
+                  no-label()
+                , no-prefix()
+                , "bob"
+                , ["a"]
+                , no-suffix()
+                , eos("\n     ")
+                )
+              , SpecificationPart(
+                  []
+                , [ImportStmt(no-label(), ["feeble"], eos("\n     "))]
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , derived-type-spec(DerivedTypeSpec("feeble", no-list()))
+                    , no-list()
+                    , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n   ")
+                    )
+                  ]
+                )
+              , EndFunctionStmt(no-label(), "bob", eos("\n"))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec(), eos("\n\n"))
+          )
         ]
       )
-    , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , ModuleSubprogramPart(
+        ContainsStmt(no-label(), eos("\n\n  "))
+      , [ FunctionSubprogram(
+            FunctionStmt(
+              no-label()
+            , no-prefix()
+            , "boo"
+            , ["a"]
+            , no-suffix()
+            , eos("\n    ")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , derived-type-spec(DerivedTypeSpec("point", no-list()))
+                , no-list()
+                , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n  ")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndFunctionStmt(no-label(), "boo", eos("\n\n"))
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "whut", eos("\n"))
     )
   ]
 )

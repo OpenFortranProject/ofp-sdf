@@ -7,7 +7,7 @@ Program(
         [ ImplicitStmt(
             no-label()
           , [ ImplicitSpec(
-                IntrinsicType(REAL(no-kind()))
+                IntrinsicType(REAL())
               , [LetterSpec("a", no-letter()), LetterSpec("b", no-letter()), LetterSpec("c", no-letter())]
               )
             ]
@@ -15,12 +15,12 @@ Program(
           )
         , ImplicitStmt(
             no-label()
-          , [ImplicitSpec(IntrinsicType(REAL(no-kind())), [LetterSpec("D", "g")])]
+          , [ImplicitSpec(IntrinsicType(REAL()), [LetterSpec("D", "g")])]
           , eos("\n")
           )
         , ImplicitStmt(
             no-label()
-          , [ImplicitSpec(IntrinsicType(INTEGER(no-kind())), [LetterSpec("y", no-letter())])]
+          , [ImplicitSpec(IntrinsicType(INTEGER()), [LetterSpec("y", no-letter())])]
           , eos("\n\n")
           )
         ]

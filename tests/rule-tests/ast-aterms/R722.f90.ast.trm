@@ -6,21 +6,21 @@ Program(
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(CHARACTER(CharSelector(LengthSelector(IntLiteralConstant("10", no-kind())), no-kind())))
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("10")), no-kind())))
           , no-list()
           , [EntityDecl("H", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(LOGICAL(no-kind()))
+          , IntrinsicType(LOGICAL())
           , no-list()
           , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
         , TypeDeclarationStmt(
             no-label()
-          , IntrinsicType(INTEGER(no-kind()))
+          , IntrinsicType(INTEGER())
           , no-list()
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
@@ -36,11 +36,9 @@ Program(
             no-label()
           , DataRef([PartRef("s", no-section-subscripts(), no-image-selector())])
           , DefBinExpr(
-              Parens(
-                DefBinExpr(IntLiteralConstant("1", no-kind()), ".intersect.", IntLiteralConstant("2", no-kind()))
-              )
+              Parens(DefBinExpr(IntVal("1"), ".intersect.", IntVal("2")))
             , ".UNION."
-            , Parens(Minus(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind())))
+            , Parens(Minus(IntVal("3"), IntVal("4")))
             )
           , eos("\n")
           )
@@ -48,18 +46,15 @@ Program(
             no-label()
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
           , EQ(
-              Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind()))
-            , Mult(IntLiteralConstant("2", no-kind()), IntLiteralConstant("4", no-kind()))
+              Plus(IntVal("1"), IntVal("2"))
+            , Mult(IntVal("2"), IntVal("4"))
             )
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("s", no-section-subscripts(), no-image-selector())])
-          , DefUnaryExpr(
-              ".inverse."
-            , Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
-            )
+          , DefUnaryExpr(".inverse.", Parens(Plus(IntVal("1"), IntVal("2"))))
           , eos("\n")
           )
         , AssignmentStmt(
@@ -68,14 +63,14 @@ Program(
           , AND(
               Parens(
                 EQ(
-                  Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
-                , IntLiteralConstant("3", no-kind())
+                  Parens(Plus(IntVal("1"), IntVal("2")))
+                , IntVal("3")
                 )
               )
             , Parens(
                 EQ(
-                  Parens(Mult(IntLiteralConstant("3", no-kind()), IntLiteralConstant("4", no-kind())))
-                , IntLiteralConstant("12", no-kind())
+                  Parens(Mult(IntVal("3"), IntVal("4")))
+                , IntVal("12")
                 )
               )
             )
@@ -86,9 +81,13 @@ Program(
           , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
           , EQ(
               Concat("\"E\"", "\"G\"")
-            , Substring(
-                DataRef([PartRef("H", no-section-subscripts(), no-image-selector())])
-              , SubstringRange(IntLiteralConstant("1", no-kind()), IntLiteralConstant("10", no-kind()))
+            , DataRef(
+                [ PartRef(
+                    "H"
+                  , paren-list([Triplet(IntVal("1"), IntVal("10"), no-stride())])
+                  , no-image-selector()
+                  )
+                ]
               )
             )
           , eos("\n")
@@ -96,18 +95,15 @@ Program(
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
-          , Plus(
-              IntLiteralConstant("1", no-kind())
-            , Mult(IntLiteralConstant("2", no-kind()), IntLiteralConstant("3", no-kind()))
-            )
+          , Plus(IntVal("1"), Mult(IntVal("2"), IntVal("3")))
           , eos("\n")
           )
         , AssignmentStmt(
             no-label()
           , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
           , Mult(
-              Parens(Plus(IntLiteralConstant("1", no-kind()), IntLiteralConstant("2", no-kind())))
-            , IntLiteralConstant("3", no-kind())
+              Parens(Plus(IntVal("1"), IntVal("2")))
+            , IntVal("3")
             )
           , eos("\n\n")
           )
