@@ -102,8 +102,8 @@ sorts
   CharLiteralConstant                 %% R423
   LogicalLiteralConstant              %% R424
 
-  NoKindParam OptKindSelector
-  NoKindSelector OptCharSelector NoLengthSelector
+  OptKindSelector IconVal
+  NoKindSelector NoLengthSelector
 
 %% 4.5 Derived types
 
@@ -855,21 +855,28 @@ context-free syntax
 %%
 
 %%R404
-  'INTEGER'            OptKindSelector  -> IntrinsicTypeSpec    {cons("INTEGER")}
-  'REAL'               OptKindSelector  -> IntrinsicTypeSpec    {cons("REAL")}
+  'INTEGER'                             -> IntrinsicTypeSpec    {cons("INTEGER")}    %% FAST term
+  'INTEGER'               KindSelector  -> IntrinsicTypeSpec    {cons("INTEGER")}    %% FAST term
+  'REAL'                                -> IntrinsicTypeSpec    {cons("REAL")}       %% FAST term
+  'REAL'                  KindSelector  -> IntrinsicTypeSpec    {cons("REAL")}       %% FAST term
   'DOUBLE' 'PRECISION'                  -> IntrinsicTypeSpec    {cons("DOUBLEPRECISION")}
-  'COMPLEX'            OptKindSelector  -> IntrinsicTypeSpec    {cons("COMPLEX")}
-  'CHARACTER'          OptCharSelector  -> IntrinsicTypeSpec    {cons("CHARACTER")}
-  'LOGICAL'            OptKindSelector  -> IntrinsicTypeSpec    {cons("LOGICAL")}
+  'COMPLEX'                             -> IntrinsicTypeSpec    {cons("COMPLEX")}    %% FAST term
+  'COMPLEX'               KindSelector  -> IntrinsicTypeSpec    {cons("COMPLEX")}    %% FAST term
+  'CHARACTER'                           -> IntrinsicTypeSpec    {cons("CHARACTER")}  %% FAST term
+  'CHARACTER'             CharSelector  -> IntrinsicTypeSpec    {cons("CHARACTER")}  %% FAST term
+  'LOGICAL'                             -> IntrinsicTypeSpec    {cons("LOGICAL")}    %% FAST term
+  'LOGICAL'               KindSelector  -> IntrinsicTypeSpec    {cons("LOGICAL")}    %% FAST term
   'DOUBLE' 'COMPLEX'                    -> IntrinsicTypeSpec    {cons("DOUBLECOMPLEX")}
 
 %%R405
 %%       expr substituted for scalar-int-constant-expr
 %%       NONSTANDARD: e.g., integer*8 complex*8 complex*16
 %%
-  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("KindSelector")}
-  '('            Expr ')'               -> KindSelector  {cons("KindSelector")}
-  '*' Icon                              -> KindSelector  {cons("KindSelector_STAR")}
+  '(' 'KIND' '=' Expr ')'               -> KindSelector  {cons("Kind")}              %% FAST term
+  '('            Expr ')'               -> KindSelector  {cons("Kind")}              %% FAST term
+  '*' IconVal                           -> KindSelector  {cons("Kind")}
+
+  Icon                                  -> IconVal       {cons("IntVal")}            %% FAST term
 
   KindSelector                          -> OptKindSelector
   % empty %                             -> OptKindSelector  {cons("no-kind")}
@@ -880,13 +887,11 @@ context-free syntax
   Sign IntLiteralConstant            -> SignedIntLiteralConstant  {cons("SignedIntLiteralConstant")}
 
 %%R407
-  DigitString   NoKindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
-  DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntLiteralConstant")}
-
-  % empty %                             -> NoKindParam         {cons("no-kind")}
+  DigitString                           -> IntLiteralConstant  {cons("IntVal")}      %% FAST term
+  DigitString '_' KindParam             -> IntLiteralConstant  {cons("IntVal")}      %% FAST term
 
 %%R408
-  DigitString NoKindParam               -> KindParam           {cons("IntLiteralConstant")}
+  DigitString                           -> KindParam           {cons("IntVal")}      %% FAST term
   ScalarIntConstantName                 -> KindParam           {cons("VarRef")}
 
   Ident                                 -> ScalarIntConstantName
@@ -907,8 +912,8 @@ context-free syntax
   Sign RealLiteralConstant              -> SignedRealLiteralConstant  {cons("SignedRealLiteralConstant")}
 
 %%R413
-  Rcon   NoKindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
-  Rcon '_' KindParam                    -> RealLiteralConstant        {cons("RealLiteralConstant")}
+  Rcon                                  -> RealLiteralConstant        {cons("RealVal")}  %% FAST term
+  Rcon '_' KindParam                    -> RealLiteralConstant        {cons("RealVal")}  %% FAST term
 
 %%R414 significand     - lex
 
@@ -941,9 +946,6 @@ context-free syntax
 
   % empty %                                                    -> NoLengthSelector {cons("no-char-length")}
 
-  CharSelector                                                 -> OptCharSelector
-  % empty %                                                    -> OptCharSelector  {cons("no-char-selector")}
-
 %%R421
   '(' 'LEN' '=' TypeParamValue ')'                             -> LengthSelector  {cons("length-selector")}
   '('           TypeParamValue ')'                             -> LengthSelector  {cons("length-selector")}
@@ -959,10 +961,10 @@ context-free syntax
                 Scon                    -> CharLiteralConstant
 
 %%R424
-  '.TRUE.'      NoKindParam             -> LogicalLiteralConstant  {cons("TRUE")}
-  '.TRUE.'  '_'   KindParam             -> LogicalLiteralConstant  {cons("TRUE")}
-  '.FALSE.'     NoKindParam             -> LogicalLiteralConstant  {cons("FALSE")}
-  '.FALSE.' '_'   KindParam             -> LogicalLiteralConstant  {cons("FALSE")}
+  '.TRUE.'                              -> LogicalLiteralConstant  {cons("TRUE")}   %% FAST term
+  '.TRUE.'  '_'   KindParam             -> LogicalLiteralConstant  {cons("TRUE")}   %% FAST term
+  '.FALSE.'                             -> LogicalLiteralConstant  {cons("FALSE")}  %% FAST term
+  '.FALSE.' '_'   KindParam             -> LogicalLiteralConstant  {cons("FALSE")}  %% FAST term
 
 
 %% 4.5 Derived types
@@ -1213,9 +1215,9 @@ context-free syntax
 %%
 
 %%R463
-  BinaryConstant                                   -> BozLiteralConstant      {cons("BozLiteralConstant_BC")}
-  OctalConstant                                    -> BozLiteralConstant      {cons("BozLiteralConstant_OC")}
-  HexConstant                                      -> BozLiteralConstant      {cons("BozLiteralConstant_HC")}
+  BinaryConstant                                   -> BozLiteralConstant      {cons("BinVal")}
+  OctalConstant                                    -> BozLiteralConstant      {cons("OctVal")}
+  HexConstant                                      -> BozLiteralConstant      {cons("HexVal")}
 
 %%R464
 %% BinaryConstant - lex

@@ -973,9 +973,9 @@ signature
     AcSpec                          : OptTypeSpec * List(AcValue) -> AcSpec
     AcSpec                          : TypeSpec * NoAcValueList -> AcSpec
     ArrayConstructor                : AcSpec -> ArrayConstructor
-    BozLiteralConstant_HC           : HexConstant -> BozLiteralConstant
-    BozLiteralConstant_OC           : OctalConstant -> BozLiteralConstant
-    BozLiteralConstant_BC           : BinaryConstant -> BozLiteralConstant
+    HexVal                          : HexConstant -> BozLiteralConstant
+    OctVal                          : OctalConstant -> BozLiteralConstant
+    BinVal                          : BinaryConstant -> BozLiteralConstant
     EndEnumStmt                     : OptLabel * EOS -> EndEnumStmt
     no-expr                         : OptEqualsExpr
     equals-expr                     : IntConstantExpr -> OptEqualsExpr
@@ -1068,17 +1068,15 @@ signature
     DerivedTypeStmt                 : OptLabel * OptTypeAttrSpecList * TypeName * OptTypeParamNameList * EOS -> DerivedTypeStmt
     DerivedTypeDef                  : DerivedTypeStmt * List(TypeParamDefStmt) * List(PrivateOrSequence) * ComponentPart * OptTypeBoundProcedurePart * EndTypeStmt -> DerivedTypeDef
     FALSE                           : KindParam -> LogicalLiteralConstant
-    FALSE                           : NoKindParam -> LogicalLiteralConstant
+    FALSE                           : LogicalLiteralConstant
     TRUE                            : KindParam -> LogicalLiteralConstant
-    TRUE                            : NoKindParam -> LogicalLiteralConstant
+    TRUE                            : LogicalLiteralConstant
                                     : Scon -> CharLiteralConstant
     CharLiteralConstant             : KindParam * Scon -> CharLiteralConstant
     IntVal                          : Icon -> CharLength
     char-length                     : TypeParamValue -> CharLength
     length-selector                 : CharLength -> LengthSelector
     length-selector                 : TypeParamValue -> LengthSelector
-    no-char-selector                : OptCharSelector
-                                    : CharSelector -> OptCharSelector
     no-char-length                  : NoLengthSelector
     CharSelector_KIND_LEN           : Expr * NoLengthSelector -> CharSelector
     CharSelector_KIND_LEN           : Expr * TypeParamValue -> CharSelector
@@ -1091,8 +1089,8 @@ signature
                                     : SignedRealLiteralConstant -> RealPart
                                     : SignedIntLiteralConstant -> RealPart
     ComplexLiteralConstant          : RealPart * ImagPart -> ComplexLiteralConstant
-    RealLiteralConstant             : Rcon * KindParam -> RealLiteralConstant
-    RealLiteralConstant             : Rcon * NoKindParam -> RealLiteralConstant
+    RealVal                         : Rcon * KindParam -> RealLiteralConstant
+    RealVal                         : Rcon -> RealLiteralConstant
     SignedRealLiteralConstant       : Sign * RealLiteralConstant -> SignedRealLiteralConstant
                                     : RealLiteralConstant -> SignedRealLiteralConstant
     MINUS                           : Sign
@@ -1100,24 +1098,29 @@ signature
                                     : Icon -> DigitString
                                     : Ident -> ScalarIntConstantName
     VarRef                          : ScalarIntConstantName -> KindParam
-    IntLiteralConstant              : DigitString * NoKindParam -> KindParam
-    no-kind                         : NoKindParam
-    IntLiteralConstant              : DigitString * KindParam -> IntLiteralConstant
-    IntLiteralConstant              : DigitString * NoKindParam -> IntLiteralConstant
+    IntVal                          : DigitString -> KindParam
+    IntVal                          : DigitString * KindParam -> IntLiteralConstant
+    IntVal                          : DigitString -> IntLiteralConstant
     SignedIntLiteralConstant        : Sign * IntLiteralConstant -> SignedIntLiteralConstant
                                     : IntLiteralConstant -> SignedIntLiteralConstant
     no-kind                         : NoKindSelector
     no-kind                         : OptKindSelector
                                     : KindSelector -> OptKindSelector
-    KindSelector_STAR               : Icon -> KindSelector
-    KindSelector                    : Expr -> KindSelector
+    IntVal                          : Icon -> IconVal
+    Kind                            : IconVal -> KindSelector
+    Kind                            : Expr -> KindSelector
     DOUBLECOMPLEX                   : IntrinsicTypeSpec
-    LOGICAL                         : OptKindSelector -> IntrinsicTypeSpec
-    CHARACTER                       : OptCharSelector -> IntrinsicTypeSpec
-    COMPLEX                         : OptKindSelector -> IntrinsicTypeSpec
+    LOGICAL                         : KindSelector -> IntrinsicTypeSpec
+    LOGICAL                         : IntrinsicTypeSpec
+    CHARACTER                       : CharSelector -> IntrinsicTypeSpec
+    CHARACTER                       : IntrinsicTypeSpec
+    COMPLEX                         : KindSelector -> IntrinsicTypeSpec
+    COMPLEX                         : IntrinsicTypeSpec
     DOUBLEPRECISION                 : IntrinsicTypeSpec
-    REAL                            : OptKindSelector -> IntrinsicTypeSpec
-    INTEGER                         : OptKindSelector -> IntrinsicTypeSpec
+    REAL                            : KindSelector -> IntrinsicTypeSpec
+    REAL                            : IntrinsicTypeSpec
+    INTEGER                         : KindSelector -> IntrinsicTypeSpec
+    INTEGER                         : IntrinsicTypeSpec
     AssumedType                     : DeclarationTypeSpec
     AssumedClass                    : DeclarationTypeSpec
     class-type-spec                 : DerivedTypeSpec -> DeclarationTypeSpec
