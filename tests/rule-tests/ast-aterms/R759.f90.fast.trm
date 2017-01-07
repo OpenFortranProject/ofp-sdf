@@ -1,0 +1,149 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [Var("N", INTEGER(), Init(IntVal("10")))]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var("i", INTEGER(), no-init())
+            , Var("j", INTEGER(), no-init())
+            , Var(
+                "Y"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("10")), Range(no-lower-bound(), IntVal("10"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("10")), Range(no-lower-bound(), IntVal("10"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "X"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "Z"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("10")), Range(no-lower-bound(), IntVal("10"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , [ ForallStmt(
+            "13"
+          , ForallHeader(
+              no-type-spec()
+            , [ForallTripletSpec("I", IntVal("1"), VarRef("N"), no-forall-step())]
+            , no-mask-expr()
+            )
+          , AssignmentStmt(
+              no-label()
+            , PartRef("A", [VarRef("I"), VarRef("I")], no-image-selector())
+            , PartRef("X", [VarRef("I")], no-image-selector())
+            ){Comment("
+
+")}
+          )
+        , ForallStmt(
+            no-label()
+          , ForallHeader(
+              no-type-spec()
+            , [ ForallTripletSpec("I", IntVal("1"), VarRef("N"), no-forall-step())
+              , ForallTripletSpec("J", IntVal("1"), VarRef("N"), no-forall-step())
+              ]
+            , no-mask-expr()
+            )
+          , AssignmentStmt(
+              no-label()
+            , PartRef("Z", [VarRef("I"), VarRef("J")], no-image-selector())
+            , Div(
+                RealVal("1.0")
+              , PartRef(
+                  "REAL"
+                , [Minus(Plus(VarRef("I"), VarRef("J")), IntVal("1"))]
+                , no-image-selector()
+                )
+              )
+            ){Comment("
+
+")}
+          )
+        , ForallStmt(
+            no-label()
+          , ForallHeader(
+              no-type-spec()
+            , [ ForallTripletSpec("I", IntVal("1"), VarRef("N"), no-forall-step())
+              , ForallTripletSpec("J", IntVal("1"), VarRef("N"), no-forall-step())
+              ]
+            , comma-expr(
+                AND(
+                  NE(
+                    PartRef("Y", [VarRef("I"), VarRef("J")], no-image-selector())
+                  , IntVal("0")
+                  )
+                , NE(VarRef("I"), VarRef("J"))
+                )
+              )
+            )
+          , AssignmentStmt(
+              no-label()
+            , PartRef("Z", [VarRef("I"), VarRef("J")], no-image-selector())
+            , Div(
+                RealVal("1.0")
+              , PartRef("Y", [VarRef("I"), VarRef("J")], no-image-selector())
+              )
+            ){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R757 forall-assignment-stmt
+!    is assignment-stmt
+!    or pointer-assignment-stmt
+
+! NOTE 7.57
+
+")}

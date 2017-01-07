@@ -1,0 +1,237 @@
+Program(
+  "!! R757 forall-assignment-stmt\n!    is assignment-stmt\n!    or pointer-assignment-stmt\n\n! NOTE 7.57\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [EntityDecl("N", no-list(), no-list(), no-char-length(), Init(IntVal("10")))]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl(
+                "Y"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("10")), ExplicitShape(no-lower-bound(), IntVal("10"))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl(
+                "A"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("10")), ExplicitShape(no-lower-bound(), IntVal("10"))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "X"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "Z"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("10")), ExplicitShape(no-lower-bound(), IntVal("10"))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n")
+          )
+        , ForallStmt(
+            "13"
+          , ForallHeader(
+              no-type-spec()
+            , [ ForallTripletSpec(
+                  "I"
+                , IntVal("1")
+                , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                , no-forall-step()
+                )
+              ]
+            , no-mask-expr()
+            )
+          , AssignmentStmt(
+              no-label()
+            , DataRef(
+                [ PartRef(
+                    "A"
+                  , paren-list(
+                      [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                      , DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                      ]
+                    )
+                  , no-image-selector()
+                  )
+                ]
+              )
+            , DataRef(
+                [ PartRef(
+                    "X"
+                  , paren-list([DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])])
+                  , no-image-selector()
+                  )
+                ]
+              )
+            , eos("\n\n")
+            )
+          )
+        , ForallStmt(
+            no-label()
+          , ForallHeader(
+              no-type-spec()
+            , [ ForallTripletSpec(
+                  "I"
+                , IntVal("1")
+                , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                , no-forall-step()
+                )
+              , ForallTripletSpec(
+                  "J"
+                , IntVal("1")
+                , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                , no-forall-step()
+                )
+              ]
+            , no-mask-expr()
+            )
+          , AssignmentStmt(
+              no-label()
+            , DataRef(
+                [ PartRef(
+                    "Z"
+                  , paren-list(
+                      [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                      , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                      ]
+                    )
+                  , no-image-selector()
+                  )
+                ]
+              )
+            , Div(
+                RealVal("1.0")
+              , DataRef(
+                  [ PartRef(
+                      "REAL"
+                    , paren-list(
+                        [ Minus(
+                            Plus(
+                              DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                            , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                            )
+                          , IntVal("1")
+                          )
+                        ]
+                      )
+                    , no-image-selector()
+                    )
+                  ]
+                )
+              )
+            , eos("\n\n")
+            )
+          )
+        , ForallStmt(
+            no-label()
+          , ForallHeader(
+              no-type-spec()
+            , [ ForallTripletSpec(
+                  "I"
+                , IntVal("1")
+                , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                , no-forall-step()
+                )
+              , ForallTripletSpec(
+                  "J"
+                , IntVal("1")
+                , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                , no-forall-step()
+                )
+              ]
+            , comma-expr(
+                AND(
+                  NE(
+                    DataRef(
+                      [ PartRef(
+                          "Y"
+                        , paren-list(
+                            [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                            , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                            ]
+                          )
+                        , no-image-selector()
+                        )
+                      ]
+                    )
+                  , IntVal("0")
+                  )
+                , NE(
+                    DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                  , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                  )
+                )
+              )
+            )
+          , AssignmentStmt(
+              no-label()
+            , DataRef(
+                [ PartRef(
+                    "Z"
+                  , paren-list(
+                      [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                      , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                      ]
+                    )
+                  , no-image-selector()
+                  )
+                ]
+              )
+            , Div(
+                RealVal("1.0")
+              , DataRef(
+                  [ PartRef(
+                      "Y"
+                    , paren-list(
+                        [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                        , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                        ]
+                      )
+                    , no-image-selector()
+                    )
+                  ]
+                )
+              )
+            , eos("\n\n")
+            )
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)
