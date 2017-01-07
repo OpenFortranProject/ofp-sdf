@@ -1,0 +1,103 @@
+Program(
+  "!! R439 component-array-spec\n!    is explicit-shape-spec-list\n!    or deferred-shape-spec-list\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [ EntityDecl("a", no-list(), no-list(), no-char-length(), Init(IntVal("3")))
+            , EntityDecl("x", no-list(), no-list(), no-char-length(), Init(IntVal("4")))
+            , EntityDecl("y", no-list(), no-list(), no-char-length(), Init(IntVal("13")))
+            ]
+          , eos("\n")
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "ugly", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([POINTER()])
+              , [ComponentDecl("truth", ArraySpec([DeferredShape()]), no-list(), no-char-length(), no-init())]
+              , eos("\n  ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([POINTER()])
+              , [ ComponentDecl(
+                    "beauty"
+                  , ArraySpec([DeferredShape(), DeferredShape(), DeferredShape(), DeferredShape(), DeferredShape()])
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n  ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ ComponentDecl(
+                    "foo"
+                  , ArraySpec(
+                      [ ExplicitShape(no-lower-bound(), IntVal("2"))
+                      , ExplicitShape(no-lower-bound(), IntVal("3"))
+                      , ExplicitShape(no-lower-bound(), IntVal("4"))
+                      , ExplicitShape(no-lower-bound(), DataRef([PartRef("a", no-section-subscripts(), no-image-selector())]))
+                      , ExplicitShape(no-lower-bound(), DataRef([PartRef("x", no-section-subscripts(), no-image-selector())]))
+                      ]
+                    )
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n  ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ ComponentDecl(
+                    "bar"
+                  , ArraySpec(
+                      [ExplicitShape(no-lower-bound(), DataRef([PartRef("y", no-section-subscripts(), no-image-selector())]))]
+                    )
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n  ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ ComponentDecl(
+                    "lies"
+                  , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("8"))])
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

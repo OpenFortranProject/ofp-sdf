@@ -1,0 +1,189 @@
+Program(
+  no-comments()
+, [ Module(
+      ModuleStmt(no-label(), "points", eos("\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "POINT", no-list(), eos("\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ ComponentDecl("X", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("Y", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n\n")
+              )
+            ]
+          , TypeBoundProcedurePart(
+              ContainsStmt(no-label(), eos("\n"))
+            , no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass(no-arg-name())])
+                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT", eos("\n\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , comma-list([Extends("point")])
+            , "POINT_3D"
+            , no-list()
+            , eos("\n  ")
+            )
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ComponentDecl("Z", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , TypeBoundProcedurePart(
+              ContainsStmt(no-label(), eos("\n"))
+            , no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass(no-arg-name())])
+                , [TypeBoundProcDecl("LENGTH", "POINT_3D_LENGTH")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT_3D", eos("\n\n"))
+          )
+        ]
+      )
+    , ModuleSubprogramPart(
+        ContainsStmt(no-label(), eos("\n\n"))
+      , [ FunctionSubprogram(
+            FunctionStmt(
+              no-label()
+            , [IntrinsicType(REAL())]
+            , "POINT_LENGTH"
+            , ["A", "B"]
+            , no-suffix()
+            , eos("\n")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , class-type-spec(DerivedTypeSpec("POINT", no-list()))
+                , comma-list([Intent(IN())])
+                , [ EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())
+                  , EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())
+                  ]
+                , eos("\n")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("POINT_LENGTH", no-section-subscripts(), no-image-selector())])
+                , DataRef(
+                    [ PartRef(
+                        "SQRT"
+                      , paren-list(
+                          [ Plus(
+                              Power(
+                                Parens(
+                                  Minus(
+                                    DataRef(
+                                      [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  , DataRef(
+                                      [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("X", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  )
+                                )
+                              , IntVal("2")
+                              )
+                            , Power(
+                                Parens(
+                                  Minus(
+                                    DataRef(
+                                      [PartRef("A", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  , DataRef(
+                                      [PartRef("B", no-section-subscripts(), no-image-selector()), PartRef("Y", no-section-subscripts(), no-image-selector())]
+                                    )
+                                  )
+                                )
+                              , IntVal("2")
+                              )
+                            )
+                          ]
+                        )
+                      , no-image-selector()
+                      )
+                    ]
+                  )
+                , eos("\n")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndFunctionStmt(no-label(), "POINT_LENGTH", eos("\n"))
+          )
+        , FunctionSubprogram(
+            FunctionStmt(
+              no-label()
+            , [IntrinsicType(REAL())]
+            , "POINT_3D_LENGTH"
+            , ["A", "B"]
+            , no-suffix()
+            , eos("\n")
+            )
+          , initial-spec-part([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , class-type-spec(DerivedTypeSpec("POINT_3D", no-list()))
+                , comma-list([Intent(IN())])
+                , [EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n")
+                )
+              , TypeDeclarationStmt(
+                  no-label()
+                , class-type-spec(DerivedTypeSpec("point", no-list()))
+                , comma-list([Intent(IN())])
+                , [EntityDecl("B", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n")
+                )
+              , SelectTypeConstruct(
+                  SelectTypeStmt(
+                    no-label()
+                  , no-name()
+                  , no-name()
+                  , DataRef([PartRef("B", no-section-subscripts(), no-image-selector())])
+                  , eos("\n  ")
+                  )
+                , [ TypeGuardStmtBlock(
+                      ClassGuardStmt(no-label(), DerivedTypeSpec("POINT_3D", no-list()), no-name(), eos("\n"))
+                    , Block([])
+                    )
+                  ]
+                , EndSelectTypeStmt(no-label(), no-name(), eos("\n"))
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndFunctionStmt(no-label(), "point_3d_length", eos("\n"))
+          )
+        ]
+      )
+    , EndModuleStmt(no-label(), "points", eos("\n"))
+    )
+  ]
+)

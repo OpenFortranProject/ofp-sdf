@@ -1,0 +1,191 @@
+Program(
+  "!! R456 component-spec\n!   is [ keyword = ] component-data-source\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt("13", no-list(), "person", no-list(), eos("\n   "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("age", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n   ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("50")), no-kind())))
+              , no-list()
+              , [ComponentDecl("name", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt("14", "person", eos("\n\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "point", no-list(), eos("! A base type\n  "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ ComponentDecl("X", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("Y", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "POINT", eos("\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , comma-list([Extends("POINT")])
+            , "COLOR_POINT"
+            , no-list()
+            , eos("! An extension of TYPE(POINT)\n  ! Components X and Y, and component name POINT, inherited from parent\n  ")
+            )
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("COLOR", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "COLOR_POINT", eos("\n\n"))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("person", no-list()))
+          , no-list()
+          , [EntityDecl("p", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n!! NOTE 4.59\n!\n")
+          )
+        , TypeDeclarationStmt(
+            "15"
+          , derived-type-spec(DerivedTypeSpec("point", no-list()))
+          , no-list()
+          , [ EntityDecl(
+                "PV"
+              , no-list()
+              , no-list()
+              , no-char-length()
+              , Init(
+                  DataRef(
+                    [PartRef(
+                       "POINT"
+                     , paren-list([RealVal("1.0"), RealVal("2.0")])
+                     , no-image-selector()
+                     )]
+                  )
+                )
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("color_point", no-list()))
+          , no-list()
+          , [ EntityDecl("cp1", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("cp2", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("cp3", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("cp1", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "COLOR_POINT"
+                , paren-list(
+                    [ ActualArgSpec(
+                        "point"
+                      , DataRef(
+                          [PartRef(
+                             "point"
+                           , paren-list([IntVal("1"), IntVal("2")])
+                           , no-image-selector()
+                           )]
+                        )
+                      )
+                    , ActualArgSpec("color", IntVal("3"))
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("cp2", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "COLOR_POINT"
+                , paren-list(
+                    [ ActualArgSpec("point", DataRef([PartRef("PV", no-section-subscripts(), no-image-selector())]))
+                    , ActualArgSpec("color", IntVal("3"))
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("cp3", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "COLOR_POINT"
+                , paren-list([IntVal("1"), IntVal("2"), IntVal("3")])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n\n!! NOTE 4.60\n!\n")
+          )
+        , AssignmentStmt(
+            "16"
+          , DataRef([PartRef("p", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("PERSON", paren-list([IntVal("21"), "'JOHN SMITH'"]), no-image-selector())]
+            )
+          , eos("\n! This could also be written as\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("p", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "PERSON"
+                , paren-list(
+                    [ActualArgSpec("NAME", "'JOHN SMITH'"), ActualArgSpec("AGE", IntVal("21"))]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,41 @@
+Program(
+  "!! R421 length-selector\n!    is ( [ LEN = ] type-param-value )\n!    or * char-length [ , ]\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("1")), no-kind())))
+          , no-list()
+          , [EntityDecl("str1", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("2")), no-kind())))
+          , no-list()
+          , [EntityDecl("str2", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("3")), no-kind())))
+          , no-list()
+          , [EntityDecl("str3", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(COLON()), no-kind())))
+          , comma-list([ALLOCATABLE()])
+          , [EntityDecl("str_colon", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)

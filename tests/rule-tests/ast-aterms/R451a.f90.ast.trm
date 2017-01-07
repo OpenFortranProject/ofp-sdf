@@ -1,0 +1,49 @@
+Program(
+  "!! R451 binding-attr\n!    is PASS [ (arg-name ) ]\n!    or NOPASS\n!    or NON_OVERRIDABLE\n!    or DEFERRED\n!    or access-spec\n! \n"
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "truth", no-list(), eos("\n"))
+          , []
+          , []
+          , []
+          , TypeBoundProcedurePart(
+              ContainsStmt(no-label(), eos("\n  "))
+            , no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass("beauty")])
+                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([Pass(no-arg-name()), DEFERRED()])
+                , [TypeBoundProcDecl("boo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([NON_OVERRIDABLE(), PRIVATE()])
+                , [TypeBoundProcDecl("hoo", no-procedure-name())]
+                , eos("\n  ")
+                )
+              , TypeBoundProcedureStmt(
+                  no-label()
+                , comma-list([PUBLIC()])
+                , [TypeBoundProcDecl("loo", no-procedure-name()), TypeBoundProcDecl("doo", "goo")]
+                , eos("\n")
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "truth", eos("\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)
