@@ -16,6 +16,8 @@
    no-comma-opt-list             -- " " _1,
    no-comma-opt-list.1:iter-sep  -- _1 ",",
 
+   comma-expr                    -- ", " _1,
+
    CONCURRENT                    -- "CONCURRENT",
    Halo                          -- ", " "HALO" "(" _1 ")",
    HaloAlloc                     -- ", " "HALO" "=" _1,
@@ -625,7 +627,7 @@
    ElsewhereClause               -- V vs=0 is=2 [_1 _2],
 
    %% R750
-   ForallConstruct               -- _1 _2 _3,
+   ForallConstruct               -- V vs=0 is=2 [_1 _2] _3,
 
    ForallConstructStmt           -- H hs=1[_1 _2 "FORALL" H hs=0[_3]],
 
@@ -636,7 +638,11 @@
    ForallTripletSpec             -- _1 "=" _2 ":" _3 _4,
    no-forall-step                -- ,
 
+   %% R759
    EndForallStmt                 -- H hs=1[_1 "END FORALL" H hs=0[_2]],
+
+   %% R759
+   ForallStmt                    -- H hs=1[_1 "FORALL" H hs=0[_2] _3],
 
    %% R801
    AssociateConstruct            -- _1 _2 _3,
