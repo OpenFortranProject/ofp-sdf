@@ -1,0 +1,79 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [Var("c", COMPLEX(), no-init())]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , LOGICAL()
+          , []
+          , [Var("l", LOGICAL(), no-init())]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER(IntVal("5"))
+          , []
+          , [Var("str", CHARACTER(IntVal("5")), no-init())]
+          ){Comment("
+
+  ")}
+        ]
+      , [ AssignmentStmt(no-label(), VarDef("i"), IntVal("13")){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("i"), IntVal("13", IntVal("4"))){Comment("
+
+  ")}
+        , AssignmentStmt(no-label(), VarDef("r"), RealVal("3.1415")){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("r"), RealVal("3.1415", IntVal("8"))){Comment("
+
+  ")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("c")
+          , ComplexLiteralConstant(
+              SignedRealLiteralConstant(MINUS(), RealVal("1.0", IntVal("4")))
+            , SignedRealLiteralConstant(PLUS(), RealVal("2.0", IntVal("4")))
+            )
+          ){Comment("
+
+  ")}
+        , AssignmentStmt(no-label(), VarDef("l"), TRUE()){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("l"), FALSE(IntVal("4"))){Comment("
+
+  ")}
+        , AssignmentStmt(no-label(), VarDef("str"), "\"hello\""){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("str"), CharLiteralConstant(IntVal("1"), "\"hello\"")){Comment("
+
+  ")}
+        , AssignmentStmt(no-label(), VarDef("z"), HexVal("Z\"abcdef\"")){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("o"), OctVal("O'01234567'")){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("b"), BinVal("B'0110'")){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-program-name())
+    )
+  ]
+){Comment("!! R305 literal-constant
+!    is int-literal-constant
+!    or real-literal-constant
+!    or complex-literal-constant
+!    or logical-literal-constant
+!    or char-literal-constant
+!    or boz-literal-constant
+
+  ")}

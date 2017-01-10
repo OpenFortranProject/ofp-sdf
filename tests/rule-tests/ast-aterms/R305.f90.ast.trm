@@ -1,0 +1,109 @@
+Program(
+  "!! R305 literal-constant\n!    is int-literal-constant\n!    or real-literal-constant\n!    or complex-literal-constant\n!    or logical-literal-constant\n!    or char-literal-constant\n!    or boz-literal-constant\n\n  "
+, [ MainProgram(
+      no-program-stmt()
+    , initial-spec-part([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(COMPLEX())
+          , no-list()
+          , [EntityDecl("c", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(LOGICAL())
+          , no-list()
+          , [EntityDecl("l", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER(CharSelector(length-selector(IntVal("5")), no-kind())))
+          , no-list()
+          , [EntityDecl("str", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , IntVal("13")
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+          , IntVal("13", IntVal("4"))
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
+          , RealVal("3.1415")
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
+          , RealVal("3.1415", IntVal("8"))
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
+          , ComplexLiteralConstant(
+              SignedRealLiteralConstant(MINUS(), RealVal("1.0", IntVal("4")))
+            , SignedRealLiteralConstant(PLUS(), RealVal("2.0", IntVal("4")))
+            )
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("l", no-section-subscripts(), no-image-selector())])
+          , TRUE()
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("l", no-section-subscripts(), no-image-selector())])
+          , FALSE(IntVal("4"))
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("str", no-section-subscripts(), no-image-selector())])
+          , "\"hello\""
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("str", no-section-subscripts(), no-image-selector())])
+          , CharLiteralConstant(IntVal("1"), "\"hello\"")
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("z", no-section-subscripts(), no-image-selector())])
+          , HexVal("Z\"abcdef\"")
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("o", no-section-subscripts(), no-image-selector())])
+          , OctVal("O'01234567'")
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+          , BinVal("B'0110'")
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    )
+  ]
+)
