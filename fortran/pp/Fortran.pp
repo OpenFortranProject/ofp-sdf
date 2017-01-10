@@ -65,13 +65,12 @@
    LEN                           -- "LEN",
 
    Kind                          -- H hs=0 ["(" "KIND=" _1 ")"],
-   ppLiteralKind                 -- H hs=0 ["_" _1],
    no-kind                       -- ,
 
    IntVal                        -- _1,
-   IntVal                        -- H hs=0[_1 _2],
+   IntVal                        -- H hs=0[_1 "_" _2],
    RealVal                       -- _1,
-   RealVal                       -- H hs=0[_1 _2],
+   RealVal                       -- H hs=0[_1 "_" _2],
 
    %% R403
    IntrinsicType                 -- _1,
@@ -117,7 +116,7 @@
    %% R423
    SignedRealLiteralConstant     -- _1 _2,
    ComplexLiteralConstant        -- "(" _1 "," _2 ")",
-   CharLiteralConstant           -- _1 _2,
+   CharLiteralConstant           -- _1 "_" _2,
 
    %% R424
    TRUE                          -- ".TRUE.",
@@ -828,6 +827,7 @@
    FMT-or-NML                    --            _1,
    ADVANCE                       -- "ADVANCE=" _1,
    FMT                           -- "FMT="     _1,
+   NML                           -- "NML="     _1,
    ID                            -- "ID="      _1,
    REC                           -- "REC="     _1,
    SIZE                          -- "SIZE="    _1,
