@@ -300,13 +300,13 @@ fast-to-sage:  LOGICAL()              -> SgUntypedType("bool",   <sg-expression>
 //R407
 fast-to-sage:  IntVal(val)
                -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type>INTEGER())
-fast-to-sage:  IntVal(val,Kind(expr))
+fast-to-sage:  IntVal(val,expr)
                -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type(|expr)>INTEGER())
 
 //R413
 fast-to-sage:  RealVal(val)
                -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type>REAL())
-fast-to-sage:  RealVal(val,Kind(expr))
+fast-to-sage:  RealVal(val,expr)
                -> SgUntypedValueExpression(<sg-fortran-keyword>FORTRAN_UNKNOWN(),val,<sg-build-intrinsic-type(|expr)>REAL())
 
 
