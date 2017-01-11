@@ -19,7 +19,7 @@ lexical syntax
   "&"           [\ \t]*  Comment?     EOL     -> Continuation
   Continuation  [\ \t]*  Comment      EOL     -> Continuation  %% ignore comment lines in a continuation
   Continuation  [\ \t]*               EOL     -> Continuation  %% ignore   blank lines in a continuation
-  Continuation ([\ \t]+ "&" )?                -> Continuation  %% continuation continues after "&" symbol
+  Continuation ([\ \t]* "&" )?                -> Continuation  %% continuation continues after "&" symbol
   Continuation                                -> LAYOUT        %% continuation is whitespace
 
 context-free restrictions
