@@ -6,6 +6,21 @@ Program(
             no-label()
           , INTEGER()
           , []
+          , [ Var(
+                "i"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("13"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
           , [ Var("x", INTEGER(), no-init())
             , Var("y", INTEGER(), no-init())
             , Var("z", INTEGER(), no-init())
@@ -18,6 +33,32 @@ Program(
           , REAL()
           , []
           , [Var("truth", REAL(), no-init()), Var("beauty", REAL(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [ Var("this", CHARACTER_LEN(IntVal("35")), no-init())
+            , Var(
+                "ridiculous"
+              , ArrayType(
+                  CHARACTER_LEN(IntVal("12"))
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("5")), Range(no-lower-bound(), IntVal("6"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , [PARAMETER()]
+          , [ Var("p1", CHARACTER_LEN(STAR()), Init("\"x\""))
+            , Var("p2", CHARACTER_LEN(STAR()), Init("\"y\""))
+            ]
           ){Comment("
 
 ")}
@@ -33,7 +74,5 @@ Program(
 !                   [ lbracket co-array-spec rbracket ]
 !                   [ * char-length ] [ initialization ]
 !    or function-name [ * char-length ]
-
-!TODO-F08 - improve test e.g. for co-array-spec
 
 ")}

@@ -1,10 +1,24 @@
 Program(
-  "!! R503 entity-decl\n!    is object-name [( array-spec )]\n!                   [ lbracket co-array-spec rbracket ]\n!                   [ * char-length ] [ initialization ]\n!    or function-name [ * char-length ]\n\n!TODO-F08 - improve test e.g. for co-array-spec\n\n"
+  "!! R503 entity-decl\n!    is object-name [( array-spec )]\n!                   [ lbracket co-array-spec rbracket ]\n!                   [ * char-length ] [ initialization ]\n!    or function-name [ * char-length ]\n\n"
 , [ MainProgram(
       no-program-stmt()
     , initial-spec-part([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl(
+                "i"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("13"))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(INTEGER())
           , no-list()
@@ -22,6 +36,44 @@ Program(
           , no-list()
           , [ EntityDecl("truth", no-list(), no-list(), no-char-length(), no-init())
             , EntityDecl("beauty", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER())
+          , no-list()
+          , [ EntityDecl("this", no-list(), no-list(), opt-char-length(IntVal("35")), no-init())
+            , EntityDecl(
+                "ridiculous"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("5")), ExplicitShape(no-lower-bound(), IntVal("6"))]
+                )
+              , no-list()
+              , opt-char-length(IntVal("12"))
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER())
+          , comma-list([PARAMETER()])
+          , [ EntityDecl(
+                "p1"
+              , no-list()
+              , no-list()
+              , opt-char-length(char-length(STAR()))
+              , Init("\"x\"")
+              )
+            , EntityDecl(
+                "p2"
+              , no-list()
+              , no-list()
+              , opt-char-length(char-length(STAR()))
+              , Init("\"y\"")
+              )
             ]
           , eos("\n\n")
           )
