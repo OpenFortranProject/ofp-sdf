@@ -33,5 +33,5 @@ junk : $(SYNTAX)/Fortran.tbl  $(TRANS)/ofp-simplify
 	$(SGLRI) -p $(SYNTAX)/Fortran.tbl -i junk.f90 | $(TRANS)/ofp-simplify | pp-aterm
 
 clean :
-	rm -f *.ast.trm *.fast.trm
+	rm -f *.ast *.ast.trm *.fast.trm
 	rm -f *.o *.mod
