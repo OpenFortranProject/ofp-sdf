@@ -384,6 +384,8 @@ ofp-to-ast =
    ;  ! Var(name,CHARACTER_LEN(char_length),init)
   <+  ? EntityDecl(name,dims,codims,no-char-length(),init)
    ;  ! Var(name,ArrayType(unknown-type(),dims,codims),init)
+   <+ ? EntityDecl(name,dims,codims,char_length,init)
+    ; ! Var(name,ArrayType(CHARACTER_LEN(char_length),dims,codims),init)
 
 //R510
 ofp-to-ast:  DeferredCoshape()                  -> Range(no-lower-bound(),COLON())
