@@ -225,8 +225,9 @@ ast-to-pp =
     ; ! ppArrayVar(name,ppArrayType(dims,codims),init)
 
 ast-to-pp =
-      ? Var(name,CHARACTER_LEN(len),init)   ; ! ppVarLen(name,len,init)
-  <+  ? Var(name,type,init)                 ; ! ppVar(name,init)
+      ? Var(name,CHARACTER_LEN(STAR()),init) ; ! ppVarLen(name,Parens(STAR()),init)
+  <+  ? Var(name,CHARACTER_LEN(len),init)    ; ! ppVarLen(name,len,init)
+  <+  ? Var(name,type,init)                  ; ! ppVar(name,init)
 
 //R508
 //  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
