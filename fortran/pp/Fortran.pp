@@ -758,8 +758,6 @@
 
    ErrorStopStmt                 -- H hs=1 [_1 "ERROR STOP" _2],
 
-   PauseStmt                     -- H hs=1 [_1 "PAUSE" H hs=0 [_2]],
-
    SyncAllStmt                   -- H hs=1 [_1 "SYNC ALL" H hs=0 ["(" _2 ")"]],
    SyncAllStmt.2:iter-sep        -- _1 ", ",
 
@@ -1117,6 +1115,13 @@
    %% R1240
    EntryStmt                           -- H hs=1 [_1 "ENTRY" H hs=0 [_2 "(" _3 ")" _4]],
    EntryStmt.3:iter-sep                -- _1 ",",
-   no-suffix                           --
+   no-suffix                           -- ,
+
+%% Delete Features
+%%
+
+   PauseStmt                           -- H hs=1 [_1 "PAUSE" H hs=0 [_2]],
+
+   AssignStmt                          -- H hs=1 [_1 "ASSIGN" _2 "TO" _3]
 
 ]
