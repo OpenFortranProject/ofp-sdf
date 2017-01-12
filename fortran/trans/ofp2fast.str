@@ -716,10 +716,6 @@ ofp-to-ast =  ?StopStmt(label,code,eos("\n"))        ;  !StopStmt(label,code)
 ofp-to-ast =  ?ErrorStopStmt(label,code,eos("\n"))   ;  !ErrorStopStmt(label,code)
           <+  ?ErrorStopStmt(label,code,eos(str) )   ;  !ErrorStopStmt(label,code) {Comment(str)}
 
-//F77
-ofp-to-ast =  ?PauseStmt(label,code,eos("\n"))       ;  !PauseStmt(label,code)
-          <+  ?PauseStmt(label,code,eos(str) )       ;  !PauseStmt(label,code) {Comment(str)}
-
 //R858
 ofp-to-ast =  ?SyncAllStmt(label,list,eos("\n"))        ;  !SyncAllStmt(label,list)
           <+  ?SyncAllStmt(label,list,eos(str) )        ;  !SyncAllStmt(label,list) {Comment(str)}
@@ -948,3 +944,15 @@ ofp-to-ast =  ?EntryStmt(label,name,args,suffix,eos("\n"));  !EntryStmt(label,na
 //R1241
 ofp-to-ast =  ?ReturnStmt(label,expr,eos("\n"))           ;  !ReturnStmt(label,expr)
           <+  ?ReturnStmt(label,expr,eos(str) )           ;  !ReturnStmt(label,expr) {Comment(str)}
+
+
+// Obsolete features
+//
+
+//F77
+ofp-to-ast =  ?PauseStmt(label,code,eos("\n"))               ;  !PauseStmt(label,code)
+          <+  ?PauseStmt(label,code,eos(str) )               ;  !PauseStmt(label,code) {Comment(str)}
+
+//F77
+ofp-to-ast =  ?AssignStmt(label,assign_label,var,eos("\n"))  ;  !AssignStmt(label,assign_label,var)
+          <+  ?AssignStmt(label,assign_label,var,eos(str) )  ;  !AssignStmt(label,assign_label,var) {Comment(str)}
