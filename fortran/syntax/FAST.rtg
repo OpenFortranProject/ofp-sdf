@@ -1004,10 +1004,6 @@ regular tree grammar
     OptStopCode                       -> StopCode
     OptStopCode                       -> no-stop-code()
 
-/* Deleted */
-    Stmt                              -> PauseStmt(OptLabel,OptStopCode)
-    PauseStmt                         -> PauseStmt(OptLabel,OptStopCode)
-
 /* R858 */
     Stmt                              -> SyncAllStmt
     SyncAllStmt                       -> SyncAllStmt(OptLabel,ListStarOfSyncStat)
@@ -2385,3 +2381,12 @@ regular tree grammar
     ListPlusOfDummyArgName            -> <conc>(ListPlusOfDummyArgName,ListStarOfDummyArgName)
     ListPlusOfDummyArgName            -> <conc>(ListPlusOfDummyArgName,ListPlusOfDummyArgName)
     ListPlusOfDummyArgName            -> <cons>(DummyArgName,ListStarOfDummyArgName)
+
+
+/* Deleted Features */
+
+    Stmt                              -> PauseStmt
+    PauseStmt                         -> PauseStmt(OptLabel,OptStopCode)
+
+    Stmt                              -> AssignStmt
+    AssignStmt                        -> AssignStmt(OptLabel,Label,IntVariable)
