@@ -736,7 +736,11 @@ regular tree grammar
     OptComment0                            -> <string>
     OptComment_EOL0                        -> <(1)>(<string>)
     OptComment_EOL_Lit0                    -> <string>
+    GotoStmt                               -> GotoStmt(OptLabel,IntVariable,EOS)
+    AssignStmt                             -> AssignStmt(OptLabel,Label,IntVariable,EOS)
+    ActionStmt                             -> AssignStmt
     PauseStmt                              -> PauseStmt(OptLabel,OptStopCode,EOS)
+    ActionStmt                             -> PauseStmt
     Level1Expr                             -> ParensUnaryMinus
     Level1Expr                             -> ParensUnaryPlus
     ParensUnaryMinus                       -> ParensUnaryMinus(Primary)
@@ -938,7 +942,6 @@ regular tree grammar
     MainProgram                            -> MainProgram(OptProgramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndProgramStmt)
     NoKeyword                              -> no-keyword()
     Keyword                                -> Name
-    ActionStmt                             -> PauseStmt
     ActionStmt                             -> EndDoStmt
     ActionStmt                             -> NonlabelDoStmt
     ActionStmt                             -> LabelDoStmt

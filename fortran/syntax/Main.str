@@ -2,6 +2,7 @@ module Main
 
 signature
   constructors
+    AssignStmt                      : OptLabel * Label * IntVariable * EOS -> AssignStmt
     PauseStmt                       : OptLabel * OptStopCode * EOS -> PauseStmt
     ParensUnaryMinus                : Primary -> ParensUnaryMinus
     ParensUnaryPlus                 : Primary -> ParensUnaryPlus
@@ -195,6 +196,7 @@ signature
     MainProgram                     : OptProgramStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndProgramStmt -> MainProgram
     no-keyword                      : NoKeyword
                                     : Name -> Keyword
+                                    : AssignStmt -> ActionStmt
                                     : PauseStmt -> ActionStmt
                                     : EndDoStmt -> ActionStmt
                                     : NonlabelDoStmt -> ActionStmt
@@ -504,6 +506,7 @@ signature
     ContinueStmt                    : OptLabel * EOS -> ContinueStmt
     ArithmeticIfStmt                : OptLabel * Expr * LblRef * LblRef * LblRef * EOS -> ArithmeticIfStmt
     ComputedGotoStmt                : OptLabel * List(LblRef) * Expr * EOS -> ComputedGotoStmt
+    GotoStmt                        : OptLabel * IntVariable * EOS -> GotoStmt
     GotoStmt                        : OptLabel * LblRef * EOS -> GotoStmt
                                     : Ident -> ConstructName
     ExitStmt                        : OptLabel * NoName * EOS -> ExitStmt
