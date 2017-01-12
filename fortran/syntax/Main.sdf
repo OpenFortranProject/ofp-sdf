@@ -3387,8 +3387,6 @@ context-free syntax
   LabelDoStmt                            -> ActionStmt
   NonlabelDoStmt                         -> ActionStmt
   EndDoStmt                              -> ActionStmt
-%% Deleted features
-  PauseStmt                              -> ActionStmt
 
 %%215
   Name                                   -> Keyword
