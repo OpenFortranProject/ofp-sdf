@@ -1117,11 +1117,22 @@
    EntryStmt.3:iter-sep                -- _1 ",",
    no-suffix                           -- ,
 
+
 %% Delete Features
 %%
 
    PauseStmt                           -- H hs=1 [_1 "PAUSE" H hs=0 [_2]],
 
-   AssignStmt                          -- H hs=1 [_1 "ASSIGN" _2 "TO" _3]
+   AssignStmt                          -- H hs=1 [_1 "ASSIGN" _2 "TO" _3],
+
+
+%% Extended Features
+%%
+
+   CrayPointerStmt                     -- H hs=1 [_1 "POINTER" H hs=0[_2]],
+   CrayPointerStmt.2:iter-sep          -- _1 ", ",
+
+   %% R551
+   CrayPointerDecl                     -- "("_1 "," _2 _3 ")"
 
 ]
