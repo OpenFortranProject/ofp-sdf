@@ -730,17 +730,26 @@ regular tree grammar
     ListPlusOfTypeParamDefStmt0            -> <conc>(ListPlusOfTypeParamDefStmt0,ListStarOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0            -> <conc>(ListPlusOfTypeParamDefStmt0,ListPlusOfTypeParamDefStmt0)
     ListPlusOfTypeParamDefStmt0            -> <cons>(TypeParamDefStmt,ListStarOfTypeParamDefStmt0)
+    ListStarOfCrayPointerDecl0             -> ListPlusOfCrayPointerDecl0
+    ListStarOfCrayPointerDecl0             -> <nil>()
+    ListStarOfCrayPointerDecl0             -> <conc>(ListStarOfCrayPointerDecl0,ListStarOfCrayPointerDecl0)
+    ListPlusOfCrayPointerDecl0             -> <conc>(ListStarOfCrayPointerDecl0,ListPlusOfCrayPointerDecl0)
+    ListPlusOfCrayPointerDecl0             -> <conc>(ListPlusOfCrayPointerDecl0,ListStarOfCrayPointerDecl0)
+    ListPlusOfCrayPointerDecl0             -> <conc>(ListPlusOfCrayPointerDecl0,ListPlusOfCrayPointerDecl0)
+    ListPlusOfCrayPointerDecl0             -> <cons>(CrayPointerDecl,ListStarOfCrayPointerDecl0)
     ListStarOfLetter0                      -> <string>
     ListPlusOfLetter0                      -> <string>
     SconSingle_SconDouble0                 -> <string>
     OptComment0                            -> <string>
     OptComment_EOL0                        -> <(1)>(<string>)
     OptComment_EOL_Lit0                    -> <string>
-    GotoStmt                               -> GotoStmt(OptLabel,IntVariable,EOS)
     AssignStmt                             -> AssignStmt(OptLabel,Label,IntVariable,EOS)
     ActionStmt                             -> AssignStmt
     PauseStmt                              -> PauseStmt(OptLabel,OptStopCode,EOS)
     ActionStmt                             -> PauseStmt
+    Initialization                         -> Init(ConstantExpr)
+    ComponentInitialization                -> Init(Expr)
+    GotoStmt                               -> GotoStmt(OptLabel,IntVariable,EOS)
     Level1Expr                             -> ParensUnaryMinus
     Level1Expr                             -> ParensUnaryPlus
     ParensUnaryMinus                       -> ParensUnaryMinus(Primary)
@@ -2025,10 +2034,9 @@ regular tree grammar
     Constant                               -> LiteralConstant
     NoName                                 -> no-name()
     Name                                   -> Ident
-    CrayPointerStmt                        -> CrayPointerStmt(OptLabel,ObjectName,ObjectName,EOS)
+    CrayPointerDecl                        -> CrayPointerDecl(ObjectName,ObjectName,OptArraySpec)
+    CrayPointerStmt                        -> CrayPointerStmt(OptLabel,ListPlusOfCrayPointerDecl0,EOS)
     OtherSpecificationStmt                 -> CrayPointerStmt
-    Initialization                         -> Init(ConstantExpr)
-    ComponentInitialization                -> Init(Expr)
     Continuation                           -> <string>
     EOS                                    -> eos(EOStmt)
     LblRef                                 -> LblDef
