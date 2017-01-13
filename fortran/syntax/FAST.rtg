@@ -671,7 +671,8 @@ regular tree grammar
 
 /* ER550 */
     Decl                              -> CrayPointerStmt
-    CrayPointerStmt                   -> CrayPointerStmt(OptLabel,ObjectName,ObjectName)
+    CrayPointerStmt                   -> CrayPointerStmt(OptLabel,ListPlusOfCrayPointerDecl)
+    CrayPointerDecl                   -> CrayPointerDecl(ObjectName,ObjectName,OptArraySpec)
 
 /* R551 */
     PointerDecl                       -> PointerDecl(ObjectName,ListStarOfRange)
@@ -2390,3 +2391,14 @@ regular tree grammar
 
     Stmt                              -> AssignStmt
     AssignStmt                        -> AssignStmt(OptLabel,Label,IntVariable)
+
+/* Extended Features */
+
+/* ER551 */
+    ListStarOfCrayPointerDecl         -> ListPlusOfCrayPointerDecl
+    ListStarOfCrayPointerDecl         -> <nil>()
+    ListStarOfCrayPointerDecl         -> <conc>(ListStarOfCrayPointerDecl,ListStarOfCrayPointerDecl)
+    ListPlusOfCrayPointerDecl         -> <conc>(ListStarOfCrayPointerDecl,ListPlusOfCrayPointerDecl)
+    ListPlusOfCrayPointerDecl         -> <conc>(ListPlusOfCrayPointerDecl,ListStarOfCrayPointerDecl)
+    ListPlusOfCrayPointerDecl         -> <conc>(ListPlusOfCrayPointerDecl,ListPlusOfCrayPointerDecl)
+    ListPlusOfCrayPointerDecl         -> <cons>(CrayPointerDecl,ListStarOfPointerDecl)

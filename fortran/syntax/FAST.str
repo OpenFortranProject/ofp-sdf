@@ -217,7 +217,8 @@ signature
     IntentStmt                      : OptLabel * IntentSpec * List(DummyArgName) -> IntentStmt
     OptionalStmt                    : OptLabel * List(DummyArgName) -> OptionalStmt
     PointerStmt                     : OptLabel * List(PointerDecl) -> PointerStmt
-    CrayPointerStmt                 : OptLabel * ObjectName * ObjectName -> CrayPointerStmt
+    CrayPointerStmt                 : OptLabel * List(CrayPointerDecl) -> CrayPointerStmt
+    CrayPointerDecl                 : ObjectName * ObjectName * OptArraySpec -> CrayPointerDecl
     PointerDecl                     : ObjectName * List(Range) -> PointerDecl
     ProtectedStmt                   : OptLabel * List(Name) -> ProtectedStmt
     SaveStmt                        : OptLabel * List(SavedEntity) -> SaveStmt
