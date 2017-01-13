@@ -23,15 +23,21 @@ context-free syntax
   ParensUnaryPlus                          -> Level1Expr
   ParensUnaryMinus                         -> Level1Expr
 
+%% OR851
+  OptLabel 'GO' 'TO' IntVariable            EOS -> GotoStmt     {cons("GotoStmt")}
+
 
 %% Deleted Features
 %%
+
+%% DR442
+  '/' Expr '/'                                  -> ComponentInitialization   {cons("Init")}
+
+%% DR505
+  '/' ConstantExpr '/'                          -> Initialization  {cons("Init")}
 
   PauseStmt                                     -> ActionStmt
   OptLabel 'PAUSE' OptStopCode              EOS -> PauseStmt    {cons("PauseStmt")}
 
   AssignStmt                                    -> ActionStmt
   OptLabel 'ASSIGN' Label 'TO' IntVariable  EOS -> AssignStmt   {cons("AssignStmt")}
-
-%% OR851
-  OptLabel 'GO' 'TO' IntVariable            EOS -> GotoStmt     {cons("GotoStmt")}
