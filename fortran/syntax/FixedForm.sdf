@@ -32,7 +32,7 @@ exports
     "#"                         -> PRECHAR
     [\$]                        -> PRECHAR   % WARNING - doesn't work with gfortran as preprocess char %
 
-    [cC\!]                      -> COMMENTCHAR
+    [cC\*\!]                    -> COMMENTCHAR
 
 %% start of a non-labeled statement
 
