@@ -11,17 +11,14 @@ exports
 sorts
 
   CrayPointerStmt                     %% ER550
+  CrayPointerDecl                     %% ER551
 
 context-free syntax
 
-%%DR442
-  '/' Expr '/'                                              -> ComponentInitialization   {cons("Init")}
-
-%%DR505
-  '/' ConstantExpr '/'                                      -> Initialization  {cons("Init")}
-
 %% ER550 Cray pointers
+%%
   CrayPointerStmt                                           -> OtherSpecificationStmt
+  OptLabel 'POINTER' {CrayPointerDecl ','}+             EOS -> CrayPointerStmt {cons("CrayPointerStmt")}
 
-%% ER550 Cray pointers
-  OptLabel 'POINTER' '(' ObjectName ',' ObjectName ')'  EOS -> CrayPointerStmt {cons("CrayPointerStmt")}
+%% ER551
+  '(' ObjectName ',' ObjectName OptArraySpec ')'            -> CrayPointerDecl {cons("CrayPointerDecl")}
