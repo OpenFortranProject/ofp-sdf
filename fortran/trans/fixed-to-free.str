@@ -53,8 +53,9 @@ fixed-to-free-form:  Comment(comchar(_), "DIR$ FIXED", eol("\n"))
 
 // Change comment character to '!'
 //
-fixed-to-free-form:  comchar("C")                 -> comchar("!")
-fixed-to-free-form:  comchar("c")                 -> comchar("!")
+fixed-to-free-form =  ? comchar("C")            ;  ! comchar("!")
+                  <+  ? comchar("c")            ;  ! comchar("!")
+                  <+  ? comchar("*")            ;  ! comchar("!")
 
 // Change start character to ' '
 //
