@@ -20,8 +20,10 @@ strategies //=================START OF STRATEGIES============================
 
   fixed-to-free =
       outermost(fixed-disamb)
+    ; innermost(fixed-to-free-comments)
     ; innermost(fixed-to-free-form)
-    ; <fixed-to-free-continuation> <id>
+//    ; <fixed-to-free-continuation> <id>
+//    ; innermost(fix-dos-line-endings)
 
 
 rules //========================START OF RULES===============================
@@ -40,9 +42,15 @@ fixed-disamb =
    <+ ? amb([BlankLine(ws, eol), Continuation(_,_,_,_)])  /* DOS blank lines with spaces */
     ; ! BlankLine(ws, eol)
 
+// Change comment character to '!'
+//
+fixed-to-free-comments =  ? comchar("C")            ;  ! comchar("!")
+                      <+  ? comchar("c")            ;  ! comchar("!")
+                      <+  ? comchar("*")            ;  ! comchar("!")
+
 // Change DOS line endings to unix (unparsing doesn't work properly for DOS "\r\n" line endings)
 //
-fixed-to-free-form:  eol("\r\n")                 -> eol("\n")
+fix-dos-line-endings:  eol("\r\n")                 -> eol("\n")
 
 // Change fixed-form directive to free form
 //
@@ -50,12 +58,6 @@ fixed-to-free-form:  Comment(comchar(_), "DEC$ NOFREEFORM", eol("\n"))
                                                   -> Comment(comchar("!"), "DEC$ FREEFORM", eol("\n"))
 fixed-to-free-form:  Comment(comchar(_), "DIR$ FIXED", eol("\n"))
                                                   -> Comment(comchar("!"), "DIR$ FREE", eol("\n"))
-
-// Change comment character to '!'
-//
-fixed-to-free-form =  ? comchar("C")            ;  ! comchar("!")
-                  <+  ? comchar("c")            ;  ! comchar("!")
-                  <+  ? comchar("*")            ;  ! comchar("!")
 
 // Change start character to ' '
 //
