@@ -1,0 +1,17 @@
+## repositioning the aterm and strategoxt libraries
+#
+
+# get info
+otool -D libATerm.dylib
+
+     libATerm.dylib:
+     /opt/aterm/v2.5/lib/libATerm.dylib
+
+# change the rpath
+install_name_tool -id /tmp/libATerm.dylib libATerm.dylib
+
+# get info
+otool -D libATerm.dylib
+
+     libATerm.dylib:
+     /tmp/libATerm.dylib
