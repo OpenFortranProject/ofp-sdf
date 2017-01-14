@@ -1,13 +1,14 @@
 ## repositioning the aterm and strategoxt libraries
+#    - this allows changing the original rpath that was provided
 #
 
-# get info
+# get info (MacOSX)
 otool -D libATerm.dylib
 
      libATerm.dylib:
      /opt/aterm/v2.5/lib/libATerm.dylib
 
-# change the rpath
+# change the rpath (MacOSX)
 install_name_tool -id /tmp/libATerm.dylib libATerm.dylib
 
 # get info
