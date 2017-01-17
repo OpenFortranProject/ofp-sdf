@@ -8,7 +8,8 @@ exports
     LABEL LABELTAB START TABSTART
     STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
     StartChar ContChar CommentChar BangChar PreChar NoChar Eol OptWS
-    File Line
+    BlankLine CommentLine Continuation FollowLine PreprocessLine Stmt
+    InitialComment StmtBlock File
 
   context-free start-symbols
 
@@ -87,25 +88,34 @@ exports
 
   context-free syntax
 
-    Line*                       -> File {cons("File")}
+    InitialComment* StmtBlock*  -> File {cons("File")}
 
-    OptWS                   Eol -> Line {cons("BlankLine")}
+    BlankLine                   -> InitialComment
+    CommentLine                 -> InitialComment
+    PreprocessLine              -> InitialComment
 
-    PreChar         CHARS   Eol -> Line {cons("Preprocess")}
+    BlankLine                   -> FollowLine
+    CommentLine                 -> FollowLine
+    Continuation                -> FollowLine
+    PreprocessLine              -> FollowLine
 
-    CommentChar     CHARS   Eol -> Line {cons("Comment")}
+    PreChar         CHARS   Eol -> PreprocessLine {cons("Preprocess")}
+    OptWS                   Eol -> BlankLine      {cons("BlankLine")}
+    CommentChar     CHARS   Eol -> CommentLine    {cons("Comment")}
+    WS BangChar     CHARS   Eol -> CommentLine    {cons("FreeFormComment")}
 
-    WS BangChar     CHARS   Eol -> Line {cons("FreeFormComment")}
+    START  ContChar CHARS   Eol -> Continuation   {cons("Continuation")}
 
-    START StartChar CHARS   Eol -> Line {cons("Stmt")}
-    TABSTART NoChar CHARS   Eol -> Line {cons("Stmt")}
+    START StartChar CHARS   Eol -> Stmt           {cons("Stmt")}
+    TABSTART NoChar CHARS   Eol -> Stmt           {cons("Stmt")}
 
-    LABEL StartChar CHARS   Eol -> Line {cons("LabeledStmt")}
-    LABELTAB NoChar CHARS   Eol -> Line {cons("LabeledStmt")}
+    LABEL StartChar CHARS   Eol -> Stmt           {cons("LabeledStmt")}
+    LABELTAB NoChar CHARS   Eol -> Stmt           {cons("LabeledStmt")}
 
-    START  ContChar CHARS   Eol -> Line {cons("Continuation")}
+    Stmt FollowLine*            -> StmtBlock      {cons("StmtBlock")}
 
-    EOL                         -> Eol {cons("eol")}
+
+    EOL                         -> Eol         {cons("eol")}
 
     BANGCHAR                    -> BangChar    {cons("comchar")}
     COMMENTCHAR                 -> CommentChar {cons("comchar")}
@@ -115,5 +125,5 @@ exports
 
     % empty %                   -> NoChar      {cons("no-char")}
 
-    WS                          -> OptWS  {cons("ws")}
-    % empty %                   -> OptWS  {cons("no-ws")}
+    WS                          -> OptWS       {cons("ws")}
+    % empty %                   -> OptWS       {cons("no-ws")}
