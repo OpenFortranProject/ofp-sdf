@@ -9,6 +9,8 @@ signature
 
   ppchar  :  StartChar  -> ppchar
 
+  ppStmtBlock : Stmt * FollowLines -> ppStmtBlock
+
   // For ambiguities
   amb : list -> choice
 
@@ -19,10 +21,10 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(fixed-to-free)
 
   fixed-to-free =
-      outermost(fixed-disamb)
-    ; innermost(fixed-to-free-comments)
+//      outermost(fixed-disamb)
+      innermost(fixed-to-free-comments)
     ; innermost(fixed-to-free-form)
-//    ; <fixed-to-free-continuation> <id>
+    ; outermost(fixed-to-free-continuation)
 //    ; innermost(fix-dos-line-endings)
 
 
@@ -42,88 +44,70 @@ fixed-disamb =
    <+ ? amb([BlankLine(ws, eol), Continuation(_,_,_,_)])  /* DOS blank lines with spaces */
     ; ! BlankLine(ws, eol)
 
-// Change comment character to '!'
-//
+
+/**
+ * Change comment character to '!'
+ */
 fixed-to-free-comments =  ? comchar("C")            ;  ! comchar("!")
                       <+  ? comchar("c")            ;  ! comchar("!")
                       <+  ? comchar("*")            ;  ! comchar("!")
 
-// Change DOS line endings to unix (unparsing doesn't work properly for DOS "\r\n" line endings)
-//
+
+/**
+ * Change DOS line endings to unix (unparsing doesn't work properly for DOS "\r\n" line endings)
+ */
 fix-dos-line-endings:  eol("\r\n")                 -> eol("\n")
 
-// Change fixed-form directive to free form
-//
+
+/**
+ * Change fixed-form directive to free form
+ */
 fixed-to-free-form:  Comment(comchar(_), "DEC$ NOFREEFORM", eol("\n"))
                                                   -> Comment(comchar("!"), "DEC$ FREEFORM", eol("\n"))
 fixed-to-free-form:  Comment(comchar(_), "DIR$ FIXED", eol("\n"))
                                                   -> Comment(comchar("!"), "DIR$ FREE", eol("\n"))
 
-// Change start character to ' '
-//
+/**
+ * Change start character to ' '
+ */
 fixed-to-free-form:  stchar(_)                    -> ppchar(" ")
 
-// Change continuation character to '&'
-//
+
+/**
+ * Change continuation character to '&'
+ */
 fixed-to-free-form:  conchar(_)                   -> ppchar("&")
 
-// Add continuation character to end of continued lines
-//
-fixed-to-free-continuation =
-{list
-  : ? File(lines)
-  ; <add-continuation(|[])> lines
-  ; ! File(<id>)
-}
 
-// Add continuation character to next line if needed
-// -------------------------------------------------
-add-continuation(|list) =
-{new_list
+/**
+ * Add continuation character to end of continuations (except for last)
+ *
+ *  This works by reversing the follow list in a StmtBlock, separating the
+ *  list at the last Continuation (now the first) and putting the entire
+ *  list back together in the proper order.
+ */
+fixed-to-free-continuation =
 
  /* has continuation branch */
-  : ? [head|tail]
-  ; <is-continued> tail
-  ; ! head
-  ; try(<insert-cont-char> head)
-  ; <concat> [list, [<id>]]        => new_list
-  ; <add-continuation(|new_list)> tail
+    ? StmtBlock(stmt,follow)
+  ; <has-continuation> follow
+  ; <split-fetch-keep(?Continuation(_,_,_,_))> <reverse> follow
+  ; ? (before, split, after)
+  ; <concat> [<reverse(insert-cont-char)>after, [split], <reverse>before]
+  ; ! ppStmtBlock(<insert-cont-char>stmt, <id>)
 
- /* no continuation branch */
- <+ ? [head|tail]
-  ; <concat> [list, [head]]        => new_list
-  ; <add-continuation(|new_list)> tail
+/* no continuation branch */
+ <+ ? StmtBlock(stmt,follow)
+  ; ! ppStmtBlock(stmt,follow)
 
- /* end of list branch */
- <+ ? [head]
-  ; <concat> [list, [head]]
-}
 
-// Succeeds if next non-blank line is continued
-// --------------------------------------------
-is-continued =
- /* check for continuation */
-    ? [head|tail]
-  ; ! head
-  ; ? Continuation(_,_,_,_)
-
- /* check for continuation after a blank line */
- <+ ? [head|tail]
-  ; ! head
-  ; ? BlankLine(_,_)
-  ; <is-continued> tail
-
- /* check for continuation after a comment line */
- <+ ? [head|tail]
-  ; ! head
-  ; ? Comment(_,_,_)
-  ; <is-continued> tail
-
- /* check for continuation after a comment line */
- <+ ? [head|tail]
-  ; ! head
-  ; ? FreeFormComment(_,_,_,_)
-  ; <is-continued> tail
+/**
+ * Succeeds if a continuation line exists
+ */
+has-continuation =
+    ? list
+  ; <fetch(?Continuation(_,_,_,_))> list
+  ; ! list
 
 
 /**
@@ -133,13 +117,17 @@ insert-cont-char =
     ? Stmt(begin,char,text,end)
   ; ! Stmt(begin,char,<insert-cont-char-in-text>text,end)
 
-insert-cont-char =
-    ? LabeledStmt(begin,char,text,end)
+ <+ ? LabeledStmt(begin,char,text,end)
   ; ! LabeledStmt(begin,char,<insert-cont-char-in-text>text,end)
 
-insert-cont-char =
-    ? Continuation(begin,char,text,end)
+ <+ ? Continuation(begin,char,text,end)
   ; ! Continuation(begin,char,<insert-cont-char-in-text>text,end)
+
+/* these are left alone */
+
+ <+ ? BlankLine(_,_)
+ <+ ? Comment(_,_,_)
+ <+ ? Preprocess(_,_,_)
 
 /**
  * Insert continuation character in text (before comment or at end of text)
