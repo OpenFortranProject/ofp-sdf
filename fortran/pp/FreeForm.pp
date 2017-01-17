@@ -1,6 +1,7 @@
 [
-   File                          -- H hs=0 [_1],
+   File                          -- H hs=0 [_1 _2],
 
+ ppStmtBlock                     -- _1 _2,
    Comment                       -- _1 _2 _3,
    FreeFormComment               -- _1 _2 _3 _4,
    comchar                       -- _1,
