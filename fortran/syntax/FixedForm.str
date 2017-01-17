@@ -4,22 +4,35 @@ signature
   constructors
     no-ws           : OptWS
     ws              : WS -> OptWS
+    no-char         : NoChar
     stchar          : STARTCHAR -> StartChar
     prechar         : PRECHAR -> PreChar
     conchar         : CONTCHAR -> ContChar
     comchar         : COMMENTCHAR -> CommentChar
     comchar         : BANGCHAR -> BangChar
     eol             : EOL -> Eol
-    Continuation    : START * ContChar * CHARS * Eol -> Line
-    LabeledStmt     : LABEL * StartChar * CHARS * Eol -> Line
-    Stmt            : START * StartChar * CHARS * Eol -> Line
-    FreeFormComment : WS * BangChar * CHARS * Eol -> Line
-    Comment         : CommentChar * CHARS * Eol -> Line
-    Preprocess      : PreChar * CHARS * Eol -> Line
-    BlankLine       : OptWS * Eol -> Line
-    File            : List(Line) -> File
+    StmtBlock       : Stmt * List(FollowLine) -> StmtBlock
+    LabeledStmt     : LABELTAB * NoChar * CHARS * Eol -> Stmt
+    LabeledStmt     : LABEL * StartChar * CHARS * Eol -> Stmt
+    Stmt            : TABSTART * NoChar * CHARS * Eol -> Stmt
+    Stmt            : START * StartChar * CHARS * Eol -> Stmt
+    Continuation    : START * ContChar * CHARS * Eol -> Continuation
+    FreeFormComment : WS * BangChar * CHARS * Eol -> CommentLine
+    Comment         : CommentChar * CHARS * Eol -> CommentLine
+    BlankLine       : OptWS * Eol -> BlankLine
+    Preprocess      : PreChar * CHARS * Eol -> PreprocessLine
+                    : PreprocessLine -> FollowLine
+                    : Continuation -> FollowLine
+                    : CommentLine -> FollowLine
+                    : BlankLine -> FollowLine
+                    : PreprocessLine -> InitialComment
+                    : CommentLine -> InitialComment
+                    : BlankLine -> InitialComment
+    File            : List(InitialComment) * List(StmtBlock) -> File
+                    : String -> LABELTAB
                     : String -> LABEL
                     : String -> START
+                    : String -> TABSTART
                     : String -> CONTCHAR
                     : String -> STARTCHAR
                     : String -> COMMENTCHAR
