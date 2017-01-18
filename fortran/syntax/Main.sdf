@@ -2837,7 +2837,7 @@ context-free syntax
   'ROUND'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ROUND")}
   'SIGN'         '='  DefaultCharExpr            -> ConnectSpec   {cons("SIGN")}
   'STATUS'       '='  DefaultCharExpr            -> ConnectSpec   {cons("STATUS")}
-%%'TEAM'         '='  ImageTeam          %%TODO - is this in standard for F08?
+%%'TEAM'         '='  ImageTeam          %%TODO - F2015
 
 %%R906
 %%           default-char-expr substituted for scalar-default-char-expr
@@ -3077,7 +3077,7 @@ context-free syntax
   'SIGN'         '='  DefaultCharExpr                  -> InquireSpec  {cons("SIGN")}
   'SIZE'         '='  IntVariable                      -> InquireSpec  {cons("SIZE")}
   'STREAM'       '='  DefaultCharExpr                  -> InquireSpec  {cons("STREAM")}
-%%'TEAM'         '='  ImageTeam          %%TODO-F08
+%%'TEAM'         '='  ImageTeam          %%TODO-F2015
   'UNFORMATTED'  '='  DefaultCharExpr                  -> InquireSpec  {cons("UNFORMATTED")}  
   'WRITE'        '='  DefaultCharExpr                  -> InquireSpec  {cons("WRITE")}
 
