@@ -786,6 +786,7 @@
    OpenStmt                      -- H hs=1 [_1 H hs=0["OPEN"  "(" _2 ")"]],
    OpenStmt.2:iter-sep           -- _1 ", ",
 
+   %% R905
    ACCESS                        -- "ACCESS="       _1,
    ACTION                        -- "ACTION="       _1,
    ASYNCHRONOUS                  -- "ASYNCHRONOUS=" _1,
@@ -874,7 +875,22 @@
    InquireLengthStmt.3:iter-sep  -- _1 ", ",
 
    %% R931
-   EXIST                         -- "EXIST=" _1,
+   EXIST                         -- "EXIST="       _1,
+   FORMATTED                     -- "FORMATTED="   _1,
+   NAME                          -- "NAME="        _1,
+   NAMED                         -- "NAMED="       _1,
+   NEXTREC                       -- "NEXTREC="     _1,
+   NUMBER                        -- "NUMBER="      _1,
+   OPENED                        -- "OPENED="      _1,
+   PENDING                       -- "PENDING="     _1,
+   POS                           -- "POS="         _1,
+   READ                          -- "READ="        _1,
+   READWRITE                     -- "READWRITE="   _1,
+   SEQUENTIAL                    -- "SEQUENTIAL="  _1,
+   STREAM                        -- "STREAM="      _1,
+   TEAM                          -- "TEAM="        _1,   %% F2015
+   UNFORMATTED                   -- "UNFORMATTED=" _1,
+   WRITE                         -- "WRITE="       _1,
 
    %% R1001
    FormatStmt                    -- H hs=1[_1 H hs=0 ["FORMAT" "("_2")"]],
