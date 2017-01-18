@@ -9,7 +9,7 @@ exports
     STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
     StartChar ContChar CommentChar BangChar PreChar NoChar Eol OptWS
     BlankLine CommentLine Continuation FollowLine PreprocessLine Stmt
-    InitialComment StmtBlock File
+    InitialComment StmtBlock File Text
 
   context-free start-symbols
 
@@ -106,14 +106,18 @@ exports
 
     START  ContChar CHARS   Eol -> Continuation   {cons("Continuation")}
 
-    START StartChar CHARS   Eol -> Stmt           {cons("Stmt")}
-    TABSTART NoChar CHARS   Eol -> Stmt           {cons("Stmt")}
+    START StartChar Text    Eol -> Stmt           {cons("Stmt")}
+    TABSTART NoChar Text    Eol -> Stmt           {cons("Stmt")}
 
-    LABEL StartChar CHARS   Eol -> Stmt           {cons("LabeledStmt")}
-    LABELTAB NoChar CHARS   Eol -> Stmt           {cons("LabeledStmt")}
+    LABEL StartChar Text    Eol -> Stmt           {cons("LabeledStmt")}
+    LABELTAB NoChar Text    Eol -> Stmt           {cons("LabeledStmt")}
 
     Stmt FollowLine*            -> StmtBlock      {cons("StmtBlock")}
 
+
+    CHARS                       -> Text
+    WS                          -> Text        {reject}
+    % empty %                   -> Text        {reject}
 
     EOL                         -> Eol         {cons("eol")}
 

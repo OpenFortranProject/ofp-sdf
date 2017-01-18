@@ -11,11 +11,12 @@ signature
     comchar         : COMMENTCHAR -> CommentChar
     comchar         : BANGCHAR -> BangChar
     eol             : EOL -> Eol
+                    : CHARS -> Text
     StmtBlock       : Stmt * List(FollowLine) -> StmtBlock
-    LabeledStmt     : LABELTAB * NoChar * CHARS * Eol -> Stmt
-    LabeledStmt     : LABEL * StartChar * CHARS * Eol -> Stmt
-    Stmt            : TABSTART * NoChar * CHARS * Eol -> Stmt
-    Stmt            : START * StartChar * CHARS * Eol -> Stmt
+    LabeledStmt     : LABELTAB * NoChar * Text * Eol -> Stmt
+    LabeledStmt     : LABEL * StartChar * Text * Eol -> Stmt
+    Stmt            : TABSTART * NoChar * Text * Eol -> Stmt
+    Stmt            : START * StartChar * Text * Eol -> Stmt
     Continuation    : START * ContChar * CHARS * Eol -> Continuation
     FreeFormComment : WS * BangChar * CHARS * Eol -> CommentLine
     Comment         : CommentChar * CHARS * Eol -> CommentLine
