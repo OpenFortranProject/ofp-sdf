@@ -1,0 +1,278 @@
+
+1. Added preprocessing stage for fixed-form files.  This currently uses a grammar, FixedForm.sdf, a transformation program, fixed-to-free, and unparsing rules, FreeForm.pp.  This will likely be replaced by a C++ program to allow for more functionality (for example, Holleriths in format statements).
+
+2. Refactored grammar in Main.sdf to include obsolete features (FortranObsolete.sdf) and extensions (FortranExtensions.sdf).
+
+Features added/moved to obsolete grammar module:
+
+- old-style component initialization, between '/' '/'
+
+- AssignStmt, ActionStmt, PauseStmt
+
+3. Refactored grammar to fix ambiguities
+
+    Added PrivateComponentsStmt.
+
+    Added id to wait-spec-list.
+
+    Fixed ambiguity in R924-R928 by adding a preference for one of the options.
+
+    Added EndfileStmt
+
+    Added transformation of eos to Comment for EndfileStmt.  Also added R913/R914 ID.
+
+    Added transformation of eos to Comment for EndfileStmt
+
+    Fixed unparsing of R469 AcSpec
+
+    Simplified unparsing of IfThenElse statements by removing unneeded rules used to suppress blank spaces if name not used.
+
+    Cleaned up unparsing of CaseConstruct (removed unneeded optional name terms)
+
+    Cleaned up unparsing of CaseConstruct (removed unneeded optional name terms)
+
+    Replaced eos with Comment annotation for DefaultGuardStmt.
+
+    Fixed unparsing of SelectTypeStmt.
+
+    Improved handling of ambiguous io-control-spec-list so that fewer FMT-or-NML branches are required.  For example, the '*' format is now recognized as FMT(STAR()) rather than MFT-or-NML(STAR()).
+
+    Changed Read/Write unparsing format as part of fixing an ambiguity in an io-control-spec-list.
+
+
+    Fixed unparsing of case constructs.
+
+    Added testing of files (*.f90.no-diff) for which the unparsed file isn't expected to match the original.
+
+    Removed eos from LableDoStmt.
+
+
+    Add/Fixed EnumDef (and statements) regarding EOS.
+
+    Added ppEnumerator to take care of case with no value expression.
+
+    Add/Fixed EnumDef (and statements) regarding EOS.
+
+    Added functionality sufficient to traverse the initial test program for the new (experimental) OFP to ROSE connection.  Primarily fixed the way SgUntypedType was created and operators.
+
+    Refactored expressions to use the Fortran standard syntax using Level1Expr ...  This allows the standard to be followed as well as makes it easier to use SDF prefer syntax for preferences.  Didn't really end up using this as in fixing ambiguities (explained below) had to remove ambiguities directly by stuffing more things into a DataRef.  Removed (commented out) InitialDataTarget, StructureConstructure, DataRef -> ParentString, and FunctionReference -> Primary. This was done because things that look like function references are ambiguous with array refs to let them be DataRefs and disambiguate them later.  Added SubstringRange to OptSectionSubscripts.  Added Keyword '=' ActualArg and AltReturnSpec to SectionSubscript so an array can pretend to be a function reference.
+
+    Added rewrite rules for removing EOS from: TypeBoundProcedureInterfaceStmt, SelectCaseStmt, CaseStmt, EndSelectStmt, SelectTypeStmt, TypeGuardStmt, ClassGuardStmt, and EndSelectTypeStmt.
+
+    Added: ppDataComponentDefStmt, ppTypeParamDecl, ppTypeBoundProcedureStmt, and ppTypeParamSpec.
+
+    Added PauseStmt to deleted statements.
+
+    Added TypeBoundProcBinding, TypeBoundProcedureStmt, TypeBoundGenericStmt, TypeParamAttrSpec, and rules associated with CaseConstruct.
+
+    Added: ppTypeParamDecl, ppTypeBoundProcedureStmt, and ppTypeParamSpec. Fixed: SelectTypeStmt, TypeGuardStmt, ClassGuardStmt, and DefaultGaurdStmt for EOS. Improved EndSelectTypeStmt for indentation.
+
+    Added transformation for ppTypeBoundProcDecl (arity one)
+
+
+    Added TypeBoundProcedureStmt.
+
+    Added Comments for TypeBoundProcedureStmt.
+
+    Added FortranObsolete.sdf dependency for Main.def
+
+    Added: Pass(no-arg-name()) transformation, ppArrayVarLen (with rule producing it), and ppProcDecl.
+
+    Added Comment annotation for ProcComponentDefStmt, fixed CHARACTER_LEN for ArrayType variables, and corrected some rules by adding <+
+
+    Added: NOPASS, ppArrayVarLen, ppProcDecl, and removed eos from ProcComponentDefStmt.
+
+    Added test for type that was formerly in R443 (old rule number).
+
+    Added test for type that was formerly in R443 (old rule number).
+
+    Added AltReturnSpec
+
+    Added testing of new feature for renaming operators.
+
+    Removed constructor for UseDefinedOperator and LocalDefinedOperator.
+
+    Added RenameOp
+
+    Added preference of DefinedBinaryOp to LocalDefinedOperator and UseDefinedOperator in order to fix ambiguity.
+
+    Completed Format edit descriptors.
+
+    Fixed ambiguity between substrings, function references, and arrays DataRef/PartRef by using {prefer}.
+
+    Added a nonpreferred '/' ControlEditDesc without the leading comma so that it could appear as the first descriptor in a format statement.
+
+    Replaced uncommented EndXStmt with {reject}.
+
+    Added no-diff testing for parsing of tricky files that won't unparse to exactly the same (alternative) syntax.
+
+    Removed EndProgramStmt, EndSubroutineStmt, ... from productions of ActionStmt because it created an ambiguity for a bare END statement (without program, subroutine, ...).  If the end statements don't produce an action statement they can't be added to the executable list so the parsing can now be untangled.
+
+    Fixed ambiguity in DefinedOperator by prefering DefinedUnaryOp over DefinedBinaryOp (both are DOP from lex grammar)
+
+    Uncommented .unaryop. and .binaryop. tests.
+
+    Added all of the operators.
+
+
+    Added more digits to some labels and used 0.
+
+    Added duplicate formats that should unparse to the same thing.  This should be tested somehow (by testing the resulting aterms).
+
+    Added ProcComponentRef
+
+    Removed DataRef % BindingName as it was ambiguous with ProcComponentRef
+
+
+    Fixed ambiguity between Designator and FunctionReference prefering Designator.
+
+    Changes to make compilable.
+
+    Fixed Substring/DataRef ambiguity by using prefer
+
+
+    Make type of ComponentInitialization a ConstantExpr rather than plain expr (mimics Initialization)
+
+    Added FortranExtensions.sdf dependency to Main.def target.
+
+    Added deleted initialization form '/' expr '/'
+
+    Added CrayPointerStmt
+
+    Fixed where constructs.
+
+    Added EntryStmt.
+
+    Added constructors for DataStmtRepeat
+
+    Fixed BozLiteralConstant.
+
+    Starting to fixup WhereConstruct.
+
+    Starting to fixup WhereConstruct. Also backed out adding constructor for DataStmtRepeat.  For some reason this wile break the creation of a regular tree grammar for FAST.rtg
+
+    Fixed R608 Substring - already added to unit test below
+
+    Fixed DataComponentDefStmt by constructing OptComponentArraySpec as ArraySpec. Also ComponentInitialization -> Init and add KeywordArgSpec to allow actual args with keywords to be parsed as PartRefs.
+
+    Removed R438 opt-component-array-spec (replaced by ArraySpec in Main.sdf)
+
+    Fixed DataComponentDefStmt
+
+    Added AssumedClass and AssumedType.  Fixed Class in a type declarations stmt.
+
+    Added CrayPointerStmt support and improved handling of character declarations (EntityDecl).
+
+    Added imports of FortranExtensions.
+
+    Added CrayPointerStmt (ER550).
+
+    Added SignedIntLiteralConstant
+
+    Fixed AssumedSize constructor so that it had constant arity.
+
+    Added more FormatSpec items (needs to be uncommented and tested).
+
+----------
+
+
+
+Improvements to parsing
+-----------------------
+
+- modified handling of free-form comments to remove ambiguity with statements
+
+- added EXIST (R931) as part of an inquire-spec
+
+- added IncludeStmt (not actually a statement in Fortran)
+
+- added CrayPointerStmt and CrayPointerDecl
+
+    Modified ATerms to reflect recent changes in Main.sdf to produce FAST terms directly rather than requiring extra transformation rules.
+
+    IntVal (with arity of 1 and 2) is now being output by the parser rather than IntLiteralConstant.
+
+    Added HexVal, OctVal, BinVal, and IntVal.
+
+    Added several constructors leading directly to FAST terms thus reducing need for later transformations.  For example, REAL with KindSelector and CHARACTER with CharSelector.  Other examples: KindSelector -> Kind, RealLiteralConstant -> RealVal, BozLiteralConstant_HC -> HexVal, LogicalLiteralConstant -> TRUE/FALSE
+
+
+
+Improvements to transformations to FAST
+---------------------------------------
+
+PrivateComponentsStmt statement transformations for comments
+
+Simplified EntityDecl rewrite rule transforming to a Var for character lengths.
+
+    Added CHARACTER_LEN(char_length) option to transformation of EntityDecl.  Previously only supported no-char-length.
+
+
+Improvements to unparsing
+-------------------------
+
+Added indentation for a Block.
+    Added indentation for statements within a block-construct.
+
+
+Also fixed issue with char-length (R422) unparsing incorrectly for statements like: character*(2)
+
+Added multiple inquire-specs (in particular OPENED).
+
+    Added Parens(STAR()) to replace CHARACTER_LEN(STAR) so it can be unparsed correctly.
+
+    Added support for ForallStmt and indentation for ForallConstruct.
+
+
+Bug Fixes:
+----------
+
+Issue #15: Added rewrite of PartRef with substring-section-range to Substring as part of major refactoring to fix this issue.  Also added rewrite of ParensUnaryPlus/Minus to add obsolete feature for expressions, e.g., a--b to a-(-b)
+
+Issue #16: Transformed LengthSelector_STAR(CharLength(STAR())) to STAR()
+
+Issue #17: Modifications allowing simpler io-control-spec-lists (specifically UNIT=, FMT=, and NML= specifiers) as long as they are correctly ordered.  The bug is that FMT can be ambiguous with NML so a new constructor was added, FMT-or-NML which will have to be figured out during analysis.
+
+Issue #18: Fixed Continuation so that blank and comment lines can appear within a continuation.  Also added a transformation of a RealVal with a kind to RealVal(val,ppLiteralKind(kval)).
+
+Issue #21: Added IncludeStmt (although not actually a statement in Fortran).
+
+Issue #33: Made whitespace before continuation character '&' optional.
+
+Issue #34: Added CrayPointerStmt and CrayPointerDecl.
+
+Issue #35: Added '*' as a COMMENTCHAR in fixed format preprocessing.
+
+Issue #36: Added multiple inquire-specs (in particular OPENED).
+
+
+Testing:
+--------
+
+Added several files to the tests/rule-tests/pp directory for the round-trip
+testing of Fortran rules.  Also, parsing of the files in the tests/rule-tests
+directory as another set of tests.  In addition, added tests in the tests/issues
+directory to ensure that issues reported on the bug tracking system at github.com
+remain fixed (although one outstanding bug in this directory remains to be fixed).
+
+    Added additional statements to test for ambiguity.
+    Added another statement to trigger a potential ambiguity (although since the unparsed form is being tested it won't actually be triggered, see file in parent directory ../).
+
+
+
+
+Some of these new tests required changes to the grammar, transformations to FAST,
+and the unparser.
+
+
+
+A partial list of files for unit testing added (or improved) to the
+tests/rule-tests/pp directory includes:
+
+R417, R437, R438, R444, R456, R468, R451, R455, R468, R469, R537, R608, R609, R618,
+R741, R922, R923, R924, R925, R926, R927, R928, R929, R930, R931, R1221, R1222, R1223
+
+
+
+
+
