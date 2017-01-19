@@ -5,11 +5,11 @@ exports
   sorts
 
     EOL WS DIGIT LETTER CHARS
-    LABEL LABELTAB START TABSTART
+    LABEL LABELTAB START TABSTART BANGSTART
     STARTCHAR CONTCHAR COMMENTCHAR BANGCHAR PRECHAR
     StartChar ContChar CommentChar BangChar PreChar NoChar Eol OptWS
     BlankLine CommentLine Continuation FollowLine PreprocessLine Stmt
-    InitialComment StmtBlock File Text
+    InitialComment CommentText StmtBlock File Text
 
   context-free start-symbols
 
@@ -35,6 +35,14 @@ exports
 
     [cC\*\!]                    -> COMMENTCHAR
 
+%% free-form commentary
+
+%% [\!]                         -> BANGSTART  %% ambiguous with fixed-form commentary
+   [\ ][\!]                     -> BANGSTART
+   [\ ][\ ][\!]                 -> BANGSTART
+   [\ ][\ ][\ ][\!]             -> BANGSTART
+   [\ ][\ ][\ ][\ ][\!]         -> BANGSTART
+
 %% start of a non-labeled statement
 
    [\ 0\t]                      -> STARTCHAR
@@ -48,7 +56,7 @@ exports
    [\ ][\ ][\ ][\ ][\ ]         ->    START
 
 %% labels: max 5 digits with space in 6th pos
-%%
+
     [0-9][\ ][\ ][\ ][\ ]       -> LABEL
     [\ ][0-9][\ ][\ ][\ ]       -> LABEL
     [\ ][\ ][0-9][\ ][\ ]       -> LABEL
@@ -101,8 +109,6 @@ exports
 
     PreChar         CHARS   Eol -> PreprocessLine {cons("Preprocess")}
     OptWS                   Eol -> BlankLine      {cons("BlankLine")}
-    CommentChar     CHARS   Eol -> CommentLine    {cons("Comment")}
-    WS BangChar     CHARS   Eol -> CommentLine    {cons("FreeFormComment")}
 
     START  ContChar CHARS   Eol -> Continuation   {cons("Continuation")}
 
@@ -114,8 +120,17 @@ exports
 
     Stmt FollowLine*            -> StmtBlock      {cons("StmtBlock")}
 
+% Commentary %
+
+    OptWS BANGCHAR  CHARS           -> CommentText    {cons("Comment")}
+
+    CommentChar     CHARS       Eol -> CommentLine    {cons("Comment")}
+    BANGSTART       CHARS       Eol -> CommentLine    {cons("StartFFComment")}
+    START StartChar CommentText Eol -> CommentLine    {cons("FreeFormComment")}
+
 
     CHARS                       -> Text
+    OptWS BANGCHAR CHARS        -> Text        {reject}
     WS                          -> Text        {reject}
     % empty %                   -> Text        {reject}
 
