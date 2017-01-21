@@ -7,7 +7,7 @@ ARCH = -m32
 SDF2_PATH = /opt/sdf2-bundle/v2.4/bin
 ST_PATH = /opt/strategoxt/v0.17/bin
 ATERM_ROOT = /usr/local/stratego-debug-32
-SGLRI = /opt/strategoxt/v0.17/bin/sglri
+SGLRI = $(ST_PATH)/sglri
 
 ## Define extra flags for compiling strategies
 #
