@@ -3,7 +3,7 @@ NWCHEM_HOME = /usr/local/packages/nwchem/nwchem-6.6
 
 INC_DIR = $(HOME)/ofp-tests/parser/nwchem/include
 NWCHEM_INCS = -I $(NWCHEM_HOME)/src/tools/install/include -I $(NWCHEM_HOME)/src/include
-INCLUDES = $(NWCHEM_INCS)
+INCLUDES = $(NWCHEM_INCS) -I $(INC_DIR)
 
 include $(OFP_HOME)/make.inc
 
@@ -26,8 +26,83 @@ OUT_DIR = /Users/rasmus/ofp-tests/parser/nwchem
 SYNTAX = $(OFP_HOME)/fortran/syntax
 TRANS  = $(OFP_HOME)/fortran/trans
 
+SRC_DIRS_F90 =                                           \
+     src/blas/double                                     \
+     src/blas/single
+
+SRC_DIRS_LATER =                                         \
+     src/ccca                                            \
+     src/cckohn                                          \
+     src/tools
+
 SRC_DIRS =                                               \
-     src/analyz
+     src                                                 \
+     src/64to32blas                                      \
+     src/NWints                                          \
+     src/analyz                                          \
+     src/argos                                           \
+     src/atomscf                                         \
+     src/basis                                           \
+     src/blas/double                                     \
+     src/blas/single                                     \
+     src/bq                                              \
+     src/cafe                                            \
+     src/ccca                                            \
+     src/cckohn                                          \
+     src/ccsd                                            \
+     src/chelp                                           \
+     src/cons                                            \
+     src/cphf                                            \
+     src/dangchang                                       \
+     src/ddscf                                           \
+     src/develop                                         \
+     src/diana                                           \
+     src/dntmc                                           \
+     src/dplot                                           \
+     src/drdy                                            \
+     src/driver                                          \
+     src/esp                                             \
+     src/etrans                                          \
+     src/geninterface                                    \
+     src/geom                                            \
+     src/gradients                                       \
+     src/hessian                                         \
+     src/inp                                             \
+     src/input                                           \
+     src/leps                                            \
+     src/lucia                                           \
+     src/mcscf                                           \
+     src/mm                                              \
+     src/moints                                          \
+     src/mp2_grad                                        \
+     src/ncc                                             \
+     src/nwdft                                           \
+     src/nwmd                                            \
+     src/nwpw                                            \
+     src/nwxc                                            \
+     src/perfm                                           \
+     src/prepar                                          \
+     src/property                                        \
+     src/pstat                                           \
+     src/python                                          \
+     src/qhop                                            \
+     src/qmd                                             \
+     src/qmmm                                            \
+     src/rimp2                                           \
+     src/rimp2_grad                                      \
+     src/rism                                            \
+     src/rtdb                                            \
+     src/selci                                           \
+     src/solvation                                       \
+     src/space                                           \
+     src/stepper                                         \
+     src/symmetry                                        \
+     src/task                                            \
+     src/tce                                             \
+     src/uccsdt                                          \
+     src/util                                            \
+     src/vib                                             \
+     src/vscf
 
 DIRS = $(SRC_DIRS)
 
