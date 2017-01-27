@@ -1,0 +1,2 @@
+READ(iflint)
+END PROGRAM
