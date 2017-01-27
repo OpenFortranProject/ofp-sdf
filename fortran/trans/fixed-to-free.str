@@ -11,9 +11,6 @@ signature
 
   ppStmtBlock : Stmt * FollowLines -> ppStmtBlock
 
-  // For ambiguities
-  amb : list -> choice
-
 
 strategies //=================START OF STRATEGIES============================
 
@@ -21,7 +18,6 @@ strategies //=================START OF STRATEGIES============================
     io-wrap(fixed-to-free)
 
   fixed-to-free =
-//      outermost(fixed-disamb)
       innermost(fixed-to-free-comments)
     ; innermost(fixed-to-free-form)
     ; outermost(fixed-to-free-continuation)
@@ -29,21 +25,6 @@ strategies //=================START OF STRATEGIES============================
 
 
 rules //========================START OF RULES===============================
-
-/**
- * Remove ambiguity between statements containing all whitespace and blank lines.
- *   - replaces blank "statement" with a blank line
- */
-fixed-disamb =
-      ? amb([Stmt(_,_,_,_), BlankLine(ws, eol)])
-    ; ! BlankLine(ws, eol)
-   <+ ? amb([Stmt(_,_,_,_), FreeFormComment(ws,ch,str,eol)])
-    ; ! FreeFormComment(ws,ch,str,eol)
-   <+ ? amb([BlankLine(ws, eol), Stmt(_,_,_,_)])
-    ; ! BlankLine(ws, eol)
-   <+ ? amb([BlankLine(ws, eol), Continuation(_,_,_,_)])  /* DOS blank lines with spaces */
-    ; ! BlankLine(ws, eol)
-
 
 /**
  * Change comment character to '!'
