@@ -2866,6 +2866,7 @@ context-free syntax
 
 %%910
   OptLabel 'READ' '(' IoControlSpecList ')' {InputItem ','}*    EOS -> ReadStmt         {cons("ReadStmt")}
+  OptLabel 'READ' '(' Format ')'                                EOS -> ReadFMTStmt      {reject} %% fixes issue-37
   OptLabel 'READ' Format                    OptInputItemList    EOS -> ReadFMTStmt      {cons("ReadFMTStmt")}
 
   ',' {InputItem ','}+                                              -> OptInputItemList {cons("comma-list")}
