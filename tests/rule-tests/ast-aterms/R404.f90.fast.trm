@@ -10,9 +10,9 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("4")))
+          , INTEGER(IntVal("4"))
           , []
-          , [Var("b", INTEGER(Kind(IntVal("4"))), no-init())]
+          , [Var("b", INTEGER(IntVal("4")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
@@ -22,9 +22,9 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , REAL(Kind(IntVal("4")))
+          , REAL(IntVal("4"))
           , []
-          , [Var("d", REAL(Kind(IntVal("4"))), no-init())]
+          , [Var("d", REAL(IntVal("4")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
@@ -46,9 +46,9 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , COMPLEX(Kind(IntVal("4")))
+          , COMPLEX(IntVal("4"))
           , []
-          , [Var("h", COMPLEX(Kind(IntVal("4"))), no-init())]
+          , [Var("h", COMPLEX(IntVal("4")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
@@ -82,9 +82,9 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , LOGICAL(Kind(IntVal("1")))
+          , LOGICAL(IntVal("1"))
           , []
-          , [Var("n", LOGICAL(Kind(IntVal("1"))), no-init())]
+          , [Var("n", LOGICAL(IntVal("1")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()

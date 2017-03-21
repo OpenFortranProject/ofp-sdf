@@ -4,13 +4,9 @@ Program(
     , Scope(
         [ TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("16")))
+          , INTEGER(IntVal("16"))
           , [PARAMETER()]
-          , [Var(
-               "ieee64_two"
-             , INTEGER(Kind(IntVal("16")))
-             , Init(HexVal("Z'4000000000000000'"))
-             )]
+          , [Var("ieee64_two", INTEGER(IntVal("16")), Init(HexVal("Z'4000000000000000'")))]
           ){Comment("
 
     ")}

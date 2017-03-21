@@ -21,7 +21,7 @@ Program(
           )
         , ProcedureDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("4")))
+          , INTEGER(IntVal("4"))
           , []
           , [ProcDecl("a5", no-init())]
           ){Comment("

@@ -12,82 +12,78 @@ Program(
 ")}
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("4")))
+          , INTEGER(IntVal("4"))
           , [PARAMETER()]
-          , [Var(
-               "i"
-             , INTEGER(Kind(IntVal("4")))
-             , Init(IntVal("4"))
-             )]
+          , [Var("i", INTEGER(IntVal("4")), Init(IntVal("4")))]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("4")))
+          , INTEGER(IntVal("4"))
           , []
-          , [Var("p", INTEGER(Kind(IntVal("4"))), no-init())]
+          , [Var("p", INTEGER(IntVal("4")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(VarRef("foo")))
+          , INTEGER(VarRef("foo"))
           , []
-          , [Var("bar", INTEGER(Kind(VarRef("foo"))), no-init())]
+          , [Var("bar", INTEGER(VarRef("foo")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("8")))
+          , INTEGER(IntVal("8"))
           , []
-          , [Var("j", INTEGER(Kind(IntVal("8"))), no-init())]
+          , [Var("j", INTEGER(IntVal("8")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(PartRef("KIND", [IntVal("4")], no-image-selector())))
+          , INTEGER(PartRef("KIND", [IntVal("4")], no-image-selector()))
           , []
           , [ Var(
                 "k"
-              , INTEGER(Kind(PartRef("KIND", [IntVal("4")], no-image-selector())))
+              , INTEGER(PartRef("KIND", [IntVal("4")], no-image-selector()))
               , no-init()
               )
             ]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(VarRef("i")))
+          , INTEGER(VarRef("i"))
           , []
-          , [Var("m", INTEGER(Kind(VarRef("i"))), no-init())]
+          , [Var("m", INTEGER(VarRef("i")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(PartRef("KIND", [VarRef("j")], no-image-selector())))
+          , INTEGER(PartRef("KIND", [VarRef("j")], no-image-selector()))
           , []
           , [ Var(
                 "n"
-              , INTEGER(Kind(PartRef("KIND", [VarRef("j")], no-image-selector())))
+              , INTEGER(PartRef("KIND", [VarRef("j")], no-image-selector()))
               , no-init()
               )
             ]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(VarRef("i")))
+          , INTEGER(VarRef("i"))
           , []
-          , [Var("o", INTEGER(Kind(VarRef("i"))), no-init())]
+          , [Var("o", INTEGER(VarRef("i")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector())))
+          , INTEGER(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector()))
           , []
           , [ Var(
                 "d"
-              , INTEGER(Kind(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector())))
+              , INTEGER(PartRef("SELECTED_INT_KIND", [IntVal("12")], no-image-selector()))
               , no-init()
               )
             ]
           )
         , TypeDeclarationStmt(
             no-label()
-          , REAL(Kind(IntVal("4")))
+          , REAL(IntVal("4"))
           , []
-          , [Var("q", REAL(Kind(IntVal("4"))), no-init())]
+          , [Var("q", REAL(IntVal("4")), no-init())]
           ){Comment("
 
 ")}

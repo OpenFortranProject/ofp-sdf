@@ -40,9 +40,9 @@ Program(
 ")}
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(IntVal("4")))
+          , INTEGER(IntVal("4"))
           , []
-          , [Var("m", INTEGER(Kind(IntVal("4"))), no-init())]
+          , [Var("m", INTEGER(IntVal("4")), no-init())]
           ){Comment("
 
 ! intrinsic-type-spec with char-selector
@@ -105,35 +105,35 @@ Program(
           )
         , TypeDeclarationStmt(
             no-label()
-          , INTEGER(Kind(VarRef("SHORT")))
+          , INTEGER(VarRef("SHORT"))
           , []
-          , [Var("K", INTEGER(Kind(VarRef("SHORT"))), no-init())]
+          , [Var("K", INTEGER(VarRef("SHORT")), no-init())]
           ){Comment("!  Range at least -9999 to 9999.
 ")}
         , TypeDeclarationStmt(
             no-label()
-          , REAL(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+          , REAL(PartRef("KIND", [RealVal("0.0D0")], no-image-selector()))
           , []
           , [ Var(
                 "A"
-              , REAL(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+              , REAL(PartRef("KIND", [RealVal("0.0D0")], no-image-selector()))
               , no-init()
               )
             ]
           )
         , TypeDeclarationStmt(
             no-label()
-          , REAL(Kind(IntVal("2")))
+          , REAL(IntVal("2"))
           , []
-          , [Var("B", REAL(Kind(IntVal("2"))), no-init())]
+          , [Var("B", REAL(IntVal("2")), no-init())]
           )
         , TypeDeclarationStmt(
             no-label()
-          , COMPLEX(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+          , COMPLEX(PartRef("KIND", [RealVal("0.0D0")], no-image-selector()))
           , []
           , [ Var(
                 "C"
-              , COMPLEX(Kind(PartRef("KIND", [RealVal("0.0D0")], no-image-selector())))
+              , COMPLEX(PartRef("KIND", [RealVal("0.0D0")], no-image-selector()))
               , no-init()
               )
             ]

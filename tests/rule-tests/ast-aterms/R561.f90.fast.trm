@@ -5,10 +5,7 @@ Program(
         []
       , [ ImplicitStmt(
             "10"
-          , [ImplicitSpec(
-               INTEGER(Kind(IntVal("4")))
-             , [LetterSpec("i", no-letter())]
-             )]
+          , [ImplicitSpec(INTEGER(IntVal("4")), [LetterSpec("i", no-letter())])]
           , eos("\n")
           )
         , ImplicitStmt(
