@@ -262,11 +262,18 @@ ofp-to-ast =  ?IncludeStmt(file,eos("\n"))      ; !IncludeStmt(file)
           <+  ?IncludeStmt(file,eos(str))       ; !IncludeStmt(file) {Comment(str)}
 
 //R404
-ofp-to-ast:  IntrinsicType(type)                -> type
+ofp-to-ast:  IntrinsicType(type)                -> <remove-kind-from-intrinsic-type> type
 
 ofp-to-ast =
       ? CHARACTER(CharSelector(len,no-kind()))  ; ! CHARACTER(len)
    <+ ? CHARACTER(CharSelector(len,kind))       ; ! CHARACTER(len,kind)
+
+remove-kind-from-intrinsic-type =
+      ? INTEGER(Kind(kind))                     ; ! INTEGER(kind)
+   <+ ?    REAL(Kind(kind))                     ; !    REAL(kind)
+   <+ ? COMPLEX(Kind(kind))                     ; ! COMPLEX(kind)
+   <+ ? LOGICAL(Kind(kind))                     ; ! LOGICAL(kind)
+   <+ id /* default is to leave as is */
 
 //R420
 ofp-to-ast: CharSelector_KIND_LEN(kind,len)     -> CharSelector(len,kind)

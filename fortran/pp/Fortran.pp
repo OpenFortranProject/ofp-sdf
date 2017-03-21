@@ -82,20 +82,20 @@
    %% R404
    Type                          -- H hs=1[_1 _2],
    INTEGER                       -- "INTEGER",
-   INTEGER                       -- "INTEGER" _1,
+   INTEGER                       -- "INTEGER" "(" "KIND=" _1 ")",
    REAL                          -- "REAL",
-   REAL                          -- "REAL" _1,
+   REAL                          -- "REAL"    "(" "KIND=" _1 ")",
    DOUBLEPRECISION               -- "DOUBLE PRECISION",
    LOGICAL                       -- "LOGICAL",
-   LOGICAL                       -- "LOGICAL" _1,
+   LOGICAL                       -- "LOGICAL" "(" "KIND=" _1 ")",
    COMPLEX                       -- "COMPLEX",
-   COMPLEX                       -- "COMPLEX" _1,
+   COMPLEX                       -- "COMPLEX" "(" "KIND=" _1 ")",
    DOUBLECOMPLEX                 -- "DOUBLE COMPLEX",
 
    CHARACTER                     -- "CHARACTER",
    CHARACTER                     -- "CHARACTER" "(" _1 ")",
    CHARACTER                     -- "CHARACTER" "(" _1 ",KIND=" _2 ")",
-   ppCharNoLen                   -- "CHARACTER" "(" "KIND=" _1 ")",
+   ppCharNoLen                   -- "CHARACTER" "("     "KIND=" _1 ")",
 
    %% R406
    SignedIntLiteralConstant      -- _1 _2,
