@@ -188,9 +188,9 @@ signature
     TYPE_FLOAT                : TYPE_FLOAT
     TYPE_DOUBLE               : TYPE_DOUBLE
     TYPE_COMPLEX              : TYPE_COMPLEX
+    TYPE_BOOL                 : TYPE_BOOL
     TYPE_CHAR                 : TYPE_CHAR
     TYPE_LAST                 : TYPE_LAST
-    TYPE_BOOL                 : TYPE_BOOL  //CER-TODO-ROSE
 
     SgUntypedType             :  string * expr * bool * bool * bool * bool * bool * bool * expr * string * bool * enum -> SgUntypedType
     SgUntypedType_type_enum   :  enum -> SgUntypedType_type_enum
@@ -248,14 +248,17 @@ sg-fortran-operator =
   <+ ? FORTRAN_INTRINSIC_GT()          ; ! SgToken_ROSE_Fortran_Operators(10015)
   <+ ? FORTRAN_INTRINSIC_NOT()         ; ! SgToken_ROSE_Fortran_Operators(10016)
 
-//  e_unknown=0,e_void,e_int,e_float,e_double,e_complex,e_char,e_last
+//  e_unknown=0,e_void,e_int,e_float,e_double,e_complex,e_bool,e_char,e_last
 sg-type-enum =
      ? TYPE_UNKNOWN()                  ; ! SgUntypedType_type_enum(0)
   <+ ? TYPE_VOID()                     ; ! SgUntypedType_type_enum(1)
   <+ ? TYPE_INT()                      ; ! SgUntypedType_type_enum(2)
   <+ ? TYPE_FLOAT()                    ; ! SgUntypedType_type_enum(3)
   <+ ? TYPE_DOUBLE()                   ; ! SgUntypedType_type_enum(4)
-  <+ ? TYPE_BOOL()                     ; ! SgUntypedType_type_enum(0)  //CER-TODO-ROSE
+  <+ ? TYPE_COMPLEX()                  ; ! SgUntypedType_type_enum(5)
+  <+ ? TYPE_BOOL()                     ; ! SgUntypedType_type_enum(6)
+  <+ ? TYPE_CHAR()                     ; ! SgUntypedType_type_enum(7)
+//TODO - DOUBLECOMPLEX
 
 sg-build-void-type =                     ! SgUntypedType("void",<sg-expression>NULL_EXPR(),0,0,0,
                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_VOID())
@@ -267,8 +270,12 @@ sg-build-intrinsic-type =
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
   <+ ? DOUBLEPRECISION()               ; ! SgUntypedType("double", <sg-expression>NULL_EXPR(),0,0,0,
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
+  <+ ? COMPLEX()                       ; ! SgUntypedType("complex",<sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_COMPLEX())
   <+ ? LOGICAL()                       ; ! SgUntypedType("bool",   <sg-expression>NULL_EXPR(),0,0,0,
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
+  <+ ? CHARACTER()                     ; ! SgUntypedType("char",   <sg-expression>NULL_EXPR(),0,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_CHAR())
 
 sg-build-intrinsic-type(|kind) =
      ? INTEGER()                       ; ! SgUntypedType("integer",                      kind,1,0,0,
@@ -277,8 +284,12 @@ sg-build-intrinsic-type(|kind) =
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
   <+ ? DOUBLEPRECISION()               ; ! SgUntypedType("double",                       kind,1,0,0,
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
+  <+ ? COMPLEX()                       ; ! SgUntypedType("complex",                      kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_COMPLEX())
   <+ ? LOGICAL()                       ; ! SgUntypedType("bool",                         kind,1,0,0,
                                                           1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
+  <+ ? CHARACTER()                     ; ! SgUntypedType("char",                         kind,1,0,0,
+                                                          1,0,0,   <sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_CHAR())
 
 //R201
 fast-to-sage:  Program(units)
@@ -288,14 +299,22 @@ fast-to-sage:  Program(units)
                                                         SgUntypedFunctionDeclarationList(units)))
 
 //R404
-fast-to-sage:  INTEGER()              -> SgUntypedType("integer",<sg-expression>NULL_EXPR(),0,0,0,
-                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_INT())
-fast-to-sage:  REAL()                 -> SgUntypedType("float",  <sg-expression>NULL_EXPR(),0,0,0,
-                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_FLOAT())
-fast-to-sage:  DOUBLEPRECISION()      -> SgUntypedType("double", <sg-expression>NULL_EXPR(),0,0,0,
-                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_DOUBLE())
-fast-to-sage:  LOGICAL()              -> SgUntypedType("bool",   <sg-expression>NULL_EXPR(),0,0,0,
-                                                           1,0,0,<sg-expression>NULL_EXPR(),"",0,<sg-type-enum>TYPE_BOOL())
+fast-to-sage:  INTEGER()              -> <sg-build-intrinsic-type>        INTEGER()
+fast-to-sage:  INTEGER(kind)          -> <sg-build-intrinsic-type(|kind)> INTEGER()
+
+fast-to-sage:  REAL()                 -> <sg-build-intrinsic-type>        REAL()
+fast-to-sage:  REAL(kind)             -> <sg-build-intrinsic-type(|kind)> REAL()
+
+fast-to-sage:  DOUBLEPRECISION()      -> <sg-build-intrinsic-type>        DOUBLEPRECISION()
+
+fast-to-sage:  COMPLEX()              -> <sg-build-intrinsic-type>        COMPLEX()
+fast-to-sage:  COMPLEX(kind)          -> <sg-build-intrinsic-type(|kind)> COMPLEX()
+
+fast-to-sage:  LOGICAL()              -> <sg-build-intrinsic-type>        LOGICAL()
+fast-to-sage:  LOGICAL(kind)          -> <sg-build-intrinsic-type(|kind)> LOGICAL()
+
+fast-to-sage:  CHARACTER()            -> <sg-build-intrinsic-type>        CHARACTER()
+fast-to-sage:  CHARACTER(len)         -> <sg-build-intrinsic-type(|len)>  CHARACTER()
 
 //R407
 fast-to-sage:  IntVal(val)
