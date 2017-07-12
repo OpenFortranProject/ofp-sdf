@@ -3,6 +3,7 @@
 
  ppStmtBlock                     -- _1 _2,
    Comment                       -- _1 _2 _3,
+   StartFFComment                -- _1 _2 _3,
    FreeFormComment               -- _1 _2 _3 _4,
    comchar                       -- _1,
 
