@@ -1,12 +1,33 @@
 #ifndef OFP_BUILDER_H
 #define OFP_BUILDER_H
 
-#include "traversal.h"
+//#include "traversal.h"
+#include <aterm2.h>
 
 // global variables
 //
 FILE * fpc;
 FILE * fph;
+
+enum DataType
+{
+   UNKNOWN,
+   STRING,
+   IDENT,
+   LIST,
+   OPTION,
+   CONST,
+   OR
+};
+
+typedef struct OFP_Traverse_struct
+{
+   ATerm       term;
+   void*       pre;
+   void*       post;
+
+}
+   OFP_Traverse, * pOFP_Traverse;
 
 /* List for storing productions (prodName, [(consName, [symType]]) */
 ATermList gProdTable;
