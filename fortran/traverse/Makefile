@@ -1,8 +1,6 @@
-ATERM_ROOT = /usr/local/stratego-debug-32
+ATERM_ROOT = /opt/aterm/v2.5
 
-# cc with Apple XCode uses clang which has unwelcome warning messages
-#
-CC = gcc
+CC = cc
 
 # -m32 flag used in antlr3 build (for XCode)
 #
