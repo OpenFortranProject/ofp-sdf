@@ -8,7 +8,7 @@ int main(int argc, char * argv[])
    OFP::OFP_Traverse Module;
    
    if (argc < 2) {
-      fprintf(stderr, "usage: traverse_f filename\n");
+      fprintf(stderr, "usage: traverse_sig filename\n");
       exit(-1);
    }
 
