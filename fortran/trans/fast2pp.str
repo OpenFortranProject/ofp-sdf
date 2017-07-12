@@ -185,14 +185,14 @@ ast-to-pp:  DataComponentDefStmt(label,type,[],comps)   ->  ppDataComponentDefSt
 ast-to-pp:  TypeParamDecl(name,no-expr())               ->  ppTypeParamDecl(name)
 
 //R440
-ast-to-pp:  Pass(no-arg-name())                         ->  PASS()
+ast-to-pp:  Pass(no-name())                             ->  PASS()
 
 //R445
 ast-to-pp:  TypeBoundProcedureStmt(label,[],procs)      -> ppTypeBoundProcedureStmt(label,procs)
 
 
 //R449
-ast-to-pp:  TypeBoundProcDecl(name,no-procedure-name()) -> ppTypeBoundProcDecl(name)
+ast-to-pp:  TypeBoundProcDecl(name,no-name())           -> ppTypeBoundProcDecl(name)
 
 //R453
 ast-to-pp:  DerivedType(name,[])                        ->  ppDerivedType(name)
@@ -228,9 +228,6 @@ ast-to-pp =
       ? Var(name,CHARACTER_LEN(STAR()),init) ; ! ppVarLen(name,Parens(STAR()),init)
   <+  ? Var(name,CHARACTER_LEN(len),init)    ; ! ppVarLen(name,len,init)
   <+  ? Var(name,type,init)                  ; ! ppVar(name,init)
-
-//R508
-//  ast-to-pp:  LanguageBinding(lang,no-binding-name()) -> LanguageBinding("C")
 
 //R510
 ast-to-pp:  SaveStmt(label,[])               -> ppSaveStmt(label)
@@ -340,47 +337,6 @@ ast-to-pp:  ProcDecl(name,no-init())         -> ppProcDecl(name)
 //R1222
 ast-to-pp:  Arg(no-keyword(),arg)            -> ppArg(arg)
 
-//R1237
-//ast-to-pp:  MpSubprogram(name, scope)        -> ppMpSubprogram(scope)
 
-
-//  no-to-none: no-kind-param()              -> None()   // R408
-//  no-to-none: no-char-selector()           -> None()   // R420
-//  no-to-none: no-char-length()             -> None()   // R503
-//  no-to-none: no-init()                    -> None()   // R503
-//  no-to-none: no-kind()                    -> None()   // R405
-//  no-to-none: no-prefix()                  -> None()   // R1225
-//  no-to-none: no-language-binding()        -> None()   // R1229
-//  no-to-none: no-generic-spec()            -> None()   // R1204
-//  no-to-none: no-module-name()             -> None()   // R1106
-//  no-to-none: no-module-nature()           -> None()   // R1109
-//  no-to-none: no-block-data-name()         -> None()   // R1122
-//  no-to-none: no-proc-interface()          -> None()   // R1212
-//  no-to-none: no-subroutine-name()         -> None()   // R1236
-//  no-to-none: no-binding-name()            -> None()   // R508
-//  no-to-none: no-expr()                    -> None()   // R1241
-//  no-to-none: no-stop-code()               -> None()   // R857
-//  no-to-none: no-r()                       -> None()   // R1004
-//  no-to-none: no-m()                       -> None()   // R1007
-//  no-to-none: no-e()                       -> None()   // R1007
-//  no-to-none: no-name()                    -> None()   // R839, R850
-//  no-to-none: no-parent-submodule-name()   -> None()   // R1118
-//  no-to-none: no-high()                    -> None()   // R844
-//  no-to-none: no-low()                     -> None()   // R844
-//  no-to-none: no-stride()                  -> None()   // R920
-//  no-to-none: no-type-spec()               -> None()   // R626
-//  no-to-none: no-lower-bound()             -> None()   // R633
-//  no-to-none: no-component-name()          -> None()   // R734
-//  no-to-none: no-type-bound-procedure-part()  -> None()   //R445
-//  no-to-none: no-binding-private-stmt()    -> None()   // R446
-//  no-to-none: no-arg-name()                -> None()   // R451
-//  no-to-none: no-subprogram-part()         -> None()   // R210
-//  no-to-none: no-repeat()                  -> None()   // R541
-//  no-to-none: no-forall-step()             -> None()   // R753
-//  no-to-none: no-mask-expr()               -> None()   // R752
-//  no-to-none: no-else-stmt()               -> None()   // R832
-//  no-to-none: no-loop-control()            -> None()   // R818
-//  no-to-none: no-subscript()               -> None()   // R619
-
-  no-to-none: ppSectionSubscripts(no-section-subscripts()) -> no-section-subscripts()
-  no-to-none: ppImageSelector(no-image-selector())         -> no-image-selector()
+no-to-none: ppSectionSubscripts(no-section-subscripts()) -> no-section-subscripts()
+no-to-none: ppImageSelector(no-image-selector())         -> no-image-selector()

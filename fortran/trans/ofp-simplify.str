@@ -72,7 +72,7 @@ ofp-simplify-ast:  no-implicit-part()             -> []
 
 //R204
 ofp-simplify-ast:  SpecificationPart(l1,l2,l3,l4) -> SpecificationPart(<conc>(l1,l2,l3,l4))
-ofp-simplify-ast:  initial-spec-part(l1,l2)       -> InitialSpecPart(<conc>(l1,l2))
+ofp-simplify-ast:  InitialSpecPart(l1,l2)         -> InitialSpecPart(<conc>(l1,l2))
 
 //R403
 ofp-simplify-ast:  derived-type-spec(DerivedTypeSpec(name,list))   -> DerivedType(name,list)

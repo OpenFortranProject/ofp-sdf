@@ -10,7 +10,6 @@ signature
 
     no-label                  : NoLabel         // R312
     no-program-stmt           : NoProgramStmt   // R1102
-    no-program-name           : NoProgramName   // R1103
 
     NULL_EXPR                 : NULL_EXPR
 
@@ -569,54 +568,5 @@ fast-to-sage:
 //  fast-to-sage:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
 
 
-  no-to-string: no-label()                   -> ""   // R312
-  no-to-string: no-program-name()            -> ""
-  no-to-string: no-subroutine-name()         -> ""
-
-//  no-to-none: no-program-stmt()            -> None()   // R1102
-//  no-to-none: no-kind-param()              -> None()   // R408
-//  no-to-none: no-char-selector()           -> None()   // R420
-//  no-to-none: no-char-length()             -> None()   // R503
-//  no-to-none: no-init()                    -> None()   // R503
-//  no-to-none: no-kind()                    -> None()   // R405
-//  no-to-none: no-prefix()                  -> None()   // R1225
-//  no-to-none: no-language-binding()        -> None()   // R1229
-//  no-to-none: no-generic-spec()            -> None()   // R1204
-//  no-to-none: no-module-name()             -> None()   // R1106
-//  no-to-none: no-module-nature()           -> None()   // R1109
-//  no-to-none: no-block-data-name()         -> None()   // R1122
-//  no-to-none: no-proc-interface()          -> None()   // R1212
-//  no-to-none: no-subroutine-name()         -> None()   // R1236
-//  no-to-none: no-binding-name()            -> None()   // R508
-//  no-to-none: no-expr()                    -> None()   // R1241
-//  no-to-none: no-stop-code()               -> None()   // R857
-//  no-to-none: no-r()                       -> None()   // R1004
-//  no-to-none: no-m()                       -> None()   // R1007
-//  no-to-none: no-e()                       -> None()   // R1007
-//  no-to-none: no-name()                    -> None()   // R839, R850
-//  no-to-none: no-parent-submodule-name()   -> None()   // R1118
-//  no-to-none: no-high()                    -> None()   // R844
-//  no-to-none: no-low()                     -> None()   // R844
-//  no-to-none: no-stride()                  -> None()   // R920
-//  no-to-none: no-type-spec()               -> None()   // R626
-//  no-to-none: no-lower-bound()             -> None()   // R633
-//  no-to-none: no-component-name()          -> None()   // R734
-//  no-to-none: no-upper-bounds()            -> None()   // R736
-//  no-to-none: no-type-bound-procedure-part()  -> None()   //R445
-//  no-to-none: no-binding-private-stmt()    -> None()   // R446
-//  no-to-none: no-arg-name()                -> None()   // R451
-//  no-to-none: no-subprogram-part()         -> None()   // R210
-//  no-to-none: no-repeat()                  -> None()   // R541
-//  no-to-none: no-forall-step()             -> None()   // R753
-//  no-to-none: no-mask-expr()               -> None()   // R752
-//  no-to-none: no-else-stmt()               -> None()   // R832
-//  no-to-none: no-loop-control()            -> None()   // R818
-//  no-to-none: no-subscript()               -> None()   // R619
-
-//  no-to-none: PpKeyword(no-keyword())      -> None()   // R215
-
-//  no-to-none: PpArraySpec([])              -> None()   // R515
-//  no-to-none: PpCoarraySpec([])            -> None()   // R509
-
-//  no-to-none: PpSectionSubscripts(no-section-subscripts()) -> None()
-//  no-to-none: PpImageSelector(no-image-selector())         -> None()
+no-to-string: no-label()                   -> ""   // R312
+no-to-string: no-name()                    -> ""
