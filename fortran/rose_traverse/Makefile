@@ -9,13 +9,13 @@ CLANG_ERROR_LIMIT = -ferror-limit=5
 
 ERROR_LIMIT =
 
-CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../trans
-LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
+#CFLAGS = $(ST_CFLAGS) -I ../syntax -I ../trans
+#LDFLAGS = $(ST_LDFLAGS) -la stratego-lib
 
-#CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
-#LIBS = -L$(ATERM_ROOT)/lib -lATerm
+CFLAGS = -g $(ARCH) -I. -I$(ATERM_ROOT)/include $(ERROR_LIMIT)
+LIBS = -L$(ATERM_ROOT)/lib -lATerm
 
-OBJS = ofp_builder.o
+OBJS = ofp_builder.o build_classes.o
 
 TRAVERSE_OBJS = UntypedNodes.o \
                 OFPNodes.o OFPExpr.o OFPUnparser.o UntypedASTBuilder.o traversal.o ofp_traverse_productions.o
@@ -27,9 +27,9 @@ EXES = fast-to-rose build_classes build_includes build_traversals \
 	@echo 'Compiling file: $<'
 	@$(CPC) -c $(CFLAGS) -o $@ $<
 
-#all: $(OBJS) traverse
+all: traverse_sig
 
-all : sg-const-folding
+#all : sg-const-folding
 
 sg-const-folding : sg-const-folding.str
 	$(ST_PATH)/strc -i sg-const-folding.str $(CFLAGS) $(LDFLAGS) --main io-sg-const-folding
@@ -40,8 +40,8 @@ fast-to-rose : fast-to-rose.str
 traverse: traverse.o $(TRAVERSE_OBJS)
 	$(CPC) -o $@ $(ARCH) $< $(TRAVERSE_OBJS) $(LIBS)
 
-traverse_sig: traverse_sig.o traversal_f.o $(OBJS)
-	$(CC) -o $@ $(ARCH) $< traversal_f.o $(OBJS) $(LIBS)
+traverse_sig: traverse_sig.o $(OBJS)
+	$(CC) -o $@ $(ARCH) $< $(OBJS) $(LIBS)
 
 build_includes: build_includes.o traverse_sig.o $(OBJS)
 	$(CC) -o $@ $(ARCH) $< traverse_sig.o $(OBJS) $(LIBS)
