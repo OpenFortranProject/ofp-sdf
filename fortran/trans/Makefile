@@ -38,14 +38,19 @@ check-sage : fast2sage
 check : ofp-simplify ofp2fast
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | pp-aterm
 
-check-ofp : ofp-simplify
-	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp-simplify | pp-aterm
+check-ofp :
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl                      | pp-aterm
+check-ofp-loc :
+	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl --preserve-locations | pp-aterm
 
 check-parse : ofp-simplify
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | pp-aterm
 
 check-pp : ofp-simplify ofp2fast fast2pp
 	$(SGLRI) -i testfile.f90 -p ../syntax/Fortran.tbl | ./ofp2fast | ./fast2pp | pp-aterm
+
+check-posinfo :
+	sglr -i testfile.f90 -p ../syntax/Fortran.tbl | addPosInfo | pp-aterm
 
 check-fixed :
 	@$(SGLRI) -i testfile.for -p ../syntax/FixedForm.tbl | pp-aterm
