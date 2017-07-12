@@ -2,7 +2,7 @@ Program(
   "!! R1003 format-items\n!     format-item [ [ , ] format-item ] ...\n!\n! NOTE 10.1\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ FormatStmt(
             "5"
@@ -214,7 +214,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

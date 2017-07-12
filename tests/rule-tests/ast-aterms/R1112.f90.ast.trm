@@ -20,11 +20,11 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n"))
     )
   , MainProgram(
       no-program-stmt()
-    , initial-spec-part(
+    , InitialSpecPart(
         [ UseOnlyStmt(
             no-label()
           , no-module-nature()
@@ -37,7 +37,7 @@ Program(
       )
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

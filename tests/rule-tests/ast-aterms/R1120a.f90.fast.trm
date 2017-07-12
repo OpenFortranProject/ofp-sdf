@@ -1,5 +1,5 @@
 Program(
-  [BlockData(BlockDataStmt(no-label(), no-block-data-name()), [], EndBlockDataStmt(no-label(), no-block-data-name()))]
+  [BlockData(BlockDataStmt(no-label(), no-name()), [], EndBlockDataStmt(no-label(), no-name()))]
 ){Comment("! Test block-data
 !      block-data  is  block-data-stmt
 !                        [ specification-part ]

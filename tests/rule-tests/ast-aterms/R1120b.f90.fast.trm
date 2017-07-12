@@ -1,5 +1,5 @@
 Program(
-  [ BlockData(BlockDataStmt(no-label(), no-block-data-name()), [], EndBlockDataStmt(no-label(), no-block-data-name()){Comment("
+  [ BlockData(BlockDataStmt(no-label(), no-name()), [], EndBlockDataStmt(no-label(), no-name()){Comment("
 
 ! Include the optional block-data-name
 ")})

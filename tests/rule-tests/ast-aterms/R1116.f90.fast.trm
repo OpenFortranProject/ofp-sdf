@@ -1,6 +1,6 @@
 Program(
   [ Submodule(
-      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-parent-submodule-name()), "submod")
+      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-name()), "submod")
     , Scope([], [], [])
     , EndSubmoduleStmt(no-label(), "submod")
     )

@@ -2,7 +2,7 @@ Program(
   "!! R2021 char-string-edit-desc\n!     is  char-literal-constant\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [FormatStmt(
            "010"
@@ -11,7 +11,7 @@ Program(
          )]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n\n"))
     )
   ]
 )

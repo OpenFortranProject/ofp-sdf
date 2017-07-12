@@ -1,9 +1,9 @@
 Program(
   "! Test block-data\n!      block-data  is  block-data-stmt\n!                        [ specification-part ]\n!                      end-block-data-stmt\n!\n!      block-data-stmt  is  BLOCK DATA [ block-data-name ]\n!\n!      end-block-data-stmt  is  END [ BLOCK DATA [ block-data-name ] ] \n!\n! Not tested here: specification-part and block-data-name.\n\n! Include none of the optional parts.\n"
 , [ BlockData(
-      BlockDataStmt(no-label(), no-block-data-name(), eos("\n"))
+      BlockDataStmt(no-label(), no-name(), eos("\n"))
     , SpecificationPart([], [], no-implicit-part(), [])
-    , EndBlockDataStmt(no-label(), no-block-data-name(), eos("\n"))
+    , EndBlockDataStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

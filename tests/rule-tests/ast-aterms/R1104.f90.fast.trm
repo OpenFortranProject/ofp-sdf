@@ -2,7 +2,7 @@ Program(
   [ Module(
       ModuleStmt(no-label(), "a")
     , Scope([], [], [])
-    , EndModuleStmt(no-label(), no-module-name()){Comment("
+    , EndModuleStmt(no-label(), no-name()){Comment("
 
 ! Include the optional MODULE in end-module-stmt
 ")}
@@ -10,7 +10,7 @@ Program(
   , Module(
       ModuleStmt(no-label(), "b")
     , Scope([], [], [])
-    , EndModuleStmt(no-label(), no-module-name()){Comment("
+    , EndModuleStmt(no-label(), no-name()){Comment("
 
 ! Include optional MODULE and module-name in end-module-stmt.
 ")}

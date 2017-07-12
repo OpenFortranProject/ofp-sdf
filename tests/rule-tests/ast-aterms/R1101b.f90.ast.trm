@@ -2,10 +2,10 @@ Program(
   "! R1101b.f90 - test of R1101 main-program\n!\n!   main-program is [ program-stmt ] [\n!      specification-part ] [ execution-part ] [\n!      internal-subprogram-part ] end-program-stmt program-stmt is\n!      PROGRAM program-name end-program-stmt is END [ PROGRAM [\n!      program-name ] ] Not tested here: specification-part,\n!      execution-part, and internal-subprogram-part.\n\n! Only include the optional PROGRAM with the required END.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndProgramStmt("13", no-program-name(), eos("\n"))
+    , EndProgramStmt("13", no-name(), eos("\n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "!! R1013 control-edit-desc\n!     is  position-edit-desc\n!     or  [r]/\n!     or  :\n!     or  sign-edit-desc\n!     or  kP\n!     or  blank-interp-edit-desc\n!     or  round-edit-desc\n!     or  decimal-edit-desc\n!\n!      k  is  signed-int-literal-constant\n!\n!      position-edit-desc  is  Tn\n!                          or  TLn\n!                          or  TRn\n!                          or  nX\n! \n!      n  is  int-literal-constant\n!\n!      sign-edit-desc  is  SS\n!                      or  SP\n!                      or  S\n! \n!      blank-interp-edit-desc  is  BN\n!                              or  BZ\n!\n!      round-edit-desc  is  RU\n!                       or  RD\n!                       or  RZ\n!                       or  RN\n!                       or  RC\n!                       or  RP\n!\n!      decimal-edit-desc  is  DC\n!                         or  DP\n!\n! Tested as part of a format-stmt.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ FormatStmt(
             "001"
@@ -56,7 +56,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

@@ -46,7 +46,7 @@ Program(
                   ){Comment("
     ")}
                 ]
-              , EndFunctionStmt(no-label(), no-function-name()){Comment("
+              , EndFunctionStmt(no-label(), no-name()){Comment("
   ")}
               )
             ]
@@ -73,7 +73,7 @@ Program(
                   ){Comment("
     ")}
                 ]
-              , EndFunctionStmt(no-label(), no-function-name()){Comment("
+              , EndFunctionStmt(no-label(), no-name()){Comment("
   ")}
               )
             ]
@@ -83,7 +83,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   , Module(
       ModuleStmt(no-label(), "AA"){Comment("
@@ -99,7 +99,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   , Module(
       ModuleStmt(no-label(), "AAA"){Comment("
@@ -115,7 +115,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name()){Comment("
+    , EndModuleStmt(no-label(), no-name()){Comment("
 
 ! Test with none of the optional parts
 ")}
@@ -163,7 +163,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("! Test use-stmt

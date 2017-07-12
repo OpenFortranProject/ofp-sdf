@@ -56,7 +56,7 @@ Program(
                     )
                   ]
                 )
-              , EndFunctionStmt(no-label(), no-function-name(), eos("\n  "))
+              , EndFunctionStmt(no-label(), no-name(), eos("\n  "))
               )
             ]
           , EndInterfaceStmt(no-label(), OPERATOR(".yourop."), eos("\n  "))
@@ -85,7 +85,7 @@ Program(
                     )
                   ]
                 )
-              , EndFunctionStmt(no-label(), no-function-name(), eos("\n  "))
+              , EndFunctionStmt(no-label(), no-name(), eos("\n  "))
               )
             ]
           , EndInterfaceStmt(no-label(), OPERATOR(".yourotherop."), eos("\n"))
@@ -93,7 +93,7 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
     )
   , Module(
       ModuleStmt(no-label(), "AA", eos("\n  "))
@@ -113,7 +113,7 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
     )
   , Module(
       ModuleStmt(no-label(), "AAA", eos("\n  "))
@@ -133,11 +133,11 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n! Test with none of the optional parts\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n! Test with none of the optional parts\n"))
     )
   , MainProgram(
       no-program-stmt()
-    , initial-spec-part(
+    , InitialSpecPart(
         [ UseStmt(no-label(), no-module-nature(), "a", no-list(), eos("\n\n! Include optional module nature\n"))
         , UseStmt(no-label(), ModuleNature(INTRINSIC()), "iso_c_binding", no-list(), eos("\n"))
         , UseStmt(no-label(), ModuleNature(NON_INTRINSIC()), "A", no-list(), eos("\n\n! Include optional rename-list\n"))
@@ -173,7 +173,7 @@ Program(
       )
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

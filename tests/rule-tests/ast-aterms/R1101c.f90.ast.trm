@@ -2,7 +2,7 @@ Program(
   "! R1101c.f90 - test of R1101 main-program\n!\n!   main-program is [ program-stmt ] [\n!      specification-part ] [ execution-part ] [\n!      internal-subprogram-part ] end-program-stmt program-stmt is\n!      PROGRAM program-name end-program-stmt is END [ PROGRAM [\n!      program-name ] ] Not tested here: specification-part,\n!      execution-part, and internal-subprogram-part.\n\n! To include the optional name in end-program-stmt requires (by C1102) \n! the program-stmt with the optional name.\n"
 , [ MainProgram(
       ProgramStmt("13", "my_program", eos("\n"))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
     , EndProgramStmt(no-label(), "my_program", eos("\n"))

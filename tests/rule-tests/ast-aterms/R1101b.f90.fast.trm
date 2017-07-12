@@ -2,7 +2,7 @@ Program(
   [MainProgram(
      no-program-stmt()
    , Scope([], [], [])
-   , EndProgramStmt("13", no-program-name())
+   , EndProgramStmt("13", no-name())
    )]
 ){Comment("! R1101b.f90 - test of R1101 main-program
 !

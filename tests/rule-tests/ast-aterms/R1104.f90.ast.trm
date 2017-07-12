@@ -4,13 +4,13 @@ Program(
       ModuleStmt(no-label(), "a", eos("\n"))
     , SpecificationPart([], [], no-implicit-part(), [])
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n! Include the optional MODULE in end-module-stmt\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n! Include the optional MODULE in end-module-stmt\n"))
     )
   , Module(
       ModuleStmt(no-label(), "b", eos("\n"))
     , SpecificationPart([], [], no-implicit-part(), [])
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n! Include optional MODULE and module-name in end-module-stmt.\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n! Include optional MODULE and module-name in end-module-stmt.\n"))
     )
   , Module(
       ModuleStmt(no-label(), "c", eos("\n"))
@@ -43,14 +43,14 @@ Program(
         ContainsStmt(no-label(), eos("\n  "))
       , [ SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "sub", no-list(), no-language-binding(), eos("\n  "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart([])
           , no-subprogram-part()
           , EndSubroutineStmt(no-label(), "sub", eos("\n  "))
           )
         , FunctionSubprogram(
             FunctionStmt(no-label(), no-prefix(), "foo", [], no-suffix(), eos("\n    "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ AssignmentStmt(
                   no-label()
@@ -74,7 +74,7 @@ Program(
         ContainsStmt(no-label(), eos("\n  "))
       , [ SeparateModuleSubprogram(
             MpSubprogramStmt(no-label(), "mp", eos("\n  "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart([])
           , no-subprogram-part()
           , EndMpSubprogramStmt(no-label(), "mp", eos("\n"))
@@ -102,14 +102,14 @@ Program(
         ContainsStmt(no-label(), eos("\n  "))
       , [ SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "sub", no-list(), no-language-binding(), eos("\n  "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart([])
           , no-subprogram-part()
           , EndSubroutineStmt(no-label(), "sub", eos("\n  "))
           )
         , FunctionSubprogram(
             FunctionStmt(no-label(), no-prefix(), "foo", [], no-suffix(), eos("\n    "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ AssignmentStmt(
                   no-label()
@@ -124,7 +124,7 @@ Program(
           )
         , SeparateModuleSubprogram(
             MpSubprogramStmt(no-label(), "mp", eos("\n  "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart([])
           , no-subprogram-part()
           , EndMpSubprogramStmt(no-label(), "mp", eos("\n"))

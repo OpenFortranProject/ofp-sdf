@@ -2,7 +2,7 @@ Program(
   "!! R1007 data-edit-desc\n!     is  Iw[.m]\n!     or  Bw[.m]\n!     or  Ow[.m]\n!     or  Zw[.m]\n!     or  Fw.d\n!     or  Ew.d[Ee]\n!     or  ENw.d[Ee]\n!     or  ESw.d[Ee]\n!     or  Gw.d[Ee]\n!     or  Lw\n!     or  A[w]\n!     or  Dw.d\n!     or  DT[char-literal-constant][(v-list)]\n!\n!      w  is  int-literal-constant\n!      m  is  int-literal-constant\n!      d  is  int-literal-constant\n!      e  is  int-literal-constant\n!      v  is  signed-int-literal-constant\n!\n! Tested as part of a format-stmt.\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ FormatStmt(
             "001"
@@ -195,7 +195,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

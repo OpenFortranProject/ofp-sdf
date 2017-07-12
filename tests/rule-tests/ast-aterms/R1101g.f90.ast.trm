@@ -2,7 +2,7 @@ Program(
   "! Test main-program\n!\n!      main-program  is  [ program-stmt ]\n!                          [ specification-part ]\n!                          [ execution-part ]\n!                          [ internal-subprogram-part ]\n!                        end-program-stmt\n!\n!      program-stmt  is  PROGRAM program-name\n!\n!      end-program-stmt  is  END [ PROGRAM [ program-name ] ]\n!\n! Not tested here: specification-part, execution-part, and \n! internal-subprogram-part.\n\n! Add all of the optionals together.\n"
 , [ MainProgram(
       ProgramStmt(no-label(), "my_prog", eos("\n  "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -23,7 +23,7 @@ Program(
         ContainsStmt(no-label(), eos("\n  "))
       , [ SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "sub", no-list(), no-language-binding(), eos("\n  "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart([])
           , no-subprogram-part()
           , EndSubroutineStmt(no-label(), "sub", eos("\n"))

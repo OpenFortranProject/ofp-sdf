@@ -1,7 +1,7 @@
 Program(
   "!! R1116 submodule\n!     is submodule-stmt\n!           [ specification-part ]\n!           [ module-subprogram-part ]\n!        end-submodule-stmt\n!\n"
 , [ Submodule(
-      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-parent-submodule-name()), "submod", eos("\n"))
+      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-name()), "submod", eos("\n"))
     , SpecificationPart([], [], no-implicit-part(), [])
     , no-module-subprogram-part()
     , EndSubmoduleStmt(no-label(), "submod", eos("\n"))

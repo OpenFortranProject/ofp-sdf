@@ -2,7 +2,7 @@ Program(
   "!! R1001 format-stmt\n!     is  FORMAT format-specification\n!   \n!! R1002 format-specification\n!     is  ( [ format-item-list ] )\n!     or  ( [ format-items, ] unlimited-format-item )\n!\n! Not [completely] tested here: format-item-list.\n!\n! Duplicate statements occur to test unparsing. These duplicates\n! should be symantically the same (needs to be checked) and\n! should unparse the same way.\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ FormatStmt(
             "0010"
@@ -391,7 +391,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

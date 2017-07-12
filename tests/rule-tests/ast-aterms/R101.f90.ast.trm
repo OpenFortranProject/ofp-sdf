@@ -2,7 +2,7 @@ Program(
   "!! R101 xyz-list (generic-name-list)\n!\n!    xyz-list  is xyz [ , xyz ] ...\n!    xyz-name  is name\n!\n\n! Check for generic name list. Using parameterized derived type.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(
@@ -28,7 +28,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )
