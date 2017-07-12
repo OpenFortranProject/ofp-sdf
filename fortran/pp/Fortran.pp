@@ -208,7 +208,6 @@
    Pass                          -- "PASS" "(" _1 ")",
    NON_OVERRIDABLE               -- "NON_OVERRIDABLE",
    DEFERRED                      -- "DEFERRED",
-   no-arg-name                   --,
 
    %% R452
    FinalProcedureStmt            -- H hs=1[_1 "FINAL ::" H hs=0[_2]],
@@ -309,7 +308,6 @@
    LanguageBinding               -- H hs=0["BIND(C" _1 ")"],
    BindingName                   -- ",NAME=" _1,
    no-language-binding           -- ,
-   no-binding-name               -- ,
    
    %% R509
    CoarraySpec                   -- "[" _1 "]",
@@ -985,14 +983,12 @@
    ProgramStmt                   -- H [_1     "PROGRAM" _2],
    EndProgramStmt                -- H [_1 "END PROGRAM" _2],
    no-program-stmt               -- ,
-   no-program-name               -- ,
 
    %% R1104
    Module                        -- V vs=0 [_1 _2 _3],
 
    ModuleStmt                    -- H hs=1 [_1     "MODULE" _2],
    EndModuleStmt                 -- H hs=1 [_1 "END MODULE" _2],
-   no-module-name                -- ,
 
    %% R1109
    ppUseStmt                     -- H hs=1 [_1 "USE" H hs=0[_2 _3]],
@@ -1015,7 +1011,6 @@
 
    SubmoduleStmt                 -- H hs=1 [_1 "SUBMODULE" H hs=0["("_2")"] _3],
    EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" H hs=0[_2]],
-   no-parent-submodule-name      -- ,
 
    ParentIdentifier              -- _1 _2,
 
@@ -1024,7 +1019,6 @@
 
    BlockDataStmt                 -- H hs=1 [_1 "BLOCK DATA" _2],
    EndBlockDataStmt              -- H hs=1 [_1 "END BLOCK DATA" _2],
-   no-block-data-name            -- ,
 
    %% R1201
    InterfaceBlock             -- V vs=0 [_1 _2 _3],
@@ -1077,7 +1071,6 @@
    FunctionStmt                        -- H hs=1[_1 _2 "FUNCTION" H hs=0[_3 "("_4")" _5 _6]],
    FunctionStmt.4:iter-sep             -- _1 ",",
    EndFunctionStmt                     -- H hs=1[_1 "END FUNCTION" _2],
-   no-function-name                    -- ,
    Result                              -- " RESULT(" _1 ")",
    no-result                           -- ,
 
@@ -1117,13 +1110,11 @@
    STAR                                -- "*",
 
    no-prefix                           -- ,
-   no-subroutine-name                  -- ,
 
    %% R1237
    MpSubprogram                        -- _1 _2 _3,
    MpSubprogramStmt                    -- H hs=1 [_1 "MODULE PROCEDURE" _2],
    EndMpSubprogramStmt                 -- H hs=1 [_1 "END PROCEDURE" _2],
-   no-procedure-name                   -- ,
 
    ReturnStmt                          -- H hs=1 [_1 "RETURN" _2],
    no-expr                             --,
