@@ -17,8 +17,8 @@ signature
     MpSubprogramStmt                : OptLabel * ProcedureName * EOS -> MpSubprogramStmt
     SeparateModuleSubprogram        : MpSubprogramStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndMpSubprogramStmt -> SeparateModuleSubprogram
                                     : SubroutineName -> OptSubroutineName
-    no-subroutine-name              : OptSubroutineName
-    no-subroutine-name              : NoSubroutineName
+    no-name                         : OptSubroutineName
+    no-name                         : NoSubroutineName
                                     : Ident -> SubroutineName
     EndSubroutineStmt               : OptLabel * OptSubroutineName * EOS -> EndSubroutineStmt
     EndSubroutineStmt               : OptLabel * NoSubroutineName * EOS -> EndSubroutineStmt
@@ -32,8 +32,8 @@ signature
     SubroutineStmt                  : OptLabel * OptPrefix * SubroutineName * OptDummyArgList * OptProcLanguageBindingSpec * EOS -> SubroutineStmt
     SubroutineSubprogram            : SubroutineStmt * InitialSpecPart * SpecAndExecPart * OptInternalSubprogramPart * EndSubroutineStmt -> SubroutineSubprogram
                                     : FunctionName -> OptFunctionName
-    no-function-name                : OptFunctionName
-    no-function-name                : NoFunctionName
+    no-name                         : OptFunctionName
+    no-name                         : NoFunctionName
                                     : Ident -> FunctionName
     EndFunctionStmt                 : OptLabel * OptFunctionName * EOS -> EndFunctionStmt
     EndFunctionStmt                 : OptLabel * NoFunctionName * EOS -> EndFunctionStmt
@@ -113,7 +113,7 @@ signature
     ASSIGNMENT                      : GenericSpec
     OPERATOR                        : DefinedOperator -> GenericSpec
                                     : GenericName -> GenericSpec
-    no-procedure-name               : NoProcedureName
+    no-name                         : NoProcedureName
                                     : Ident -> ProcedureName
     ProcedureStmt                   : OptLabel * List(ProcedureName) * EOS -> ProcedureStmt
     ModuleProcedureStmt             : OptLabel * List(ProcedureName) * EOS -> ProcedureStmt
@@ -128,8 +128,8 @@ signature
                                     : InterfaceBody -> InterfaceSpecification
     InterfaceBlock                  : InterfaceStmt * List(InterfaceSpecification) * EndInterfaceStmt -> InterfaceBlock
                                     : Ident -> BlockDataName
-    no-block-data-name              : NoBlockDataName
-    no-block-data-name              : OptBlockDataName
+    no-name                         : NoBlockDataName
+    no-name                         : OptBlockDataName
                                     : BlockDataName -> OptBlockDataName
     EndBlockDataStmt                : OptLabel * NoBlockDataName * EOS -> EndBlockDataStmt
     EndBlockDataStmt                : OptLabel * OptBlockDataName * EOS -> EndBlockDataStmt
@@ -137,12 +137,12 @@ signature
     BlockData                       : BlockDataStmt * SpecificationPart * EndBlockDataStmt -> BlockData
     EndSubmoduleStmt                : OptLabel * NoSubmoduleName * EOS -> EndSubmoduleStmt
     EndSubmoduleStmt                : OptLabel * SubmoduleName * EOS -> EndSubmoduleStmt
-    no-parent-submodule-name        : NoParentSubmoduleName
+    no-name                         : NoParentSubmoduleName
                                     : Ident -> ParentSubmoduleName
                                     : Ident -> AncestorModuleName
     ParentIdentifier                : AncestorModuleName * NoParentSubmoduleName -> ParentIdentifier
     ParentIdentifier                : AncestorModuleName * ParentSubmoduleName -> ParentIdentifier
-    no-submodule-name               : NoSubmoduleName
+    no-name                         : NoSubmoduleName
                                     : Ident -> SubmoduleName
     SubmoduleStmt                   : OptLabel * ParentIdentifier * SubmoduleName * EOS -> SubmoduleStmt
     Submodule                       : SubmoduleStmt * SpecificationPart * OptModuleSubprogramPart * EndSubmoduleStmt -> Submodule
@@ -177,16 +177,16 @@ signature
                                     : ModuleSubprogramPart -> OptModuleSubprogramPart
     ModuleSubprogramPart            : ContainsStmt * List(ModuleSubprogram) -> ModuleSubprogramPart
                                     : ModuleName -> OptModuleName
-    no-module-name                  : OptModuleName
-    no-module-name                  : NoModuleName
+    no-name                         : OptModuleName
+    no-name                         : NoModuleName
                                     : Ident -> ModuleName
     EndModuleStmt                   : OptLabel * OptModuleName * EOS -> EndModuleStmt
     EndModuleStmt                   : OptLabel * NoModuleName * EOS -> EndModuleStmt
     ModuleStmt                      : OptLabel * ModuleName * EOS -> ModuleStmt
     Module                          : ModuleStmt * SpecificationPart * OptModuleSubprogramPart * EndModuleStmt -> Module
                                     : ProgramName -> OptProgramName
-    no-program-name                 : OptProgramName
-    no-program-name                 : NoProgramName
+    no-name                         : OptProgramName
+    no-name                         : NoProgramName
                                     : Ident -> ProgramName
     EndProgramStmt                  : OptLabel * OptProgramName * EOS -> EndProgramStmt
     EndProgramStmt                  : OptLabel * NoProgramName * EOS -> EndProgramStmt
@@ -257,7 +257,7 @@ signature
     ImplicitPart                    : List(ImplicitPartStmt) * ImplicitStmt -> ImplicitPart
     SpecAndExecPart                 : List(SpecAndExecConstruct) -> SpecAndExecPart
     SpecificationPart               : List(UseStmt) * List(ImportStmt) * OptImplicitPart * List(DeclarationConstruct) -> SpecificationPart
-    initial-spec-part               : List(UseStmt) * List(ImportStmt) -> InitialSpecPart
+    InitialSpecPart                 : List(UseStmt) * List(ImportStmt) -> InitialSpecPart
                                     : SubroutineSubprogram -> ExternalSubprogram
                                     : FunctionSubprogram -> ExternalSubprogram
     no-comments                     : OptStartCommentBlock
@@ -653,7 +653,7 @@ signature
     no-upper-bound                  : NoUpperBoundExpr
     BoundsRemapping                 : LowerBoundExpr * UpperBoundExpr -> BoundsRemapping
     BoundsRemapping                 : LowerBoundExpr * NoUpperBoundExpr -> BoundsRemapping
-    no-component-name               : NoDataPointerComponentName
+    no-name                         : NoDataPointerComponentName
                                     : Ident -> DataPointerComponentName
     DataPointerObject               : Variable * DataPointerComponentName -> DataPointerObject
     DataPointerObject               : VariableName * NoDataPointerComponentName -> DataPointerObject
@@ -927,7 +927,7 @@ signature
     DeferredCoshape                 : DeferredCoshapeSpec
                                     : ExplicitCoshapeSpec -> CoarraySpec
                                     : List(DeferredCoshapeSpec) -> CoarraySpec
-    no-binding-name                 : OptLanguageBindingName
+    no-name                         : OptLanguageBindingName
                                     : LanguageBindingName -> OptLanguageBindingName
     BindingName                     : Scon -> LanguageBindingName
     LanguageBinding                 : OptLanguageBindingName -> LanguageBindingSpec
@@ -995,7 +995,7 @@ signature
     DerivedTypeSpec                 : TypeName * OptTypeParamSpecList -> DerivedTypeSpec
                                     : Ident -> FinalSubroutineName
     FinalProcedureStmt              : OptLabel * List(FinalSubroutineName) * EOS -> FinalProcedureStmt
-    no-arg-name                     : NoArgName
+    no-name                         : NoArgName
                                     : Ident -> ArgName
                                     : AccessSpec -> BindingAttr
     DEFERRED                        : BindingAttr

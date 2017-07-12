@@ -744,7 +744,7 @@ sorts
 %%StmtFunctionStmt                    %% R1243  %% AMBIGUOUS with array assignment
 
   NoActualArgSpecList DummyArgList NoDummyArgList OptDummyArgList
-  OptGenericSpec  OptPrefix
+  OptGenericSpec OptPrefix
   NoProcLanguageBindingSpec OptProcLanguageBindingSpec
   NoProcAttrSpecList OptProcAttrSpecList OptProcInterface NoProcPointerInit
   NoProcedureName NoSuffix OptSuffix Result
@@ -1153,7 +1153,7 @@ context-free syntax
   AccessSpec                                       -> BindingAttr
 
   Ident                                            -> ArgName
-  % empty %                                        -> NoArgName               {cons("no-arg-name")}
+  % empty %                                        -> NoArgName               {cons("no-name")}
 
 %%452
   OptLabel 'FINAL' '::' {FinalSubroutineName ','}+ EOS -> FinalProcedureStmt  {cons("FinalProcedureStmt")}
@@ -1368,7 +1368,7 @@ context-free syntax
   ',' 'NAME' '=' Scon                                   -> LanguageBindingName  {cons("BindingName")}
 
   LanguageBindingName                                   -> OptLanguageBindingName
-  % empty %                                             -> OptLanguageBindingName {cons("no-binding-name")}
+  % empty %                                             -> OptLanguageBindingName {cons("no-name")}
 
 %%R509
   {DeferredCoshapeSpec ','}+           -> CoarraySpec
@@ -2196,7 +2196,7 @@ context-free syntax
   Variable '%'   DataPointerComponentName               -> DataPointerObject  {cons("DataPointerObject")}
 
   Ident                                                 -> DataPointerComponentName
-  % empty %                                             -> NoDataPointerComponentName {cons("no-component-name")}
+  % empty %                                             -> NoDataPointerComponentName {cons("no-name")}
 
 %%R735
 %% NOTE - replaced by BoundsRemapping with no-upper-bound
@@ -3229,7 +3229,7 @@ context-free syntax
 %%R204
 %% - Refactored to fix ambiguity with FormatStmt appearing in Spec and Exec parts
   UseStmt*
-  ImportStmt*                            -> InitialSpecPart     {cons("initial-spec-part")}
+  ImportStmt*                            -> InitialSpecPart     {cons("InitialSpecPart")}
 
 %%R204
   UseStmt*
@@ -3417,8 +3417,8 @@ context-free syntax
   OptLabel 'END' 'PROGRAM' OptProgramName  EOS -> EndProgramStmt   {cons("EndProgramStmt")}
 
   Ident                                        -> ProgramName
-  % empty %                                    -> NoProgramName    {cons("no-program-name")}
-  % empty %                                    -> OptProgramName   {cons("no-program-name")}
+  % empty %                                    -> NoProgramName    {cons("no-name")}
+  % empty %                                    -> OptProgramName   {cons("no-name")}
   ProgramName                                  -> OptProgramName
 
 %%R1104
@@ -3439,8 +3439,8 @@ context-free syntax
   OptLabel 'END' 'MODULE' OptModuleName    EOS -> EndModuleStmt    {cons("EndModuleStmt")}
 
   Ident                                        -> ModuleName
-  % empty %                                    -> NoModuleName     {cons("no-module-name")}
-  % empty %                                    -> OptModuleName    {cons("no-module-name")}
+  % empty %                                    -> NoModuleName     {cons("no-name")}
+  % empty %                                    -> OptModuleName    {cons("no-name")}
   ModuleName                                   -> OptModuleName
 
 %%R1107
@@ -3518,7 +3518,7 @@ context-free syntax
          SubmoduleName                       EOS -> SubmoduleStmt     {cons("SubmoduleStmt")}
 
   Ident                                          -> SubmoduleName
-  % empty %                                      -> NoSubmoduleName   {cons("no-submodule-name")}
+  % empty %                                      -> NoSubmoduleName   {cons("no-name")}
 
 %%R1118
   AncestorModuleName ':' ParentSubmoduleName     -> ParentIdentifier  {cons("ParentIdentifier")}
@@ -3526,7 +3526,7 @@ context-free syntax
 
   Ident                                          -> AncestorModuleName
   Ident                                          -> ParentSubmoduleName
-  % empty %                                      -> NoParentSubmoduleName {cons("no-parent-submodule-name")}
+  % empty %                                      -> NoParentSubmoduleName {cons("no-name")}
 
 %%R1119
   OptLabel 'END' 'SUBMODULE' SubmoduleName   EOS -> EndSubmoduleStmt  {cons("EndSubmoduleStmt")}
@@ -3550,8 +3550,8 @@ context-free syntax
   OptLabel 'END'                 NoBlockDataName EOS -> EndBlockDataStmt  {cons("EndBlockDataStmt")}
 
   BlockDataName                                      -> OptBlockDataName
-  % empty %                                          -> OptBlockDataName  {cons("no-block-data-name")}
-  % empty %                                          ->  NoBlockDataName  {cons("no-block-data-name")}
+  % empty %                                          -> OptBlockDataName  {cons("no-name")}
+  % empty %                                          ->  NoBlockDataName  {cons("no-name")}
   Ident                                              ->    BlockDataName
 
 %%context-free priorities
@@ -3598,7 +3598,7 @@ context-free syntax
   OptLabel          'PROCEDURE'      {ProcedureName ','}+ EOS -> ProcedureStmt  {cons("ProcedureStmt")}
 
   Ident                            -> ProcedureName
-  % empty %                        -> NoProcedureName  {cons("no-procedure-name")}
+  % empty %                        -> NoProcedureName  {cons("no-name")}
 
 %%R1207
   GenericName                                   -> GenericSpec
@@ -3767,8 +3767,8 @@ context-free syntax
   OptLabel 'END' 'FUNCTION' OptFunctionName         EOS -> EndFunctionStmt  {cons("EndFunctionStmt")}
 
   Ident                                                 -> FunctionName
-  % empty %                                             -> NoFunctionName   {cons("no-function-name")}
-  % empty %                                             -> OptFunctionName  {cons("no-function-name")}
+  % empty %                                             -> NoFunctionName   {cons("no-name")}
+  % empty %                                             -> OptFunctionName  {cons("no-name")}
   FunctionName                                          -> OptFunctionName
 
 
@@ -3807,8 +3807,8 @@ context-free syntax
   OptLabel 'END' 'SUBROUTINE' OptSubroutineName  EOS -> EndSubroutineStmt  {cons("EndSubroutineStmt")}
 
   Ident                                              -> SubroutineName
-  % empty %                                          -> NoSubroutineName   {cons("no-subroutine-name")}
-  % empty %                                          -> OptSubroutineName  {cons("no-subroutine-name")}
+  % empty %                                          -> NoSubroutineName   {cons("no-name")}
+  % empty %                                          -> OptSubroutineName  {cons("no-name")}
   SubroutineName                                     -> OptSubroutineName
 
 %%R1237

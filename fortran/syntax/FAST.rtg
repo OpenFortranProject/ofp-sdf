@@ -23,6 +23,7 @@ regular tree grammar
     Name                              -> <string>
     OptName                           -> Name
     OptName                           -> no-name()
+    NoName                            -> no-name()
 
 /* R312 */
     Label                             -> <string>
@@ -182,7 +183,7 @@ regular tree grammar
     BindingName                       -> Ident
 
     ProcedureName                     -> Ident
-    NoProcedureName                   -> no-procedure-name()
+    NoProcedureName                   -> no-name()
 
 /* R450 */
     TypeBoundGenericStmt              -> TypeBoundGenericStmt(OptLabel,OptAccessSpec,GenericSpec,ListPlusOfName)
@@ -457,7 +458,7 @@ regular tree grammar
     Stmt            -> EndFunctionStmt
     EndFunctionStmt -> EndFunctionStmt(OptLabel,OptFunctionName)
 
-    OptFunctionName                   -> no-function-name()
+    OptFunctionName                   -> no-name()
     OptFunctionName                   -> FunctionName
     FunctionName                      -> Name
 
@@ -468,7 +469,7 @@ regular tree grammar
     OptLanguageBinding                -> no-language-binding()
     OptLanguageBinding                -> LanguageBinding
     LanguageBinding                   -> LanguageBinding(OptLanguageBindingName)
-    OptLanguageBindingName            -> no-binding-name()
+    OptLanguageBindingName            -> no-name()
     OptLanguageBindingName            -> BindingName
     BindingName                       -> BindingName(<string>)
 
@@ -480,7 +481,7 @@ regular tree grammar
     EndProgramStmt                    -> EndProgramStmt(OptLabel,OptProgramName)
 
     OptProgramName                    -> ProgramName
-    OptProgramName                    -> no-program-name()
+    OptProgramName                    -> no-name()
     ProgramName                       -> Name
 
     ProgramUnit                       -> Module
@@ -489,7 +490,7 @@ regular tree grammar
     EndModuleStmt                     -> EndModuleStmt(OptLabel,OptModuleName)
 
     OptModuleName                     -> ModuleName
-    OptModuleName                     -> no-module-name()
+    OptModuleName                     -> no-name()
     ModuleName                        -> Name
 
     ProgramUnit                       -> Submodule
@@ -498,14 +499,14 @@ regular tree grammar
     EndSubmoduleStmt                  -> EndSubmoduleStmt(OptLabel,OptSubmoduleName)
 
     OptSubmoduleName                  -> SubmoduleName
-    OptSubmoduleName                  -> no-submodule-name()
+    OptSubmoduleName                  -> no-name()
     SubmoduleName                     -> Name
 
     ParentIdentifier                  -> ParentIdentifier(AncestorModuleName,OptParentSubmoduleName)
     AncestorModuleName                -> Name
 
     OptParentSubmoduleName            -> ParentSubmoduleName
-    OptParentSubmoduleName            -> no-parent-submodule-name()
+    OptParentSubmoduleName            -> no-name()
     ParentSubmoduleName               -> Name
 
     ProgramUnit                       -> BlockData
@@ -517,7 +518,7 @@ regular tree grammar
     Decl                              -> EndBlockDataStmt
     EndBlockDataStmt                  -> EndBlockDataStmt(OptLabel,OptBlockDataName)
 
-    OptBlockDataName                  -> no-block-data-name()
+    OptBlockDataName                  -> no-name()
     OptBlockDataName                  -> BlockDataName
     BlockDataName                     -> Name
 
@@ -531,7 +532,7 @@ regular tree grammar
     EndSubroutineStmt    -> EndSubroutineStmt(OptLabel,OptSubroutineName)
 
     OptSubroutineName                 -> SubroutineName
-    OptSubroutineName                 -> no-subroutine-name()
+    OptSubroutineName                 -> no-name()
     SubroutineName                    -> Name
 
     ArrayConstructor                  -> ArrayConstructor(AcSpec)
@@ -805,7 +806,7 @@ regular tree grammar
     DummyArg                          -> STAR()
     DummyArg                          -> DummyArgName
 
-    NoResultName                      -> no-result-name()
+    NoResultName                      -> no-result()
     ResultName                        -> Ident
     NoSuffix                          -> no-suffix()
     OptSuffix                         -> no-suffix()
@@ -1451,7 +1452,7 @@ regular tree grammar
     NoUpperBoundExpr                  -> no-upper-bounds()
     BoundsRemapping                   -> BoundsRemapping(LowerBoundExpr,UpperBoundExpr)
     BoundsRemapping                   -> BoundsRemapping(LowerBoundExpr,NoUpperBoundExpr)
-    NoDataPointerComponentName        -> no-component-name()
+    NoDataPointerComponentName        -> no-name()
 
     DefaultCharConstantExpr           -> DefaultCharExpr
     SpecificationExpr                 -> IntExpr
@@ -1670,7 +1671,7 @@ regular tree grammar
     ComponentSpec                     -> ComponentSpec(NoKeyword,ComponentDataSource)
     StructureConstructor              -> StructureConstructor(DerivedType,ListStarOfComponentSpec0)
 
-    NoArgName                         -> no-arg-name()
+    NoArgName                         -> no-name()
     ArgName                           -> Ident
 
     OptAccessSpec                     -> no-access-spec()
@@ -1726,7 +1727,6 @@ regular tree grammar
     LiteralConstant                   -> IntVal
     ConstantExpr                      -> LiteralConstant
 
-    NoName                            -> no-name()
     Name                              -> Ident
     Continuation                      -> <string>
     EOS                               -> eos(EOStmt)

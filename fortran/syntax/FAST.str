@@ -9,6 +9,7 @@ signature
     no-keyword                      : OptKeyword
                                     : Name -> OptName
     no-name                         : OptName
+    no-name                         : NoName
                                     : String -> Label
                                     : Label -> OptLabel
     no-label                        : OptLabel
@@ -88,7 +89,7 @@ signature
     TypeBoundProcDecl               : BindingName * NoProcedureName -> TypeBoundProcDecl
     TypeBoundProcDecl               : BindingName * ProcedureName -> TypeBoundProcDecl
                                     : Ident -> ProcedureName
-    no-procedure-name               : NoProcedureName
+    no-name                         : NoProcedureName
     TypeBoundGenericStmt            : OptLabel * OptAccessSpec * GenericSpec * List(Name) -> TypeBoundGenericStmt
     LEN                             : TypeParamAttrSpec
     KIND                            : TypeParamAttrSpec
@@ -124,7 +125,7 @@ signature
     Function                        : FunctionStmt * Scope * EndFunctionStmt -> Function
     FunctionStmt                    : OptLabel * Prefix * FunctionName * List(Arg) * OptResult * OptLanguageBinding -> FunctionStmt
     EndFunctionStmt                 : OptLabel * OptFunctionName -> EndFunctionStmt
-    no-function-name                : OptFunctionName
+    no-name                         : OptFunctionName
                                     : FunctionName -> OptFunctionName
                                     : Name -> FunctionName
     no-result                       : OptResult
@@ -133,7 +134,7 @@ signature
     no-language-binding             : OptLanguageBinding
                                     : LanguageBinding -> OptLanguageBinding
     LanguageBinding                 : OptLanguageBindingName -> LanguageBinding
-    no-binding-name                 : OptLanguageBindingName
+    no-name                         : OptLanguageBindingName
                                     : BindingName -> OptLanguageBindingName
                                     : Ident -> BindingName
     BindingName                     : String -> BindingName
@@ -141,28 +142,28 @@ signature
     ProgramStmt                     : OptLabel * Name -> ProgramStmt
     EndProgramStmt                  : OptLabel * OptProgramName -> EndProgramStmt
                                     : ProgramName -> OptProgramName
-    no-program-name                 : OptProgramName
+    no-name                         : OptProgramName
                                     : Name -> ProgramName
     Module                          : ModuleStmt * Scope * EndModuleStmt -> Module
     ModuleStmt                      : OptLabel * ModuleName -> ModuleStmt
     EndModuleStmt                   : OptLabel * OptModuleName -> EndModuleStmt
                                     : ModuleName -> OptModuleName
-    no-module-name                  : OptModuleName
+    no-name                         : OptModuleName
                                     : Name -> ModuleName
     Submodule                       : SubmoduleStmt * Scope * EndSubmoduleStmt -> Submodule
     SubmoduleStmt                   : OptLabel * ParentIdentifier * SubmoduleName -> SubmoduleStmt
     EndSubmoduleStmt                : OptLabel * OptSubmoduleName -> EndSubmoduleStmt
                                     : SubmoduleName -> OptSubmoduleName
-    no-submodule-name               : OptSubmoduleName
+    no-name                         : OptSubmoduleName
                                     : Name -> SubmoduleName
     ParentIdentifier                : AncestorModuleName * OptParentSubmoduleName -> ParentIdentifier
                                     : Name -> AncestorModuleName
                                     : ParentSubmoduleName -> OptParentSubmoduleName
-    no-parent-submodule-name        : OptParentSubmoduleName
+    no-name                         : OptParentSubmoduleName
                                     : Name -> ParentSubmoduleName
     BlockDataStmt                   : OptLabel * OptBlockDataName -> BlockDataStmt
     EndBlockDataStmt                : OptLabel * OptBlockDataName -> EndBlockDataStmt
-    no-block-data-name              : OptBlockDataName
+    no-name                         : OptBlockDataName
                                     : BlockDataName -> OptBlockDataName
                                     : Name -> BlockDataName
                                     : MainProgram -> ProgramUnit
@@ -174,7 +175,7 @@ signature
     SubroutineStmt                  : OptLabel * Prefix * SubroutineName * List(Arg) * OptLanguageBinding -> SubroutineStmt
     EndSubroutineStmt               : OptLabel * OptSubroutineName -> EndSubroutineStmt
                                     : SubroutineName -> OptSubroutineName
-    no-subroutine-name              : OptSubroutineName
+    no-name                         : OptSubroutineName
                                     : Name -> SubroutineName
     ArrayConstructor                : AcSpec -> ArrayConstructor
     AcSpec                          : OptTypeSpec * List(AcValue) -> AcSpec
@@ -265,7 +266,7 @@ signature
     ERRMSG                          : ErrmsgVariable -> DeallocOpt
     STAR                            : DummyArg
                                     : DummyArgName -> DummyArg
-    no-result-name                  : NoResultName
+    no-result                       : NoResultName
                                     : Ident -> ResultName
     no-suffix                       : OptSuffix
                                     : Suffix -> OptSuffix
@@ -711,7 +712,7 @@ signature
                                     : Expr -> ComponentDataSource
     ComponentSpec                   : Keyword * ComponentDataSource -> ComponentSpec
     StructureConstructor            : DerivedType * List(ComponentSpec) -> StructureConstructor
-    no-arg-name                     : NoArgName
+    no-name                         : NoArgName
                                     : Ident -> ArgName
     no-access-spec                  : OptAccessSpec
     comma-access-spec               : AccessSpec -> OptAccessSpec
@@ -727,7 +728,6 @@ signature
                                     : CharLiteralConstant -> LiteralConstant
                                     : IntVal -> LiteralConstant
                                     : LiteralConstant -> ConstantExpr
-    no-name                         : NoName
                                     : String -> Name
                                     : Ident -> Name
                                     : LblDef -> LblRef

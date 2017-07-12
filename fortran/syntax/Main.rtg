@@ -766,8 +766,8 @@ regular tree grammar
     MpSubprogramStmt                       -> MpSubprogramStmt(OptLabel,ProcedureName,EOS)
     SeparateModuleSubprogram               -> SeparateModuleSubprogram(MpSubprogramStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndMpSubprogramStmt)
     OptSubroutineName                      -> SubroutineName
-    OptSubroutineName                      -> no-subroutine-name()
-    NoSubroutineName                       -> no-subroutine-name()
+    OptSubroutineName                      -> no-name()
+    NoSubroutineName                       -> no-name()
     SubroutineName                         -> Ident
     EndSubroutineStmt                      -> EndSubroutineStmt(OptLabel,OptSubroutineName,EOS)
     EndSubroutineStmt                      -> EndSubroutineStmt(OptLabel,NoSubroutineName,EOS)
@@ -781,8 +781,8 @@ regular tree grammar
     SubroutineStmt                         -> SubroutineStmt(OptLabel,OptPrefix,SubroutineName,OptDummyArgList,OptProcLanguageBindingSpec,EOS)
     SubroutineSubprogram                   -> SubroutineSubprogram(SubroutineStmt,InitialSpecPart,SpecAndExecPart,OptInternalSubprogramPart,EndSubroutineStmt)
     OptFunctionName                        -> FunctionName
-    OptFunctionName                        -> no-function-name()
-    NoFunctionName                         -> no-function-name()
+    OptFunctionName                        -> no-name()
+    NoFunctionName                         -> no-name()
     FunctionName                           -> Ident
     EndFunctionStmt                        -> EndFunctionStmt(OptLabel,OptFunctionName,EOS)
     EndFunctionStmt                        -> EndFunctionStmt(OptLabel,NoFunctionName,EOS)
@@ -864,7 +864,7 @@ regular tree grammar
     GenericSpec                            -> ASSIGNMENT()
     GenericSpec                            -> OPERATOR(DefinedOperator)
     GenericSpec                            -> GenericName
-    NoProcedureName                        -> no-procedure-name()
+    NoProcedureName                        -> no-name()
     ProcedureName                          -> Ident
     ProcedureStmt                          -> ProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
     ProcedureStmt                          -> ProcedureStmt(OptLabel,ListPlusOfProcedureName0,EOS)
@@ -881,8 +881,8 @@ regular tree grammar
     InterfaceSpecification                 -> InterfaceBody
     InterfaceBlock                         -> InterfaceBlock(InterfaceStmt,ListStarOfInterfaceSpecification0,EndInterfaceStmt)
     BlockDataName                          -> Ident
-    NoBlockDataName                        -> no-block-data-name()
-    OptBlockDataName                       -> no-block-data-name()
+    NoBlockDataName                        -> no-name()
+    OptBlockDataName                       -> no-name()
     OptBlockDataName                       -> BlockDataName
     EndBlockDataStmt                       -> EndBlockDataStmt(OptLabel,NoBlockDataName,EOS)
     EndBlockDataStmt                       -> EndBlockDataStmt(OptLabel,OptBlockDataName,EOS)
@@ -891,12 +891,12 @@ regular tree grammar
     EndSubmoduleStmt                       -> EndSubmoduleStmt(OptLabel,NoSubmoduleName,EOS)
     EndSubmoduleStmt                       -> EndSubmoduleStmt(OptLabel,NoSubmoduleName,EOS)
     EndSubmoduleStmt                       -> EndSubmoduleStmt(OptLabel,SubmoduleName,EOS)
-    NoParentSubmoduleName                  -> no-parent-submodule-name()
+    NoParentSubmoduleName                  -> no-name()
     ParentSubmoduleName                    -> Ident
     AncestorModuleName                     -> Ident
     ParentIdentifier                       -> ParentIdentifier(AncestorModuleName,NoParentSubmoduleName)
     ParentIdentifier                       -> ParentIdentifier(AncestorModuleName,ParentSubmoduleName)
-    NoSubmoduleName                        -> no-submodule-name()
+    NoSubmoduleName                        -> no-name()
     SubmoduleName                          -> Ident
     SubmoduleStmt                          -> SubmoduleStmt(OptLabel,ParentIdentifier,SubmoduleName,EOS)
     Submodule                              -> Submodule(SubmoduleStmt,SpecificationPart,OptModuleSubprogramPart,EndSubmoduleStmt)
@@ -932,16 +932,16 @@ regular tree grammar
     OptModuleSubprogramPart                -> ModuleSubprogramPart
     ModuleSubprogramPart                   -> ModuleSubprogramPart(ContainsStmt,ListStarOfModuleSubprogram0)
     OptModuleName                          -> ModuleName
-    OptModuleName                          -> no-module-name()
-    NoModuleName                           -> no-module-name()
+    OptModuleName                          -> no-name()
+    NoModuleName                           -> no-name()
     ModuleName                             -> Ident
     EndModuleStmt                          -> EndModuleStmt(OptLabel,OptModuleName,EOS)
     EndModuleStmt                          -> EndModuleStmt(OptLabel,NoModuleName,EOS)
     ModuleStmt                             -> ModuleStmt(OptLabel,ModuleName,EOS)
     Module                                 -> Module(ModuleStmt,SpecificationPart,OptModuleSubprogramPart,EndModuleStmt)
     OptProgramName                         -> ProgramName
-    OptProgramName                         -> no-program-name()
-    NoProgramName                          -> no-program-name()
+    OptProgramName                         -> no-name()
+    NoProgramName                          -> no-name()
     ProgramName                            -> Ident
     EndProgramStmt                         -> EndProgramStmt(OptLabel,OptProgramName,EOS)
     EndProgramStmt                         -> EndProgramStmt(OptLabel,NoProgramName,EOS)
@@ -1051,7 +1051,7 @@ regular tree grammar
     ImplicitPart                           -> ImplicitPart(ListStarOfImplicitPartStmt0,ImplicitStmt)
     SpecAndExecPart                        -> SpecAndExecPart(ListStarOfSpecAndExecConstruct0)
     SpecificationPart                      -> SpecificationPart(ListStarOfUseStmt0,ListStarOfImportStmt0,OptImplicitPart,ListStarOfDeclarationConstruct0)
-    InitialSpecPart                        -> initial-spec-part(ListStarOfUseStmt0,ListStarOfImportStmt0)
+    InitialSpecPart                        -> InitialSpecPart(ListStarOfUseStmt0,ListStarOfImportStmt0)
     ExternalSubprogram                     -> SubroutineSubprogram
     ExternalSubprogram                     -> FunctionSubprogram
     ProgramUnit                            -> BlockData
@@ -1468,7 +1468,7 @@ regular tree grammar
     NoUpperBoundExpr                       -> no-upper-bound()
     BoundsRemapping                        -> BoundsRemapping(LowerBoundExpr,UpperBoundExpr)
     BoundsRemapping                        -> BoundsRemapping(LowerBoundExpr,NoUpperBoundExpr)
-    NoDataPointerComponentName             -> no-component-name()
+    NoDataPointerComponentName             -> no-name()
     DataPointerComponentName               -> Ident
     DataPointerObject                      -> DataPointerObject(Variable,DataPointerComponentName)
     DataPointerObject                      -> DataPointerObject(VariableName,NoDataPointerComponentName)
@@ -1785,7 +1785,7 @@ regular tree grammar
     DeferredCoshapeSpec                    -> DeferredCoshape()
     CoarraySpec                            -> ExplicitCoshapeSpec
     CoarraySpec                            -> ListPlusOfDeferredCoshapeSpec0
-    OptLanguageBindingName                 -> no-binding-name()
+    OptLanguageBindingName                 -> no-name()
     OptLanguageBindingName                 -> LanguageBindingName
     LanguageBindingName                    -> BindingName(Scon)
     LanguageBindingSpec                    -> LanguageBinding(OptLanguageBindingName)
@@ -1860,7 +1860,7 @@ regular tree grammar
     FinalSubroutineName                    -> Ident
     FinalProcedureStmt                     -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
     FinalProcedureStmt                     -> FinalProcedureStmt(OptLabel,ListPlusOfFinalSubroutineName0,EOS)
-    NoArgName                              -> no-arg-name()
+    NoArgName                              -> no-name()
     ArgName                                -> Ident
     BindingAttr                            -> AccessSpec
     BindingAttr                            -> DEFERRED()
