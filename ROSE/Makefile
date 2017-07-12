@@ -26,8 +26,17 @@ traverse_SgUntypedNodes.o : traverse_SgUntypedNodes.cpp SgUntypedNodes.hpp
 SgUntypedNodes.o : SgUntypedNodes.cpp SgUntypedNodes.hpp
 	c++ -c SgUntypedNodes.cpp $(CFLAGS)
 
+OFP.rtg.aterm : OFP.rtg
+	parse-rtg -i OFP.rtg | pp-aterm -o OFP.rtg.aterm
+
+ofp-to-traverse : ofp-to-traverse.str
+	$(ST_PATH)/strc -i ofp-to-traverse.str $(ST_CFLAGS) $(ST_LDFLAGS) -la stratego-lib
+
 SgUntyped.str : SgUntyped.rtg
 	rtg2sig -i SgUntyped.rtg -o SgUntyped.str
+
+check-ofp-pp : ofp-to-traverse OFP.rtg.aterm
+	@ofp-to-traverse -i OFP.rtg.aterm | ast2text -p sage_traverse.pp
 
 SgUntyped.rtg.aterm : SgUntyped.rtg
 	parse-rtg -i SgUntyped.rtg | pp-aterm -o SgUntyped.rtg.aterm
