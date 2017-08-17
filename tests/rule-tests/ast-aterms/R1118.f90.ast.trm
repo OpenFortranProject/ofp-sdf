@@ -1,0 +1,46 @@
+Program(
+  "!! R1118 parent-identifier\n!     is ancestor-module-name [ : parent-submodule-name ]\n!\n"
+, [ Module(
+      ModuleStmt(no-label(), "ancestor", eos("\n  "))
+    , SpecificationPart([], [], no-implicit-part(), [])
+    , ModuleSubprogramPart(ContainsStmt(no-label(), eos("\n")), [])
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  , Submodule(
+      SubmoduleStmt("11", ParentIdentifier("ancestor", no-name()), "parent", eos("\n  "))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndSubmoduleStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", "parent"), "subby", eos("\n  "))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("j", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndSubmoduleStmt("13", "subby", eos("\n"))
+    )
+  ]
+)

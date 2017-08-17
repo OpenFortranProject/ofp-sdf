@@ -1,0 +1,46 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "ancestor"){Comment("
+  ")}
+    , Scope([], [], [])
+    , EndModuleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt("11", ParentIdentifier("ancestor", no-name()), "parent"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("i", INTEGER(), no-init())]
+         )]
+      , []
+      , []
+      )
+    , EndSubmoduleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", "parent"), "subby"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("j", INTEGER(), no-init())]
+         )]
+      , []
+      , []
+      )
+    , EndSubmoduleStmt("13", "subby")
+    )
+  ]
+){Comment("!! R1118 parent-identifier
+!     is ancestor-module-name [ : parent-submodule-name ]
+!
+")}
