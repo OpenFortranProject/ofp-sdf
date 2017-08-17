@@ -522,9 +522,6 @@ fast-to-sage =
 //R1104
 fast-to-sage:  EndModuleStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_MODULE(),name)
 
-//R1116
-//  fast-to-sage:  OfpSubmodule(name, scope)    -> PpSubmodule(scope)
-
 //R1222
 //  fast-to-sage:  ActualArgSpec(keyword, arg)  -> PpActualArgSpec(PpKeyword(keyword), arg)
 
@@ -563,9 +560,6 @@ fast-to-sage =
 //R1236
 fast-to-sage:
   EndSubroutineStmt(label,name) -> SgUntypedNamedStatement(label,<sg-fortran-keyword>FORTRAN_END_SUBROUTINE(),name)
-
-//R1237
-//  fast-to-sage:  OfpMpSubprogram(name, scope) -> PpMpSubprogram(scope)
 
 
 no-to-string: no-label()                   -> ""   // R312
