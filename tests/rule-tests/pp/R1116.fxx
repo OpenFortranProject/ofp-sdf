@@ -1,2 +1,26 @@
-SUBMODULE (parent) submod
-END SUBMODULE submod
+MODULE ancestor
+END MODULE
+SUBMODULE (ancestor) submod1
+END SUBMODULE submod1
+SUBMODULE (ancestor) submod2
+END SUBMODULE
+SUBMODULE (ancestor) submod2
+INTEGER :: i
+END SUBMODULE
+SUBMODULE (ancestor) submod3
+
+CONTAINS
+
+SUBROUTINE bleu()
+END SUBROUTINE
+
+END SUBMODULE
+SUBMODULE (ancestor) submod4
+INTEGER :: i
+
+CONTAINS
+
+SUBROUTINE bleu()
+END SUBROUTINE
+
+END SUBMODULE
