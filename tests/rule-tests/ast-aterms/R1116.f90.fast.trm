@@ -1,8 +1,82 @@
 Program(
-  [ Submodule(
-      SubmoduleStmt(no-label(), ParentIdentifier("parent", no-name()), "submod")
+  [ Module(
+      ModuleStmt(no-label(), "ancestor")
     , Scope([], [], [])
-    , EndSubmoduleStmt(no-label(), "submod")
+    , EndModuleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", no-name()), "submod1")
+    , Scope([], [], [])
+    , EndSubmoduleStmt(no-label(), "submod1"){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", no-name()), "submod2"){Comment("
+  ")}
+    , Scope([], [], [])
+    , EndSubmoduleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", no-name()), "submod2"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("i", INTEGER(), no-init())]
+         )]
+      , []
+      , []
+      )
+    , EndSubmoduleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", no-name()), "submod3"){Comment("
+  ")}
+    , Scope(
+        []
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "bleu", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-name())
+          )
+        ]
+      )
+    , EndSubmoduleStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  , Submodule(
+      SubmoduleStmt(no-label(), ParentIdentifier("ancestor", no-name()), "submod4"){Comment("
+  ")}
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("i", INTEGER(), no-init())]
+         ){Comment("
+  ")}]
+      , []
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "bleu", [], no-language-binding()){Comment("
+  ")}
+          , Scope([], [], [])
+          , EndSubroutineStmt(no-label(), no-name())
+          )
+        ]
+      )
+    , EndSubmoduleStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R1116 submodule
