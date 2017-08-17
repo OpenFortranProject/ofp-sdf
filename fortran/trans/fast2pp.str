@@ -19,11 +19,6 @@ signature
 
     ppImplicitStmt  : Label          -> ppImplicitStmt
 
-    ppSubmodule    : OfpSubmodule    -> ppSubmodule
-    ppFunction     : OfpFunction     -> ppFunction
-    ppSubroutine   : OfpSubroutine   -> ppSubroutine
-    ppMpSubprogram : OfpMpSubprogram -> ppMpSubprogram
-
     ppArrayVar     : Name * ArrayType * Init           -> ppArrayVar
     ppArrayVarLen  : Name * ArrayType * Length * Init  -> ppArrayVarLen
     ppRange        : upper-bound                       -> ppRange
@@ -111,6 +106,8 @@ signature
     ppPrintStmt       : OptLabel * Format        * OutputList       -> ppPrintStmt         // R912
 
     ppIoImpliedDoControl : DoVariable * IntExpr * IntExpr           -> ppIoImpliedDoControl // R920
+
+    ppParentIdentifier   : name                                     -> ppParentIdentifier   // R1118
 
     ppUseStmt         : OptLabel * nature * name                    -> ppUseStmt
 
@@ -330,6 +327,9 @@ ast-to-pp:  IoImpliedDoControl(dovar,begin,end,no-stride())  -> ppIoImpliedDoCon
 
 //R1109
 ast-to-pp:  UseStmt(label,nature,name,[])    -> ppUseStmt(label,nature,name)
+
+//R1118
+ast-to-pp:  ParentIdentifier(ancestor,no-name()) -> ppParentIdentifier(ancestor)
 
 //R1214
 ast-to-pp:  ProcDecl(name,no-init())         -> ppProcDecl(name)

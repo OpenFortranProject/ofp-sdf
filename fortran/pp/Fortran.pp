@@ -1010,9 +1010,10 @@
    Submodule                     -- V vs=0 [_1 _2 _3],
 
    SubmoduleStmt                 -- H hs=1 [_1 "SUBMODULE" H hs=0["("_2")"] _3],
-   EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" H hs=0[_2]],
+   EndSubmoduleStmt              -- H hs=1 [_1 "END SUBMODULE" _2],
 
-   ParentIdentifier              -- _1 _2,
+   ParentIdentifier              -- _1 ":" _2,
+ ppParentIdentifier              -- _1,
 
    %% R1120
    BlockData                     -- V vs=0 is=2 [_1 _2] _3,
