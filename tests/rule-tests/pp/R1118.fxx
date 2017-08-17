@@ -1,0 +1,8 @@
+MODULE ancestor
+END MODULE
+11 SUBMODULE (ancestor) parent
+INTEGER :: i
+END SUBMODULE
+SUBMODULE (ancestor:parent) subby
+INTEGER :: j
+13 END SUBMODULE subby
