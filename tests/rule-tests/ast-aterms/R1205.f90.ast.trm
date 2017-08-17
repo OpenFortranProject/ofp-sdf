@@ -2,7 +2,7 @@ Program(
   "!! R1205 interface-body\n!                is  function-stmt\n!                        [ specification-part ]\n!                      end-function-stmt\n!                or  subroutine-stmt\n!                        [ specification-part ]\n!                      end-subroutine-stmt\n!\n! Not tested here: function-stmt, specification-part, end-function-stmt, \n! subroutine-stmt, and end-subroutine-stmt.\n!\n! interface-body tested as part of an interface-block.\n\n! Test functions.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), no-generic-spec(), eos("\n   "))
@@ -42,7 +42,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n   \n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n   \n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "! Testing generic-spec, R1207\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), "binky", eos("\n"))
@@ -27,7 +27,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

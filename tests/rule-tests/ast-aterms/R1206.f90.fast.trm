@@ -26,33 +26,33 @@ Program(
             SubroutineStmt(no-label(), [], "a", [], no-language-binding()){Comment("
   ")}
           , Scope([], [], [])
-          , EndSubroutineStmt(no-label(), no-subroutine-name())
+          , EndSubroutineStmt(no-label(), no-name())
           )
         , Subroutine(
             SubroutineStmt("16", [], "b", ["i"], no-language-binding()){Comment("
   ")}
           , Scope([], [], [])
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
   ")}
           )
         , Subroutine(
             SubroutineStmt(no-label(), [], "c", ["i", "j"], no-language-binding()){Comment("
   ")}
           , Scope([], [], [])
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
   ")}
           )
         , Subroutine(
             SubroutineStmt(no-label(), [], "d", ["x"], no-language-binding()){Comment("
   ")}
           , Scope([], [], [])
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
   ")}
           )
         , Subroutine(
             SubroutineStmt(no-label(), [], "e", ["x", "y"], no-language-binding())
           , Scope([], [], [])
-          , EndSubroutineStmt("17", no-subroutine-name()){Comment("
+          , EndSubroutineStmt("17", no-name()){Comment("
   ")}
           )
         , Subroutine(
@@ -65,11 +65,11 @@ Program(
             ){Comment("
   ")}
           , Scope([], [], [])
-          , EndSubroutineStmt(no-label(), no-subroutine-name())
+          , EndSubroutineStmt(no-label(), no-name())
           )
         ]
       )
-    , EndModuleStmt("18", no-module-name()){Comment("
+    , EndModuleStmt("18", no-name()){Comment("
 
 
 ")}

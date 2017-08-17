@@ -54,7 +54,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name()){Comment("
+    , EndModuleStmt(no-label(), no-name()){Comment("
 
 
 ")}

@@ -39,7 +39,7 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n\n\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n\n\n"))
     )
   ]
 )

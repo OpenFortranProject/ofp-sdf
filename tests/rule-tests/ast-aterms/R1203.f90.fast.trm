@@ -11,7 +11,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("! Testing interface-stmt, R1203

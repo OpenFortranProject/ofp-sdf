@@ -2,7 +2,7 @@ Program(
   "! Testing dtio-generic-spec, R1208\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), READ_FORMATTED(), eos("\n"))
@@ -27,7 +27,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

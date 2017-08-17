@@ -24,7 +24,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("! Testing generic-spec, R1207

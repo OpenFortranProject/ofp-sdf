@@ -2,7 +2,7 @@ Program(
   "! Test interface-block\n!      interface-block  is  interface-stmt\n!                             [ interface-specificiation ] ...\n!                           end-interface-stmt\n!\n!      interface-specification  is  interface-body\n!                               or  procedure-stmt\n!\n!      interface-stmt  is  INTERFACE [ generic-spec ]\n!                      or  ABSTRACT INTERFACE\n!\n!      end-interface-stmt  is  END INTERFACE [ generic-spec ]\n!\n! Not tested here: interface-body, procedure-stmt, and generic-spec.\n\n! Include none of the optional parts.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), no-generic-spec(), eos("\n"))
@@ -47,7 +47,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

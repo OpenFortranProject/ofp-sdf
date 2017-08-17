@@ -2,7 +2,7 @@ Program(
   "! Test external-stmt\n!      external-stmt  is  EXTERNAL [ :: ] external-name-list\n!\n! Not tested here: external-name-list\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ExternalStmt("10", ["a"], eos("\n"))
         , ExternalStmt(no-label(), ["b", "c"], eos("\n"))
@@ -11,7 +11,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

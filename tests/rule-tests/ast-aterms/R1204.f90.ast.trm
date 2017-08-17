@@ -2,7 +2,7 @@ Program(
   "!! R1204 end-interface-stmt\n!     is END INTERFACE [ generic-spec ]\n!\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), no-generic-spec(), eos("\n"))
@@ -17,7 +17,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

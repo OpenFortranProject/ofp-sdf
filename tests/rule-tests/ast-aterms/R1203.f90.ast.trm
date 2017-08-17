@@ -2,7 +2,7 @@ Program(
   "! Testing interface-stmt, R1203\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt("10", no-generic-spec(), eos("\n"))
@@ -17,7 +17,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )
