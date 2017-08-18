@@ -20,6 +20,14 @@ Program(
       , CommonStmt(
           no-label()
         , [CommonBlockEntry("mycom", [CommonBlockObject(VarRef("i"), [])])]
+        ){Comment("
+   ")}
+      , DataStmt(
+          no-label()
+        , [DataStmtSet(
+             [VarRef("i")]
+           , [DataStmtValue(no-repeat(), IntVal("13"))]
+           )]
         )
       ]
     , EndBlockDataStmt(no-label(), "bar")

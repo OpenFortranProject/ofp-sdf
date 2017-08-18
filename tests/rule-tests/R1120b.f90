@@ -21,4 +21,5 @@ END BLOCK DATA foo
 BLOCK DATA bar
    INTEGER i
    common /mycom/i
+   data i/13/
 END BLOCK DATA bar

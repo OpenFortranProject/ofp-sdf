@@ -5,4 +5,5 @@ END BLOCK DATA foo
 BLOCK DATA bar
   INTEGER :: i
   COMMON /mycom/ i
+  DATA i/13/
 END BLOCK DATA bar

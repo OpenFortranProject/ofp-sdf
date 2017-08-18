@@ -27,6 +27,14 @@ Program(
             no-label()
           , CommonBlockEntry("mycom", [CommonBlockObject(VarRef("i"), no-list())])
           , []
+          , eos("\n   ")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])]
+            , [DataStmtValue(no-repeat(), IntVal("13"))]
+            )
           , eos("\n")
           )
         ]
