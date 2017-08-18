@@ -7,7 +7,7 @@ Program(
         ContainsStmt(no-label(), eos("\n   "))
       , [ SeparateModuleSubprogram(
             MpSubprogramStmt(no-label(), "modproc", eos("\n      "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()

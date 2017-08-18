@@ -2,7 +2,7 @@ Program(
   "!! R1214 proc-decl\n!       is procedure-entity-name [ => proc-pointer-init ]\n\n! Testing proc decl list.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ProcedureDeclarationStmt(
             no-label()
@@ -25,7 +25,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

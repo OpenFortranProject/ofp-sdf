@@ -2,7 +2,7 @@ Program(
   [ Function(
       FunctionStmt("11", [], "foo", [], no-result(), no-language-binding())
     , Scope([], [], [])
-    , EndFunctionStmt(no-label(), no-function-name())
+    , EndFunctionStmt(no-label(), no-name())
     )
   , Function(
       FunctionStmt(
@@ -14,22 +14,22 @@ Program(
       , no-language-binding()
       )
     , Scope([], [], [])
-    , EndFunctionStmt(no-label(), no-function-name())
+    , EndFunctionStmt(no-label(), no-name())
     )
   , Function(
       FunctionStmt(no-label(), [INTEGER()], "coo", [], no-result(), no-language-binding())
     , Scope([], [], [])
-    , EndFunctionStmt(no-label(), no-function-name())
+    , EndFunctionStmt(no-label(), no-name())
     )
   , Function(
-      FunctionStmt(no-label(), [], "doo", [], no-result(), LanguageBinding(no-binding-name()))
+      FunctionStmt(no-label(), [], "doo", [], no-result(), LanguageBinding(no-name()))
     , Scope([], [], [])
-    , EndFunctionStmt(no-label(), no-function-name())
+    , EndFunctionStmt(no-label(), no-name())
     )
   , MainProgram(
       no-program-stmt()
     , Scope([], [], [])
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R1228 function-stmt

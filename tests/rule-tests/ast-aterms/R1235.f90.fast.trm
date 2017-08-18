@@ -12,7 +12,7 @@ Program(
       , []
       , []
       )
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R1235 dummy-arg and dummy-arg-list

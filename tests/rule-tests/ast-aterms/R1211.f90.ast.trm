@@ -2,7 +2,7 @@ Program(
   "! R1211 procedure-declaration-stmt\n!                      is  PROCEDURE ( [ proc-interface ] ) \n!                                        [ [ , proc-attr-spec ] ... :: ] \n!                                        proc-decl-list\n!\n!      proc-interface  is  interface-name\n!                      or  declaration-type-spec\n!\n!      proc-attr-spec  is  access-spec\n!                      or  proc-language-binding-spec\n!                      or  INTENT ( intent-spec )\n!                      or  OPTIONAL\n!                      or  POINTER\n!                      or  SAVE\n!\n!      proc-decl  is  procedure-entity-name [ => null-init ]\n!\n!      interface-name  is  name\n!\n! Not tested here: name, declaration-type-spec, access-spec, \n! proc-language-binding-spec, intent-spec, procedure-entity-name, and \n! null-init.\n\n! Test with no optional parts.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ProcedureDeclarationStmt(
             "13"
@@ -49,7 +49,7 @@ Program(
         , ProcedureDeclarationStmt(
             no-label()
           , "c"
-          , comma-list([LanguageBinding(no-binding-name()), PUBLIC(), POINTER()])
+          , comma-list([LanguageBinding(no-name()), PUBLIC(), POINTER()])
           , [ProcDecl("a7", no-init()), ProcDecl("b7", no-init())]
           , eos("\n\n! Test with optional null-init\n")
           )
@@ -63,7 +63,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

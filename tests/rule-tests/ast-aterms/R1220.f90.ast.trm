@@ -2,7 +2,7 @@ Program(
   "!!\n! R1220 call-stmt\n!    is CALL procedure-designator [ ( [ actual-arg-spec-list ] ) ]\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ CallStmt(no-label(), ProcedureDesignator("foo1"), no-list(), eos("\n"))
         , CallStmt(no-label(), ProcedureDesignator("foo2"), [], eos("\n"))
@@ -60,7 +60,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

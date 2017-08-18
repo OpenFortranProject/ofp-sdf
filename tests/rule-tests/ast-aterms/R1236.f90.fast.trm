@@ -2,7 +2,7 @@ Program(
   [ Subroutine(
       SubroutineStmt(no-label(), [], "foo1", [], no-language-binding())
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   , Subroutine(
       SubroutineStmt(no-label(), [], "foo2", [], no-language-binding())
@@ -17,14 +17,14 @@ Program(
   , Subroutine(
       SubroutineStmt(no-label(), [], "foo4", [], no-language-binding())
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+    , EndSubroutineStmt(no-label(), no-name()){Comment("
 
 ")}
     )
   , MainProgram(
       no-program-stmt()
     , Scope([], [], [])
-    , EndProgramStmt(no-label(), no-program-name()){Comment("
+    , EndProgramStmt(no-label(), no-name()){Comment("
 
 ")}
     )

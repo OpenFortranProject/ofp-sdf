@@ -2,7 +2,7 @@ Program(
   "!! R1218 intrinsic-stmt\n!    is INTRINSIC [ :: ] intrinsic-procedure-name-list\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IntrinsicStmt(no-label(), ["sin"], eos("\n"))
         , IntrinsicStmt(no-label(), ["exp", "mod"], eos("\n"))
@@ -11,7 +11,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

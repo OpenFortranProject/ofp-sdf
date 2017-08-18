@@ -9,7 +9,7 @@ Program(
       , no-suffix()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ EntryStmt("11", "binky", no-list(), no-suffix(), eos("\n   "))
         , EntryStmt(
@@ -29,7 +29,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

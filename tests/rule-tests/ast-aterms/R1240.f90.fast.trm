@@ -16,7 +16,7 @@ Program(
       , []
       , []
       )
-    , EndFunctionStmt(no-label(), no-function-name())
+    , EndFunctionStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R1240 entry-stmt

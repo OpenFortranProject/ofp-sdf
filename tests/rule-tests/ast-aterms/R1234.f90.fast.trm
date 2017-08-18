@@ -2,22 +2,22 @@ Program(
   [ Subroutine(
       SubroutineStmt("11", [], "foo", [], no-language-binding())
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   , Subroutine(
       SubroutineStmt(no-label(), [], "boo", ["a", "b"], no-language-binding())
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   , Subroutine(
       SubroutineStmt(no-label(), [PURE()], "coo", [], no-language-binding())
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   , Subroutine(
-      SubroutineStmt(no-label(), [], "doo", [], LanguageBinding(no-binding-name()))
+      SubroutineStmt(no-label(), [], "doo", [], LanguageBinding(no-name()))
     , Scope([], [], [])
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R1234 subroutine-stmt

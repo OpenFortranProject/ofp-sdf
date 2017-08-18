@@ -2,7 +2,7 @@ Program(
   "!! R1232 end-function-stmt\n!     is END [ FUNCTION [ function-name ] ]\n!\n"
 , [ FunctionSubprogram(
       FunctionStmt(no-label(), no-prefix(), "foo1", [], no-suffix(), eos("\n  "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -13,11 +13,11 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , FunctionSubprogram(
       FunctionStmt(no-label(), no-prefix(), "foo2", [], no-suffix(), eos("\n  "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -32,7 +32,7 @@ Program(
     )
   , FunctionSubprogram(
       FunctionStmt(no-label(), no-prefix(), "foo3", [], no-suffix(), eos("\n  "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -47,7 +47,7 @@ Program(
     )
   , FunctionSubprogram(
       FunctionStmt(no-label(), no-prefix(), "foo4", [], no-suffix(), eos("\n  "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -58,14 +58,14 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

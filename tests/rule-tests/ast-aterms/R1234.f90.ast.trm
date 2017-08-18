@@ -2,10 +2,10 @@ Program(
   "!! R1234 subroutine-stmt\n!    is [ prefix ] SUBROUTINE subroutine-name\n!           [ ( [ dummy-arg-list ] ) [ proc-language-binding-spec ] ]\n\n"
 , [ SubroutineSubprogram(
       SubroutineStmt("11", no-prefix(), "foo", no-list(), no-language-binding(), eos("\n"))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
     )
   , SubroutineSubprogram(
       SubroutineStmt(
@@ -16,10 +16,10 @@ Program(
       , no-language-binding()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
     )
   , SubroutineSubprogram(
       SubroutineStmt(
@@ -30,10 +30,10 @@ Program(
       , no-language-binding()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
     )
   , SubroutineSubprogram(
       SubroutineStmt(
@@ -41,13 +41,13 @@ Program(
       , no-prefix()
       , "doo"
       , no-list()
-      , LanguageBinding(no-binding-name())
+      , LanguageBinding(no-name())
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

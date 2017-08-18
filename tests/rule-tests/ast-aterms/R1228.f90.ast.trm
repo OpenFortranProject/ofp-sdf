@@ -2,10 +2,10 @@ Program(
   "!! R1228 function-stmt\n!    is   [ prefix ] FUNCTION function-name\n!                ( [ dummy-arg-name-list ] ) [ suffix ]\n\n"
 , [ FunctionSubprogram(
       FunctionStmt("11", no-prefix(), "foo", [], no-suffix(), eos("\n"))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , FunctionSubprogram(
       FunctionStmt(
@@ -16,10 +16,10 @@ Program(
       , no-suffix()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , FunctionSubprogram(
       FunctionStmt(
@@ -30,10 +30,10 @@ Program(
       , no-suffix()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , FunctionSubprogram(
       FunctionStmt(
@@ -41,20 +41,20 @@ Program(
       , no-prefix()
       , "doo"
       , []
-      , Suffix(LanguageBinding(no-binding-name()), no-result())
+      , Suffix(LanguageBinding(no-name()), no-result())
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndFunctionStmt(no-label(), no-function-name(), eos("\n"))
+    , EndFunctionStmt(no-label(), no-name(), eos("\n"))
     )
   , MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart([])
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

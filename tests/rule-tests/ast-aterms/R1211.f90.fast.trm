@@ -35,7 +35,7 @@ Program(
         , ProcedureDeclarationStmt(
             no-label()
           , "c"
-          , [LanguageBinding(no-binding-name()), PUBLIC(), POINTER()]
+          , [LanguageBinding(no-name()), PUBLIC(), POINTER()]
           , [ProcDecl("a7", no-init()), ProcDecl("b7", no-init())]
           ){Comment("
 
@@ -53,7 +53,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("! R1211 procedure-declaration-stmt
