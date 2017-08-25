@@ -1,0 +1,89 @@
+Additions/enhancements to F2008
+
+Module enhancements:
+  - submodules
+     - R1116.f90
+     - R1118.f90
+
+Parallel execution:
+  - coarrays
+     - ALLOCATE and DEALLOCATE
+        - R631.f90
+        - R636.f90
+        - R637.f90
+     - image selector
+        - R610.f90
+        - R612.f90
+        - R614.f90
+  - synchronization
+     - SYNC ALL
+        - R858.f08, R859.f09
+     - SYNC IMAGES
+        - R860.f90
+     - SYNC MEMORY
+        - R862.f08
+  - LOCK
+     - R863.f90
+  - UNLOCK
+     - R865.f90
+  - CRITICAL
+     - R810.f90
+
+Performance enhancements:
+  - DO CONCURRENT
+     - R818.f90
+  - CONTIGUOUS
+     - R502.f08
+
+Data declaration:
+  - allocatable component can be of recursive type
+  - name constant array's shape can be implied by its value
+  - a pointer can be initially associated with a target
+  - subscripts and nested implied-do limits inside a data-implied-do can be any constant expression
+  - FORALL index can have its type and kind explicitly declared within the construct
+  - TYPE can be used to declare entities of intrinsic type
+     - R403.f90
+  - multiple type-bound procedures can be declared in a single type-bound procedure statement
+     - 4.5.5
+
+Data usage and computation:
+  - a structure constructor can omit the value for an allocatable component
+  - SOURCE= in ALLOCATE statement can give array bounds as well as the value
+  - MOLD= in ALLOCATE statement can give polymorphic variable the shape, type, and type parameters
+  - real and imaginary parts of a complex entity can be accessed with component-like syntax
+     - R615.f90
+  - intrinsic assignment to an allocatable polymorphic variable is allowed
+  - a pointer function reference can denote a variable in any variable definition context
+  - some restricetions on the use of dummy arguments in elemental subprograms have been removed
+
+Input/output:
+  - NEWUNIT= in OPEN
+  - G0 edit descriptor and unlimited format control for CSV format
+  - recursive data transfers are allowed on distinct units
+
+Execution control:
+  - BLOCK construct
+     - R807.f90, R808.f90
+  - EXIT can transfer control from more named executable constructs
+  - STOP has been changed to accept a constant expression rather than merely a literal constant
+     - R855.f90
+  - ERROR STOP initiates error termination
+     - R856.f90
+
+Intrinsic procedures:
+
+Intrinsic modules:
+
+Program and procedures:
+  - empty CONTAINS allowed
+     - empty_contains.{f90,f90.no-diff}
+  - internal procedure can be used as an actual argument or procedure pointer target
+  - ALLOCATABLE and POINTER attributes used in generic resolution
+  - procedureness of a dummy argument used in generic resolution
+  - actual argument with TARGET atribute can correspond to a dummy pointer
+  - a null pointer or unallocated allocatable can be used to denote absence of optional argument
+  - impure elemental procedure processes array arguments in array element order
+  - FUNCTION and SUBROUTINE keywords can be omitted from the END statement for a module or internal subprogram
+     - end_statements.{f90,f90.no-diff}
+  - a line in a program is permitted to begin with a semicolon
+     - semicolon.{f90,f90.no-diff}
