@@ -9,4 +9,11 @@
       a = 3
    end block named_block
 
+   BLOCK
+     c = 13
+   END BLOCK
+
+   block
+   end block
+
 end
