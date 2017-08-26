@@ -10,7 +10,7 @@
 
 integer :: a = 1
 integer, pointer :: b => NULL()
-!TODO-F08 - test initial-data-target
+integer, pointer :: aptr => a   !initial-data-target
 
 end
 
