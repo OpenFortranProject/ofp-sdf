@@ -2,7 +2,7 @@ Program(
   "!! R807 block-construct\n!    is block-stmt\n!          [ specification-part ]\n!          block\n!       end-block-stmt\n!\n   "
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ BlockConstruct(
             BlockStmt(no-label(), "named_block", eos("\n      "))
@@ -28,12 +28,32 @@ Program(
                 )
               ]
             )
-          , EndBlockStmt(no-label(), "named_block", eos("\n\n"))
+          , EndBlockStmt(no-label(), "named_block", eos("\n\n   "))
+          )
+        , BlockConstruct(
+            BlockStmt(no-label(), no-name(), eos("\n     "))
+          , SpecificationPart([], [], no-implicit-part(), [])
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("c", no-section-subscripts(), no-image-selector())])
+                , IntVal("13")
+                , eos("\n   ")
+                )
+              ]
+            )
+          , EndBlockStmt(no-label(), no-name(), eos("\n\n   "))
+          )
+        , BlockConstruct(
+            BlockStmt(no-label(), no-name(), eos("\n   "))
+          , SpecificationPart([], [], no-implicit-part(), [])
+          , Block([])
+          , EndBlockStmt(no-label(), no-name(), eos("\n\n"))
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -2,9 +2,19 @@ Program(
   "!! R615 complex-part-designator\n!    is designator % RE\n!    or designator % IM\n!\n!  NOTE 6.6\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
-        [ AssignmentStmt(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(COMPLEX())
+          , no-list()
+          , [ EntityDecl("impedance", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("fft", no-list(), no-list(), no-char-length(), no-init())
+            , EntityDecl("x", no-list(), no-list(), no-char-length(), no-init())
+            ]
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
             no-label()
           , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
           , DataRef(
@@ -31,7 +41,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

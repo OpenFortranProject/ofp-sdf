@@ -2,7 +2,18 @@ Program(
   [ MainProgram(
       no-program-stmt()
     , Scope(
-        []
+        [ TypeDeclarationStmt(
+            no-label()
+          , COMPLEX()
+          , []
+          , [ Var("impedance", COMPLEX(), no-init())
+            , Var("fft", COMPLEX(), no-init())
+            , Var("x", COMPLEX(), no-init())
+            ]
+          ){Comment("
+
+")}
+        ]
       , [ AssignmentStmt(
             no-label()
           , VarDef("r")
@@ -23,7 +34,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R615 complex-part-designator

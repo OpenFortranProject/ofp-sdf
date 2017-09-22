@@ -13,7 +13,7 @@ Program(
               no-binding-private-stmt()
             , [ TypeBoundProcedureStmt(
                   no-label()
-                , [Pass(no-arg-name())]
+                , [Pass(no-name())]
                 , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
                 ){Comment("
    ")}
@@ -36,11 +36,15 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R448 type-bound-procedure-stmt
 !    is PROCEDURE [ [ , binding-attr-list ] :: ] type-bound-proc-decl-list
 !    or PROCEDURE (interface-name ), binding-attr-list :: binding-name-list
-
+!
+!   - F2008 addition
+!   - multiple type-bound procedures can be declared in a single type-bound
+!     procedure statement
+!
 ")}

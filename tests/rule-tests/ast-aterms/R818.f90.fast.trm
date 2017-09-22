@@ -2,7 +2,33 @@ Program(
   [ MainProgram(
       no-program-stmt()
     , Scope(
-        []
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "A"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            , Var(
+                "B"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), IntVal("10"))])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+   ")}
+        ]
       , [ BlockDoConstruct(
             NonlabelDoStmt(
               no-label()
@@ -30,7 +56,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R818 loop-control
@@ -39,4 +65,5 @@ Program(
 !    or [ , ] CONCURRENT forall-header
 !
 ! from NOTE 8.10
-   ")}
+
+")}

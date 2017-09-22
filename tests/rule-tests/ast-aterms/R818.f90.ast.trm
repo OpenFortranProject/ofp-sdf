@@ -1,10 +1,31 @@
 Program(
-  "!! R818 loop-control\n!    is [ , ] do-variable = scalar-int-expr, scalar-int-expr [ , scalar-int-expr ]\n!    or [ , ] WHILE ( scalar-logical-expr )\n!    or [ , ] CONCURRENT forall-header\n!\n! from NOTE 8.10\n   "
+  "!! R818 loop-control\n!    is [ , ] do-variable = scalar-int-expr, scalar-int-expr [ , scalar-int-expr ]\n!    or [ , ] WHILE ( scalar-logical-expr )\n!    or [ , ] CONCURRENT forall-header\n!\n! from NOTE 8.10\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
-        [ NonlabelDoStmt(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , no-list()
+          , [ EntityDecl(
+                "A"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "B"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("10"))])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n   ")
+          )
+        , NonlabelDoStmt(
             no-label()
           , no-name()
           , LoopConcurrentControl(
@@ -46,7 +67,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

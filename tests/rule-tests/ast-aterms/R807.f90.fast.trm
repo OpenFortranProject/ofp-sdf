@@ -20,13 +20,36 @@ Program(
             )
           , EndBlockStmt(no-label(), "named_block"){Comment("
 
-")}
+   ")}
           ){Comment("
       ")}
+        , Block(
+            no-label()
+          , no-name()
+          , Scope(
+              []
+            , [AssignmentStmt(no-label(), VarDef("c"), IntVal("13")){Comment("
+   ")}]
+            , []
+            )
+          , EndBlockStmt(no-label(), no-name()){Comment("
+
+   ")}
+          ){Comment("
+     ")}
+        , Block(
+            no-label()
+          , no-name()
+          , Scope([], [], [])
+          , EndBlockStmt(no-label(), no-name()){Comment("
+
+")}
+          ){Comment("
+   ")}
         ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R807 block-construct

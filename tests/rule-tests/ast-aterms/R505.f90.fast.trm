@@ -13,15 +13,20 @@ Program(
           , INTEGER()
           , [POINTER()]
           , [Var("b", INTEGER(), PointerInit(FunctionReference("NULL", [])))]
-          ){Comment("
-!TODO-F08 - test initial-data-target
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [POINTER()]
+          , [Var("aptr", INTEGER(), PointerInit(VarRef("a")))]
+          ){Comment("!initial-data-target
 
 ")}
         ]
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name()){Comment("
+    , EndProgramStmt(no-label(), no-name()){Comment("
 
 ")}
     )

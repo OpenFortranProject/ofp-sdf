@@ -2,14 +2,26 @@ Program(
   "!! R856 error-stop-stmt\n!    is ERROR STOP [ stop-code ]\n!\n   "
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
-        [ ErrorStopStmt(no-label(), no-stop-code(), eos("\n   "))
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [EntityDecl("stop_code", no-list(), no-list(), no-char-length(), Init(IntVal("13")))]
+          , eos("\n\n   ")
+          )
+        , ErrorStopStmt(no-label(), no-stop-code(), eos("\n   "))
+        , ErrorStopStmt(
+            no-label()
+          , DataRef([PartRef("stop_code", no-section-subscripts(), no-image-selector())])
+          , eos("\n   ")
+          )
         , ErrorStopStmt(no-label(), IntVal("33"), eos("\n"))
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

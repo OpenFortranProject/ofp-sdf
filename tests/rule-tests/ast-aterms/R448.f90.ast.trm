@@ -1,5 +1,5 @@
 Program(
-  "!! R448 type-bound-procedure-stmt\n!    is PROCEDURE [ [ , binding-attr-list ] :: ] type-bound-proc-decl-list\n!    or PROCEDURE (interface-name ), binding-attr-list :: binding-name-list\n\n"
+  "!! R448 type-bound-procedure-stmt\n!    is PROCEDURE [ [ , binding-attr-list ] :: ] type-bound-proc-decl-list\n!    or PROCEDURE (interface-name ), binding-attr-list :: binding-name-list\n!\n!   - F2008 addition\n!   - multiple type-bound procedures can be declared in a single type-bound\n!     procedure statement\n!\n"
 , [ Module(
       ModuleStmt(no-label(), "myjunk", eos("\n\n"))
     , SpecificationPart(
@@ -16,7 +16,7 @@ Program(
             , no-binding-private-stmt()
             , [ TypeBoundProcedureStmt(
                   no-label()
-                , comma-list([Pass(no-arg-name())])
+                , comma-list([Pass(no-name())])
                 , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
                 , eos("\n   ")
                 )
@@ -46,7 +46,7 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -2,12 +2,24 @@ Program(
   [ MainProgram(
       no-program-stmt()
     , Scope(
-        []
-      , [ErrorStopStmt(no-label(), no-stop-code()){Comment("
-   ")}, ErrorStopStmt(no-label(), IntVal("33"))]
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [Var("stop_code", INTEGER(), Init(IntVal("13")))]
+          ){Comment("
+
+   ")}
+        ]
+      , [ ErrorStopStmt(no-label(), no-stop-code()){Comment("
+   ")}
+        , ErrorStopStmt(no-label(), VarRef("stop_code")){Comment("
+   ")}
+        , ErrorStopStmt(no-label(), IntVal("33"))
+        ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R856 error-stop-stmt
