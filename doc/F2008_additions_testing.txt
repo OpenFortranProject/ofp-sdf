@@ -37,37 +37,52 @@ Performance enhancements:
 
 Data declaration:
   - allocatable component can be of recursive type
+     - R526b.f08
   - name constant array's shape can be implied by its value
+     - no compile-time test needed
   - a pointer can be initially associated with a target
      - R501.f08
      - R505.f08
   - subscripts and nested implied-do limits inside a data-implied-do can be any constant expression
+     - R537b.f08
   - FORALL index can have its type and kind explicitly declared within the construct
+     - R752.f08
   - TYPE can be used to declare entities of intrinsic type
      - R403.f90
   - multiple type-bound procedures can be declared in a single type-bound procedure statement
-     - 4.5.5
+     - R448.f90
 
 Data usage and computation:
   - a structure constructor can omit the value for an allocatable component
   - SOURCE= in ALLOCATE statement can give array bounds as well as the value
+     - R627b.f08
   - MOLD= in ALLOCATE statement can give polymorphic variable the shape, type, and type parameters
+     - R627c.f08
   - real and imaginary parts of a complex entity can be accessed with component-like syntax
      - R615.f90
   - intrinsic assignment to an allocatable polymorphic variable is allowed
+     - R732.f08
   - a pointer function reference can denote a variable in any variable definition context
-  - some restricetions on the use of dummy arguments in elemental subprograms have been removed
+     - R733b.f08
+  - some restrictions on the use of dummy arguments in elemental subprograms have been removed
+     - this would be a constraint so no test needed required for just parsing
 
 Input/output:
   - NEWUNIT= in OPEN
+     - R905b.f08
   - G0 edit descriptor and unlimited format control for CSV format
+     - R1005.f08
   - recursive data transfers are allowed on distinct units
+     - An input/output statement that is executed while another input/output statement is being
+       executed is a recursive input/output statement.
+     - no compile-time test needed
 
 Execution control:
   - BLOCK construct
      - R807.f90
      - R808.f90
   - EXIT can transfer control from more named executable constructs
+     - R850b.f08
   - STOP has been changed to accept a constant expression rather than merely a literal constant
      - R855.f90
   - ERROR STOP initiates error termination
@@ -81,11 +96,17 @@ Program and procedures:
   - empty CONTAINS allowed
      - empty_contains.{f90,f90.no-diff}
   - internal procedure can be used as an actual argument or procedure pointer target
+     - R1211b.f08
   - ALLOCATABLE and POINTER attributes used in generic resolution
+     - no compile-time test needed
   - procedureness of a dummy argument used in generic resolution
+     - no compile-time test needed
   - actual argument with TARGET atribute can correspond to a dummy pointer
+     - R1223b.f08
   - a null pointer or unallocated allocatable can be used to denote absence of optional argument
+     - R1223c.f08
   - impure elemental procedure processes array arguments in array element order
+     - no compile-time test needed
   - FUNCTION and SUBROUTINE keywords can be omitted from the END statement for a module or internal subprogram
      - end_statements.{f90,f90.no-diff}
   - a line in a program is permitted to begin with a semicolon
