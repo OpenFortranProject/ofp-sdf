@@ -9,7 +9,7 @@ $(SYNTAX)/Fortran.tbl :
 	cd $(SYNTAX) ; make ; cd -
 
 check : $(SYNTAX)/Fortran.tbl
-	@for file in *.f90 ; do \
+	@for file in R*.f90 R*.fxx R*.f08 ; do \
            echo "Running test $$file"; \
            $(SGLRI) -p $(SYNTAX)/Fortran.tbl -i $$file -o $$file.ast; \
            if test $$? != 0 ; then \
