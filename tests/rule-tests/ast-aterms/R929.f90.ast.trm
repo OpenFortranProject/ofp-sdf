@@ -2,7 +2,7 @@ Program(
   "!! R929 flush-spec\n!    is [UNIT =] file-unit-number\n!    or IOSTAT = scalar-int-variable\n!    or IOMSG = iomsg-variable\n!    or ERR = label\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -24,7 +24,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("13", no-program-name(), eos("\n"))
+    , EndProgramStmt("13", no-name(), eos("\n"))
     )
   ]
 )

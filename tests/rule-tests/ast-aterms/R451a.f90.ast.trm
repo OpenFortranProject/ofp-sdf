@@ -2,7 +2,7 @@ Program(
   "!! R451 binding-attr\n!    is PASS [ (arg-name ) ]\n!    or NOPASS\n!    or NON_OVERRIDABLE\n!    or DEFERRED\n!    or access-spec\n! \n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(no-label(), no-list(), "truth", no-list(), eos("\n"))
@@ -15,25 +15,25 @@ Program(
             , [ TypeBoundProcedureStmt(
                   no-label()
                 , comma-list([Pass("beauty")])
-                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , [TypeBoundProcDecl("foo", no-name())]
                 , eos("\n  ")
                 )
               , TypeBoundProcedureStmt(
                   no-label()
-                , comma-list([Pass(no-arg-name()), DEFERRED()])
-                , [TypeBoundProcDecl("boo", no-procedure-name())]
+                , comma-list([Pass(no-name()), DEFERRED()])
+                , [TypeBoundProcDecl("boo", no-name())]
                 , eos("\n  ")
                 )
               , TypeBoundProcedureStmt(
                   no-label()
                 , comma-list([NON_OVERRIDABLE(), PRIVATE()])
-                , [TypeBoundProcDecl("hoo", no-procedure-name())]
+                , [TypeBoundProcDecl("hoo", no-name())]
                 , eos("\n  ")
                 )
               , TypeBoundProcedureStmt(
                   no-label()
                 , comma-list([PUBLIC()])
-                , [TypeBoundProcDecl("loo", no-procedure-name()), TypeBoundProcDecl("doo", "goo")]
+                , [TypeBoundProcDecl("loo", no-name()), TypeBoundProcDecl("doo", "goo")]
                 , eos("\n")
                 )
               ]
@@ -43,7 +43,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "!! R701 primary\n!    is  constant\n!    or  designator\n!    or  array-constructor\n!    or  structure-constructor\n!    or  function-reference\n!    or  type-param-inquiry\n!    or  type-param-name\n!    or  ( expr )\n!\n! Each alternative is tested separately in the corresponding rule tests.\n! primary is tested as an rhs.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(no-label(), no-list(), "atype", no-list(), eos("\n  "))
@@ -96,7 +96,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

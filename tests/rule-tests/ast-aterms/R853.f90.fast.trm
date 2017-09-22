@@ -11,7 +11,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("30", no-program-name()){Comment("
+    , EndProgramStmt("30", no-name()){Comment("
 
 ")}
     )

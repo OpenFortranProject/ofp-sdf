@@ -33,7 +33,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("10", no-program-name()){Comment("
+    , EndProgramStmt("10", no-name()){Comment("
 
 ")}
     )

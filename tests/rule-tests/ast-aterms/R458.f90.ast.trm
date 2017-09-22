@@ -2,7 +2,7 @@ Program(
   "!! R458 enum-def\n!    is enum-def-stmt enumerator-def-stmt\n!            [ enumerator-def-stmt ] ... end-enum-stmt\n!\n! NOTE 4.67\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ EnumDef(
             EnumDefStmt("10", eos("\n"))
@@ -20,7 +20,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

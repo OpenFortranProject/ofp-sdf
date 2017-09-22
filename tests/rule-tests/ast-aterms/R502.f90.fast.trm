@@ -59,7 +59,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , INTEGER()
-          , [LanguageBinding(no-binding-name())]
+          , [LanguageBinding(no-name())]
           , [Var("h", INTEGER(), no-init())]
           )
         , TypeDeclarationStmt(
@@ -116,7 +116,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name()){Comment("
+    , EndProgramStmt(no-label(), no-name()){Comment("
 
 ")}
     )

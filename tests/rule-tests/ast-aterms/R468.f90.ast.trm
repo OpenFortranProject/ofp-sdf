@@ -2,7 +2,7 @@ Program(
   "!! R468 array-constructor\n!    is (/ ac-spec /)\n!    or lbracket ac-spec rbracket\n!\n! NOTE 4.68\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DimensionStmt(
             no-label()
@@ -59,7 +59,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

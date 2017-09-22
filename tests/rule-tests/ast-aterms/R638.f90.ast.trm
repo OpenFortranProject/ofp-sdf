@@ -2,7 +2,7 @@ Program(
   "!! R638 nullify-stmt\n!    is  NULLIFY ( pointer-object-list )\n!\n! Tested separetly is: pointer-object-list (R639)\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -36,7 +36,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

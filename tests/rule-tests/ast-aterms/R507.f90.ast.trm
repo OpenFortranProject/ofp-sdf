@@ -2,7 +2,7 @@ Program(
   "!! R507 access-spec\n!    is PUBLIC\n!    or PRIVATE\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(
@@ -45,7 +45,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

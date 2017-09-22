@@ -2,14 +2,14 @@ Program(
   "!! R552 protected-stmt\n!    is PROTECTED [ :: ] entity-name-list\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ProtectedStmt("13", ["a", "b", "c"], eos("\n"))
         , ProtectedStmt(no-label(), ["d"], eos("\n\n"))
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

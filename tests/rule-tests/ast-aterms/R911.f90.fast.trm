@@ -33,7 +33,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("12", no-program-name())
+    , EndProgramStmt("12", no-name())
     )
   ]
 ){Comment("!! R911 write-stmt

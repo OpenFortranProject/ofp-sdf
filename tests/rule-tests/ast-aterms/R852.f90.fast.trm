@@ -19,7 +19,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("12345", no-program-name())
+    , EndProgramStmt("12345", no-name())
     )
   ]
 ){Comment("!! R852 computed-goto-stmt

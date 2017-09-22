@@ -2,7 +2,7 @@ Program(
   "!! R456 component-spec\n!   is [ keyword = ] component-data-source\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt("13", no-list(), "person", no-list(), eos("\n   "))
@@ -185,7 +185,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

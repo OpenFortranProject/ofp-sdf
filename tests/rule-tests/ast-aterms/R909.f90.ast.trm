@@ -2,7 +2,7 @@ Program(
   "!! R909 close-spec\n!    is [ UNIT = ] file-unit-number\n!    or IOSTAT = scalar-int-variable\n!    or IOMSG = iomsg-variable\n!    or ERR = label\n!    or STATUS = scalar-default-char-expr\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -29,7 +29,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

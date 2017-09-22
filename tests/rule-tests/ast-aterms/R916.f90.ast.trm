@@ -2,7 +2,7 @@ Program(
   "!! R916 input-item\n!    is variable\n!    or io-implied-do\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ReadFMTStmt(
             no-label()
@@ -43,7 +43,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

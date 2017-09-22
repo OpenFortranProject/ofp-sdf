@@ -2,7 +2,7 @@ Program(
   "!! R472 ac-value\n!    is expr\n!    or ac-implied-do\n\n! Test of expr in ac_value_list\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -64,7 +64,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

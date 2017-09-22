@@ -2,7 +2,7 @@ Program(
   "!! R641 dealloc-opt\n!    is STAT = stat-variable\n!    or ERRMSG = errmsg-variable\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DeallocateStmt(
             no-label()
@@ -25,7 +25,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

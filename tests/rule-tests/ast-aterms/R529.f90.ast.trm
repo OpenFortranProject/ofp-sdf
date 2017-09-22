@@ -2,11 +2,11 @@ Program(
   "!! R529 bind-stmt\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ BindStmt(
             "10"
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["i", "j"]
           , eos("\n    ")
           )
@@ -24,14 +24,14 @@ Program(
           )
         , BindStmt(
             no-label()
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["B", "C", CommonBlockName("common_block_name")]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

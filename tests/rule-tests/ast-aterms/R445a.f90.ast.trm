@@ -25,7 +25,7 @@ Program(
             , no-binding-private-stmt()
             , [ TypeBoundProcedureStmt(
                   no-label()
-                , comma-list([Pass(no-arg-name())])
+                , comma-list([Pass(no-name())])
                 , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
                 , eos("\n")
                 )
@@ -46,7 +46,7 @@ Program(
             , no-suffix()
             , eos("\n  ")
             )
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
@@ -107,7 +107,7 @@ Program(
           )
         ]
       )
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

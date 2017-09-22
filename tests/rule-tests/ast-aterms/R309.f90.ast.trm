@@ -2,7 +2,7 @@ Program(
   "!! R309 intrinsic-operator\n!    is power-op     **\n!    or mult-op       * | /\n!    or add-op        + | -\n!    or concat-op    //\n!    or rel-op       .EQ. | .NE. | .LT. | ...\n!    or not-op       .NOT.\n!    or and-op       .AND.\n!    or or-op        .OR.\n!    or equiv-op\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), OPERATOR(PowerOp()), eos("\n"))
@@ -67,7 +67,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

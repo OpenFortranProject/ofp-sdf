@@ -32,7 +32,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R432 type-param-decl

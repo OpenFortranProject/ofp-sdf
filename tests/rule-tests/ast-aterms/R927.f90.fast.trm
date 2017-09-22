@@ -27,7 +27,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("314", no-program-name())
+    , EndProgramStmt("314", no-name())
     )
   ]
 ){Comment("!! R927 position-spec

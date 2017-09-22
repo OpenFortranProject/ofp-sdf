@@ -2,7 +2,7 @@ Program(
   "!! R569 common-block-object\n!   is variable-name [ ( array-spec ) ]\n!   or proc-pointer-name\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ CommonStmt(
             no-label()
@@ -44,7 +44,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

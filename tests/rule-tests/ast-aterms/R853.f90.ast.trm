@@ -2,7 +2,7 @@ Program(
   "!! R853 arithmetic-if-stmt\n!    is  IF ( scalar-numeric-expr ) label, label, label\n!\n! Tested here: arithmetic-if-stmt\n!\n! Not tested here: scalar-numeric-expr and label.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ArithmeticIfStmt(
             no-label()
@@ -17,7 +17,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("30", no-program-name(), eos("\n\n"))
+    , EndProgramStmt("30", no-name(), eos("\n\n"))
     )
   ]
 )

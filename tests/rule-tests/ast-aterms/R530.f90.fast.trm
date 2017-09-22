@@ -2,11 +2,11 @@ Program(
   [ MainProgram(
       no-program-stmt()
     , Scope(
-        [ BindStmt(no-label(), LanguageBinding(no-binding-name()), ["whatever"])
-        , BindStmt(no-label(), LanguageBinding(no-binding-name()), ["myroutine", CommonBlockName("myblock")])
+        [ BindStmt(no-label(), LanguageBinding(no-name()), ["whatever"])
+        , BindStmt(no-label(), LanguageBinding(no-name()), ["myroutine", CommonBlockName("myblock")])
         , BindStmt(
             no-label()
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["foo", "bar", CommonBlockName("truth"), "beauty"]
           ){Comment("
 
@@ -15,7 +15,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R530 bind-entity

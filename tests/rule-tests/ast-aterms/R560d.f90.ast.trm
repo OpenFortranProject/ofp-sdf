@@ -9,7 +9,7 @@ Program(
       , no-language-binding()
       , eos("\n       !...\n       ")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IfConstruct(
             IfThenStmt(
@@ -103,7 +103,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n!\n! even if the only two appearances of NSQP are within the BLOCK constructs,\n! the scope of NSQP is the whole subroutine S.\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n!\n! even if the only two appearances of NSQP are within the BLOCK constructs,\n! the scope of NSQP is the whole subroutine S.\n"))
     )
   ]
 )

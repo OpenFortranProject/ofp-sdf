@@ -2,7 +2,7 @@ Program(
   "!! R846 select-type-construct\n!      select-type-construct  is  select-type-stmt\n!                                   [ type-guard-stmt \n!                                       block ] ...\n!                                 end-select-type-stmt\n!\n!      select-type-stmt  is  [ select-construct-name : ] SELECT TYPE \n!                              ( [ associate-name => ] selector)\n!\n!      type-guard-stmt  is  TYPE IS ( type-spec) [ select-construct-name ]\n!                       or  CLASS IS ( type-spec ) [ select-construct-name ]\n!                       or  CLASS DEFAULT [ select-construct-name ]\n!\n!      end-select-type-stmt  is  END SELECT [ select-construct-name ]\n!\n! Tested here: select-type-construct, select-type-stmt, type-guard-stmt, and \n! end-select-type-stmt.\n!\n! Not tested here: block, select-construct-name, associate-name, selector, \n! and type-spec\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ SelectTypeConstruct(
             SelectTypeStmt(
@@ -148,7 +148,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

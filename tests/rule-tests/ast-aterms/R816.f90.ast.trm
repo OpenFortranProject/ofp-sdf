@@ -2,7 +2,7 @@ Program(
   "!! R816 case-value-range\n!    is case-value\n!    or case-value :\n!    or : case-value\n!    or case-value : case-value\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ CaseConstruct(
             SelectCaseStmt(
@@ -92,7 +92,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

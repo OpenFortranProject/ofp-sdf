@@ -2,7 +2,7 @@ Program(
   "!! R305 literal-constant\n!    is int-literal-constant\n!    or real-literal-constant\n!    or complex-literal-constant\n!    or logical-literal-constant\n!    or char-literal-constant\n!    or boz-literal-constant\n\n  "
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -103,7 +103,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

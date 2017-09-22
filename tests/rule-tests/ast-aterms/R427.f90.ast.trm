@@ -2,7 +2,7 @@ Program(
   "!! R427 type-attr-spec\n!    is ABSTRACT\n!    or access-spec\n!    or BIND (C)\n!    or EXTENDS ( parent-type-name )\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(
@@ -63,7 +63,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

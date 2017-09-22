@@ -2,7 +2,7 @@ Program(
   "!! R502 attr-spec\n!                 is  access-spec \n!                 or  ALLOCATABLE\n!                 or  ASYNCHRONOUS\n!                 or  CODIMENSION [ coarray-spec ]\n!                 or  CONTIGUOUS\n!                 or  dimension-spec\n!                 or  EXTERNAL\n!                 or  INTENT ( intent-spec )\n!                 or  INTRINSIC\n!                 or  language-binding-spec\n!                 or  OPTIONAL\n!                 or  PARAMETER\n!                 or  POINTER\n!                 or  PROTECTED\n!                 or  SAVE\n!                 or  TARGET\n!                 or  VALUE\n!                 or  VOLATILE\n! \n! Tested separately are: R507 (access-spec), R509 (dimension-spec), \n! R523 (intent-spec), and R508 (language-binding-spec).\n!\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -70,7 +70,7 @@ Program(
         , TypeDeclarationStmt(
             no-label()
           , IntrinsicType(INTEGER())
-          , comma-list([LanguageBinding(no-binding-name())])
+          , comma-list([LanguageBinding(no-name())])
           , [EntityDecl("h", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
@@ -133,7 +133,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

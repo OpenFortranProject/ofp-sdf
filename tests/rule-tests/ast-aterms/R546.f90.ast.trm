@@ -9,7 +9,7 @@ Program(
       , no-language-binding()
       , eos("\n\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IntentStmt(
             "10"

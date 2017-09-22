@@ -10,7 +10,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("10", no-program-name())
+    , EndProgramStmt("10", no-name())
     )
   ]
 ){Comment("!! R908 close-stmt

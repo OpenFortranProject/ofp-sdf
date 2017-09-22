@@ -2,7 +2,7 @@ Program(
   "!! R455 structure-constructor\n!    is derived-type-spec ( [ component-spec-list ] )\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(no-label(), no-list(), "point", no-list(), eos("\n  "))
@@ -46,7 +46,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

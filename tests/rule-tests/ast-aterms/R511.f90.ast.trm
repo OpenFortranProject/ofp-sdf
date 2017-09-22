@@ -2,7 +2,7 @@ Program(
   "!! R511 explicit-coshape-spec\n!    is [ [ lower-cobound : ] upper-cobound, ]... [ lower-cobound : ] *\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -92,7 +92,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n\n"))
     )
   ]
 )

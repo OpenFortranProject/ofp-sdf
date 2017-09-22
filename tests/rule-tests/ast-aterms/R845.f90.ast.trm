@@ -2,7 +2,7 @@ Program(
   "!! R845 if-stmt\n!    is  IF ( scalar-logical-expr ) action-stmt\n!\n! Not tested here are: scalar-logical-expr and action-stmt.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IfStmt(
             no-label()
@@ -20,7 +20,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

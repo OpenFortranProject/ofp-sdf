@@ -45,7 +45,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt("18", no-module-name())
+    , EndModuleStmt("18", no-name())
     )
   ]
 ){Comment("!! R444 private-components-stmt

@@ -2,7 +2,7 @@ Program(
   "!! R526 allocatable-stmt\n!    is ALLOCATABLE [ :: ] allocatable-decl-list\n!\n!  allocatable-decl\n!    is object-name [ ( array-spec ) ] [ lbracket co-array-spec rbracket ]\n\n!TODO-F08 add co-array-spec\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AllocatableStmt(
             "10"
@@ -24,7 +24,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -48,7 +48,7 @@ Program(
             , no-suffix()
             , eos("! All data entities need to\n      ")
             )
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
@@ -70,7 +70,7 @@ Program(
     )
   , SubroutineSubprogram(
       SubroutineStmt(no-label(), no-prefix(), "SUB", no-list(), no-language-binding(), eos("\n   "))
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ImplicitStmt(
             no-label()
@@ -89,7 +89,7 @@ Program(
         ContainsStmt(no-label(), eos("\n   "))
       , [ SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "SUB1", no-list(), no-language-binding(), eos("\n      "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ ImplicitStmt(
                   no-label()
@@ -131,7 +131,7 @@ Program(
           )
         , SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "SUB2", no-list(), no-language-binding(), eos("\n      "))
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ AssignmentStmt(
                   no-label()
@@ -146,7 +146,7 @@ Program(
           )
         , SubroutineSubprogram(
             SubroutineStmt(no-label(), no-prefix(), "SUB3", no-list(), no-language-binding(), eos("\n      "))
-          , initial-spec-part(
+          , InitialSpecPart(
               [UseStmt(no-label(), no-module-nature(), "EXAMPLE_MODULE", no-list(), eos("! Accesses integer function FUN\n                          ! by use association\n      "))]
             , []
             )

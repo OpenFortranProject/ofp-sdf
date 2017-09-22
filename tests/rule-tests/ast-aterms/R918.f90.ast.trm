@@ -2,7 +2,7 @@ Program(
   "!! R918 io-implied-do\n!      io-implied-do  is  ( io-implied-do-object-list, io-implied-do-control )\n!\n! Not tested here: io-implied-do-object-list and io-implied-do-control.\n!\n! io-implied-do tested as an output-itemt for a print-stmt.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PrintStmt(
             no-label()
@@ -42,7 +42,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

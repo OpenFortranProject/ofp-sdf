@@ -2,7 +2,7 @@ Program(
   "!! R563 namelist-stmt\n!    is NAMELIST\n!         / namelist-group-name / namelist-group-object-list\n!         [ [ , ] / namelist-group-name / namelist-group-object-list ] ...\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ NamelistStmt(
             "11"
@@ -34,7 +34,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

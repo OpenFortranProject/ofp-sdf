@@ -33,7 +33,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R426 derived-type-stmt

@@ -2,7 +2,7 @@ Program(
   "!! R557 target-decl\n!    is object-name [ ( array-spec ) ]\n!       [ lbracket coarray-spec rbracket ]\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TargetStmt(
             "13"
@@ -37,7 +37,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

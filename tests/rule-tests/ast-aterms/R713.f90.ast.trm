@@ -2,7 +2,7 @@ Program(
   "!! R713 rel-op\n!   is .EQ.\n!   or .NE.\n!   or .LT.\n!   or .LE.\n!   or .GT.\n!   or .GE.\n!   or ==\n!   or /=\n!   or <\n!   or <=\n!   or >\n!   or >=\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -79,7 +79,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

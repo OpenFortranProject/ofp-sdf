@@ -2,7 +2,7 @@ Program(
   "!! R631 allocation\n!    is allocate-object [ ( allocate-shape-spec-list ) ]\n!                       [ lbracket allocate-co-array-spec rbracket ]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AllocateStmt(
             no-label()
@@ -99,7 +99,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

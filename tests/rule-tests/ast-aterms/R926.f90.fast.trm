@@ -20,7 +20,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("4", no-program-name())
+    , EndProgramStmt("4", no-name())
     )
   ]
 ){Comment("!! R926 rewind-stmt

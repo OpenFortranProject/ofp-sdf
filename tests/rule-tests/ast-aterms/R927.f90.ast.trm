@@ -2,7 +2,7 @@ Program(
   "!! R927 position-spec\n!    is  [ UNIT = ] file-unit-number\n!    or  IOMSG = iomsg-variable\n!    or  IOSTAT = scalar-int-variable\n!    or  ERR = label\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -30,7 +30,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("314", no-program-name(), eos("\n"))
+    , EndProgramStmt("314", no-name(), eos("\n"))
     )
   ]
 )

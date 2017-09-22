@@ -9,14 +9,14 @@ Program(
       , no-language-binding()
       , eos("\n")
       )
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ OptionalStmt("10", ["a", "B"], eos("\n   "))
         , OptionalStmt(no-label(), ["c", "D"], eos("\n"))
         ]
       )
     , no-subprogram-part()
-    , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n"))
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

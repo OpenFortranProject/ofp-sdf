@@ -103,7 +103,7 @@ Program(
       , []
       , []
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R454 type-param-spec

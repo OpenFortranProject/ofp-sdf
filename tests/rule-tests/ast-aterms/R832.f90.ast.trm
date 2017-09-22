@@ -2,7 +2,7 @@ Program(
   "!! R832 if-construct\n!    is  if-then-stmt\n!              block\n!          [ else-if-smt \n!              block ] ...\n!          [ else-stmt \n!              block ]\n!         end-if-stmt\n!\n! Also tests rules R841 (if-then-stmt), R842 (else-if-stmt), R843 (else-stmt), \n! R844 (end-if-stmt), and if-construct-name.  Does not test \n! scalar-logical-expr.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IfConstruct(
             IfThenStmt(
@@ -172,7 +172,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

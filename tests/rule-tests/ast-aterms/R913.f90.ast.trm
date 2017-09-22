@@ -2,7 +2,7 @@ Program(
   "!! R913 io-control-spec\n!    is [ UNIT = ] io-unit\n!    or [FMT=]format\n!    or [ NML = ] namelist-group-name\n!    or ADVANCE = scalar-default-char-expr\n!    or ASYNCHRONOUS = scalar-char-initialization-expr\n!    or BLANK = scalar-default-char-expr\n!    or DECIMAL = scalar-default-char-expr\n!    or DELIM = scalar-default-char-expr\n!    or END = label\n!    or EOR = label\n!    or ERR = label\n!    or ID = scalar-int-variable\n!    or IOMSG = iomsg-variable\n!    or IOSTAT = scalar-int-variable\n!    or PAD = scalar-default-char-expr\n!    or POS = scalar-int-expr\n!    or REC = scalar-int-expr\n!    or ROUND = scalar-default-char-expr\n!    or SIGN = scalar-default-char-expr\n!    or SIZE = scalar-int-variable\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ WriteStmt(
             "13"
@@ -63,7 +63,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("999", no-program-name(), eos("\n\n"))
+    , EndProgramStmt("999", no-name(), eos("\n\n"))
     )
   ]
 )

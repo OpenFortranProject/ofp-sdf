@@ -2,7 +2,7 @@ Program(
   "!! R403 declaration-type-spec\n!    is  intrinsic-type-spec (R404)\n!    or  TYPE ( intrinsic-type-spec )\n!    or  TYPE ( derived-type-spec )\n!    or  CLASS ( derived-type-spec )\n!    or  CLASS ( * )\n!    or  TYPE  ( * )\n!\n! Tested separately are: R404 and R457.\n!\n! declaration-type-spec is tested as part of a type-declaration-stmt (R501).\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -49,7 +49,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

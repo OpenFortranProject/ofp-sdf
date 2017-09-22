@@ -2,7 +2,7 @@ Program(
   "!! R925 endfile-stmt\n!    is  ENDFILE file-unit-number\n!    or  ENDFILE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ endfile-unit-stmt("13", IntVal("10"), eos("\n"))
         , EndfileStmt(no-label(), [UNIT(IntVal("10"))], eos("\n"))
@@ -17,7 +17,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("4", no-program-name(), eos("\n"))
+    , EndProgramStmt("4", no-name(), eos("\n"))
     )
   ]
 )

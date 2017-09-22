@@ -27,7 +27,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("13", no-program-name())
+    , EndProgramStmt("13", no-name())
     )
   ]
 ){Comment("!! R931 inquire-spec

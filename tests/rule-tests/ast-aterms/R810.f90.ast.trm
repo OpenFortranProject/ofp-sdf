@@ -2,7 +2,7 @@ Program(
   "!! R810 critical-construct\n!    is critical-stmt\n!          block\n!       end-critical-stmt\n!\n! from NOTE 8.5\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ CriticalConstruct(
             CriticalStmt("10", no-name(), eos("\n      "))
@@ -32,7 +32,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "!! R405 kind-selector\n!    is ( [ KIND = ] scalar-int-initialization-expr )\n!\n! kind-selector can have an expr so there are too many to test all of them, \n! but we can test some common ones.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -119,7 +119,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

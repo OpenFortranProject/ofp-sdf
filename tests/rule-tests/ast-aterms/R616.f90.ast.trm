@@ -2,7 +2,7 @@ Program(
   "!! R615 type-param-inquiry\n!    is designator % type-param-name\n!\n!  NOTE 6.8\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -75,7 +75,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

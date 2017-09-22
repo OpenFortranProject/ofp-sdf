@@ -2,7 +2,7 @@ Program(
   "!! R545 dimension-stmt\n!    is DIMENSION [ :: ] dimension-decl-list\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DimensionStmt(
             "10"
@@ -26,7 +26,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

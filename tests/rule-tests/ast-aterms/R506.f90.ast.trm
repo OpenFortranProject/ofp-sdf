@@ -2,7 +2,7 @@ Program(
   "!! R506 null-init\n!    is  function-reference\n!\n! Function reference must be a reference to the NULL intrinsic function with\n! no arguments (C506).\n!\n! null-init is tested as part of an initialization (R505), which is part of \n! an entity-decl (R503), which is part of a type-declaration-stmt (R501).\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -21,7 +21,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

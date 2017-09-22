@@ -2,7 +2,7 @@ Program(
   "!! R911 write-stmt\n!    is  WRITE ( io-control-spec-list ) [ output-item-list ]\n!\n! Not tested here: io-control-spec-list and output-item-list.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ WriteStmt(
             no-label()
@@ -52,7 +52,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("12", no-program-name(), eos("\n"))
+    , EndProgramStmt("12", no-name(), eos("\n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "!! R617 array-element\n!    is data-ref\n!\n\n! NOTE 6.9\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -33,7 +33,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

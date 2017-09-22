@@ -9,7 +9,7 @@ Program(
       , [ TypeDeclarationStmt(
             no-label()
           , IntrinsicType(INTEGER())
-          , comma-list([LanguageBinding(no-binding-name())])
+          , comma-list([LanguageBinding(no-name())])
           , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
           , eos("\n")
           )
@@ -23,7 +23,7 @@ Program(
         ]
       )
     , no-module-subprogram-part()
-    , EndModuleStmt(no-label(), no-module-name(), eos("\n"))
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

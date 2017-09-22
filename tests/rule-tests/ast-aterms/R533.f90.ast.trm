@@ -2,14 +2,14 @@ Program(
   "!! R533 contiguous-stmt\n!    is CONTIGUOUS [ :: ] object-name-list\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ContiguousStmt("13", ["a"], eos("\n"))
         , ContiguousStmt(no-label(), ["b", "c", "d"], eos("\n\n"))
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

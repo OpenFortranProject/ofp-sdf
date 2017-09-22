@@ -2,7 +2,7 @@ Program(
   "!! R542 data-stmt-constant\n!    is scalar-constant\n!    or scalar-constant-subobject\n!    or signed-int-literal-constant\n!    or signed-real-literal-constant\n!    or null-init\n!    or initial-data-target\n!    or structure-constructor\n\n!TODO - fix major AMBIGUITY and add more tests.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DataStmt(
             no-label()
@@ -21,7 +21,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

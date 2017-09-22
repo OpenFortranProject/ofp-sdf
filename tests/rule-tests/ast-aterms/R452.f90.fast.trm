@@ -42,7 +42,7 @@ Program(
             , []
             , []
             )
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
 
 ")}
           )
@@ -70,7 +70,7 @@ Program(
             , []
             , []
             )
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
 
 ")}
           )
@@ -87,13 +87,13 @@ Program(
             , []
             , []
             )
-          , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
 
 ")}
           )
         ]
       )
-    , EndModuleStmt("15", no-module-name())
+    , EndModuleStmt("15", no-name())
     )
   ]
 ){Comment("!! R452 final-procedure-stmt

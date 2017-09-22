@@ -52,7 +52,7 @@ Program(
       , []
       , []
       )
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R422 char-length

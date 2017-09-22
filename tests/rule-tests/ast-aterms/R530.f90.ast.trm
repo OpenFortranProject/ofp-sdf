@@ -2,25 +2,25 @@ Program(
   "!! R530 bind-entity\n!    is   entity-name\n!    or   / common-block-name /\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
-        [ BindStmt(no-label(), LanguageBinding(no-binding-name()), ["whatever"], eos("\n"))
+        [ BindStmt(no-label(), LanguageBinding(no-name()), ["whatever"], eos("\n"))
         , BindStmt(
             no-label()
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["myroutine", CommonBlockName("myblock")]
           , eos("\n")
           )
         , BindStmt(
             no-label()
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["foo", "bar", CommonBlockName("truth"), "beauty"]
           , eos("\n\n")
           )
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

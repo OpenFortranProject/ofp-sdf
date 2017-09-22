@@ -2,7 +2,7 @@ Program(
   "!! R565 equivalence-stmt\n!    is EQUIVALENCE equivalence-set-list\n!\n!! R566 equivalence-set\n!    is ( equivalence-object , equivalence-object-list )\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -78,7 +78,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

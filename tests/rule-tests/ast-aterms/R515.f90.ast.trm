@@ -2,7 +2,7 @@ Program(
   "!! R515 array-spec\n!    is explicit-shape-spec-list\n!    or assumed-shape-spec-list\n!    or deferred-shape-spec-list\n!    or assumed-size-spec\n!    or implied-shape-spec -list\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -108,7 +108,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -21,7 +21,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name()){Comment("
+    , EndProgramStmt(no-label(), no-name()){Comment("
 
 ")}
     )

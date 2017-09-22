@@ -2,7 +2,7 @@ Program(
   "!! R837 if-stmt\n!      if-stmt     is IF ( scalar-logical-expr ) action-stmt\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ IfStmt(
             "13"
@@ -33,7 +33,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

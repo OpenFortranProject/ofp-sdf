@@ -2,11 +2,11 @@ Program(
   "!! R733 pointer-assignment-stmt\n!    is data-pointer-object [ (bounds-spec-list) ] => data-target\n!    or data-pointer-object (bounds-remapping-list ) => data-target\n!    proc-pointer-object => proc-target\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PointerAssignmentStmt(
             "13"
-          , DataPointerObject(VarRef("pointer_foo"), no-component-name())
+          , DataPointerObject(VarRef("pointer_foo"), no-name())
           , paren-list(
               [ BoundsRemapping(IntVal("3"), IntVal("4"))
               , BoundsRemapping(IntVal("7"), IntVal("8"))
@@ -17,7 +17,7 @@ Program(
           )
         , PointerAssignmentStmt(
             no-label()
-          , DataPointerObject(VarRef("pointer"), no-component-name())
+          , DataPointerObject(VarRef("pointer"), no-name())
           , no-list()
           , DataRef([PartRef("target", no-section-subscripts(), no-image-selector())])
           , eos("\n   ")
@@ -34,7 +34,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

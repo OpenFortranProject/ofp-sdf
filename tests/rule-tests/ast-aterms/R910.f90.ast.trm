@@ -2,7 +2,7 @@ Program(
   "!! R910 read-stmt\n!    is  READ (io-control-spec-list ) [ input-item-list ]\n!    or  READ format [, input-item-list ]\n!\n! Not tested here: io-control-spec-list, input-item-list, and format\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ReadStmt(
             no-label()
@@ -45,7 +45,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

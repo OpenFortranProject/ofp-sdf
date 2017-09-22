@@ -2,7 +2,7 @@ Program(
   "!! R855 stop-stmt\n!    is  STOP [ stop-code ]\n!  \n!      stop-code  is  scalar-char-constant\n!                 or  digit [ digit [ digit [ digit [ digit ] ] ] ] \n!\n! Not tested here: scalar-char-constant\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -36,7 +36,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

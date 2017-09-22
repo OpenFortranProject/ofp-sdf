@@ -2,7 +2,7 @@ Program(
   "!! R850 exit-stmt\n!    is EXIT [ construct-name ]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ NonlabelDoStmt(
             no-label()
@@ -16,7 +16,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

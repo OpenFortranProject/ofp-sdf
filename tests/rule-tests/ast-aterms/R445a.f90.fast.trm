@@ -20,7 +20,7 @@ Program(
               no-binding-private-stmt()
             , [TypeBoundProcedureStmt(
                  no-label()
-               , [Pass(no-arg-name())]
+               , [Pass(no-name())]
                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
                )]
             )
@@ -88,7 +88,7 @@ Program(
           )
         ]
       )
-    , EndModuleStmt(no-label(), no-module-name())
+    , EndModuleStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R445 type-bound-procedure-part

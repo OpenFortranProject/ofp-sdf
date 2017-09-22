@@ -33,7 +33,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R613 structure-component

@@ -2,7 +2,7 @@ Program(
   "!! R637 allocate-coshape-spec\n!    is [ lower-bound-expr : ] upper-bound-expr\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AllocateStmt(
             no-label()
@@ -46,7 +46,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

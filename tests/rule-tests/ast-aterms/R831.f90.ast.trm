@@ -2,7 +2,7 @@ Program(
   "!! R831 cycle-stmt\n!      cycle-stmt  is  CYCLE [ do-construct-name ]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ NonlabelDoStmt(
             no-label()
@@ -23,7 +23,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

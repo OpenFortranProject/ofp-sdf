@@ -2,7 +2,7 @@ Program(
   "!! R404 intrinsic-type-spec\n!    is INTEGER [ kind-selector ]\n!    or REAL [ kind-selector ]\n!    or DOUBLE PRECISION\n!    or COMPLEX [ kind-selector ]\n!    or CHARACTER [ char-selector ]\n!    or LOGICAL [ kind-selector ]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -112,7 +112,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

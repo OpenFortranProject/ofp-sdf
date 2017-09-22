@@ -2,7 +2,7 @@ Program(
   "!! R706 level-2-expr\n!    is [ [ level-2-expr ] add-op ] add-operand\n!\n!  level-2-expr is an add-op\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssignmentStmt(
             no-label()
@@ -25,7 +25,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

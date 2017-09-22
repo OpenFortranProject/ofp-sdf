@@ -2,7 +2,7 @@ Program(
   "!! R509 coarray-spec\n!    is deferred-coshape-spec-list\n!    or explicit-coshape-spec\n!\n! From NOTE 5.7\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -93,7 +93,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

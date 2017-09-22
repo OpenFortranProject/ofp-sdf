@@ -2,11 +2,11 @@ Program(
   "!! R738 bounds-remapping\n!    is lower-bound-expr : upper-bound-expr\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PointerAssignmentStmt(
             no-label()
-          , DataPointerObject(VarRef("myptr"), no-component-name())
+          , DataPointerObject(VarRef("myptr"), no-name())
           , paren-list(
               [ BoundsRemapping(IntVal("4"), IntVal("5"))
               , BoundsRemapping(IntVal("7"), IntVal("9"))
@@ -29,7 +29,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -2,7 +2,7 @@ Program(
   "!! R538 data-i-do-object\n!    is array-element\n!    or scalar-structure-component\n!    or data-implied-do\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DataStmt(
             no-label()
@@ -127,7 +127,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

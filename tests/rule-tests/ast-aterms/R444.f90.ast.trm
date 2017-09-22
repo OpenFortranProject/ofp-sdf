@@ -44,7 +44,7 @@ Program(
         ]
       )
     , ModuleSubprogramPart(ContainsStmt("17", eos("\n\n")), [])
-    , EndModuleStmt("18", no-module-name(), eos("\n"))
+    , EndModuleStmt("18", no-name(), eos("\n"))
     )
   ]
 )

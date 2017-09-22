@@ -2,7 +2,7 @@ Program(
   "!! R838 case-construct\n!\n!      case-construct  is  select-case-stmt\n!                            [ case-stmt\n!                                block ] ...\n!                          end-select-stmt\n!\n!      select-case-stmt  is  [ case-construct-name: ] SELECT CASE ( case-expr )\n!\n!      case-stmt  is  CASE case-selector [ case-construct-name ]\n!  \n!      end-select-stmt  is  END SELECT [ case-construct-name ]\n!\n!      case-expr  is  scalar-int-expr\n!                 or  scalar-char-expr\n!                 or  scalar-logical-expr\n!\n!      case-selector  is  ( case-value-range-list )\n!                     or  DEFAULT\n!\n!      case-value-range  is  case-value\n!                        or  case-value :\n!                        or  : case-value\n!                        or  case-value : case-value\n! \n!      case-value  is  scalar-int-initialization-expr\n!                  or  scalar-char-initialization-expr\n!                  or  scalar-logical-initialization-expr\n!\n! Tested here: case-construct, select-case-stmt, case-stmt, end-select-stmt,\n! case-expr, case-selector, case-value-range, case-value-range-list,  \n! case-value, and case-construct-name.\n!\n! Not tested here are: scalar-int-expr, scalar-char-expr, scalar-logical-expr, \n! scalar-int-initialization-expr, scalar-char-initialization-expr,  \n! scalar-logical-initialization-expr, and block.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -278,7 +278,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

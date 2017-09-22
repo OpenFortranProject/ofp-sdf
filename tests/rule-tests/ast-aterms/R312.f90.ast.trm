@@ -2,7 +2,7 @@ Program(
   "!! R312 label\n!    is digit [digit [digit [digit [digit ]]]]\n!\n! Test label_list with a list of length 1,2,3.\n!\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ComputedGotoStmt(
             no-label()
@@ -30,7 +30,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("01234", no-program-name(), eos("\n"))
+    , EndProgramStmt("01234", no-name(), eos("\n"))
     )
   ]
 )

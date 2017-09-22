@@ -12,25 +12,25 @@ Program(
             , [ TypeBoundProcedureStmt(
                   no-label()
                 , [Pass("beauty")]
-                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , [TypeBoundProcDecl("foo", no-name())]
                 ){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
-                , [Pass(no-arg-name()), DEFERRED()]
-                , [TypeBoundProcDecl("boo", no-procedure-name())]
+                , [Pass(no-name()), DEFERRED()]
+                , [TypeBoundProcDecl("boo", no-name())]
                 ){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [NON_OVERRIDABLE(), PRIVATE()]
-                , [TypeBoundProcDecl("hoo", no-procedure-name())]
+                , [TypeBoundProcDecl("hoo", no-name())]
                 ){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [PUBLIC()]
-                , [TypeBoundProcDecl("loo", no-procedure-name()), TypeBoundProcDecl("doo", "goo")]
+                , [TypeBoundProcDecl("loo", no-name()), TypeBoundProcDecl("doo", "goo")]
                 )
               ]
             )
@@ -40,7 +40,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R451 binding-attr

@@ -24,7 +24,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("13", no-program-name())
+    , EndProgramStmt("13", no-name())
     )
   ]
 ){Comment("!! R929 flush-spec

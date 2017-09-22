@@ -2,11 +2,11 @@ Program(
   "!! R737 bounds-spec\n!    is lower-bound-expr :\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PointerAssignmentStmt(
             no-label()
-          , DataPointerObject(VarRef("pointer_foo"), no-component-name())
+          , DataPointerObject(VarRef("pointer_foo"), no-name())
           , paren-list(
               [BoundsRemapping(IntVal("3"), no-upper-bound()), BoundsRemapping(IntVal("7"), no-upper-bound())]
             )
@@ -16,7 +16,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

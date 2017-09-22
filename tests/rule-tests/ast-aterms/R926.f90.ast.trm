@@ -2,7 +2,7 @@ Program(
   "!! R926 rewind-stmt\n!    is  REWIND file-unit-number\n!    or  REWIND ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -33,7 +33,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("4", no-program-name(), eos("\n"))
+    , EndProgramStmt("4", no-name(), eos("\n"))
     )
   ]
 )

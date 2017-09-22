@@ -2,7 +2,7 @@ Program(
   "!! R914 format\n!    is  default-char-expr\n!    or  label\n!    or  *\n!\n! Not tested here: default-char-expr and label.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PrintStmt(
             no-label()
@@ -30,7 +30,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

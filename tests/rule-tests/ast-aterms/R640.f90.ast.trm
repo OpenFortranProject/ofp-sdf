@@ -2,7 +2,7 @@ Program(
   "!! R640 deallocate-stmt\n!    is  DEALLOCATE ( allocate-object-list [, dealloc-opt-list] )\n!\n! Tested separately is: allocate-object-list (R632).\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -56,7 +56,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

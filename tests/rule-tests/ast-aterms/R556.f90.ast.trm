@@ -2,7 +2,7 @@ Program(
   "!! R556 target-stmt\n!    is TARGET [ :: ] target-decl-list\n!\n! from NOTE 5.36\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TargetStmt(
             no-label()
@@ -25,7 +25,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

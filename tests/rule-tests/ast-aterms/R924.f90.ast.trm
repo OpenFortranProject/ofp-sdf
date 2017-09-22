@@ -2,7 +2,7 @@ Program(
   "!! R924 backspace-stmt\n!    is  BACKSPACE file-unit-number\n!    or  BACKSPACE ( position-spec-list )\n!\n! Not tested here: file-unit-number and position-spec-list.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -23,7 +23,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

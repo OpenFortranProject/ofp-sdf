@@ -2,7 +2,7 @@ Program(
   "!! R512 explicit-shape-spec\n!  is [ lower-bound : ] upper-bound\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ CommonStmt(
             no-label()
@@ -31,7 +31,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -44,7 +44,7 @@ Program(
             , ProcComponentDefStmt(
                 no-label()
               , "bob"
-              , [Pass(no-arg-name()), PUBLIC(), POINTER()]
+              , [Pass(no-name()), PUBLIC(), POINTER()]
               , [ProcDecl("foo", "bar")]
               )
             ]

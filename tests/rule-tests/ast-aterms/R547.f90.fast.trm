@@ -15,7 +15,7 @@ Program(
       , []
       , []
       )
-    , EndSubroutineStmt(no-label(), no-subroutine-name())
+    , EndSubroutineStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R547 optional-stmt

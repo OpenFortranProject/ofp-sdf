@@ -2,7 +2,7 @@ Program(
   "!! R928 flush-stmt\n!    is  FLUSH file-unit-number\n!    or  FLUSH ( flush-spec-list )\n!\n! Not tested here: file-unit-number.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -34,7 +34,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("10", no-program-name(), eos("\n\n"))
+    , EndProgramStmt("10", no-name(), eos("\n\n"))
     )
   ]
 )

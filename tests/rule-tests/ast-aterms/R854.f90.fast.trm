@@ -4,7 +4,7 @@ Program(
     , Scope([], [ContinueStmt(no-label()), ContinueStmt("99"){Comment("
 
 ")}], [])
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R854 continue-stmt

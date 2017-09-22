@@ -7,7 +7,7 @@ Program(
  ")}, GotoStmt("9", "10")]
       , []
       )
-    , EndProgramStmt("10", no-program-name())
+    , EndProgramStmt("10", no-name())
     )
   ]
 ){Comment("!! R851 goto-stmt

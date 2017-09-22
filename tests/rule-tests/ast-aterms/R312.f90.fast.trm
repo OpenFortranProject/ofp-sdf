@@ -18,7 +18,7 @@ Program(
         ]
       , []
       )
-    , EndProgramStmt("01234", no-program-name())
+    , EndProgramStmt("01234", no-name())
     )
   ]
 ){Comment("!! R312 label

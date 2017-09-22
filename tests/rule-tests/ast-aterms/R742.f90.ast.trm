@@ -2,7 +2,7 @@ Program(
   "!! R742 where-construct\n!    is where-construct-stmt\n!          [ where-body-construct ] ...\n!       [ masked-elsewhere-stmt\n!          [ where-body-construct ] ... ] ...\n!       [ elsewhere-stmt\n!          [ where-body-construct ] ... ]\n!       end-where-stmt\n!\n!  R743 where-construct-stmt\n!    is [where-construct-name :] WHERE ( mask-expr )\n!\n!  R744 where-body-construct\n!    is where-assignment-stmt\n!    or where-stmt\n!    or where-construct\n!\n!  R745 where-assigment-stmt\n!    is assignment-stmt\n!\n!  R746 masked-expression\n!    is logical-expr\n!\n!  R747 masked-elsewhere-stmt\n!    is ELSEWHERE (mask-expr ) [where-construct-name ]\n!\n!  R748 elsewhere-stmt\n!    is ELSEWHERE [where-construct-name ]\n!\n!  R749 end-where-stmt\n!    is END WHERE [where-construct-name ]\n!\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -101,7 +101,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

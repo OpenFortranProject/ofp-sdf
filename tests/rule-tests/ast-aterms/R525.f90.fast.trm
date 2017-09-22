@@ -16,7 +16,7 @@ Program(
   , MainProgram(
       no-program-stmt()
     , Scope([], [], [])
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R525 access-id

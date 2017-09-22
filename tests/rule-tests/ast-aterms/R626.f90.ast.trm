@@ -2,7 +2,7 @@ Program(
   "!! R626 allocate-stmt\n!    is  ALLOCATE ( [ type-spec :: ] allocation-list [, alloc-opt-list ] )\n!\n! Tested separately are: type-spec (R402) and allocation-list (R631).\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ TypeDeclarationStmt(
             no-label()
@@ -111,7 +111,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

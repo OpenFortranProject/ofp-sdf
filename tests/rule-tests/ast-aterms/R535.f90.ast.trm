@@ -2,7 +2,7 @@ Program(
   "!! R535 data-stmt-set\n!    is data-stmt-object-list / data-stmt-value -list /\n!\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DataStmt(
             no-label()
@@ -84,7 +84,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

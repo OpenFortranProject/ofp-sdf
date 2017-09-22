@@ -2,7 +2,7 @@ Program(
   "!! R802 associate-construct\n!\n!      associate-construct  is  associate-stmt\n!                                 block\n!                               end-associate-stmt\n!\n!      associate-stmt  is  [ associate-construct-name : ] ASSOCIATE \n!                            ( association-list )\n!\n!      association  is  associate-name => selector\n!\n!      selector  is  expr\n!                or  variable\n!\n! Tested here: associate-construct, associate-stmt, end-associate-smt, \n! associate-construct-name, association-list, association, and associate-name.\n!\n! Not tested here: block, selector, expr, and variable.\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ AssociateConstruct(
             AssociateStmt(
@@ -65,7 +65,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

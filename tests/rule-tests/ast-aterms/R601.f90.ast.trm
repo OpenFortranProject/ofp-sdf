@@ -2,7 +2,7 @@ Program(
   "!! R601 designator\n!    is  object-name\n!    or  array-element\n!    or  array-section\n!    or  complex-part-designator\n!    or  structure-component\n!    or  substring\n! \n! Full tests for each of the alternatives is done separately.  \n!\n! designator tested as part of a variable (R602), which is used as part of \n! an assignment-stmt (R732).\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ DerivedTypeDef(
             DerivedTypeStmt(no-label(), no-list(), "T", no-list(), eos("\n  "))
@@ -78,7 +78,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

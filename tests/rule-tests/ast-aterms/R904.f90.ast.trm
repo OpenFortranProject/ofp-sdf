@@ -2,7 +2,7 @@ Program(
   "!! R904 open-stmt\n!    is OPEN ( connect-spec-list )\n!\n! Not tested here: connect-spec-list\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ OpenStmt(
             no-label()
@@ -15,7 +15,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

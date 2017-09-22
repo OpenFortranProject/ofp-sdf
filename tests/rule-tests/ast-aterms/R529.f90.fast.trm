@@ -2,7 +2,7 @@ Program(
   [ MainProgram(
       no-program-stmt()
     , Scope(
-        [ BindStmt("10", LanguageBinding(no-binding-name()), ["i", "j"]){Comment("
+        [ BindStmt("10", LanguageBinding(no-name()), ["i", "j"]){Comment("
     ")}
         , BindStmt(no-label(), LanguageBinding(BindingName("'binky'")), ["zztop"]){Comment("
 
@@ -13,7 +13,7 @@ Program(
           )
         , BindStmt(
             no-label()
-          , LanguageBinding(no-binding-name())
+          , LanguageBinding(no-name())
           , ["B", "C", CommonBlockName("common_block_name")]
           ){Comment("
 
@@ -22,7 +22,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R529 bind-stmt

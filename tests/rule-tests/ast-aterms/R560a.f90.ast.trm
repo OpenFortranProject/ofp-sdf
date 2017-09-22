@@ -2,7 +2,7 @@ Program(
   "!! R560 implicit-stmt\n!    is IMPLICIT implicit-spec-list\n!    or IMPLICIT NONE\n!\n!! R561 implicit-spec\n!    is declaration-type-spec ( letter-spec-list )\n!\n!! R562 letter-spec\n!    is letter [ – letter ]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ImplicitNoneStmt("10", eos("\n\n"))
         , ImplicitStmt(
@@ -21,7 +21,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
     )
   ]
 )

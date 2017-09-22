@@ -67,7 +67,7 @@ Program(
         ]
       , []
       )
-    , EndSubroutineStmt(no-label(), no-subroutine-name()){Comment("
+    , EndSubroutineStmt(no-label(), no-name()){Comment("
 !
 ! even if the only two appearances of NSQP are within the BLOCK constructs,
 ! the scope of NSQP is the whole subroutine S.

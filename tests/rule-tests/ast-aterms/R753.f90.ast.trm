@@ -2,7 +2,7 @@ Program(
   "!! R755 forall-triplet-spec\n!    is index-name = subscript : subscript [ : stride]\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ForallConstruct(
             ForallConstructStmt(
@@ -90,7 +90,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

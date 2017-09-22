@@ -2,7 +2,7 @@ Program(
   "!! R852 computed-goto-stmt\n!    is GO TO ( label-list ) [ , ] scalar-int-expr\n\n!R313 test for label and label-list\n\n  "
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ ComputedGotoStmt(
             no-label()
@@ -21,7 +21,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt("12345", no-program-name(), eos("\n"))
+    , EndProgramStmt("12345", no-name(), eos("\n"))
     )
   ]
 )

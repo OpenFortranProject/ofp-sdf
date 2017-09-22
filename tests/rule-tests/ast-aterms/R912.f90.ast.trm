@@ -2,7 +2,7 @@ Program(
   "!! R912 print-stmt\n!    is  PRINT format [, output-item-list ]\n!\n! Not tested here: format and output-item-list.\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ PrintStmt(
             "13"
@@ -55,7 +55,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

@@ -12,32 +12,32 @@ Program(
             , [ TypeBoundProcedureStmt(
                   no-label()
                 , [NOPASS(), DEFERRED()]
-                , [TypeBoundProcDecl("foo", no-procedure-name())]
+                , [TypeBoundProcDecl("foo", no-name())]
                 ){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [PRIVATE(), NOPASS()]
-                , [TypeBoundProcDecl("beauty", no-procedure-name())]
+                , [TypeBoundProcDecl("beauty", no-name())]
                 ){Comment("
   ")}
-              , TypeBoundProcedureStmt(no-label(), [NON_OVERRIDABLE()], [TypeBoundProcDecl("ugly", no-procedure-name())]){Comment("
+              , TypeBoundProcedureStmt(no-label(), [NON_OVERRIDABLE()], [TypeBoundProcDecl("ugly", no-name())]){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
-                , [Pass(no-arg-name())]
-                , [TypeBoundProcDecl("lies", no-procedure-name())]
+                , [Pass(no-name())]
+                , [TypeBoundProcDecl("lies", no-name())]
                 ){Comment("
   ")}
               , TypeBoundProcedureStmt(
                   no-label()
                 , [Pass("woohoo")]
-                , [TypeBoundProcDecl("bar", no-procedure-name())]
+                , [TypeBoundProcDecl("bar", no-name())]
                 ){Comment("
   ")}
-              , TypeBoundProcedureStmt(no-label(), [PUBLIC()], [TypeBoundProcDecl("that", no-procedure-name())]){Comment("
+              , TypeBoundProcedureStmt(no-label(), [PUBLIC()], [TypeBoundProcDecl("that", no-name())]){Comment("
   ")}
-              , TypeBoundProcedureStmt(no-label(), [PRIVATE()], [TypeBoundProcDecl("theother", no-procedure-name())])
+              , TypeBoundProcedureStmt(no-label(), [PRIVATE()], [TypeBoundProcDecl("theother", no-name())])
               ]
             )
           , EndTypeStmt(no-label(), "truth")
@@ -46,7 +46,7 @@ Program(
       , []
       , []
       )
-    , EndProgramStmt(no-label(), no-program-name())
+    , EndProgramStmt(no-label(), no-name())
     )
   ]
 ){Comment("!! R451 binding-attr

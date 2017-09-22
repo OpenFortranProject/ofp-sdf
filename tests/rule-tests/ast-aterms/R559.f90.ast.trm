@@ -2,14 +2,14 @@ Program(
   "!! R559 volatile-stmt\n!    is VOLATILE [ :: ] object-name-list\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ VolatileStmt("10", ["z"], eos("\n"))
         , VolatileStmt(no-label(), ["A", "B", "c"], eos("\n\n"))
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )

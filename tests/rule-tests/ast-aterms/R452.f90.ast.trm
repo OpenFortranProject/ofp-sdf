@@ -33,7 +33,7 @@ Program(
             , no-language-binding()
             , eos("\n")
             )
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
@@ -52,7 +52,7 @@ Program(
               ]
             )
           , no-subprogram-part()
-          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n\n"))
+          , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
           )
         , SubroutineSubprogram(
             SubroutineStmt(
@@ -63,7 +63,7 @@ Program(
             , no-language-binding()
             , eos("\n")
             )
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
@@ -84,7 +84,7 @@ Program(
               ]
             )
           , no-subprogram-part()
-          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n\n"))
+          , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
           )
         , SubroutineSubprogram(
             SubroutineStmt(
@@ -95,7 +95,7 @@ Program(
             , no-language-binding()
             , eos("\n")
             )
-          , initial-spec-part([], [])
+          , InitialSpecPart([], [])
           , SpecAndExecPart(
               [ TypeDeclarationStmt(
                   no-label()
@@ -107,11 +107,11 @@ Program(
               ]
             )
           , no-subprogram-part()
-          , EndSubroutineStmt(no-label(), no-subroutine-name(), eos("\n\n"))
+          , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
           )
         ]
       )
-    , EndModuleStmt("15", no-module-name(), eos("\n"))
+    , EndModuleStmt("15", no-name(), eos("\n"))
     )
   ]
 )

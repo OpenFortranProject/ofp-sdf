@@ -2,7 +2,7 @@ Program(
   "!! R310 defined-operator\n!    is defined-unary-op        R703\n!    or defined-binary-op       R723\n!    or extended-intrinsic-op   R311\n\n"
 , [ MainProgram(
       no-program-stmt()
-    , initial-spec-part([], [])
+    , InitialSpecPart([], [])
     , SpecAndExecPart(
         [ InterfaceBlock(
             InterfaceStmt(no-label(), OPERATOR(".unaryop."), eos("\n"))
@@ -27,7 +27,7 @@ Program(
         ]
       )
     , no-subprogram-part()
-    , EndProgramStmt(no-label(), no-program-name(), eos("\n"))
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
     )
   ]
 )
