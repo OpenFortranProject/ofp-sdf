@@ -1,0 +1,38 @@
+Program(
+  "!! R850 exit-stmt\n!   - F2008 addition\n!   - EXIT can transfer control from more named executable constructs\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ NonlabelDoStmt(
+            no-label()
+          , "loop_outer"
+          , LoopControl(VarRef("i"), IntVal("1"), IntVal("3"), no-expr())
+          , eos("\n")
+          )
+        , NonlabelDoStmt(
+            no-label()
+          , "loop_inner"
+          , LoopControl(VarRef("ii"), IntVal("1"), IntVal("3"), no-expr())
+          , eos("\n   ")
+          )
+        , ExitStmt(no-label(), "loop_outer", eos("\n"))
+        , EndDoStmt(no-label(), "loop_inner", eos("\n"))
+        , EndDoStmt(no-label(), "loop_outer", eos("\n\n"))
+        , NonlabelDoStmt(no-label(), "loop_while", LoopWhileControl(TRUE()), eos("\n   "))
+        , ExitStmt(no-label(), "loop_while", eos("\n"))
+        , EndDoStmt(no-label(), "loop_while", eos("\n\n"))
+        , IfConstruct(
+            IfThenStmt(no-label(), "if_construct", TRUE(), eos("\n   "))
+          , Block([ExitStmt(no-label(), "if_construct", eos("\n"))])
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), "if_construct", eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,87 @@
+Program(
+  "!! R1211 procedure-declaration-stmt\n!   - F2008 addition\n!   - internal procedure can be used as an actual argument\n!     or procedure pointer target\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "internal_proc_as_actual", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec(), eos("\n     "))
+          , [ InterfaceBody(
+                SubroutineStmt(
+                  no-label()
+                , no-prefix()
+                , "proc_arg"
+                , ["proc"]
+                , no-language-binding()
+                , eos("\n       ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ ProcedureDeclarationStmt(
+                      no-label()
+                    , no-proc-interface()
+                    , no-list()
+                    , [ProcDecl("proc", no-init())]
+                    , eos("\n     ")
+                    )
+                  ]
+                )
+              , EndSubroutineStmt(no-label(), no-name(), eos("\n  "))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec(), eos("\n\n  "))
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "internal_proc"
+          , comma-list([POINTER()])
+          , [ProcDecl("proc_ptr", "internal_proc")]
+          , eos("\n\n  ")
+          )
+        , CallStmt(
+            no-label()
+          , ProcedureDesignator("proc_arg")
+          , [ActualArgSpec(no-keyword(), DataRef([PartRef("internal_proc", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , SubprogramPart(
+        ContainsStmt(no-label(), eos("\n\n  "))
+      , [ SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "internal_proc"
+            , ["i"]
+            , no-language-binding()
+            , eos("\n    ")
+            )
+          , InitialSpecPart([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , IntrinsicType(INTEGER())
+                , no-list()
+                , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n    ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                , IntVal("13")
+                , eos("\n  ")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

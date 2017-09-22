@@ -1,0 +1,34 @@
+Program(
+  "!! R859 sync-stat\n!    is STAT = stat-variable\n!    or ERRMSG = errmsg-variable\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER())
+          , no-list()
+          , [EntityDecl("msg", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n")
+          )
+        , SyncAllStmt(
+            "13"
+          , [ STAT(DataRef([PartRef("i", no-section-subscripts(), no-image-selector())]))
+            , ERRMSG(DataRef([PartRef("msg", no-section-subscripts(), no-image-selector())]))
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  ]
+)

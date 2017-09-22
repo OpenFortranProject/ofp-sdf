@@ -1,0 +1,126 @@
+Program(
+  "!! R1223 actual-arg\n!    is expr\n!    or variable\n!    or procedure-name\n!    or proc-component-ref\n!    or alt-return-spec\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list(
+                    [NOT(DataRef([PartRef("B", no-section-subscripts(), no-image-selector())]))]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list([DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list(
+                    [ DataRef(
+                        [PartRef("udt", no-section-subscripts(), no-image-selector()), PartRef("bar", no-section-subscripts(), no-image-selector())]
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("foo", paren-list([AltReturnSpec("10")]), no-image-selector())]
+            )
+          , eos("! alt-return-spec\n\n! procedure-name\n!\n!  Originally these were (for example):\n!      a = foo(1)(.not.B)\n!  However, it appears this is incorrect and a '%' must be present\n!  for a proc-component-ref\n!\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("var", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list(
+                    [NOT(DataRef([PartRef("B", no-section-subscripts(), no-image-selector())]))]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("var", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list([DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("var", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list(
+                    [ DataRef(
+                        [PartRef("udt", no-section-subscripts(), no-image-selector()), PartRef("bar", no-section-subscripts(), no-image-selector())]
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("var", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef("foo", paren-list([AltReturnSpec("10")]), no-image-selector())
+              ]
+            )
+          , eos("! alt-return-spec\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

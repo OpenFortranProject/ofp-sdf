@@ -1,0 +1,95 @@
+Program(
+  "!! R733 pointer-assignment-stmt\n!   - F2008 addition\n!   - a pointer function reference can denote a variable in any variable\n!     definition context\n!\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "pointer_function_ref"
+      , ["proc_ptr"]
+      , no-language-binding()
+      , eos("\n  ")
+      )
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec(), eos("\n     "))
+          , [ InterfaceBody(
+                SubroutineStmt(
+                  no-label()
+                , no-prefix()
+                , "int_arg_sub"
+                , ["i"]
+                , no-language-binding()
+                , eos("\n       ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(INTEGER())
+                    , no-list()
+                    , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n     ")
+                    )
+                  ]
+                )
+              , EndSubroutineStmt(no-label(), no-name(), eos("\n  "))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec(), eos("\n\n  "))
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "int_arg_sub"
+          , comma-list([POINTER()])
+          , [ProcDecl("proc_ptr", no-init())]
+          , eos("\n\n  ")
+          )
+        , PointerAssignmentStmt(
+            no-label()
+          , DataPointerObject(VarRef("proc_ptr"), no-name())
+          , no-list()
+          , DataRef([PartRef("internal_proc", no-section-subscripts(), no-image-selector())])
+          , eos("\n\n")
+          )
+        ]
+      )
+    , SubprogramPart(
+        ContainsStmt(no-label(), eos("\n\n  "))
+      , [ SubroutineSubprogram(
+            SubroutineStmt(
+              no-label()
+            , no-prefix()
+            , "internal_proc"
+            , ["i"]
+            , no-language-binding()
+            , eos("\n    ")
+            )
+          , InitialSpecPart([], [])
+          , SpecAndExecPart(
+              [ TypeDeclarationStmt(
+                  no-label()
+                , IntrinsicType(INTEGER())
+                , no-list()
+                , [EntityDecl("i", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n    ")
+                )
+              , AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("i", no-section-subscripts(), no-image-selector())])
+                , IntVal("13")
+                , eos("\n  ")
+                )
+              ]
+            )
+          , no-subprogram-part()
+          , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

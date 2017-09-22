@@ -1,0 +1,95 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt"){Comment("
+  ")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "Base", []){Comment("
+    ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("val", INTEGER(), no-init())]
+             ){Comment("
+  ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Base"){Comment("
+  ")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [Extends("Base")], "Derived", []){Comment("
+    ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("dval", INTEGER(), no-init())]
+             ){Comment("
+  ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Derived"){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("Derived", [])
+          , []
+          , [ Var(
+                "old"
+              , ArrayType(
+                  DerivedType("Derived", [])
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("10")), Range(no-lower-bound(), IntVal("20"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("Base", [])
+          , [ALLOCATABLE()]
+          , [ Var(
+                "new"
+              , ArrayType(
+                  DerivedType("Base", [])
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+  ")}
+        ]
+      , [ AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(VarRef("new"), [], [])]
+          , [MOLD(VarRef("old"))]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R627 alloc-opt
+!    or MOLD = source-expr
+!   - F2008 addition
+!   - MOLD= in ALLOCATE statement can give polymorphic variable the shape,
+!     type, and type parameters
+!
+")}

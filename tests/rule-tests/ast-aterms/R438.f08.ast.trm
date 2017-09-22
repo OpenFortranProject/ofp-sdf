@@ -1,0 +1,153 @@
+Program(
+  "!! R438 component-decl\n!    is component-name\n!           [ ( component-array-spec ) ]\n!           [ lbracket coarray-spec rbracket ]\n!           [ * char-length ] [ component-initialization ]\n!\n! from NOTE 4.30\n   "
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "GRID_TYPE", no-list(), eos("\n      "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([ALLOCATABLE(), Codimension([DeferredCoshape(), DeferredCoshape(), DeferredCoshape()])])
+              , [ ComponentDecl(
+                    "GRID1"
+                  , ArraySpec([DeferredShape(), DeferredShape(), DeferredShape()])
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n      ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([ALLOCATABLE()])
+              , [ ComponentDecl(
+                    "GRID2"
+                  , ArraySpec([DeferredShape(), DeferredShape(), DeferredShape()])
+                  , CoarraySpec([DeferredCoshape(), DeferredCoshape(), DeferredCoshape()])
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n      ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("i", no-list(), no-list(), no-char-length(), Init(IntVal("13")))]
+              , eos("\n   ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "GRID_TYPE", eos("\n\n"))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "nasty", no-list(), eos("\n\t"))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ ComponentDecl("truth", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("beauty", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("ugly", no-list(), no-list(), no-char-length(), no-init())
+                , ComponentDecl("lies", no-list(), no-list(), no-char-length(), no-init())
+                ]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , no-list()
+              , [ ComponentDecl(
+                    "foo"
+                  , ArraySpec(
+                      [ ExplicitShape(no-lower-bound(), IntVal("3"))
+                      , ExplicitShape(no-lower-bound(), IntVal("4"))
+                      , ExplicitShape(IntVal("5"), IntVal("9"))
+                      ]
+                    )
+                  , no-list()
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([ALLOCATABLE()])
+              , [ComponentDecl("bar", no-list(), CoarraySpec([DeferredCoshape()]), no-char-length(), no-init())]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(CHARACTER())
+              , no-list()
+              , [ ComponentDecl("this", no-list(), no-list(), opt-char-length(IntVal("35")), no-init())
+                , ComponentDecl(
+                    "ridiculous"
+                  , ArraySpec(
+                      [ExplicitShape(no-lower-bound(), IntVal("5")), ExplicitShape(no-lower-bound(), IntVal("6"))]
+                    )
+                  , no-list()
+                  , opt-char-length(IntVal("12"))
+                  , no-init()
+                  )
+                ]
+              , eos("\n        ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("that", no-list(), no-list(), no-char-length(), Init(IntVal("4")))]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([ALLOCATABLE()])
+              , [ ComponentDecl(
+                    "ridic"
+                  , ArraySpec([DeferredShape(), DeferredShape()])
+                  , CoarraySpec([DeferredCoshape()])
+                  , no-char-length()
+                  , no-init()
+                  )
+                ]
+              , eos("\n\t")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([POINTER()])
+              , [ ComponentDecl(
+                    "ridicule"
+                  , ArraySpec([DeferredShape()])
+                  , no-list()
+                  , no-char-length()
+                  , PointerInit(FunctionReference(ProcedureDesignator("null"), []))
+                  )
+                ]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

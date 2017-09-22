@@ -1,0 +1,73 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "pointer_function_ref", ["proc_ptr"], no-language-binding()){Comment("
+  ")}
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+     ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "int_arg_sub", ["i"], no-language-binding()){Comment("
+       ")}
+              , [TypeDeclarationStmt(
+                   no-label()
+                 , INTEGER()
+                 , []
+                 , [Var("i", INTEGER(), no-init())]
+                 ){Comment("
+     ")}]
+              , EndSubroutineStmt(no-label(), no-name()){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+  ")}
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "int_arg_sub"
+          , [POINTER()]
+          , [ProcDecl("proc_ptr", no-init())]
+          ){Comment("
+
+  ")}
+        ]
+      , [PointerAssignmentStmt(
+           no-label()
+         , DataPointerObject(VarRef("proc_ptr"), no-name())
+         , []
+         , VarRef("internal_proc")
+         ){Comment("
+
+")}]
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "internal_proc", ["i"], no-language-binding()){Comment("
+    ")}
+          , Scope(
+              [TypeDeclarationStmt(
+                 no-label()
+               , INTEGER()
+               , []
+               , [Var("i", INTEGER(), no-init())]
+               ){Comment("
+    ")}]
+            , [AssignmentStmt(no-label(), VarDef("i"), IntVal("13")){Comment("
+  ")}]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndSubroutineStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R733 pointer-assignment-stmt
+!   - F2008 addition
+!   - a pointer function reference can denote a variable in any variable
+!     definition context
+!
+")}

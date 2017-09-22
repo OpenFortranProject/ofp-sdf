@@ -1,0 +1,98 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "array"
+            , [Triplet(IntVal("1"), VarRef("N"), IntVal("2")), VarRef("M")]
+            , no-image-selector()
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , Substring(
+              PartRef(
+                "char_array"
+              , [ Triplet(no-subscript(), no-subscript(), no-stride())
+                , Triplet(no-subscript(), no-subscript(), no-stride())
+                , Triplet(no-subscript(), no-subscript(), no-stride())
+                ]
+              , no-image-selector()
+              )
+            , SubstringRange(IntVal("2"), IntVal("3"))
+            )
+          ){Comment("
+
+! NOTE 6.11
+")}
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef(
+                  "ARRAY_A"
+                , [Triplet(IntVal("1"), VarRef("N"), IntVal("2"))]
+                , no-image-selector()
+                )
+              , PartRef("ARRAY_B", [VarRef("I"), VarRef("J")], no-image-selector())
+              , Substring(
+                  PartRef("STRING", [VarRef("K")], no-image-selector())
+                , SubstringRange(no-lower-bound(), no-upper-bound())
+                )
+              ]
+            )
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ VarRef("SCALAR_PARENT")
+              , PartRef(
+                  "ARRAY_FIELD"
+                , [Triplet(IntVal("1"), VarRef("N"), no-stride())]
+                , no-image-selector()
+                )
+              ]
+            )
+          , IntVal("1")
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("A")
+          , DataRef(
+              [ VarRef("SCALAR_PARENT")
+              , PartRef(
+                  "ARRAY_FIELD"
+                , [Triplet(IntVal("1"), VarRef("N"), no-stride())]
+                , no-image-selector()
+                )
+              , VarRef("SCALAR_FIELD")
+              ]
+            )
+          ){Comment("
+
+! complex-part-designator
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("r")
+          , DataRef([VarRef("c"), VarRef("re")])
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R618 array-section
+!    is data-ref [ (substring-range) ]
+!    or complex-part-designator
+!
+
+")}

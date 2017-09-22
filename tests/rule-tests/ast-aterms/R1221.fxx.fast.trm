@@ -1,0 +1,24 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(no-label(), VarDef("a"), FunctionReference("foo", []))
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef([VarRef("udt"), FunctionReference("foo", [])])
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1221 procedure-designator
+!    is procedure-name
+!    or proc-component-ref
+!    or data-ref % binding-name
+!
+
+")}

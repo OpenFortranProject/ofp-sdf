@@ -1,0 +1,56 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "recursive_type"){Comment("
+  ")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "NODE", []){Comment("! Define a "recursive" type
+    ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , []
+              , [Var("value", INTEGER(), Init(IntVal("0")))]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , DerivedType("NODE", [])
+              , [POINTER()]
+              , [Var(
+                   "next_node"
+                 , DerivedType("NODE", [])
+                 , PointerInit(FunctionReference("NULL", []))
+                 )]
+              ){Comment("
+  ")}
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "NODE"){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("NODE", [])
+          , []
+          , [Var("recursive_t", DerivedType("NODE", []), no-init())]
+          ){Comment("
+  ")}
+        , AllocatableStmt(no-label(), [Var("recursive_t", unknown-type(), no-init())]){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R526 allocatable-stmt
+!   - F2008 addition
+!   - allocatable component can be of recursive type
+!
+")}

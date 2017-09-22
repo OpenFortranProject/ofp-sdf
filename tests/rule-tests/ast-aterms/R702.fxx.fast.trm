@@ -1,0 +1,15 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [AssignmentStmt(no-label(), VarDef("a"), DefUnaryExpr(".INVERSE.", VarRef("B")))]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R702 level-1-expr
+!    is [ defined-unary-op ] primary
+
+")}

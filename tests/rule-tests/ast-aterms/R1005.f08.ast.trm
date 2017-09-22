@@ -1,0 +1,46 @@
+Program(
+  "!! R1005 unlimited-format-item\n!     is * ( format-items )\n!\n! Use with G0 to create CSV output\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "G0", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl(
+                "I"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("3"))])
+              , no-list()
+              , no-char-length()
+              , Init(
+                  ArrayConstructor(
+                    AcSpec(
+                      no-type-spec()
+                    , [IntVal("1"), IntVal("2"), IntVal("3")]
+                    )
+                  )
+                )
+              )
+            ]
+          , eos("\n\n  ")
+          )
+        , WriteStmt(
+            no-label()
+          , io-control-spec-list(UNIT(STAR()), FMT-or-NML("\"(*(G0:','))\""), no-list())
+          , [DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])]
+          , eos("\n  ")
+          )
+        , WriteStmt(
+            no-label()
+          , io-control-spec-list(UNIT(STAR()), comma-list([FMT("\"(*(g0:','))\"")]))
+          , [IntVal("12"), RealVal("1.34"), "\"abc\"", "\"defe\"", IntVal("45")]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

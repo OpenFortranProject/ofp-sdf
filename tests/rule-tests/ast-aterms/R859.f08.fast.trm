@@ -1,0 +1,37 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("i", INTEGER(), no-init())]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [Var("msg", CHARACTER(), no-init())]
+          ){Comment("
+
+")}
+        ]
+      , [SyncAllStmt(
+           "13"
+         , [STAT(VarRef("i")), ERRMSG(VarRef("msg"))]
+         ){Comment("
+
+")}]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R859 sync-stat
+!    is STAT = stat-variable
+!    or ERRMSG = errmsg-variable
+!
+")}

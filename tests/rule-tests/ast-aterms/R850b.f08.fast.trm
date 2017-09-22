@@ -1,0 +1,55 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ BlockDoConstruct(
+            NonlabelDoStmt(
+              no-label()
+            , "loop_outer"
+            , LoopControl(VarRef("i"), IntVal("1"), IntVal("3"), no-expr())
+            )
+          , [ BlockDoConstruct(
+                NonlabelDoStmt(
+                  no-label()
+                , "loop_inner"
+                , LoopControl(VarRef("ii"), IntVal("1"), IntVal("3"), no-expr())
+                ){Comment("
+   ")}
+              , [ExitStmt(no-label(), "loop_outer")]
+              , EndDoStmt(no-label(), "loop_inner")
+              )
+            ]
+          , EndDoStmt(no-label(), "loop_outer"){Comment("
+
+")}
+          )
+        , BlockDoConstruct(
+            NonlabelDoStmt(no-label(), "loop_while", LoopWhileControl(TRUE())){Comment("
+   ")}
+          , [ExitStmt(no-label(), "loop_while")]
+          , EndDoStmt(no-label(), "loop_while"){Comment("
+
+")}
+          )
+        , IfConstruct(
+            IfThenStmt(no-label(), "if_construct", TRUE()){Comment("
+   ")}
+          , [ExitStmt(no-label(), "if_construct")]
+          , []
+          , no-else-stmt()
+          , EndIfStmt(no-label(), "if_construct"){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R850 exit-stmt
+!   - F2008 addition
+!   - EXIT can transfer control from more named executable constructs
+
+")}

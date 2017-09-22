@@ -1,0 +1,78 @@
+Program(
+  "!! R437 component-attr-spec\n!    is access-spec\n!    or ALLOCATABLE\n!    or CODIMENSION lbracket coarray-spec rbracket\n!    or CONTIGUOUS\n!    or DIMENSION ( component-array-spec )\n!    or POINTER\n!\n"
+, [ Module(
+      ModuleStmt(no-label(), "boohoo", eos("\n"))
+    , SpecificationPart(
+        []
+      , []
+      , no-implicit-part()
+      , [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "woohoo", no-list(), eos("\n    "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , comma-list([POINTER(), Dimension([DeferredShape()])])
+              , [ComponentDecl("ugly", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , comma-list([ALLOCATABLE(), Codimension([DeferredCoshape()])])
+              , [ComponentDecl("bar", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([POINTER()])
+              , [ComponentDecl("lies1", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([ALLOCATABLE()])
+              , [ComponentDecl(
+                   "lies2"
+                 , ArraySpec([DeferredShape(), DeferredShape()])
+                 , no-list()
+                 , no-char-length()
+                 , no-init()
+                 )]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(REAL())
+              , comma-list([POINTER(), PRIVATE()])
+              , [ComponentDecl("foo", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , comma-list([ALLOCATABLE()])
+              , [ComponentDecl("this", ArraySpec([DeferredShape()]), no-list(), no-char-length(), no-init())]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , comma-list([ALLOCATABLE(), PRIVATE()])
+              , [ComponentDecl("that", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name(), eos("\n"))
+          )
+        ]
+      )
+    , no-module-subprogram-part()
+    , EndModuleStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

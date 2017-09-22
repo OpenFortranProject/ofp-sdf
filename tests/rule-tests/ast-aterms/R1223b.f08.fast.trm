@@ -1,0 +1,49 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "target_as_actual"){Comment("
+  ")}
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+     ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "SUB", ["X"], no-language-binding()){Comment("
+       ")}
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , REAL()
+                  , [POINTER()]
+                  , [Var("X", REAL(), no-init())]
+                  ){Comment("
+     ")}
+                ]
+              , EndSubroutineStmt(no-label(), "SUB"){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [TARGET()]
+          , [Var("A", REAL(), no-init())]
+          ){Comment("
+
+  ")}
+        ]
+      , [CallStmt(no-label(), "SUB", [VarRef("A")]){Comment("
+
+")}]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1223 actual-arg
+!   - F2008 addition
+!   - actual argument with TARGET atribute can correspond to a dummy pointer
+
+")}

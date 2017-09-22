@@ -1,0 +1,55 @@
+Program(
+  "!! R1223 actual-arg\n!   - F2008 addition\n!   - actual argument with TARGET atribute can correspond to a dummy pointer\n\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "target_as_actual", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec(), eos("\n     "))
+          , [ InterfaceBody(
+                SubroutineStmt(
+                  no-label()
+                , no-prefix()
+                , "SUB"
+                , ["X"]
+                , no-language-binding()
+                , eos("\n       ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(REAL())
+                    , comma-list([POINTER()])
+                    , [EntityDecl("X", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n     ")
+                    )
+                  ]
+                )
+              , EndSubroutineStmt(no-label(), "SUB", eos("\n  "))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec(), eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , comma-list([TARGET()])
+          , [EntityDecl("A", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n  ")
+          )
+        , CallStmt(
+            no-label()
+          , ProcedureDesignator("SUB")
+          , [ActualArgSpec(no-keyword(), DataRef([PartRef("A", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,22 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        [TypeDeclarationStmt(
+           no-label()
+         , INTEGER()
+         , []
+         , [Var("unit_number", INTEGER(), no-init())]
+         ){Comment("
+   ")}]
+      , [OpenStmt(no-label(), [FILE("\"hello.txt\""), NEWUNIT(VarRef("unit_number"))])]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R905 connect-spec
+!   - F2008 addition
+!    or NEWUNIT = scalar-int-variable
+!
+   ")}

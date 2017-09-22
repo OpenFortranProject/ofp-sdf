@@ -1,0 +1,60 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "absent_optional"){Comment("
+  ")}
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+     ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "SUB", ["X"], no-language-binding()){Comment("
+       ")}
+              , [ TypeDeclarationStmt(
+                    no-label()
+                  , REAL()
+                  , [OPTIONAL()]
+                  , [Var("X", REAL(), no-init())]
+                  ){Comment("
+     ")}
+                ]
+              , EndSubroutineStmt(no-label(), "SUB"){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [ALLOCATABLE()]
+          , [Var("unallocd", REAL(), no-init())]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [POINTER()]
+          , [Var("aptr", REAL(), PointerInit(FunctionReference("NULL", [])))]
+          ){Comment("
+
+  ")}
+        ]
+      , [ CallStmt(no-label(), "sub", [VarRef("unallocd")]){Comment("
+  ")}
+        , CallStmt(no-label(), "sub", [VarRef("aptr")]){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1223 actual-arg
+!   - F2008 addition
+!   - a null pointer or unallocated allocatable can be used to denote
+!     absence of optional argument
+!
+")}

@@ -1,0 +1,89 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt"){Comment("
+  ")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "Base", []){Comment("
+    ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("val", INTEGER(), no-init())]
+             ){Comment("
+  ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Base"){Comment("
+  ")}
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [Extends("Base")], "Derived", []){Comment("
+    ")}
+          , []
+          , []
+          , [DataComponentDefStmt(
+               no-label()
+             , INTEGER()
+             , []
+             , [Var("dval", INTEGER(), no-init())]
+             ){Comment("
+  ")}]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Derived"){Comment("
+
+  ")}
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("Derived", [])
+          , []
+          , [Var("old", DerivedType("Derived", []), no-init())]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , DerivedType("Derived", [])
+          , [ALLOCATABLE()]
+          , [Var("new", DerivedType("Derived", []), no-init())]
+          ){Comment("
+
+  ")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("old"), VarRef("val")])
+          , IntVal("1")
+          ){Comment("
+  ")}
+        , AssignmentStmt(
+            no-label()
+          , DataRef([VarRef("old"), VarRef("dval")])
+          , IntVal("3")
+          ){Comment("
+
+  ")}
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(VarRef("new"), [], [])]
+          , []
+          ){Comment("
+  ")}
+        , AssignmentStmt(no-label(), VarDef("new"), VarRef("old")){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R732 assignment-stmt
+!    is variable = expr
+!   - F2008 addition
+!   -  intrinsic assignment to an allocatable polymorphic variable is allowed
+!
+")}

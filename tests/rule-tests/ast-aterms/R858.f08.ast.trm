@@ -1,0 +1,15 @@
+Program(
+  "!! R858 sync-all-stmt\n!    is SYNC ALL [ ( [ sync-stat-list ] ) ]\n!\n   "
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ SyncAllStmt(no-label(), no-list(), eos("\n   "))
+        , SyncAllStmt(no-label(), [], eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  ]
+)

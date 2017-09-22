@@ -1,0 +1,101 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , []
+          , [ Var(
+                "old"
+              , ArrayType(
+                  REAL()
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("2")), Range(no-lower-bound(), IntVal("4"))]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+  ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [ALLOCATABLE()]
+          , [ Var(
+                "new"
+              , ArrayType(
+                  REAL()
+                , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                , []
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+  ")}
+        ]
+      , [ AssignmentStmt(
+            no-label()
+          , PartRef(
+              "old"
+            , [IntVal("1"), Triplet(IntVal("1"), IntVal("4"), no-stride())]
+            , no-image-selector()
+            )
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [IntVal("11"), IntVal("12"), IntVal("13"), IntVal("14")]
+              )
+            )
+          ){Comment("
+  ")}
+        , AssignmentStmt(
+            no-label()
+          , PartRef(
+              "old"
+            , [IntVal("2"), Triplet(IntVal("1"), IntVal("4"), no-stride())]
+            , no-image-selector()
+            )
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [IntVal("21"), IntVal("22"), IntVal("23"), IntVal("24")]
+              )
+            )
+          ){Comment("
+
+  ")}
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(VarRef("new"), [], [])]
+          , [ SOURCE(
+                PartRef(
+                  "old"
+                , [ Triplet(IntVal("1"), IntVal("2"), no-stride())
+                  , Triplet(IntVal("1"), IntVal("3"), no-stride())
+                  ]
+                , no-image-selector()
+                )
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R627 alloc-opt
+!    or SOURCE = source-expr
+!   - F2008 addition
+!   - SOURCE= in ALLOCATE statement can give array bounds as well as the value
+
+")}

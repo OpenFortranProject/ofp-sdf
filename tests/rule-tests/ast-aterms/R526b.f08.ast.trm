@@ -1,0 +1,54 @@
+Program(
+  "!! R526 allocatable-stmt\n!   - F2008 addition\n!   - allocatable component can be of recursive type\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "recursive_type", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "NODE", no-list(), eos("! Define a \"recursive\" type\n    "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("value", no-list(), no-list(), no-char-length(), Init(IntVal("0")))]
+              , eos("\n    ")
+              )
+            , DataComponentDefStmt(
+                no-label()
+              , derived-type-spec(DerivedTypeSpec("NODE", no-list()))
+              , comma-list([POINTER()])
+              , [ ComponentDecl(
+                    "next_node"
+                  , no-list()
+                  , no-list()
+                  , no-char-length()
+                  , PointerInit(FunctionReference(ProcedureDesignator("NULL"), []))
+                  )
+                ]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "NODE", eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("NODE", no-list()))
+          , no-list()
+          , [EntityDecl("recursive_t", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , AllocatableStmt(
+            no-label()
+          , [AllocatableDecl("recursive_t", no-list(), no-list())]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,25 @@
+Program(
+  "!! R905 connect-spec\n!   - F2008 addition\n!    or NEWUNIT = scalar-int-variable\n!\n   "
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("unit_number", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n   ")
+          )
+        , OpenStmt(
+            no-label()
+          , [FILE("\"hello.txt\""), NEWUNIT(DataRef([PartRef("unit_number", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

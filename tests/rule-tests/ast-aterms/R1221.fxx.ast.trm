@@ -1,0 +1,27 @@
+Program(
+  "!! R1221 procedure-designator\n!    is procedure-name\n!    or proc-component-ref\n!    or data-ref % binding-name\n!\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef([PartRef("foo", function-ref-no-args(), no-image-selector())])
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("udt", no-section-subscripts(), no-image-selector()), PartRef("foo", function-ref-no-args(), no-image-selector())]
+            )
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

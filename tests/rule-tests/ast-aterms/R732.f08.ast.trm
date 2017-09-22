@@ -1,0 +1,96 @@
+Program(
+  "!! R732 assignment-stmt\n!    is variable = expr\n!   - F2008 addition\n!   -  intrinsic assignment to an allocatable polymorphic variable is allowed\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "Base", no-list(), eos("\n    "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("val", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Base", eos("\n  "))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , comma-list([Extends("Base")])
+            , "Derived"
+            , no-list()
+            , eos("\n    ")
+            )
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("dval", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Derived", eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("Derived", no-list()))
+          , no-list()
+          , [EntityDecl("old", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("Derived", no-list()))
+          , comma-list([ALLOCATABLE()])
+          , [EntityDecl("new", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("old", no-section-subscripts(), no-image-selector()), PartRef("val", no-section-subscripts(), no-image-selector())]
+            )
+          , IntVal("1")
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [PartRef("old", no-section-subscripts(), no-image-selector()), PartRef("dval", no-section-subscripts(), no-image-selector())]
+            )
+          , IntVal("3")
+          , eos("\n\n  ")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("new", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , no-list()
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("new", no-section-subscripts(), no-image-selector())])
+          , DataRef([PartRef("old", no-section-subscripts(), no-image-selector())])
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

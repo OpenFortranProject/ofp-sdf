@@ -1,0 +1,110 @@
+Program(
+  "!! R627 alloc-opt\n!    or SOURCE = source-expr\n!   - F2008 addition\n!   - SOURCE= in ALLOCATE statement can give array bounds as well as the value\n\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , no-list()
+          , [ EntityDecl(
+                "old"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("2")), ExplicitShape(no-lower-bound(), IntVal("4"))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , comma-list([ALLOCATABLE()])
+          , [ EntityDecl(
+                "new"
+              , ArraySpec([AssumedShape(no-lower-bound()), AssumedShape(no-lower-bound())])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef(
+                  "old"
+                , paren-list(
+                    [IntVal("1"), Triplet(IntVal("1"), IntVal("4"), no-stride())]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [IntVal("11"), IntVal("12"), IntVal("13"), IntVal("14")]
+              )
+            )
+          , eos("\n  ")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef(
+                  "old"
+                , paren-list(
+                    [IntVal("2"), Triplet(IntVal("1"), IntVal("4"), no-stride())]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , ArrayConstructor(
+              AcSpec(
+                no-type-spec()
+              , [IntVal("21"), IntVal("22"), IntVal("23"), IntVal("24")]
+              )
+            )
+          , eos("\n\n  ")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("new", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , comma-list(
+              [ SOURCE(
+                  DataRef(
+                    [ PartRef(
+                        "old"
+                      , paren-list(
+                          [ Triplet(IntVal("1"), IntVal("2"), no-stride())
+                          , Triplet(IntVal("1"), IntVal("3"), no-stride())
+                          ]
+                        )
+                      , no-image-selector()
+                      )
+                    ]
+                  )
+                )
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

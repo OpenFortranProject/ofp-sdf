@@ -1,0 +1,78 @@
+Program(
+  "!! R503 entity-decl\n!    is object-name [( array-spec )]\n!                   [ lbracket co-array-spec rbracket ]\n!                   [ * char-length ] [ initialization ]\n!    or function-name [ * char-length ]\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "entities"
+      , ["what", "ever", "this", "ridiculous"]
+      , no-language-binding()
+      , eos("\n\n")
+      )
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([SAVE()])
+          , [ EntityDecl(
+                "i"
+              , ArraySpec([ExplicitShape(no-lower-bound(), IntVal("13"))])
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl(
+                "what"
+              , no-list()
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , no-char-length()
+              , no-init()
+              )
+            , EntityDecl(
+                "ever"
+              , no-list()
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(CHARACTER())
+          , no-list()
+          , [ EntityDecl(
+                "this"
+              , no-list()
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , opt-char-length(IntVal("35"))
+              , no-init()
+              )
+            , EntityDecl(
+                "ridiculous"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("5")), ExplicitShape(no-lower-bound(), IntVal("6"))]
+                )
+              , CoarraySpec(explicit-coshape-spec-list([], final-cobounds-entry(no-lower-bound())))
+              , opt-char-length(IntVal("12"))
+              , no-init()
+              )
+            ]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  ]
+)

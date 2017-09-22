@@ -1,0 +1,81 @@
+Program(
+  "!! R609 parent-string\n!    is scalar-variable-name\n!    or array-element\n!    or coindexed-named-object\n!    or scalar-structure-component\n!    or scalar-constant\n!\n! from NOTE 6.2\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "B"
+                , substring-section-range(
+                    [IntVal("1")]
+                  , SubstringRange(IntVal("1"), IntVal("5"))
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("P", no-section-subscripts(), no-image-selector())
+              , PartRef(
+                  "NAME"
+                , paren-list([Triplet(IntVal("1"), IntVal("1"), no-stride())])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "ID"
+                , paren-list([Triplet(IntVal("4"), IntVal("9"), no-stride())])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , Substring(
+              "'0123456789'"
+            , SubstringRange(
+                DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+              , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+              )
+            )
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "coarray_string"
+                , paren-list([Triplet(IntVal("2"), IntVal("3"), no-stride())])
+                , substring-section-range(ImageSelector([IntVal("5")]), SubstringRange(no-lower-bound(), no-upper-bound()))
+                )
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,94 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef("foo", [NOT(VarRef("B"))], no-image-selector())
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef("foo", [VarRef("b")], no-image-selector())
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef(
+              "foo"
+            , [DataRef([VarRef("udt"), VarRef("bar")])]
+            , no-image-selector()
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , PartRef("foo", [AltReturnSpec("10")], no-image-selector())
+          ){Comment("! alt-return-spec
+
+! procedure-name
+!
+!  Originally these were (for example):
+!      a = foo(1)(.not.B)
+!  However, it appears this is incorrect and a '%' must be present
+!  for a proc-component-ref
+!
+")}
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef(
+              [ PartRef("var", [IntVal("1")], no-image-selector())
+              , PartRef("foo", [NOT(VarRef("B"))], no-image-selector())
+              ]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef(
+              [ PartRef("var", [IntVal("1")], no-image-selector())
+              , PartRef("foo", [VarRef("b")], no-image-selector())
+              ]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef(
+              [ PartRef("var", [IntVal("1")], no-image-selector())
+              , PartRef(
+                  "foo"
+                , [DataRef([VarRef("udt"), VarRef("bar")])]
+                , no-image-selector()
+                )
+              ]
+            )
+          )
+        , AssignmentStmt(
+            no-label()
+          , VarDef("a")
+          , DataRef(
+              [ PartRef("var", [IntVal("1")], no-image-selector())
+              , PartRef("foo", [AltReturnSpec("10")], no-image-selector())
+              ]
+            )
+          ){Comment("! alt-return-spec
+
+")}
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1223 actual-arg
+!    is expr
+!    or variable
+!    or procedure-name
+!    or proc-component-ref
+!    or alt-return-spec
+
+")}

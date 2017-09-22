@@ -1,0 +1,150 @@
+Program(
+  "!! R1222 actual-arg-spec\n!    is [ keyword = ] actual-arg\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list(
+                    [ActualArgSpec(
+                       "keyword"
+                     , NOT(DataRef([PartRef("B", no-section-subscripts(), no-image-selector())]))
+                     )]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list(
+                    [ActualArgSpec("keyword", DataRef([PartRef("b", no-section-subscripts(), no-image-selector())]))]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "foo"
+                , paren-list(
+                    [ ActualArgSpec(
+                        "keyword"
+                      , DataRef(
+                          [PartRef("udt", no-section-subscripts(), no-image-selector()), PartRef("bar", no-section-subscripts(), no-image-selector())]
+                        )
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef(
+                 "foo"
+               , paren-list([ActualArgSpec("keyword", AltReturnSpec("10"))])
+               , no-image-selector()
+               )]
+            )
+          , eos("\n\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("fref", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list(
+                    [ActualArgSpec(
+                       "keyword"
+                     , NOT(DataRef([PartRef("B", no-section-subscripts(), no-image-selector())]))
+                     )]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("fref", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list(
+                    [ActualArgSpec("keyword", DataRef([PartRef("b", no-section-subscripts(), no-image-selector())]))]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("fref", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list(
+                    [ ActualArgSpec(
+                        "keyword"
+                      , DataRef(
+                          [PartRef("udt", no-section-subscripts(), no-image-selector()), PartRef("bar", no-section-subscripts(), no-image-selector())]
+                        )
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("fref", paren-list([IntVal("1")]), no-image-selector())
+              , PartRef(
+                  "foo"
+                , paren-list([ActualArgSpec("keyword", AltReturnSpec("10"))])
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

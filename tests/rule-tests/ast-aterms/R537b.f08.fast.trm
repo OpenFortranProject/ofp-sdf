@@ -1,0 +1,76 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "data_implied_do"){Comment("
+
+   ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [PARAMETER()]
+          , [ Var("begin", INTEGER(), Init(IntVal("2")))
+            , Var("end", INTEGER(), Init(IntVal("100")))
+            , Var("stride", INTEGER(), Init(IntVal("1")))
+            ]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [Var("k", INTEGER(), no-init())]
+          ){Comment("
+   ")}
+        , TypeDeclarationStmt(
+            no-label()
+          , REAL()
+          , [ Dimension(
+                [Range(no-lower-bound(), IntVal("100")), Range(no-lower-bound(), IntVal("100"))]
+              )
+            ]
+          , [Var("Skew", REAL(), no-init())]
+          ){Comment("
+
+   ")}
+        , DataStmt(
+            no-label()
+          , [ DataStmtSet(
+                [ DataImpliedDo(
+                    [ DataImpliedDo(
+                        [PartRef("Skew", [VarRef("k"), VarRef("j")], no-image-selector())]
+                      , DataIDoVariable(VarRef("j"))
+                      , Plus(VarRef("k"), IntVal("1"))
+                      , VarRef("end")
+                      , no-expr()
+                      )
+                    ]
+                  , DataIDoVariable(VarRef("k"))
+                  , Minus(VarRef("begin"), IntVal("1"))
+                  , Minus(VarRef("end"), IntVal("1"))
+                  , VarRef("stride")
+                  )
+                ]
+              , [DataStmtValue(DataStmtRepeat("4950"), RealVal("1.0"))]
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R537 data-implied-do
+!    is ( data-i-do-object-list, data-i-do-variable
+!       = scalar-int-constant-expr, scalar-int-constant-expr [ , scalar-int-constant-expr ] )
+!
+!   - F2008 addition
+!   - subscripts and nested implied-do limits inside a data-implied-do
+!     can be any constant expression
+!
+")}

@@ -1,0 +1,60 @@
+Program(
+  "!! R808 block-stmt\n!    is [ block-construct-name : ] BLOCK\n!\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("a", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n")
+          )
+        , BlockConstruct(
+            BlockStmt("10", "named_block", eos("\n  "))
+          , SpecificationPart(
+              []
+            , []
+            , no-implicit-part()
+            , [ TypeDeclarationStmt(
+                  no-label()
+                , IntrinsicType(INTEGER())
+                , no-list()
+                , [EntityDecl("b", no-list(), no-list(), no-char-length(), no-init())]
+                , eos("\n  ")
+                )
+              ]
+            )
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("b", no-section-subscripts(), no-image-selector())])
+                , IntVal("3")
+                , eos("\n")
+                )
+              ]
+            )
+          , EndBlockStmt("11", "named_block", eos("\n"))
+          )
+        , BlockConstruct(
+            BlockStmt("12", no-name(), eos("\n  "))
+          , SpecificationPart([], [], no-implicit-part(), [])
+          , Block(
+              [ AssignmentStmt(
+                  no-label()
+                , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+                , IntVal("13")
+                , eos("\n")
+                )
+              ]
+            )
+          , EndBlockStmt("13", no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

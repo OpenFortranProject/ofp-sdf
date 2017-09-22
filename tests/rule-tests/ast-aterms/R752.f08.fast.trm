@@ -1,0 +1,36 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [ ForallConstruct(
+            ForallConstructStmt(
+              no-label()
+            , no-name()
+            , ForallHeader(
+                INTEGER(Kind(IntVal("4")))
+              , [ ForallTripletSpec("ii", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("jj", IntVal("1"), IntVal("10"), no-forall-step())
+                ]
+              , no-mask-expr()
+              )
+            )
+          , []
+          , EndForallStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R752 forall-header
+!    is ( [ type-spec :: ] forall-triplet-spec-list [, scalar-mask-expr] )
+!
+!   - F2008 addition
+!   - FORALL index can have its type and kind explicitly declared within the construct
+!
+
+")}

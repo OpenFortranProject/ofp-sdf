@@ -1,0 +1,19 @@
+Program(
+  "!! R702 level-1-expr\n!    is [ defined-unary-op ] primary\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DefUnaryExpr(".INVERSE.", DataRef([PartRef("B", no-section-subscripts(), no-image-selector())]))
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

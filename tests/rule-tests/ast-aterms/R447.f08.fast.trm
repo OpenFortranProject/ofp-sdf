@@ -1,0 +1,46 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "myjunk"){Comment("
+
+")}
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "POINT", [])
+          , []
+          , []
+          , []
+          , TypeBoundProcPart(
+              no-binding-private-stmt()
+            , [ TypeBoundProcedureStmt(
+                  no-label()
+                , [Pass(no-name())]
+                , [TypeBoundProcDecl("LENGTH", "POINT_LENGTH")]
+                ){Comment("
+   ")}
+              , TypeBoundProcedureStmt(no-label(), [], [TypeBoundProcDecl("length", "point_length")]){Comment("
+   ")}
+              , TypeBoundProcedureStmt(no-label(), [], [TypeBoundProcDecl("length", "point_length")])
+              , TypeBoundProcedureInterfaceStmt(
+                  "10"
+                , "proc_name"
+                , [NON_OVERRIDABLE(), DEFERRED()]
+                , ["sink", "or", "swim"]
+                )
+              ]
+            )
+          , EndTypeStmt(no-label(), "POINT"){Comment("
+
+")}
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R447 type-bound-procedure-stmt
+!    is PROCEDURE [ [ , binding-attr-list ] :: ] type-bound-proc-decl-list
+!    or PROCEDURE (interface-name ), binding-attr-list :: binding-name-list
+
+")}

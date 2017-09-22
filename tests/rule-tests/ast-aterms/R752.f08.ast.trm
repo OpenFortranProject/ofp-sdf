@@ -1,0 +1,29 @@
+Program(
+  "!! R752 forall-header\n!    is ( [ type-spec :: ] forall-triplet-spec-list [, scalar-mask-expr] )\n!\n!   - F2008 addition\n!   - FORALL index can have its type and kind explicitly declared within the construct\n!\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ ForallConstruct(
+            ForallConstructStmt(
+              no-label()
+            , no-name()
+            , ForallHeader(
+                type-spec-colon(INTEGER(Kind(IntVal("4"))))
+              , [ ForallTripletSpec("ii", IntVal("1"), IntVal("10"), no-forall-step())
+                , ForallTripletSpec("jj", IntVal("1"), IntVal("10"), no-forall-step())
+                ]
+              , no-mask-expr()
+              )
+            , eos("\n")
+            )
+          , []
+          , EndForallStmt(no-label(), no-name(), eos("\n\n"))
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

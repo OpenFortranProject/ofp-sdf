@@ -1,0 +1,91 @@
+Program(
+  [ Module(
+      ModuleStmt(no-label(), "boohoo")
+    , Scope(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), [], "woohoo", []){Comment("
+    ")}
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , [POINTER(), Dimension([Range(no-lower-bound(), COLON())])]
+              , [Var("ugly", INTEGER(), no-init())]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , [ALLOCATABLE(), Codimension([Range(no-lower-bound(), COLON())])]
+              , [Var("bar", INTEGER(), no-init())]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , [POINTER()]
+              , [Var("lies1", REAL(), no-init())]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , [ALLOCATABLE()]
+              , [ Var(
+                    "lies2"
+                  , ArrayType(
+                      REAL()
+                    , ArraySpec([Range(no-lower-bound(), COLON()), Range(no-lower-bound(), COLON())])
+                    , []
+                    )
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , REAL()
+              , [POINTER(), PRIVATE()]
+              , [Var("foo", REAL(), no-init())]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , [ALLOCATABLE()]
+              , [ Var(
+                    "this"
+                  , ArrayType(INTEGER(), ArraySpec([Range(no-lower-bound(), COLON())]), [])
+                  , no-init()
+                  )
+                ]
+              ){Comment("
+    ")}
+            , DataComponentDefStmt(
+                no-label()
+              , INTEGER()
+              , [ALLOCATABLE(), PRIVATE()]
+              , [Var("that", INTEGER(), no-init())]
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), no-name())
+          )
+        ]
+      , []
+      , []
+      )
+    , EndModuleStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R437 component-attr-spec
+!    is access-spec
+!    or ALLOCATABLE
+!    or CODIMENSION lbracket coarray-spec rbracket
+!    or CONTIGUOUS
+!    or DIMENSION ( component-array-spec )
+!    or POINTER
+!
+")}

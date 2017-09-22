@@ -1,0 +1,87 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(
+        no-label()
+      , []
+      , "entities"
+      , ["what", "ever", "this", "ridiculous"]
+      , no-language-binding()
+      ){Comment("
+
+")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , [SAVE()]
+          , [ Var(
+                "i"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("13"))])
+                , CoarraySpec([Range(no-lower-bound(), STAR())])
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "what"
+              , ArrayType(INTEGER(), [], CoarraySpec([Range(no-lower-bound(), STAR())]))
+              , no-init()
+              )
+            , Var(
+                "ever"
+              , ArrayType(INTEGER(), [], CoarraySpec([Range(no-lower-bound(), STAR())]))
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , CHARACTER()
+          , []
+          , [ Var(
+                "this"
+              , ArrayType(
+                  CHARACTER_LEN(IntVal("35"))
+                , []
+                , CoarraySpec([Range(no-lower-bound(), STAR())])
+                )
+              , no-init()
+              )
+            , Var(
+                "ridiculous"
+              , ArrayType(
+                  CHARACTER_LEN(IntVal("12"))
+                , ArraySpec(
+                    [Range(no-lower-bound(), IntVal("5")), Range(no-lower-bound(), IntVal("6"))]
+                  )
+                , CoarraySpec([Range(no-lower-bound(), STAR())])
+                )
+              , no-init()
+              )
+            ]
+          ){Comment("
+
+")}
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R503 entity-decl
+!    is object-name [( array-spec )]
+!                   [ lbracket co-array-spec rbracket ]
+!                   [ * char-length ] [ initialization ]
+!    or function-name [ * char-length ]
+
+")}

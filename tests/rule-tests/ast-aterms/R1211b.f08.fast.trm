@@ -1,0 +1,63 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "internal_proc_as_actual"){Comment("
+  ")}
+    , Scope(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec()){Comment("
+     ")}
+          , [ InterfaceBody(
+                SubroutineStmt(no-label(), [], "proc_arg", ["proc"], no-language-binding()){Comment("
+       ")}
+              , [ProcedureDeclarationStmt(no-label(), no-proc-interface(), [], [ProcDecl("proc", no-init())]){Comment("
+     ")}]
+              , EndSubroutineStmt(no-label(), no-name()){Comment("
+  ")}
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec()){Comment("
+
+  ")}
+          )
+        , ProcedureDeclarationStmt(
+            no-label()
+          , "internal_proc"
+          , [POINTER()]
+          , [ProcDecl("proc_ptr", "internal_proc")]
+          ){Comment("
+
+  ")}
+        ]
+      , [CallStmt(no-label(), "proc_arg", [VarRef("internal_proc")]){Comment("
+
+")}]
+      , [ Subroutine(
+            SubroutineStmt(no-label(), [], "internal_proc", ["i"], no-language-binding()){Comment("
+    ")}
+          , Scope(
+              [TypeDeclarationStmt(
+                 no-label()
+               , INTEGER()
+               , []
+               , [Var("i", INTEGER(), no-init())]
+               ){Comment("
+    ")}]
+            , [AssignmentStmt(no-label(), VarDef("i"), IntVal("13")){Comment("
+  ")}]
+            , []
+            )
+          , EndSubroutineStmt(no-label(), no-name()){Comment("
+
+")}
+          )
+        ]
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1211 procedure-declaration-stmt
+!   - F2008 addition
+!   - internal procedure can be used as an actual argument
+!     or procedure pointer target
+!
+")}

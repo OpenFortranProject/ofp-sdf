@@ -1,0 +1,92 @@
+Program(
+  "!! R627 alloc-opt\n!    or MOLD = source-expr\n!   - F2008 addition\n!   - MOLD= in ALLOCATE statement can give polymorphic variable the shape,\n!     type, and type parameters\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "alloc_opt", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ DerivedTypeDef(
+            DerivedTypeStmt(no-label(), no-list(), "Base", no-list(), eos("\n    "))
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("val", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Base", eos("\n  "))
+          )
+        , DerivedTypeDef(
+            DerivedTypeStmt(
+              no-label()
+            , comma-list([Extends("Base")])
+            , "Derived"
+            , no-list()
+            , eos("\n    ")
+            )
+          , []
+          , []
+          , [ DataComponentDefStmt(
+                no-label()
+              , IntrinsicType(INTEGER())
+              , no-list()
+              , [ComponentDecl("dval", no-list(), no-list(), no-char-length(), no-init())]
+              , eos("\n  ")
+              )
+            ]
+          , no-type-bound-procedure-part()
+          , EndTypeStmt(no-label(), "Derived", eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("Derived", no-list()))
+          , no-list()
+          , [ EntityDecl(
+                "old"
+              , ArraySpec(
+                  [ExplicitShape(no-lower-bound(), IntVal("10")), ExplicitShape(no-lower-bound(), IntVal("20"))]
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , derived-type-spec(DerivedTypeSpec("Base", no-list()))
+          , comma-list([ALLOCATABLE()])
+          , [ EntityDecl(
+                "new"
+              , ArraySpec([AssumedShape(no-lower-bound()), AssumedShape(no-lower-bound())])
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n\n  ")
+          )
+        , AllocateStmt(
+            no-label()
+          , no-type-spec()
+          , [Allocation(
+               DataRef([PartRef("new", no-section-subscripts(), no-image-selector())])
+             , no-list()
+             , no-list()
+             )]
+          , comma-list(
+              [MOLD(DataRef([PartRef("old", no-section-subscripts(), no-image-selector())]))]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

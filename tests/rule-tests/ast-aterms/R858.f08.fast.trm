@@ -1,0 +1,18 @@
+Program(
+  [ MainProgram(
+      no-program-stmt()
+    , Scope(
+        []
+      , [SyncAllStmt(no-label(), []){Comment("
+   ")}, SyncAllStmt(no-label(), [])]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name()){Comment("
+
+")}
+    )
+  ]
+){Comment("!! R858 sync-all-stmt
+!    is SYNC ALL [ ( [ sync-stat-list ] ) ]
+!
+   ")}

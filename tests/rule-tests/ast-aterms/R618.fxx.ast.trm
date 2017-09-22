@@ -1,0 +1,141 @@
+Program(
+  "!! R618 array-section\n!    is data-ref [ (substring-range) ]\n!    or complex-part-designator\n!\n\n"
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "array"
+                , paren-list(
+                    [ Triplet(
+                        IntVal("1")
+                      , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                      , opt-stride(IntVal("2"))
+                      )
+                    , DataRef([PartRef("M", no-section-subscripts(), no-image-selector())])
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("a", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef(
+                  "char_array"
+                , substring-section-range(
+                    [ Triplet(no-subscript(), no-subscript(), no-stride())
+                    , Triplet(no-subscript(), no-subscript(), no-stride())
+                    , Triplet(no-subscript(), no-subscript(), no-stride())
+                    ]
+                  , SubstringRange(IntVal("2"), IntVal("3"))
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , eos("\n\n! NOTE 6.11\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef(
+                  "ARRAY_A"
+                , paren-list(
+                    [ Triplet(
+                        IntVal("1")
+                      , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                      , opt-stride(IntVal("2"))
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              , PartRef(
+                  "ARRAY_B"
+                , paren-list(
+                    [ DataRef([PartRef("I", no-section-subscripts(), no-image-selector())])
+                    , DataRef([PartRef("J", no-section-subscripts(), no-image-selector())])
+                    ]
+                  )
+                , no-image-selector()
+                )
+              , PartRef(
+                  "STRING"
+                , substring-section-range(
+                    [DataRef([PartRef("K", no-section-subscripts(), no-image-selector())])]
+                  , SubstringRange(no-lower-bound(), no-upper-bound())
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , IntVal("1")
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef(
+              [ PartRef("SCALAR_PARENT", no-section-subscripts(), no-image-selector())
+              , PartRef(
+                  "ARRAY_FIELD"
+                , paren-list(
+                    [ Triplet(
+                        IntVal("1")
+                      , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                      , no-stride()
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              ]
+            )
+          , IntVal("1")
+          , eos("\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("A", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [ PartRef("SCALAR_PARENT", no-section-subscripts(), no-image-selector())
+              , PartRef(
+                  "ARRAY_FIELD"
+                , paren-list(
+                    [ Triplet(
+                        IntVal("1")
+                      , DataRef([PartRef("N", no-section-subscripts(), no-image-selector())])
+                      , no-stride()
+                      )
+                    ]
+                  )
+                , no-image-selector()
+                )
+              , PartRef("SCALAR_FIELD", no-section-subscripts(), no-image-selector())
+              ]
+            )
+          , eos("\n\n! complex-part-designator\n")
+          )
+        , AssignmentStmt(
+            no-label()
+          , DataRef([PartRef("r", no-section-subscripts(), no-image-selector())])
+          , DataRef(
+              [PartRef("c", no-section-subscripts(), no-image-selector()), PartRef("re", no-section-subscripts(), no-image-selector())]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,75 @@
+Program(
+  "!! R1223 actual-arg\n!   - F2008 addition\n!   - a null pointer or unallocated allocatable can be used to denote\n!     absence of optional argument\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "absent_optional", eos("\n  "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ InterfaceBlock(
+            InterfaceStmt(no-label(), no-generic-spec(), eos("\n     "))
+          , [ InterfaceBody(
+                SubroutineStmt(
+                  no-label()
+                , no-prefix()
+                , "SUB"
+                , ["X"]
+                , no-language-binding()
+                , eos("\n       ")
+                )
+              , SpecificationPart(
+                  []
+                , []
+                , no-implicit-part()
+                , [ TypeDeclarationStmt(
+                      no-label()
+                    , IntrinsicType(REAL())
+                    , comma-list([OPTIONAL()])
+                    , [EntityDecl("X", no-list(), no-list(), no-char-length(), no-init())]
+                    , eos("\n     ")
+                    )
+                  ]
+                )
+              , EndSubroutineStmt(no-label(), "SUB", eos("\n  "))
+              )
+            ]
+          , EndInterfaceStmt(no-label(), no-generic-spec(), eos("\n\n  "))
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , comma-list([ALLOCATABLE()])
+          , [EntityDecl("unallocd", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n  ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , comma-list([POINTER()])
+          , [ EntityDecl(
+                "aptr"
+              , no-list()
+              , no-list()
+              , no-char-length()
+              , PointerInit(FunctionReference(ProcedureDesignator("NULL"), []))
+              )
+            ]
+          , eos("\n\n  ")
+          )
+        , CallStmt(
+            no-label()
+          , ProcedureDesignator("sub")
+          , [ActualArgSpec(no-keyword(), DataRef([PartRef("unallocd", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n  ")
+          )
+        , CallStmt(
+            no-label()
+          , ProcedureDesignator("sub")
+          , [ActualArgSpec(no-keyword(), DataRef([PartRef("aptr", no-section-subscripts(), no-image-selector())]))]
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

@@ -1,0 +1,85 @@
+Program(
+  "!! R537 data-implied-do\n!    is ( data-i-do-object-list, data-i-do-variable\n!       = scalar-int-constant-expr, scalar-int-constant-expr [ , scalar-int-constant-expr ] )\n!\n!   - F2008 addition\n!   - subscripts and nested implied-do limits inside a data-implied-do\n!     can be any constant expression\n!\n"
+, [ MainProgram(
+      ProgramStmt(no-label(), "data_implied_do", eos("\n\n   "))
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [ EntityDecl("begin", no-list(), no-list(), no-char-length(), Init(IntVal("2")))
+            , EntityDecl("end", no-list(), no-list(), no-char-length(), Init(IntVal("100")))
+            , EntityDecl("stride", no-list(), no-list(), no-char-length(), Init(IntVal("1")))
+            ]
+          , eos("\n   ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [EntityDecl("k", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n   ")
+          )
+        , TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(REAL())
+          , comma-list(
+              [ Dimension(
+                  [ExplicitShape(no-lower-bound(), IntVal("100")), ExplicitShape(no-lower-bound(), IntVal("100"))]
+                )
+              ]
+            )
+          , [EntityDecl("Skew", no-list(), no-list(), no-char-length(), no-init())]
+          , eos("\n\n   ")
+          )
+        , DataStmt(
+            no-label()
+          , DataStmtSet(
+              [ DataImpliedDo(
+                  [ DataImpliedDo(
+                      [ DataRef(
+                          [ PartRef(
+                              "Skew"
+                            , paren-list(
+                                [ DataRef([PartRef("k", no-section-subscripts(), no-image-selector())])
+                                , DataRef([PartRef("j", no-section-subscripts(), no-image-selector())])
+                                ]
+                              )
+                            , no-image-selector()
+                            )
+                          ]
+                        )
+                      ]
+                    , DataIDoVariable(VarRef("j"))
+                    , Plus(
+                        DataRef([PartRef("k", no-section-subscripts(), no-image-selector())])
+                      , IntVal("1")
+                      )
+                    , DataRef([PartRef("end", no-section-subscripts(), no-image-selector())])
+                    , no-expr()
+                    )
+                  ]
+                , DataIDoVariable(VarRef("k"))
+                , Minus(
+                    DataRef([PartRef("begin", no-section-subscripts(), no-image-selector())])
+                  , IntVal("1")
+                  )
+                , Minus(
+                    DataRef([PartRef("end", no-section-subscripts(), no-image-selector())])
+                  , IntVal("1")
+                  )
+                , opt-expr(DataRef([PartRef("stride", no-section-subscripts(), no-image-selector())]))
+                )
+              ]
+            , [DataStmtValue(DataStmtRepeat("4950"), RealVal("1.0"))]
+            )
+          , eos("\n\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n\n"))
+    )
+  ]
+)
