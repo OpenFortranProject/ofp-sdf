@@ -2,8 +2,6 @@
 !    is ( data-i-do-object-list, data-i-do-variable
 !       = scalar-int-constant-expr, scalar-int-constant-expr [ , scalar-int-constant-expr ] )
 !
-! TODO- Fix AMBIGUITIES
-!
 ! From NOTE 5.29
 !
 CHARACTER (LEN = 10)  NAME

@@ -1,7 +1,11 @@
 !! R448 type-bound-procedure-stmt
 !    is PROCEDURE [ [ , binding-attr-list ] :: ] type-bound-proc-decl-list
 !    or PROCEDURE (interface-name ), binding-attr-list :: binding-name-list
-
+!
+!   - F2008 addition
+!   - multiple type-bound procedures can be declared in a single type-bound
+!     procedure statement
+!
 module myjunk
 
 TYPE POINT

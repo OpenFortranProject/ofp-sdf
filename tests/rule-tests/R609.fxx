@@ -12,6 +12,6 @@ a = P%NAME(1:1)
 a = ID(4:9)
 a = '0123456789'(N:N)
 
-b = coarray_string[5]
+b = coarray_string(2:3)[5](:)
 
 end
