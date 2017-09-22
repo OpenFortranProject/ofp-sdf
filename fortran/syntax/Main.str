@@ -934,6 +934,7 @@ signature
     PRIVATE                         : AccessSpec
     PUBLIC                          : AccessSpec
                                     : FunctionReference -> NullInit
+    PointerInit                     : InitialDataTarget -> Initialization
     PointerInit                     : NullInit -> Initialization
     Init                            : ConstantExpr -> Initialization
     no-init                         : OptInitialization
@@ -1023,6 +1024,7 @@ signature
                                     : TypeBoundProcedurePart -> OptTypeBoundProcedurePart
     TypeBoundProcedurePart          : ContainsStmt * OptBindingPrivateStmt * List(TypeBoundProcBinding) -> TypeBoundProcedurePart
     PrivateComponentsStmt           : OptLabel * EOS -> PrivateComponentsStmt
+                                    : Designator -> InitialDataTarget
     Init                            : Expr -> ComponentInitialization
     PointerInit                     : NullInit -> ComponentInitialization
     Init                            : ConstantExpr -> ComponentInitialization

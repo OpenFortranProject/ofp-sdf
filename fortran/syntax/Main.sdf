@@ -1346,8 +1346,8 @@ context-free syntax
 
 %%R505
   '='   ConstantExpr       -> Initialization  {cons("Init")}
-  '=>'  NullInit           -> Initialization  {cons("PointerInit")}
-%%'=>'  InitialDataTarget  -> Initialization  {cons("PointerInit")} %%AMBIGUOUS with FunctionReference in NullInit
+  '=>'  NullInit           -> Initialization  {cons("PointerInit"), prefer}
+  '=>'  InitialDataTarget  -> Initialization  {cons("PointerInit")} %%AMBIGUOUS with FunctionReference in NullInit
 
 %%R506
   FunctionReference                                     -> NullInit

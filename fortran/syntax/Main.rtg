@@ -1792,6 +1792,7 @@ regular tree grammar
     AccessSpec                             -> PRIVATE()
     AccessSpec                             -> PUBLIC()
     NullInit                               -> FunctionReference
+    Initialization                         -> PointerInit(InitialDataTarget)
     Initialization                         -> PointerInit(NullInit)
     Initialization                         -> Init(ConstantExpr)
     OptInitialization                      -> no-init()
