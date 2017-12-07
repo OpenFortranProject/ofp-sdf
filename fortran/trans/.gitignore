@@ -8,3 +8,5 @@ no-to-none
 ofp2fast
 fast2sage
 unix-to-dos
+fixed-to-free
+strip-final-lf

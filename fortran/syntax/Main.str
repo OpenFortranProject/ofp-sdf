@@ -6,6 +6,43 @@ signature
     PauseStmt                       : OptLabel * OptStopCode * EOS -> PauseStmt
     ParensUnaryMinus                : Primary -> ParensUnaryMinus
     ParensUnaryPlus                 : Primary -> ParensUnaryPlus
+    no-list                         : OptWaitSpecList
+    comma-list                      : List(WaitSpec) -> OptWaitSpecList
+    EventWaitStmt                   : OptLabel * EventVariable * OptWaitSpecList * EOS -> EventWaitStmt
+                                    : ScalarVariable -> EventVariable
+    EventPostStmt                   : OptLabel * EventVariable * OptSyncStatList * EOS -> EventPostStmt
+    FailImageStmt                   : OptLabel * OptStopCode * EOS -> FailImageStmt
+    SyncTeamStmt                    : OptLabel * TeamVariable * OptSyncStatList * EOS -> SyncTeamStmt
+                                    : SyncStat -> FormTeamSpec
+    FormTeamSpec                    : ScalarIntExpr -> FormTeamSpec
+                                    : ScalarIntExpr -> TeamId
+    no-list                         : OptFormTeamSpecList
+    comma-list                      : List(FormTeamSpec) -> OptFormTeamSpecList
+    FormTeamStmt                    : OptLabel * TeamId * TeamVariable * OptFormTeamSpecList * EOS -> FormTeamStmt
+                                    : Expr -> ScalarIntExpr
+    no-team-id                      : OptTeamId
+    TeamId                          : ScalarIntExpr -> OptTeamId
+    no-team-variable                : OptTeamVariable
+    TeamVariable                    : TeamVariable -> OptTeamVariable
+    no-image-selector               : OptImageSelector
+    substring-section-range         : ImageSelector * SubstringRange -> OptImageSelector
+                                    : ImageSelector -> OptImageSelector
+    ImageSelector                   : OptTeamVariable * List(Cosubscript) * OptTeamId -> ImageSelector
+                                    : Variable -> ScalarVariable
+                                    : ScalarVariable -> TeamVariable
+    no-name                         : OptTeamConstructName
+    Name                            : Ident -> OptTeamConstructName
+    no-list                         : OptParensSyncStatList
+    paren-list                      : List(SyncStat) -> OptParensSyncStatList
+    EndChangeTeamStmt               : OptLabel * OptParensSyncStatList * OptTeamConstructName * EOS -> EndChangeTeamStmt
+                                    : Ident -> CoselectorName
+    CoarrayAssociation              : CodimensionDecl * CoselectorName -> CoarrayAssociation
+    no-list                         : OptCoarrayAssociationList
+    comma-list                      : List(CoarrayAssociation) -> OptCoarrayAssociationList
+    no-name                         : OptTeamConstructNameCOLON
+    Name                            : Ident -> OptTeamConstructNameCOLON
+    ChangeTeamStmt                  : OptLabel * OptTeamConstructNameCOLON * TeamVariable * OptCoarrayAssociationList * OptSyncStatList * EOS -> ChangeTeamStmt
+    ChangeTeamConstruct             : ChangeTeamStmt * Block * EndChangeTeamStmt -> ChangeTeamConstruct
     ContainsStmt                    : OptLabel * EOS -> ContainsStmt
     ReturnStmt                      : OptLabel * NoExpr * EOS -> ReturnStmt
     ReturnStmt                      : OptLabel * Expr * EOS -> ReturnStmt
@@ -207,6 +244,7 @@ signature
                                     : WhereStmt -> ActionStmt
                                     : WaitStmt -> ActionStmt
                                     : UnlockStmt -> ActionStmt
+                                    : SyncTeamStmt -> ActionStmt
                                     : SyncMemoryStmt -> ActionStmt
                                     : SyncImagesStmt -> ActionStmt
                                     : SyncAllStmt -> ActionStmt
@@ -226,6 +264,10 @@ signature
                                     : ForallStmt -> ActionStmt
                                     : FlushStmt -> ActionStmt
                                     : ExitStmt -> ActionStmt
+                                    : FormTeamStmt -> ActionStmt
+                                    : FailImageStmt -> ActionStmt
+                                    : EventWaitStmt -> ActionStmt
+                                    : EventPostStmt -> ActionStmt
                                     : ErrorStopStmt -> ActionStmt
                                     : EndfileStmt -> ActionStmt
                                     : DeallocateStmt -> ActionStmt
@@ -388,6 +430,8 @@ signature
     endfile-unit-stmt               : OptLabel * FileUnitNumber * EOS -> EndfileStmt
     BackspaceStmt                   : OptLabel * List(PositionSpec) * EOS -> BackspaceStmt
     backspace-unit-stmt             : OptLabel * FileUnitNumber * EOS -> BackspaceStmt
+                                    : SyncStat -> WaitSpec
+    UNTIL_COUNT                     : ScalarIntExpr -> WaitSpec
     IOSTAT                          : IntExpr -> WaitSpec
     IOMSG                           : IomsgVariable -> WaitSpec
     ID                              : IntExpr -> WaitSpec
@@ -776,10 +820,6 @@ signature
     AllocateStmt                    : OptLabel * TypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
     AllocateStmt                    : OptLabel * NoTypeSpec * List(Allocation) * OptAllocOptList * EOS -> AllocateStmt
                                     : IntExpr -> Cosubscript
-    no-image-selector               : OptImageSelector
-    substring-section-range         : ImageSelector * SubstringRange -> OptImageSelector
-                                    : ImageSelector -> OptImageSelector
-    ImageSelector                   : List(Cosubscript) -> ImageSelector
     no-stride                       : OptStride
     opt-stride                      : Stride -> OptStride
                                     : IntExpr -> Stride
@@ -1146,6 +1186,7 @@ signature
                                     : IfConstruct -> ExecutableConstruct
                                     : ForallConstruct -> ExecutableConstruct
                                     : CriticalConstruct -> ExecutableConstruct
+                                    : ChangeTeamConstruct -> ExecutableConstruct
                                     : CaseConstruct -> ExecutableConstruct
                                     : BlockConstruct -> ExecutableConstruct
                                     : AssociateConstruct -> ExecutableConstruct

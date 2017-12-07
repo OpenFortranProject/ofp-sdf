@@ -1,0 +1,27 @@
+Program(
+  "!! R511-F2015-N2007 fail-image-stmt\n!    is FAIL IMAGE [ stop-code ]\n!\n   "
+, [ MainProgram(
+      no-program-stmt()
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , comma-list([PARAMETER()])
+          , [EntityDecl("stop_code", no-list(), no-list(), no-char-length(), Init(IntVal("13")))]
+          , eos("\n\n   ")
+          )
+        , FailImageStmt(no-label(), no-stop-code(), eos("\n   "))
+        , FailImageStmt(
+            no-label()
+          , DataRef([PartRef("stop_code", no-section-subscripts(), no-image-selector())])
+          , eos("\n   ")
+          )
+        , FailImageStmt(no-label(), IntVal("33"), eos("\n"))
+        ]
+      )
+    , no-subprogram-part()
+    , EndProgramStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)
