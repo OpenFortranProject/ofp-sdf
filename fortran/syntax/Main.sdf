@@ -770,6 +770,8 @@ sorts
   TeamVariable                        %% R506-F2015-N2007
 
   ImageSelector                       %% R624, R624-F2015-N2007
+  ImageSelectorSpec                   %% R926-2018
+  TeamValue                           %% R1115-2018
 
   FormTeamStmt                        %% R507-F2015-N2007
   TeamId                              %% R508-F2015-N2007
@@ -786,7 +788,7 @@ sorts
   ScalarVariable                      %% TODO - use this in 2008 grammar portion as well
 
   OptWaitSpecList OptFormTeamSpecList OptParensSyncStatList OptCoarrayAssociationList
-  OptTeamId OptTeamVariable CoselectorName OptTeamConstructName OptTeamConstructNameCOLON
+  OptTeamVariable CoselectorName OptTeamConstructName OptTeamConstructNameCOLON
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3959,10 +3961,14 @@ context-free syntax
 %% -------------------
 
 %%R624-F2015-N2007
+%%R924-F2018-TODO
 %%
   '['
-      OptTeamVariable {Cosubscript ','}+
-      OptTeamId
+      {Cosubscript ','}+
+  ']'                                                   -> ImageSelector        {cons("ImageSelector")}
+  '['
+      {Cosubscript ','}+ ','
+      {ImageSelectorSpec ','}+
   ']'                                                   -> ImageSelector        {cons("ImageSelector")}
 
   ImageSelector                                         -> OptImageSelector
@@ -3972,8 +3978,12 @@ context-free syntax
   TeamVariable '::'                                     -> OptTeamVariable      {cons("TeamVariable")}
   % empty %                                             -> OptTeamVariable      {cons("no-team-variable")}
 
-  'TEAM_ID' '=' ScalarIntExpr                           -> OptTeamId            {cons("TeamId")}
-  % empty %                                             -> OptTeamId            {cons("no-team-id")}
+  'STAT'        '=' StatVariable                        -> ImageSelectorSpec    {cons("STAT")}
+  'TEAM'        '=' TeamValue                           -> ImageSelectorSpec    {cons("TEAM")}
+  'TEAM_NUMBER' '=' ScalarIntExpr                       -> ImageSelectorSpec    {cons("TEAM_NUMBER")}
+
+%%R1115-2018
+  Expr                                                  -> TeamValue            {cons("TeamValue")}
 
   Expr                                                  -> ScalarIntExpr
 
