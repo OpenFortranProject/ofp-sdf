@@ -352,10 +352,6 @@ fast-to-sage:  ImplicitStmt(label,list)  -> SgUntypedImplicitDeclaration (label,
 //  fast-to-sage:  LetterSpec(s1,no-letter())   -> PpLetterSpec(s1)
 //  fast-to-sage:  LetterSpec(s1,s2)            -> PpLetterSpec(s1,s2)
 
-//R612
-//  fast-to-sage:
-//    PartRef(name,ss,is) -> PpPartRef(name,PpSectionSubscripts(ss),PpImageSelector(is))
-
 //R631
 //  fast-to-sage:  Allocation(part,[],[])                 -> PpAllocation(part)
 //  fast-to-sage:  Allocation(part,shape,[])              -> PpAllocationShape(part,shape)

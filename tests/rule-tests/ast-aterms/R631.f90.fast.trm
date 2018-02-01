@@ -50,7 +50,9 @@ Program(
           , no-type-spec()
           , [ Allocation(
                 DataRef(
-                  [PartRef("T", no-section-subscripts(), [VarRef("Q")]), VarRef("AAC")]
+                  [ PartRef("T", no-section-subscripts(), ImageSelector([VarRef("Q")], []))
+                  , VarRef("AAC")
+                  ]
                 )
               , [Range(no-lower-bound(), VarRef("N"))]
               , []

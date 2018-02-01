@@ -5,13 +5,13 @@ Program(
         []
       , [ AssignmentStmt(
             no-label()
-          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")], []))
           , IntVal("1")
           )
         , AssignmentStmt(
             no-label()
           , VarDef("b")
-          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")], []))
           ){Comment("
 
 ! NOTE 6.17
@@ -21,7 +21,7 @@ Program(
           , PartRef(
               "A"
             , [Triplet(no-subscript(), no-subscript(), no-stride())]
-            , [IntVal("1"), IntVal("4")]
+            , ImageSelector([IntVal("1"), IntVal("4")], [])
             )
           , IntVal("1")
           )
@@ -31,7 +31,7 @@ Program(
           , PartRef(
               "A"
             , [Triplet(no-subscript(), no-subscript(), no-stride())]
-            , [IntVal("1"), IntVal("4")]
+            , ImageSelector([IntVal("1"), IntVal("4")], [])
             )
           ){Comment("
 

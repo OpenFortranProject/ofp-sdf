@@ -24,25 +24,33 @@ Program(
         , AssignmentStmt(
             no-label()
           , VarDef("c")
-          , PartRef("s", no-section-subscripts(), [IntVal("1"), IntVal("2")])
+          , PartRef(
+              "s"
+            , no-section-subscripts()
+            , ImageSelector([IntVal("1"), IntVal("2")], [])
+            )
           )
         , AssignmentStmt(
             no-label()
           , VarDef("c")
-          , PartRef("s", [IntVal("1")], [IntVal("3")])
+          , PartRef(
+              "s"
+            , [IntVal("1")]
+            , ImageSelector([IntVal("3")], [])
+            )
           ){Comment("
 
    ")}
         , AssignmentStmt(
             no-label()
-          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")], []))
           , IntVal("1")
           ){Comment("
    ")}
         , AssignmentStmt(
             no-label()
           , VarDef("b")
-          , PartRef("a", no-section-subscripts(), [IntVal("3")])
+          , PartRef("a", no-section-subscripts(), ImageSelector([IntVal("3")], []))
           ){Comment("
 
 ")}

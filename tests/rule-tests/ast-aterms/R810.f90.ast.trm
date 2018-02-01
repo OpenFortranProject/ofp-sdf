@@ -10,11 +10,11 @@ Program(
               [ AssignmentStmt(
                   no-label()
                 , DataRef(
-                    [PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")]))]
+                    [PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")], no-list()))]
                   )
                 , Plus(
                     DataRef(
-                      [PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")]))]
+                      [PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")], no-list()))]
                     )
                   , IntVal("1")
                   )

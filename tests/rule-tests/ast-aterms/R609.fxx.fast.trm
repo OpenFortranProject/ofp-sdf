@@ -47,7 +47,7 @@ Program(
               PartRef(
                 "coarray_string"
               , [Triplet(IntVal("2"), IntVal("3"), no-stride())]
-              , [IntVal("5")]
+              , ImageSelector([IntVal("5")], [])
               )
             , SubstringRange(no-lower-bound(), no-upper-bound())
             )

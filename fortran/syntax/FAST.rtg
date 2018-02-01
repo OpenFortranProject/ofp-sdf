@@ -319,13 +319,6 @@ regular tree grammar
     ListPlusOfPointerObject0          -> <conc>(ListPlusOfPointerObject0,ListPlusOfPointerObject0)
     ListPlusOfPointerObject0          -> <cons>(PointerObject,ListStarOfPointerObject0)
 
-    ListStarOfCosubscript0            -> ListPlusOfCosubscript0
-    ListStarOfCosubscript0            -> <nil>()
-    ListStarOfCosubscript0            -> <conc>(ListStarOfCosubscript0,ListStarOfCosubscript0)
-    ListPlusOfCosubscript0            -> <conc>(ListStarOfCosubscript0,ListPlusOfCosubscript0)
-    ListPlusOfCosubscript0            -> <conc>(ListPlusOfCosubscript0,ListStarOfCosubscript0)
-    ListPlusOfCosubscript0            -> <conc>(ListPlusOfCosubscript0,ListPlusOfCosubscript0)
-    ListPlusOfCosubscript0            -> <cons>(Cosubscript,ListStarOfCosubscript0)
     ListStarOfSectionSubscript0       -> ListPlusOfSectionSubscript0
     ListStarOfSectionSubscript0       -> <nil>()
     ListStarOfSectionSubscript0       -> <conc>(ListStarOfSectionSubscript0,ListStarOfSectionSubscript0)
@@ -1522,7 +1515,8 @@ regular tree grammar
     Cosubscript                       -> IntExpr
     OptImageSelector                  -> no-image-selector()
     OptImageSelector                  -> ImageSelector
-    ImageSelector                     -> ImageSelector(ListPlusOfCosubscript0)
+    ImageSelector                     -> ImageSelector(ListPlusOfCosubscript,ListStarOfImageSelectorSpec)
+
     VectorSubscript                   -> IntExpr
     OptStride                         -> no-stride()
     OptStride                         -> opt-stride(Stride)
@@ -2364,6 +2358,24 @@ regular tree grammar
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListStarOfOutputItem)
     ListPlusOfOutputItem              -> <conc>(ListPlusOfOutputItem,ListPlusOfOutputItem)
     ListPlusOfOutputItem              -> <cons>(OutputItem,ListStarOfOutputItem)
+
+/* R925-F2018-N2146 */
+    ListStarOfCosubscript             -> ListPlusOfCosubscript
+    ListStarOfCosubscript             -> <nil>()
+    ListStarOfCosubscript             -> <conc>(ListStarOfCosubscript,ListStarOfCosubscript)
+    ListPlusOfCosubscript             -> <conc>(ListStarOfCosubscript,ListPlusOfCosubscript)
+    ListPlusOfCosubscript             -> <conc>(ListPlusOfCosubscript,ListStarOfCosubscript)
+    ListPlusOfCosubscript             -> <conc>(ListPlusOfCosubscript,ListPlusOfCosubscript)
+    ListPlusOfCosubscript             -> <cons>(Cosubscript,ListStarOfCosubscript)
+
+/* R926-F2018-N2146 */
+    ListStarOfImageSelectorSpec             -> ListPlusOfImageSelectorSpec
+    ListStarOfImageSelectorSpec             -> <nil>()
+    ListStarOfImageSelectorSpec             -> <conc>(ListStarOfImageSelectorSpec,ListStarOfImageSelectorSpec)
+    ListPlusOfImageSelectorSpec             -> <conc>(ListStarOfImageSelectorSpec,ListPlusOfImageSelectorSpec)
+    ListPlusOfImageSelectorSpec             -> <conc>(ListPlusOfImageSelectorSpec,ListStarOfImageSelectorSpec)
+    ListPlusOfImageSelectorSpec             -> <conc>(ListPlusOfImageSelectorSpec,ListPlusOfImageSelectorSpec)
+    ListPlusOfImageSelectorSpec             -> <cons>(ImageSelectorSpec,ListStarOfImageSelectorSpec)
 
 /* R1214 */
     ListStarOfProcDecl                -> ListPlusOfProcDecl

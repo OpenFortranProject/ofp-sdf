@@ -67,7 +67,7 @@ Program(
                   "z"
                 , paren-list([IntVal("3")])
                 , substring-section-range(
-                    ImageSelector([IntVal("13")])
+                    ImageSelector([IntVal("13")], no-list())
                   , SubstringRange(IntVal("1"), IntVal("2"))
                   )
                 )

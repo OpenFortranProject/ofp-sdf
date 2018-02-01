@@ -1,0 +1,58 @@
+Program(
+  "!! R521 assumed-size-spec\n!    [ explicit-shape-spec , ] ... [ lower-bound : ] *\n\n"
+, [ SubroutineSubprogram(
+      SubroutineStmt(
+        no-label()
+      , no-prefix()
+      , "assumed_shape"
+      , ["bar", "truth"]
+      , no-language-binding()
+      , eos("\n  ")
+      )
+    , InitialSpecPart([], [])
+    , SpecAndExecPart(
+        [ TypeDeclarationStmt(
+            no-label()
+          , IntrinsicType(INTEGER())
+          , no-list()
+          , [ EntityDecl(
+                "bar"
+              , ArraySpec(
+                  AssumedSize(
+                    [ExplicitShape(IntVal("2"), IntVal("6"))]
+                  , IntVal("5")
+                  )
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        , TypeDeclarationStmt(
+            "3"
+          , IntrinsicType(REAL())
+          , no-list()
+          , [ EntityDecl(
+                "truth"
+              , ArraySpec(
+                  AssumedSize(
+                    [ExplicitShape(no-lower-bound(), IntVal("31")), ExplicitShape(no-lower-bound(), IntVal("41"))]
+                  , no-lower-bound()
+                  )
+                )
+              , no-list()
+              , no-char-length()
+              , no-init()
+              )
+            ]
+          , eos("\n")
+          )
+        ]
+      )
+    , no-subprogram-part()
+    , EndSubroutineStmt(no-label(), no-name(), eos("\n"))
+    )
+  ]
+)

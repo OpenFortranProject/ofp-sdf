@@ -72,7 +72,10 @@ Program(
                   [ PartRef(
                       "T"
                     , no-section-subscripts()
-                    , ImageSelector([DataRef([PartRef("Q", no-section-subscripts(), no-image-selector())])])
+                    , ImageSelector(
+                        [DataRef([PartRef("Q", no-section-subscripts(), no-image-selector())])]
+                      , no-list()
+                      )
                     )
                   , PartRef("AAC", no-section-subscripts(), no-image-selector())
                   ]

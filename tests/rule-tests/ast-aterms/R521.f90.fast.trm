@@ -1,0 +1,53 @@
+Program(
+  [ Subroutine(
+      SubroutineStmt(no-label(), [], "assumed_shape", ["bar", "truth"], no-language-binding()){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "bar"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec(
+                    [Range(IntVal("2"), IntVal("6")), Range(IntVal("5"), STAR())]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        , TypeDeclarationStmt(
+            "3"
+          , REAL()
+          , []
+          , [ Var(
+                "truth"
+              , ArrayType(
+                  REAL()
+                , ArraySpec(
+                    [ Range(no-lower-bound(), IntVal("31"))
+                    , Range(no-lower-bound(), IntVal("41"))
+                    , Range(no-lower-bound(), STAR())
+                    ]
+                  )
+                , []
+                )
+              , no-init()
+              )
+            ]
+          )
+        ]
+      , []
+      , []
+      )
+    , EndSubroutineStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R521 assumed-size-spec
+!    [ explicit-shape-spec , ] ... [ lower-bound : ] *
+
+")}

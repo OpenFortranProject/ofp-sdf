@@ -5,13 +5,17 @@ Program(
         []
       , [ AssignmentStmt(
             no-label()
-          , PartRef("co", no-section-subscripts(), [IntVal("3"), IntVal("1")])
+          , PartRef(
+              "co"
+            , no-section-subscripts()
+            , ImageSelector([IntVal("3"), IntVal("1")], [])
+            )
           , IntVal("1")
           )
         , AssignmentStmt(
             no-label()
           , VarDef("b")
-          , PartRef("co", no-section-subscripts(), [IntVal("3")])
+          , PartRef("co", no-section-subscripts(), ImageSelector([IntVal("3")], []))
           ){Comment("
 
 ")}

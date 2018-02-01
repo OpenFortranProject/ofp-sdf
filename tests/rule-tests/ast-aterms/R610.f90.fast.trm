@@ -41,7 +41,11 @@ Program(
             no-label()
           , VarDef("a")
           , Substring(
-              PartRef("z", [IntVal("3")], [IntVal("13")])
+              PartRef(
+                "z"
+              , [IntVal("3")]
+              , ImageSelector([IntVal("13")], [])
+              )
             , SubstringRange(IntVal("1"), IntVal("2"))
             )
           ){Comment("

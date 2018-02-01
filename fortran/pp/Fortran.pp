@@ -482,8 +482,8 @@
    ppPartRef                        -- H hs=0[_1 _2 _3],
    ppSectionSubscripts              -- "(" _1 ")",
    ppSectionSubscripts.1:iter-sep   -- _1 ",",
-   ppImageSelector                  -- "[" _1 "]",
-   ppImageSelector.1:iter-sep       -- _1 ",",
+   ImageSelector                  -- "[" _1 _2 "]",
+   ImageSelector.1:iter-sep       -- _1 ",",
    no-section-subscripts            -- ,
    no-image-selector                -- ,
 

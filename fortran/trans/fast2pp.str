@@ -47,7 +47,7 @@ signature
 
     ppPartRef           : name * ss * is -> ppPartRef
     ppSectionSubscripts : ss             -> ppSectionSubscripts
-    ppImageSelector     : ss             -> ppImageSelector
+    ppImageSelector     : is             -> ppImageSelector
 
     ppTypeBoundProcDecl      : name                    -> ppTypeBoundProcDecl
 
@@ -247,7 +247,7 @@ ast-to-pp:  ImplicitStmt(label,[])           -> ppImplicitStmt(label)
 //  ast-to-pp:  LetterSpec(s1,s2)            -> ppLetterSpec(s1,s2)
 
 //R612
-ast-to-pp:  PartRef(name,ss,is)              -> ppPartRef(name,ppSectionSubscripts(ss),ppImageSelector(is))
+ast-to-pp:  PartRef(name,ss,is)              -> ppPartRef(name,ppSectionSubscripts(ss),is)
 
 stride-separator = ?no-stride() < !"" + !":"
 

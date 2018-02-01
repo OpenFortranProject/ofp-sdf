@@ -624,7 +624,7 @@ signature
                                     : IntExpr -> Cosubscript
     no-image-selector               : OptImageSelector
                                     : ImageSelector -> OptImageSelector
-    ImageSelector                   : List(Cosubscript) -> ImageSelector
+    ImageSelector                   : List(Cosubscript) * ListStarOfImageSelectorSpec -> ImageSelector
     no-stride                       : OptStride
     opt-stride                      : Stride -> OptStride
                                     : IntExpr -> Stride

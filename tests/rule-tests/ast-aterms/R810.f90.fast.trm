@@ -7,9 +7,9 @@ Program(
             CriticalStmt("10", no-name(), eos("\n      "))
           , [ AssignmentStmt(
                 no-label()
-              , PartRef("GLOBAL_COUNTER", no-section-subscripts(), [IntVal("1")])
+              , PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")], []))
               , Plus(
-                  PartRef("GLOBAL_COUNTER", no-section-subscripts(), [IntVal("1")])
+                  PartRef("GLOBAL_COUNTER", no-section-subscripts(), ImageSelector([IntVal("1")], []))
                 , IntVal("1")
                 )
               )

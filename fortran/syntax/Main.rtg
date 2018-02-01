@@ -2,13 +2,6 @@
 regular tree grammar
   start Program
   productions
-    ListStarOfWaitSpec0                    -> ListPlusOfWaitSpec0
-    ListStarOfWaitSpec0                    -> <nil>()
-    ListStarOfWaitSpec0                    -> <conc>(ListStarOfWaitSpec0,ListStarOfWaitSpec0)
-    ListPlusOfWaitSpec0                    -> <conc>(ListStarOfWaitSpec0,ListPlusOfWaitSpec0)
-    ListPlusOfWaitSpec0                    -> <conc>(ListPlusOfWaitSpec0,ListStarOfWaitSpec0)
-    ListPlusOfWaitSpec0                    -> <conc>(ListPlusOfWaitSpec0,ListPlusOfWaitSpec0)
-    ListPlusOfWaitSpec0                    -> <cons>(WaitSpec,ListStarOfWaitSpec0)
     ListStarOfFormTeamSpec0                -> ListPlusOfFormTeamSpec0
     ListStarOfFormTeamSpec0                -> <nil>()
     ListStarOfFormTeamSpec0                -> <conc>(ListStarOfFormTeamSpec0,ListStarOfFormTeamSpec0)
@@ -16,6 +9,13 @@ regular tree grammar
     ListPlusOfFormTeamSpec0                -> <conc>(ListPlusOfFormTeamSpec0,ListStarOfFormTeamSpec0)
     ListPlusOfFormTeamSpec0                -> <conc>(ListPlusOfFormTeamSpec0,ListPlusOfFormTeamSpec0)
     ListPlusOfFormTeamSpec0                -> <cons>(FormTeamSpec,ListStarOfFormTeamSpec0)
+    ListStarOfImageSelectorSpec0           -> ListPlusOfImageSelectorSpec0
+    ListStarOfImageSelectorSpec0           -> <nil>()
+    ListStarOfImageSelectorSpec0           -> <conc>(ListStarOfImageSelectorSpec0,ListStarOfImageSelectorSpec0)
+    ListPlusOfImageSelectorSpec0           -> <conc>(ListStarOfImageSelectorSpec0,ListPlusOfImageSelectorSpec0)
+    ListPlusOfImageSelectorSpec0           -> <conc>(ListPlusOfImageSelectorSpec0,ListStarOfImageSelectorSpec0)
+    ListPlusOfImageSelectorSpec0           -> <conc>(ListPlusOfImageSelectorSpec0,ListPlusOfImageSelectorSpec0)
+    ListPlusOfImageSelectorSpec0           -> <cons>(ImageSelectorSpec,ListStarOfImageSelectorSpec0)
     ListStarOfCosubscript0                 -> ListPlusOfCosubscript0
     ListStarOfCosubscript0                 -> <nil>()
     ListStarOfCosubscript0                 -> <conc>(ListStarOfCosubscript0,ListStarOfCosubscript0)
@@ -23,6 +23,13 @@ regular tree grammar
     ListPlusOfCosubscript0                 -> <conc>(ListPlusOfCosubscript0,ListStarOfCosubscript0)
     ListPlusOfCosubscript0                 -> <conc>(ListPlusOfCosubscript0,ListPlusOfCosubscript0)
     ListPlusOfCosubscript0                 -> <cons>(Cosubscript,ListStarOfCosubscript0)
+    ListStarOfWaitSpec0                    -> ListPlusOfWaitSpec0
+    ListStarOfWaitSpec0                    -> <nil>()
+    ListStarOfWaitSpec0                    -> <conc>(ListStarOfWaitSpec0,ListStarOfWaitSpec0)
+    ListPlusOfWaitSpec0                    -> <conc>(ListStarOfWaitSpec0,ListPlusOfWaitSpec0)
+    ListPlusOfWaitSpec0                    -> <conc>(ListPlusOfWaitSpec0,ListStarOfWaitSpec0)
+    ListPlusOfWaitSpec0                    -> <conc>(ListPlusOfWaitSpec0,ListPlusOfWaitSpec0)
+    ListPlusOfWaitSpec0                    -> <cons>(WaitSpec,ListStarOfWaitSpec0)
     ListStarOfCoarrayAssociation0          -> ListPlusOfCoarrayAssociation0
     ListStarOfCoarrayAssociation0          -> <nil>()
     ListStarOfCoarrayAssociation0          -> <conc>(ListStarOfCoarrayAssociation0,ListStarOfCoarrayAssociation0)
@@ -763,11 +770,43 @@ regular tree grammar
     ActionStmt                             -> PauseStmt
     Initialization                         -> Init(ConstantExpr)
     ComponentInitialization                -> Init(Expr)
+    WriteStmt                              -> WriteStmt(OptLabel,IoControlSpecList,ListStarOfOutputItem0,EOS)
+    ReadStmt                               -> ReadStmt(OptLabel,IoControlSpecList,ListStarOfInputItem0,EOS)
     GotoStmt                               -> GotoStmt(OptLabel,IntVariable,EOS)
     Level1Expr                             -> ParensUnaryMinus
     Level1Expr                             -> ParensUnaryPlus
     ParensUnaryMinus                       -> ParensUnaryMinus(Primary)
     ParensUnaryPlus                        -> ParensUnaryPlus(Primary)
+    OptFormTeamSpecList                    -> no-list()
+    OptFormTeamSpecList                    -> OptFormTeamSpecList(ListPlusOfFormTeamSpec0)
+    FormTeamSpec                           -> SyncStat
+    FormTeamSpec                           -> FormTeamSpec(ScalarIntExpr)
+    ScalarVariable                         -> Variable
+    TeamVariable                           -> ScalarVariable
+    TeamNumber                             -> ScalarIntExpr
+    FormTeamStmt                           -> FormTeamStmt(OptLabel,TeamNumber,TeamVariable,OptFormTeamSpecList,EOS)
+    ScalarIntExpr                          -> Expr
+    TeamValue                              -> ScalarIntExpr
+    OptTeamConstructName                   -> no-name()
+    OptTeamConstructName                   -> Name(Ident)
+    OptParensSyncStatList                  -> no-list()
+    OptParensSyncStatList                  -> no-list()
+    OptParensSyncStatList                  -> OptParensSyncStatList(ListPlusOfSyncStat0)
+    EndChangeTeamStmt                      -> EndChangeTeamStmt(OptLabel,OptParensSyncStatList,OptTeamConstructName,EOS)
+    CoarrayAssociation                     -> CoarrayAssociation(CodimensionDecl,Selector)
+    ChangeTeamStmt                         -> ChangeTeamStmt(OptLabel,OptTeamConstructName,TeamValue,OptCoarrayAssociationList,OptSyncStatList,EOS)
+    OptTeamVariable                        -> no-team-variable()
+    OptTeamVariable                        -> TeamVariable(TeamVariable)
+    OptImageSelectorSpecList               -> no-list()
+    OptImageSelectorSpecList               -> OptImageSelectorSpecList(ListPlusOfImageSelectorSpec0)
+    ImageSelectorSpec                      -> TEAM_NUMBER(ScalarIntExpr)
+    ImageSelectorSpec                      -> TEAM(TeamValue)
+    ImageSelectorSpec                      -> STAT(StatVariable)
+    Cosubscript                            -> ScalarIntExpr
+    OptImageSelector                       -> no-image-selector()
+    OptImageSelector                       -> substring-section-range(ImageSelector,SubstringRange)
+    OptImageSelector                       -> ImageSelector
+    ImageSelector                          -> ImageSelector(ListPlusOfCosubscript0,OptImageSelectorSpecList)
     WaitSpec                               -> SyncStat
     WaitSpec                               -> UNTIL_COUNT(ScalarIntExpr)
     OptWaitSpecList                        -> no-list()
@@ -777,28 +816,6 @@ regular tree grammar
     EventPostStmt                          -> EventPostStmt(OptLabel,EventVariable,OptSyncStatList,EOS)
     FailImageStmt                          -> FailImageStmt(OptLabel,OptStopCode,EOS)
     SyncTeamStmt                           -> SyncTeamStmt(OptLabel,TeamVariable,OptSyncStatList,EOS)
-    FormTeamSpec                           -> SyncStat
-    FormTeamSpec                           -> FormTeamSpec(ScalarIntExpr)
-    TeamId                                 -> ScalarIntExpr
-    OptFormTeamSpecList                    -> no-list()
-    OptFormTeamSpecList                    -> comma-list(ListPlusOfFormTeamSpec0)
-    FormTeamStmt                           -> FormTeamStmt(OptLabel,TeamId,TeamVariable,OptFormTeamSpecList,EOS)
-    ScalarIntExpr                          -> Expr
-    OptTeamId                              -> no-team-id()
-    OptTeamId                              -> TeamId(ScalarIntExpr)
-    OptTeamVariable                        -> no-team-variable()
-    OptTeamVariable                        -> TeamVariable(TeamVariable)
-    OptImageSelector                       -> no-image-selector()
-    OptImageSelector                       -> substring-section-range(ImageSelector,SubstringRange)
-    OptImageSelector                       -> ImageSelector
-    ImageSelector                          -> ImageSelector(OptTeamVariable,ListPlusOfCosubscript0,OptTeamId)
-    ScalarVariable                         -> Variable
-    TeamVariable                           -> ScalarVariable
-    OptTeamConstructName                   -> no-name()
-    OptTeamConstructName                   -> Name(Ident)
-    OptParensSyncStatList                  -> no-list()
-    OptParensSyncStatList                  -> paren-list(ListPlusOfSyncStat0)
-    EndChangeTeamStmt                      -> EndChangeTeamStmt(OptLabel,OptParensSyncStatList,OptTeamConstructName,EOS)
     CoselectorName                         -> Ident
     CoarrayAssociation                     -> CoarrayAssociation(CodimensionDecl,CoselectorName)
     OptCoarrayAssociationList              -> no-list()
@@ -1661,7 +1678,6 @@ regular tree grammar
     NoTypeSpec                             -> no-type-spec()
     AllocateStmt                           -> AllocateStmt(OptLabel,TypeSpec,ListPlusOfAllocation0,OptAllocOptList,EOS)
     AllocateStmt                           -> AllocateStmt(OptLabel,NoTypeSpec,ListPlusOfAllocation0,OptAllocOptList,EOS)
-    Cosubscript                            -> IntExpr
     VectorSubscript                        -> IntExpr
     OptStride                              -> no-stride()
     OptStride                              -> opt-stride(Stride)

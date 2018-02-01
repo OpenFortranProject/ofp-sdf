@@ -1,0 +1,53 @@
+Program(
+  [ MainProgram(
+      ProgramStmt(no-label(), "G0"){Comment("
+  ")}
+    , Scope(
+        [ TypeDeclarationStmt(
+            no-label()
+          , INTEGER()
+          , []
+          , [ Var(
+                "I"
+              , ArrayType(
+                  INTEGER()
+                , ArraySpec([Range(no-lower-bound(), IntVal("3"))])
+                , []
+                )
+              , Init(
+                  ArrayConstructor(
+                    AcSpec(
+                      no-type-spec()
+                    , [IntVal("1"), IntVal("2"), IntVal("3")]
+                    )
+                  )
+                )
+              )
+            ]
+          ){Comment("
+
+  ")}
+        ]
+      , [ WriteStmt(
+            no-label()
+          , [UNIT(STAR()), FMT-or-NML("\"(*(G0:','))\"")]
+          , [VarRef("I")]
+          ){Comment("
+  ")}
+        , WriteStmt(
+            no-label()
+          , [UNIT(STAR()), FMT("\"(*(g0:','))\"")]
+          , [IntVal("12"), RealVal("1.34"), "\"abc\"", "\"defe\"", IntVal("45")]
+          )
+        ]
+      , []
+      )
+    , EndProgramStmt(no-label(), no-name())
+    )
+  ]
+){Comment("!! R1005 unlimited-format-item
+!     is * ( format-items )
+!
+! Use with G0 to create CSV output
+!
+")}

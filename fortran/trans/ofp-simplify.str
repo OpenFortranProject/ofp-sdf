@@ -112,10 +112,6 @@ ofp-simplify-ast:
 //R622
 ofp-simplify-ast:  opt-stride(stride)             -> stride
 
-//R624
-//Removed because of team additions in F2015
-//ofp-simplify-ast:  ImageSelector(list)          -> list  // reduces '[' list ']' to list
-
 //ofp-simplify-ast:  DataRef([PartRef(obj,_,_)])  -> obj
 
 //R636
