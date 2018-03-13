@@ -48,15 +48,19 @@ exports
 
 sorts
 
-  ActionStmt OptLabel ProcedureDesignator
-  ActualArgSpec NoActualArgSpecList
-
 %% Rosebud syntax
 %% uses host sorts
+
+  ActionStmt AttrSpec PrefixSpec EntityName
+  OptLabel ProcedureDesignator
+  ActualArgSpec NoActualArgSpecList
+  Expr
 
 %% Rosebud syntax
 %% private sorts
 
+  CudaPrefixSpec CudaAttrSpec
+  CudaAttributesPrefix CudaAttributesSpec CudaAttributesStmt
   CudaCallStmt CudaDeviceSpecification
 
 %% Rosebud syntax
@@ -64,8 +68,27 @@ sorts
 
 context-free syntax
 
+%%R212
+  CudaAttributesStmt                                  -> OtherSpecificationStmt
+
 %%R214
-    CudaCallStmt                                      -> ActionStmt
+  CudaCallStmt                                        -> ActionStmt
+
+%%R502
+  CudaAttrSpec                                        -> AttrSpec
+
+  'GLOBAL'                                            -> CudaAttrSpec          {cons("CUDA_GLOBAL")}
+  'GRID_GLOBAL'                                       -> CudaAttrSpec          {cons("CUDA_GRID_GLOBAL")}
+  'MANAGED'                                           -> CudaAttrSpec          {cons("CUDA_MANAGED")}
+  'CONSTANT'                                          -> CudaAttrSpec          {cons("CUDA_CONSTANT")}
+  'SHARED'                                            -> CudaAttrSpec          {cons("CUDA_SHARED")}
+  'PINNED'                                            -> CudaAttrSpec          {cons("CUDA_PINNED")}
+  'TEXTURE'                                           -> CudaAttrSpec          {cons("CUDA_TEXTURE")}
+
+  'ATTRIBUTES' '(' CudaAttrSpec ')'                 -> CudaAttributesSpec      {cons("CudaAttributesSpec")}
+
+  OptLabel CudaAttributesSpec '::' {EntityName ','}+ EOS -> CudaAttributesStmt {cons("CudaAttributesStmt")}
+  OptLabel CudaAttributesSpec      {EntityName ','}+ EOS -> CudaAttributesStmt {cons("CudaAttributesStmt")}
 
 %%R1220
   OptLabel 'CALL' ProcedureDesignator
@@ -76,3 +99,11 @@ context-free syntax
                   '(' {ActualArgSpec ','}* ')'  EOS -> CudaCallStmt            {cons("CudaCallStmt")}
 
   '<<<' Expr ',' Expr '>>>'                         -> CudaDeviceSpecification {cons("CudaDeviceSpecification")}
+
+%%R1226
+  CudaAttributesPrefix                              -> PrefixSpec
+
+  'DEVICE'                                          -> CudaPrefixSpec          {cons("CUDA_DEVICE")}
+  'HOST'                                            -> CudaPrefixSpec          {cons("CUDA_HOST")}
+
+  'ATTRIBUTES' '(' CudaPrefixSpec ')'               -> CudaAttributesPrefix    {cons("CudaAttributesPrefix")}

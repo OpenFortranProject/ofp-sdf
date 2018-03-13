@@ -1,21 +1,12 @@
-include ../../make.inc
+FORTRAN_ROOT = ../../fortran/syntax
 
-TEST_DIR = ../../tests/rule-tests
+all : CUDA_Fortran.tbl
 
-STRATEGO_TBL = /usr/local/packages/strategoxt-0.17/stratego-front/syn/StrategoStratego.tbl
-
-TestFiles = $(wildcard $(TEST_DIR)/*.f90)
-ASTFiles  = $(wildcard $(TEST_DIR)/*.f90.ast)
-
-FOR_ROOT = ../../fortran/syntax
-
-all : CUDA.tbl
-
-CUDA.tbl : CUDA.def
+CUDA_Fortran.tbl : CUDA.def
 	sdf2table -i $< -o $@ -m CUDA
 
 CUDA.def : CUDA.sdf
-	pack-sdf -i $< -o $@ -Idef $(FOR_ROOT)/Main.def
+	pack-sdf -i $< -o $@ -Idef $(FORTRAN_ROOT)/Main.def
 
 clean :
 	rm -f *.def *.tbl
