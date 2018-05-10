@@ -944,6 +944,7 @@
    SLASH                         -- _1 "/",
    no-r                          -- ,
    COLON_ED                      -- ":",
+   DOLLAR_ED                     -- "$",
    P                             -- _1 "P",
 
 %% R1015
