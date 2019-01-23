@@ -2822,6 +2822,7 @@ context-free syntax
   'NEWUNIT'      '='  IntVariable                -> ConnectSpec   {cons("NEWUNIT")}
   'PAD'          '='  DefaultCharExpr            -> ConnectSpec   {cons("PAD")}
   'POSITION'     '='  DefaultCharExpr            -> ConnectSpec   {cons("POSITION")}
+  'CARRIAGECONTROL' '=' DefaultCharExpr          -> ConnectSpec   {cons("CARRIAGECONTROL")}
   'RECL'         '='  IntExpr                    -> ConnectSpec   {cons("RECL")}
   'ROUND'        '='  DefaultCharExpr            -> ConnectSpec   {cons("ROUND")}
   'SIGN'         '='  DefaultCharExpr            -> ConnectSpec   {cons("SIGN")}
